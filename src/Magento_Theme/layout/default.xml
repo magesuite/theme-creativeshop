@@ -7,8 +7,18 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="footer">
-            <block class="Magento\Framework\View\Element\Template" name="scripts.js" template="Magento_Theme::html/scripts.phtml" />
+
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/creativeshop-logo.png</argument>
+                <argument name="logo_img_width" xsi:type="number">220</argument>
+                <argument name="logo_img_height" xsi:type="number">39</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="before.body.end" after="-">
+            <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml" />
         </referenceContainer>
+
     </body>
 </page>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+    <update handle="1column"/>
+    <move element="page.main.title" destination="dashboard.page.main.title" before="-"/>
+
+    <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-dashboard">
+
+        <referenceContainer name="columns.top" label="Before Main Columns"/>
+
+        <referenceContainer name="columns" htmlClass="cs-dashboard__wrapper">
+
+            <container name="sticky.menu.wrapper" htmlTag="div" htmlClass="cs-dashboard__menu" before="main">
+                    <container name="sticky.menu" as="sticky_menu" label="Sticky menu"/>
+            </container>
+
+            <referenceContainer name="main" label="Main Content Container" htmlTag="div" htmlClass="cs-dashboard__main"  after="sticky.menu.wrapper">
+
+                <referenceContainer name="content"  htmlTag="div" htmlClass=" cs-dashboard__top" before="dashboard.bottom">
+                    <container name="dashboard.page.main.title" htmlTag="div" htmlClass="cs-dashboard__page-title">
+                    </container>
+                </referenceContainer>
+
+                 <container name="dashboard.bottom" htmlTag="div" htmlClass=" cs-dashboard__bottom" after="content">
+
+                     <container name="dashboard.bottom.wishlist" htmlTag="div" htmlClass="cs-dashboard__block">
+                         <block class="Magento\Wishlist\Block\Customer\Sidebar" name="wishlist.dashboard" template="Magento_Wishlist::bottom.phtml"/>
+                     </container>
+
+                    <container name="dashboard.bottom.compare" after="main" htmlTag="div" htmlClass="cs-dashboard__block">
+                        <block class="Magento\Framework\View\Element\Template" name="catalog.compare.dashboard"
+                               template="Magento_Catalog::product/compare/bottom.phtml">
+                            <arguments>
+                                <argument name="jsLayout" xsi:type="array">
+                                    <item name="components" xsi:type="array">
+                                        <item name="compareProducts" xsi:type="array">
+                                            <item name="component" xsi:type="string">Magento_Catalog/js/view/compare-products</item>
+                                        </item>
+                                    </item>
+                                </argument>
+                            </arguments>
+                        </block>
+                    </container>
+
+                    <container name="dashboard.bottom.reorder" htmlTag="div" htmlClass="cs-dashboard__block">
+                        <block class="Magento\Sales\Block\Reorder\Sidebar" name="sale.reorder.dashboard" as="reorder" template="reorder/bottom.phtml"/>
+                    </container>
+
+                </container>
+
+            </referenceContainer>
+
+        </referenceContainer>
+
+    </referenceContainer>
+
+</layout>

@@ -1,0 +1,25 @@
+$namespace: 'cs-';
+
+@import '../../../node_modules/creative-patterns/packages/components/cs-items-grid/src/cs-items-grid';
+
+@include export-once( 'customizations/items-grid' ) {
+    .#{$namespace}items-grid {
+        $root: &;
+
+        &__item {
+            width: 50%;
+            @include media('>=tablet') {
+                width: 33.3%;
+            }
+
+            &--hide-third-mobile {
+                &:nth-child( 3 ) {
+                    @include media('<tablet') {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,75 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="cs-info-block | cs-dashboard__block | block-dashboard-orders">
+
+    <?php $_orders = $block->getOrders(); ?>
+    <?php echo $block->getChildHtml('info'); ?>
+
+    <div class="cs-info-block__content">
+        <?php if ($_orders && count($_orders)): ?>
+            <div class="cs-table | orders-history">
+                <table class="cs-table__body | history" id="my-orders-table">
+                    <caption class="cs-visually-hidden"><?php /* @escapeNotVerified */
+                        echo __('Orders') ?></caption>
+                    <thead class="cs-table__head">
+                    <tr>
+                        <th scope="col" class="cs-t-headline cs-t-headline--size_4 id"><?php /* @escapeNotVerified */
+                            echo __('Order #') ?></th>
+                        <th scope="col" class="cs-t-headline cs-t-headline--size_4 date"><?php /* @escapeNotVerified */
+                            echo __('Date') ?></th>
+                        <th scope="col" class="cs-t-headline cs-t-headline--size_4 shipping"><?php /* @escapeNotVerified */
+                            echo __('Ship To') ?></th>
+                        <th scope="col" class="cs-t-headline cs-t-headline--size_4 total"><?php /* @escapeNotVerified */
+                            echo __('Order Total') ?></th>
+                        <th scope="col" class="cs-t-headline cs-t-headline--size_4 status"><?php /* @escapeNotVerified */
+                            echo __('Status') ?></th>
+                        <th scope="col" class="cs-t-headline cs-t-headline--size_4 actions"><?php /* @escapeNotVerified */ echo __('Action') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($_orders as $_order): ?>
+                        <tr>
+                            <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="cs-table__col | id"><?php /* @escapeNotVerified */
+                                echo $_order->getRealOrderId() ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Date')) ?>" class="cs-table__col | date"><?php /* @escapeNotVerified */
+                                echo $block->formatDate($_order->getCreatedAt()) ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Ship To')) ?>" class="cs-table__col | shipping"><?php echo $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Order Total')) ?>" class="cs-table__col | total"><?php /* @escapeNotVerified */
+                                echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Status')) ?>" class="cs-table__col | status"><?php /* @escapeNotVerified */
+                                echo $_order->getStatusLabel() ?></td>
+                            <td data-th="<?php echo $block->escapeHtml(__('Actions')) ?>" class="cs-table__col cs-table__col--actions | actions">
+                                <a href="<?php /* @escapeNotVerified */
+                                echo $block->getViewUrl($_order) ?>" class="cs-link cs-link--separator">
+                                    <?php /* @escapeNotVerified */
+                                    echo __('View Order') ?>
+                                </a>
+                                <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getEntityId())) : ?>
+                                    <a href="<?php /* @escapeNotVerified */
+                                    echo $block->getReorderUrl($_order) ?>" class="cs-link">
+                                        <?php /* @escapeNotVerified */
+                                        echo __('Reorder') ?>
+                                    </a>
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php if ($block->getPagerHtml()): ?>
+                <div class="cs-info-block__toolbar | order-products-toolbar"><?php echo $block->getPagerHtml(); ?></div>
+            <?php endif ?>
+        <?php else: ?>
+            <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */
+                echo __('You have placed no orders.'); ?></div>
+        <?php endif ?>
+    </div>
+</div>

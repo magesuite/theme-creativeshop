@@ -1,0 +1,32 @@
+@import '../../components/link/link';
+
+@include export-once( 'customizations/link' ) {
+    .#{$namespace}link {
+        @include link( $colorCeruleanBlue, 1.4rem );
+        text-transform: none;
+        display: inline-block;
+        font-weight: 300;
+
+        &:visited {
+            @include link($colorCeruleanBlue, 1.4rem);
+            text-decoration: none;
+        }
+
+        &:hover {
+            @include link($colorCeruleanBlueHover, 1.4rem);
+        }
+
+        &--separator {
+            margin-right: .5rem;
+
+            &:after {
+                margin-left: .5rem;
+                content: '';
+                display: inline-block;
+                width: .2rem;
+                height: 1.2rem;
+                background: $colorAlto;
+            }
+        }
+    }
+}

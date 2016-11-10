@@ -1,0 +1,89 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * Last ordered items sidebar
+ *
+ * @var $block \Magento\Sales\Block\Reorder\Sidebar
+ */
+?>
+<div class="cs-info-block | block-reorder" data-bind="scope: 'lastOrderedItems'">
+    <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+            <span id="block-reorder-heading" role="heading" aria-level="2"><?php /* @escapeNotVerified */ echo __('Recently Ordered') ?></span>
+        </h2>
+        <span class="cs-title-block__span">
+            <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('View All'); ?></span>
+            </a>
+        </span>
+    </div>
+    <div class="cs-info-block__content | no-display"
+         data-bind="css: {'no-display': !lastOrderedItems().items || lastOrderedItems().items.length === 0}"
+         aria-labelledby="block-reorder-heading">
+
+        <form method="post" class="cs-form | reorder"
+              action="<?php /* @escapeNotVerified */ echo $block->getFormActionUrl() ?>" id="reorder-validate-detail">
+            <ol id="cart-sidebar-reorder" class="cs-list cs-list--unstyled cs-list--multiline"
+                data-bind="foreach: lastOrderedItems().items">
+                <li class="cs-list__item cs-list__item--inputs">
+                    <div class="cs-input cs-input--type-checkbox cs-input--inline | no-display" data-bind="css: {'no-display': !is_saleable}">
+                        <div class="cs-input__control">
+                            <input type="checkbox" name="order_items[]"
+                                   data-bind="attr: {id: 'reorder-item-' + id, value: id}"
+                                   title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>"
+                                   class="cs-input__checkbox | checkbox" data-validate='{"validate-one-checkbox-required-by-name": true}'/>
+                            <label class="cs-input__label | label" data-bind="attr: {'for': 'reorder-item-' + id}">
+                                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+                            </label>
+                        </div>
+                        <a data-bind="attr: {href: url}" class="cs-input__link">
+                            <span data-bind="text: name"></span>
+                        </a>
+                    </div>
+
+                </li>
+            </ol>
+            <div id="cart-sidebar-reorder-advice-container"></div>
+            <div class="cs-info-block__buttons">
+                <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>" class="cs-button cs-button--look_default  cs-button--size_90">
+                    <?php /* @escapeNotVerified */ echo __('Add to Cart') ?>
+                    <svg class="cs-button__icon">
+                        <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#arrow_next"></use>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- ko ifnot: lastOrderedItems().items.length -->
+    <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo __('You have no recently ordered items.') ?></div>
+    <!-- /ko -->
+    <script>
+        require(["jquery", "mage/mage"], function(jQuery){
+            jQuery('#reorder-validate-detail').mage('validation', {
+                errorPlacement: function(error, element) {
+                    error.appendTo('#cart-sidebar-reorder-advice-container');
+                }
+            });
+        });
+    </script>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "lastOrderedItems": {
+                    "component": "Magento_Sales/js/view/last-ordered-items"
+                }
+            }
+        }
+    }
+}
+</script>

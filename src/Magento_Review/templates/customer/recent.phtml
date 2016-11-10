@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/** @var $block \Magento\Review\Block\Customer\Recent */
+?>
+
+<?php if ($block->getReviews() && count($block->getReviews())): ?>
+    <div class="cs-info-block | cs-dashboard__block | block-reviews-dashboard">
+
+        <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+            <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('My Recent Reviews') ?></h2>
+            <span class="cs-title-block__span">
+                <a class="cs-info-block__title-link | cs-link" href="<?php /* @escapeNotVerified */ echo $block->getAllReviewsUrl() ?>"><?php /* @escapeNotVerified */ echo __('View All') ?></a>
+            </span>
+        </div>
+
+        <div class="cs-info-block__content">
+            <ol class="cs-list cs-list--unstyled">
+                <?php foreach ($block->getReviews() as $_review): ?>
+                    <li>
+                        <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $block->getReviewUrl($_review->getReviewId()) ?>"><?php echo $block->escapeHtml($_review->getName()) ?></a>
+                        <?php if ($_review->getSum()): ?>
+                            <?php $rating = $_review->getSum() / $_review->getCount() ?>
+                            <div class="rating-summary">
+                                <span class="label"><span><?php /* @escapeNotVerified */ echo __('Rating') ?>:</span></span>
+                                <div class="rating-result" title="<?php /* @escapeNotVerified */ echo $rating; ?>%">
+                                    <span style="width:<?php /* @escapeNotVerified */ echo $rating; ?>%"><span><?php /* @escapeNotVerified */ echo $rating; ?>%</span></span>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        </div>
+    </div>
+<?php endif; ?>

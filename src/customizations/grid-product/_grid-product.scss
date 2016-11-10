@@ -1,0 +1,234 @@
+$namespace: 'cs-';
+
+@import '../../../node_modules/creative-patterns/packages/components/grid-product/src/grid-product';
+
+@include export-once('customizations/grid-product') {
+    .#{$namespace}grid-product {
+        $root: &;
+
+        width: 100%;
+        padding: 0;
+        position: relative;
+        z-index: 2;
+        background-color: transparent;
+        box-sizing: border-box;
+
+        @include media('>=phone-lg') {
+            padding: 1rem;
+        }
+
+        @include media('>=laptop') {
+            padding: 1rem 2em;
+        }
+
+        &__link {
+            display: block;
+            padding: 0 1.2em;
+            text-align: left;
+            font-weight: 300;
+
+            &:hover {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            &:visited {
+                color: inherit;
+            }
+        }
+
+        &__figure {
+            position: relative;
+        }
+
+        &__badge {
+            top: 2em;
+            right: 2em;
+            width: 42px;
+            height: 42px;
+            line-height: 42px;
+            background-color: $colorCrimson;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        &__name {
+            margin: 0 0 .5em;
+            font-weight: 300;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            height: 3rem;
+            overflow: hidden;
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+        &__price-outer {
+            font-size: 1.12rem;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 1.5rem;
+            height: 2rem;
+        }
+
+        &__price-label {
+            display: block;
+            font-size: 1.08rem;
+            line-height: 1em;
+            color: $colorDoveGray;
+
+            #{$root}__price--prominent & {
+                text-align: right;
+            }
+        }
+
+        &__uvp-price {
+            text-decoration: line-through;
+            padding-right: .7rem;
+        }
+
+        &__our-price {
+            padding-left: .7rem;
+        }
+
+        &__price {
+            font-size: 1.5rem;
+            font-weight: 400;
+            line-height: 1em;
+            white-space: nowrap;
+
+            &--prominent {
+                color: $colorCrimson;
+            }
+
+            &-icon {
+                width: 11px;
+                height: 13px;
+                margin-right: -1px;
+                fill: $colorGold;
+
+                &--star {
+                    width: 15px;
+                    height: 15px;
+                    margin: 0 -2px -1px;
+                }
+            }
+        }
+
+        &__addons {
+            display: none;
+
+            #{$root}:hover & {
+                display: none;
+            }
+        }
+
+        &__fieldset {
+            margin-bottom: 0;
+        }
+
+        &__stock,
+        &__links {
+            margin: .8rem 0 0;
+        }
+
+        &__comment {
+            margin-bottom: 1rem;
+        }
+
+        &__inline-section {
+            @include media('>=phone-lg') {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+        &__inline-span {
+            margin-bottom: 1rem;
+
+            @include media('<phone-lg') {
+                margin-top: .7rem;
+                display: inline-block;
+                margin-bottom: .7rem;
+            }
+        }
+
+        &__remove {
+            position: absolute;
+            top: 0;
+            right: 2.5rem;
+            z-index: 2;
+        }
+
+        @include media('>=laptop') {
+            &__addons {
+                display: none;
+                padding: .3em 1.2em 0;
+                font-size: 1.12rem;
+            }
+
+            &__addon {
+                &--look-green {
+                    color: $colorApple;
+                }
+
+                &--a-right {
+                    flex-grow: 2;
+                    text-align: right;
+                }
+            }
+
+            &:before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                content: '';
+                z-index: -1;
+                border-radius: 4px;
+                box-shadow: 0 0 0 rgba( 0, 0, 0, 0 );
+                transition: box-shadow .15s ease-in-out, transform .15s ease-in-out;
+                transform-origin: 50% 0;
+            }
+
+            &:hover {
+                z-index: 3;
+
+                &:before {
+                    background-color: $colorWhite;
+                    box-shadow: 1px 3px 40px 0 rgba( 30, 48, 67, .34 );
+                    transform: scaleY( 1.12 );
+                }
+
+                #{$root}__addons {
+                    display: flex;
+                }
+            }
+
+            &__link,
+            &__addons {
+                padding-left: 1.5em;
+                padding-right: 1.5em;
+            }
+
+        }
+
+        &--no-scale {
+            &:hover {
+                &:before {
+                    transform: scaleY( 1.02 );
+                }
+            }
+        }
+
+        &--no-shadow {
+            &:hover {
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+}

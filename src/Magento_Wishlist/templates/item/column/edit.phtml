@@ -1,0 +1,18 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+?>
+
+<?php if ($product->isVisibleInSiteVisibility()): ?>
+    <a class="cs-link cs-link--separator" href="<?php /* @escapeNotVerified */ echo $block->getItemConfigureUrl($item) ?>">
+        <?php /* @escapeNotVerified */ echo __('Edit') ?>
+    </a>
+<?php endif ?>

@@ -1,0 +1,125 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Temlate for \Magento\Customer\Block\Address\Book block
+ * @var $block \Magento\Customer\Block\Address\Book
+ */
+?>
+<div class="cs-info-block | cs-dashboard__block | block-addresses-default">
+
+    <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('Default Addresses') ?></h2>
+    </div>
+
+    <div class="cs-info-block__content">
+        <?php if ($_pAddsses = $block->getDefaultBilling()): ?>
+
+            <div class="cs-info-block__box | box-address-billing">
+                <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                    <?php /* @escapeNotVerified */ echo __('Default Billing Address') ?>
+                </h3>
+                <div class="cs-info-block__box-content">
+                    <address class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                        <?php echo $block->getAddressHtml($block->getAddressById($_pAddsses)) ?>
+                    </address>
+                </div>
+                <div class="cs-info-block__box-actions">
+                    <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $block->getAddressEditUrl($_pAddsses) ?>">
+                        <span><?php /* @escapeNotVerified */ echo __('Change Billing Address') ?></span>
+                    </a>
+                </div>
+            </div>
+
+        <?php else: ?>
+            <div class="cs-info-block__box | box-address-billing">
+                <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                    <?php /* @escapeNotVerified */ echo __('Default Billing Address') ?>
+                </h3>
+                <div class="cs-info-block__box-content">
+                    <p class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo __('You have no default billing address in your address book.') ?></p>
+                </div>
+            </div>
+        <?php endif ?>
+
+        <?php if ($_pAddsses = $block->getDefaultShipping()): ?>
+
+                <div class="cs-info-block__box | box-address-shipping">
+                    <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                        <?php /* @escapeNotVerified */ echo __('Default Shipping Address') ?>
+                    </h3>
+                    <div class="cs-info-block__box-content">
+                        <address class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                            <?php echo $block->getAddressHtml($block->getAddressById($_pAddsses)) ?>
+                        </address>
+                    </div>
+                    <div class="cs-info-block__box-actions">
+                        <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $block->getAddressEditUrl($_pAddsses) ?>">
+                            <span><?php /* @escapeNotVerified */ echo __('Change Shipping Address') ?></span>
+                        </a>
+                    </div>
+                </div>
+
+        <?php else: ?>
+            <div class="cs-info-block__box |  box-shipping-address">
+                <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                    <?php /* @escapeNotVerified */ echo __('Default Shipping Address') ?>
+                </h3>
+                <div class="cs-info-block__box-content">
+                    <p class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo __('You have no default shipping address in your address book.') ?></p>
+                </div>
+            </div>
+        <?php endif ?>
+    </div>
+</div>
+
+<div class="cs-info-block | cs-dashboard__block | block-addresses-list">
+    <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('Additional Address Entries') ?></h2>
+    </div>
+    <div class="cs-info-block__content">
+        <?php if ($_pAddsses = $block->getAdditionalAddresses()): ?>
+                <?php foreach ($_pAddsses as $_address): ?>
+                    <div class="cs-info-block__box">
+                        <address class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                            <?php echo $block->getAddressHtml($_address) ?><br />
+                        </address>
+                        <div class="cs-info-block__box-actions">
+                            <a class="cs-link cs-link--separator" href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/address/edit', ['id' => $_address->getId()]) ?>"><span><?php /* @escapeNotVerified */ echo __('Edit Address') ?></span></a>
+                            <a class="cs-link" href="#" role="delete-address" data-address="<?php /* @escapeNotVerified */ echo $_address->getId() ?>"><span><?php /* @escapeNotVerified */ echo __('Delete Address') ?></span></a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+        <?php else: ?>
+            <p class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo __('You have no other address entries in your address book.') ?></p>
+        <?php endif ?>
+    </div>
+</div>
+
+<div class="cs-info-block__buttons">
+        <button type="button" role="add-address" title="<?php /* @escapeNotVerified */ echo __('Add New Address') ?>" class="cs-button cs-button--look_default">
+            <?php /* @escapeNotVerified */ echo __('Add New Address') ?>
+            <svg class="cs-button__icon">
+                <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+            </svg>
+        </button>
+</div>
+<script type="text/x-magento-init">
+    {
+        ".page-main": {
+            "address": {
+                "deleteAddress": "li.item a[role='delete-address']",
+                "deleteUrlPrefix": "<?php /* @escapeNotVerified */ echo $block->getDeleteUrl() ?>id/",
+                "addAddress": "button[role='add-address']",
+                "addAddressLocation": "<?php /* @escapeNotVerified */ echo $block->getAddAddressUrl() ?>"
+            }
+        }
+    }
+</script>

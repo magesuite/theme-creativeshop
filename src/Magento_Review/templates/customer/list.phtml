@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+/** @var \Magento\Review\Block\Customer\ListCustomer $block */
+?>
+<?php if ($block->getReviews() && count($block->getReviews())): ?>
+    <div class="cs-info-block | cs-dashboard__block | reviews">
+        <table class="cs-table | table-reviews" id="my-reviews-table">
+            <caption class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Product Reviews') ?></caption>
+            <thead class="cs-table__head">
+            <tr>
+                <th scope="col" class="cs-t-headline cs-t-headline--size_4 date"><?php /* @escapeNotVerified */ echo __('Created') ?></th>
+                <th scope="col" class="cs-t-headline cs-t-headline--size_4 item"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+                <th scope="col" class="cs-t-headline cs-t-headline--size_4 summary"><?php /* @escapeNotVerified */ echo __('Rating') ?></th>
+                <th scope="col" class="cs-t-headline cs-t-headline--size_4 description"><?php /* @escapeNotVerified */ echo __('Review') ?></th>
+                <th scope="col" class="cs-t-headline cs-t-headline--size_4 actions">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($block->getReviews() as $_review): ?>
+                <tr>
+                    <td data-th="<?php echo $block->escapeHtml(__('Created')) ?>" class="cs-table__col date"><?php /* @escapeNotVerified */ echo $block->dateFormat($_review->getReviewCreatedAt()); ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Product Name')) ?>" class="cs-table__col item">
+                        <strong class="product-name">
+                            <a href="<?php /* @escapeNotVerified */ echo $block->getProductLink() ?>id/<?php /* @escapeNotVerified */ echo $_review->getEntityPkValue() ?>"><?php echo $block->escapeHtml($_review->getName()) ?></a>
+                        </strong>
+                    </td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Rating')) ?>" class="cs-table__col summary">
+                        <?php if ($_review->getSum()): ?>
+                            <div class="rating-summary">
+                                <span class="label"><span><?php /* @escapeNotVerified */ echo __('Rating') ?>:</span></span>
+                                <div class="rating-result" title="<?php /* @escapeNotVerified */ echo($_review->getSum() / $_review->getCount()) ?>%">
+                                    <span style="width:<?php /* @escapeNotVerified */ echo($_review->getSum() / $_review->getCount()) ?>%;"><span><?php /* @escapeNotVerified */ echo($_review->getSum() / $_review->getCount()) ?>%</span></span>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Review')) ?>" class="cs-table__col description">
+                        <?php echo $this->helper('Magento\Review\Helper\Data')->getDetailHtml($_review->getDetail()) ?>
+                    </td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Actions')) ?>" class="cs-table__col  cs-table__col--actions actions">
+                        <a href="<?php /* @escapeNotVerified */ echo $block->getReviewLink() ?>id/<?php /* @escapeNotVerified */ echo $_review->getReviewId() ?>" class="cs-link">
+                            <?php /* @escapeNotVerified */ echo __('See Details') ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($block->getToolbarHtml()): ?>
+        <div class="cs-info-block__toolbar | products-reviews-toolbar">
+            <?php echo $block->getToolbarHtml() ?>
+        </div>
+    <?php endif; ?>
+<?php else: ?>
+    <div class="cs-info-block__line"><?php /* @escapeNotVerified */ echo __('You have submitted no reviews.') ?></div>
+<?php endif; ?>
+

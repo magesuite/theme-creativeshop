@@ -1,0 +1,132 @@
+/**
+ * Stack nav component customization.
+ */
+
+@include export-once( 'customizations/stack-nav' ) {
+    .#{$namespace}stack-nav {
+        position: relative;
+        font-size: 1rem;
+        $root: &;
+
+        &__trigger {
+            border-top: 1px solid $colorAlto;
+            border-bottom: 1px solid $colorAlto;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            @include media( '>=tablet' ) {
+                display: none;
+            }
+        }
+
+        &__trigger-icon {
+            width: 1.8rem;
+            height: 1.8rem;
+            transition: transform .35s;
+            fill: $colorMineShaft;
+            transform: rotate( 90deg );
+
+            .#{$namespace}dropdown__trigger--in & {
+                transform: rotate( 270deg );
+            }
+
+        }
+
+        &__nav {
+            border-radius: 4px;
+            background-color: $colorWhite;
+            box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
+            padding: 20px 0;
+
+            @include media( '>=tablet' ) {
+                //margin-top: 2rem;
+                z-index: 1;
+            }
+
+            #{$root}__list  li {
+                margin: 0;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            // Link - nav items
+            #{$root}__list  li  a,
+            #{$root}__list  li  strong {
+                font-size: 1.4rem;
+                border-left: none;
+                padding: .5rem 1.8rem .5rem 2.5rem;
+                display: block;
+                margin-bottom: .1rem;
+                overflow: hidden;
+                color: $colorDoveGray;
+                font-weight: 300;
+            }
+
+
+            #{$root}__list  li  a:hover {
+                background: $colorGallery;
+            }
+
+            #{$root}__list  li  strong {
+                border-left: none;
+                border-color: transparent;
+                font-weight: 300;
+                color: $colorMineShaft;
+            }
+
+            // Current item
+            #{$root}__list  li.current strong {
+                border-left: none;
+                border-color: transparent;
+                font-weight: 700;
+                position: relative;
+                &:after {
+                    position: absolute;
+                    left: -6px;
+                    top: 0;
+                    content: '';
+                    display: block;
+                    width: 0;
+                    height: 0;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    border-top: 28px solid $colorGold;
+                }
+
+                &:before {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    content: '';
+                    display: block;
+                    width: 4px;
+                    height: 100%;
+                    background: $colorGold;
+
+                }
+            }
+
+            // Reset style for a if it is a child of current
+            #{$root}__list  li.current  a {
+                padding: 0;
+                margin-bottom: 0;
+            }
+
+            @include media( '>=tablet' ) {
+                display: block;
+                position: relative;
+
+            }
+
+        }
+
+        &__list {
+            list-style: none none;
+            padding: 0;
+            margin: 0;
+        }
+
+    }
+
+}
