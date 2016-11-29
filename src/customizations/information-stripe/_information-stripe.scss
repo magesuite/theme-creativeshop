@@ -1,0 +1,68 @@
+/**
+ *  Information stripe component usually visible on the top of the page.
+ *  This component contains some quick overview on most important contact and shipping info.
+ */
+
+@import '../../components/container/container';
+@import '../../components/information-stripe/information-stripe';
+@import '../list/list';
+
+@include export-once( 'customizations/information-stripe' ) {
+    .#{$namespace}information-stripe {
+        @include information-stripe();
+        width: 100%;
+
+        &__wrapper {
+            padding: 0;
+            justify-content: space-between;
+            font-size: 1.1em;
+        }
+
+        &__list {
+            fill: $colorGray;
+            font-size: 1em;
+            height: 2.7rem;
+        }
+
+        &__item {
+            padding: 0 1.3rem 0 .5rem !important;/* stylelint-disable-line declaration-no-important */
+            display: inline-flex;
+            align-items: center;
+            margin-right: 0;
+            white-space: nowrap;
+
+            &:after {
+                content: '';
+                display: inline-block;
+                height: 100%;
+                width: .15rem;
+                background: $colorWhite;
+                transform: skew( -13deg );
+                margin-left: 1.7rem;
+            }
+
+            &--last {
+                margin-right: 0;
+                padding-right: 0;
+                &:after {
+                    display: none;
+                }
+            }
+        }
+
+        &__phone-number {
+            color: inherit;
+            margin-right: .909em;
+
+            &:hover {
+                color: inherit;
+            }
+        }
+
+        &__phone-hours {
+            margin: 0;
+            display: inline-block;
+            color: $colorGray;
+        }
+    }
+}

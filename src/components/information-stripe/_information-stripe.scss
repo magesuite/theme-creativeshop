@@ -1,0 +1,28 @@
+/**
+ * Information stripe component that can be included in any desired custom class.
+ */
+
+@import '../container/container';
+
+@mixin information-stripe() {
+    display: none;
+    font-size: 1rem;
+    transform: translateY( 0 );
+    transition: transform .3s;
+
+    &__wrapper {
+        @include container-wrapper();
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+
+    &--hidden {
+        transform: translateY( -105% );
+    }
+
+    @include media( '>=tablet' ) {
+        display: block;
+    }
+
+}

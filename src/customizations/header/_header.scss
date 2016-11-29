@@ -1,0 +1,42 @@
+/**
+ * Poppen header component customization.
+ */
+
+@import '../../components/container/container';
+@import '../t-text/t-text';
+@import '../link/link';
+@import '../logo/logo';
+@import '../header-search/header-search';
+@import '../header-user-area/header-user-area';
+
+@include export-once( 'customizations/header' ) {
+    .#{$namespace}header {
+        font-size: 1rem;
+
+        &__content {
+            @include container-wrapper();
+
+            padding: 1.6em 0;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid $colorGallery;
+        }
+
+        &__logo {
+            display: flex;
+            flex: 0 1 20%;
+        }
+
+        &__search {
+            flex: 0 1 32%;
+        }
+
+        &__user-area {
+            display: flex;
+            flex: 0 1 20%;
+            justify-content: space-between;
+        }
+    }
+}

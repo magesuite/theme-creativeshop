@@ -7,17 +7,98 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <move element="skip_to_content" destination="header.container" before="-"/>
+        <move element="top.links" destination="header.user-area" before="-"/>
+
+        <referenceContainer name="header.panel" remove="true"/>
+
+        <!--Welcome message-->
+        <referenceBlock name="header" remove="true"/>
+
+        <referenceContainer name="page.wrapper">
+            <container name="information.stripe.container" htmlTag="section" htmlClass="cs-container cs-container--contrast" before="-">
+                <container name="information.stripe.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <container name="information.stripe.container.flex" htmlTag="div" htmlClass="cs-container__flex">
+                        <block class="Magento\Framework\View\Element\Template" name="information-stripe" template="Magento_Theme::html/information-stripe.phtml"/>
+                        <container name="information.stripe.logout" htmlTag="div" htmlClass=""/>
+
+                    </container>
+                </container>
+            </container>
+
+            <container name="header.page.container" htmlTag="section" htmlClass="cs-container" after="information.stripe.container">
+                <container name="header.page.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
+            </container>
+        </referenceContainer>
+
+        <referenceContainer name="header.container" htmlClass="cs-header"/>
+        <move element="header.container" destination="header.page.container.inner"/>
+
+        <referenceContainer name="page.top">
+            <container name="breadcrumbs.container" htmlTag="section" htmlClass="cs-container cs-container--contrast cs-container--breadcrumbs" after="-">
+                <container name="breadcrumbs.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
+            </container>
+        </referenceContainer>
+
+        <move element="breadcrumbs" destination="breadcrumbs.container.inner"/>
+
+        <referenceContainer name="header-wrapper" htmlClass="cs-header__content">
+            <container name="header.user-area" htmlTag="div" htmlClass="cs-header__user-area | cs-header-user-area">
+            </container>
+        </referenceContainer>
+        <move element="minicart" destination="header.user-area" after="-"/>
 
         <referenceBlock name="logo">
             <arguments>
                 <argument name="logo_file" xsi:type="string">images/creativeshop-logo.png</argument>
-                <argument name="logo_img_width" xsi:type="number">220</argument>
-                <argument name="logo_img_height" xsi:type="number">39</argument>
+                <argument name="logo_img_width" xsi:type="number">213</argument>
+                <argument name="logo_img_height" xsi:type="number">67</argument>
             </arguments>
         </referenceBlock>
 
+        <referenceBlock name="navigation.sections" remove="true"/>
+        <referenceContainer name="page.top">
+            <container name="navigation.container" htmlTag="section" htmlClass="cs-container">
+                <container name="navigation.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <block class="Creativestyle\ContentConstructorFrontendExtension\Block\Component" name="componentjk8k2">
+                        <arguments>
+                            <argument xsi:type="string" name="type">navigation</argument>
+                            <argument xsi:type="array" name="data">
+                                <item name="root_category_id" xsi:type="string">2</item>
+                            </argument>
+                        </arguments>
+                    </block>
+                </container>
+            </container>
+
+        </referenceContainer>
+
+        <move element="columns.top" destination="page.main.container.inner" after="-"/>
+        <move element="columns" destination="page.main.container.inner" after="-"/>
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container cs-container--spacious">
+            <container name="page.main.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+            </container>
+        </referenceContainer>
+
+        <move element="form.subscribe" destination="footer.right" after="-"/>
+
+
+        <referenceContainer name="footer-container" htmlClass="cs-container | cs-footer">
+            <referenceContainer name="footer" htmlClass="cs-container__inner | cs-footer__wrapper">
+                <referenceBlock name="copyright" remove="true"/>
+                <referenceBlock name="report.bugs" remove="true"/>
+                <referenceBlock name="footer_links" remove="true"/>
+                <container name="footer.left" htmlTag="div" htmlClass="cs-footer__left">
+                    <block class="Magento\Framework\View\Element\Template" name="footer.columns" template="Magento_Theme::html/footer/columns.phtml"/>
+                </container>
+                <container name="footer.right" htmlTag="div" htmlClass="cs-footer__right">
+                </container>
+
+            </referenceContainer>
+        </referenceContainer>
+
         <referenceContainer name="before.body.end" after="-">
-            <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml" />
+            <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml"/>
         </referenceContainer>
 
     </body>

@@ -1,0 +1,49 @@
+
+@import '../../../node_modules/creative-patterns/packages/components/pagination/src/pagination';
+
+@include export-once( 'customizations/pagination' ) {
+    .#{$namespace}pagination {
+        $root: &;
+
+        margin: 0;
+        width: auto;
+
+        &__pager {
+            margin: 0 1em;
+            padding: 0;
+            list-style: none;
+        }
+
+        &__label {
+            text-transform: uppercase;
+        }
+
+        &__item {
+            margin: 0;
+            display: inline-block;
+            margin-right: .25em;
+            font-size: 1.12rem;
+        }
+
+        &__number {
+            padding: .25em .5em;
+
+            &--current {
+                border: 1px solid $colorAlto;
+                border-radius: 3px;
+                color: $colorAlto;
+                padding-left: .75em;
+                padding-right: .75em;
+            }
+        }
+
+        &__prev-icon:not( &__prev-icon--disabled ),
+        &__next-icon:not( &__next-icon--disabled ) {
+            transition: fill .15s linear;
+
+            &:hover {
+                fill: $colorGray;
+            }
+        }
+    }
+}

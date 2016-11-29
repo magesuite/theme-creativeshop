@@ -1,0 +1,91 @@
+/**
+ * Footer component customization.
+ * @see /Magento_Theme/templates/footer/columns.phtml for templates.
+ */
+
+@import '../../components/container/container';
+@import '../footer-list/footer-list';
+
+@include export-once( 'customizations/footer' ) {
+    .#{$namespace}footer {
+        @include container();
+        font-size: 1rem;
+        color: $colorWhite;
+        background-color: $colorBlack;
+
+        &__wrapper {
+            @include container-wrapper();
+            padding: 4rem 2rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+
+            @include media( '>=tablet' ) {
+                flex-wrap: nowrap;
+                padding: 4rem 0 2rem;
+            }
+        }
+
+        &__right {
+            width: 100%;
+            max-width: 40rem;
+            @include media( '>=tablet' ) {
+                width: 32%;
+                max-width: 30rem;
+            }
+        }
+
+        &__left {
+            width: 100%;
+
+            @include media( '>=tablet' ) {
+                width: 68%;
+            }
+
+        }
+
+        &__columns {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &__column {
+            width: 100%;
+            padding-bottom: 2rem;
+
+            @include media( '>=phone-lg' ) {
+                width: 50%;
+            }
+
+            @include media( '>=laptop' ) {
+                width: 25%;
+            }
+        }
+
+        &__column-title {
+            font-size: 1.2rem;
+            color: $colorGray;
+            font-weight: 500;
+            text-transform: uppercase;
+            padding: 0;
+            margin: .3rem 0 2.2rem;
+            letter-spacing: .08rem;
+
+            &--image {
+                width: 13.5rem;
+                height: auto;
+                display: block;
+                margin-top: 0;
+            }
+        }
+
+        &__list {
+            color: $colorGallery;
+            padding-right: 2rem;
+        }
+
+        &__banner {
+            display: block;
+        }
+
+    }
+}

@@ -7,6 +7,7 @@
         $boxShadow: inset 0 1px 2px rgba( 0, 0, 0, .15 );
         font-size: 1rem;
         margin-bottom: 2rem;
+        position: relative;
 
         &.required,
         &._required {
@@ -16,6 +17,14 @@
                     color: $colorCrimson;
                     font-size: 1.2rem;
                     margin: 0 0 0 .4rem;
+                }
+            }
+        }
+
+        &.no-required {
+            #{$root}__label {
+                &:after {
+                    display: none;
                 }
             }
         }
@@ -100,7 +109,7 @@
             background-image: url( 'images/dropdown-arrows-bg.png' );
             background-size: 3.2rem 3.2rem;
             background-position: right;
-            min-width: 4.5rem;
+            min-width: 7rem;
 
             &:hover:not( :disabled ):not( :focus ),
             &:not( [ disabled ] ):focus {
@@ -113,6 +122,17 @@
             &:disabled {
                 background-image: url( 'sprites/png/arrow-select.png' );
             }
+
+            /* stylelint-disable */
+            &--short {
+                max-width: 10rem!important;
+                min-width: 10rem!important;
+            }
+            /* stylelint-enable */
+        }
+
+        select {
+            @extend #{$root}__select;
         }
 
         &__link {
@@ -123,6 +143,17 @@
                 text-decoration: none;
                 color: $colorMineShaft;
             }
+        }
+
+        &__button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 200;
+            width: 5rem;
+            overflow: hidden;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
         }
 
         ::placeholder {

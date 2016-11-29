@@ -40,6 +40,9 @@ $namespace: 'cs-';
 
         &--look {
             &_default {
+                color: $colorWhite;
+                border-color: $colorCeruleanBlue;
+                background: $colorCeruleanBlue;
                 &:hover {
                     background-color: $colorCeruleanBlueHover;
                     border: 1px solid $colorCeruleanBlueHover;
@@ -79,6 +82,32 @@ $namespace: 'cs-';
                     border: 1px solid $colorCeruleanBlueHover;
                 }
             }
+
+            &_on-input {
+                min-width: 5rem;
+                height: 100%;
+                position: relative;
+                padding: 0;
+                cursor: pointer;
+                transform: skew( -18deg ) translateX( 1rem );
+                opacity: 1 !important;/* stylelint-disable-line declaration-no-important */
+                border-radius: 0;
+
+                #{$root}__icon {
+                    transform: skew( 18deg ) translate( -50%, -50% );
+                }
+
+                &[ disabled ] {
+                    &:hover {
+                        background-color: $colorCeruleanBlueHover;
+                        /* stylelint-disable*/
+                        &:before {
+                            background-color: $colorCeruleanBlueHover;
+                        }
+                        /* stylelint-enable*/
+                    }
+                }
+            }
         }
 
         &--size {
@@ -90,6 +119,22 @@ $namespace: 'cs-';
                 min-width: 11rem;
                 @include media('>=phone-lg') {
                     padding: .8rem 1.5rem;
+                }
+            }
+
+            &_long {
+                &:after {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    z-index: 200;
+                    width: 5rem;
+                    overflow: hidden;
+                    border-top-right-radius: 3px;
+                    border-bottom-right-radius: 3px;
+                    background: $colorCeruleanBlueHover;
                 }
             }
         }
@@ -106,11 +151,33 @@ $namespace: 'cs-';
             top: 50%;
             transform: translateY( -50% );
             fill: $colorWhite;
+
+            &--center {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate( -50%, -50% );
+            }
+
+            &--search {
+                width: 1.6rem;
+                height: 2.2rem;
+            }
+
+            &--plus {
+                width: 1.1rem;
+                height: 1.1rem;
+                margin-left: -.2rem;
+            }
+
+            &--cart {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
         }
 
         &__icon-center {
-            width: 2.5rem;
-            height: 2.5rem;
+
             position: absolute;
             top: 50%;
             left: 50%;
@@ -118,6 +185,7 @@ $namespace: 'cs-';
             margin-left: -.8rem;
             fill: $colorWhite;
         }
+
 
         &__remove-icon {
             padding: 1rem 1.1rem;

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">login</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Login</item>
+                    <item name="label" xsi:type="string" translate="true">Login</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <move element="customer_form_login" destination="container.section.login"/>
+        <move element="customer.new" destination="container.section.register"/>
+
+        <referenceContainer name="customer.login.container" htmlClass="cs-container__flex">
+            <container name="container.section.login" label="Customer Login Container" htmlTag="div" htmlClass="cs-container__section cs-container__section--half"/>
+            <container name="container.section.register" label="Customer Register Container" htmlTag="div" htmlClass="cs-container__section cs-container__section--half"/>
+        </referenceContainer>
+
+    </body>
+</page>

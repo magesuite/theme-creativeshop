@@ -1,0 +1,39 @@
+@import '../../../node_modules/creative-patterns/packages/components/navigation/src/navigation';
+
+@include export-once( 'customizations/navigation' ) {
+    .#{$namespace}navigation {
+        @include navigation();
+        $root: &;
+
+        &__list {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        &__flyout {
+            z-index: 1001; // Make sure flyouts cover gallery nav.
+        }
+
+        &__item {
+            &:last-child {
+                #{$root}__link {
+                    &:after {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        &__link {
+            padding-right: 3.5rem;
+            &:after {
+                content: '';
+                display: inline-block;
+                width: .2rem;
+                height: 1.2rem;
+                background: $colorAlto;
+                margin-left: 3.5rem;
+            }
+        }
+    }
+}
