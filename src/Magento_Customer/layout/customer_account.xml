@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="dashboard" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <body>
+        <attribute name="class" value="account"/>
+        <referenceContainer name="sticky.menu">
+            <block class="Magento\Framework\View\Element\Html\Links" name="customer_account_navigation" before="-" template="Magento_Customer::account/navigation.phtml">
+                <referenceBlock class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-account-link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Account Information</argument>
+                        <argument name="path" xsi:type="string">customer/account</argument>
+                    </arguments>
+                </referenceBlock>
+                <referenceBlock class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-account-edit-link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">Edit Account Information</argument>
+                        <argument name="path" xsi:type="string">customer/account/edit</argument>
+                    </arguments>
+                </referenceBlock>
+                <referenceBlock class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-address-link">
+                    <arguments>
+                        <argument name="label" xsi:type="string" translate="true">My Addresses</argument>
+                        <argument name="path" xsi:type="string">customer/address</argument>
+                    </arguments>
+                </referenceBlock>
+                <referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true"/>
+                <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

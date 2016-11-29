@@ -1,0 +1,215 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Form\Edit $block */
+?>
+<div class="cs-dashboard__block">
+    <form class="cs-form | form form-edit-account" action="<?php /* @escapeNotVerified */
+    echo $block->getUrl('customer/account/editPost') ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?php /* @escapeNotVerified */
+    echo __('* Required Fields') ?>" autocomplete="off">
+        <fieldset class="cs-form__fieldset cs-form__fieldset--level_1 | info">
+            <?php echo $block->getBlockHtml('formkey') ?>
+            <!--        <legend class="cs-title-block cs-title-block--bordered">-->
+            <!---->
+            <!--            <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">--><?php ///* @escapeNotVerified */
+            //                echo __('Account Information') ?><!--</span>-->
+            <!--        </legend>-->
+            <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
+            <?php if ($_gender->isEnabled()): ?>
+                <?php echo $_gender->setGender($block->getCustomer()->getGender())->toHtml() ?>
+            <?php endif ?>
+            <?php echo $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')->setObject($block->getCustomer())->toHtml() ?>
+
+            <?php $_dob = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Dob') ?>
+            <?php $_taxvat = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Taxvat') ?>
+            <?php if ($_dob->isEnabled()): ?>
+                <?php echo $_dob->setDate($block->getCustomer()->getDob())->toHtml() ?>
+            <?php endif ?>
+            <?php if ($_taxvat->isEnabled()): ?>
+                <?php echo $_taxvat->setTaxvat($block->getCustomer()->getTaxvat())->toHtml() ?>
+            <?php endif ?>
+
+            <ul class="cs-list cs-list--inline">
+                <li class="cs-list__item">
+                    <div class="cs-input cs-input--type-checkbox | field">
+                        <input type="checkbox" name="change_email" id="change-email" data-role="change-email" value="1" title="<?php /* @escapeNotVerified */
+                        echo __('Change Email') ?>" class="cs-input__checkbox | checkbox"/>
+                        <label class="cs-input__label" for="change-email"><?php /* @escapeNotVerified */
+                            echo __('Change Email') ?></label>
+                    </div>
+                </li>
+                <li class="cs-list__item">
+                    <div class="cs-input cs-input--type-checkbox | field">
+                        <input type="checkbox" name="change_password" id="change-password" data-role="change-password" value="1" title="<?php /* @escapeNotVerified */
+                        echo __('Change Password') ?>"<?php if ($block->getChangePassword()): ?> checked="checked"<?php endif; ?> class="cs-input__checkbox | checkbox"/>
+                        <label class="cs-input__label" for="change-password">
+                            <?php /* @escapeNotVerified */
+                            echo __('Change Password') ?>
+                        </label>
+                    </div>
+                </li>
+            </ul>
+
+
+        </fieldset>
+
+        <fieldset class="cs-form__fieldset cs-form__fieldset--level_1 | password" data-container="change-email-password">
+            <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
+            <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php /* @escapeNotVerified */
+                echo __('Edit email') ?>
+            </span>
+            </legend>
+
+            <div class="cs-input | cs-form__field | email required" data-container="change-email">
+                <label class="cs-input__label" for="email"><span><?php /* @escapeNotVerified */
+                        echo __('Email') ?></span></label>
+
+                <div class="cs-input__control">
+                    <input type="email" name="email" id="email" autocomplete="email" data-input="change-email" value="<?php echo $block->escapeHtml($block->getCustomer()->getEmail()) ?>" title="<?php /* @escapeNotVerified */
+                    echo __('Email') ?>" class="cs-input__input" data-validate="{required:true, 'validate-email':true}"/>
+                </div>
+            </div>
+            <div class="cs-input | cs-form__field | password current required">
+                <label class="cs-input__label" for="current-password"><span><?php /* @escapeNotVerified */
+                        echo __('Current Password') ?></span></label>
+
+                <div class="cs-input__control">
+                    <input type="password" class="cs-input__input" name="current_password" id="current-password" data-input="current-password" autocomplete="off"/>
+                </div>
+            </div>
+            <div class="cs-input | cs-form__field |  new password required" data-container="new-password" data-mage-init='{"passwordStrengthIndicator": {}}'>
+                <div class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
+                <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                    <?php /* @escapeNotVerified */
+                    echo __('Edit password') ?>
+                </span>
+                </div>
+                <label class="cs-input__label" for="password"><span><?php /* @escapeNotVerified */
+                        echo __('New Password') ?></span></label>
+
+                <div class="cs-input__control">
+                    <input type="password" class="cs-input__input" name="password" id="password"
+                           data-password-min-length="<?php echo $block->escapeHtml($block->getMinimumPasswordLength()) ?>"
+                           data-password-min-character-sets="<?php echo $block->escapeHtml($block->getRequiredCharacterClassesNumber()) ?>"
+                           data-input="new-password"
+                           data-validate="{required:true, 'validate-customer-password':true}"
+                           autocomplete="off"/>
+
+                    <div id="password-strength-meter-container" data-role="password-strength-meter">
+                        <div id="password-strength-meter" class="password-strength-meter">
+                            <?php /* @escapeNotVerified */
+                            echo __('Password Strength'); ?>:
+                        <span id="password-strength-meter-label" data-role="password-strength-meter-label" class="password-strength-meter__label">
+                            <?php /* @escapeNotVerified */
+                            echo __('No Password'); ?>
+                        </span>
+
+                            <div class="password-strength-meter__icons-wrapper">
+                                <svg class="password-strength-meter__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#rhomb"></use>
+                                </svg>
+                                <svg class="password-strength-meter__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#rhomb"></use>
+                                </svg>
+                                <svg class="password-strength-meter__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#rhomb"></use>
+                                </svg>
+                                <svg class="password-strength-meter__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#rhomb"></use>
+                                </svg>
+                                <svg class="password-strength-meter__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#rhomb"></use>
+                                </svg>
+                                <svg class="password-strength-meter__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#rhomb"></use>
+                                </svg>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cs-input | cs-form__field | confirm password required" data-container="confirm-password">
+                <label class="cs-input__label" for="password-confirmation"><span><?php /* @escapeNotVerified */
+                        echo __('Confirm New Password') ?></span></label>
+
+                <div class="cs-input__control">
+                    <input type="password" class="cs-input__input" name="password_confirmation" id="password-confirmation"
+                           data-input="confirm-password"
+                           autocomplete="off"/>
+                </div>
+            </div>
+            <?php echo $block->getChildHtml('form_additional_info'); ?>
+        </fieldset>
+        <div class="cs-form__buttons">
+            <button type="submit" class="cs-button cs-button--look_default" title="<?php /* @escapeNotVerified */
+            echo __('Save') ?>">
+                <?php /* @escapeNotVerified */ echo __('Save') ?>
+                <svg class="cs-button__icon">
+                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    require( [
+        "jquery",
+        "mage/mage",
+        "mage/validation"
+    ], function( $ ) {
+        var dataForm = $( '#form-validate' );
+        var ignore = <?php /* @escapeNotVerified */ echo $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null'; ?>;
+
+        dataForm.mage( 'validation', {
+            <?php if ($_dob->isEnabled()): ?>
+            errorPlacement: function( error, element ) {
+                if ( element.prop( 'id' ).search( 'full' ) !== -1 ) {
+                    var dobElement = $( element ).parents( '.customer-dob' ),
+                        errorClass = error.prop( 'class' );
+                    error.insertAfter( element.parent() );
+                    dobElement.find( '.validate-custom' ).addClass( errorClass )
+                        .after( '<div class="' + errorClass + '"></div>' );
+                }
+                else {
+                    error.appendTo( element.parents( '.cs-input' ) );
+                }
+            },
+            ignore: ':hidden:not(' + ignore + ')'
+            <?php else: ?>
+            ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+            <?php endif ?>
+        }
+        );
+
+
+//        $( 'button' )
+//            .on( 'mouseover', function() {
+//                dataForm.validation('isValid');
+//            } );
+
+    }
+    );
+</script>
+<script type="text/x-magento-init">
+    {
+        "[data-role=change-email], [data-role=change-password]": {
+            "changeEmailPassword": {
+                "titleChangeEmail": "<?php /* @escapeNotVerified */
+    echo __('Change Email') ?>",
+                "titleChangePassword": "<?php /* @escapeNotVerified */
+    echo __('Change Password') ?>",
+                "titleChangeEmailAndPassword": "<?php /* @escapeNotVerified */
+    echo __('Change Email and Password') ?>"
+            }
+        }
+    }
+
+</script>

@@ -1,0 +1,74 @@
+@import '../visually-hidden/visually-hidden';
+
+@include export-once( 'customizations/table' ) {
+    .#{$namespace}table {
+        font-size: 1rem;
+        width: 100%;
+
+        @include media( '<tablet' ) {
+            border: none;
+            display: block;
+        }
+
+
+        &__head {
+            border-bottom: 2px solid $colorAlto;
+            @include media( '<tablet' ) {
+                display: none;
+            }
+        }
+
+        &__col {
+            font-size: 1.3rem;
+            color: $colorDoveGray;
+            font-weight: 300;
+            border-bottom: 1px solid $colorAlto;
+            padding: .8rem 1rem;
+
+            @include media( '<tablet' ) {
+                border: none;
+                display: block;
+                font-size: 1.4rem;
+                padding: .4rem 1rem;
+
+                &:first-child {
+                    padding-top: 2rem;
+                }
+                &:last-child {
+                    padding-bottom: 1.2rem;
+                }
+            }
+
+            @include media( '>=laptop' ) {
+                font-size: 1.4rem;
+            }
+
+            &--attention {
+                font-weight: 700;
+                color: $colorMineShaft;
+            }
+
+            &:before {
+                @include media( '<tablet' ) {
+                    padding-right: 10px;
+                    content: attr( data-th ) ': ';
+                    display: inline-block;
+                    color: $colorMineShaft;
+                    font-weight: 700;
+                }
+            }
+
+            &--actions {
+                @include media( '<tablet' ) {
+                    border-bottom: 1px solid $colorAlto;
+                }
+                &:before {
+                    @include media('<tablet') {
+                        @include visually-hidden;
+                    }
+                }
+            }
+        }
+
+    }
+}

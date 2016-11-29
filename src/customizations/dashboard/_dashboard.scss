@@ -1,0 +1,114 @@
+@import '../stack-nav/stack-nav';
+@import '../qty-increment/qty-increment';
+@import '../t-headline/t-headline';
+@import '../t-text/t-text';
+@import '../info-block/info-block';
+@import '../button/button';
+@import '../link/link';
+@import '../list/list';
+@import '../table/table';
+@import '../title-block/title-block';
+@import '../form/form';
+@import '../input/input';
+@import '../wishlist/wishlist';
+@import '../grid-product/grid-product';
+@import '../items-grid/items-grid';
+@import '../password-strength-meter/password-strength-meter';
+@import '../visually-hidden/visually-hidden';
+@import '../sticky-block/sticky-block';
+@import '../pager/pager';
+@import '../calendar/calendar';
+
+@import '../../components/container/container';
+
+
+@include export-once( 'customizations/dashboard' ) {
+    .#{$namespace}dashboard {
+        $menuTabletWidth: 22;
+        $menuWidth: 26.5;
+        $menuMarginRight: 3.6;
+
+        @include container();
+        @include container-wrapper();
+        font-size: 1rem;
+        padding: 0;
+
+
+        &__wrapper {
+            position: relative;
+
+            @include media( '>=tablet' ) {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                align-content: stretch;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        &__menu {
+            width: 100%;
+            @include media( '>=tablet' ) {
+                width: #{$menuTabletWidth}em;
+                margin-right: #{$menuMarginRight}em;
+            }
+            @include media( '>=laptop' ) {
+                width: #{$menuWidth}em;
+                margin-right: #{$menuMarginRight}em;
+            }
+        }
+
+
+        &__main {
+            padding: 3.5rem 1.5rem 2rem;
+            margin-bottom: 2rem;
+
+            @include media( '>=tablet' ) {
+                padding: 0;
+                width: calc( 100% - #{$menuTabletWidth + $menuMarginRight}em );
+            }
+
+            @include media('>=laptop') {
+                width: calc( 100% - #{$menuWidth + $menuMarginRight}em );
+            }
+
+        }
+
+        &__top {
+            padding: 1.5rem 0 2.2rem;
+            font-size: 1.4rem;
+        }
+
+        &__page-title {
+            padding-bottom: 1rem;
+
+            .page-title {
+                @extend .#{$namespace}t-headline;
+                @extend .#{$namespace}t-headline--size_1;
+                @extend .#{$namespace}t-headline--look_light;
+            }
+        }
+
+        &__block {
+            width: 100%;
+            margin: 1.5rem 0 2.5rem;
+            @include media( '>=phone-lg' ) {
+                margin: 1.5rem 0 5.5rem;
+
+            }
+        }
+
+        &__bottom {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border-top: 2px solid $colorAlto;
+            padding-top: 2rem;
+            @include media( '>=tablet' ) {
+                width: 100%;
+                padding-top: 4rem;
+            }
+        }
+
+    }
+}

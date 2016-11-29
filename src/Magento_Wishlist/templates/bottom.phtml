@@ -1,0 +1,129 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Wishlist\Block\Customer\Sidebar */
+?>
+<?php
+$wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
+?>
+<?php if ($wishlistHelper->isAllow()) : ?>
+    <div class="cs-info-block block-wishlist" data-bind="scope: 'wishlist'" xmlns="http://www.w3.org/1999/html">
+
+        <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+            <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php /* @escapeNotVerified */
+                echo $block->getTitle(); ?>
+                <!-- ko if: wishlist().counter -->
+                <span class="cs-t-headline__span" data-bind="text: '('+wishlist().counter+')'"></span>
+                <!-- /ko -->
+            </h2>
+
+            <div class="cs-title-block__span no-display" data-bind="css: {'no-display': null}">
+                <a class="cs-link"
+                   href="<?php /* @escapeNotVerified */
+                   echo $this->helper('Magento\Wishlist\Helper\Data')->getListUrl() ?>"
+                   title="<?php /* @escapeNotVerified */
+                   echo __('Go to Wish List') ?>"><span><?php /* @escapeNotVerified */
+                        echo __('Go to Wish List') ?></span></a>
+            </div>
+        </div>
+
+        <div class="cs-info-block__content">
+            <!-- ko ifnot: wishlist().items.length -->
+            <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */
+                echo __('You have no items in your wish list.') ?></div>
+            <!-- /ko -->
+            <!-- ko if: wishlist().counter -->
+            <ul class="cs-items-grid | no-display" id="wishlist-sidebar" data-bind="foreach: wishlist().items, css: {'no-display': null}">
+                <li class="cs-items-grid__item cs-items-grid__item--hide-third-mobile">
+                    <div class="cs-grid-product cs-grid-product--no-shadow">
+                        <a class="cs-grid-product__figure" data-bind="attr: { href: product_url, title: product_name }">
+                            <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
+                        </a>
+
+                        <div class="cs-grid-product__name">
+                            <a data-bind="attr: { href: product_url }">
+                                <span data-bind="text: product_name" class="cs-t-text"></span>
+                            </a>
+                        </div>
+
+
+
+                        <div class="cs-grid-product__description">
+                            <div class="cs-grid-product__price-outer">
+                                <div class="cs-grid-product__uvp">
+<!--                                    <span class="cs-grid-product__price-label">UVP</span>-->
+                                    <span class="cs-grid-product__uvp-price">249,99&euro;</span>
+                                </div>
+                                <div class="cs-grid-product__our-price">
+<!--                                    <span class="cs-grid-product__price-label">Unser Preis</span>-->
+                                    <span data-bind="html: product_price"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ko if: product_is_saleable_and_visible -->
+                        <div class="cs-grid-product__buttons">
+                            <!-- ko if: product_has_required_options -->
+                            <a href="#" data-bind="attr: {'data-post': add_to_cart_params}" class="cs-button cs-button--look_default">
+                                <?php /* @escapeNotVerified */
+                                echo __('Add to Cart') ?>
+
+                                <svg class="cs-button__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                                </svg>
+                            </a>
+                            <!-- /ko -->
+                            <!-- ko ifnot: product_has_required_options -->
+                            <button type="button" class="cs-button cs-button--look_default cs-button--size_90" data-bind="attr: {'data-post': add_to_cart_params}">
+
+                                <?php /* @escapeNotVerified */
+                                echo __('Add to Cart') ?>
+
+                                <svg class="cs-button__icon">
+                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                                </svg>
+                            </button>
+                            <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                        <div class="cs-grid-product__remove">
+                            <a href="#"  data-bind="attr: {'data-post': delete_item_params}"
+                               title="<?php /* @escapeNotVerified */ echo __('Remove This Item') ?>"
+                               class="cs-button--look_remove">
+                                <svg class="cs-button__remove-icon">
+                                    <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#close"></use>
+                                </svg>
+                                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Remove This Item') ?></span>
+                            </a>
+                        </div>
+
+                    </div>
+
+                </li>
+            </ul>
+
+            <!-- /ko -->
+
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "wishlist": {
+                        "component": "Magento_Wishlist/js/view/wishlist"
+                    }
+                }
+            }
+        }
+    }
+
+    </script>
+<?php endif ?>
