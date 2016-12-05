@@ -8,26 +8,35 @@
 
 @include export-once( 'customizations/footer' ) {
     .#{$namespace}footer {
+        $root: &;
+
         @include container();
         font-size: 1rem;
         color: $colorWhite;
         background-color: $colorBlack;
+        padding-bottom: 2rem;
+
+        @include media( '>=tablet' ) {
+            padding-bottom: 0;
+        }
 
         &__wrapper {
             @include container-wrapper();
-            padding: 4rem 2rem 2rem;
             display: flex;
             flex-wrap: wrap;
+            width: calc( 100% + 3rem );
+            margin: 0 -1.5rem;
 
             @include media( '>=tablet' ) {
-                flex-wrap: nowrap;
                 padding: 4rem 0 2rem;
+                flex-wrap: nowrap;
+                width: 100%;
+                margin: 0 auto;
             }
         }
 
         &__right {
             width: 100%;
-            max-width: 40rem;
             @include media( '>=tablet' ) {
                 width: 32%;
                 max-width: 30rem;
@@ -50,10 +59,10 @@
 
         &__column {
             width: 100%;
-            padding-bottom: 2rem;
 
-            @include media( '>=phone-lg' ) {
+            @include media( '>=tablet' ) {
                 width: 50%;
+                padding-bottom: 2rem;
             }
 
             @include media( '>=laptop' ) {
@@ -66,9 +75,41 @@
             color: $colorGray;
             font-weight: 500;
             text-transform: uppercase;
-            padding: 0;
-            margin: .3rem 0 2.2rem;
             letter-spacing: .08rem;
+            position: relative;
+            border-top: 1px solid $colorGray;
+            padding: 2rem;
+            margin: 0;
+            cursor: pointer;
+
+            #{$root}__column:first-child & {
+                border-top: none;
+            }
+
+            &:after {
+                content: '+';
+                fill: $colorGray;
+                font-size: 3rem;
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 100%;
+                padding: 1rem 2rem;
+            }
+
+            &.collapse__trigger--in {
+                content: '-';
+            }
+
+            @include media( '>=tablet' ) {
+                padding: .3rem 0 2.2rem;
+                cursor: default;
+                border-top: none;
+
+                &:after {
+                    display: none;
+                }
+            }
 
             &--image {
                 width: 13.5rem;
@@ -76,11 +117,22 @@
                 display: block;
                 margin-top: 0;
             }
+
+            &--clear {
+                &:after {
+                    display: none;
+                }
+            }
         }
 
         &__list {
             color: $colorGallery;
-            padding-right: 2rem;
+            padding: 0 2rem;
+
+            @include media( '>=tablet' ) {
+                padding: 0 2rem 0 0;
+            }
+
         }
 
         &__banner {

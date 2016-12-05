@@ -19,13 +19,19 @@
         </referenceContainer>
 
         <referenceContainer name="content"  htmlTag="div" htmlClass="cs-dashboard__top" before="dashboard.bottom">
-            <container name="dashboard.page.main.title" htmlTag="div" htmlClass="cs-dashboard__page-title" before="customer_account_dashboard_top">
+            <container name="dashboard.page.main.title" htmlTag="div" htmlClass="cs-dashboard__page-title">
             </container>
         </referenceContainer>
 
         <move element="page.main.title" destination="dashboard.page.main.title"/>
 
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+        <referenceBlock name="wishlist_sidebar" remove="true"/>
+        <referenceBlock name="paypal.partner.right.logo" remove="true"/>
+        <referenceBlock name="bml.right.logo" remove="true"/>
         <referenceContainer name="sidebar.additional" remove="true"/>
+
 
         <referenceContainer name="main" htmlClass="cs-dashboard__main"  after="sticky.menu.wrapper">
 
@@ -35,7 +41,7 @@
                     <block class="Magento\Wishlist\Block\Customer\Sidebar" name="wishlist.dashboard" template="Magento_Wishlist::bottom.phtml"/>
                 </container>
 
-                <container name="dashboard.bottom.compare" after="main" htmlTag="div" htmlClass="cs-dashboard__block">
+                <container name="dashboard.bottom.compare" htmlTag="div" htmlClass="cs-dashboard__block">
                     <block class="Magento\Framework\View\Element\Template" name="catalog.compare.dashboard"
                            template="Magento_Catalog::product/compare/bottom.phtml">
                         <arguments>

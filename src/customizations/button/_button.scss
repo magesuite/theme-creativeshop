@@ -111,7 +111,7 @@ $namespace: 'cs-';
         }
 
         &--size {
-            &_90 {
+            &_300 {
                 line-height: 1.2rem;
                 font-size: 1.2rem;
                 max-height: 3rem;
@@ -121,8 +121,16 @@ $namespace: 'cs-';
                     padding: .8rem 1.5rem;
                 }
             }
+        }
+
+        &--type {
 
             &_long {
+                position: relative;
+                overflow: hidden;
+                min-width: 17rem;
+                padding-right: 6rem;
+                text-indent: 2rem;
                 &:after {
                     content: '';
                     display: block;
@@ -131,17 +139,32 @@ $namespace: 'cs-';
                     top: 0;
                     z-index: 200;
                     width: 5rem;
+                    height: 100%;
                     overflow: hidden;
                     border-top-right-radius: 3px;
                     border-bottom-right-radius: 3px;
                     background: $colorCeruleanBlueHover;
+                    transform: skew( -18deg ) translateX( 1rem );
+                }
+
+                #{$root}__icon {
+                    z-index: 202;
+                    right: 1.5rem;
+                }
+            }
+            &_wide {
+                width: 100%;
+            }
+
+            &_wide-mobile {
+
+                @include media('<tablet') {
+                    width: 100%;
+                    max-width: 40rem;
                 }
             }
         }
 
-        &--wide {
-            width: 100%;
-        }
 
         &__icon {
             width: .7rem;
@@ -149,14 +172,14 @@ $namespace: 'cs-';
             position: absolute;
             right: 1rem;
             top: 50%;
-            transform: translateY( -50% );
+            transform: translateY(-50%);
             fill: $colorWhite;
 
             &--center {
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate( -50%, -50% );
+                transform: translate(-50%, -50%);
             }
 
             &--search {
@@ -173,19 +196,9 @@ $namespace: 'cs-';
             &--cart {
                 width: 2.5rem;
                 height: 2.5rem;
+                margin-left: -.8rem;
             }
         }
-
-        &__icon-center {
-
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate( -50%, -50% );
-            margin-left: -.8rem;
-            fill: $colorWhite;
-        }
-
 
         &__remove-icon {
             padding: 1rem 1.1rem;

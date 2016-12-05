@@ -26,8 +26,10 @@ import 'vendors';
 
 import './customizations/sticky-block/sticky-block';
 
-import { FlyoutCollection } from './components/flyout/flyout.ts';
-new FlyoutCollection( { name: 'cs-dropdown', type: 'dropdown' } );
+import './components/dropdown/dropdown';
+import './components/collapse/collapse';
 
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment.ts';
 new QtyIncrementCollection();
+
+

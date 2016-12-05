@@ -18,25 +18,73 @@
 
             padding: 1.6em 0;
             display: flex;
-            flex-wrap: nowrap;
-            justify-content: space-between;
+            flex-wrap: wrap;
             align-items: center;
             border-bottom: 1px solid $colorGallery;
+
+            @include media('>=tablet') {
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+        }
+
+
+        &__burger {
+            width: 4rem;
+            order: 1;
+            flex: 0 1 4rem;
+            margin-top: .5rem;
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
+
+        &__burger-icon {
+            width: 2.3rem;
+            height: 1.3rem;
+            fill: $colorCeruleanBlue;
+            &:hover {
+                fill: $colorCeruleanBlueHover;
+            }
         }
 
         &__logo {
             display: flex;
-            flex: 0 1 20%;
+            order: 2;
+            flex: 0 1 12.5rem;
+
+            @include media('>=phone-lg') {
+                flex: 0 1 15.5rem;
+            }
+            @include media('>=tablet') {
+                flex: 0 1 20%;
+                order: 1;
+            }
         }
 
         &__search {
-            flex: 0 1 32%;
+            margin-top: 1.5rem;
+            width: 100%;
+            order: 4;
+            @include media('>=tablet') {
+                flex: 0 1 32%;
+                order: 2;
+            }
         }
 
         &__user-area {
             display: flex;
-            flex: 0 1 20%;
-            justify-content: space-between;
+            width: calc( 100% - 16.5rem );
+            justify-content: flex-end;
+            order: 3;
+            @include media('>=phone-lg') {
+                width: calc( 100% - 19.5rem );
+            }
+            @include media('>=tablet') {
+                justify-content: space-between;
+                width: auto;
+                flex: 0 1 20%;
+            }
         }
     }
 }

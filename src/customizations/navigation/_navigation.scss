@@ -8,32 +8,48 @@
         &__list {
             max-width: 1200px;
             margin: 0 auto;
+            flex-wrap: wrap;
+
+            @include media('>=tablet') {
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
         }
 
         &__flyout {
             z-index: 1001; // Make sure flyouts cover gallery nav.
+            border: 1px solid $colorAlto;
+            border-top: 1px solid $colorCeruleanBlue;
+            box-shadow: 2px 2px 5px rgba( 0, 0, 0, .15 );
         }
 
         &__item {
-            &:last-child {
-                #{$root}__link {
-                    &:after {
-                        display: none;
-                    }
+            &:hover {
+                > #{$root}__link {
+                    color: $colorCeruleanBlue;
                 }
             }
         }
 
         &__link {
-            padding-right: 3.5rem;
-            &:after {
-                content: '';
-                display: inline-block;
-                width: .2rem;
-                height: 1.2rem;
-                background: $colorAlto;
-                margin-left: 3.5rem;
+            padding: .6rem 1.5rem .6rem 0;
+            @include media('>=tablet') {
+                padding: 1.286rem 0;
             }
+
+            &:hover {
+                text-decoration: none;
+                color: $colorCeruleanBlue;
+            }
+
+            &--category {
+                padding-bottom: 2rem;
+            }
+
+        }
+
+        &__categories {
+            padding: 2rem;
         }
     }
 }
