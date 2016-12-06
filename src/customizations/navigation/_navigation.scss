@@ -1,0 +1,55 @@
+@import '../../../node_modules/creative-patterns/packages/components/navigation/src/navigation';
+
+@include export-once( 'customizations/navigation' ) {
+    .#{$namespace}navigation {
+        @include navigation();
+        $root: &;
+
+        &__list {
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+
+            @include media('>=tablet') {
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+        }
+
+        &__flyout {
+            z-index: 1001; // Make sure flyouts cover gallery nav.
+            border: 1px solid $colorAlto;
+            border-top: 1px solid $colorCeruleanBlue;
+            box-shadow: 2px 2px 5px rgba( 0, 0, 0, .15 );
+        }
+
+        &__item {
+            &:hover {
+                > #{$root}__link {
+                    color: $colorCeruleanBlue;
+                }
+            }
+        }
+
+        &__link {
+            padding: .6rem 1.5rem .6rem 0;
+            @include media('>=tablet') {
+                padding: 1.286rem 0;
+            }
+
+            &:hover {
+                text-decoration: none;
+                color: $colorCeruleanBlue;
+            }
+
+            &--category {
+                padding-bottom: 2rem;
+            }
+
+        }
+
+        &__categories {
+            padding: 2rem;
+        }
+    }
+}

@@ -9,16 +9,42 @@
     <update handle="customer_account"/>
     <body>
 
+        <referenceBlock name="account.newsletter.breadcrumbs" remove="true"/>
+        <referenceBlock name="account.orders.breadcrumbs" remove="true"/>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">account</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">My account</item>
+                    <item name="label" xsi:type="string" translate="true">My account</item>
+                    <item name="link" xsi:type="string">/customer/account/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">wishlist</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Wishlist</item>
+                    <item name="label" xsi:type="string" translate="true">Wishlist</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
         <referenceContainer name="dashboard.bottom.wishlist" remove="true"/>
 
-        <referenceContainer name="content">
+        <referenceBlock name="customer.wishlist.item.actions">
+            <arguments>
+                <argument name="css_class" xsi:type="string">cs-grid-product__links</argument>
+            </arguments>
+        </referenceBlock>
 
-            <referenceBlock class="Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Actions" name="customer.wishlist.item.actions" template="item/column/actions.phtml" cacheable="false">
-                <arguments>
-                    <argument name="css_class" xsi:type="string">cs-grid-product__links</argument>
-                </arguments>
-            </referenceBlock>
-
-        </referenceContainer>
     </body>
 </page>

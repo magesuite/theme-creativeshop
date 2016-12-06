@@ -1,0 +1,39 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Wishlist\Block\Link */
+?>
+
+<a class="cs-header-user-area__section cs-header-user-area__section--favourites" <?php /* @escapeNotVerified */ echo $block->getLinkAttributes() ?> data-bind="scope: 'wishlist'">
+    <div class="cs-header-user-area__icon-wrapper" data-bind="scope: 'wishlist'">
+        <!-- ko if: wishlist().counter -->
+        <span class="cs-header-user-area__badge | cs-badge cs-badge--short cs-badge--attention">
+            <span class="cs-badge__span" data-bind="text: wishlist().counter"></span>
+        </span>
+        <!-- /ko -->
+
+        <svg class="cs-header-user-area__icon cs-user-area__icon--favourites">
+            <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#heart"></use>
+        </svg>
+    </div>
+    <p class="cs-header-user-area__label | cs-t-text cs-t-text--size_200 cs-t-text--look_caption"><?=__('Wishlist');?></p>
+</a>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "wishlist": {
+                        "component": "Magento_Wishlist/js/view/wishlist"
+                    }
+                }
+            }
+        }
+    }
+</script>

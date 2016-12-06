@@ -1,0 +1,42 @@
+/**
+ * Poppen footer-list component customization that is often included in footer component.
+ * export-once mixin makes sure it is only included once in the styles.
+ */
+
+@include export-once( 'customizations/footer-list' ) {
+    .#{$namespace}footer-list {
+        $root: &;
+
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+
+        &--inline {
+            display: flex;
+
+            #{$root}__item {
+                margin-right: .8rem;
+            }
+        }
+
+        &__link {
+            font-size: 1.3rem;
+            color: $colorGallery;
+            font-weight: 200;
+
+            &:visited,
+            &:hover {
+                color: $colorWhite;
+            }
+
+            &:last-child {
+                padding-bottom: 2rem;
+
+                @include media('>=tablet') {
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+}

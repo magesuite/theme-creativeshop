@@ -1,0 +1,90 @@
+/**
+ * Poppen header component customization.
+ */
+
+@import '../../components/container/container';
+@import '../t-text/t-text';
+@import '../link/link';
+@import '../logo/logo';
+@import '../header-search/header-search';
+@import '../header-user-area/header-user-area';
+
+@include export-once( 'customizations/header' ) {
+    .#{$namespace}header {
+        font-size: 1rem;
+
+        &__content {
+            @include container-wrapper();
+
+            padding: 1.6em 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 1px solid $colorGallery;
+
+            @include media('>=tablet') {
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+        }
+
+
+        &__burger {
+            width: 4rem;
+            order: 1;
+            flex: 0 1 4rem;
+            margin-top: .5rem;
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
+
+        &__burger-icon {
+            width: 2.3rem;
+            height: 1.3rem;
+            fill: $colorCeruleanBlue;
+            &:hover {
+                fill: $colorCeruleanBlueHover;
+            }
+        }
+
+        &__logo {
+            display: flex;
+            order: 2;
+            flex: 0 1 12.5rem;
+
+            @include media('>=phone-lg') {
+                flex: 0 1 15.5rem;
+            }
+            @include media('>=tablet') {
+                flex: 0 1 20%;
+                order: 1;
+            }
+        }
+
+        &__search {
+            margin-top: 1.5rem;
+            width: 100%;
+            order: 4;
+            @include media('>=tablet') {
+                flex: 0 1 32%;
+                order: 2;
+            }
+        }
+
+        &__user-area {
+            display: flex;
+            width: calc( 100% - 16.5rem );
+            justify-content: flex-end;
+            order: 3;
+            @include media('>=phone-lg') {
+                width: calc( 100% - 19.5rem );
+            }
+            @include media('>=tablet') {
+                justify-content: space-between;
+                width: auto;
+                flex: 0 1 20%;
+            }
+        }
+    }
+}

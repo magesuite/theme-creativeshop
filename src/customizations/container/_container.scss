@@ -1,0 +1,66 @@
+@import '../../components/container/container';
+
+.#{$namespace}container {
+    margin: 0 calc( ( ( 100vw - 100% ) / 2 ) * -1 );
+    @include container();
+
+    &__inner {
+        @include container-wrapper();
+
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        &--flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            @include media('>=tablet') {
+                flex-wrap: nowrap;
+            }
+
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    &__main-column {
+        padding-right: 35%;
+
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    }
+
+    &--contrast {
+        background-color: $colorGallery;
+    }
+
+    &--spacious {
+        padding-top: 2em;
+        padding-bottom: 2em;
+    }
+
+    &--edge-to-edge {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    &--breadcrumbs {
+        background-image: url( 'images/breadcrumbs.png' );
+        background-size: auto 4.8rem;
+        background-position: right;
+        background-repeat: no-repeat;
+    }
+
+    &--main {
+        @include media('>=laptop') {
+            min-height: calc( 100vh - 50rem );
+        }
+    }
+}

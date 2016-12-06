@@ -1,0 +1,37 @@
+<nav class="{{ namespace }}navigation">
+    <ul class="{{ namespace }}navigation__list">
+        {% for item in items %}
+            <li class=" {{ namespace }}navigation__item">
+                <a href="{{ item.url }}" class="{{ namespace }}navigation__link">
+                    {{ item.label }}
+                </a>
+                {% if item.subcategories and item.subcategories|length > 0 %}
+                    <div class="{{ namespace }}navigation__flyout">
+                        <div class="{{ namespace }}navigation__categories">
+                            {% for category in item.subcategories %}
+                                <div class="{{ namespace }}navigation__category">
+                                    <a href="{{ category.url }}" class="{{ namespace }}navigation__link {{ namespace }}navigation__link--category">{{ category.label }}</a>
+                                    <ul class="{{ namespace }}navigation__subcategories">
+                                        {% for subcategory in category.subcategories %}
+                                            <li class="{{ namespace }}navigation__subcategory">
+                                                <a href="{{ subcategory.url }}" class="{{ namespace }}navigation__link {{ namespace }}navigation__link--subcategory">{{ subcategory.label }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="{{ namespace }}navigation__banners">
+                            <div class="{{ namespace }}navigation__banner">
+                                <img src="http://placehold.it/500x350">
+                            </div>
+                            <div class="{{ namespace }}navigation__banner">
+                                <img src="http://placehold.it/500x350">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

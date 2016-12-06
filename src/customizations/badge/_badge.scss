@@ -1,0 +1,84 @@
+/**
+ * Badge component responsible for styling different kinds of badges.
+ */
+
+@include export-once( 'customizations/badge' ) {
+    .#{$namespace}badge {
+        $root: &;
+
+        font-size: 1rem;
+        border-radius: 2px;
+        text-align: center;
+        color: $colorWhite;
+        padding: .2rem .455rem .1rem;
+        box-shadow: 0 0 0 1px $colorWhite;
+        transform: skew( -10deg );
+        box-sizing: border-box;
+        min-width: 2.1rem;
+        overflow: hidden;
+
+        &--short {
+            max-width: 2.1rem;
+            max-height: 1.7rem;
+
+            #{$root}__span {
+                max-width: 1.3rem;
+                max-height: 1.7rem;
+            }
+
+        }
+
+        &--attention {
+            background-color: $colorCrimson;
+            #{$root}__span {
+                color: $colorWhite;
+                font-weight: 400;
+            }
+        }
+
+        &--info {
+            background-color: $colorGold;
+        }
+
+        &--dark {
+            background: $colorMineShaft;
+            border-color: $colorMineShaft;
+            cursor: pointer;
+            box-shadow: none;
+
+            #{$root}__span {
+                fill: $colorWhite;
+            }
+        }
+
+        &--big {
+            padding: 1rem;
+            min-width: 4.4rem;
+            height: 3.8rem;
+            display: inline-block;
+        }
+
+        &__span {
+            color: $colorMineShaft;
+            display: inline-block;
+            font-weight: 700;
+            transform: skew( 10deg );
+
+            &--fb {
+                width: .9rem;
+                height: 1.8rem;
+            }
+
+            &--yt {
+                width: 1.8rem;
+                height: 2.1rem;
+            }
+
+            &--gplus {
+                width: 1.7rem;
+                height: 1.8rem;
+                transform: translateX( .3rem );
+            }
+        }
+    }
+}
