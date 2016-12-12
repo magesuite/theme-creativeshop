@@ -17,10 +17,10 @@ $product = $item->getProduct();
 <?php endforeach; ?>
 
 <fieldset class="cs-grid-product__fieldset | fieldset">
-    <div class="cs-grid-product__inline-section">
+    <div class="cs-grid-product__section">
 
     <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
-        <div class="cs-input | cs-grid-product__inline-span | cs-qty-increment">
+        <div class="cs-input | cs-grid-product__section-item | cs-qty-increment">
             <!--                <label class="cs-input__label" for="qty[--><?php ///* @escapeNotVerified */ echo $item->getId() ?><!--]"><span>--><?php ///* @escapeNotVerified */ echo __('Qty') ?><!--</span></label>-->
             <div class="cs-input__control">
                 <input type="number" data-role="qty" id="qty[<?php /* @escapeNotVerified */
@@ -43,7 +43,7 @@ $product = $item->getProduct();
         </div>
     <?php endif; ?>
     <?php if ($product->isSaleable()): ?>
-        <div class="cs-grid-product__inline-span">
+        <div class="cs-grid-product__section-item">
             <button type="button" data-role="tocart" data-post='<?php /* @escapeNotVerified */
             echo $block->getItemAddToCartParams($item) ?>' title="<?php /* @escapeNotVerified */
             echo __('Add to Cart') ?>" data-item-id="<?php /* @escapeNotVerified */

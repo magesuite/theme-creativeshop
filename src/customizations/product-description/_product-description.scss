@@ -1,0 +1,78 @@
+.#{$namespace}product-description {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    &__item {
+        border-bottom: 15px solid $colorWhite;
+        @include media('>=tablet') {
+            margin: 3em 0 1.5rem;
+            padding: 0 0 3rem;
+            border-bottom: 1px solid $colorAlto;
+            margin-right: 45%;
+        }
+        @include media('>=laptop') {
+            margin-right: 35%;
+        }
+
+        &--last {
+            @include media('>=tablet') {
+                border-bottom: none;
+            }
+        }
+
+    }
+
+    &__headline {
+        padding: 0;
+        margin: 1rem 0 2rem;
+        border-bottom: none;
+
+        @include media('<tablet') {
+            padding: 2.5rem 0 2.5rem 3rem;
+            position: relative;
+            margin: 0;
+
+            &:after,
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                background: $colorCeruleanBlue;
+                transition: .3s all ease-out;
+            }
+
+            &:after {
+                top: 50%;
+                transform: translate( 35%, -50% );
+                right: 3rem;
+                height: .3rem;
+                width: 1.2rem;
+            }
+
+            &:before {
+                top: 50%;
+                transform: translateY( -50% );
+                right: 3rem;
+                width: .3rem;
+                height: 1.2rem;
+            }
+
+            &.#{$namespace}collapse__trigger--in {
+                &:after {
+                    background: $colorGray;
+                }
+                &:before {
+                    background: $colorGray;
+                    transform: translate( 35%, -50% ) rotate( 90deg );
+                }
+            }
+        }
+    }
+
+    &__content {
+        @include media('<tablet') {
+            padding: 3rem;
+        }
+    }
+}

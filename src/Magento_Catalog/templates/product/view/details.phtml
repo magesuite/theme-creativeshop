@@ -10,23 +10,31 @@
 <?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
     <?php $newOrderTabbing = array( 'product.info.description', 'product.attributes' ); ?>
 
-    <?php $layout = $block->getLayout(); ?>
-    <div class="cs-product-description">
-        <?php foreach ($newOrderTabbing as $name):?>
-            <?php
-            $html = $layout->renderElement($name);
-            if (!trim($html)) {
-                continue;
-            }
-            $alias = $layout->getElementAlias($name);
-            $label = $block->getChildData($alias, 'title');
-            ?>
-            <div class="cs-product-description__item | cs-collapse">
-                <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php /* @escapeNotVerified */ echo $label; ?></h2>
-                <div class="cs-collapse__content cs-collapse__content--only-mobile | cs-cms-block">
-                    <?php /* @escapeNotVerified */ echo $html; ?>
+    <?php
+    $layout = $block->getLayout();
+    ?>
+
+    <?php foreach ($newOrderTabbing as $name): ?>
+        <?php
+        $html = $layout->renderElement($name);
+        if (!trim($html)) {
+            continue;
+        }
+        $alias = $layout->getElementAlias($name);
+        $label = $block->getChildData($alias, 'title');
+        ?>
+        <div class="cs-product-description__item <?php if ($name == 'product.attributes') {
+            echo 'cs-product-description__item--last';
+        } ?> | cs-collapse">
+            <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php /* @escapeNotVerified */
+                echo $label; ?></h2>
+
+            <div class="cs-collapse__content cs-collapse__content--only-mobile | cs-cms-block">
+                <div class="cs-product-description__content">
+                    <?php /* @escapeNotVerified */
+                    echo $html; ?>
                 </div>
             </div>
-        <?php endforeach;?>
-    </div>
+        </div>
+    <?php endforeach; ?>
 <?php endif; ?>

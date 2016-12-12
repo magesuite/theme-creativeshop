@@ -1,0 +1,82 @@
+@import '../input/input';
+
+@include export-once( 'customizations/aftersearch-nav' ) {
+    .#{$namespace}aftersearch-nav {
+        $root: &;
+        &__popover {
+            display: none !important;// stylelint-disable-line
+        }
+
+        &__filter {
+            padding: 0;
+            border-bottom-color: $colorAlto;
+
+            #{$root}__filter-title,
+            &.active #{$root}__filter-title {
+                #{$root}__filter-arrow {
+                    background-image: none !important;// stylelint-disable-line
+                    width: 11px;
+                    height: 16px;
+                    display: flex;
+                    justify-content: center;
+                    align-content: center;
+
+                    &:after {
+                        font-size: 19px;
+                        font-weight: 700;
+                        content: '+';
+                        color: $colorGray;
+                        padding: 0;
+                        line-height: 15px;
+                    }
+                }
+            }
+
+            &.active {
+                #{$root}__filter-title {
+                    #{$root}__filter-arrow {
+                        &:after {// stylelint-disable-line
+                            content: '\2013';// stylelint-disable-line
+                            line-height: 13px;// stylelint-disable-line
+                        }
+                    }
+                }
+            }
+        }
+
+        & #{$root}__filter-title {
+            padding: 22px 0;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        & #{$root}__filter-content {
+            padding: 0 0 26px;
+        }
+
+        &__filter-input {
+            &--type {
+                &_checkbox {
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+
+        &__filter-item {
+            margin: 0 !important;// stylelint-disable-line
+        }
+
+        &__button {
+            &--apply-filters {
+                display: block;
+                width: 100% !important;// stylelint-disable-line
+                background: transparent !important;// stylelint-disable-line
+                margin: 0 !important;// stylelint-disable-line
+                border-color: currentColor !important;// stylelint-disable-line
+                color: $colorCeruleanBlue !important;// stylelint-disable-line
+                font-weight: 400 !important;// stylelint-disable-line
+                font-size: 14px;
+            }
+        }
+    }
+}

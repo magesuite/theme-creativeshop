@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $url = $block->getReviewsUrl() . '#reviews'; ?>
+<?php $urlForm = $block->getReviewsUrl() . '#review-form'; ?>
+
+<?php if ($block->getReviewsCount()): ?>
+
+    <?php 
+        $rating = $block->getRatingSummary();
+        $dividedRating = floor( ( $rating / 20 ) * 2 ) / 2;
+    ?>
+
+    <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        <?=$this->getLayout()->createBlock(
+            'Creativestyle\FrontendExtension\Block\Twig', 
+            'rating-summary-product-sale-block', [
+                'data' => [
+                    "maxStars" => 5,
+                    "activeStars" => $dividedRating,
+                    "text" => '<span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span> <span itemprop="reviewCount">('.$block->getReviewsCount().' '.(($block->getReviewsCount() == 1) ? __('Review') : __('Reviews')).')</span>'
+                ]
+            ]
+        )->setTemplate( "star-rating/star-rating.twig" )->toHtml(); ?>
+    </div>
+
+<?php elseif ($block->getDisplayIfEmpty()): ?>
+
+    <div class="cs-product-sale-block__no-review">
+        <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $urlForm; ?>">
+            <?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?>
+        </a>
+    </div>
+
+<?php endif; ?>

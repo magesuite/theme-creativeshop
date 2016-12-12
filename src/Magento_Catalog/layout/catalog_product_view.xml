@@ -14,13 +14,22 @@
             <container name="pdp.container" htmlTag="section" htmlClass="cs-container__inner cs-container__inner--pdp">
                 <container name="product.media.container" htmlTag="section" htmlClass="cs-container__pdp-gallery" before="-">
                     <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
-                        <container name="product.media.container.column" htmlTag="div" htmlClass="cs-container__main-column"/>
                     </container>
                 </container>
                 <container name="product.sale.block.container" htmlTag="div" htmlClass="cs-container__sale-block" after="product.media.container" before="product.details.container"/>
 
-                <container name="product.details.container" htmlTag="section" htmlClass="cs-container cs-container--details cs-container--contrast cs-container--edge-to-edge" after="product.sale.block.container">
-                    <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
+                <container name="product.details.container" htmlTag="section" htmlClass="cs-container cs-container--details cs-container--edge-to-edge" after="product.sale.block.container">
+                    <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner | cs-product-description">
+                    </container>
+                </container>
+
+                <container name="product.review.container" htmlTag="section" htmlClass="cs-container cs-container--edge-to-edge" after="product.details.container">
+                    <container name="product.review.container.wrapper" htmlTag="div" htmlClass="cs-container__reviews | cs-collapse">
+                        <container name="product.reviews" htmlTag="div" htmlClass="cs-reviews">
+                            <block class="Magento\Review\Block\Product\View\ListView" name="review_customer_list_title" template="customer/list-title.phtml" cacheable="false"/>
+                            <container name="product.review.container.content" htmlTag="div" htmlClass="cs-collapse__content cs-collapse__content--only-mobile"/>
+                        </container>
+
                     </container>
                 </container>
 
@@ -32,7 +41,7 @@
         </referenceContainer>
 
 
-        <move element="product.info.media" destination="product.media.container.column"/>
+        <move element="product.info.media" destination="product.media.container.wrapper"/>
         <move element="product.info.details" destination="product.details.container.wrapper"/>
         <move element="page.main.title" destination="product.info.main" before="-"/>
         <move element="product.info.main" destination="main" before="-"/>
@@ -58,12 +67,20 @@
         <referenceContainer name="product.info.main" htmlClass="cs-sticky-block cs-sticky-block--pdp | cs-product-sale-block">
             <block class="Creativestyle\FrontendExtension\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-">
             </block>
-            <block class="Creativestyle\FrontendExtension\Block\Product\View\SpecialAttributes" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
         </referenceContainer>
         <move element="product.info.main" destination="product.sale.block.container" before="-"/>
 
         <referenceBlock name="product.info.mailto" remove="true"/>
         <move element="product.category.name" destination="product.info.main" before="-"/>
+
+        <referenceBlock name="product.info.description">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Catalog::product/view/description.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <move element="product.info.overview" destination="product.details.container.wrapper" before="-"/>
 
     </body>
 </page>

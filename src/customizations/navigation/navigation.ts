@@ -6,7 +6,7 @@ import Navigation from '../../../node_modules/creative-patterns/packages/compone
 
 const namespace: string = 'cs-';
 /**
- * Navigation component initialization for Poppen.
+ * Navigation component initialization
  */
 new Navigation( $( `.${namespace}navigation` ), {
     containerClassName: `${namespace}navigation__list`,
