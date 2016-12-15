@@ -24,12 +24,9 @@ import 'vendors';
 // Customizations
 // =============================================================================
 
-import './customizations/sticky-block/sticky-block';
-
-import './components/dropdown/dropdown';
 import './components/collapse/collapse';
+import './components/dropdown/dropdown';
+import './customizations/sticky-block/sticky-block';
 
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment.ts';
 new QtyIncrementCollection();
-
-
