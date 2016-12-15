@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
+    <?php $newOrderTabbing = array( 'product.info.description', 'product.attributes' ); ?>
+
+    <?php $layout = $block->getLayout(); ?>
+    <div class="cs-product-description">
+        <?php foreach ($newOrderTabbing as $name):?>
+            <?php
+            $html = $layout->renderElement($name);
+            if (!trim($html)) {
+                continue;
+            }
+            $alias = $layout->getElementAlias($name);
+            $label = $block->getChildData($alias, 'title');
+            ?>
+            <div class="cs-product-description__item | cs-collapse">
+                <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php /* @escapeNotVerified */ echo $label; ?></h2>
+                <div class="cs-collapse__content cs-collapse__content--only-mobile | cs-cms-block">
+                    <?php /* @escapeNotVerified */ echo $html; ?>
+                </div>
+            </div>
+        <?php endforeach;?>
+    </div>
+<?php endif; ?>

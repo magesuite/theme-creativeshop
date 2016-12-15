@@ -1,0 +1,174 @@
+@import '../../../../../vendors/include-media';
+@import '../../../../../configs/colors';
+
+.product.media {
+    width: 100% !important;// stylelint-disable-line
+}
+
+.fotorama {
+    $root: &;
+
+    &:not( &--fullscreen ) {
+        #{$root}__stage {
+            // Centering current image.
+            margin: 0 auto;
+        }
+    }
+
+    &__thumb {
+        @include media('<tablet') {
+            display: none !important;// stylelint-disable-line
+        }
+
+        &__arr {
+            &--right {
+                #{$root}__thumb--icon {
+                    // Fixing bug with invalid bottom arrow in thumb nav position.
+                    background-position: -25px -346px;
+                }
+            }
+        }
+    }
+
+    &__arr {
+        border-radius: 6px;
+        background-color: $colorWhite;
+        box-shadow: 1px 1px 3px 0 rgba( 0, 0, 0, .31 );
+        width: 3.7rem;
+        height: 3.7rem;
+        top: 50%;
+        transform: translateY( -50% );
+    }
+
+    &__arr--prev {
+        left: 1rem;
+        .fotorama__arr__arr {
+            background-image: url( 'images/arrow-prev.png' );
+            background-size: contain;
+            background-position: center;
+            width: .9rem;
+            height: 1.5rem;
+            // @include retina-sprite($sprite-arrow-prev-group);
+        }
+    }
+
+    &__arr--next {
+        right: 1rem;
+        .fotorama__arr__arr {
+            right: 2rem;
+            background-image: url( 'images/arrow-next.png' );
+            background-size: contain;
+            background-position: center;
+            width: .9rem;
+            height: 1.5rem;
+            // @include retina-sprite($sprite-arrow-next-group);
+        }
+    }
+
+    &__thumb-border {
+        display: none;
+    }
+
+    &__nav-wrap {
+        padding-top: 2rem;
+        @include media('<tablet') {
+            padding-top: 0;
+            position: static !important;// stylelint-disable-line
+            width: 100vw !important;// stylelint-disable-line
+        }
+
+        &--horizontal {
+            #{$root}__nav--thumbs {
+                height: auto !important;// stylelint-disable-line
+            }
+
+            #{$root}__nav__frame--thumb {
+                & + #{$root}__nav__frame--thumb {
+                    margin-left: 12px;
+                }
+            }
+        }
+
+        &--vertical {
+            #{$root}__nav__frame--thumb {
+                & + #{$root}__nav__frame--thumb {
+                    margin-top: 12px;
+                }
+            }
+        }
+    }
+
+    &__nav__shaft {
+        @include media('<tablet') {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__shadows {
+        &--bottom,
+        &--top {
+            &:before,
+            &:after {
+                // Removing top and bottom shadows from thumb navigation.
+                display: none;
+            }
+        }
+
+    }
+
+    &__nav {
+        @include media('<tablet') {
+            width: 100vw !important;// stylelint-disable-line
+            padding: 2rem 0 0;
+            height: auto !important;// stylelint-disable-line
+        }
+        &__frame {
+            @include media('<tablet') {
+                border-radius: 2px;
+                background-color: $colorAlto;
+                width: 2.8rem !important;// stylelint-disable-line
+                height: .9rem !important;// stylelint-disable-line
+                transform: skew( -18deg );
+                margin: 0 .5rem 0 0 !important;// stylelint-disable-line
+                border: none !important;// stylelint-disable-line
+                display: inline-block !important;// stylelint-disable-line
+
+                &.fotorama__active {
+                    background: $colorGold;
+                }
+            }
+            &--thumb {
+                // Adjusting thumbnails
+                padding: 0 !important;// stylelint-disable-line
+                border: 1px solid $colorAlto;
+                box-sizing: border-box;
+                transition: border-color .3s;
+                border-radius: 3px;
+                overflow: hidden;
+                cursor: pointer;
+
+                &[ data-active='true' ] {
+                    border-color: $colorCeruleanBlue;
+                }
+            }
+        }
+    }
+
+    &__dot {
+        display: none;
+    }
+
+    &__grab,
+    &__stage {
+        @include media('<tablet') {
+            min-height: 30rem;
+            width: 100vw !important;// stylelint-disable-line
+            max-width: 100vw !important;// stylelint-disable-line
+        }
+    }
+
+    &__stage {
+        left: 0 !important;// stylelint-disable-line
+    }
+}

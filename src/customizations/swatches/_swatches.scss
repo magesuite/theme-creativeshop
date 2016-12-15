@@ -1,0 +1,108 @@
+@import '../../components/swatches/swatches';
+
+@include export-once( 'customizations/swatches' ) {
+    .#{$namespace}swatches {
+        @include swatches();
+
+        margin-top: 0;
+        padding-top: 1em;
+        border-top: 1px solid $colorAlto;
+        border-top: none;
+
+        &__attribute {
+            padding: .8em 0;
+            border-top: 1px solid $colorAlto;
+        }
+
+        &__attribute-label {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            line-height: 3.3rem;
+
+            &:after {
+                content: ':';
+                display: inline-block;
+                padding-left: .3rem;
+            }
+        }
+
+        &__swatch {
+            min-width: 32px;
+            height: 32px;
+            border-radius: 3px;
+            background-color: $colorAlto;
+            color: $colorWhite;
+            line-height: 32px;
+            border: 1px solid $colorAlto;
+            margin: .28rem;
+
+            &:not( .color ) {
+                &:after {
+                    display: none;
+                }
+
+                &:hover {
+                    border: 1px solid $colorCeruleanBlue;
+                }
+
+                &.selected {
+                    background-color: $colorCeruleanBlue;
+
+                    &:hover {
+                        background-color: $colorCeruleanBlueHover;
+                    }
+                }
+
+                &.disabled {
+                    opacity: .35;
+
+                    &:hover {
+                        background-color: $colorGallery;
+                    }
+                }
+            }
+
+            &.color {
+                min-width: 28px;
+                height: 28px;
+                margin: .38rem;
+
+                &:after {
+                    top: -3px;
+                    bottom: -3px;
+                    left: -3px;
+                    right: -3px;
+                }
+
+                &:hover:after {
+                    border-color: $colorCeruleanBlueHover;
+                }
+
+                &.selected {
+                    border-color: $colorGallery;
+
+                    &:hover:after {
+                        border-color: $colorGallery;
+                    }
+                }
+
+                &.disabled {
+                    opacity: .35;
+
+                    &:hover:after {
+                        border-color: #f1f1f1;
+                    }
+                }
+            }
+
+            &:after {
+                border-radius: 3px;
+            }
+        }
+    }
+
+    .swatch-option-tooltip {
+        display: none !important;// stylelint-disable-line
+    }
+}

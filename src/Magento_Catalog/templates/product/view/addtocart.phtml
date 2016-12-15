@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+
+<?php if ($_product->isSaleable()): ?>
+    <div class="cs-box-addtocart">
+        <div class="cs-box-addtocart__fieldset">
+            <?php if ($block->shouldRenderQuantity()): ?>
+                <div class="cs-box-addtocart__qty-wrapper">
+                    <label class="cs-label | cs-box-addtocart__label" for="qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></label>
+
+                    <div class="cs-box-addtocart__qty-increment">
+                        <?=$this->getLayout()->createBlock(
+                            'Creativestyle\FrontendExtension\Block\Twig',
+                            'add-to-cart-pdp', [
+                                'data' => [
+                                    "namespace" => 'cs-',
+                                    "minValue" => /* @escapeNotVerified */ $block->getProductDefaultQty() * 1,
+                                    "initialValue" => /* @escapeNotVerified */ $block->getProductDefaultQty() * 1,
+                                    "maxValue" => 100,
+                                    "maxLength" => 12,
+                                    "size" => 2,
+                                    "name" => 'qty',
+                                    "inputParams" => 'data-validate="'.$block->escapeHtml(json_encode($block->getQuantityValidators())).'"',
+                                    "icons" => [
+                                        "increment" => $this->getViewFileUrl('images/sprites.svg') . '#plus',
+                                        "decrement" => $this->getViewFileUrl('images/sprites.svg') . '#minus'
+                                    ]
+                                ]
+                            ]
+                        )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <div class="cs-box-addtocart__actions">
+                <button type="submit" title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>" class="cs-button cs-button--type_wide cs-button--type_cart" id="product-addtocart-button">
+                    <svg class="cs-button__icon cs-button__icon--cart">
+                        <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#cart"></use>
+                    </svg>
+                    <?php /* @escapeNotVerified */ echo $buttonTitle ?>
+                </button>
+
+                <?php echo $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+</script>
+
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+    <script type="text/x-magento-init">
+        {
+            "#product_addtocart_form": {
+                "catalogAddToCart": {
+                    "bindSubmit": false
+                }
+            }
+        }
+    </script>
+<?php endif; ?>

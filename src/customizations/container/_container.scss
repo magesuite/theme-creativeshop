@@ -25,15 +25,36 @@
                 display: none;
             }
         }
+
+        &--pdp {
+            position: relative;
+
+            @include media('<tablet') {
+                margin: 0 calc( ( ( 100vw - 100%) / 2 ) * -1 );
+                max-width: 100vw;
+            }
+        }
     }
 
-    &__main-column {
-        padding-right: 35%;
+    &__sale-block {
+        @include media('>=tablet') {
+            width: 30%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+        }
+    }
 
-        &:after {
-            content: '';
-            display: table;
-            clear: both;
+    &__pdp-gallery {
+        width: 70%;
+        position: relative;
+        @include media('<tablet') {
+            padding: 1.5rem 0;
+            border-top: 1px solid $colorAlto;
+            max-width: 100vw !important;// stylelint-disable-line
+            width: 100vw !important;// stylelint-disable-line
+            min-height: 30rem;
         }
     }
 
@@ -49,6 +70,7 @@
     &--edge-to-edge {
         padding-left: 0;
         padding-right: 0;
+        width: 100vw;
     }
 
     &--breadcrumbs {
@@ -56,11 +78,26 @@
         background-size: auto 4.8rem;
         background-position: right;
         background-repeat: no-repeat;
+        display: none;
+        @include media('>=tablet') {
+            display: block;
+        }
+    }
+
+    &--details {
+        background-color: $colorGallery;
+        background-size: cover;
+        background-repeat: no-repeat;
+        @include media('>=tablet') {
+            padding-top: 2rem;
+            background-image: url( 'images/background.png' );
+        }
     }
 
     &--main {
         @include media('>=laptop') {
             min-height: calc( 100vh - 50rem );
+            padding-top: 1rem;
         }
     }
 }
