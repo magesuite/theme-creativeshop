@@ -1,7 +1,6 @@
 /* tslint:disable:no-unused-new object-literal-key-quotes */
 import $ from 'jquery';
 
-
 interface IFlyout {
     toggleState(): void;
     destroy(): void;
@@ -90,7 +89,6 @@ class Flyout implements IFlyout {
     private eventListeners: IFlyoutEventListeners = {};
     private $content: JQuery;
     private $close: JQuery;
-    private $window: JQuery = $(window);
 
     /**
      * Creates and initiates new Flyout component with settings.
@@ -187,7 +185,6 @@ class Flyout implements IFlyout {
             let scrollHeight: number = this.$content[0].scrollHeight;
             this.$content.css( { 'max-height': scrollHeight + 'px' } );
         }
-
 
         // Trigger show event and callback
         this.$element.trigger( `${this.name}.show` );
@@ -328,4 +325,3 @@ class FlyoutCollection {
 export {Flyout};
 export {IFlyout};
 export {IFlyoutSettings};
-
