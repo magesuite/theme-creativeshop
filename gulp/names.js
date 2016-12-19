@@ -7,5 +7,5 @@ export default {
      * in global window object.
      * @type {String}
      */
-    moduleId: 'magento2Template',
+    moduleId: 'creativeshop',
 };
