@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceContainer name="main" htmlClass="cs-container cs-container--edge-to-edge cs-container--main"/>
+
+        <referenceContainer name="content">
+            <container name="pdp.container" htmlTag="section" htmlClass="cs-container__inner cs-container__inner--pdp">
+                <container name="product.media.container" htmlTag="section" htmlClass="cs-container__pdp-gallery" before="-">
+                    <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
+                        <container name="product.media.container.column" htmlTag="div" htmlClass="cs-container__main-column"/>
+                    </container>
+                </container>
+                <container name="product.sale.block.container" htmlTag="div" htmlClass="cs-container__sale-block" after="product.media.container" before="product.details.container"/>
+
+                <container name="product.details.container" htmlTag="section" htmlClass="cs-container cs-container--details cs-container--contrast cs-container--edge-to-edge" after="product.sale.block.container">
+                    <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
+                    </container>
+                </container>
+
+            </container>
+        </referenceContainer>
+
+        <referenceContainer name="product.info.media" htmlClass="cs-container__gallery">
+            <block class="Magento\Framework\View\Element\Template" name="product.badge" template="Magento_Catalog::product/view/badge.phtml"/>
+        </referenceContainer>
+
+
+        <move element="product.info.media" destination="product.media.container.column"/>
+        <move element="product.info.details" destination="product.details.container.wrapper"/>
+        <move element="page.main.title" destination="product.info.main" before="-"/>
+        <move element="product.info.main" destination="main" before="-"/>
+
+
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">cs-product-sale-block__name | cs-t-headline--size_2</argument>
+                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
+            </arguments>
+            <block class="Magento\Framework\View\Element\Template" name="product.info.share" template="Magento_Catalog::product/view/share.phtml"/>
+        </referenceBlock>
+
+        <move element="product.info.stock.sku" destination="product.info.options.wrapper.bottom"/>
+        <move element="product.price.final" destination="product.info.price" after="-"/>
+        <move element="product.info.review" destination="product.info.main" after="page.main.title"/>
+
+        <referenceContainer name="product.info.stock.sku" htmlClass="cs-box-addtocart__stock"/>
+        <referenceBlock name="product.info.sku" remove="true"/>
+
+        <referenceContainer name="product.info.price" htmlClass="product-info-price | cs-price cs-price--pdp"/>
+
+        <referenceContainer name="product.info.main" htmlClass="cs-sticky-block cs-sticky-block--pdp | cs-product-sale-block">
+            <block class="Creativestyle\FrontendExtension\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-">
+            </block>
+            <block class="Creativestyle\FrontendExtension\Block\Product\View\SpecialAttributes" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
+        </referenceContainer>
+        <move element="product.info.main" destination="product.sale.block.container" before="-"/>
+
+        <referenceBlock name="product.info.mailto" remove="true"/>
+        <move element="product.category.name" destination="product.info.main" before="-"/>
+
+    </body>
+</page>

@@ -2,7 +2,21 @@
 
 @include export-once( 'customizations/sticky-block' ) {
     .#{$namespace}sticky-block {
-        @include stickyBlock;
+        box-sizing: border-box;
+
+        &--pdp {
+            @include media( '>=tablet' ) {
+                @include stickyBlock;
+                top: 2em;
+                margin-top: 2em;
+                margin-right: 15px;
+            }
+
+            @media screen and ( min-width: 1230px ) {
+                margin-right: 0;
+            }
+        }
+
     }
 
     .#{$namespace}sticky-block-no-mobile {

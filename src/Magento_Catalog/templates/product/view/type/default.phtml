@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
+<?php $_product = $block->getProduct() ?>
+
+<?php if ($block->displayProductStockStatus()): ?>
+    <?php if ($_product->isAvailable()): ?>
+        <div class="cs-box-addtocart__stock-text cs-box-addtocart__stock-text--available" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+            <svg class="cs-box-addtocart__stock-icon cs-box-addtocart__stock-icon--available">
+                <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#tick"></use>
+            </svg>
+            <span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
+        </div>
+    <?php else: ?>
+        <div class="cs-box-addtocart__stock-text cs-box-addtocart__stock-text--unavailable" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+            <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
