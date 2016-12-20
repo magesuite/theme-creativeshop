@@ -1414,7 +1414,6 @@
         // Original Magento overloaded code didn't allow events delegated to form element,
         // only to fields. No idea why.
         if (!this[0].form && !this.is('form')) {
-            // ----------------------------------------
             return this;
         }
 

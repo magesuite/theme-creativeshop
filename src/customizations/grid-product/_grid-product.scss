@@ -1,4 +1,3 @@
-$namespace: 'cs-';
 
 @import '../../../node_modules/creative-patterns/packages/components/grid-product/src/grid-product';
 
@@ -15,10 +14,6 @@ $namespace: 'cs-';
 
         @include media('>=phone-lg') {
             padding: 1rem;
-        }
-
-        @include media('>=laptop') {
-            padding: 1rem 2em;
         }
 
         &__link {
@@ -41,24 +36,34 @@ $namespace: 'cs-';
             position: relative;
         }
 
-        &__badge {
-            top: 2em;
-            right: 2em;
-            width: 42px;
-            height: 42px;
-            line-height: 42px;
-            background-color: $colorCrimson;
-            font-weight: 600;
-            font-size: 1.25rem;
+        &__image {
+            max-height: 20rem;
+        }
+
+        &__badge-wrapper {
+            top: 0;
+            left: 2.5rem;
+            position: absolute;
+            display: flex;
+            align-items: center;
+
+            @include media('>=tablet') {
+                top: 1.5rem;
+            }
         }
 
         &__name {
             margin: 0 0 .5em;
-            font-weight: 300;
-            font-size: 1.2rem;
-            line-height: 1.5rem;
-            height: 3rem;
+            font-size: 1.5rem;
+            line-height: 1.6rem;
+            font-weight: 400;
             overflow: hidden;
+            text-align: center;
+            color: $colorBlack;
+
+            @include media('>=desktop') {
+                height: 1.5rem;
+            }
 
             a {
                 text-decoration: none;
@@ -71,50 +76,6 @@ $namespace: 'cs-';
             align-items: flex-start;
             padding: 0 1.5rem;
             height: 2rem;
-        }
-
-        &__price-label {
-            display: block;
-            font-size: 1.08rem;
-            line-height: 1em;
-            color: $colorDoveGray;
-
-            #{$root}__price--prominent & {
-                text-align: right;
-            }
-        }
-
-        &__uvp-price {
-            text-decoration: line-through;
-            padding-right: .7rem;
-        }
-
-        &__our-price {
-            padding-left: .7rem;
-        }
-
-        &__price {
-            font-size: 1.5rem;
-            font-weight: 400;
-            line-height: 1em;
-            white-space: nowrap;
-
-            &--prominent {
-                color: $colorCrimson;
-            }
-
-            &-icon {
-                width: 11px;
-                height: 13px;
-                margin-right: -1px;
-                fill: $colorGold;
-
-                &--star {
-                    width: 15px;
-                    height: 15px;
-                    margin: 0 -2px -1px;
-                }
-            }
         }
 
         &__addons {
@@ -138,19 +99,25 @@ $namespace: 'cs-';
             margin-bottom: 1rem;
         }
 
-        &__inline-section {
+        &__section {
+            width: 100%;
             @include media('>=phone-lg') {
                 display: flex;
                 justify-content: space-between;
+                align-items: center;
             }
         }
-        &__inline-span {
+        &__section-item {
             margin-bottom: 1rem;
 
             @include media('<phone-lg') {
                 margin-top: .7rem;
                 display: inline-block;
                 margin-bottom: .7rem;
+            }
+
+            .product-reviews-summary {
+                margin: 0;
             }
         }
 
@@ -161,23 +128,8 @@ $namespace: 'cs-';
             z-index: 2;
         }
 
+
         @include media('>=laptop') {
-            &__addons {
-                display: none;
-                padding: .3em 1.2em 0;
-                font-size: 1.12rem;
-            }
-
-            &__addon {
-                &--look-green {
-                    color: $colorApple;
-                }
-
-                &--a-right {
-                    flex-grow: 2;
-                    text-align: right;
-                }
-            }
 
             &:before {
                 position: absolute;
@@ -199,18 +151,26 @@ $namespace: 'cs-';
                 &:before {
                     background-color: $colorWhite;
                     box-shadow: 1px 3px 40px 0 rgba( 30, 48, 67, .34 );
-                    transform: scaleY( 1.12 );
+                    transform: scaleY( 1.2 );
                 }
 
                 #{$root}__addons {
-                    display: flex;
+                    display: block;
                 }
             }
 
-            &__link,
-            &__addons {
+            &__link {
                 padding-left: 1.5em;
                 padding-right: 1.5em;
+            }
+
+            &__addons {
+                box-sizing: border-box;
+                display: none;
+                width: 100%;
+                padding: 0 3rem 0 1rem;
+                font-size: 1.12rem;
+                transform: translateY( -.7rem );
             }
 
         }

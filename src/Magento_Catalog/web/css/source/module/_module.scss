@@ -1,6 +1,3 @@
-@import '../../../../../vendors/include-media';
-@import '../../../../../configs/colors';
-
 .product.media {
     width: 100% !important;// stylelint-disable-line
 }
@@ -38,6 +35,9 @@
         height: 3.7rem;
         top: 50%;
         transform: translateY( -50% );
+        @include media('>=tablet') {
+            display: none!important;// stylelint-disable-line
+        }
     }
 
     &__arr--prev {
@@ -98,25 +98,6 @@
         }
     }
 
-    &__nav__shaft {
-        @include media('<tablet') {
-            display: flex;
-            justify-content: center;
-        }
-    }
-
-    &__shadows {
-        &--bottom,
-        &--top {
-            &:before,
-            &:after {
-                // Removing top and bottom shadows from thumb navigation.
-                display: none;
-            }
-        }
-
-    }
-
     &__nav {
         @include media('<tablet') {
             width: 100vw !important;// stylelint-disable-line
@@ -155,6 +136,25 @@
         }
     }
 
+    &__nav__shaft {
+        @include media('<tablet') {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__shadows {
+        &--bottom,
+        &--top {
+            &:before,
+            &:after {
+                // Removing top and bottom shadows from thumb navigation.
+                display: none;
+            }
+        }
+
+    }
+
     &__dot {
         display: none;
     }
@@ -170,5 +170,15 @@
 
     &__stage {
         left: 0 !important;// stylelint-disable-line
+    }
+
+    &__stage__shaft {
+        @include media('>=tablet') {
+            padding-left: 11.5rem;
+        }
+
+        @include media('>=desktop') {
+            padding-left: 0;
+        }
     }
 }
