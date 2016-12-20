@@ -1,0 +1,60 @@
+<?php
+/**
+ * Copyright 2016 aheadWorks. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/* @var $block \Aheadworks\Layerednav\Block\Navigation\PriceSlider\FilterRenderer */
+
+// @codingStandardsIgnoreFile
+
+$isPriceSliderEnabled = $block->isPriceSliderEnabled();
+$isFromToInputsEnabled = $block->isFromToInputsEnabled();
+$isFilterLabelEnabled = $isPriceSliderEnabled && !$isFromToInputsEnabled;
+$isFilterButtonDisabled = $block->isFilterButtonDisabled();
+$currencySymbol = $block->getCurrencySymbol();
+?>
+<div class="aw-layered-nav-priceslider">
+    <div class="price-filter-info" <?php /* @noEscape */ echo $isFilterLabelEnabled ? : 'style="display: none"'; ?>>
+        <?php echo $block->escapeHtml(__('From %1', $currencySymbol))?><!--
+     --><span data-role="aw-layered-nav-price-label-from"></span>
+        <?php echo $block->escapeHtml(__('to %1', $currencySymbol))?><!--
+     --><span data-role="aw-layered-nav-price-label-to"></span>
+    </div>
+    <div
+        id="slider-range"
+        class="full-width"
+        <?php /* @noEscape */ echo $isPriceSliderEnabled ? : 'style="display: none"'; ?>
+        data-mage-init='{
+        "awLayeredNavPriceSlider": {
+            "range": true,
+            "submitOnValueChange": <?php /* @noEscape */ echo $isFilterButtonDisabled ? 'true' : 'false' ?>,
+            "min": <?php echo $block->escapeHtml($minPrice) ?>,
+            "max": <?php echo $block->escapeHtml($maxPrice) ?>,
+            "values": [
+             <?php echo $block->escapeHtml($fromPrice) ?>, <?php echo $block->escapeHtml($toPrice) ?> ]
+        }
+    }'></div>
+    <div class="cs-aftersearch-nav__price | price-inputs-wrapper" <?php /* @noEscape */ echo $isFromToInputsEnabled ? : 'style="display: none"'; ?>>
+        <div class="cs-aftersearch-nav__price-field cs-aftersearch-nav__price-field--from | cs-input">
+            <span class="cs-aftersearch-nav__currency"><?php /* @noEscape */ echo $currencySymbol?></span>
+            <input type="text" id="price_from" data-role="aw-layered-nav-price-from" class="cs-aftersearch-nav__price-input | cs-input__input">
+        </div>
+        <div class="cs-aftersearch-nav__price-field cs-aftersearch-nav__price-field--to | cs-input">
+            <label for="price_to" id="price_to_label" class="cs-aftersearch-nav__price-label">
+                <?php echo $block->escapeHtml(__('To')); ?>
+            </label>
+            <span class="cs-aftersearch-nav__currency"><?php /* @noEscape */ echo $currencySymbol?></span>
+            <input type="text" id="price_to" data-role="aw-layered-nav-price-to" class="cs-aftersearch-nav__price-input | cs-input__input">
+        </div>
+    </div>
+    <button
+        data-role="aw-layered-nav-price-submit"
+        class="cs-button cs-button--look_default cs-button--size_300 | price-filter-button"
+        <?php echo $isFilterButtonDisabled ? 'style="display: none"' : ''; ?>>
+        <?php echo $block->escapeHtml(__('Apply Filter'))?>
+        <svg class="cs-button__icon">
+            <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#arrow_next"></use>
+        </svg>
+    </button>
+</div>

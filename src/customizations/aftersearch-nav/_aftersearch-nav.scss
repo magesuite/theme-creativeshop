@@ -1,0 +1,138 @@
+
+@include export-once( 'customizations/aftersearch-nav' ) {
+    .#{$namespace}aftersearch-nav {
+        $root: &;
+
+        .filter-options {
+            @include media('<tablet') {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+        }
+
+        &__filter {
+            border-bottom: 1px solid $colorAlto;
+            @include media('<tablet') {
+                width: 48%;
+            }
+        }
+
+        &__filters {
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid $colorAlto;
+        }
+
+        &__filter-title {
+            padding-top: 2rem!important;// stylelint-disable-line
+            font-size: 1.2rem!important;// stylelint-disable-line
+            padding-left: 0!important;// stylelint-disable-line
+        }
+
+        &__filter-arrow {
+
+            #{$root}__filter & {
+                background: none!important;// stylelint-disable-line
+                position: relative;
+                transform: translateY( -.5rem );
+
+                &:after,
+                &:before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    background: $colorCeruleanBlue;
+                    transition: .3s all ease-out;
+                }
+                &:after {
+                    top: 50%;
+                    transform: translate( 35%, -50% );
+                    right: 1rem;
+                    height: .2rem;
+                    width: 1rem;
+                }
+                &:before {
+                    top: 50%;
+                    transform: translateY( -50% );
+                    right: 1rem;
+                    width: .2rem;
+                    height: 1rem;
+                }
+
+            }
+
+            #{$root}__filter.active & {
+                &:after {
+                    background: $colorGray;
+                }
+                &:before {
+                    background: $colorGray;
+                    transform: translate( 35%, -50% ) rotate( 90deg );
+                }
+            }
+        }
+
+        &__filter-content {
+            padding-top: .3rem!important;// stylelint-disable-line
+            padding-left: 0!important;// stylelint-disable-line
+        }
+
+        &__swatch {
+            transform: translateX( -.3rem );
+        }
+
+        &__price {
+            display: flex;
+        }
+
+
+        &__price-input {
+            height: 3rem;
+            width: 100% !important;// stylelint-disable-line
+            padding-right: 2rem;
+        }
+
+        &__price-field {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-top: 0!important;// stylelint-disable-line
+
+            &--from {
+                width: calc( 100%/2 - 2rem ) !important;// stylelint-disable-line
+            }
+
+            &--to {
+                width: calc( 100%/2 + 2rem ) !important;// stylelint-disable-line
+
+            }
+
+        }
+
+        &__price-label {
+            font-size: 11px;
+            color: $colorGray;
+            text-transform: lowercase;
+            padding: 0 1rem;
+            display: inline-block;
+            box-sizing: border-box;
+            width: 3.2rem;
+            text-align: center;
+        }
+
+        &__currency {
+            position: absolute;
+            right: .5rem;
+            color: $colorGray;
+        }
+
+
+        &__button {
+            &--apply-filters {
+                margin-top: 0!important;// stylelint-disable-line
+            }
+        }
+
+    }
+}

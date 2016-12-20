@@ -1,0 +1,101 @@
+
+@include export-once( 'customizations/category-page' ) {
+    .#{$namespace}category-page {
+        $root: &;
+
+        display: flex;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid $colorAlto;
+        margin-bottom: 3rem;
+        position: relative;
+        flex-wrap: wrap;
+        @include media('>=tablet') {
+            flex-wrap: nowrap;
+        }
+
+        .page-title-wrapper {
+            padding: 1rem 0 1.5rem;
+            @include media('>=desktop') {
+                width: 40%;
+            }
+        }
+
+        &__toolbar {
+            padding-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            @include media('>=laptop') {
+                flex-wrap: nowrap;
+            }
+        }
+
+        &__toolbar-left {
+            display: flex;
+        }
+
+        &__toolbar-label {
+            white-space: nowrap;
+            padding-right: .5rem;
+            display: inline-block;
+        }
+
+        &__toolbar-amount {
+            display: none;
+        }
+
+        &__modes {
+            display: none;
+        }
+
+        &__toolbar-sorter,
+        &__toolbar-limiter {
+            display: flex;
+            align-items: center;
+            margin: 0 1.5rem 1rem 0!important;// stylelint-disable-line
+            padding-top: 0;
+        }
+
+        .cs-pagination {
+            margin-bottom: 1rem;
+        }
+
+        .column.main {
+            box-sizing: border-box;
+            width: 100%;
+
+            @include media('>=tablet') {
+                width: 70%;
+                flex-basis: 70%;
+                padding-left: 3rem;
+                padding-top: 3rem;
+                border-left: 1px solid $colorAlto;
+            }
+            @include media('>=laptop') {
+                width: 78%;
+                flex-basis: 78%;
+            }
+        }
+
+        .sidebar-main {
+            box-sizing: border-box;
+            width: 100%;
+            border-right: none;
+            @include media('>=tablet') {
+                width: 30%;
+                flex-basis: 30%;
+                padding-right: 3rem;
+                padding-top: 3rem;
+            }
+            @include media('>=laptop') {
+                width: 22%;
+                flex-basis: 22%;
+            }
+        }
+
+        .sidebar.sidebar-additional {
+            width: 100%;
+        }
+    }
+}

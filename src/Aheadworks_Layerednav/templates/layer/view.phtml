@@ -1,0 +1,78 @@
+<?php
+/* @var $block \Aheadworks\Layerednav\Block\Navigation */
+
+// @codingStandardsIgnoreFile
+?>
+<div id="layered-filter-block"
+     class="cs-aftersearch-nav | block filter"
+     data-role="filter-block"
+     data-mage-init='{"collapsible":{
+            "openedState": "active",
+            "collapsible": true,
+            "active": true,
+            "collateral": {
+                "openedState": "filter-active",
+                "element": "body"
+            }
+         }}'>
+    <div id="aw-layered-nav-popup"
+         class="cs-aftersearch-nav__popover | aw-layered-nav-popover aw-layered-nav-popover"
+         data-role="aw-layered-nav-popover"
+         data-mage-init='{"awLayeredNavPopover": {
+                "filtersContainer": "#layered-filter-block",
+                "hasActiveFilters": <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->hasActiveFilters()) ?>}}'>
+        <div class="aw-layered-nav-popover__content">
+            <div id="aw-layered-nav-popover__items" data-role="items-count-container" class="aw-layered-nav-popover__items"></div>
+            <div class="aw-layered-nav-popover__loader"><div class="aw-layered-nav-popover__loader-itself"></div></div>
+            <div class="aw-layered-nav-popover__action">
+                <button data-role="show-button" class="action primary show-button"><?php /* @escapeNotVerified */ echo __('Show');?></button>
+            </div>
+        </div>
+    </div>
+    <div class="cs-aftersearch-nav__filters | block-content filter-content">
+        <div class="filter-options" id="narrow-by-list">
+            <?php foreach ($block->getFilters() as $filter): ?>
+                <?php if ($filter->getItemsCount()): ?>
+                    <div class="cs-aftersearch-nav__filter | filter-options-item<?php if ($block->getPageLayout() != '1column'): ?> active<?php endif; ?>"
+                         data-mage-init='{"awLayeredNavCollapse": {}}'>
+                        <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php echo $block->escapeHtml(__($filter->getName())) ?><span class="cs-aftersearch-nav__filter-arrow | arrow"></span></div>
+                        <div data-role="content" class="cs-aftersearch-nav__filter-content | filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <div class="button-list aw-layered-nav-popover__action"
+                 data-role="aw-layered-nav-actions"
+                 data-mage-init='{"awLayeredNavFilterActions": {}}'>
+                <button data-role="show-button"
+                        class="cs-aftersearch-nav__button cs-aftersearch-nav__button--apply-filters | cs-button cs-button--look_default cs-button--type_long cs-button--type_wide | show-button<?php if (!$block->hasActiveFilters()): ?> cs-aftersearch-nav__button--disabled disabled<?php endif; ?>"><?php /* @escapeNotVerified */ echo __('Update Filters');?>
+                    <svg class="cs-button__icon">
+                        <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#arrow_next"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'Aheadworks_Layerednav/js/filter/request/bridge',
+    <?php if ($block->isAjaxEnabled()): ?>
+        'Aheadworks_Layerednav/js/filter/request/executor/ajax',
+    <?php else: ?>
+        'Aheadworks_Layerednav/js/filter/request/executor/location',
+    <?php endif; ?>
+        'Aheadworks_Layerednav/js/filter/data/source/ajax',
+        'Aheadworks_Layerednav/js/product-list/pager'
+    ], function ($, requestBridge, executor, ajaxDataSource) {
+        requestBridge.init({executor: executor});
+        ajaxDataSource.init({
+            url: '<?php echo $block->escapeQuote($block->getItemsCountUrl()) ?>',
+            pageType: '<?php /* @escapeNotVerified */ echo $block->getPageType() ?>',
+            categoryId: '<?php /* @escapeNotVerified */ echo $block->getCategoryId() ?>',
+            searchQueryText: '<?php echo $block->escapeQuote($block->getSearchQueryText()) ?>'
+        });
+        $('.pages').awLayeredNavPager({});
+    });
+</script>
