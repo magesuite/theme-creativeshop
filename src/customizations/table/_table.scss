@@ -1,7 +1,9 @@
 @import '../visually-hidden/visually-hidden';
 
 @include export-once( 'customizations/table' ) {
+
     .#{$namespace}table {
+        $root: &;
         font-size: 1rem;
         width: 100%;
 
@@ -10,11 +12,24 @@
             display: block;
         }
 
+        &--bordered {
+            @include media('>=tablet') {
+                border-top: 1px solid $colorAlto;
+                margin-top: 2rem;
+            }
+        }
+
 
         &__head {
             border-bottom: 2px solid $colorAlto;
             @include media( '<tablet' ) {
                 display: none;
+            }
+
+            &--spacious {
+                th {
+                    padding: 1.3rem 1.5rem 1.3rem .1rem;
+                }
             }
         }
 
@@ -68,6 +83,77 @@
                     }
                 }
             }
+        }
+
+        &__buttons {
+            margin: 2rem 1.5rem 1.5rem;
+            @include media( '>=tablet' ) {
+                margin: 2rem 0 1.5rem;
+            }
+
+            &--right {
+                text-align: right;
+            }
+        }
+
+        &--tablet-small {
+            @include media( '<laptop' ) {
+                max-width: 40rem;
+                border: none;
+                display: block;
+                font-size: 1.4rem;
+                padding: .4rem 1rem;
+
+                &:first-child {
+                    padding-top: 2rem;
+                }
+                &:last-child {
+                    padding-bottom: 1.2rem;
+                }
+            }
+
+            #{$root}__head {
+                @include media('<laptop') {
+                    display: none;
+                }
+            }
+
+            #{$root}__col {
+                @include media( '<laptop' ) {
+                    border: none;
+                    display: block;
+                    font-size: 1.4rem;
+                    padding: .4rem 1rem;
+
+                    &:first-child {
+                        padding-top: 2rem;
+                    }
+                    &:last-child {
+                        padding-bottom: 1.2rem;
+                    }
+                }
+                &:before {
+                    @include media( '<laptop' ) {
+                        padding-right: 10px;
+                        content: attr( data-th ) ': ';
+                        display: inline-block;
+                        color: $colorMineShaft;
+                        font-weight: 700;
+                    }
+                }
+
+                &--actions {
+                    @include media( '<laptop' ) {
+                        border-bottom: 1px solid $colorAlto;
+                    }
+                    &:before {
+                        @include media('<laptop') {/* stylelint-disable-line */
+                            @include visually-hidden;/* stylelint-disable-line */
+                        }
+                    }
+                }
+            }
+
         }
 
     }

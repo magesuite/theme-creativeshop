@@ -1,0 +1,56 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**  @var $block \Magento\Checkout\Block\Cart */
+?>
+<?php $mergedCells = ($this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices() ? 2 : 1); ?>
+<?php echo $block->getChildHtml('form_before') ?>
+<form action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/updatePost') ?>"
+      method="post"
+      id="form-validate"
+      data-mage-init='{"validation":{}}'
+      class="cs-form">
+    <?php echo $block->getBlockHtml('formkey'); ?>
+    <div class="cs-table cs-table--tablet-small cs-table--bordered | cart<?php echo $mergedCells == 2 ? ' detailed' : ''; ?>">
+        <table id="shopping-cart-table"
+               class="cs-table__body | cart items data table"
+               data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
+               "updateCartActionContainer": "#update_cart_action_container"}}'>
+            <caption role="heading" aria-level="2" class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Shopping Cart Items') ?></caption>
+            <thead class="cs-table__head cs-table__head--spacious">
+            <tr>
+                <th class="cs-t-headline cs-t-headline--size_4 | item" scope="col"><span><?php /* @escapeNotVerified */ echo __('Item') ?></span></th>
+                <th class="cs-t-headline cs-t-headline--size_4 | price" scope="col"><span><?php /* @escapeNotVerified */ echo __('Price') ?></span></th>
+                <th class="cs-t-headline cs-t-headline--size_4 | qty" scope="col"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></th>
+                <th class="cs-t-headline cs-t-headline--size_4 | subtotal" scope="col"><span><?php /* @escapeNotVerified */ echo __('Subtotal') ?></span></th>
+                <th class="cs-t-headline cs-t-headline--size_4 | subtotal" scope="col"><span></span></th>
+            </tr>
+            </thead>
+            <?php foreach ($block->getItems() as $_item): ?>
+                <?php echo $block->getItemHtml($_item) ?>
+            <?php endforeach ?>
+        </table>
+    </div>
+    <div class="cs-table__buttons cs-table__buttons--right">
+        <button type="submit"
+                name="update_cart_action"
+                data-cart-item-update=""
+                value="update_qty"
+                title="<?php echo $block->escapeHtml(__('Update Shopping Cart')); ?>"
+                class="cs-button cs-button--look_default cs-button--type_long cs-button--type__wide-mobile">
+            <?php /* @escapeNotVerified */ echo __('Update Shopping Cart'); ?>
+            <svg class="cs-button__icon">
+                <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+            </svg>
+        </button>
+        <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
+    </div>
+</form>
+<?php echo $block->getChildHtml('checkout.cart.order.actions') ?>
+<?php echo $block->getChildHtml('shopping.cart.table.after'); ?>
+

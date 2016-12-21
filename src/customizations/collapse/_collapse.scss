@@ -6,6 +6,41 @@
 
 @include export-once( 'customizations/collapse' ) {
     .#{$namespace}collapse {
+        $root: &;
         @include collapse;
+
+        &__trigger {
+            &--arrowed {
+                display: flex;
+                align-items: center;
+                position: relative;
+                justify-content: space-between;
+
+                @include media('>=tablet') {
+                    justify-content: flex-start;
+
+                }
+            }
+
+            &--arrow-right {
+                justify-content: space-between;
+            }
+
+            &--in {
+                #{$root}__icon {
+                    transform: rotate( -90deg );
+                }
+            }
+        }
+
+        &__trigger-icon {
+            margin-left: 1rem;
+            width: .6rem;
+            height: 1rem;
+            fill: $colorCeruleanBlue;
+            transform: rotate( 90deg );
+            transition: transform .3s;
+
+        }
     }
 }

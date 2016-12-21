@@ -131,6 +131,28 @@
             /* stylelint-enable */
         }
 
+        &__radio[ type='radio' ] {
+
+            &:checked + #{$root}__label:before,
+            &:checked + #{$root}__label:after {
+                color: $colorCeruleanBlue;
+                border-color: $colorCeruleanBlue;
+            }
+
+            &:hover:not( :disabled ) + #{$root}__label:before {
+                border-color: $colorCeruleanBlueHover;
+            }
+
+            &:checked + #{$root}__label:after {
+                width: .7rem;
+                height: .7rem;
+                top: calc( 50% - .04rem );
+                left: .6rem;
+                background-color: $colorCeruleanBlue;
+            }
+
+        }
+
         select {
             @extend #{$root}__select;
         }
@@ -164,6 +186,28 @@
             display: flex;
             align-items: center;
             margin-bottom: 0;
+        }
+
+        &--type-radio {
+            #{$root}__label {
+                margin-left: 1rem;
+
+                &:before {
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    border: 1px solid $colorGallery;
+                    box-shadow: $boxShadow;
+                    line-height: 1.6rem;
+                }
+
+                &:after {
+                    width: .7rem;
+                    height: 7rem;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate( -50%, -50% );
+                }
+            }
         }
 
         &--type-checkbox {
