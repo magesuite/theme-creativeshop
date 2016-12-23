@@ -11,12 +11,12 @@
         <referenceContainer name="main" htmlClass="cs-container cs-container--edge-to-edge cs-container--main"/>
 
         <referenceContainer name="content">
-            <container name="pdp.container" htmlTag="section" htmlClass="cs-container__inner cs-container__inner--pdp">
-                <container name="product.media.container" htmlTag="section" htmlClass="cs-container__pdp-gallery" before="-">
+            <container name="pdp.container" htmlTag="section" htmlClass="cs-container__inner cs-container__inner--columns">
+                <container name="product.media.container" htmlTag="section" htmlClass="cs-container__main-column" before="-">
                     <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
                     </container>
                 </container>
-                <container name="product.sale.block.container" htmlTag="div" htmlClass="cs-container__sale-block" after="product.media.container" before="product.details.container"/>
+                <container name="product.sale.block.container" htmlTag="div" htmlClass="cs-container__sticky" after="product.media.container" before="product.details.container"/>
 
                 <container name="product.details.container" htmlTag="section" htmlClass="cs-container cs-container--details cs-container--edge-to-edge" after="product.sale.block.container">
                     <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner | cs-product-description">
@@ -73,6 +73,20 @@
 
         <referenceBlock name="product.info.mailto" remove="true"/>
         <move element="product.category.name" destination="product.info.main" before="-"/>
+
+        <referenceBlock name="product.info.overview">
+            <arguments>
+                <argument name="at_call" xsi:type="string">getShortDescription</argument>
+                <argument name="at_code" xsi:type="string">short_description</argument>
+                <argument name="css_class" xsi:type="string">overview | cs-cms-block cs-cms-block--space-top</argument>
+                <argument name="at_label" translate="true" xsi:type="string">none</argument>
+                <argument name="title" translate="true" xsi:type="string">Highlights</argument>
+                <argument name="add_attribute" xsi:type="string">itemprop="description"</argument>
+            </arguments>
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Catalog::product/view/highlights.phtml</argument>
+            </action>
+        </referenceBlock>
 
         <referenceBlock name="product.info.description">
             <action method="setTemplate">

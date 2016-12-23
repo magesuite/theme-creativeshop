@@ -26,34 +26,50 @@
             }
         }
 
-        &--pdp {
+        &--columns {
             position: relative;
 
             @include media('<tablet') {
                 margin: 0 calc( ((100vw - 100%) / 2) * -1 );
                 max-width: 100vw;
             }
+            @include media('>=tablet') {
+                padding: 0 1.5rem;
+            }
         }
     }
 
-    &__sale-block {
+    &__sticky {
         @include media('>=tablet') {
-            width: 41%;
+            width: 40%;
             position: absolute;
             top: 0;
-            right: 0;
+            right: 2.2rem;
             height: 100%;
         }
         @include media('>=laptop') {
+            width: 32%;
+        }
+        @include media('>=desktop') {
+            right: 0;
             width: 30%;
+        }
+
+        &--space-top {
+            @include media('>=tablet') {
+                padding-top: 4.5rem;
+            }
         }
     }
 
-    &__pdp-gallery {
-        width: 57%;
+    &__main-column {
+        width: 56%;
         position: relative;
         @include media('>=laptop') {
-            width: 70%;
+            width: 61%;
+        }
+        @include media('>=desktop') {
+            width: 67%;
         }
         @include media('<tablet') {
             padding: 1.5rem 0;
@@ -124,6 +140,26 @@
     }
 
     &--main {
+        @include media('<tablet') {
+            padding-left: 0;
+            padding-right: 0;
+            width: 100vw;
+        }
+        @include media('>=tablet') {
+            padding-top: 2em;
+            padding-bottom: 2em;
+        }
+        @include media('>=laptop') {
+            min-height: calc( 100vh - 50rem );
+            padding-top: 0;
+        }
+    }
+
+    &--checkout-type {
+        padding-top: 2rem;
+        @include media('>=tablet') {
+            padding-bottom: 5rem;
+        }
         @include media('>=laptop') {
             min-height: calc( 100vh - 50rem );
             padding-top: 0;

@@ -1,0 +1,135 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+
+$_item = $block->getItem();
+$product = $_item->getProduct();
+$isVisibleProduct = $product->isVisibleInSiteVisibility();
+/** @var \Magento\Msrp\Helper\Data $helper */
+$helper = $this->helper('Magento\Msrp\Helper\Data');
+$canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+?>
+<tbody class="">
+<tr class="cs-cart-item">
+    <td data-th="<?php echo $block->escapeHtml(__('Item')); ?>" class="cs-table__col cs-cart-item__item | item">
+        <div class="cs-cart-item__product">
+            <?php if ($block->hasProductUrl()):?>
+            <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"
+               title="<?php echo $block->escapeHtml($block->getProductName()) ?>"
+               tabindex="-1"
+               class="cs-cart-item__image">
+                <?php else:?>
+                <span class="product-item-photo">
+            <?php endif;?>
+            <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
+            <?php if ($block->hasProductUrl()):?>
+            </a>
+            <?php else: ?>
+            </span>
+            <?php endif; ?>
+            <div class="cs-cart-item__details">
+            <span class="cs-cart-item__name">
+                <?php if ($block->hasProductUrl()):?>
+                    <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"><?php echo $block->escapeHtml($block->getProductName()) ?></a>
+                <?php else: ?>
+                    <?php echo $block->escapeHtml($block->getProductName()) ?>
+                <?php endif; ?>
+            </span>
+                <?php if ($_options = $block->getOptionList()):?>
+                    <div class="cs-cart-item__options">
+                        <?php foreach ($_options as $_option) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <dl class="cs-cart-item__options-group">
+                                <dt class="cs-cart-item__options-label | cs-t-headline cs-t-headline--size_4"><?php echo $block->escapeHtml($_option['label']) ?></dt>
+                                <dd class="cs-cart-item__options-value | cs-t-text s-t-text--size_350 cs-t-text--look_light">
+                                    <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                        <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?>
+                                    <?php else: ?>
+                                        <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                                    <?php endif; ?>
+                                </dd>
+                            </dl>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif;?>
+                <?php if ($messages = $block->getMessages()): ?>
+                    <?php foreach ($messages as $message): ?>
+                        <div class="cs-cart-item__message | message <?php /* @escapeNotVerified */ echo $message['type'] ?>"><div><?php echo $block->escapeHtml($message['text']) ?></div></div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                <?php if ($addInfoBlock): ?>
+                    <?php echo $addInfoBlock->setItem($_item)->toHtml() ?>
+                <?php endif;?>
+            </div>
+        </div>
+
+    </td>
+
+    <?php if ($canApplyMsrp): ?>
+        <td class="cs-table__col | msrp" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
+                <span class="pricing msrp">
+                    <span class="msrp notice"><?php /* @escapeNotVerified */ echo __('See price before order confirmation.'); ?></span>
+                    <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
+                    <a href="#" class="action help map" id="<?php /* @escapeNotVerified */ echo($helpLinkId); ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?php /* @escapeNotVerified */ echo $helpLinkId;?>","productName": "<?php /* @escapeNotVerified */ echo $product->getName(); ?>","showAddToCart": false}}'>
+                        <span><?php /* @escapeNotVerified */ echo __("What's this?"); ?></span>
+                    </a>
+                </span>
+        </td>
+    <?php else: ?>
+        <td class="cs-table__col | cs-cart-item__price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
+            <?php echo $block->getUnitPriceHtml($_item); ?>
+        </td>
+    <?php endif; ?>
+    <td class="cs-table__col | cs-cart-item__qty" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>">
+
+        <div class="cs-cart-item__qty-input">
+            <?=$this->getLayout()->createBlock(
+                'Creativestyle\FrontendExtension\Block\Twig',
+                'cart-item'.$_item->getSku(), [
+                    'data' => [
+                        "namespace" => 'cs-',
+                        "minValue" => 1,
+                        "initialValue" =>  /* @escapeNotVerified */ $block->getQty(),
+                        "maxValue" => 100,
+                        "maxLength" => 12,
+                        "size" => 2,
+                        "name" => 'qty',
+                        "inputParams" => 'id="cart-'./* @escapeNotVerified */ $_item->getId().'-qty" name="cart'./* @escapeNotVerified */ $_item->getId().'][qty]" data-cart-item-id="'./* @escapeNotVerified */ $_item->getSku().'" data-role="cart-item-qty" data-validate="required:true,\'validate-greater-than-zero\':true}"',
+                        "icons" => [
+                            "increment" => $this->getViewFileUrl('images/sprites.svg') . '#plus',
+                            "decrement" => $this->getViewFileUrl('images/sprites.svg') . '#minus'
+                        ]
+                    ]
+                ]
+            )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+        </div>
+
+    </td>
+
+    <td class="cs-table__col | cs-cart-item__subtotal | subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal'));?>">
+        <div class="cs-cart-item__subtotal-inner">
+            <?php if ($canApplyMsrp): ?>
+                <span class="cart msrp subtotal">--</span>
+            <?php else: ?>
+                <?php echo $block->getRowTotalHtml($_item); ?>
+            <?php endif; ?>
+
+        </div>
+
+    </td>
+    <td class="cs-table__col | cs-cart-item__bottom">
+        <div class="cs-cart-item__buttons">
+            <?php /* @escapeNotVerified */ echo $block->getActions($_item) ?>
+        </div>
+    </td>
+</tr>
+
+
+</tbody>

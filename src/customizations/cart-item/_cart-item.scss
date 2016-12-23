@@ -1,0 +1,221 @@
+@include export-once( 'customizations/cart-item' ) {
+    .#{$namespace}cart-item {
+
+        border-top: 1px solid $colorAlto;
+        position: relative;
+        padding-bottom: 5rem;
+        tbody:nth-child( 3 ) & {
+            border-top: none;
+        }
+
+        tbody:last-child & {
+            @include media('<laptop') {
+                border-bottom: 1px solid $colorAlto;
+            }
+        }
+        @include media('>=laptop') {
+            padding-right: 11rem;
+            padding-bottom: 0;
+            border-top: none;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        &__product {
+            display: flex;
+            padding: 1rem;
+            @include media('>=laptop') {
+                padding: 1rem 0 0;
+            }
+        }
+
+
+        &__name {
+            width: 100%;
+            padding: 1.5rem 0;
+        }
+
+        &__name a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: $colorMineShaft;
+
+            &:hover {
+                color: $colorMineShaft;
+                text-decoration: none;
+            }
+        }
+
+        &__details {
+            padding: 0 1rem 1rem 2rem;
+
+            @include media('>=laptop') {
+                padding: 0 1rem 0 2rem;
+            }
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            align-content: center;
+        }
+
+        &__options {
+            @include media('>=laptop') {
+                display: flex;
+            }
+        }
+
+        &__options-group {
+            margin: 0 2rem 0 0;
+            @include media('>=laptop') {
+                margin: 0 2rem 1rem 0;
+
+            }
+
+        }
+
+        &__options-label {
+            width: 7rem;
+            display: inline-block;
+            @include media('>=laptop') {
+                width: auto;
+                display: block;
+            }
+        }
+        &__options-value {
+            margin-bottom: 0;
+            display: inline-block;
+            @include media('>=laptop') {
+                width: auto;
+                display: block;
+            }
+
+        }
+
+        &__price,
+        &__subtotal {
+            .price {
+                font-weight: 300;
+                font-size: 1.4rem;
+                color: $colorDoveGray;
+            }
+        }
+        &__price {
+            @include media('<laptop') {
+                text-align: left;
+            }
+        }
+
+
+        &__subtotal {
+            padding-right: 2rem;
+            @include media('>=laptop') {
+                padding-right: 0;
+            }
+            @include media('<laptop') {
+                text-align: right;
+            }
+        }
+
+        &__price,
+        &__subtotal,
+        &__qty {
+            padding-right: 2rem;
+            padding-left: 2rem;
+            @include media('<laptop') {
+                box-sizing: border-box;
+                width: 28%;
+                display: inline-block !important;/* stylelint-disable-line declaration-no-important */
+                height: 9rem;
+
+                &:before {
+                    content: attr( data-th );
+                    font-size: 1.1rem;
+                    text-transform: uppercase;
+                    padding: 0 0 1rem;
+                }
+            }
+            @include media('>=laptop') {
+                padding-left: 0;
+            }
+        }
+
+        &__qty {
+            @include media('<laptop') {
+                padding-right: 0;
+                padding-left: 0;
+                text-align: center;
+                width: 44%;
+            }
+        }
+
+        &__item {
+            @include media('<laptop') {
+                padding-top: 1rem;
+                &:before {
+                    display: none !important;/* stylelint-disable-line declaration-no-important */
+                }
+            }
+        }
+
+        &__qty-input {
+            @include media('<laptop') {
+                display: flex;
+                justify-content: center;
+            }
+        }
+
+
+        &__subtotal-inner {
+            @include media('>=laptop') {
+                display: flex;
+                align-items: center;
+                height: 2.5rem;
+            }
+        }
+
+        &__buttons {
+            width: 100%;
+            padding-left: 2rem;
+            align-items: center;
+            position: relative;
+            @include media('>=laptop') {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+
+
+        &__link {
+            display: flex;
+            align-items: center;
+
+            &--left {
+                @include media('<laptop') {
+                    position: absolute;
+                    left: 0;
+                }
+            }
+            &--right {
+                @include media('<laptop') {
+                    position: absolute;
+                    right: 2rem;
+                }
+            }
+        }
+
+        &__bottom {
+            @include media('<laptop') {
+                padding-bottom: 3.5rem !important;/* stylelint-disable-line declaration-no-important */
+            }
+
+            &:before {
+                display: none !important;/* stylelint-disable-line declaration-no-important */
+            }
+        }
+
+
+    }
+}

@@ -30,8 +30,6 @@ import './components/dropdown/dropdown';
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment.ts';
 new QtyIncrementCollection();
 
-import './customizations/sticky-block/sticky-block';
-
 import { init as collapsibleText } from './components/collapsible-text/collapsible-text';
 collapsibleText();
 
@@ -45,4 +43,3 @@ import { QtyIncrementCollection } from './customizations/qty-increment/qty-incre
 new QtyIncrementCollection();
 
 import './customizations/sticky-block/sticky-block';
-
