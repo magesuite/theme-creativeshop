@@ -14,6 +14,11 @@
         &__fieldset {
             border: none;
             padding: 0;
+            margin: 0;
+
+            &--space-bottom {
+                margin-bottom: 2rem;
+            }
 
             &--level {
                 &_1 {
@@ -28,6 +33,13 @@
                 }
             }
 
+        }
+
+        &__fieldset-inner {
+            padding-bottom: 1rem;
+            @include media('>=laptop') {
+                border-bottom: 1px solid $colorAlto;
+            }
         }
 
         &__field {
@@ -48,6 +60,20 @@
                     max-width: 50%;
                 }
             }
+
+        }
+
+        &__group {
+            border: none;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 0;
+            .#{$namespace}form__field {
+                .#{$namespace}input__label:after {
+                    display: none;
+                }
+            }
+
         }
 
         &__reminder {
@@ -56,8 +82,15 @@
         }
 
         &__buttons {
+            margin-top: 2rem;
             display: flex;
             flex-wrap: wrap;
+        }
+
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
         }
 
     }

@@ -4,6 +4,7 @@
 
     .#{$namespace}table {
         $root: &;
+        $rootNoChangeMobile: ($root)--no-change-mobile;
         font-size: 1rem;
         max-width: 100%;
         width: 100%;
@@ -20,6 +21,11 @@
             }
         }
 
+        &--no-change-mobile {
+            #{$root}__col {
+                vertical-align: middle;
+            }
+        }
 
         &__head {
             border-bottom: 2px solid $colorAlto;
@@ -41,19 +47,33 @@
             border-bottom: 1px solid $colorAlto;
             padding: .8rem 1rem;
 
-            @include media( '<tablet' ) {
-                border: none;
-                display: block;
-                font-size: 1.4rem;
-                padding: .4rem 1rem;
+            &:not( #{$rootNoChangeMobile} ) {
+                @include media( '<tablet' ) {
+                    border: none;
+                    display: block;
+                    font-size: 1.4rem;
+                    padding: .4rem 1rem;
 
-                &:first-child {
-                    padding-top: 2rem;
+                    &:first-child {
+                        padding-top: 2rem;
+                    }
+                    &:last-child {
+                        padding-bottom: 1.2rem;
+                    }
                 }
-                &:last-child {
-                    padding-bottom: 1.2rem;
+
+
+                &:before {
+                    @include media('<tablet') {
+                        padding-right: 10px;
+                        content: attr( data-th ) ': ';
+                        display: inline-block;
+                        color: $colorMineShaft;
+                        font-weight: 700;
+                    }
                 }
             }
+
 
             @include media( '>=laptop' ) {
                 font-size: 1.4rem;
@@ -62,16 +82,6 @@
             &--attention {
                 font-weight: 700;
                 color: $colorMineShaft;
-            }
-
-            &:before {
-                @include media( '<tablet' ) {
-                    padding-right: 10px;
-                    content: attr( data-th ) ': ';
-                    display: inline-block;
-                    color: $colorMineShaft;
-                    font-weight: 700;
-                }
             }
 
             &--actions {

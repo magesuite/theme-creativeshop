@@ -1,0 +1,31 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="cs-checkout__address" data-bind="css: isSelected() ? 'selected-item' : 'not-selected-item'">
+    <div class="cs-checkout__address-radio">
+        <div class="cs-input cs-input--type-radio" data-bind="click: selectAddress">
+            <label class="cs-input__label"></label>
+        </div>
+
+    </div>
+    <div class="cs-checkout__address-text" data-bind="click: selectAddress">
+        <!-- ko text: address().prefix --><!-- /ko --> <!-- ko text: address().firstname --><!-- /ko -->
+        <!-- ko text: address().lastname --><!-- /ko --> <!-- ko text: address().suffix --><!-- /ko --><br/>
+        <!-- ko text: address().street --><!-- /ko --><br/>
+        <!-- ko text: address().city --><!-- /ko -->, <!-- ko text: address().region --><!-- /ko --> <!-- ko text: address().postcode --><!-- /ko --><br/>
+        <!-- ko text: getCountryName(address().countryId) --><!-- /ko --><br/>
+        <!-- ko text: address().telephone --><!-- /ko --><br/>
+        <!-- ko if: (address().isEditable()) -->
+        <button type="button"
+                class="cs-button cs-button--size_300 cs-button--look_default"
+                data-bind="click: editAddress, visible: address().isEditable()">
+            <span data-bind="i18n: 'Edit'"></span>
+            <span class="cs-button__icon cs-button__icon--bg"></span>
+        </button>
+        <!-- /ko -->
+    </div>
+
+</div>
