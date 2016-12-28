@@ -14,7 +14,7 @@
       method="post"
       id="form-validate"
       data-mage-init='{"validation":{}}'
-      class="cs-form">
+      class="cs-form cs-form--center-mobile">
     <?php echo $block->getBlockHtml('formkey'); ?>
     <div class="cs-table cs-table--tablet-small cs-table--bordered | cart<?php echo $mergedCells == 2 ? ' detailed' : ''; ?>">
         <table id="shopping-cart-table"
@@ -35,9 +35,12 @@
                 <?php echo $block->getItemHtml($_item) ?>
             <?php endforeach ?>
         </table>
+            <div class="load indicator | cs-no-display">
+        </div>
     </div>
-    <div class="cs-table__buttons cs-table__buttons--right">
+    <div class="cs-table__buttons cs-table__buttons--right | cs-visually-hidden">
         <button type="submit"
+                id="update-cart-button"
                 name="update_cart_action"
                 data-cart-item-update=""
                 value="update_qty"
@@ -53,4 +56,33 @@
 </form>
 <?php echo $block->getChildHtml('checkout.cart.order.actions') ?>
 <?php echo $block->getChildHtml('shopping.cart.table.after'); ?>
+
+<script>
+    require([
+        "jquery"
+    ], function($){
+
+        $( '.cs-qty-increment__button' ).on( 'click', function() {
+            $( '#update-cart-button' ).trigger( 'click' );
+            $( '.load.indicator' ).removeClass( 'cs-no-display' )
+
+        } );
+
+        $( '.cs-qty-increment__input' ).each( function( index ) {
+            $( this ).on( 'keydown', function() {
+                setTimeout( function() {
+
+                    $( '#update-cart-button' ).trigger( 'click' );
+                    $( '.load.indicator' ).removeClass( 'cs-no-display' );
+
+                }, 1500 );
+
+            } );
+        });
+    });
+
+</script>
+
+
+
 
