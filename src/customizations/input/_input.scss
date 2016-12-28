@@ -87,7 +87,8 @@
         &__input {
             &._has-datepicker {
                 display: inline-block;
-                width: calc(100% - 50px);
+                width: 100%;
+                overflow: hidden;
             }
         }
 
@@ -128,6 +129,10 @@
                 max-width: 10rem!important;
                 min-width: 10rem!important;
             }
+
+            &::-ms-expand {
+                display: none;
+            }
             /* stylelint-enable */
         }
 
@@ -146,7 +151,7 @@
             &:checked + #{$root}__label:after {
                 width: .7rem;
                 height: .7rem;
-                top: calc( 50% - .04rem );
+                top: 50%;
                 left: .6rem;
                 background-color: $colorCeruleanBlue;
             }
@@ -263,5 +268,27 @@
         .ui-datepicker-year {
             @extend .#{$namespace}input__select;
         }
+    }
+
+    ._has-datepicker ~ .ui-datepicker-trigger {
+        @extend .#{$namespace}button;
+        @extend .#{$namespace}button--look_default;
+        @extend .#{$namespace}button--look_on-input;
+        @extend .#{$namespace}input__button;
+        position: absolute !important;/* stylelint-disable-line declaration-no-important */
+
+
+        &:before {
+            color: $colorWhite;
+            transform: skew( 18deg ) translateX( -.4rem );
+        }
+    }
+
+    .customer-dob {
+        width: calc( 100% + .1rem );
+
+        overflow: hidden;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
     }
 }

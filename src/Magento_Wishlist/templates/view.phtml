@@ -22,13 +22,13 @@
             <?php echo $block->getBlockHtml('formkey');?>
             <?php $block->getChildBlock('items')->setItems($block->getWishlistItems()); ?>
             <?php echo $block->getChildHtml('items');?>
+            <div class="cs-wishlist__buttons">
+                <?php echo $block->getChildHtml('control_buttons');?>
+            </div>
         <?php else: ?>
             <div class="cs-wishlist__line | cs-t-text cs-t-text--look_light"><span><?php /* @escapeNotVerified */ echo __('You have no items in your wish list.') ?></span></div>
         <?php endif ?>
         <?php echo $block->getChildHtml('bottom'); ?>
-        <div class="cs-wishlist__buttons">
-            <?php echo $block->getChildHtml('control_buttons');?>
-        </div>
     </form>
     <script id="form-tmpl" type="text/x-magento-template">
         <form id="wishlist-hidden-form" method="post" action="<%- data.url %>" class="no-display">

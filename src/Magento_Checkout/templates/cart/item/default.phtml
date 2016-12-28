@@ -100,8 +100,9 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                         "maxValue" => 100,
                         "maxLength" => 12,
                         "size" => 2,
-                        "name" => 'qty',
-                        "inputParams" => 'id="cart-'./* @escapeNotVerified */ $_item->getId().'-qty" name="cart'./* @escapeNotVerified */ $_item->getId().'][qty]" data-cart-item-id="'./* @escapeNotVerified */ $_item->getSku().'" data-role="cart-item-qty" data-validate="required:true,\'validate-greater-than-zero\':true}"',
+                        "name" => 'cart['. /* @escapeNotVerified */ $_item->getId().'][qty]',
+                        'inputClass' => 'qty',
+                        "inputParams" => 'id="cart-'./* @escapeNotVerified */ $_item->getId().'-qty" name="cart'./* @escapeNotVerified */ $_item->getId().'][qty]" data-cart-item-id="'./* @escapeNotVerified */ $_item->getSku().'" data-role="cart-item-qty" data-validate="required:true,"validate-greater-than-zero":true}"',
                         "icons" => [
                             "increment" => $this->getViewFileUrl('images/sprites.svg') . '#plus',
                             "decrement" => $this->getViewFileUrl('images/sprites.svg') . '#minus'
