@@ -2,58 +2,56 @@ $namespace: 'cs-';
 
 @import '../../../node_modules/creative-patterns/packages/components/items-grid/src/items-grid';
 
-@include export-once( 'customizations/items-grid' ) {
-    .#{$namespace}items-grid {
-        @include itemsGrid();
+.#{$namespace}items-grid {
+    @include itemsGrid();
 
-        $root: &;
-        $mobileGutter: .75rem;
-        $tabletUpGutter: 1rem;
+    $root: &;
+    $mobileGutter: .75rem;
+    $tabletUpGutter: 1rem;
 
-        position: relative;
-        z-index: 4;
-        width: calc( 100% + ( 2 * #{$mobileGutter} ) );
-        margin: 0 -#{$mobileGutter};
+    position: relative;
+    z-index: 4;
+    width: calc( 100% + ( 2 * #{$mobileGutter} ) );
+    margin: 0 -#{$mobileGutter};
 
-        @include media( '>=tablet' ) {
-            width: calc( 100% + ( 2 * #{$tabletUpGutter} ) );
-            margin: 0 -#{$tabletUpGutter};
+    @include media( '>=tablet' ) {
+        width: calc( 100% + ( 2 * #{$tabletUpGutter} ) );
+        margin: 0 -#{$tabletUpGutter};
+    }
+
+    &__item {
+        margin: 0 $mobileGutter 2 * $mobileGutter;
+
+        @include media( '>=phone-lg' ) {
+            width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
+
+            #{$root}--in-column & {
+                width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
+            }
         }
 
-        &__item {
-            margin: 0 $mobileGutter 2 * $mobileGutter;
+        @include media( '>=tablet' ) {
+            margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
+            width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
 
-            @include media( '>=phone-lg' ) {
-                width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
-
-                #{$root}--in-column & {
-                    width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
-                }
+            #{$root}--in-column & {
+                width: calc( ( 100% / 2 ) - ( 2 * #{$tabletUpGutter} ) );
             }
+        }
 
-            @include media( '>=tablet' ) {
-                margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
+        @include media( '>=laptop' ) {
+            width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
+
+            #{$root}--in-column & {
                 width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
-
-                #{$root}--in-column & {
-                    width: calc( ( 100% / 2 ) - ( 2 * #{$tabletUpGutter} ) );
-                }
             }
+        }
 
-            @include media( '>=laptop' ) {
-                width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
+        @include media( '>=desktop' ) {
+            width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
 
-                #{$root}--in-column & {
-                    width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
-                }
-            }
-
-            @include media( '>=desktop' ) {
-                width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
-
-                #{$root}--in-column & {
-                    width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
-                }
+            #{$root}--in-column & {
+                width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
             }
         }
     }

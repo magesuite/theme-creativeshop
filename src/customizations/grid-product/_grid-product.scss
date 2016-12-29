@@ -1,130 +1,129 @@
+$namespace: 'cs-';
 
 @import '../../../node_modules/creative-patterns/packages/components/grid-product/src/grid-product';
 
-@include export-once('customizations/grid-product') {
-    .#{$namespace}grid-product {
-        @include gridProduct();
+.#{$namespace}grid-product {
+    @include gridProduct();
 
-        $root: &;
+    $root: &;
+
+    @include media( '>=laptop' ) {
+        &:hover:before {
+            box-shadow: 1px 3px 4.5rem 0 rgba( 30, 48, 67, .34 );
+        }
+    }
+
+    &__main {
+        padding: 1.5rem;
 
         @include media( '>=laptop' ) {
-            &:hover:before {
-                box-shadow: 1px 3px 4.5rem 0 rgba( 30, 48, 67, .34 );
-            }
-        }
-
-        &__main {
-            padding: 1.5rem;
-
-            @include media( '>=laptop' ) {
-                #{$root}:hover & {
-                    &:after {
-                        height: 4.5rem;
-                    }
-                }
-            }
-        }
-
-        &__addons {
-            padding: 0 1.5rem;
-
-            @include media( '>=laptop' ) {
-                #{$root}:hover & {
-                    box-shadow: 1px 3px 4.5rem 0 rgba( 30, 48, 67, .34 );
-                }
-
+            #{$root}:hover & {
                 &:after {
                     height: 4.5rem;
                 }
             }
         }
+    }
 
-        &__addon {
-            padding: .5rem .5rem .5rem 0;
+    &__addons {
+        padding: 0 1.5rem;
 
-            &:nth-child( 2n ) {
-                padding-left: .5rem;
-                padding-right: 0;
+        @include media( '>=laptop' ) {
+            #{$root}:hover & {
+                box-shadow: 1px 3px 4.5rem 0 rgba( 30, 48, 67, .34 );
             }
 
-            &--comment-form:nth-child( 1 ) {
-                padding-left: 0;
-                padding-right: 0;
+            &:after {
+                height: 4.5rem;
             }
         }
+    }
 
-        &__figure-wrapper {
-            margin: -1.5rem -1.5rem 0;
-            padding: 1.5rem;
+    &__addon {
+        padding: .5rem .5rem .5rem 0;
+
+        &:nth-child( 2n ) {
+            padding-left: .5rem;
+            padding-right: 0;
         }
 
-        &__figure {
-            height: 20rem;
+        &--comment-form:nth-child( 1 ) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
 
-            @include media( '>=tablet' ) {
-                height: 27rem;
-            }
+    &__figure-wrapper {
+        margin: -1.5rem -1.5rem 0;
+        padding: 1.5rem;
+    }
+
+    &__figure {
+        height: 20rem;
+
+        @include media( '>=tablet' ) {
+            height: 27rem;
+        }
+    }
+
+    &__badges {
+        top: 1.5rem;
+        left: 1.5rem;
+    }
+
+    $swatchesHeight: 1.875rem;
+    &__swatches {
+        height: $swatchesHeight;
+        margin-bottom: 1.25rem;
+
+        + #{$root}__name {
+            margin-top: 0;
+        }
+    }
+
+    $nameLineHeight: 1.835rem;
+    &__name {
+        margin-top: calc( #{$swatchesHeight} + 1.25rem );
+        margin-bottom: .25rem;
+        height: 2 * $nameLineHeight;
+        line-height: $nameLineHeight;
+        font-weight: 400;
+        font-size: 1.531rem;
+    }
+
+    &__name-link {
+        color: $colorMineShaft;
+    }
+
+    &__stock {
+        &--in-stock {
+            color: $colorApple;
         }
 
-        &__badges {
-            top: 1.5rem;
-            left: 1.5rem;
+        &--out-of-stock {
+            color: $colorCrimson;
         }
+    }
 
-        $swatchesHeight: 1.875rem;
-        &__swatches {
-            height: $swatchesHeight;
-            margin-bottom: 1.25rem;
+    &__comment {
+        margin-bottom: 1.5rem;
 
-            + #{$root}__name {
-                margin-top: 0;
-            }
+        &-input {
+            max-height: 6rem;
         }
+    }
 
-        $nameLineHeight: 1.835rem;
-        &__name {
-            margin-top: calc( #{$swatchesHeight} + 1.25rem );
-            margin-bottom: .25rem;
-            height: 2 * $nameLineHeight;
-            line-height: $nameLineHeight;
-            font-weight: 400;
-            font-size: 1.531rem;
-        }
+    &__remove {
+        top: 1.5rem;
+        right: 1.5rem;
+    }
 
-        &__name-link {
-            color: $colorMineShaft;
-        }
+    &--static {
+        padding: 1.5rem;
 
-        &__stock {
-            &--in-stock {
-                color: $colorApple;
-            }
-
-            &--out-of-stock {
-                color: $colorCrimson;
-            }
-        }
-
-        &__comment {
-            margin-bottom: 1.5rem;
-
-            &-input {
-                max-height: 6rem;
-            }
-        }
-
-        &__remove {
-            top: 1.5rem;
-            right: 1.5rem;
-        }
-
-        &--static {
-            padding: 1.5rem;
-
-            #{$root}__addons {
-                padding: 1rem 0 0;
-                margin-bottom: -1rem;
-            }
+        #{$root}__addons {
+            padding: 1rem 0 0;
+            margin-bottom: -1rem;
         }
     }
 }

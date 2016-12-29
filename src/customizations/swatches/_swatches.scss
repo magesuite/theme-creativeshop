@@ -1,65 +1,64 @@
-//@import '../../components/swatches/swatches';
+$namespace: 'cs-';
+
 @import '../../../node_modules/creative-patterns/packages/components/swatches/src/swatches';
 
-@include export-once( 'customizations/swatches' ) {
-    .cs-swatches {
-        @include swatches();
+.#{$namespace}swatches {
+    @include swatches();
 
-        $root: &;
+    $root: &;
 
-        $swatch-size: 2.75rem;
-        &__attribute {
-            padding: 2rem 0;
+    $swatch-size: 2.75rem;
+    &__attribute {
+        padding: 2rem 0;
+    }
+
+    &__attribute-label {
+        font-size: 1.25rem;
+
+        @include media( '>=tablet' ) {
+            padding-top: 1.45rem;
+            padding-right: 1.45rem;
+        }
+    }
+
+    &__swatch {
+        min-width: $swatch-size;
+        height: $swatch-size;
+        padding: .65rem;
+        font-size: 1rem;
+
+        &.color,
+        &--color,
+        &.image,
+        &--image {
+            position: relative;
+            margin: .65rem;
+            background-size: cover !important;
         }
 
-        &__attribute-label {
-            font-size: 1.25rem;
-
-            @include media( '>=tablet' ) {
-                padding-top: 1.45rem;
-                padding-right: 1.45rem;
-            }
+        &.text,
+        &--text {
+            min-width: calc( $swatch-size + 6px );
+            height: calc( $swatch-size + 6px );
+            margin: calc( .65rem - 3px );
         }
+    }
 
-        &__swatch {
+    &--mini {
+        $swatch-size: $swatch-size * .35;
+
+        #{$root}__swatch {
             min-width: $swatch-size;
             height: $swatch-size;
-            padding: .65rem;
-            font-size: 1rem;
-
-            &.color,
-            &--color,
-            &.image,
-            &--image {
-                position: relative;
-                margin: .65rem;
-                background-size: cover !important;
-            }
 
             &.text,
             &--text {
-                min-width: calc( $swatch-size + 6px );
-                height: calc( $swatch-size + 6px );
-                margin: calc( .65rem - 3px );
-            }
-        }
-
-        &--mini {
-            $swatch-size: $swatch-size * .35;
-
-            #{$root}__swatch {
-                min-width: $swatch-size;
-                height: $swatch-size;
-
-                &.text,
-                &--text {
-                    font-size: .85rem;
-                }
+                font-size: .85rem;
             }
         }
     }
+}
 
-    .swatch-option-tooltip {
-        display: none !important;// stylelint-disable-line
-    }
+.swatch-option-tooltip {
+    display: none !important;// stylelint-disable-line
 }
