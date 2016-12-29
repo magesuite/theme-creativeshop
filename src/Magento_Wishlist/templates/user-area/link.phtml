@@ -11,11 +11,10 @@
 
 <a class="cs-header-user-area__section cs-header-user-area__section--favourites" <?php /* @escapeNotVerified */ echo $block->getLinkAttributes() ?> data-bind="scope: 'wishlist'">
     <div class="cs-header-user-area__icon-wrapper" data-bind="scope: 'wishlist'">
-        <!-- ko if: wishlist().counter -->
-        <span class="cs-header-user-area__badge | cs-badge cs-badge--short cs-badge--attention" data-bind="css: { 'cs-display': (wishlist().counter) }">
-            <span class="cs-badge__span" data-bind="text: wishlist().counter"></span>
+
+        <span class="cs-header-user-area__badge | cs-badge cs-badge--short cs-badge--attention" data-bind="css: { 'cs-header-user-area__badge--visible': wishlist().counter > 0 }">
+            <span class="cs-badge__span"><!-- ko text: wishlist().counter --><!-- /ko --></span>
         </span>
-        <!-- /ko -->
 
         <svg class="cs-header-user-area__icon cs-user-area__icon--favourites">
             <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#heart"></use>

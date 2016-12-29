@@ -14,12 +14,10 @@ echo $block->getShoppingCartUrl(); ?>"
    data-bind="scope: 'minicart_content'">
     <div class="cs-header-user-area__icon-wrapper">
 
-
-        <!-- ko if: getCartParam('summary_count') -->
-        <span class="cs-header-user-area__badge | cs-badge cs-badge--short cs-badge--info" data-bind="css: { 'cs-display': (getCartParam('summary_count')) }">
+        <span class="cs-header-user-area__badge | cs-badge cs-badge--short cs-badge--info" data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }">
             <span class="cs-badge__span"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
         </span>
-        <!-- /ko -->
+
         <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
             <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#cart"></use>
         </svg>
@@ -38,5 +36,3 @@ echo $block->getShoppingCartUrl(); ?>"
     }
 
 </script>
-
-
