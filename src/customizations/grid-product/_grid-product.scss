@@ -3,191 +3,127 @@
 
 @include export-once('customizations/grid-product') {
     .#{$namespace}grid-product {
+        @include gridProduct();
+
         $root: &;
 
-        width: 100%;
-        padding: 0;
-        position: relative;
-        z-index: 2;
-        background-color: transparent;
-        box-sizing: border-box;
-
-        @include media('>=phone-lg') {
-            padding: 1rem;
-        }
-
-        &__link {
-            display: block;
-            padding: 0 1.2em;
-            text-align: left;
-            font-weight: 300;
-
-            &:hover {
-                color: inherit;
-                text-decoration: none;
-            }
-
-            &:visited {
-                color: inherit;
+        @include media( '>=laptop' ) {
+            &:hover:before {
+                box-shadow: 1px 3px 4.5rem 0 rgba( 30, 48, 67, .34 );
             }
         }
 
-        &__figure {
-            position: relative;
-        }
+        &__main {
+            padding: 1.5rem;
 
-        &__image {
-            max-height: 20rem;
-        }
-
-        &__badge-wrapper {
-            top: 0;
-            left: 2.5rem;
-            position: absolute;
-            display: flex;
-            align-items: center;
-
-            @include media('>=tablet') {
-                top: 1.5rem;
+            @include media( '>=laptop' ) {
+                #{$root}:hover & {
+                    &:after {
+                        height: 4.5rem;
+                    }
+                }
             }
-        }
-
-        &__name {
-            margin: 0 0 .5em;
-            font-size: 1.5rem;
-            line-height: 1.6rem;
-            font-weight: 400;
-            overflow: hidden;
-            text-align: center;
-            color: $colorBlack;
-
-            @include media('>=desktop') {
-                height: 1.5rem;
-            }
-
-            a {
-                text-decoration: none;
-            }
-        }
-
-        &__price-outer {
-            font-size: 1.12rem;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 0 1.5rem;
-            height: 2rem;
         }
 
         &__addons {
-            display: none;
+            padding: 0 1.5rem;
 
-            #{$root}:hover & {
-                display: none;
+            @include media( '>=laptop' ) {
+                #{$root}:hover & {
+                    box-shadow: 1px 3px 4.5rem 0 rgba( 30, 48, 67, .34 );
+                }
+
+                &:after {
+                    height: 4.5rem;
+                }
             }
         }
 
-        &__fieldset {
-            margin-bottom: 0;
+        &__addon {
+            padding: .5rem .5rem .5rem 0;
+
+            &:nth-child( 2n ) {
+                padding-left: .5rem;
+                padding-right: 0;
+            }
+
+            &--comment-form:nth-child( 1 ) {
+                padding-left: 0;
+                padding-right: 0;
+            }
         }
 
-        &__stock,
-        &__links {
-            margin: .8rem 0 0;
+        &__figure-wrapper {
+            margin: -1.5rem -1.5rem 0;
+            padding: 1.5rem;
+        }
+
+        &__figure {
+            height: 20rem;
+
+            @include media( '>=tablet' ) {
+                height: 27rem;
+            }
+        }
+
+        &__badges {
+            top: 1.5rem;
+            left: 1.5rem;
+        }
+
+        $swatchesHeight: 1.875rem;
+        &__swatches {
+            height: $swatchesHeight;
+            margin-bottom: 1.25rem;
+
+            + #{$root}__name {
+                margin-top: 0;
+            }
+        }
+
+        $nameLineHeight: 1.835rem;
+        &__name {
+            margin-top: calc( #{$swatchesHeight} + 1.25rem );
+            margin-bottom: .25rem;
+            height: 2 * $nameLineHeight;
+            line-height: $nameLineHeight;
+            font-weight: 400;
+            font-size: 1.531rem;
+        }
+
+        &__name-link {
+            color: $colorMineShaft;
+        }
+
+        &__stock {
+            &--in-stock {
+                color: $colorApple;
+            }
+
+            &--out-of-stock {
+                color: $colorCrimson;
+            }
         }
 
         &__comment {
-            margin-bottom: 1rem;
-        }
+            margin-bottom: 1.5rem;
 
-        &__section {
-            width: 100%;
-            @include media('>=phone-lg') {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-        &__section-item {
-            margin-bottom: 1rem;
-
-            @include media('<phone-lg') {
-                margin-top: .7rem;
-                display: inline-block;
-                margin-bottom: .7rem;
-            }
-
-            .product-reviews-summary {
-                margin: 0;
+            &-input {
+                max-height: 6rem;
             }
         }
 
         &__remove {
-            position: absolute;
-            top: 0;
-            right: 2.5rem;
-            z-index: 2;
+            top: 1.5rem;
+            right: 1.5rem;
         }
 
+        &--static {
+            padding: 1.5rem;
 
-        @include media('>=laptop') {
-
-            &:before {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                content: '';
-                z-index: -1;
-                border-radius: 4px;
-                box-shadow: 0 0 0 rgba( 0, 0, 0, 0 );
-                transition: box-shadow .15s ease-in-out, transform .15s ease-in-out;
-                transform-origin: 50% 0;
-            }
-
-            &:hover {
-                z-index: 3;
-
-                &:before {
-                    background-color: $colorWhite;
-                    box-shadow: 1px 3px 40px 0 rgba( 30, 48, 67, .34 );
-                    transform: scaleY( 1.2 );
-                }
-
-                #{$root}__addons {
-                    display: block;
-                }
-            }
-
-            &__link {
-                padding-left: 1.5em;
-                padding-right: 1.5em;
-            }
-
-            &__addons {
-                box-sizing: border-box;
-                display: none;
-                width: 100%;
-                padding: 0 3rem 0 1rem;
-                font-size: 1.12rem;
-                transform: translateY( -.7rem );
-            }
-
-        }
-
-        &--no-scale {
-            &:hover {
-                &:before {
-                    transform: scaleY( 1.02 );
-                }
-            }
-        }
-
-        &--no-shadow {
-            &:hover {
-                &:before {
-                    display: none;
-                }
+            #{$root}__addons {
+                padding: 1rem 0 0;
+                margin-bottom: -1rem;
             }
         }
     }

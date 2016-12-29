@@ -17,18 +17,35 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
 ?>
 <div class="cs-category-page__toolbar-sorter | cs-input | sorter">
     <label class="cs-category-page__toolbar-label | cs-t-text cs-t-text--look_label" for="sorter"><?php /* @escapeNotVerified */ echo __('Sort By') ?></label>
-    <select id="sorter" data-role="sorter" class="cs-input__select">
-        <option selected="true" disabled="disabled">Choose Tagging</option>
-        <?php foreach ($block->getAvailableOrders() as $_key => $_order): ?>
-            <option value="<?php /* @escapeNotVerified */ echo $_key; ?>"
-                <?php if ($block->isOrderCurrent($_key)): ?>
-                    selected="selected"
-                <?php endif; ?>
-                >
-                <?php echo $block->escapeHtml(__($_order)) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+
+    <?php 
+        $options = [];
+
+        foreach ($block->getAvailableOrders() as $_key => $_order){
+            $_ = [
+                'value' => $_key,
+                'label' => $block->escapeHtml(__($_order))
+            ];
+
+            if($block->isOrderCurrent($_key)) {
+                $_['params'] = 'selected=selected';
+            }
+
+            $options[] = $_;
+        }
+    ?>
+
+    <?=$this->getLayout()->createBlock( 
+            'Creativestyle\FrontendExtension\Block\Twig', 'select-sorter', [
+                'data' => [
+                    'params' => 'id=sorter data-role=sorter',
+                    'options' => $options
+                ]
+            ]
+        )->setTemplate("select/select.twig")->toHtml();
+    ?>
+
+
     <?php if ($block->getCurrentDirection() == 'desc'): ?>
         <a title="<?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?>" href="#" class="action sorter-action sort-desc" data-role="direction-switcher" data-value="asc">
             <span><?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?></span>

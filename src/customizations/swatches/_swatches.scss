@@ -1,103 +1,60 @@
-@import '../../components/swatches/swatches';
+//@import '../../components/swatches/swatches';
+@import '../../../node_modules/creative-patterns/packages/components/swatches/src/swatches';
 
 @include export-once( 'customizations/swatches' ) {
-    .#{$namespace}swatches {
+    .cs-swatches {
         @include swatches();
 
-        margin-top: 0;
-        padding-top: 1em;
-        border-top: 1px solid $colorAlto;
-        border-top: none;
+        $root: &;
 
+        $swatch-size: 2.75rem;
         &__attribute {
-            padding: .8em 0;
-            border-top: 1px solid $colorAlto;
+            padding: 2rem 0;
         }
 
         &__attribute-label {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            line-height: 3.3rem;
+            font-size: 1.25rem;
 
-            &:after {
-                content: ':';
-                display: inline-block;
-                padding-left: .3rem;
+            @include media( '>=tablet' ) {
+                padding-top: 1.45rem;
+                padding-right: 1.45rem;
             }
         }
 
         &__swatch {
-            min-width: 32px;
-            height: 32px;
-            border-radius: 3px;
-            background-color: $colorAlto;
-            color: $colorWhite;
-            line-height: 32px;
-            border: 1px solid $colorAlto;
-            margin: .28rem;
+            min-width: $swatch-size;
+            height: $swatch-size;
+            padding: .65rem;
+            font-size: 1rem;
 
-            &:not( .color ) {
-                &:after {
-                    display: none;
-                }
-
-                &:hover {
-                    border: 1px solid $colorCeruleanBlue;
-                }
-
-                &.selected {
-                    background-color: $colorCeruleanBlue;
-
-                    &:hover {
-                        background-color: $colorCeruleanBlueHover;
-                    }
-                }
-
-                &.disabled {
-                    opacity: .35;
-
-                    &:hover {
-                        background-color: $colorGallery;
-                    }
-                }
+            &.color,
+            &--color,
+            &.image,
+            &--image {
+                position: relative;
+                margin: .65rem;
+                background-size: cover !important;
             }
 
-            &.color {
-                min-width: 28px;
-                height: 28px;
-                margin: .38rem;
-
-                &:after {
-                    top: -3px;
-                    bottom: -3px;
-                    left: -3px;
-                    right: -3px;
-                }
-
-                &:hover:after {
-                    border-color: $colorCeruleanBlueHover;
-                }
-
-                &.selected {
-                    border-color: $colorGallery;
-
-                    &:hover:after {
-                        border-color: $colorGallery;
-                    }
-                }
-
-                &.disabled {
-                    opacity: .35;
-
-                    &:hover:after {
-                        border-color: #f1f1f1;
-                    }
-                }
+            &.text,
+            &--text {
+                min-width: calc( $swatch-size + 6px );
+                height: calc( $swatch-size + 6px );
+                margin: calc( .65rem - 3px );
             }
+        }
 
-            &:after {
-                border-radius: 3px;
+        &--mini {
+            $swatch-size: $swatch-size * .35;
+
+            #{$root}__swatch {
+                min-width: $swatch-size;
+                height: $swatch-size;
+
+                &.text,
+                &--text {
+                    font-size: .85rem;
+                }
             }
         }
     }

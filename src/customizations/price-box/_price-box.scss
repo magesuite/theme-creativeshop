@@ -1,0 +1,51 @@
+@import '../../../node_modules/creative-patterns/packages/components/price-box/src/price-box';
+
+@include export-once( 'customizations/price-box' ) {
+
+    .price-box {
+        @include priceBox();
+
+        .price {
+            color: $colorCeruleanBlue;
+            font-size: 1.51rem;
+
+            &-label {
+                display: block;
+                @extend .cs-visually-hidden;
+            }
+        }
+
+        .old-price {
+            .price {
+                font-size: 1rem;
+                color: $colorDoveGray;
+            }
+        }
+
+        .special-price {
+            .price {
+                color: $colorCrimson;
+            }
+        }
+    }
+
+    .cs-price--pdp {
+        margin-top: 1.2rem;
+
+        .price {
+            font-size: 2rem;
+        }
+
+        .special-price .price {
+            font-size: 2rem;
+        }
+
+        .old-price {
+            transform: translateY( -.3rem );
+        }
+
+        .old-price .price {
+            font-size: 1.2rem;
+        }
+    }
+}

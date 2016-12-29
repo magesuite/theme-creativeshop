@@ -35,7 +35,7 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
         $viewModeClass = 'cs-items-grid';
         $image = 'category_page_grid';
         $showDescription = false;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
     } else {
         $viewMode = 'list';
         $viewModeClass = 'cs-items-list';
@@ -49,177 +49,61 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
     $pos = $block->getPositioned();
     ?>
     <div class="">
-        <?php $iterator = 1; ?>
+        <?php $iterator = 0; ?>
         <ol class="<?php /* @escapeNotVerified */
-        echo $viewModeClass; ?>">
+        echo $viewModeClass; ?> cs-items-grid--in-column">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
-                <?php /* @escapeNotVerified */
-                echo ($iterator++ == 1) ? '<li class="' . /* @escapeNotVerified */
-                    $viewModeClass . '__item">' : '</li>
-                <li class="' . /* @escapeNotVerified */
-                    $viewModeClass . '__item">' ?>
-
-<!--                --><?php //$this->getLayout()->createBlock(
-//                        'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
-//                            'data' => [
-//                                'namespace' => 'cs-',
-//                                'product' => [
-//                                    'url' => $_product->getProductUrl(),
-//                                    'image' => [
-//                                        'classes' => $_product->getProductUrl(),
-//                                        'mixins' => '',
-//                                        'src' => '',
-//                                        'alt' => '',
-//                                        'title' => ''
-//                                    ],
-//                                    'badgesHtml' => '',
-//                                    'nameHtml' => $_helper->productAttribute($_product, $_product->getName(), 'name'),
-//                                    'price' => [
-//                                        'mixins' => 'cs-price',
-//                                        'html' => $block->getProductPrice($_product),
-//
-//                                    ],
-//
-//                                ]
-//                            ]
-//                        ]
-//                    )->setTemplate("grid-product/grid-product.twig")->toHtml();?>
-
-                <div class="cs-grid-product">
+                <?php $iterator++; ?>
+                <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item | cs-grid-product">
                     <?php
-                    $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
-                    $productImageUrl = $_imagehelper->init($_product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
-                    $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+                        $productImageUrl = $_imagehelper->init($_product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+                        $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                     ?>
 
-                    <a href="<?php /* @escapeNotVerified */
-                    echo $_product->getProductUrl() ?>" class="cs-grid-product__link" tabindex="-1">
-                        <figure class="cs-grid-product__figure">
-                            <img class="cs-grid-product__image" src="<?php /* @escapeNotVerified */
-                            echo $productImageUrl; ?>" alt="<?php /* @escapeNotVerified */
-                            echo $_productNameStripped ?>">
-                        </figure>
+                    <?=$this->getLayout()->createBlock( 
+                        'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
+                            'data' => [
+                                'showWrapper' => false,
+                                'url' => $_product->getProductUrl(),
+                                'image' => [
+                                    'src' => $productImageUrl,
+                                    'alt' => $_productNameStripped
+                                ],
+                                'name' => $_helper->productAttribute($_product, $_product->getName(), 'name'),
+                                'price' => [
+                                    'content' => $block->getProductPrice($_product)
+                                ],
+                                'swatches' => [
+                                    'content' => $block->getProductDetailsHtml($_product)
+                                ],
+                                'addons' => [
+                                    'show' => true
+                                ],
+                                'rating' => [
+                                    'maxStars' => 5,
+                                    'activeStars' => 4.5,
+                                    'text' => '(34)'
+                                ],
+                                'stock' => [
+                                    'showInStock' => $_product->getIsSalable() ? true : false,
+                                    'showOutOfStock' => $_product->getIsSalable() ? false : true,
+                                    'inStockContent' => __('In stock'),
+                                    'outOfStockContent' => __('Out of stock')
+                                ],
+                                'hotspots' => [
+                                    'after' => [
+                                        'inStock' => [
+                                            'content' => '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="'.$block->escapeHtml(__('Add to Wish List')).'" aria-label="'.$block->escapeHtml(__('Add to Wish List')).'" data-post=\''.$block->getAddToWishlistParams($_product).'\' data-action="add-to-wishlist" role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href="'.$this->getViewFileUrl('images/sprites.svg').'#heart"></use></svg>'.__('Add to Wish List').'</a></li></ul>'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
 
-                        <!--Badges - logic must be implement-->
-
-                        <div class="cs-grid-product__badge-wrapper">
-                            <?php
-                            $badge_display = Array(0, 1);
-                            $_show_new = $badge_display[array_rand($badge_display)];
-                            ?>
-                            <?php if ($_show_new): ?>
-
-                                <span class="cs-badge cs-badge--new cs-badge--label cs-badge--cut">
-                                    <span class="cs-badge__span"><?= __('New'); ?></span>
-                                </span>
-
-                            <?php endif; ?>
-
-                            <?php if ($_show_new == 0 && $badge_display[array_rand($badge_display)]): ?>
-                                <span class="cs-badge cs-badge--attention cs-badge--label cs-badge--cut">
-                                    <span class="cs-badge__span"><?= __('Sale'); ?></span>
-                                </span>
-                                <span class="cs-badge cs-badge--label">
-                                    <span class="cs-badge__span"><?= __('-30%'); ?></span>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-
-
-                        <div class="cs-grid-product__name">
-                            <?php /* @escapeNotVerified */
-                            echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
-                        </div>
-
-                        <div class="cs-grid-product__description">
-                            <div class="cs-grid-product__price-outer">
-                                <div class="cs-grid-product__price | cs-price">
-
-                                    <?php /* @escapeNotVerified */
-                                    echo $block->getProductPrice($_product) ?>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="cs-grid-product__addons">
-
-                        <div class="cs-grid-product__section">
-                            <div class="cs-grid-product__section-item">
-
-                                <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-
-                                    <?php
-                                    // TO DO - find the way to get ranking $rating = ;
-                                    $rating = 0;
-                                    $dividedRating = floor(($rating / 20) * 2) / 2;
-                                    $_review_wording = ($block->getReviewsCount() == 1) ? __('Review') : __('Reviews');
-                                    ?>
-                                    <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'rating-summary-grid-product-' . $iterator, ['data' => ["maxStars" => 5, "activeStars" => $dividedRating, "text" => '<span itemprop="ratingValue">' . $dividedRating . '</span> / <span itemprop="bestRating">5</span> <span itemprop="reviewCount">(' . $block->getReviewsCount() . ' ' . ( ($block->getReviewsCount() == 0) ? __('No reviews') : $review_wording ) . ')</span>']])->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
-                                </div>
-                            </div>
-                            <div class="cs-grid-product__section-item">
-
-                                <?php if ($_product->getIsSalable()): ?>
-
-                                    <span class="cs-t-text cs-t-text--size_300 cs-t-text--look_success" title="<?php /* @escapeNotVerified */
-                                    echo __('Availability') ?>"><?php /* @escapeNotVerified */
-                                        echo __('In stock') ?>
-                                        </span>
-                                <?php else: ?>
-
-                                    <span class="cs-t-text cs-t-text--size_300 cs-t-text--look_error" title="<?php /* @escapeNotVerified */
-                                    echo __('Availability') ?>"><?php /* @escapeNotVerified */
-                                        echo __('Out of stock') ?>
-                                        </span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-
-                        <ul class="cs-grid-product__section | cs-links-block-addto" data-role="add-to-links">
-                            <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
-                                <li class="cs-links-block-addto__item">
-                                    <a href="#"
-                                       class="cs-links-block-addto__link"
-                                       title="<?php echo $block->escapeHtml(__('Add to Wish List')); ?>"
-                                       aria-label="<?php echo $block->escapeHtml(__('Add to Wish List')); ?>"
-                                       data-post='<?php /* @escapeNotVerified */
-                                       echo $block->getAddToWishlistParams($_product); ?>'
-                                       data-action="add-to-wishlist"
-                                       role="button">
-                                        <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
-                                            <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#heart"></use>
-                                        </svg>
-                                        <?php /* @escapeNotVerified */
-                                        echo __('Add to Wish List') ?>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                            <?php
-                            $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
-                            ?>
-                            <li class="cs-links-block-addto__item">
-                                <a href="#"
-                                   class="cs-links-block-addto__link"
-                                   title="<?php echo $block->escapeHtml(__('Add to Compare')); ?>"
-                                   aria-label="<?php echo $block->escapeHtml(__('Add to Compare')); ?>"
-                                   data-post='<?php /* @escapeNotVerified */
-                                   echo $compareHelper->getPostDataParams($_product); ?>'
-                                   role="button">
-                                    <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--compare">
-                                        <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#compare"></use>
-                                    </svg>
-                                    <?php /* @escapeNotVerified */
-                                    echo __('Add to Compare') ?>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-                <?php echo ($iterator == count($_productCollection) + 1) ? '</li>' : '' ?>
+                </li>
             <?php endforeach; ?>
         </ol>
     </div>

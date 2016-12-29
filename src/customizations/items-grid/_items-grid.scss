@@ -5,19 +5,56 @@ $namespace: 'cs-';
 @include export-once( 'customizations/items-grid' ) {
     .#{$namespace}items-grid {
         @include itemsGrid();
+
         $root: &;
-        padding-top: 2rem;
+        $mobileGutter: .75rem;
+        $tabletUpGutter: 1rem;
+
+        position: relative;
+        z-index: 4;
+        width: calc( 100% + ( 2 * #{$mobileGutter} ) );
+        margin: 0 -#{$mobileGutter};
+
+        @include media( '>=tablet' ) {
+            width: calc( 100% + ( 2 * #{$tabletUpGutter} ) );
+            margin: 0 -#{$tabletUpGutter};
+        }
 
         &__item {
+            margin: 0 $mobileGutter 2 * $mobileGutter;
 
-            &--hide-third-mobile {
-                &:nth-child( 3 ) {
-                    @include media('<tablet') {
-                        display: none;
-                    }
+            @include media( '>=phone-lg' ) {
+                width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
+
+                #{$root}--in-column & {
+                    width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
+                }
+            }
+
+            @include media( '>=tablet' ) {
+                margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
+                width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
+
+                #{$root}--in-column & {
+                    width: calc( ( 100% / 2 ) - ( 2 * #{$tabletUpGutter} ) );
+                }
+            }
+
+            @include media( '>=laptop' ) {
+                width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
+
+                #{$root}--in-column & {
+                    width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
+                }
+            }
+
+            @include media( '>=desktop' ) {
+                width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
+
+                #{$root}--in-column & {
+                    width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
                 }
             }
         }
-
     }
 }

@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var $block \Magento\Swatches\Block\Product\Renderer\Configurable */ ?>
+<div class="cs-swatches cs-swatches--mini cs-swatches--color-only cs-swatches--static">
+    <div class="swatch-opt-<?php /* @escapeNotVerified */ echo $block->getProduct()->getId() ?>"></div>
+    <script>
+        require(["jquery", "jquery/ui", "Magento_Swatches/js/swatch-renderer"], function ($) {
+            $('.swatch-opt-<?php /* @escapeNotVerified */ echo $block->getProduct()->getId() ?>').SwatchRenderer({
+                selectorProduct: '.product-item-details',
+                onlySwatches: true,
+                enableControlLabel: false,
+                numberToShow: <?php /* @escapeNotVerified */ echo $block->getNumberSwatchesPerProduct(); ?>,
+                jsonConfig: <?php /* @escapeNotVerified */ echo $block->getJsonConfig(); ?>,
+                jsonSwatchConfig: <?php /* @escapeNotVerified */ echo $block->getJsonSwatchConfig(); ?>,
+                mediaCallback: '<?php /* @escapeNotVerified */ echo $block->getMediaCallback() ?>',
+                "classes": {
+                    "attributeClass": "cs-swatches__attribute",
+                    "attributeLabelClass": "cs-swatches__attribute-label",
+                    "attributeSelectedOptionLabelClass": "cs-swatches__attribute-selected",
+                    "attributeOptionsWrapper": "cs-swatches__list cs-swatches__list--mini",
+                    "attributeInput": "cs-swatches__input",
+                    "optionClass": "cs-swatches__swatch",
+                    "selectClass": "cs-swatches__select | swatch-select",
+                    "moreButton": "cs-swatches__more",
+                    "loader": "cs-swatches__loader | swatch-option-loading"
+                }
+            });
+        });
+    </script>
+</div>
