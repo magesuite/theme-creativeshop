@@ -26,9 +26,7 @@ import 'vendors';
 
 import './components/collapse/collapse';
 import './components/dropdown/dropdown';
-
-import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment.ts';
-new QtyIncrementCollection();
+import './customizations/select/select';
 
 import { init as collapsibleText } from './components/collapsible-text/collapsible-text';
 collapsibleText();
