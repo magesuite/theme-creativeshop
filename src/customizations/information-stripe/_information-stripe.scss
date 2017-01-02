@@ -21,6 +21,7 @@
         justify-content: space-between;
         font-size: 1.1em;
         flex-wrap: wrap;
+        width: 100%;
 
         @include media('>=tablet') {
             flex-wrap: nowrap;
@@ -48,33 +49,21 @@
         padding: 0 .3rem 0 0;
         display: inline-flex;
         align-items: center;
-        margin-right: 0;
         white-space: nowrap;
         margin-bottom: 0;
+        transform: skew( -18deg );
+        border-right: .2rem solid $colorWhite;
+        margin-right: .9rem;
 
-        &:after {
-            content: '';
-            display: inline-block;
-            height: 100%;
-            width: .15rem;
-            background: $colorWhite;
-            transform: skew( -13deg );
-            margin-left: .9rem;
-        }
-
-        @include media( '>=tablet' ) {
+        @include media('>=tablet') {
             padding: 0 1.3rem 0 0;
-            &:after {
-                margin-left: 1.7rem;
-            }
+            margin-right: 1.7rem;
         }
 
         &--last {
             margin-right: 0;
             padding-right: 0;
-            &:after {
-                display: none;
-            }
+            border-right: none;
         }
     }
 
@@ -83,17 +72,29 @@
         font-weight: 700;
         margin-right: .909em;
 
+        @include media( '<laptop' ) {
+            display: none;
+        }
+
         &:hover {
             color: inherit;
+        }
+        &--last {
+            margin-right: 0;
+            padding-right: 0;
+            border-right: none;
+        }
+
+        &--login {
+            transform: none;
+            border-right: none;
+            padding-right: 0;
+            margin-right: 0;
         }
     }
 
     &__phone-label {
         margin-right: .3em;
-
-        @include media( '<laptop' ) {
-            display: none;
-        }
     }
 
     &__phone-hours {
@@ -113,5 +114,13 @@
         max-width: 1.1rem;
         max-height: 1.1rem;
         padding-right: .5rem;
+    }
+
+    &__item-text,
+    &__phone-label,
+    &__phone-number,
+    &__phone-hours,
+    &__account-link {
+        transform: skew( 18deg );
     }
 }

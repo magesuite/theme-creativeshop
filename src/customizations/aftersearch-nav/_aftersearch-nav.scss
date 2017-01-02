@@ -3,6 +3,10 @@
     .#{$namespace}aftersearch-nav {
         $root: &;
 
+        @include media('<tablet') {
+            margin-bottom: 1rem !important;// stylelint-disable-line
+        }
+
         .filter-options {
             @include media('<tablet') {
                 display: flex;
@@ -12,22 +16,32 @@
         }
 
         &__filter {
-            border-bottom: 1px solid $colorAlto;
             @include media('<tablet') {
                 width: 48%;
+                border-bottom: none !important;// stylelint-disable-line
+            }
+            @include media('>=tablet') {
+                border-bottom: 1px solid $colorAlto;
             }
         }
 
         &__filters {
             padding-bottom: 2rem;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid $colorAlto;
+            margin-bottom: 1rem;
+            @include media('>=tablet') {
+                margin-bottom: 3rem;
+                border-bottom: 1px solid $colorAlto;
+            }
         }
 
         &__filter-title {
             padding-top: 2rem!important;// stylelint-disable-line
             font-size: 1.2rem!important;// stylelint-disable-line
             padding-left: 0!important;// stylelint-disable-line
+            @include media('<tablet') {
+                background-color: $colorGallery;
+                padding: 1.5rem 1.5rem .5rem!important;// stylelint-disable-line
+            }
         }
 
         &__filter-arrow {
@@ -76,6 +90,25 @@
         &__filter-content {
             padding-top: .3rem!important;// stylelint-disable-line
             padding-left: 0!important;// stylelint-disable-line
+            position: relative;
+
+            &:after {
+                @include media('>=tablet') {
+                    content: '';
+                    display: block;
+                    height: .7rem;
+                    position: absolute;
+                    bottom: .8rem;
+                    width: 100%;
+                    background: rgba( 255, 255, 255, .55 );
+                }
+            }
+        }
+
+        &__filter-items {
+            @include media('>=tablet') {
+                max-height: 21rem !important;// stylelint-disable-line
+            }
         }
 
         &__swatch {
@@ -84,6 +117,9 @@
 
         &__price {
             display: flex;
+            @include media('>=tablet') {
+                flex-direction: row;
+            }
         }
 
 
@@ -131,6 +167,16 @@
         &__button {
             &--apply-filters {
                 margin-top: 0!important;// stylelint-disable-line
+            }
+        }
+
+        &__button-list {
+            @include media('<tablet') {
+                background-color: $colorGallery;
+                margin: 0 calc( ( (100vw - 100%) / 2 ) * -1 );
+                padding: 1.5rem;
+                width: 100%;
+                box-shadow: 0 1px 3px 0 rgba( 0, 0, 0, .35 );
             }
         }
 
