@@ -1,14 +1,16 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import flexbugs from 'postcss-flexbugs-fixes';
+import cleanCSS from 'postcss-clean';
 
 import paths from '../../paths';
+import environment from '../../environment';
 
 /**
  * Returns information for styles building.
  * @returns {object} Styles building task information.
  */
-export default {
+const config = {
     watch: [
         path.join( paths.src, '**/*.{css,scss,sass}' ),
     ],
@@ -37,3 +39,9 @@ export default {
         errLogToConsole: true,
     },
 };
+
+if ( environment.production ) {
+    config.postcss.push( cleanCSS() );
+}
+
+export default config;
