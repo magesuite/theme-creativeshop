@@ -60,8 +60,8 @@ const settings = {
          */
         dest: path.join( paths.dist, 'web/bundle.js' ),
         format: 'umd',
-        moduleName: names.moduleId,
-        moduleId: names.moduleId,
+        moduleName: 'bundle',
+        moduleId: 'bundle',
         globals: {
             'jQuery': 'jQuery',
             '$': 'jQuery',
