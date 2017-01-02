@@ -1,0 +1,16 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<ul class="cs-checkout__progress-bar | cs-progress-bar">
+    <!-- ko foreach: { data: steps().sort(sortItems), as: 'item' } -->
+    <li class="cs-progress-bar__item" data-bind="css: item.isVisible() ? '_active' : ($parent.isProcessed(item) ? '_complete' : '')">
+        <span class="cs-progress-bar__indicator-wrapper" data-bind="click: $parent.navigateTo">
+            <span class="cs-progress-bar__indicator"></span>
+        </span>
+        <span class="cs-progress-bar__item-text" data-bind="i18n: item.title, click: $parent.navigateTo"></span>
+    </li>
+    <!-- /ko -->
+</ul>

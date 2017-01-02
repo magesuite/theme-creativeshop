@@ -1,0 +1,44 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<aside class="modal-<%= data.type %> <%= data.modalClass %>
+       <% if(data.responsive){ %><%= data.responsiveClass %><% } %>
+       <% if(data.innerScroll){ %><%= data.innerScrollClass %><% } %> | cs-modal"
+       data-role="modal"
+       data-type="<%= data.type %>"
+       tabindex="0">
+    <div data-role="focusable-start" tabindex="0"></div>
+    <div class="modal-inner-wrap | cs-modal__inner"
+         data-role="focusable-scope">
+        <header class="modal-header">
+            <% if(data.title){ %>
+            <h1 class="cs-modal__title  | cs-t-headline cs-t-headline--size_2"
+                data-role="title"><%= data.title %></h1>
+            <% } %>
+            <button
+                    class="action-close | cs-modal__close"
+                    data-role="closeBtn"
+                    type="button">
+                <span><%= data.closeText %></span>
+            </button>
+        </header>
+        <div class="modal-content | cs-modal__content" data-role="content"></div>
+        <% if(data.buttons.length > 0){ %>
+        <footer class="modal-footer | cs-modal__footer">
+            <% _.each(data.buttons, function(button) { %>
+            <button
+                    class="<%= button.class %>"
+                    type="button"
+                    data-role="action"><span><%= button.text %></span>
+                    <span class="cs-button__icon cs-button__icon--bg"></span>
+            </button>
+            <% }); %>
+        </footer>
+        <% } %>
+    </div>
+    <div data-role="focusable-end" tabindex="0"></div>
+</aside>

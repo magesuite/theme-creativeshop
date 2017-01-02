@@ -1,0 +1,73 @@
+@include export-once( 'customizations/modal' ) {
+    .#{$namespace}modal {
+        $root: &;
+
+        &.custom-slide {
+            #{$root}__content {
+            }
+        }
+
+        &__title {
+            padding: 1rem 0;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid $colorAlto;
+        }
+
+        &__close {
+            margin: 1.5rem !important;/* stylelint-disable-line declaration-no-important */
+        }
+
+        &__inner {
+            background: $colorWhite !important;/* stylelint-disable-line declaration-no-important */
+        }
+
+        &__footer {
+            padding: 3rem !important;/* stylelint-disable-line declaration-no-important */
+            border-top: 1px solid $colorAlto !important;/* stylelint-disable-line declaration-no-important */
+
+            button {
+                @extend .#{$namespace}button;
+                @extend .#{$namespace}button--look_default;
+            }
+
+            .action-hide-popup {
+                @extend .#{$namespace}button--look_light;
+            }
+            .action-save-address {
+                @extend .#{$namespace}button--look_default;
+            }
+        }
+
+        .#{$namespace}form__field .field-tooltip .field-tooltip-content {
+            background: $colorWhite;
+            border: none;
+            font-size: 1.1rem;
+            padding: .3rem 0 0;
+            width: 100%;
+            display: block;
+            left: auto;
+            position: static;
+            top: auto;
+            word-wrap: break-word;
+            color: $colorApple;
+
+            &:before,
+            &:after {
+                display: none;
+            }
+        }
+
+        .#{$namespace}form__field .field-tooltip {
+            cursor: default;
+            position: static;
+        }
+
+        .#{$namespace}form__field .field-tooltip-action {
+            display: none;
+        }
+    }
+
+    .modal-custom-overlay {
+        background: rgba( 0, 0, 0, .65 );
+    }
+}

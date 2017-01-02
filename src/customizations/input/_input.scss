@@ -39,6 +39,10 @@
             float: none;
             margin-bottom: .5rem;
             padding-right: .5rem;
+
+            &--no-space {
+                margin-bottom: 0;
+            }
         }
 
         &__control {
@@ -148,7 +152,9 @@
                 border-color: $colorCeruleanBlueHover;
             }
 
-            &:checked + #{$root}__label:after {
+            &:checked + #{$root}__label:after,
+            .selected-item #{$root}__label:after {
+                border-radius: 50%;
                 width: .7rem;
                 height: .7rem;
                 top: 50%;
@@ -160,6 +166,13 @@
 
         select {
             @extend #{$root}__select;
+        }
+
+        &__note {
+            font-size: 1.1rem;
+            padding: .3rem 0 0;
+            display: block;
+            color: $colorApple;
         }
 
         &__link {
@@ -196,22 +209,28 @@
         &--type-radio {
             #{$root}__label {
                 margin-left: 1rem;
+                margin-bottom: 0;
 
                 &:before {
-                    width: 1.6rem;
-                    height: 1.6rem;
-                    border: 1px solid $colorGallery;
+                    width: 1.65rem;
+                    height: 1.65rem;
+                    border: 1px solid darken( $colorGallery, 8% );
                     box-shadow: $boxShadow;
                     line-height: 1.6rem;
                 }
 
                 &:after {
                     width: .7rem;
-                    height: 7rem;
+                    height: .7rem;
                     top: 50%;
-                    left: 50%;
                     transform: translate( -50%, -50% );
+                    border-radius: 50%;
+                    content: '';
                 }
+            }
+
+            &__input {
+                opacity: .01 !important;/* stylelint-disable-line declaration-no-important */
             }
         }
 
@@ -261,6 +280,14 @@
 
         }
 
+    }
+
+    .#{$namespace}input + .#{$namespace}input {
+        margin-top: 0;
+    }
+
+    div.mage-error[ generated ] {/* stylelint-disable-line */
+        margin-top: .3rem;
     }
 
     .ui-datepicker {
