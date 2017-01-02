@@ -30,6 +30,7 @@ gulp.task( 'build', ( done ) => {
             'copy:misc',
             'copy:twig',
             'copy:vendors',
+            'copy:scripts',
 
             'merge:vendors',
         ],
@@ -51,12 +52,22 @@ gulp.task( 'lint', ( done ) => {
 } );
 
 /**
- *  Task for serving files of the pattern library.
+ *  Task for watching project files.
  */
-gulp.task( 'serve', ( done ) => {
+gulp.task( 'watch', ( done ) => {
     environment.watch = true;
     sequence(
         'build',
+        done
+    );
+} );
+
+/**
+ *  Task for serving project files.
+ */
+gulp.task( 'serve', ( done ) => {
+    sequence(
+        'watch',
         'maintain:serve',
         done
     );
@@ -73,4 +84,3 @@ gulp.task( 'pre-commit', ( done ) => {
  *  Default task
  */
 gulp.task( 'default', [ 'compile' ] );
-
