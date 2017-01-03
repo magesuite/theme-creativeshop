@@ -1,0 +1,60 @@
+<section>
+        {% set items = [] %}
+
+        {% for product in products %}
+            {% set content %}
+                {% include locate( 'grid-product/grid-product.twig' ) with {
+                    namespace: 'cs-',
+                    showWrapper: false,
+                    url: product.url,
+                    image: {
+                        src: product.image,
+                        alt: product.name,
+                    },
+                    name: product.name,
+                    price: {
+                        content: product.price
+                    },
+                    addons: { 
+                        show: true
+                    },
+                    swatches: {
+                        mix: 'cs-grid-product__swatches--color-only',
+                        asAddon: false,
+                        content: '<div class="cs-swatches cs-swatches--mini cs-swatches--color-only cs-swatches--static" data-role="swatch-options"><div class="cs-swatches__attribute color" attribute-code="color" attribute-id="93" option-selected="57"><span class="cs-swatches__attribute-label">Color</span><span class="cs-swatches__attribute-selected">Purple</span><div class="cs-swatches__list clearfix"><div class="cs-swatches__swatch color" option-type="1" option-id="57" option-label="Purple" option-tooltip-thumb="" option-tooltip-value="#ef3dff"  style="background: #ef3dff no-repeat center; background-size: initial;"></div><div class="cs-swatches__swatch color" option-type="1" option-id="59" option-label="White" option-tooltip-thumb="" option-tooltip-value="#ffffff" " style="background: #ffffff no-repeat center; background-size: initial;"></div><div class="cs-swatches__swatch color disabled" option-type="1" option-id="60" option-label="Yellow" option-tooltip-thumb="" option-tooltip-value="#ffd500" " style="background: #ffd500 no-repeat center; background-size: initial;"></div></div></div><div class="cs-swatches__attribute size" attribute-code="size" attribute-id="142"><span class="cs-swatches__attribute-label">Size</span><span class="cs-swatches__attribute-selected"></span><div class="cs-swatches__list clearfix"><div class="cs-swatches__swatch text" option-type="0" option-id="167" option-label="XS" option-tooltip-thumb="" option-tooltip-value="XS">XS</div><div class="cs-swatches__swatch text" option-type="0" option-id="168" option-label="S" option-tooltip-thumb="" option-tooltip-value="S">S</div><div class="cs-swatches__swatch text" option-type="0" option-id="169" option-label="M" option-tooltip-thumb="" option-tooltip-value="M">M</div><div class="cs-swatches__swatch text" option-type="0" option-id="170" option-label="L" option-tooltip-thumb="" option-tooltip-value="L">L</div><div class="cs-swatches__swatch text disabled" option-type="0" option-id="171" option-label="XL" option-tooltip-thumb="" option-tooltip-value="XL" disabled="disabled">Extra Large</div></div></div></div>'
+                    },
+                    rating: {
+                        maxStars: 5,
+                        activeStars: 4.5,
+                        text: '(34)'
+                    },
+                    stock: {
+                        showInStock: true,
+                        showOutOfStock: false,
+                        inStockContent: 'In stock',
+                        outOfStockContent: 'Out of stock'
+                    },
+                    hotspots: {
+                        after: {
+                            inStock: {
+                                content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="Add to Wish List" aria-label="Add to Wish List" data-action="add-to-wishlist" role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href="http://m2c.dev/static/frontend/Creativestyle/magento2-template-creativeshop/en_US/images/sprites.svg#heart"></use></svg>Add to Wish List</a></li></ul>'
+                            }
+                        }
+                    }
+                } %}
+            {% endset %}
+
+
+            {% set items = items|merge( [ {
+                mix: 'cs-grid-product cs-grid-product--in-carousel',
+                content: content
+            } ] ) %}
+        {% endfor %}
+
+        {% include locate('components/products-promo/products-promo.twig') with {
+            namespace: 'cs-',
+            showPagination: true,
+            showNavigation: true,
+            products: items
+        } %}
+</section>

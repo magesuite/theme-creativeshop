@@ -1,25 +1,29 @@
+$namespace: 'cs-';
+
 @import '../../../node_modules/creative-patterns/packages/components/sticky-block/src/sticky-block';
 
-@include export-once( 'customizations/sticky-block' ) {
-    .#{$namespace}sticky-block {
-        box-sizing: border-box;
+.#{$namespace}sticky-block {
+    box-sizing: border-box;
 
-        &--pdp {
-            @include media( '>=tablet' ) {
-                @include stickyBlock;
-                top: 2em;
-                margin-top: 2em;
-                margin-right: 15px;
-            }
-
-            @media screen and ( min-width: 1230px ) {
-                margin-right: 0;
-            }
+    &--pdp {
+        @include media( '>=tablet' ) {
+            position: relative;
+            z-index: 3;
+            margin-right: calc( 15px - .5rem );
         }
 
+        @include media( '>=laptop' ) {
+            @include stickyBlock;
+            top: 2em;
+            margin-right: 15px;
+        }
+
+        @media screen and ( min-width: 1230px ) {
+            margin-right: 0;
+        }
     }
 
-    .#{$namespace}sticky-block-no-mobile {
+    &-no-mobile {
         @include media( '>=tablet' ) {
             @include stickyBlock;
             position: sticky;
@@ -27,4 +31,3 @@
         }
     }
 }
-

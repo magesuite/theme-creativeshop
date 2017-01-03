@@ -26,7 +26,7 @@
 
                     <div class="cs-input cs-input--no-margin required">
                         <label class="cs-input__label">
-                            <span><?php /* @escapeNotVerified */ echo __('Click on stars and tell people what you think') ?>:</span>
+                            <span><?php /* @escapeNotVerified */ echo __('Your rating') ?>:</span>
                         </label>
                     </div>
 
@@ -34,8 +34,33 @@
                         <?php foreach ($block->getRatings() as $_rating): ?>
                             <div class="cs-input choice review-field-rating">
                                 <div class="cs-input__control | cs-reviews__rate | review-control-vote">
-                                    <?php $options = $_rating->getOptions();?>
+                                    <?php $options = $_rating->getOptions(); ?>
+                                    <?php $msg = __('Click on stars to rate'); ?>
+
+                                    <div class="cs-reviews__rate-feedback" data-default-message="<?php /* @escapeNotVerified */ echo $msg ?>"><?php /* @escapeNotVerified */ echo $msg ?></div>
+
                                     <?php $iterator = 1; foreach ($options as $_option): ?>
+
+                                        <?php switch ($_option->getValue()) {
+                                            case 1:
+                                                $msg = __('Very bad');
+                                                break;
+                                            case 2:
+                                                $msg = __('Bad');
+                                                break;
+                                            case 3:
+                                                $msg = __('Could be better');
+                                                break;
+                                            case 4:
+                                                $msg = __('Good');
+                                                break;
+                                            case 5:
+                                                $msg = __('Very good!');
+                                                break;
+                                            default:
+                                                $msg = __('Click on stars to rate');
+                                        } ?>
+
                                         <input
                                             type="radio"
                                             name="ratings[<?php /* @escapeNotVerified */ echo $_rating->getId() ?>]"
@@ -43,6 +68,7 @@
                                             value="<?php /* @escapeNotVerified */ echo $_option->getId() ?>"
                                             class="radio"
                                             data-validate="{required:true, messages:{required:'Please select one of each of the ratings above.'}}"
+                                            data-feedback-message="<?php /* @escapeNotVerified */ echo $msg ?>"
                                             aria-labelledby="<?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_rating_label <?php echo $block->escapeHtml($_rating->getRatingCode()) ?>_<?php /* @escapeNotVerified */ echo $_option->getValue() ?>_label" />
                                         <label
                                             class="rating-<?php /* @escapeNotVerified */ echo $iterator; ?>"
@@ -79,7 +105,7 @@
                 <div class="cs-form__field cs-form__field--full | cs-input required">
                     <label for="review_field" class="cs-input__label cs-input__label--look-top-align"><?php /* @escapeNotVerified */ echo __('Review') ?>:</label>
                     <div class="cs-input__control">
-                        <textarea name="detail" class="cs-input__textarea" id="review_field" data-validate="{required:true}" data-bind="value: review().detail"></textarea>
+                        <textarea name="detail" class="cs-input__textarea | cs-reviews__review-field" id="review_field" data-validate="{required:true}" data-bind="value: review().detail"></textarea>
                     </div>
                 </div>
             </div>

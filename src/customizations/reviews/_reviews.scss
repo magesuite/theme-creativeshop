@@ -12,9 +12,8 @@
 
     &__list {
         list-style: none;
-        margin: 4rem 0 0;
-        padding: 4rem 0 0;
-        border-top: 1px solid $colorAlto;
+        margin: 0;
+        padding: 0;
     }
 
     &__label {
@@ -23,21 +22,12 @@
     }
 
     &__item {
-        padding: 0 0 1.5em;
-        margin: 0 0 2em;
+        padding: 0 0 2.5rem !important;
+        margin: 0 0 2.5rem !important;
         border-bottom: 1px solid $colorAlto;
-    }
 
-    &__form-wrapper {
-        @include media('>=tablet') {
-            margin-right: 45%;
-        }
-        @include media('>=laptop') {
-            margin-right: 35%;
-        }
-        @include media('<tablet') {
-            padding: 3rem;
-            background: $colorGallery;
+        &:before {
+            display: none !important;
         }
     }
 
@@ -57,39 +47,50 @@
     &__fieldset {
         margin-bottom: 1.5em;
         text-align: left;
+
+        .cs-form__field {
+            margin-bottom: 2rem;
+        }
     }
 
     &__rate {
         height: 4.1rem;
         overflow: hidden;
         margin-top: 0;
+        margin-bottom: 2rem;
 
         + .mage-error {
             margin: -2rem 0 2rem !important; // stylelint-disable-line
         }
     }
 
-    &__content {
-        @include media('>=tablet') {
-            margin-right: 45%;
-        }
-        @include media('>=laptop') {
-            margin-right: 35%;
-        }
-        @include media('<tablet') {
-            padding: 3rem;
+    &__rate-feedback {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        padding: 0 1rem;
+        font-size: 1.08rem;
+        font-weight: 600;
+        transform: translateY( -50% );
+        color: $colorGray;
+    }
 
-        }
+    &__review-field {
+        min-height: 10rem;
     }
 }
 
 .review-control-vote {
-    max-width: 30rem;
     background: $colorWhite;
     border-radius: 3px;
+    max-width: 40rem;
+    width: 100%;
+
     @include media('>=tablet') {
         background: $colorGallery;
+        max-width: 50%;
     }
+
     &:before,
     label:before {
         font-size: 4rem;

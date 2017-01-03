@@ -18,6 +18,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper('Magento\Catalog\Helper\Output');
+$csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
 ?>
@@ -82,9 +83,9 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                                     'show' => true
                                 ],
                                 'rating' => [
-                                    'maxStars' => 5,
-                                    'activeStars' => 4.5,
-                                    'text' => '(34)'
+                                    'maxStars' => $csProductHelper->getReviewSummary($_product)['data']['maxStars'],
+                                    'activeStars' => $csProductHelper->getReviewSummary($_product)['data']['activeStars'],
+                                    'text' => '('.$csProductHelper->getReviewSummary($_product)['data']['count'].')'
                                 ],
                                 'stock' => [
                                     'showInStock' => $_product->getIsSalable() ? true : false,
