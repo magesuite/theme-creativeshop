@@ -7,83 +7,111 @@
 @import '../../components/information-stripe/information-stripe';
 @import '../list/list';
 
-@include export-once( 'customizations/information-stripe' ) {
-    .#{$namespace}information-stripe {
-        @include information-stripe();
+.#{$namespace}information-stripe {
+    @include information-stripe();
+    display: none;
+    width: 100%;
+
+    @include media('>=tablet') {
+        display: flex;
+    }
+
+    &__wrapper {
+        padding: 0;
+        justify-content: space-between;
+        font-size: 1.1em;
+        flex-wrap: wrap;
+
         @include media('>=tablet') {
-            width: 100%;
+            flex-wrap: nowrap;
         }
+    }
 
-        &__wrapper {
-            padding: 0;
-            justify-content: space-between;
-            font-size: 1.1em;
-            flex-wrap: wrap;
+    &__list {
+        fill: $colorGray;
+        font-size: 1em;
+        height: 2.7rem;
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin: 0;
+        min-height: 1.7rem;
 
-            @include media('>=tablet') {
-                flex-wrap: nowrap;
+        &--featured {
+            @include media( '<tablet' ) {
+                display: none;
             }
         }
+    }
 
-        &__list {
-            fill: $colorGray;
-            font-size: 1em;
-            height: 2.7rem;
-            display: flex;
-            flex-wrap: wrap;
-            padding-left: 0;
-            margin: 0;
-            min-height: 1.7rem;
-        }
+    &__item {
+        padding: 0 .3rem 0 0;
+        display: inline-flex;
+        align-items: center;
+        margin-right: 0;
+        white-space: nowrap;
+        margin-bottom: 0;
 
-        &__item {
-            padding: 0 .3rem 0 0;
-            display: inline-flex;
-            align-items: center;
-            margin-right: 0;
-            white-space: nowrap;
-            margin-bottom: 0;
-
-            &:after {
-                content: '';
-                display: inline-block;
-                height: 100%;
-                width: .15rem;
-                background: $colorWhite;
-                transform: skew( -13deg );
-                margin-left: .9rem;
-            }
-
-            @include media('>=tablet') {
-                padding: 0 1.3rem 0 0;
-                &:after {
-                    margin-left: 1.7rem;
-                }
-            }
-
-
-            &--last {
-                margin-right: 0;
-                padding-right: 0;
-                &:after {
-                    display: none;
-                }
-            }
-        }
-
-        &__phone-number {
-            color: inherit;
-            margin-right: .909em;
-
-            &:hover {
-                color: inherit;
-            }
-        }
-
-        &__phone-hours {
-            margin: 0;
+        &:after {
+            content: '';
             display: inline-block;
-            color: $colorGray;
+            height: 100%;
+            width: .15rem;
+            background: $colorWhite;
+            transform: skew( -13deg );
+            margin-left: .9rem;
         }
+
+        @include media( '>=tablet' ) {
+            padding: 0 1.3rem 0 0;
+            &:after {
+                margin-left: 1.7rem;
+            }
+        }
+
+        &--last {
+            margin-right: 0;
+            padding-right: 0;
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    &__phone-number {
+        color: $colorMineShaft;
+        font-weight: 700;
+        margin-right: .909em;
+
+        &:hover {
+            color: inherit;
+        }
+    }
+
+    &__phone-label {
+        margin-right: .3em;
+
+        @include media( '<laptop' ) {
+            display: none;
+        }
+    }
+
+    &__phone-hours {
+        margin: 0;
+        display: inline-block;
+    }
+
+    &__account-link {
+        color: $colorCeruleanBlue;
+        font-size: 1.1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__account-icon {
+        max-width: 1.1rem;
+        max-height: 1.1rem;
+        padding-right: .5rem;
     }
 }

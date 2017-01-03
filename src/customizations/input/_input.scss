@@ -1,321 +1,325 @@
 @import '../../../node_modules/creative-patterns/packages/components/cs-input/src/cs-input';
 @import '../../utilities/sprites';
 
-@include export-once('customizations/input') {
-    .#{$namespace}input {
-        $root: &;
-        $boxShadow: inset 0 1px 2px rgba( 0, 0, 0, .15 );
-        font-size: 1rem;
-        position: relative;
+.#{$namespace}input {
+    $root: &;
+    $boxShadow: inset 0 1px 2px rgba( 0, 0, 0, .15 );
+    font-size: 1rem;
+    position: relative;
 
-        &.required,
-        &._required {
-            #{$root}__label {
-                &:after {
-                    content: '*';
-                    color: $colorCrimson;
-                    font-size: 1.2rem;
-                    margin: 0 0 0 .4rem;
-                }
+    &.required,
+    &._required {
+        #{$root}__label {
+            &:after {
+                content: '*';
+                color: $colorCrimson;
+                font-size: 1.2rem;
+                margin: 0 0 0 .4rem;
             }
         }
+    }
 
-        &.no-required {
-            #{$root}__label {
-                &:after {
-                    display: none;
-                }
-            }
-        }
-
-        &__label {
-            display: block;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: $colorMineShaft;
-            padding: 0;
-            text-align: left;
-            width: auto;
-            float: none;
-            margin-bottom: .5rem;
-            padding-right: .5rem;
-
-            &--no-space {
-                margin-bottom: 0;
-            }
-        }
-
-        &__control {
-            position: relative;
-        }
-
-        input[ type='text' ],
-        &__input[ type='text' ],
-        input[ type='email' ],
-        &__input[ type='email' ],
-        input[ type='password' ],
-        &__input[ type='password' ],
-        input[ type='number' ],
-        &__input[ type='number' ],
-        input[ type='url' ],
-        &__input[ type='url' ],
-        input[ type='search' ],
-        &__input[ type='search' ],
-        input[ type='datetime' ],
-        &__input[ type='datetime' ],
-        &__input {
-            color: $colorMineShaft;
-            border-color: darken( $colorAlto, 3% );
-            border-style: solid;
-            background-color: $colorWhite;
-            border-radius: 3px;
-            height: 4rem;
-            box-shadow: $boxShadow;
-            font-size: 1.4rem;
-
-            &:hover:not( :disabled ):not( :focus ),
-            &:focus,
-            &:active {
-                border-color: $colorCeruleanBlue;
-                box-shadow: $boxShadow;
-                outline: none;
-            }
-
-            &.mage-error {
-                border-color: $colorCrimson;
-            }
-
-        }
-        /* stylelint-disable */
-        input,
-        &__input {
-            &._has-datepicker {
-                display: inline-block;
-                width: 100%;
-                overflow: hidden;
-            }
-        }
-
-
-        &__textarea {
-            @extend #{$root}__input;
-
-            &:not( [ disabled ] ):focus {
-                box-shadow: $boxShadow;
-            }
-        }
-
-        /* stylelint-enable */
-
-        &__select {
-            @extend #{$root}__input;
-            font-size: 1.4rem;
-            width: 100%;
-            background-image: url( 'images/dropdown-arrows-bg.png' );
-            background-size: 3.2rem 3.2rem;
-            background-position: right;
-            min-width: 7rem;
-
-            &:hover:not( :disabled ):not( :focus ),
-            &:not( [ disabled ] ):focus {
-                background-image: url( 'images/dropdown-arrows-bg-open.png' );
-                border-color: $colorCeruleanBlue;
-                box-shadow: $boxShadow;
-                outline: none;
-            }
-
-            &:disabled {
-                background-image: url( 'sprites/png/arrow-select.png' );
-            }
-
-            /* stylelint-disable */
-            &--short {
-                max-width: 10rem!important;
-                min-width: 10rem!important;
-            }
-
-            &::-ms-expand {
+    &.no-required {
+        #{$root}__label {
+            &:after {
                 display: none;
             }
-            /* stylelint-enable */
         }
+    }
 
-        &__radio[ type='radio' ] {
+    &__label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: $colorMineShaft;
+        padding: 0;
+        text-align: left;
+        width: auto;
+        float: none;
+        margin-bottom: .5rem;
+        padding-right: .5rem;
 
-            &:checked + #{$root}__label:before,
-            &:checked + #{$root}__label:after {
-                color: $colorCeruleanBlue;
-                border-color: $colorCeruleanBlue;
-            }
-
-            &:hover:not( :disabled ) + #{$root}__label:before {
-                border-color: $colorCeruleanBlueHover;
-            }
-
-            &:checked + #{$root}__label:after,
-            .selected-item #{$root}__label:after {
-                border-radius: 50%;
-                width: .7rem;
-                height: .7rem;
-                top: 50%;
-                left: .6rem;
-                background-color: $colorCeruleanBlue;
-            }
-
-        }
-
-        select {
-            @extend #{$root}__select;
-        }
-
-        &__note {
-            font-size: 1.1rem;
-            padding: .3rem 0 0;
-            display: block;
-            color: $colorApple;
-        }
-
-        &__link {
-            color: $colorMineShaft;
-            white-space: nowrap;
-            padding-right: 2rem;
-            &:hover {
-                text-decoration: none;
-                color: $colorMineShaft;
-            }
-        }
-
-        &__button {
-            position: absolute;
-            right: 0;
-            top: 0;
-            z-index: 200;
-            width: 5rem;
-            overflow: hidden;
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-        }
-
-        ::placeholder {
-            color: $colorBombay;
-        }
-
-        &--inline {
-            display: flex;
-            align-items: center;
+        &--no-space {
             margin-bottom: 0;
         }
+    }
 
-        &--type-radio {
-            #{$root}__label {
-                margin-left: 1rem;
-                margin-bottom: 0;
+    &__control {
+        position: relative;
+    }
 
-                &:before {
-                    width: 1.65rem;
-                    height: 1.65rem;
-                    border: 1px solid darken( $colorGallery, 8% );
-                    box-shadow: $boxShadow;
-                    line-height: 1.6rem;
-                }
+    input[ type='text' ],
+    &__input[ type='text' ],
+    input[ type='email' ],
+    &__input[ type='email' ],
+    input[ type='password' ],
+    &__input[ type='password' ],
+    input[ type='number' ],
+    &__input[ type='number' ],
+    input[ type='url' ],
+    &__input[ type='url' ],
+    input[ type='search' ],
+    &__input[ type='search' ],
+    input[ type='datetime' ],
+    &__input[ type='datetime' ],
+    &__input {
+        color: $colorMineShaft;
+        border-color: darken( $colorAlto, 3% );
+        border-style: solid;
+        background-color: $colorWhite;
+        border-radius: 3px;
+        height: 4rem;
+        box-shadow: $boxShadow;
+        font-size: 1.4rem;
 
-                &:after {
-                    width: .7rem;
-                    height: .7rem;
-                    top: 50%;
-                    transform: translate( -50%, -50% );
-                    border-radius: 50%;
-                    content: '';
-                }
-            }
-
-            &__input {
-                opacity: .01 !important;/* stylelint-disable-line declaration-no-important */
-            }
+        &:hover:not( :disabled ):not( :focus ),
+        &:focus,
+        &:active {
+            border-color: $colorCeruleanBlue;
+            box-shadow: $boxShadow;
+            outline: none;
         }
 
-        &--type-checkbox {
-            font-size: 1rem;
-            #{$root}__checkbox {
-
-                &:hover:not( :disabled ) + #{$root}__label:before {
-                    border-color: $colorCeruleanBlue;
-                }
-
-                &:checked + #{$root}__label:before {
-                    content: '';
-                    border-width: 1px;
-                    border-color: $colorAlto;
-                    border-style: solid;
-                    width: 2rem;
-                    height: 1.9rem;
-                    background-image: url( 'images/check@2x.png' );
-                    background-size: 1rem auto;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 ), 0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
-
-                }
-            }
-
-            #{$root}__label {
-                font-size: 1.2rem;
-                color: $colorGray;
-                font-weight: 300;
-                padding-left: 3rem;
-                margin-bottom: 0;
-                padding-top: .7rem;
-                min-height: 1.9rem;
-
-                &:before {
-                    content: '';
-                    border-width: 1px;
-                    border-color: $colorAlto;
-                    border-style: solid;
-                    width: 2rem;
-                    height: 1.9rem;
-                    box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 ), 0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
-                }
-            }
-
+        &.mage-error {
+            border-color: $colorCrimson;
         }
 
     }
-
-    .#{$namespace}input + .#{$namespace}input {
-        margin-top: 0;
-    }
-
-    div.mage-error[ generated ] {/* stylelint-disable-line */
-        margin-top: .3rem;
-    }
-
-    .ui-datepicker {
-        .ui-datepicker-month,
-        .ui-datepicker-year {
-            @extend .#{$namespace}input__select;
+    /* stylelint-disable */
+    input,
+    &__input {
+        &._has-datepicker {
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
         }
     }
 
-    ._has-datepicker ~ .ui-datepicker-trigger {
-        @extend .#{$namespace}button;
-        @extend .#{$namespace}button--look_default;
-        @extend .#{$namespace}button--look_on-input;
-        @extend .#{$namespace}input__button;
-        position: absolute !important;/* stylelint-disable-line declaration-no-important */
-
-
-        &:before {
-            color: $colorWhite;
-            transform: skew( 18deg ) translateX( -.4rem );
+    &__input {
+        &--with-button {
+            padding-right: 6rem !important;
         }
     }
 
-    .customer-dob {
-        width: calc( 100% + .1rem );
 
+    &__textarea {
+        @extend #{$root}__input;
+
+        &:not( [ disabled ] ):focus {
+            box-shadow: $boxShadow;
+        }
+    }
+
+    /* stylelint-enable */
+
+    &__select {
+        @extend #{$root}__input;
+        font-size: 1.4rem;
+        width: 100%;
+        background-image: url( 'images/dropdown-arrows-bg.png' );
+        background-size: 3.2rem 3.2rem;
+        background-position: right;
+        min-width: 7rem;
+
+        &:hover:not( :disabled ):not( :focus ),
+        &:not( [ disabled ] ):focus {
+            background-image: url( 'images/dropdown-arrows-bg-open.png' );
+            border-color: $colorCeruleanBlue;
+            box-shadow: $boxShadow;
+            outline: none;
+        }
+
+        &:disabled {
+            background-image: url( 'sprites/png/arrow-select.png' );
+        }
+
+        /* stylelint-disable */
+        &--short {
+            max-width: 10rem!important;
+            min-width: 10rem!important;
+        }
+
+        &::-ms-expand {
+            display: none;
+        }
+        /* stylelint-enable */
+    }
+
+    &__radio[ type='radio' ] {
+
+        &:checked + #{$root}__label:before,
+        &:checked + #{$root}__label:after {
+            color: $colorCeruleanBlue;
+            border-color: $colorCeruleanBlue;
+        }
+
+        &:hover:not( :disabled ) + #{$root}__label:before {
+            border-color: $colorCeruleanBlueHover;
+        }
+
+        &:checked + #{$root}__label:after,
+        .selected-item #{$root}__label:after {
+            border-radius: 50%;
+            width: .7rem;
+            height: .7rem;
+            top: 50%;
+            left: .6rem;
+            background-color: $colorCeruleanBlue;
+        }
+
+    }
+
+    select {
+        @extend #{$root}__select;
+    }
+
+    &__note {
+        font-size: 1.1rem;
+        padding: .3rem 0 0;
+        display: block;
+        color: $colorApple;
+    }
+
+    &__link {
+        color: $colorMineShaft;
+        white-space: nowrap;
+        padding-right: 2rem;
+        &:hover {
+            text-decoration: none;
+            color: $colorMineShaft;
+        }
+    }
+
+    &__button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 200;
+        width: 5rem;
         overflow: hidden;
         border-top-right-radius: 3px;
         border-bottom-right-radius: 3px;
     }
+
+    ::placeholder {
+        color: $colorBombay;
+    }
+
+    &--inline {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+    }
+
+    &--type-radio {
+        #{$root}__label {
+            margin-left: 1rem;
+            margin-bottom: 0;
+
+            &:before {
+                width: 1.65rem;
+                height: 1.65rem;
+                border: 1px solid darken( $colorGallery, 8% );
+                box-shadow: $boxShadow;
+                line-height: 1.6rem;
+            }
+
+            &:after {
+                width: .7rem;
+                height: .7rem;
+                top: 50%;
+                transform: translate( -50%, -50% );
+                border-radius: 50%;
+                content: '';
+            }
+        }
+
+        &__input {
+            opacity: .01 !important;/* stylelint-disable-line declaration-no-important */
+        }
+    }
+
+    &--type-checkbox {
+        font-size: 1rem;
+        #{$root}__checkbox {
+
+            &:hover:not( :disabled ) + #{$root}__label:before {
+                border-color: $colorCeruleanBlue;
+            }
+
+            &:checked + #{$root}__label:before {
+                content: '';
+                border-width: 1px;
+                border-color: $colorAlto;
+                border-style: solid;
+                width: 2rem;
+                height: 1.9rem;
+                background-image: url( 'images/check@2x.png' );
+                background-size: 1rem auto;
+                background-position: center;
+                background-repeat: no-repeat;
+                box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 ), 0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
+
+            }
+        }
+
+        #{$root}__label {
+            font-size: 1.2rem;
+            color: $colorGray;
+            font-weight: 300;
+            padding-left: 3rem;
+            margin-bottom: 0;
+            padding-top: .7rem;
+            min-height: 1.9rem;
+
+            &:before {
+                content: '';
+                border-width: 1px;
+                border-color: $colorAlto;
+                border-style: solid;
+                width: 2rem;
+                height: 1.9rem;
+                box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 ), 0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
+            }
+        }
+
+    }
+
+}
+
+.#{$namespace}input + .#{$namespace}input {
+    margin-top: 0;
+}
+
+div.mage-error[ generated ] {/* stylelint-disable-line */
+    margin-top: .3rem;
+}
+
+.ui-datepicker {
+    .ui-datepicker-month,
+    .ui-datepicker-year {
+        @extend .#{$namespace}input__select;
+    }
+}
+
+._has-datepicker ~ .ui-datepicker-trigger {
+    @extend .#{$namespace}button;
+    @extend .#{$namespace}button--look_default;
+    @extend .#{$namespace}button--look_on-input;
+    @extend .#{$namespace}input__button;
+    position: absolute !important;/* stylelint-disable-line declaration-no-important */
+
+
+    &:before {
+        color: $colorWhite;
+        transform: skew( 18deg ) translateX( -.4rem );
+    }
+}
+
+.customer-dob {
+    width: calc( 100% + .1rem );
+
+    overflow: hidden;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
