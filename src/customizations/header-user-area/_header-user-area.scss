@@ -5,27 +5,21 @@
 
 @import '../badge/badge';
 
-@include export-once( 'customizations/header-user-area' ) {
-    .#{$namespace}header-user-area {
-        font-size: 1rem;
+.#{$namespace}header-user-area {
+    font-size: 1rem;
 
-        &__section {
-            padding: 1rem 0 1rem 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            @include media('>=tablet') {
-                width: 33.3%;
-            }
-
-            &:hover {
-                text-decoration: none;
-            }
+    &__section {
+        padding: 1rem 0 1rem 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        @include media('>=tablet') {
+            width: 33.3%;
         }
 
-        &__icon-wrapper {
-            position: relative;
-            margin-bottom: .4rem;
+        &:hover {
+            text-decoration: none;
         }
+    }
 
         &__badge {
             position: absolute;
@@ -37,32 +31,41 @@
                 right: .2rem;
             }
 
-            &--visible {
-                display: block;
-            }
+    &__badge {
+        position: absolute;
+        display: none; // Hide by default, let JS show when needed.
+        top: -.2rem;
+        right: -.6rem;
+        display: none;
+        @include media('>=tablet') {
+            right: .2rem;
         }
 
-        &__icon {
-            width: 2.6rem;
-            height: 2.6rem;
+        &--visible {
             display: block;
-            margin: 0 auto;
-            fill: $colorCeruleanBlue;
-
-            &:hover {
-                fill: $colorCeruleanBlueHover;
-            }
         }
+    }
 
-        &__label {
-            margin: 0;
-            text-decoration: none;
-            white-space: nowrap;
-            display: none;
+    &__icon {
+        width: 2.6rem;
+        height: 2.6rem;
+        display: block;
+        margin: 0 auto;
+        fill: $colorCeruleanBlue;
 
-            @include media('>=tablet') {
-                display: block;
-            }
+        &:hover {
+            fill: $colorCeruleanBlueHover;
+        }
+    }
+
+    &__label {
+        margin: 0;
+        text-decoration: none;
+        white-space: nowrap;
+        display: none;
+
+        @include media('>=tablet') {
+            display: block;
         }
     }
 }

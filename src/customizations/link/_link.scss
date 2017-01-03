@@ -1,87 +1,85 @@
 @import '../../components/link/link';
 
-@include export-once( 'customizations/link' ) {
-    .#{$namespace}link {
-        @include link( $colorCeruleanBlue, 1.4rem );
-        text-transform: none;
-        font-weight: 300;
-        display: inline-flex;
-        align-items: center;
+.#{$namespace}link {
+    @include link( $colorCeruleanBlue, 1.4rem );
+    text-transform: none;
+    font-weight: 300;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    background: none;
+    padding: 0;
+
+    &:hover,
+    &:active {
         border: none;
         background: none;
         padding: 0;
+    }
 
-        &:hover,
-        &:active {
-            border: none;
-            background: none;
-            padding: 0;
-        }
+    &:visited {
+        text-decoration: none;
+    }
 
-        &:visited {
+    &--look {
+        &_text {
+            color: $colorDoveGray;
             text-decoration: none;
-        }
-
-        &--look {
-            &_text {
+            &:visited,
+            &:hover {
                 color: $colorDoveGray;
-                text-decoration: none;
-                &:visited,
-                &:hover {
-                    color: $colorDoveGray;
-                }
+            }
+        }
+    }
+
+    &--size {
+        &_300 {
+            font-size: 1.2rem;
+        }
+    }
+
+    &--separator {
+        margin-right: .5rem;
+
+        &:after {
+            margin-left: .5rem;
+            content: '';
+            display: inline-block;
+            width: .2rem;
+            height: 1.2rem;
+            background: $colorAlto;
+        }
+    }
+
+    &__icon {
+        max-width: 1.4rem;
+        max-height: 1.2rem;
+        fill: rgba( 0, 0, 0, .25 );
+        padding-right: .5rem;
+
+        &--big {
+            max-width: 2.7rem;
+            max-height: 2rem;
+            padding-right: 0;
+            padding-left: .5rem;
+            fill: $colorCeruleanBlue;
+            height: 2.2rem;
+            width: auto;
+
+            &:hover {
+                fill: $colorCeruleanBlueHover;
             }
         }
 
-        &--size {
-            &_300 {
-                font-size: 1.2rem;
-            }
-        }
-
-        &--separator {
-            margin-right: .5rem;
-
-            &:after {
-                margin-left: .5rem;
-                content: '';
-                display: inline-block;
-                width: .2rem;
-                height: 1.2rem;
-                background: $colorAlto;
-            }
-        }
-
-        &__icon {
-            max-width: 1.4rem;
-            max-height: 1.2rem;
-            fill: rgba( 0, 0, 0, .25 );
-            padding-right: .5rem;
-
-            &--big {
-                max-width: 2.7rem;
-                max-height: 2rem;
-                padding-right: 0;
-                padding-left: .5rem;
-                fill: $colorCeruleanBlue;
-                height: 2.2rem;
-                width: auto;
-
-                &:hover {
-                    fill: $colorCeruleanBlueHover;
-                }
-            }
-
-            &--edit {
-                fill: $colorCeruleanBlue;
-                width: 1.8rem;
-                height: 1.8rem;
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-image: url( 'images/edit.png' );
-                max-height: none;
-                max-width: none;
-            }
+        &--edit {
+            fill: $colorCeruleanBlue;
+            width: 1.8rem;
+            height: 1.8rem;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-image: url( 'images/edit.png' );
+            max-height: none;
+            max-width: none;
         }
     }
 }
