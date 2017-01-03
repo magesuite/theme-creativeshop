@@ -1,9 +1,8 @@
 .#{$namespace}product-gallery {
 
-    margin-top: 2rem;
     @include media('>=tablet') {
         min-height: 52rem;
-        padding: 1.5rem 3rem 0 1.5rem;
+        padding: 0 1rem 0 0;
         margin-top: 0;
     }
 
@@ -11,15 +10,34 @@
         padding: 1.5rem 3rem 0 0;
     }
 
+    &__container {
+        order: 1 !important;
+        min-height: 100px;
+
+        @include media('>=laptop') {
+            padding-top: 2em;
+        }
+    }
+
+    &__wrapper {
+        padding-bottom: 15px;
+        position: relative;
+
+        @include media('>=tablet') {
+            padding: 0;
+        }
+    }
+
+    &__loading-mask,
+    &__loading-mask img {
+        position: absolute !important;
+    }
+
     &__badge-wrapper {
         display: flex;
         position: absolute;
-        top: 2rem;
-        right: 2rem;
-        @include media('>=tablet') {
-            top: 4rem;
-            right: 5rem;
-        }
+        top: 0;
+        right: 0;
 
         .#{$namespace}badge {
             margin-left: .3rem;

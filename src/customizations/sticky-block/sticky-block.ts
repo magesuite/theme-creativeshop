@@ -11,3 +11,9 @@ new StickyBlock( $( '.cs-sticky-block' ) );
 new StickyBlock( $( '.cs-sticky-block-no-mobile' ), {
     breakpoint: breakpoint.tablet,
 } );
+
+$( '.cs-product-gallery' ).on( 'gallery:loaded', function(): void {
+    if ( Stickyfill && Stickyfill.stickies.length ) {
+        Stickyfill.rebuild();
+    }
+} );

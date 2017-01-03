@@ -1,5 +1,9 @@
 @import '../../../../components/container/container';
 
+body {
+    overflow-x: hidden;
+}
+
 .page-wrapper {
     @include container-wrapper();
 }
@@ -19,10 +23,37 @@ h2 {
     width: auto;
     padding-bottom: 0;
     margin-bottom: 3em;
+    max-width: 100%;
 }
 
 .product-info-main .page-title-wrapper .page-title {
     margin: 0;
+}
+
+.page-layout-1column {
+    .product-info-main {
+        width: 100%;
+
+        @include media('>=tablet') {
+            width: 40%;
+        }
+
+        @include media( '>=laptop' ) {
+            width: 30%;
+        }
+    }
+}
+
+.catalog-product-view .column.main {
+    @include media('<tablet') {
+        padding-top: 15px;
+        border-top: 1px solid $colorAlto;
+    }
+
+    > section,
+    > div {
+        order: 3;
+    }
 }
 
 @include media('>=tablet') {

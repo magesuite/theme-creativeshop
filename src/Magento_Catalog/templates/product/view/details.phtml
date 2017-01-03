@@ -8,13 +8,12 @@
 
 ?>
 <?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
-    <?php $newOrderTabbing = array( 'product.info.description', 'product.attributes' ); ?>
 
     <?php
     $layout = $block->getLayout();
     ?>
 
-    <?php foreach ($newOrderTabbing as $name): ?>
+    <?php foreach ($detailedInfoGroup as $name): ?>
         <?php
         $html = $layout->renderElement($name);
         if (!trim($html)) {
@@ -23,18 +22,24 @@
         $alias = $layout->getElementAlias($name);
         $label = $block->getChildData($alias, 'title');
         ?>
-        <div class="cs-product-description__item <?php if ($name == 'product.attributes') {
-            echo 'cs-product-description__item--last';
-        } ?> | cs-collapse">
-            <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php /* @escapeNotVerified */
-                echo $label; ?></h2>
+        <div class="cs-product-description__item | cs-collapse<?php if($name == 'reviews.tab'): ?> cs-product-description__item--reviews<?php endif;?><?php if($name == 'product.attributes'): ?> cs-product-description__item--penultimate<?php endif;?>">
+            <?php if($name == 'reviews.tab'): ?>
+                <div class="cs-product-description__item--reviews__inner">
+                    <div class="cs-product-description__item--reviews__column">
+            <?php endif;?>
+                        <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php /* @escapeNotVerified */
+                            echo $label; ?></h2>
 
-            <div class="cs-collapse__content cs-collapse__content--only-mobile | cs-cms-block">
-                <div class="cs-product-description__content">
-                    <?php /* @escapeNotVerified */
-                    echo $html; ?>
+                        <div class="cs-collapse__content cs-collapse__content--only-mobile | cs-cms-block">
+                            <div class="cs-product-description__content">
+                                <?php /* @escapeNotVerified */
+                                echo $html; ?>
+                            </div>
+                        </div>
+            <?php if($name == 'reviews.tab'): ?>
+                    </div>
                 </div>
-            </div>
+            <?php endif;?>
         </div>
     <?php endforeach; ?>
 <?php endif; ?>

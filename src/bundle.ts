@@ -31,13 +31,13 @@ import './customizations/select/select';
 import { init as collapsibleText } from './components/collapsible-text/collapsible-text';
 collapsibleText();
 
-import './components/dropdown/dropdown';
-import { init as hero } from './customizations/hero/_hero';
-hero();
-
 import './customizations/navigation/navigation';
 
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment.ts';
 new QtyIncrementCollection();
 
+import './customizations/hero/hero';
+import './customizations/products-promo/products-promo';
 import './customizations/sticky-block/sticky-block';
+
+import './customizations/reviews/reviews';

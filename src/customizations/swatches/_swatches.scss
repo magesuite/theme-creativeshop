@@ -6,14 +6,15 @@ $namespace: 'cs-';
     @include swatches();
 
     $root: &;
+    $swatch-size: 4.4rem;
 
-    $swatch-size: 2.75rem;
     &__attribute {
-        padding: 2rem 0;
+        padding: .5rem 0;
+        border: none;
     }
 
     &__attribute-label {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
 
         @include media( '>=tablet' ) {
             padding-top: 1.45rem;
@@ -21,11 +22,21 @@ $namespace: 'cs-';
         }
     }
 
+    &__list {
+        position: relative;
+        z-index: 2;
+        margin-left: -( .65rem / 2 );
+    }
+
     &__swatch {
         min-width: $swatch-size;
-        height: $swatch-size;
+        height: $swatch-size * .67;
         padding: .65rem;
-        font-size: 1rem;
+        font-size: 1.08rem;
+
+        @include media( '>=tablet' ) {
+            min-width: $swatch-size * .67;
+        }
 
         &.color,
         &--color,
@@ -34,13 +45,84 @@ $namespace: 'cs-';
             position: relative;
             margin: .65rem;
             background-size: cover !important;
+
+            &:after {
+                border-color: transparent;
+                background-color: lighten( $colorGallery, 1.5% );
+                z-index: -1;
+            }
+
+            &.selected:after,
+            &.selected:hover:after,
+            &--selected:after,
+            &--selected:hover:after {
+                border-color: $colorCeruleanBlue;
+            }
+
+            &.disabled,
+            &--disabled {
+                opacity: 1;
+
+                &:before {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 1.55rem;
+                    height: 1.54rem;
+                    content: '\00d7';
+                    font-size: 1.7rem;
+                    background: rgba( 255, 255, 255, .5 );
+                    color: $colorMineShaft;
+                    z-index: 2;
+                    transform: translate( -50%, -50% );
+                    border-radius: 20px;
+                }
+            }
+
+            @include media( '>=tablet' ) {
+                &.disabled:before,
+                &--disabled:before {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+            }
         }
 
         &.text,
         &--text {
-            min-width: calc( $swatch-size + 6px );
-            height: calc( $swatch-size + 6px );
+            min-width: calc( #{$swatch-size} + 6px );
+            height: calc( #{$swatch-size} * .67 + 6px );
             margin: calc( .65rem - 3px );
+            background-color: lighten( $colorGallery, 1.5% );
+            color: $colorGray;
+            border: 1px solid lighten( $colorGallery, 1.5% );
+
+            @include media( '>=tablet' ) {
+                $swatch-size: $swatch-size * .67;
+                min-width: calc( #{$swatch-size} + 6px );
+            }
+
+            &.disabled,
+            &--disabled,
+            &.disabled:hover,
+            &--disabled:hover {
+                opacity: 1;
+                background-color: transparent;
+                border: 2px solid $colorGallery;
+                color: lighten( $colorGray, 35% );
+            }
+
+            &.selected,
+            &.selected:hover,
+            &--selected,
+            &--selected:hover {
+                background-color: transparent;
+                border-color: $colorCeruleanBlue;
+                color: $colorCeruleanBlue;
+            }
         }
     }
 

@@ -7,45 +7,28 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-
-        <referenceContainer name="main" htmlClass="column main | cs-container cs-container--edge-to-edge"/>
-
         <referenceContainer name="content">
-            <container name="pdp.container" htmlTag="section" htmlClass="cs-container__inner">
-                <container name="product.media.container" htmlTag="section" htmlClass="cs-container__main-column" before="-">
-                    <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
-                    </container>
+            <container name="product.media.container" htmlTag="section" htmlClass="cs-container cs-product-gallery__container" before="-">
+                <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
+                    <container name="product.media.container.column" htmlTag="div" htmlClass="cs-container__main-column" />
                 </container>
-                <container name="product.sale.block.container" htmlTag="div" htmlClass="cs-container__sticky" after="product.media.container" before="product.details.container"/>
+            </container>
 
-                <container name="product.details.container" htmlTag="section" htmlClass="cs-container cs-container--details cs-container--edge-to-edge" after="product.sale.block.container">
-                    <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner | cs-product-description">
-                    </container>
-                </container>
-
-                <container name="product.review.container" htmlTag="section" htmlClass="cs-container cs-container--edge-to-edge" after="product.details.container">
-                    <container name="product.review.container.wrapper" htmlTag="div" htmlClass="cs-container__reviews | cs-collapse">
-                        <container name="product.reviews" htmlTag="div" htmlClass="cs-reviews">
-                            <block class="Magento\Review\Block\Product\View\ListView" name="review_customer_list_title" template="customer/list-title.phtml" cacheable="false"/>
-                            <container name="product.review.container.content" htmlTag="div" htmlClass="cs-collapse__content cs-collapse__content--only-mobile"/>
-                        </container>
-
-                    </container>
-                </container>
-
+            <container name="product.details.container" htmlTag="section" htmlClass="cs-container cs-container--contrast cs-container--edge-to-edge" after="product.info.main">
+                <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner | cs-product-description"/>
             </container>
         </referenceContainer>
+        <move element="product.info.media" destination="product.media.container.column" />
 
-        <referenceContainer name="product.info.media" htmlClass="cs-container__gallery">
+        <referenceContainer name="product.info.media" htmlClass="cs-product-gallery__wrapper">
             <block class="Magento\Framework\View\Element\Template" name="product.badge" template="Magento_Catalog::product/view/badge.phtml"/>
         </referenceContainer>
 
-
-        <move element="product.info.media" destination="product.media.container.wrapper"/>
-        <move element="product.info.details" destination="product.details.container.wrapper"/>
-        <move element="page.main.title" destination="product.info.main" before="-"/>
-        <move element="product.info.main" destination="main" before="-"/>
-
+        <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main | cs-sticky-block cs-sticky-block--pdp | cs-product-sale-block">
+            <block class="Creativestyle\FrontendExtension\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
+        </referenceContainer>
+        <move element="product.info.main" destination="content" before="product.media.container" />
 
         <referenceBlock name="page.main.title">
             <arguments>
@@ -54,31 +37,21 @@
             </arguments>
             <block class="Magento\Framework\View\Element\Template" name="product.info.share" template="Magento_Catalog::product/view/share.phtml"/>
         </referenceBlock>
-
-        <move element="product.info.stock.sku" destination="product.info.options.wrapper.bottom"/>
-        <move element="product.price.final" destination="product.info.price" after="-"/>
-        <move element="product.info.review" destination="product.info.main" after="page.main.title"/>
+        <move element="page.main.title" destination="product.info.main" after="product.category.name" />
 
         <referenceContainer name="product.info.stock.sku" htmlClass="cs-box-addtocart__stock"/>
-        <referenceBlock name="product.info.sku" remove="true"/>
-
         <referenceContainer name="product.info.price" htmlClass="product-info-price | cs-price cs-price--pdp"/>
 
-        <referenceContainer name="product.info.main" htmlClass="cs-sticky-block cs-sticky-block--pdp | cs-product-sale-block">
-            <block class="Creativestyle\FrontendExtension\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-">
-            </block>
-            <block class="Magento\Framework\View\Element\Template" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
-        </referenceContainer>
-        <move element="product.info.main" destination="product.sale.block.container" before="-"/>
+        <move element="product.info.stock.sku" destination="product.info.options.wrapper.bottom"/>
 
+        <referenceBlock name="product.info.sku" remove="true"/>
         <referenceBlock name="product.info.mailto" remove="true"/>
-        <move element="product.category.name" destination="product.info.main" before="-"/>
 
         <referenceBlock name="product.info.overview">
             <arguments>
                 <argument name="at_call" xsi:type="string">getShortDescription</argument>
                 <argument name="at_code" xsi:type="string">short_description</argument>
-                <argument name="css_class" xsi:type="string">overview | cs-cms-block cs-cms-block--space-top</argument>
+                <argument name="css_class" xsi:type="string">cs-product-description__content</argument>
                 <argument name="at_label" translate="true" xsi:type="string">none</argument>
                 <argument name="title" translate="true" xsi:type="string">Highlights</argument>
                 <argument name="add_attribute" xsi:type="string">itemprop="description"</argument>
@@ -87,14 +60,13 @@
                 <argument name="template" xsi:type="string">Magento_Catalog::product/view/highlights.phtml</argument>
             </action>
         </referenceBlock>
+        <move element="product.info.overview" destination="product.details.container.wrapper" before="-"/>
 
         <referenceBlock name="product.info.description">
             <action method="setTemplate">
                 <argument name="template" xsi:type="string">Magento_Catalog::product/view/description.phtml</argument>
             </action>
         </referenceBlock>
-
-        <move element="product.info.overview" destination="product.details.container.wrapper" before="-"/>
-
+        <move element="product.info.details" destination="product.details.container.wrapper"/>
     </body>
 </page>

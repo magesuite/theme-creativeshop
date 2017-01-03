@@ -1,12 +1,15 @@
+$namespace: 'cs-';
 @import '../../components/container/container';
 
 .#{$namespace}container {
-    margin: 0 calc( ((100vw - 100%) / 2) * -1 );
     @include container();
+
+    @media ( min-width: 1200px ) {
+        margin: 0 calc( ( ( 100vw - 100% ) / 2 ) * -1 );
+    }
 
     &__inner {
         @include container-wrapper();
-        position: relative;
 
         &:after {
             content: '';
@@ -18,6 +21,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+
             @include media('>=tablet') {
                 flex-wrap: nowrap;
             }
@@ -28,55 +32,9 @@
         }
     }
 
-    &__sticky {
-        @include media('>=tablet') {
-            width: 40%;
-            position: absolute;
-            top: 0;
-            right: 2.2rem;
-            height: 100%;
-        }
-        @include media('>=laptop') {
-            width: 32%;
-        }
-        @include media('>=desktop') {
-            right: 0;
-            width: 30%;
-        }
-
-        &--space-top {
-            @include media('>=tablet') {
-                padding-top: 4.5rem;
-            }
-        }
-    }
-
     &__main-column {
-        width: 56%;
-        position: relative;
-        @include media('>=laptop') {
-            width: 61%;
-        }
-        @include media('>=desktop') {
-            width: 67%;
-        }
-        @include media('<tablet') {
-            border-top: 1px solid $colorAlto;
-            max-width: 100vw !important; // stylelint-disable-line
-            width: 100vw !important; // stylelint-disable-line
-            min-height: 30rem;
-        }
-    }
-
-    &__reviews {
-        @extend .#{$namespace}container__inner;
-        @include media('>=tablet') {
-            background: $colorWhite;
-            margin-top: 3rem;
-            padding: 0 2rem;
-        }
-        @include media('>=desktop') {
-            padding: 2rem 0 0;
+        @include media( '>=laptop' ) {
+            padding-right: 35%;
         }
 
         &:after {
@@ -84,12 +42,20 @@
             display: table;
             clear: both;
         }
-
-        padding-bottom: 2rem;
     }
 
     &--contrast {
         background-color: $colorGallery;
+
+        &-mobile {
+            @include media( '<tablet' ) {
+                background-color: $colorGallery;
+            }
+        }
+
+        @include media( '>=tablet' ) {
+            background-image: url( 'images/background.png' );
+        }
     }
 
     &--spacious {
@@ -109,9 +75,17 @@
     }
 
     &--edge-to-edge {
-        padding-left: 0;
-        padding-right: 0;
-        width: 100vw;
+        margin-left: -15px;
+        margin-right: -15px;
+
+        @include media('>=tablet') {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        @include media('>=tablet') {
+            margin: 0 calc( ( ( 100vw - 100% ) / 2 ) * -1 );
+        }
     }
 
     &--breadcrumbs {
@@ -120,6 +94,7 @@
         background-position: right;
         background-repeat: no-repeat;
         display: none;
+
         @include media('>=tablet') {
             display: block;
         }
@@ -129,9 +104,11 @@
         background-color: $colorGallery;
         background-size: cover;
         background-repeat: no-repeat;
+
         @include media('>=tablet') {
             padding: 0 2rem;
         }
+
         @include media('>=desktop') {
             padding: 2rem 0 0;
             background-image: url( 'images/background.png' );
