@@ -33,7 +33,6 @@
 
         <referenceContainer name="main" htmlClass="cs-cart-page | cs-container__inner"/>
         <move element="page.main.title" destination="main" before="-"/>
-        <move element="page.messages"  destination="main" after="page.main.title"/>
 
         <referenceBlock name="page.main.title">
             <arguments>
@@ -42,15 +41,17 @@
         </referenceBlock>
 
         <referenceContainer name="checkout.cart.container">
-            <container name="checkout.cart.sticky" htmlTag="div" htmlClass="cs-container__aside"/>
+            <container name="checkout.cart.aside" htmlTag="div" htmlClass="cs-container__aside"/>
             <container name="checkout.cart.column" htmlTag="div" htmlClass="cs-container__main-column"/>
         </referenceContainer>
 
-        <move element="checkout.cart.form"  destination="checkout.cart.column" before="-" />
-        <move element="checkout.cart.widget"  destination="checkout.cart.column" />
+        <move element="page.messages"  destination="checkout.cart.column" before="-"/>
+
+        <move element="checkout.cart.form"  destination="checkout.cart.column" after="page.messages" />
+        <move element="checkout.cart.widget"  destination="checkout.cart.column" after="checkout.cart.form"/>
 
         <referenceContainer name="cart.summary" htmlClass="cs-cart-summary | cs-sticky-block-no-mobile" after="-" />
-        <move element="cart.summary"  destination="checkout.cart.sticky" before="-" />
+        <move element="cart.summary"  destination="checkout.cart.aside" before="-" />
 
         <referenceBlock name="checkout.cart.summary.title">
             <arguments>
