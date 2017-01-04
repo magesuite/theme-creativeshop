@@ -38,11 +38,24 @@
         &_default {
             color: $colorWhite;
             border-color: $colorCeruleanBlue;
-            background: $colorCeruleanBlue;
+            background-color: $colorCeruleanBlue;
             &:hover {
-                background-color: $colorCeruleanBlueHover;
                 border: 1px solid $colorCeruleanBlueHover;
                 color: $colorWhite;
+                border-color: $colorCeruleanBlue;
+                background-color: $colorCeruleanBlue;
+
+                &:active,
+                &:focus {
+                    color: $colorWhite;
+                    border-color: $colorCeruleanBlue;
+                    background: $colorCeruleanBlue;
+                }
+                &:hover {
+                    background-color: $colorCeruleanBlueHover;
+                    border: 1px solid $colorCeruleanBlueHover;
+                    color: $colorWhite;
+                }
             }
         }
 
@@ -75,6 +88,7 @@
             }
         }
 
+
         &_on-input {
             min-width: 5rem;
             height: 100%;
@@ -84,7 +98,12 @@
             transform: skew( -18deg ) translateX( 1rem );
             opacity: 1 !important;/* stylelint-disable-line declaration-no-important */
             border-radius: 0;
-            border: 1px solid $colorCeruleanBlue;
+            backface-visibility: hidden;
+            border: none;
+
+            &:hover {
+                border: none;
+            }
 
             #{$root}__icon {
                 transform: skew( 18deg ) translate( -50%, -50% );

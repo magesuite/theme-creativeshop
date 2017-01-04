@@ -40,7 +40,7 @@
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <div class="button-list aw-layered-nav-popover__action"
+            <div class="cs-aftersearch-nav__button-list | button-list aw-layered-nav-popover__action"
                  data-role="aw-layered-nav-actions"
                  data-mage-init='{"awLayeredNavFilterActions": {}}'>
                 <button data-role="show-button"
@@ -74,5 +74,14 @@
             searchQueryText: '<?php echo $block->escapeQuote($block->getSearchQueryText()) ?>'
         });
         $('.pages').awLayeredNavPager({});
+
+        if( $( window ).width() < 768 ) {
+            $( '.filter-options-item:gt( 0 )' ).removeClass( 'active' );
+        }
+
+        $( '.page-title-wrapper' ).clone().prependTo( '.columns' ).addClass( 'page-title-wrapper--checkout-type page-title-wrapper--wide cs-hide-tablet-desktop' );
+
+        $( '.main .page-title-wrapper' ).addClass( 'cs-hide-mobile' );
+
     });
 </script>
