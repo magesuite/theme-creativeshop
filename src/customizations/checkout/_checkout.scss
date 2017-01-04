@@ -7,7 +7,8 @@
         position: relative;
         justify-content: space-between;
         @include media('>=tablet') {
-            margin-top: 1.5rem;
+            max-width: 95rem;
+            margin: 1.5rem auto 0;
         }
 
         &__progress-bar {
@@ -33,10 +34,7 @@
 
             @include media('>=tablet') {
                 padding: 0;
-                width: 55%;
-            }
-            @include media('>=laptop') {
-                width: 65%;
+                width: 54%;
             }
         }
 
@@ -45,12 +43,8 @@
                 height: 100%;
                 z-index: 2;
                 margin-top: 1rem;
-                padding: 2rem 0 0;
                 box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
-                width: 45%;
-                @include media('>=laptop') {
-                    width: 35%;
-                }
+                width: 44%;
             }
 
             .action-close {
@@ -77,8 +71,6 @@
 
         &__shipping-information {
             margin-bottom: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid $colorAlto;
         }
 
         &__step-content {
@@ -157,6 +149,14 @@
         &__summary-title {
             display: flex;
             justify-content: space-between;
+            padding: 2rem 0 1rem;
+
+            &--bordered {
+                border-top: 1px solid $colorAlto;
+                padding-top: 1rem;
+                padding-bottom: .4rem;
+                margin-top: 1rem;
+            }
         }
 
         &__summary-title,
@@ -169,7 +169,9 @@
 
             td,
             th {
-                padding: .8rem 2rem;
+                padding: .3rem 2rem 1rem;
+                font-weight: 400;
+                font-size: 1.3rem;
             }
 
             .amount {
@@ -177,7 +179,14 @@
             }
 
             .grand {
-                font-size: 1.6rem;
+                border-top: 1px solid $colorAlto;
+                th,
+                td {
+                    padding-top: 1.4rem;
+                    color: $colorMineShaft;
+                    font-weight: 700 !important;/* stylelint-disable-line declaration-no-important */
+                    font-size: 1.5rem !important;/* stylelint-disable-line declaration-no-important */
+                }
             }
         }
 
@@ -192,8 +201,8 @@
             @include media('>=tablet') {
                 height: auto;
                 position: absolute;
+                top: -13.2rem;
                 right: .5rem;
-                top: -10.7rem;
                 width: 30rem;
                 margin-top: 0;
             }
@@ -202,6 +211,7 @@
                 span {
                     position: absolute;
                     right: -4rem;
+                    font-size: 1.2rem;
                     @include media('>=phone-lg') {
                         right: -14rem;
                     }
@@ -275,6 +285,8 @@
             margin-bottom: 2rem;
             padding: 0 1.5rem;
             z-index: 2;
+            width: 100%;
+            max-width: 40rem;
             @include media('>=tablet') {
                 display: none;
             }
@@ -335,13 +347,30 @@
             .#{$namespace}information-stripe__item--login {
                 display: none;
             }
+
+            .#{$namespace}information-stripe {
+                max-width: 95rem;
+                margin: 0 auto;
+                padding-right: 4rem;
+                box-sizing: border-box;
+            }
         }
     }
 
     .#{$namespace}checkout-header {
 
+        max-width: 95rem;
+        margin: 1.5rem auto 1rem;
+
         .#{$namespace}logo {
-            padding-left: .5rem;
+            padding-left: 1.5rem;
+            @include media('>=laptop') {
+                padding-left: 0;
+            }
         }
+    }
+
+    .#{$namespace}cart-page {
+        position: relative;
     }
 }
