@@ -2,186 +2,184 @@
  * Badge component responsible for styling different kinds of badges.
  */
 
-@include export-once( 'customizations/badge' ) {
-    .#{$namespace}badge {
-        $root: &;
+.#{$namespace}badge {
+    $root: &;
 
-        font-size: 1rem;
-        border-radius: 2px;
-        text-align: center;
-        color: $colorWhite;
-        background: $colorGray;
-        padding: .2rem .455rem .1rem;
-        box-shadow: 0 0 0 1px $colorWhite;
-        transform: skew( -10deg );
-        box-sizing: border-box;
-        min-width: 2.1rem;
-        overflow: hidden;
-        display: inline-block;
-        margin-left: .3rem;
+    font-size: 1rem;
+    border-radius: 2px;
+    text-align: center;
+    color: $colorWhite;
+    background: $colorGray;
+    padding: .15rem .5rem .2rem;
+    box-shadow: 0 0 0 1px $colorWhite;
+    transform: skew( -10deg );
+    box-sizing: border-box;
+    min-width: 1.7rem;
+    overflow: hidden;
+    display: inline-block;
+    margin-left: .3rem;
 
-        &--short {
-            max-width: 2.1rem;
+    &--short {
+        max-width: 2.1rem;
+        max-height: 1.7rem;
+
+        #{$root}__span {
+            max-width: 1.3rem;
             max-height: 1.7rem;
-
-            #{$root}__span {
-                max-width: 1.3rem;
-                max-height: 1.7rem;
-            }
-
         }
 
-        &--attention {
+    }
+
+    &--attention {
+        background-color: $colorCrimson;
+        &:before {
             background-color: $colorCrimson;
-            &:before {
-                background-color: $colorCrimson;
-            }
-            #{$root}__span {
-                color: $colorWhite;
-                font-weight: 400;
-            }
         }
-
-        &--info {
-            background-color: $colorGold;
-            #{$root}__span {
-                color: $colorMineShaft;
-            }
-        }
-
-        &--amount {
-            background-color: $colorCeruleanBlue;
-            #{$root}__span {
-                color: $colorWhite;
-            }
-        }
-
-        &--dark {
-            background: $colorMineShaft;
-            border-color: $colorMineShaft;
-            cursor: pointer;
-            box-shadow: none;
-
-            #{$root}__span {
-                fill: $colorWhite;
-                color: $colorWhite;
-                &:before {
-                    background-color: $colorMineShaft;
-                }
-            }
-        }
-
-        &--new {
-            background-color: $colorMySin;
-            &:before {
-                background-color: $colorMySin;
-            }
-
-            #{$root}__span {
-                color: $colorMineShaft;
-            }
-        }
-
-        &--big {
-            padding: 1rem;
-            min-width: 4.4rem;
-            height: 3.8rem;
-            display: inline-block;
-        }
-
-        &--label {
-            transform: skew( -18deg );
-            height: 2.1rem;
-            padding: .6rem .7rem .5rem 1.5rem;
-            line-height: 1;
-            box-shadow: none;
-            text-indent: -.5rem;
-            border-radius: 3px;
-
-
-            #{$root}__span {
-                font-size: 1.2rem;
-                text-transform: uppercase;
-                transform: skew( 18deg );
-                font-weight: 400;
-                padding-left: .4rem;
-            }
-
-            &#{$root}--new #{$root}__span {
-                font-weight: 700;
-            }
-
-        }
-
-        &--label-big {
-            transform: skew( -18deg );
-            height: 2.7rem;
-            line-height: 1;
-            box-shadow: none;
-            padding: .8rem .6rem .5rem .5rem;
-            border-radius: 3px;
-
-            #{$root}__span {
-                font-weight: 400;
-                font-size: 1.5rem;
-                text-transform: uppercase;
-                transform: skew( 18deg );
-            }
-        }
-
-
-        &--cut {
-            overflow: visible;
-            display: inline-block;
-            position: relative;
-            padding-left: .5rem;
-            padding-right: .4rem;
-
-            &:before {
-                content: '';
-                display: inline-block;
-                height: 100%;
-                width: 1.5rem;
-                position: absolute;
-                top: 0;
-                left: -.9rem;
-                transform: skew( 18deg );
-                border-top-left-radius: 3px;
-                border-bottom-left-radius: 3px;
-            }
-
-            #{$root}__span {
-                transform: skew( 18deg ) translateX( -.5rem );
-                padding-left: .8rem;
-            }
-        }
-
-
-        &__span {
+        #{$root}__span {
             color: $colorWhite;
-            display: inline-block;
+            font-weight: 400;
+        }
+    }
+
+    &--info {
+        background-color: $colorGold;
+        #{$root}__span {
+            color: $colorMineShaft;
+        }
+    }
+
+    &--amount {
+        background-color: $colorCeruleanBlue;
+        #{$root}__span {
+            color: $colorWhite;
+        }
+    }
+
+    &--dark {
+        background: $colorMineShaft;
+        border-color: $colorMineShaft;
+        cursor: pointer;
+        box-shadow: none;
+
+        #{$root}__span {
+            fill: $colorWhite;
+            color: $colorWhite;
+            &:before {
+                background-color: $colorMineShaft;
+            }
+        }
+    }
+
+    &--new {
+        background-color: $colorMySin;
+        &:before {
+            background-color: $colorMySin;
+        }
+
+        #{$root}__span {
+            color: $colorMineShaft;
+        }
+    }
+
+    &--big {
+        padding: 1rem;
+        min-width: 4.4rem;
+        height: 3.8rem;
+        display: inline-block;
+    }
+
+    &--label {
+        transform: skew( -18deg );
+        height: 2.1rem;
+        padding: .6rem .7rem .5rem 1.5rem;
+        line-height: 1;
+        box-shadow: none;
+        text-indent: -.5rem;
+        border-radius: 3px;
+
+
+        #{$root}__span {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            transform: skew( 18deg );
+            font-weight: 400;
+            padding-left: .4rem;
+        }
+
+        &#{$root}--new #{$root}__span {
             font-weight: 700;
-            transform: skew( 10deg );
+        }
 
-            &--fb {
-                width: .9rem;
-                height: 1.8rem;
-            }
+    }
 
-            &--yt {
-                width: 1.8rem;
-                height: 2.1rem;
-            }
+    &--label-big {
+        transform: skew( -18deg );
+        height: 2.7rem;
+        line-height: 1;
+        box-shadow: none;
+        padding: .8rem .6rem .5rem .5rem;
+        border-radius: 3px;
 
-            &--gplus {
-                width: 1.7rem;
-                height: 1.8rem;
-                transform: translateX( .3rem );
-            }
+        #{$root}__span {
+            font-weight: 400;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            transform: skew( 18deg );
+        }
+    }
 
-            &--no-space {
-                padding-left: 0!important; // stylelint-disable-line
-            }
+
+    &--cut {
+        overflow: visible;
+        display: inline-block;
+        position: relative;
+        padding-left: .5rem;
+        padding-right: .4rem;
+
+        &:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            width: 1.5rem;
+            position: absolute;
+            top: 0;
+            left: -.9rem;
+            transform: skew( 18deg );
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        #{$root}__span {
+            transform: skew( 18deg ) translateX( -.5rem );
+            padding-left: .8rem;
+        }
+    }
+
+
+    &__span {
+        color: $colorWhite;
+        display: inline-block;
+        font-weight: 700;
+        transform: skew( 10deg );
+
+        &--fb {
+            width: .9rem;
+            height: 1.8rem;
+        }
+
+        &--yt {
+            width: 1.8rem;
+            height: 2.1rem;
+        }
+
+        &--gplus {
+            width: 1.7rem;
+            height: 1.8rem;
+            transform: translateX( .3rem );
+        }
+
+        &--no-space {
+            padding-left: 0!important; // stylelint-disable-line
         }
     }
 }
