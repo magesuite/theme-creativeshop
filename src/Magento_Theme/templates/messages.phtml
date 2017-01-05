@@ -4,21 +4,21 @@
  * See COPYING.txt for license details.
  */
 ?>
-<div data-bind="scope: 'messages'">
-    <div data-bind="foreach: { data: cookieMessages, as: 'message' }" class="cs-messages">
+<div data-bind="scope: 'messages'" class="cs-messages">
+    <div data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages | cs-messages__inner">
         <div data-bind="attr: {
-            class: 'cs-message' + message.type + ' ' + message.type + ' message',
+            class: 'message-' + message.type + ' ' + message.type + ' | cs-messages__message cs-messages__message--' + message.type,
             'data-ui-id': 'message-' + message.type
         }">
-            <div data-bind="html: message.text"></div>
+            <div data-bind="html: message.text" class="cs-messages__text"></div>
         </div>
     </div>
-    <div data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages">
+    <div data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages | cs-messages__inner"">
         <div data-bind="attr: {
-            class: 'message__item--' + message.type + ' ' + message.type + ' message',
+            class: 'message-' + message.type + ' ' + message.type + ' | cs-messages__message cs-messages__message--' + message.type,
             'data-ui-id': 'message-' + message.type
         }">
-            <div data-bind="html: message.text"></div>
+            <div data-bind="html: message.text" class="cs-messages__text"></div>
         </div>
     </div>
 </div>

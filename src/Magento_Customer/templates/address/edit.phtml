@@ -115,7 +115,13 @@
         </div>
 
         <?php if ($block->isDefaultBilling()): ?>
-            <div class="message info"><?php /* @escapeNotVerified */ echo __("It's a default billing address.") ?></div>
+            <div class="cs-messages cs-messages--short">
+                <div class="cs-messages__message  cs-messages__message--info">
+                    <span class="cs-messages__text">
+                        <?php /* @escapeNotVerified */ echo __("It's a default billing address.") ?>
+                    </span>
+                </div>
+            </div>
         <?php elseif ($block->canSetAsDefaultBilling()): ?>
             <div class="cs-input cs-input--type-checkbox | choice set billing">
                 <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="cs-input__checkbox">
@@ -128,7 +134,13 @@
         <?php endif; ?>
 
         <?php if ($block->isDefaultShipping()): ?>
-            <div class="message info"><?php /* @escapeNotVerified */ echo __("It's a default shipping address.") ?></div>
+            <div class="cs-messages cs-messages--short">
+            <div class="cs-messages__message  cs-messages__message--info">
+                <span class="cs-messages__text">
+                    <?php /* @escapeNotVerified */ echo __("It's a default shipping address.") ?>
+                </span>
+            </div>
+        </div>
         <?php elseif ($block->canSetAsDefaultShipping()): ?>
             <div class="cs-input cs-input--type-checkbox | choice set shipping">
                 <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="cs-input__checkbox">
