@@ -9,37 +9,30 @@
     }
 
     #{$root}__content {
-        position: absolute;
-        top: -99999px;
-        left: -99999px;
-        z-index: -10;
+        overflow: hidden;
+        height: 0;
         opacity: 0;
         min-height: initial !important;
         max-height: initial !important;
-        height: auto !important;
         transform: translateY( -15px );
-        transition-property: opacity, transform;
-        transition-duration: .15s;
-        will-change: z-index, position, top, left;
+        transition: opacity .18s linear, transform .11s ease-in-out;
+        will-change: height;
 
         &--initial-in,
         &--in {
-            position: relative;
-            top: auto;
-            left: auto;
+            height: auto !important;
             opacity: 1;
-            z-index: 1;
             visibility: visible;
             transform: translateY( 0 );
         }
 
         &--only-mobile {
             @include media('>=tablet') {
+                transition: none;
                 height: auto !important;
-                min-height: initial !important;
-                max-height: 9999px !important;
-                opacity: 1 !important;
-                visibility: visible !important;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY( 0 );
             }
         }
     }
