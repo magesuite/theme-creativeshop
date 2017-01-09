@@ -69,10 +69,14 @@
 
         </referenceContainer>
 
-        
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container cs-container--spacious">
+            <container name="page.main.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+            </container>
+        </referenceContainer>
+        <move element="columns.top" destination="page.main.container.inner" after="-"/>
+        <move element="columns" destination="page.main.container.inner" after="-"/>
 
         <move element="form.subscribe" destination="footer.right" after="-"/>
-
 
         <referenceContainer name="footer-container" htmlClass="cs-container | cs-footer">
             <referenceContainer name="footer" htmlClass="cs-container__inner | cs-footer__wrapper">
@@ -93,6 +97,8 @@
                 <block class="Magento\Framework\View\Element\Template" name="page.bottom" template="Magento_Theme::html/page-bottom.phtml"/>
             </container>
         </container>
+
+        <move element="page.bottom.wrapper" destination="page.wrapper" after="-"/>
 
         <referenceContainer name="before.body.end" after="-">
             <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml"/>

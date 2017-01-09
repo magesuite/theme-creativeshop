@@ -1,45 +1,40 @@
 @mixin collapse() {
     $root: &;
 
+    position: relative;
+    overflow: hidden;
+
+    #{$root}__trigger {
+        cursor: pointer;
+    }
+
     #{$root}__content {
-        position: relative;
-        top: auto;
-        left: auto;
-        max-height: 0;
-        transition-property: height, min-height;
-        transition-duration: .35s;
-        z-index: 1;
         overflow: hidden;
-        opacity: 1;
+        height: 0;
+        opacity: 0;
+        min-height: initial !important;
+        max-height: initial !important;
+        transform: translateY( -15px );
+        transition: opacity .18s linear, transform .11s ease-in-out;
+        will-change: height;
 
-        &--transitioning {
-            opacity: 1;
-        }
-
-        &--initial-in {
-            height: auto;
-            min-height: initial;
+        &--initial-in,
+        &--in {
+            height: auto !important;
             opacity: 1;
             visibility: visible;
-            transition-duration: .35s;
-            transition-property: max-height;
+            transform: translateY( 0 );
         }
-
-        &--in {
-            transition-property: max-height;
-        }
-
 
         &--only-mobile {
             @include media('>=tablet') {
-                height: auto!important;// stylelint-disable-line
-                min-height: initial!important; // stylelint-disable-line
-                max-height: 9999px!important; // stylelint-disable-line
-                opacity: 1!important; // stylelint-disable-line
-                visibility: visible!important; // stylelint-disable-line
+                transition: none;
+                height: auto !important;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY( 0 );
             }
         }
-
     }
 
 }

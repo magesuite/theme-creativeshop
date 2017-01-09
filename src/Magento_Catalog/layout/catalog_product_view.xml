@@ -7,6 +7,7 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceContainer name="main.content" htmlClass="cs-container cs-container--spacious | cs-container--pdp"/>
         <referenceContainer name="content">
             <container name="product.media.container" htmlTag="section" htmlClass="cs-container cs-product-gallery__container" before="-">
                 <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
@@ -28,7 +29,9 @@
 
         <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main | cs-sticky-block cs-sticky-block--pdp | cs-product-sale-block">
             <block class="Creativestyle\FrontendExtension\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-"/>
-            <block class="Magento\Framework\View\Element\Template" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
+            <container name="product.details.specials" htmlTag="div" htmlClass="cs-product-sale-block__item">
+                <block class="Magento\Framework\View\Element\Template" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
+            </container>
         </referenceContainer>
         <move element="product.info.main" destination="content" before="product.media.container" />
 

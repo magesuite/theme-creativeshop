@@ -1,11 +1,59 @@
 @import '../../../../components/container/container';
 
+$namespace: 'cs-';
+
 body {
     overflow-x: hidden;
 }
 
+body,
+html {
+    height: 100%;
+}
+
+#maincontent { // stylelint-disable-line
+    flex: 1;
+}
+
 .page-wrapper {
     @include container-wrapper();
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    &--checkout {
+        .#{$namespace}information-stripe__item--login {
+            display: none;
+        }
+
+        .#{$namespace}information-stripe {
+            max-width: 95rem;
+            margin: 0 auto;
+            padding-right: 4rem;
+            box-sizing: border-box;
+        }
+    }
+}
+
+.ie11 .page-wrapper {
+    display: block;
+}
+
+.#{$namespace}checkout-header {
+
+    max-width: 95rem;
+    margin: 1.5rem auto 1rem;
+
+    .#{$namespace}logo {
+        padding-left: 1.5rem;
+        @include media('>=laptop') {
+            padding-left: 0;
+        }
+    }
+}
+
+.#{$namespace}cart-page {
+    position: relative;
 }
 
 .page-main {
@@ -24,6 +72,7 @@ h2 {
     padding-bottom: 0;
     margin-bottom: 3em;
     max-width: 100%;
+    min-height: 10rem;
 }
 
 .product-info-main .page-title-wrapper .page-title {
@@ -53,6 +102,14 @@ h2 {
     > section,
     > div {
         order: 3;
+    }
+}
+
+.catalog-category-view .column.main {
+    > .page-title-wrapper {
+        @include media('>=tablet') {
+            padding-bottom: 1rem;
+        }
     }
 }
 

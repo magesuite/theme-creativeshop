@@ -8,6 +8,7 @@
     padding: .9rem 2.2rem .9rem 1.5rem;
     min-width: 12.2rem;
     color: $colorWhite;
+    fill: currentColor;
     border-color: $colorCeruleanBlue;
     background: $colorCeruleanBlue;
     font-weight: 700;
@@ -36,39 +37,53 @@
 
     &--look {
         &_default {
+            border: 1px solid $colorCeruleanBlue;
             color: $colorWhite;
             border-color: $colorCeruleanBlue;
             background-color: $colorCeruleanBlue;
-            &:hover {
+            &:hover,
+            &:active,
+            &:focus {
                 border: 1px solid $colorCeruleanBlueHover;
                 color: $colorWhite;
-                border-color: $colorCeruleanBlue;
-                background-color: $colorCeruleanBlue;
+                border-color: $colorCeruleanBlueHover;
+                background-color: $colorCeruleanBlueHover;
+            }
 
-                &:active,
-                &:focus {
-                    color: $colorWhite;
-                    border-color: $colorCeruleanBlue;
-                    background: $colorCeruleanBlue;
-                }
-                &:hover {
-                    background-color: $colorCeruleanBlueHover;
-                    border: 1px solid $colorCeruleanBlueHover;
-                    color: $colorWhite;
-                }
+
+            &:visited {
+                color: $colorWhite;
+                border-color: $colorCeruleanBlue;
+                background: $colorCeruleanBlue;
             }
         }
 
         &_light {
-            background: transparent;
+            border: 1px solid $colorCeruleanBlue;
+            background-color: transparent;
             color: $colorCeruleanBlue;
-            fill: $colorCeruleanBlue;
+            border-color: $colorCeruleanBlue;
 
-            &:hover {
-                background-color: $colorCeruleanBlueHover;
+            &:hover,
+            &:active,
+            &:focus {
                 border: 1px solid $colorCeruleanBlueHover;
+                background-color: $colorCeruleanBlueHover;
+                border-color: $colorCeruleanBlueHover;
                 color: $colorWhite;
-                fill: $colorWhite;
+                #{$root}__icon {
+                    fill: $colorWhite;
+                }
+            }
+
+            &:visited {
+                background-color: transparent;
+                color: $colorCeruleanBlue;
+                border-color: $colorCeruleanBlue;
+            }
+
+            #{$root}__icon {
+                fill: $colorCeruleanBlue;
             }
         }
 
@@ -194,7 +209,7 @@
         right: 1rem;
         top: 50%;
         transform: translateY( -50% );
-        fill: $colorWhite;
+        transition: fill .15s linear;
 
         &--center {
             position: absolute;
