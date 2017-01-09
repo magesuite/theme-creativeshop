@@ -1,16 +1,13 @@
-$namespace: 'cs-';
-@import '../../components/container/container';
-
 .#{$namespace}container {
-    @include container();
+    $root: &;
 
-    @media ( min-width: 1200px ) {
-        margin: 0 calc( ( ( 100vw - 100% ) / 2 ) * -1 );
-    }
+    @include container();
+    margin: 0 calc( ( (100vw - 100%) / 2 ) * -1 );
 
     &__inner {
         @include container-wrapper();
-        width: 100%;
+
+        position: relative;
 
         &:after {
             content: '';
@@ -23,7 +20,7 @@ $namespace: 'cs-';
             flex-wrap: wrap;
             justify-content: space-between;
 
-            @include media('>=tablet') {
+            @include media( '>=tablet' ) {
                 flex-wrap: nowrap;
             }
 
@@ -31,11 +28,67 @@ $namespace: 'cs-';
                 display: none;
             }
         }
+
+        #{$root}--edge-to-edge & {
+            @include media( '>=tablet' ) {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
+    }
+
+    &__sticky {
+        @include media( '>=tablet' ) {
+            width: 40%;
+            position: absolute;
+            top: 0;
+            right: 2.2rem;
+            height: 100%;
+        }
+        @include media( '>=laptop' ) {
+            width: 32%;
+        }
+        @include media( '>=desktop' ) {
+            right: 0;
+            width: 30%;
+        }
+        &--space-top {
+            @include media( '>=tablet' ) {
+                padding-top: 4.5rem;
+            }
+        }
     }
 
     &__main-column {
+        width: 56%;
+        position: relative;
+
         @include media( '>=laptop' ) {
-            padding-right: 35%;
+            width: 61%;
+        }
+
+        @include media( '>=desktop' ) {
+            width: 67%;
+        }
+
+        @include media( '<tablet' ) {
+            max-width: 100% !important;
+            width: 100% !important;
+            min-height: 30rem;
+        }
+    }
+
+    &__reviews {
+        @extend .#{$namespace}container__inner;
+
+        @include media( '>=tablet' ) {
+            background: $colorWhite;
+            margin-top: 3rem;
+            padding: 0 2rem;
+        }
+
+        @include media( '>=desktop' ) {
+            padding: 2rem 0 0;
         }
 
         &:after {
@@ -43,69 +96,40 @@ $namespace: 'cs-';
             display: table;
             clear: both;
         }
-    }
 
-    &__aside {
-        width: 100vw;
-        @include media('>=tablet') {
-            width: 40%;
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-            padding-top: 4.5rem;
-        }
-        @include media('>=laptop') {
-            width: 32%;
-        }
-        @include media('>=desktop') {
-            right: 0;
-            width: 30%;
-        }
+        padding-bottom: 2rem;
     }
 
     &--contrast {
         background-color: $colorGallery;
 
-        &-mobile {
-            @include media( '<tablet' ) {
-                background-color: $colorGallery;
-            }
-        }
-
-        @include media( '>=tablet' ) {
+        @include media( '>=laptop' ) {
             background-image: url( 'images/background.png' );
+            background-size: cover;
+            background-repeat: no-repeat;
         }
     }
 
     &--spacious {
-        padding-top: 2em;
-        padding-bottom: 2em;
-    }
+        padding-top: 2rem;
+        padding-bottom: 2rem;
 
-    &--checkout-type {
-        @include media('<tablet') {
-            padding-left: 0;
-            padding-right: 0;
-            width: 100vw;
+        @include media( '>=laptop' ) {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
         }
-        @include media('>=tablet') {
-            padding-bottom: 5rem;
+
+        .catalog-category-view & {
+            @include media( '>=tablet' ) {
+                padding-top: 0;
+            }
         }
     }
 
     &--edge-to-edge {
-        margin-left: -15px;
-        margin-right: -15px;
-
-        @include media('>=tablet') {
-            margin-left: 0;
-            margin-right: 0;
-        }
-
-        @include media('>=tablet') {
-            margin: 0 calc( ( ( 100vw - 100% ) / 2 ) * -1 );
-        }
+        padding-left: 0;
+        padding-right: 0;
+        width: 100vw;
     }
 
     &--breadcrumbs {
@@ -114,25 +138,33 @@ $namespace: 'cs-';
         background-position: right;
         background-repeat: no-repeat;
         display: none;
-
         @include media('>=tablet') {
             display: block;
         }
     }
 
-    &--details {
-        background-color: $colorGallery;
-        background-size: cover;
-        background-repeat: no-repeat;
-
-        @include media('>=tablet') {
-            padding: 0 2rem;
-        }
-
-        @include media('>=desktop') {
-            padding: 2rem 0 0;
-            background-image: url( 'images/background.png' );
+    &--pdp {
+        @include media( '>=laptop' ) {
+            padding-top: 0;
         }
     }
 
+    &--main {
+        @include media( '>=laptop' ) {
+            min-height: calc( 100vh - 50rem );
+        }
+    }
+
+    &--checkout-type {
+        @include media( '<tablet' ) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        @include media( '>=tablet' ) {
+            padding-bottom: 5rem;
+        }
+        @include media( '>=laptop' ) {
+            min-height: calc( 100vh - 50rem );
+        }
+    }
 }

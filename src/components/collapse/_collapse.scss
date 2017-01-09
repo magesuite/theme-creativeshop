@@ -1,45 +1,47 @@
 @mixin collapse() {
     $root: &;
 
+    position: relative;
+    overflow: hidden;
+
+    #{$root}__trigger {
+        cursor: pointer;
+    }
+
     #{$root}__content {
-        position: relative;
-        top: auto;
-        left: auto;
-        max-height: 0;
-        transition-property: height, min-height;
-        transition-duration: .35s;
-        z-index: 1;
-        overflow: hidden;
-        opacity: 1;
+        position: absolute;
+        top: -99999px;
+        left: -99999px;
+        z-index: -10;
+        opacity: 0;
+        min-height: initial !important;
+        max-height: initial !important;
+        height: auto !important;
+        transform: translateY( -15px );
+        transition-property: opacity, transform;
+        transition-duration: .15s;
+        will-change: z-index, position, top, left;
 
-        &--transitioning {
-            opacity: 1;
-        }
-
-        &--initial-in {
-            height: auto;
-            min-height: initial;
-            opacity: 1;
-            visibility: visible;
-            transition-duration: .35s;
-            transition-property: max-height;
-        }
-
+        &--initial-in,
         &--in {
-            transition-property: max-height;
+            position: relative;
+            top: auto;
+            left: auto;
+            opacity: 1;
+            z-index: 1;
+            visibility: visible;
+            transform: translateY( 0 );
         }
-
 
         &--only-mobile {
             @include media('>=tablet') {
-                height: auto!important;// stylelint-disable-line
-                min-height: initial!important; // stylelint-disable-line
-                max-height: 9999px!important; // stylelint-disable-line
-                opacity: 1!important; // stylelint-disable-line
-                visibility: visible!important; // stylelint-disable-line
+                height: auto !important;
+                min-height: initial !important;
+                max-height: 9999px !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
         }
-
     }
 
 }
