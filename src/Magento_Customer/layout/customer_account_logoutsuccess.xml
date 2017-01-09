@@ -8,13 +8,31 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
 
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">login-out</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Logout</item>
+                    <item name="label" xsi:type="string" translate="true">Logout</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
                 <argument name="title" translate="true" xsi:type="string">You are signed out</argument>
                 <argument name="htmlClass" xsi:type="string">cs-t-headline cs-t-headline--size_1</argument>
             </action>
             <arguments>
-                <argument name="css_class" xsi:type="string">page-title-wrapper--checkout-type</argument>
+                <argument name="css_class" xsi:type="string">page-title-wrapper page-title-wrapper--checkout-type page-title-wrapper--space-top</argument>
             </arguments>
         </referenceBlock>
 

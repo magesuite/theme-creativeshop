@@ -28,6 +28,10 @@
             margin: 0 -1.5rem;
 
             @include media( '>=tablet' ) {
+                padding: 4rem 3.5rem 2rem;
+            }
+
+            @include media( '>=laptop' ) {
                 padding: 4rem 0 2rem;
                 flex-wrap: nowrap;
                 width: 100%;
@@ -42,15 +46,20 @@
 
         &__right {
             @include media( '>=tablet' ) {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            @include media( '>=laptop' ) {
                 flex-basis: 32%;
-                max-width: 30rem;
             }
         }
 
         &__left {
-            @include media( '>=tablet' ) {
+            @include media( '>=laptop' ) {
                 flex-basis: 68%;
             }
+
         }
 
         &__columns {
@@ -62,12 +71,53 @@
             width: 100%;
 
             @include media( '>=tablet' ) {
-                width: 50%;
+                width: 33.3%;
                 padding-bottom: 2rem;
             }
 
             @include media( '>=laptop' ) {
                 width: 25%;
+            }
+
+            &--first {
+                @include media( '>=tablet' ) {
+                    width: 100%;
+                }
+                @include media( '>=laptop' ) {
+                    width: 25%;
+                }
+            }
+
+            &--newsletter {
+                border-top: 1px solid $colorGray;
+                @include media( '>=tablet' ) {
+                    width: 45%;
+                    margin-top: 1.5rem;
+                    border-top: none;
+                }
+                @include media( '>=laptop' ) {
+                    width: 100%;
+                    margin-top: 0;
+                    max-width: none;
+                }
+
+                #{$root}__list {
+                    @include media( '<tablet' ) {
+                        margin: 0 auto;
+                        max-width: 40rem;
+                        margin-bottom: 3rem;
+                    }
+                }
+            }
+            &--socials {
+                @include media( '>=tablet' ) {
+                    width: 33.3%;
+                    margin-top: 1.5rem;
+                }
+                @include media( '>=laptop' ) {
+                    width: 100%;
+                    margin-top: 0;
+                }
             }
         }
 

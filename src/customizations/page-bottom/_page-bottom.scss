@@ -7,6 +7,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        @include media('>=tablet') {
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        @include media('>=laptop') {
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
 
         &__image {
             height: 3rem;
@@ -41,11 +49,26 @@
                 height: 2rem;
                 background: $colorAlto;
             }
+
+            @include media('>=tablet') {
+                display: none;
+            }
+            @include media('>=laptop') {
+                display: block;
+            }
         }
 
         &__group {
             display: flex;
             align-items: center;
+            @include media('>=tablet') {
+                width: 100%;
+                padding: 1rem 1.5rem;
+            }
+            @include media('>=laptop') {
+                width: auto;
+                padding: 0;
+            }
         }
 
     }
