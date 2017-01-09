@@ -4,7 +4,7 @@
 
     .#{$namespace}table {
         $root: &;
-        $rootNoChangeMobile: ($root)--no-change-mobile;
+        $rootNoChangeMobile: #{$root}--no-change-mobile;
         font-size: 1rem;
         max-width: 100%;
         width: 100%;
@@ -14,10 +14,75 @@
             display: block;
         }
 
-        &--bordered {
+
+        &--tablet-small {
+            @include media( '<laptop' ) {
+                max-width: 40rem;
+                border: none;
+                display: block;
+                font-size: 1.4rem;
+                padding: .4rem 1rem;
+
+                &:first-child {
+                    padding-top: 2rem;
+                }
+                &:last-child {
+                    padding-bottom: 1.2rem;
+                }
+            }
+
+            #{$root}__head {
+                @include media('<laptop') {
+                    display: none;
+                }
+            }
+
+            #{$root}__col {
+                @include media( '<laptop' ) {
+                    border: none;
+                    display: block;
+                    font-size: 1.4rem;
+                    padding: .4rem 1rem;
+
+                    &:first-child {
+                        padding-top: 2rem;
+                    }
+                    &:last-child {
+                        padding-bottom: 1.2rem;
+                    }
+                }
+                &:before {
+                    @include media( '<laptop' ) {
+                        padding-right: 10px;
+                        content: attr( data-th ) ': ';
+                        display: inline-block;
+                        color: $colorMineShaft;
+                        font-weight: 700;
+                    }
+                }
+
+                &--actions {
+                    @include media( '<laptop' ) {
+                        border-bottom: 1px solid $colorAlto;
+                    }
+                    &:before {
+                        @include media('<laptop') {/* stylelint-disable-line */
+                            @include visually-hidden;/* stylelint-disable-line */
+                        }
+                    }
+                }
+            }
+
+        }
+
+        &--cart {
             @include media('>=tablet') {
                 border-top: 1px solid $colorAlto;
                 margin-top: 2rem;
+            }
+
+            @include media( '<tablet' ) {
+                padding: .4rem 0;
             }
         }
 
@@ -105,66 +170,6 @@
             &--right {
                 text-align: right;
             }
-        }
-
-        &--tablet-small {
-            @include media( '<laptop' ) {
-                max-width: 40rem;
-                border: none;
-                display: block;
-                font-size: 1.4rem;
-                padding: .4rem 1rem;
-
-                &:first-child {
-                    padding-top: 2rem;
-                }
-                &:last-child {
-                    padding-bottom: 1.2rem;
-                }
-            }
-
-            #{$root}__head {
-                @include media('<laptop') {
-                    display: none;
-                }
-            }
-
-            #{$root}__col {
-                @include media( '<laptop' ) {
-                    border: none;
-                    display: block;
-                    font-size: 1.4rem;
-                    padding: .4rem 1rem;
-
-                    &:first-child {
-                        padding-top: 2rem;
-                    }
-                    &:last-child {
-                        padding-bottom: 1.2rem;
-                    }
-                }
-                &:before {
-                    @include media( '<laptop' ) {
-                        padding-right: 10px;
-                        content: attr( data-th ) ': ';
-                        display: inline-block;
-                        color: $colorMineShaft;
-                        font-weight: 700;
-                    }
-                }
-
-                &--actions {
-                    @include media( '<laptop' ) {
-                        border-bottom: 1px solid $colorAlto;
-                    }
-                    &:before {
-                        @include media('<laptop') {/* stylelint-disable-line */
-                            @include visually-hidden;/* stylelint-disable-line */
-                        }
-                    }
-                }
-            }
-
         }
 
     }
