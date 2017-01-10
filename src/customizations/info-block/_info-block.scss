@@ -4,11 +4,23 @@
         $root: &;
         font-size: 1rem;
 
+        &--flex {
+            display: flex;
+            flex-wrap: wrap;
+            @include media( '>=tablet' ) {
+                flex-wrap: nowrap;
+            }
+        }
+
         &__title {
             margin-bottom: .9rem;
 
             &--up {
                 margin-bottom: .3rem;
+            }
+
+            &--space-top {
+                margin-top: 2rem;
             }
         }
 
@@ -50,6 +62,10 @@
 
         &__line {
             margin-bottom: 0;
+
+            dt {
+                font-weight: 400;
+            }
         }
 
         &__title-link {
@@ -64,6 +80,17 @@
         &__buttons {
             width: 100%;
             margin-top: 2rem;
+
+            &--right {
+                @include media( '>=tablet' ) {
+                    text-align: right;
+                }
+            }
+        }
+
+        &__button {
+            margin-right: 1rem;
+            margin-bottom: .8rem;
         }
 
         &__toolbar {
