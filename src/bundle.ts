@@ -33,7 +33,7 @@ collapsibleText();
 
 import './customizations/navigation/navigation';
 
-import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment.ts';
+import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
 
 import './customizations/hero/hero';
