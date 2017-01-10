@@ -1,0 +1,59 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer */ ?>
+<?php $_item = $block->getItem() ?>
+<?php $_order = $block->getItem()->getOrderItem()->getOrder() ?>
+<tr id="order-item-row-<?php /* @escapeNotVerified */ echo $_item->getId() ?>">
+    <td class="cs-table__col | name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
+        <span class="cs-t-text cs-t-text--look_attention | product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></span>
+        <?php if ($_options = $block->getItemOptions()): ?>
+
+        <div class="cs-cart-item__options">
+            <?php foreach ($_options as $_option) : ?>
+                <dl class="cs-cart-item__options-group | item-options">
+                    <dt class="cs-cart-item__options-label"><?php echo $block->escapeHtml($_option['label']) ?></dt>
+                    <?php if (!$block->getPrintStatus()): ?>
+                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                        <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="cs-cart-item__options-value | tooltip wrapper"<?php endif; ?>>
+                            <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                <div class="tooltip content">
+                                    <dl class="item options">
+                                        <dt><?php echo $block->escapeHtml($_option['label']) ?></dt>
+                                        <dd><?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?></dd>
+                                    </dl>
+                                </div>
+                            <?php endif; ?>
+                        </dd>
+                    <?php else: ?>
+                        <dd class="cs-cart-item__options-value"><?php echo $block->escapeHtml((isset($_option['print_value']) ? $_option['print_value'] : $_option['value'])) ?></dd>
+                    <?php endif; ?>
+                </dl>
+            <?php endforeach; ?>
+        </div>
+
+        <?php endif; ?>
+        <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+        <?php if ($addInfoBlock) :?>
+            <?php echo $addInfoBlock->setItem($_item->getOrderItem())->toHtml(); ?>
+        <?php endif; ?>
+        <?php echo $block->escapeHtml($_item->getDescription()) ?>
+    </td>
+    <td class="cs-table__col | sku" data-th="<?php echo $block->escapeHtml(__('SKU')); ?>"><?php /* @escapeNotVerified */ echo $block->prepareSku($block->getSku()) ?></td>
+    <td class="cs-table__col | price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
+        <?php echo $block->getItemPriceHtml(); ?>
+    </td>
+    <td class="cs-table__col | qty" data-th="<?php echo $block->escapeHtml(__('Qty Invoiced')); ?>">
+        <span class="qty summary"><?php /* @escapeNotVerified */ echo $_item->getQty()*1 ?></span>
+    </td>
+    <td class="cs-table__col | subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal')); ?>">
+        <?php echo $block->getItemRowTotalHtml(); ?>
+    </td>
+</tr>

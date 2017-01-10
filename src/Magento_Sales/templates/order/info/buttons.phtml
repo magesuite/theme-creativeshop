@@ -1,0 +1,32 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="cs-info-block cs-info-block--flex">
+    <?php  $_order = $block->getOrder() ?>
+    <div class="cs-info-block__buttons">
+        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($_order->getEntityId())) : ?>
+            <a class="cs-info-block__button | cs-button cs-button--size_300 cs-button--look_default" href="<?php /* @escapeNotVerified */ echo $block->getReorderUrl($_order) ?>">
+                <?php /* @escapeNotVerified */ echo __('Reorder') ?>
+                <svg class="cs-button__icon">
+                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                </svg>
+            </a>
+        <?php endif ?>
+        <a class="cs-info-block__button | cs-button cs-button--size_300 cs-button--look_light"
+           href="<?php /* @escapeNotVerified */ echo $block->getPrintUrl($_order) ?>"
+           onclick="this.target='_blank';">
+            <?php /* @escapeNotVerified */ echo __('Print Order') ?>
+            <svg class="cs-button__icon">
+                <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+            </svg>
+        </a>
+    </div>
+
+    <?php echo $block->getChildHtml(); ?>
+</div>

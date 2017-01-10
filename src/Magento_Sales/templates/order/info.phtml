@@ -1,0 +1,61 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php $_order = $block->getOrder() ?>
+<div class="cs-info-block | cs-dashboard__block | block-order-details-view">
+    <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+        <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('Shipping and payment information') ?></span>
+    </div>
+    <div class="cs-info-block__content">
+        <?php if (!$_order->getIsVirtual()): ?>
+            <div class="cs-info-block__box | box-order-shipping-address">
+                <div class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4"><?php /* @escapeNotVerified */ echo __('Shipping Address') ?></div>
+                <div class="cs-info-block__box-content">
+                    <address class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo $block->getFormattedAddress($_order->getShippingAddress()); ?></address>
+                </div>
+            </div>
+
+            <div class="cs-info-block__box | box-order-shipping-method">
+                <div class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                    <?php /* @escapeNotVerified */ echo __('Shipping Method') ?>
+                </div>
+                <div class="cs-info-block__box-content">
+                    <div class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                    <?php if ($_order->getShippingDescription()): ?>
+                        <?php echo $block->escapeHtml($_order->getShippingDescription()) ?>
+                    <?php else: ?>
+                        <?php /* @escapeNotVerified */ echo __('No shipping information available'); ?>
+                    <?php endif; ?>
+                    </div>
+
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <div class="cs-info-block__box | box-order-billing-address">
+            <div class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                <?php /* @escapeNotVerified */ echo __('Billing Address') ?>
+            </div>
+            <div class="cs-info-block__box-content">
+                <address class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo $block->getFormattedAddress($_order->getBillingAddress()); ?></address>
+            </div>
+        </div>
+        <div class="cs-info-block__box | box-order-billing-method">
+            <div class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                <?php /* @escapeNotVerified */ echo __('Payment Method') ?>
+            </div>
+            <div class="cs-info-block__box-content">
+                <div class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                <?php echo $block->getPaymentInfoHtml() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

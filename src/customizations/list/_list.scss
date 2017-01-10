@@ -8,12 +8,28 @@
 @include export-once( 'customizations/list' ) {
     .#{$namespace}list {
         @include list();
+        $root: &;
 
         margin: 0;
         padding: 0;
 
         &--multiline {
             width: 100%;
+        }
+
+        &--menu {
+            display: flex;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $colorGallery;
+
+            li {
+                @extend #{$root}__item;
+                @extend #{$root}__item--menu;
+            }
+
+            a {
+                @extend .#{$namespace}link;
+            }
         }
 
         &__item {
@@ -38,6 +54,26 @@
                 }
                 @include media('>=laptop') {
                     width: 25%;
+                }
+            }
+
+            &--menu {
+                font-size: 1.4rem;
+                font-weight: 500;
+                color: $colorDoveGray;
+                padding: .8rem 1.8rem;
+                border-right: 1px solid $colorGallery;
+
+                &:last-child {
+                    border-right: none;
+
+                    &:first-child {
+                        display: none;
+                    }
+                }
+
+                &:first-child {
+                    padding-left: 0;
                 }
             }
         }

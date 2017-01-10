@@ -3,6 +3,8 @@
 @import '../list/list';
 
 .#{$namespace}attributes-list {
+    $root: &;
+
     &__list {
         @extend .#{$namespace}list;
         list-style: none;
@@ -11,6 +13,16 @@
         &--columns {
             columns: 2;
         }
+        &--long-labels {
+            #{$root}__item,
+            #{$root}__item-label {
+                @include media('<tablet') {
+                    width: 45%;
+                }
+            }
+
+        }
+
     }
 
     &__item {
@@ -29,6 +41,10 @@
         width: 22%;
         margin: 0;
         vertical-align: top;
+
+        &--long {
+            width: 40%;
+        }
     }
 
     &__bullet {
