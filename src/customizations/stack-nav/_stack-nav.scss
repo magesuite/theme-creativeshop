@@ -8,42 +8,32 @@
     $root: &;
 
     &__trigger {
-        border-top: 1px solid $colorAlto;
-        border-bottom: 1px solid $colorAlto;
         padding: 1rem 1.5rem;
+        background-color: $colorGallery;
         cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         @include media( '>=tablet' ) {
             display: none;
         }
     }
 
-    &__trigger-icon {
-        width: 1.8rem;
-        height: 1.8rem;
-        transition: transform .35s;
-        fill: $colorMineShaft;
-        transform: rotate( 90deg );
-
-        .#{$namespace}dropdown__trigger--in & {
-            transform: rotate( 270deg );
+    &__content {
+        @include media( '<tablet' ) {
+            background-color: $colorGallery;
         }
 
+        @include media( '>=tablet' ) {
+            border-radius: 4px;
+            background-color: $colorWhite;
+            box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
+            padding: 20px 0;
+        }
     }
 
     &__nav {
-        border-radius: 4px;
-        background-color: $colorWhite;
-        box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
-        padding: 20px 0;
-
-        @include media( '>=tablet' ) {
-            //margin-top: 2rem;
-            z-index: 1;
-        }
-
         #{$root}__list  li {
             margin: 0;
             overflow: hidden;
@@ -54,17 +44,25 @@
         #{$root}__list  li  strong {
             font-size: 1.4rem;
             border-left: none;
-            padding: .5rem 1.8rem .5rem 2.5rem;
+            padding: .75rem 15px;
             display: block;
             margin-bottom: .1rem;
             overflow: hidden;
             color: $colorDoveGray;
             font-weight: 300;
+
+            @include media( '>=tablet' ) {
+                padding: .5rem 1.8rem .5rem 2.5rem;
+            }
         }
 
 
         #{$root}__list  li  a:hover {
-            background: $colorGallery;
+            background-color: darken( $colorGallery, 5% );
+
+            @include media( '>=tablet' ) {
+                background-color: $colorGallery;
+            }
         }
 
         #{$root}__list  li  strong {
@@ -80,6 +78,7 @@
             border-color: transparent;
             font-weight: 700;
             position: relative;
+
             &:after {
                 position: absolute;
                 left: -6px;
@@ -90,7 +89,11 @@
                 height: 0;
                 border-left: 10px solid transparent;
                 border-right: 10px solid transparent;
-                border-top: 28px solid $colorGold;
+                border-top: 35px solid $colorGold;
+
+                @include media( '>=tablet' ) {
+                    border-top-width: 28px;
+                }
             }
 
             &:before {

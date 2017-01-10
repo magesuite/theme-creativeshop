@@ -4,7 +4,7 @@
 // @codingStandardsIgnoreFile
 ?>
 <div id="layered-filter-block"
-     class="cs-aftersearch-nav | block filter"
+     class="cs-aftersearch-nav | block filter | cs-collapse cs-collapse--only-mobile"
      data-role="filter-block"
      data-mage-init='{"collapsible":{
             "openedState": "active",
@@ -29,7 +29,15 @@
             </div>
         </div>
     </div>
-    <div class="cs-aftersearch-nav__filters | block-content filter-content">
+
+    <h2 class="cs-t-headline cs-t-headline--size_3 | cs-aftersearch-nav__filters-trigger | cs-collapse__trigger cs-collapse__trigger--arrowed cs-collapse__trigger--only-mobile">
+        <?php /* @escapeNotVerified */ echo __('Filter');?>
+        <svg class="cs-aftersearch-nav__filters-trigger-icon | cs-collapse__trigger-icon">
+            <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+        </svg>
+    </h2>
+
+    <div class="cs-aftersearch-nav__filters | block-content filter-content | cs-collapse__content">
         <div class="filter-options" id="narrow-by-list">
             <?php foreach ($block->getFilters() as $filter): ?>
                 <?php if ($filter->getItemsCount()): ?>
