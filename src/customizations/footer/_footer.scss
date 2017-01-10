@@ -129,33 +129,19 @@
         margin: 0;
         cursor: pointer;
 
+        &:before,
+        &:after {
+            background-color: $colorGray !important;
+        }
+
         #{$root}__column:first-child & {
             border-top: none;
-        }
-
-        &:after {
-            content: '+';
-            fill: $colorGray;
-            font-size: 3rem;
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-            padding: 1rem 2rem;
-        }
-
-        &.collapse__trigger--in {
-            content: '-';
         }
 
         @include media( '>=tablet' ) {
             padding: .3rem 0 2.2rem;
             cursor: default;
             border-top: none;
-
-            &:after {
-                display: none;
-            }
         }
 
         &--image {
@@ -166,6 +152,7 @@
         }
 
         &--clear {
+            &:before,
             &:after {
                 display: none;
             }

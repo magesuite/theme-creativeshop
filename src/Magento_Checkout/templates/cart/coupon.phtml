@@ -7,12 +7,15 @@
 // @codingStandardsIgnoreFile
 
 ?>
-<div class="cs-discount | discount" id="block-discount" data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
-    <div class="cs-discount__title" data-role="title">
+<div class="cs-discount | discount | cs-collapse" id="block-discount">
+    <div class="cs-discount__title | cs-collapse__trigger cs-collapse__trigger--arrowed" data-role="title">
         <span class="cs-t-text cs-t-text--size_300" id="block-discount-heading" role="heading" aria-level="2"><?php /* @escapeNotVerified */
             echo __('Apply Discount Code') ?></span>
+        <svg class="cs-discount__trigger-icon | cs-collapse__trigger-icon">
+            <use xlink:href="<?=$this->getViewFileUrl('images/sprites.svg');?>#arrow_next"></use>
+        </svg>
     </div>
-    <div class="cs-discount__content" data-role="content" aria-labelledby="block-discount-heading">
+    <div class="cs-discount__content | cs-collapse__content" data-role="content" aria-labelledby="block-discount-heading">
         <form id="discount-coupon-form"
               action="<?php /* @escapeNotVerified */
               echo $block->getUrl('checkout/cart/couponPost') ?>"
