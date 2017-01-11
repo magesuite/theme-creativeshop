@@ -6,7 +6,10 @@
         $root: &;
 
         margin: 0;
-        width: auto;
+        width: 100%;
+        @include media('>=tablet') {
+            width: auto;
+        }
 
         &__pager {
             margin: 0 .2rem 0 .5rem;
@@ -41,6 +44,23 @@
 
             &:hover {
                 fill: $colorCeruleanBlueHover;
+            }
+        }
+
+        &__content {
+            display: none;
+            @include media('>=tablet') {
+                display: flex;
+            }
+        }
+
+        &__content-mobile {
+            width: 100%;
+            margin-top: 2rem;
+            border-top: 1px solid $colorAlto;
+            padding: 3rem 2rem 0;
+            @include media('>=tablet') {
+                display: none;
             }
         }
     }

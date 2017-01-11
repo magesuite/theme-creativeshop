@@ -4,13 +4,13 @@
         $root: &;
 
         display: flex;
-        padding-bottom: 3rem;
-        border-bottom: 1px solid $colorAlto;
-        margin-bottom: 3rem;
         position: relative;
         flex-wrap: wrap;
         @include media('>=tablet') {
             flex-wrap: nowrap;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid $colorAlto;
+            margin-bottom: 3rem;
         }
 
         .page-title-wrapper .main {
@@ -21,18 +21,39 @@
         }
 
         &__toolbar {
-            padding-bottom: 2rem;
-            display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            display: flex;
+            @include media('>=tablet') {
+                padding-bottom: 2rem;
+            }
             @include media('>=laptop') {
                 flex-wrap: nowrap;
             }
         }
 
+        &__toolbar-top {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
         &__toolbar-left {
-            display: flex;
+            display: none;
+            @include media('>=tablet') {
+                display: flex;
+            }
+        }
+
+        &__toolbar-right {
+            @include media('<tablet') {
+                margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
+                width: 100vw !important;
+            }
+            @include media('>=tablet') {
+                width: auto;
+            }
         }
 
         &__toolbar-label {

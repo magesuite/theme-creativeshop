@@ -17,6 +17,9 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
 
 ?>
 <?php if ($block->getCollection()->getSize()): ?>
+    <?php if ($block->getTotalNum()): ?>
+    <div class="page-title__span | js-page-title-product-amount"> <?php echo '  (' . $block->getTotalNum() . ')'; ?></div>
+    <?php endif ?>
     <div class="cs-category-page__toolbar" data-mage-init='<?php /* @escapeNotVerified */
     echo $block->getWidgetOptionsJson(); ?>'>
 
@@ -40,3 +43,18 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
 
     </div>
 <?php endif ?>
+
+<script>
+    require([
+        "jquery"
+    ], function($){
+
+        $( '.js-page-title-product-amount' ).each( function( i, el ) {
+            if ( i === 0 ) {
+                $( el ).appendTo( '.page-title' );
+            } else {
+                $( el ).remove();
+            }
+        } );
+    });
+</script>
