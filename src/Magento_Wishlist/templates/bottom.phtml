@@ -40,58 +40,52 @@ $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
             <!-- /ko -->
             <!-- ko if: wishlist().counter -->
             <ul class="cs-items-grid | no-display" id="wishlist-sidebar" data-bind="foreach: wishlist().items, css: {'no-display': null}">
-                <li class="cs-items-grid__item cs-items-grid__item--hide-third-mobile">
-                    <div class="cs-grid-product cs-grid-product--no-shadow">
-                        <a class="cs-grid-product__figure" data-bind="attr: { href: product_url, title: product_name }">
-                            <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
-                        </a>
-
-                        <div class="cs-grid-product__name">
-                            <a data-bind="attr: { href: product_url }">
-                                <span data-bind="text: product_name" class="cs-t-text"></span>
+                <li class="cs-items-grid__item">
+                    <div class="cs-grid-product">
+                        <div class="cs-grid-product__main">
+                            <a class="cs-grid-product__figure-wrapper" data-bind="attr: { href: product_url, title: product_name }">
+                                <figure class="cs-grid-product__figure cs-grid-product__figure--small">
+                                    <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
+                                </figure>
                             </a>
-                        </div>
 
-
-
-                        <div class="cs-grid-product__description">
-                            <div class="cs-grid-product__price-outer">
-                                <div class="cs-grid-product__uvp">
-<!--                                    <span class="cs-grid-product__price-label">UVP</span>-->
-                                    <span class="cs-grid-product__uvp-price">249,99&euro;</span>
-                                </div>
-                                <div class="cs-grid-product__our-price">
-<!--                                    <span class="cs-grid-product__price-label">Unser Preis</span>-->
-                                    <span data-bind="html: product_price"></span>
-                                </div>
+                            <div class="cs-grid-product__name cs-grid-product__name--no-space">
+                                <a data-bind="attr: { href: product_url }" class="cs-grid-product__name-link">
+                                    <span data-bind="text: product_name"></span>
+                                </a>
                             </div>
+
+                            <div class="cs-grid-product__price">
+                                <div data-bind="html: product_price"></div>
+                            </div>
+
+                            <!-- ko if: product_is_saleable_and_visible -->
+                            <div class="cs-grid-product__buttons">
+                                <!-- ko if: product_has_required_options -->
+                                <a href="#" data-bind="attr: {'data-post': add_to_cart_params}" class="cs-button cs-button--look_default cs-button--size_300">
+                                    <?php /* @escapeNotVerified */
+                                    echo __('Add to Cart') ?>
+                                    <svg class="cs-button__icon">
+                                        <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                                    </svg>
+                                </a>
+                                <!-- /ko -->
+                                <!-- ko ifnot: product_has_required_options -->
+                                <button type="button" class="cs-button cs-button--look_default cs-button--size_300" data-bind="attr: {'data-post': add_to_cart_params}">
+
+                                    <?php /* @escapeNotVerified */
+                                    echo __('Add to Cart') ?>
+
+                                    <svg class="cs-button__icon">
+                                        <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                                    </svg>
+                                </button>
+                                <!-- /ko -->
+                            </div>
+                            <!-- /ko -->
                         </div>
 
-                        <!-- ko if: product_is_saleable_and_visible -->
-                        <div class="cs-grid-product__buttons">
-                            <!-- ko if: product_has_required_options -->
-                            <a href="#" data-bind="attr: {'data-post': add_to_cart_params}" class="cs-button cs-button--look_default cs-button--size_300">
-                                <?php /* @escapeNotVerified */
-                                echo __('Add to Cart') ?>
 
-                                <svg class="cs-button__icon">
-                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
-                                </svg>
-                            </a>
-                            <!-- /ko -->
-                            <!-- ko ifnot: product_has_required_options -->
-                            <button type="button" class="cs-button cs-button--look_default cs-button--size_300" data-bind="attr: {'data-post': add_to_cart_params}">
-
-                                <?php /* @escapeNotVerified */
-                                echo __('Add to Cart') ?>
-
-                                <svg class="cs-button__icon">
-                                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
-                                </svg>
-                            </button>
-                            <!-- /ko -->
-                        </div>
-                        <!-- /ko -->
                         <div class="cs-grid-product__remove">
                             <a href="#"  data-bind="attr: {'data-post': delete_item_params}"
                                title="<?php /* @escapeNotVerified */ echo __('Remove This Item') ?>"

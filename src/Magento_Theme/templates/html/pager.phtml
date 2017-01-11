@@ -113,6 +113,17 @@
                 <?php endif;?>
 
             </div>
+            <div class="cs-pagination__content-mobile">
+
+                <?php if (!$block->isLastPage()): ?>
+                    <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : '';?>
+                    <a class="cs-button cs-button--look_light cs-button--type_wide" href="<?php /* @escapeNotVerified */ echo $block->getNextPageUrl() ?>" title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Next page') ?>"> <?php echo __('Next page'); ?>
+                        <svg class="cs-button__icon">
+                            <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                        </svg>
+                    </a>
+                <?php endif;?>
+            </div>
         </div>
     <?php endif; ?>
 
