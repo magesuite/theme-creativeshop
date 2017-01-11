@@ -25,7 +25,6 @@
 
     &__flyout {
         z-index: 1001; // Make sure flyouts cover gallery nav.
-        border: 1px solid $colorAlto;
         box-shadow: 2px 2px 5px rgba( 0, 0, 0, .15 );
     }
 
@@ -55,6 +54,20 @@
     }
 
     &__categories {
-        padding: 2rem;
+        column-width: calc( 25vw - 7.5px ); // 25vw - 30px padding / 4
+        column-count: 4;
+        column-gap: 0;
+
+        @include media( '>=1200px' ) {
+            column-count: 5;
+            column-width: 240px; // 1200px / 5
+        }
+    }
+
+    &__category,
+    &__banners {
+        box-sizing: border-box;
+        padding: 10px;
+        width: 100%;
     }
 }

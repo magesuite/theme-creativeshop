@@ -1,92 +1,88 @@
-$namespace: 'cs-';
-
 @import '../../../node_modules/creative-patterns/packages/components/qty-increment/src/qty-increment';
 
-@include export-once( 'customizations/qty-increment' ) {
-    .#{$namespace}qty-increment {
-        $root: &;
+.#{$namespace}qty-increment {
+    $root: &;
 
-        min-width: 11rem;
-        max-width: 11rem;
+    min-width: 11rem;
+    max-width: 11rem;
 
-        &__input {
-            margin: 0;
+    &__input {
+        margin: 0;
+        padding: 0;
+        width: 10.5rem;
+        height: 3.75rem;
+        border: 1px solid $colorAlto;
+        border-radius: 3px;
+    }
+
+    &__button {
+        width: 3.25rem;
+        border-radius: 0;
+
+        &:hover {
+            background-color: transparent;
             padding: 0;
-            width: 10.5rem;
-            height: 3.75rem;
-            border: 1px solid $colorAlto;
-            border-radius: 3px;
+            border-top: 0;
+            border-bottom: 0;
+
+            #{$root}__icon {
+                fill: $colorCeruleanBlueHover;
+            }
         }
 
-        &__button {
-            width: 3.25rem;
-            border-radius: 0;
+        &:focus,
+        &:active {
+            background-color: transparent;
+            border-top: 0;
+            border-bottom: 0;
+        }
 
-            &:hover {
-                background-color: transparent;
-                padding: 0;
-                border-top: 0;
-                border-bottom: 0;
+        &:active {
+            outline: 1px  dotted $colorAlto;
+        }
 
-                #{$root}__icon {
-                    fill: $colorCeruleanBlueHover;
-                }
-            }
+        &--decrement {
+            border-right-color: $colorAlto;
 
+            &:hover,
             &:focus,
             &:active {
-                background-color: transparent;
-                border-top: 0;
-                border-bottom: 0;
-            }
-
-            &:active {
-                outline: 1px  dotted $colorAlto;
-            }
-
-            &--decrement {
+                border-left: 0;
                 border-right-color: $colorAlto;
-
-                &:hover,
-                &:focus,
-                &:active {
-                    border-left: 0;
-                    border-right-color: $colorAlto;
-                    box-shadow: none;
-                }
+                box-shadow: none;
             }
+        }
 
-            &--increment {
+        &--increment {
+            border-left-color: $colorAlto;
+
+            &:hover,
+            &:focus,
+            &:active {
+                border-right: 0;
                 border-left-color: $colorAlto;
-
-                &:hover,
-                &:focus,
-                &:active {
-                    border-right: 0;
-                    border-left-color: $colorAlto;
-                    box-shadow: none;
-                }
-            }
-
-            &--disabled {
-                opacity: 1;
-
-                #{$root}__icon {
-                    opacity: .5;
-                }
+                box-shadow: none;
             }
         }
 
-        &__icon {
-            fill: $colorCeruleanBlue;
-            transition: fill .15s linear;
-            width: 1rem;
-            height: 1rem;
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate( -50%, -50% );
+        &--disabled {
+            opacity: 1;
+
+            #{$root}__icon {
+                opacity: .5;
+            }
         }
+    }
+
+    &__icon {
+        fill: $colorCeruleanBlue;
+        transition: fill .15s linear;
+        width: 1rem;
+        height: 1rem;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate( -50%, -50% );
     }
 }
