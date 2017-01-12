@@ -32,8 +32,13 @@ Alternatively we could calculate widths automatically using block input paramete
  */
 ?>
 <?php
+$subtractYears = 16;
 $fieldCssClass = 'field date field-' . $block->getHtmlId();
 $fieldCssClass .= $block->isRequired() ? ' required' : '';
+$time = new DateTime('now');
+$dateFormat = $block->getDateFormat();
+$separator = substr(preg_replace("/[A-Za-z0-9 ]/", '', $dateFormat ), 1, 3);
+$maxDate = $time->modify('-'.$subtractYears.' year')->format( substr(strtolower( explode( $separator, $dateFormat )[0] ), 0, 1 ) . $separator . substr( strtolower( explode( $separator, $dateFormat )[1] ), 0, 1 ) . $separator . 'Y');
 ?>
 <div class="cs-input | cs-form__field | <?php /* @escapeNotVerified */ echo $fieldCssClass; ?>">
     <label class="cs-input__label | label" for="<?php echo $block->getHtmlId()?>"><span><?php /* @escapeNotVerified */ echo $block->getLabel() ?></span></label>
@@ -42,10 +47,60 @@ $fieldCssClass .= $block->isRequired() ? ' required' : '';
     </div>
     <div class="field-tooltip">
         <div class="field-tooltip-content" data-target="dropdown" aria-hidden="true">
-            <?php /* @escapeNotVerified */ echo __('Provide date in format dd/mm/yy') ?>
+            <?php /* @escapeNotVerified */ echo __('Provide date not greater than: '.$maxDate .' in format: '. $dateFormat ); ?>
         </div>
     </div>
     <?php if ($_message = $block->getAdditionalDescription()) : ?>
         <div class="note"><?php /* @escapeNotVerified */ echo $_message; ?></div>
     <?php endif; ?>
 </div>
+
+<script type="text/javascript">
+    require([
+        'jquery', // jquery Library
+        'jquery/ui', // Jquery UI Library
+        'jquery/validate', // Jquery Validation Library
+        'mage/translate' // Magento text translate (Validation message translte as per language)
+    ], function($){
+        $.validator.addMethod(
+            'validate-cs-dob', function (value) {
+                var pat = /([0-9]{1,})$/;
+                var year = value.match( pat )[0];
+                var dateFormat = '<?php echo $block->getDateFormat(); ?>';
+                var dayPosition = 0;
+                var monthPosition = 1;
+                if( dateFormat.charAt( 0 ).toLowerCase() === 'm' ) {
+                    dayPosition = 1;
+                    monthPosition = 0;
+                }
+                var separator = value.replace(/[A-Za-z0-9 ]/gi, '' );
+                separator = separator.charAt( 0 );
+                var insertedDateArray = value.split( separator );
+                insertedDateArray = insertedDateArray.map( function( item ) {
+                    return parseInt( item, 10 );
+                });
+
+                if ( ( year.length !== 4 || isNaN( year ) === true ) && insertedDateArray[ 1 ].length > 2 && insertedDateArray[ 0 ].length > 2 ) {
+                    return false;
+                }
+
+                var minDate = new Date();
+                minDate.setFullYear( minDate.getFullYear() - <?php echo $subtractYears; ?> );
+
+                if ( insertedDateArray[ 2 ] > minDate.getFullYear() ) {
+                    return false;
+                }
+
+                if ( insertedDateArray[ 2 ] === minDate.getFullYear() && ( insertedDateArray[ monthPosition ] - 1  > minDate.getMonth() ) ) {
+                    return false;
+                }
+
+                if ( insertedDateArray[ 2 ] === minDate.getFullYear() && ( insertedDateArray[ monthPosition ] - 1 ) === minDate.getMonth() && insertedDateArray[ dayPosition ] > minDate.getDay() ) {
+                    return false;
+                }
+
+                return true;
+            }, $.mage.__('Enter valid date according to given format'));
+
+    });
+</script>
