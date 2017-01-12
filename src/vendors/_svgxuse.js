@@ -1,8 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////
+//  CS:
+//  This file has been modified o work when loaded asynchronously.
+//  See line 217 for chandes.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 /*!
  * @copyright Copyright (c) 2016 IcoMoon.io
  * @license   Licensed under MIT license
  *            See https://github.com/Keyamoon/svgxuse
- * @version   1.1.22
+ * @version   1.1.23
  */
 /*jslint browser: true */
 /*global XDomainRequest, MutationObserver, window */
@@ -50,16 +57,22 @@
             // In IE 9, cross origin requests can only be sent using XDomainRequest.
             // XDomainRequest would fail if CORS headers are not set.
             // Therefore, XDomainRequest should only be used with cross origin requests.
-            function getOrigin(href) {
-                var a = document.createElement('a');
-                a.href = href;
-                return a.protocol + a.hostname;
+            function getOrigin(loc) {
+                var a;
+                if (loc.protocol !== undefined) {
+                    a = loc;
+                } else {
+                    a = document.createElement('a');
+                    a.href = loc;
+                }
+                return a.protocol.replace(/:/g, '') + a.host;
             }
             var Request;
-            var origin = location.protocol + location.hostname;
+            var origin;
             var origin2;
             if (window.XMLHttpRequest) {
                 Request = new XMLHttpRequest();
+                origin = getOrigin(location);
                 origin2 = getOrigin(url);
                 if (Request.withCredentials === undefined && origin2 !== '' && origin2 !== origin) {
                     Request = XDomainRequest || undefined;
@@ -200,10 +213,16 @@
             inProgressCount += 1;
             observeIfDone();
         };
-        // The load event fires when all resources have finished loading, which allows detecting whether SVG use elements are empty.
-        window.addEventListener('load', function winLoad() {
-            window.removeEventListener('load', winLoad, false); // to prevent memory leaks
+        // CS: Here we added check if document was already loaded before script did.
+        // This fixes the situation when load event didn't fire at all.
+        if (document.readyState == 'complete') {
             tid = setTimeout(checkUseElems, 0);
-        }, false);
+        } else {
+            // The load event fires when all resources have finished loading, which allows detecting whether SVG use elements are empty.
+            window.addEventListener('load', function winLoad() {
+                window.removeEventListener('load', winLoad, false); // to prevent memory leaks
+                tid = setTimeout(checkUseElems, 0);
+            }, false);
+        }
     }
 }());
