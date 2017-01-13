@@ -8,7 +8,8 @@ body {
 
 body,
 html {
-    height: 100%;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 #maincontent { // stylelint-disable-line
@@ -22,6 +23,11 @@ html {
     min-height: 100%;
 
     &--checkout {
+
+        @include media('<tablet') {
+            max-width: 100vw;
+            overflow: hidden;
+        }
         .#{$namespace}information-stripe__item--login {
             display: none;
         }
@@ -33,16 +39,6 @@ html {
             box-sizing: border-box;
         }
     }
-}
-
-.page-title {
-    display: flex;
-}
-
-.page-title__span {
-    color: lighten( $colorDoveGray, 7% );
-    font-weight: 400;
-    padding-left: .5rem;
 }
 
 .ie11 .page-wrapper {
@@ -68,10 +64,10 @@ html {
 
 .#{$namespace}cart-page {
     position: relative;
+    width: 100%;
     @include media('<tablet') {
         max-width: 40rem;
         margin: 0 auto;
-        width: 100%;
 
         .page-title {
             padding-left: 2rem;
@@ -128,7 +124,8 @@ h2 {
     }
 }
 
-.catalog-category-view .column.main {
+.catalog-category-view .column.main,
+.cs-category-page .column.main {
     > .page-title-wrapper {
         @include media('>=tablet') {
             padding-bottom: 1rem;
