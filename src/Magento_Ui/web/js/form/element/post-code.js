@@ -21,24 +21,6 @@ define([
          * @param {String} value
          */
         update: function (value) {
-            var country = registry.get(this.parentName + '.' + 'country_id'),
-                options = country.indexedOptions,
-                option;
-
-            if (!value) {
-                return;
-            }
-
-            console.log('hsdgsds')
-
-            option = options[value];
-
-            if (option['is_zipcode_optional']) {
-                this.error(false);
-                this.validation = _.omit(this.validation, 'required-entry');
-                console.log('if1')
-            }
-
         }
     });
 });
