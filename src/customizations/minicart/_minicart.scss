@@ -2,9 +2,23 @@
 @include export-once( 'customizations/minicart' ) {
     .#{$namespace}minicart {
 
+        .action.close {
+            top: .8rem;
+        }
+
         &__title {
             border-bottom: 1px solid $colorAlto;
-            padding: 0 2rem 1.5rem;
+            padding: 2rem 2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            @extend .#{$namespace}t-headline;
+            @extend .#{$namespace}t-headline--size_2;
+            @extend .#{$namespace}t-headline--look_light;
+        }
+
+        &__title-qty {
+            color: $colorDoveGray;
+            font-size: 1.3rem;
         }
 
         &__content-wrapper {
@@ -19,6 +33,15 @@
             padding: 0;
             list-style: none;
             margin-bottom: 0;
+
+            &--scroll {
+                height: auto !important;
+                max-height: 18rem;
+                overflow-y: scroll;
+                @include media('>=tablet') {
+                    max-height: 29rem;
+                }
+            }
         }
 
         &__list-item {
@@ -29,6 +52,87 @@
                 border-bottom: none;
             }
         }
+
+        &__buttons {
+            padding: 2rem 2rem .5rem;
+            border-top: 1px solid $colorAlto;
+            box-shadow: 0 -5px 5px -5px rgba( 0, 0, 0, .27 );
+        }
+
+        &__button {
+            margin-top: 1rem;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        &__subtotal {
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+
+        }
+
+        &__subtotal-price {
+
+            .price {
+                font-weight: 700;
+                font-size: 1.5rem !important;
+            }
+
+        }
     }
 
 }
+
+.minicart-wrapper .block-minicart {
+    box-shadow: 0 0 21px 0 rgba( 0, 0, 0, .27 );
+    right: -.3rem;
+    border: none;
+    width: 29.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+
+    &:before {
+        top: 0;
+        right: .7rem;
+        left: auto;
+        border: none;
+        border: solid transparent;
+        content: '';
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba( 136, 183, 213, 0 );
+        border-top-color: $colorWhite;
+        border-width: 1.4rem;
+        @include media('>=desktop') {
+            right: 1.7rem;
+        }
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: $colorWhite;
+        transform: rotate( 45deg );
+        top: -.8rem;
+        right: 1.3rem;
+        left: auto;
+        border: none;
+        box-shadow: -1px -1px 10px -2px rgba( 0, 0, 0, .27 );
+        z-index: -1;
+        @include media('>=desktop') {
+            right: 2.3rem;
+        }
+    }
+}
+
+

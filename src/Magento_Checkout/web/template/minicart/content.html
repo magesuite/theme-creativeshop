@@ -1,0 +1,109 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="cs-minicart">
+
+    <button type="button"
+            id="btn-minicart-close"
+            class="action close"
+            data-action="close"
+            data-bind="attr: { title: $t('Close') }">
+        <span><!-- ko i18n: 'Close' --><!-- /ko --></span>
+    </button>
+
+    <span class="cs-minicart__title">
+        <!-- ko i18n: 'My Cart' --><!-- /ko -->
+    </span>
+
+    <div class="cs-minicart__content-wrapper">
+
+        <div class="cs-minicart__content">
+
+        <!-- ko if: getCartParam('summary_count') -->
+            <ol id="mini-cart" class="cs-minicart__list cs-minicart__list--scroll" data-bind="foreach: { data: getCartParam('items'), as: 'item' }">
+                <!-- ko foreach: $parent.getRegion($parent.getItemRenderer(item.product_type)) -->
+                <!-- ko template: {name: getTemplate(), data: item, afterRender: function() {$parents[1].initSidebar()}} --><!-- /ko -->
+                <!-- /ko -->
+            </ol>
+        <!-- /ko -->
+
+        </div>
+
+
+        <div class="cs-minicart__buttons">
+
+        <!-- ko if: getCartParam('summary_count') -->
+
+            <!-- ko if: getCartParam('possible_onepage_checkout') -->
+            <!-- ko foreach: getRegion('subtotalContainer') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko foreach: getRegion('extraInfo') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if: getCartParam('possible_onepage_checkout') -->
+            <div class="cs-minicart__button">
+                <button
+                        id="top-cart-btn-checkout"
+                        type="button"
+                        class="cs-button cs-button--look_default cs-button--type_long cs-button--type_wide | checkout"
+                        data-bind="attr: {title: $t('Proceed to Checkout')}">
+                    <!-- ko i18n: 'Go to Checkout' --><!-- /ko -->
+                    <span class="cs-button__icon cs-button__icon--bg"></span>
+
+                </button>
+                <div data-bind="html: getCartParam('extra_actions')"></div>
+            </div>
+            <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko ifnot: getCartParam('summary_count') -->
+            <strong class="subtitle empty" data-bind="visible: closeSidebar()">
+                <!-- ko i18n: 'You have no items in your shopping cart.' --><!-- /ko -->
+            </strong>
+            <!-- ko if: getCartParam('cart_empty_message') -->
+            <p class="minicart empty text"><!-- ko text: getCartParam('cart_empty_message') --><!-- /ko --></p>
+
+            <div class="cs-minicart__button">
+                <a class="cs-button cs-button--look_light cs-button--type_wide | viewcart" data-bind="attr: {href: shoppingCartUrl}">
+                    <span><!-- ko text: $t('View and edit cart') --><!-- /ko --></span>
+                    <span class="cs-button__icon cs-button__icon--bg"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: getCartParam('summary_count') -->
+            <div class="cs-minicart__button">
+                <a class="cs-button cs-button--look_light cs-button--type_wide | viewcart" data-bind="attr: {href: shoppingCartUrl}">
+                    <span><!-- ko i18n: 'View and edit cart' --><!-- /ko --></span>
+                    <span class="cs-button__icon cs-button__icon--bg"></span>
+                </a>
+            </div>
+        <!-- /ko -->
+
+            <div id="minicart-widgets" class="minicart-widgets">
+                <!-- ko foreach: getRegion('promotion') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <!-- ko foreach: getRegion('sign-in-popup') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+
+

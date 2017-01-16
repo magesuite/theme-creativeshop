@@ -6,6 +6,11 @@
         &__image-container {
             display: inline-block;
             margin-right: 1rem;
+
+            img {
+                width: auto !important;
+                height: auto !important;
+            }
         }
         &__image-wrapper {
             height: auto;
@@ -18,6 +23,7 @@
 
         &__name-wrapper {
             margin-bottom: 1.3rem;
+            text-align: left;
         }
 
         &__name {
@@ -28,14 +34,32 @@
             text-decoration: none;
             color: $colorMineShaft;
             margin-bottom: 1.2rem;
+
+            &:visited,
+            &:hover {
+                text-decoration: none;
+                color: $colorMineShaft;
+            }
+        }
+
+        .price {
+            font-size: 1.4rem !important;/* stylelint-disable-line declaration-no-important */
+            font-weight: 700;
         }
 
 
         &__options-wrapper {
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             @include media('>=laptop') {
                 display: flex;
                 flex-direction: column;
+            }
+
+            &--column {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
             }
         }
 
@@ -50,6 +74,11 @@
             font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 0;
+            .minicart-price {
+                font-size: 1.1rem !important;/* stylelint-disable-line declaration-no-important */
+                font-weight: 400 !important;/* stylelint-disable-line declaration-no-important */
+                color: $colorMineShaft !important;/* stylelint-disable-line declaration-no-important */
+            }
         }
 
         &__options-value {
@@ -57,6 +86,16 @@
             display: inline-block;
             font-size: 1.2rem;
             color: $colorDoveGray;
+
+            &--price-minicart {
+                margin-top: .8rem;
+
+                .price {
+                    font-size: 1.1rem !important;/* stylelint-disable-line declaration-no-important */
+                    font-weight: 400 !important;/* stylelint-disable-line declaration-no-important */
+                }
+
+            }
         }
 
         &__price-wrapper {
@@ -65,11 +104,6 @@
 
         &__price {
             color: $colorDoveGray;
-            font-weight: 700;
-        }
-
-        .price {
-            font-size: 1.4rem !important;/* stylelint-disable-line declaration-no-important */
             font-weight: 700;
         }
     }
