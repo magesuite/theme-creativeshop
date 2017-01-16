@@ -33,14 +33,17 @@ if ($_attributeType && $_attributeType == 'text') {
 ?>
 
 <?php if ($_attributeValue):?>
-    <div class="cs-product-description__item | cs-collapse">
+    <div class="cs-product-description__item | cs-collapse cs-collapse--only-mobile">
         <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger">
             <?php /* @escapeNotVerified */ echo __('Highlights'); ?>
         </h2>
-        <div class="cs-collapse__content cs-collapse__content--only-mobile">
-            <div class="product attribute <?php /* @escapeNotVerified */ echo $_className?>">
-                <?php if ($_attributeLabel != 'none'): ?><strong class="type"><?php /* @escapeNotVerified */ echo $_attributeLabel?></strong><?php endif; ?>
-                <div class="value" <?php /* @escapeNotVerified */ echo $_attributeAddAttribute;?>><?php /* @escapeNotVerified */ echo $_attributeValue; ?></div>
+
+        <div class="cs-collapse__content | cs-cms-block">
+            <div class="cs-product-description__content">
+                <div class="product attribute <?php /* @escapeNotVerified */ echo $_className?>">
+                    <?php if ($_attributeLabel != 'none'): ?><strong class="type"><?php /* @escapeNotVerified */ echo $_attributeLabel?></strong><?php endif; ?>
+                    <div class="value" <?php /* @escapeNotVerified */ echo $_attributeAddAttribute;?>><?php /* @escapeNotVerified */ echo $_attributeValue; ?></div>
+                </div>
             </div>
         </div>
     </div>
