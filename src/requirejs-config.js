@@ -21,9 +21,4 @@ var config = {
             exports: 'isMobile',
         },
     },
-    map: {
-        '*': {
-            'mage/validation': 'js/validation',
-        }
-    },
 };

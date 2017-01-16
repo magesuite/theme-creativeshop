@@ -1,9 +1,22 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <!--
-            Do not add fonts stylesheets here, they will block render while loading.
+            Do not add fonts' stylesheets here, they will block render while loading.
             See Magento_Theme/templates/html/fonts.phtml file to add fonts there.
         -->
-        <css src="bundle.css" after="-"/>
+
+        <!--
+            We remove styles so we can add them back without media attributes.
+            This allows CSS to be merged into one file.
+        -->
+        <css src="css/styles-l.css" media="all"/>
+        <css src="css/print.css" media="all"/>
+        <css src="bundle.css" media="all"/>
+
+        <!-- We have our own swatches implementation. -->
+        <remove src="Magento_Swatches::css/swatches.css"/>
+
+        <!-- Add loadCSS utility for async CSS loading. -->
+        <script src="loadCSS.js"/>
     </head>
 </page>

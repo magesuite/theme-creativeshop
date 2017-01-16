@@ -19,6 +19,8 @@ export default {
         path.join( paths.src, '**/*.csv' ),
         // Require.js configs.
         path.join( paths.src, '**/requirejs-config.js' ),
+        // Less styles.
+        path.join( paths.src, '**/*.less' ),
     ],
 
     src: [
@@ -34,6 +36,8 @@ export default {
         path.join( paths.src, '**/*.csv' ),
         // Require.js configs.
         path.join( paths.src, '**/requirejs-config.js' ),
+        // Less styles.
+        path.join( paths.src, '**/*.less' ),
     ],
     dest: paths.dist,
 };
