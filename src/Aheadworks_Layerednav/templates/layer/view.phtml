@@ -21,11 +21,15 @@
          data-mage-init='{"awLayeredNavPopover": {
                 "filtersContainer": "#layered-filter-block",
                 "hasActiveFilters": <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->hasActiveFilters()) ?>}}'>
-        <div class="aw-layered-nav-popover__content">
-            <div id="aw-layered-nav-popover__items" data-role="items-count-container" class="aw-layered-nav-popover__items"></div>
-            <div class="aw-layered-nav-popover__loader"><div class="aw-layered-nav-popover__loader-itself"></div></div>
-            <div class="aw-layered-nav-popover__action">
-                <button data-role="show-button" class="action primary show-button"><?php /* @escapeNotVerified */ echo __('Show');?></button>
+        <div class="cs-aftersearch-nav__popover-content | aw-layered-nav-popover__content">
+            <div id="aw-layered-nav-popover__items" data-role="items-count-container" class="cs-aftersearch-nav__popover-items | aw-layered-nav-popover__items"></div>
+            <div class="cs-aftersearch-nav__popover-loader | aw-layered-nav-popover__loader"><div class="aw-layered-nav-popover__loader-itself"></div></div>
+            <div class="cs-aftersearch-nav__popover-action | aw-layered-nav-popover__action">
+                <button data-role="show-button" class="cs-button cs-button--look_default cs-button--size_300 | show-button"><?php /* @escapeNotVerified */ echo __('Show');?>
+                    <svg class="cs-button__icon">
+                        <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#arrow_next"></use>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -87,9 +91,11 @@
             $( '.filter-options-item:gt( 0 )' ).removeClass( 'active' );
         }
 
-        $( '.page-title-wrapper' ).clone().prependTo( '.columns' ).addClass( 'page-title-wrapper--checkout-type page-title-wrapper--wide cs-hide-tablet-desktop' );
+        if ( !$( '.columns > .page-title-wrapper' ).length ) {
+            $( '.page-title-wrapper' ).clone().prependTo( '.columns' ).addClass( 'page-title-wrapper--checkout-type page-title-wrapper--wide cs-hide-tablet-desktop' );
+            $( '.main .page-title-wrapper' ).addClass( 'cs-hide-mobile' );
 
-        $( '.main .page-title-wrapper' ).addClass( 'cs-hide-mobile' );
+        }
 
     });
 </script>

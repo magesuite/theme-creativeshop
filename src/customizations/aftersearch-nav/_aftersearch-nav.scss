@@ -1,6 +1,8 @@
 .#{$namespace}aftersearch-nav {
     $root: &;
 
+    overflow: visible;
+
     @include media('<tablet') {
         margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
         width: 100vw;
@@ -21,6 +23,7 @@
     }
 
     &__filter {
+        position: relative;
         @include media('<tablet') {
             width: 48%;
             border-bottom: none !important;
@@ -201,6 +204,7 @@
 
     &__button {
         z-index: 2;
+        margin-top: 1rem;
         &--apply-filters {
             margin-top: 0 !important;
         }
@@ -231,5 +235,91 @@
             margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
             width: 100vw !important;
         }
+    }
+
+    &__popover {
+        background: $colorWhite;
+        border: 2px solid $colorCeruleanBlue;
+        border-radius: 3px;
+        box-sizing: border-box;
+        display: none;
+        height: 4.2rem;
+        padding: .4rem;
+        position: absolute;
+        width: auto;
+        min-width: 18rem;
+        z-index: 10;
+
+        &:before,
+        &:after {
+            border: solid transparent;
+            content: '';
+            display: block;
+            height: 0;
+            position: absolute;
+            top: 50%;
+            width: 0;
+            right: 100%;
+        }
+
+        &:before {
+            border-width: 2.1rem;
+            margin-top: -2.1rem;
+            border-right-color: $colorCeruleanBlue !important;
+        }
+
+        &:after {
+            border-width: 1.9rem;
+            margin-top: -1.9rem;
+            border-right-color: $colorWhite;
+        }
+    }
+
+    &__popover-content {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__popover-items {
+        color: $colorDoveGray;
+        font-size: 1.2rem;
+        white-space: nowrap;
+        margin-right: 1.5rem;
+    }
+
+    .aw-layered-nav-popover--loading &__popover-items {
+        display: none;
+    }
+    .aw-layered-nav-popover--loading &__popover-loader {
+        display: block;
+    }
+
+    @keyframes aw-layered-nav-rotate {
+        0% {
+            transform: rotate( 0deg ) scale( 1 );
+        }
+        50% {
+            transform: rotate( 180deg ) scale( .6 );
+        }
+        100% {
+            transform: rotate( 360deg ) scale( 1 );
+        }
+    }
+
+    &__popover-loader {
+        animation: aw-layered-nav-rotate .75s 0s linear infinite; //stylelint-disable-line
+        animation-fill-mode: both;
+        background: transparent !important;
+        border: 2px solid $colorCeruleanBlue;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: none;
+        height: 1.8rem;
+        width: 1.8rem;
+    }
+
+    &__popover-action {
+        width: auto !important;
     }
 }
