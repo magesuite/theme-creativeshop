@@ -126,13 +126,13 @@ $namespace: 'cs-';
     }
 
     &__cta {
+        @include media('<tablet') {
+            display: none;
+        }
+
         @include media('<laptop') {
             transform: scale( .9 );
             transform-origin: left bottom;
-        }
-
-        @include media('<tablet') {
-            transform: scale( .8 );
         }
 
         @include media('<phone-lg') {
@@ -214,7 +214,11 @@ $namespace: 'cs-';
 
     &__pagination {
         @include media('<tablet') {
-            bottom: .5rem;
+            position: static;
+            transform: none;
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
         }
 
         &-item {
@@ -270,6 +274,28 @@ $namespace: 'cs-';
         @include media( '>=tablet' ) {
             width: $sliderWidth;
             padding: 0 (100% - $sliderWidth) / 2;
+        }
+    }
+
+    &--as-list-mobile {
+        @include media( '<tablet' ) {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+
+            #{$root}__slides {
+                flex-wrap: wrap;
+            }
+
+            #{$root}__slide {
+                width: 100% !important;
+                opacity: 1 !important;
+                margin-bottom: .5rem;
+            }
+
+            #{$root}__pagination {
+                display: none;
+            }
         }
     }
 }

@@ -3,4 +3,6 @@
 import Hero from '../../../node_modules/creative-patterns/packages/components/hero/src/hero';
 import $ from 'jquery';
 
-new Hero( $( '.cs-hero' ) );
+$( '.cs-hero' ).each( function(): void {
+    new Hero( $( this ) );
+} );
