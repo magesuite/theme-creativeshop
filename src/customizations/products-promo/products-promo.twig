@@ -2,7 +2,41 @@
         {% set items = [] %}
 
         {% for product in products %}
-            {% set isOutOfStock = product.stock ? false : true %}
+
+            {% set leftAddons = [] %}
+            {% set rightAddons = [] %}
+
+            {% if product.rating.data is not null %}
+                {% set ratingContent %}
+                    {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
+                {% endset %}
+            {% endif %}
+
+            {% if ratingContent is defined %}
+                {% set leftAddons = leftAddons|merge( [ {
+                    mix: 'cs-grid-product__addon--rating',
+                    content: ratingContent
+                } ] ) %}
+            {% endif %}
+
+            {% set leftAddons = leftAddons|merge( [ {
+                mix: 'cs-grid-product__addon--rating',
+                content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="Add to Wish List" aria-label="Add to Wish List" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=' ~ asset( 'images/sprites.svg#heart' ) ~'></use></svg>Add to Wish List</a></li></ul>'
+            } ] ) %}
+
+
+            {% if product.stock %}
+                {% set rightAddons = rightAddons|merge( [ {
+                    mix: 'cs-grid-product__addon--in-stock',
+                    content: 'In stock'
+                } ] ) %}
+            {% else %}
+                {% set rightAddons = rightAddons|merge( [ {
+                    mix: 'cs-grid-product__addon--out-of-stock',
+                    content: 'Out of stock'
+                } ] ) %}
+            {% endif %}
+
 
             {% set content %}
                 {% include locate( 'grid-product/grid-product.twig' ) with {
@@ -17,31 +51,16 @@
                     price: {
                         content: product.price
                     },
-                    addons: {
-                        show: true
-                    },
                     swatches: {
                         mix: 'cs-grid-product__swatches--color-only',
-                        asAddon: false,
                         content: product.swatches
                     },
-                    rating: product.rating.data,
-                    stock: {
-                        showInStock: product.stock,
-                        showOutOfStock: isOutOfStock,
-                        inStockContent: 'In stock',
-                        outOfStockContent: 'Out of stock'
+                    addons: {
+                        left: leftAddons,
+                        right: rightAddons
                     },
-                    hotspots: {
-                        after: {
-                            inStock: {
-                                content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="Add to Wish List" aria-label="Add to Wish List" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=' ~ asset( 'images/sprites.svg#heart' ) ~'></use></svg>Add to Wish List</a></li></ul>'
-                            }
-                        }
-                    }
                 } %}
             {% endset %}
-
 
             {% set items = items|merge( [ {
                 mix: 'cs-grid-product cs-grid-product--in-carousel',
