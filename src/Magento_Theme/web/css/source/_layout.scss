@@ -17,9 +17,13 @@ html {
 
 .page-wrapper {
     @include container-wrapper();
-    display: flex;
-    flex-direction: column;
+    display: block !important;
     min-height: 100%;
+
+    @include media('>=tablet') {
+        display: flex !important;
+        flex-direction: column !important;
+    }
 
     &--checkout {
 
@@ -42,6 +46,10 @@ html {
 
 .ie11 .page-wrapper {
     display: block;
+}
+
+.ie11  .modal-popup._inner-scroll .modal-inner-wrap {
+    max-height: none;
 }
 
 .rss {

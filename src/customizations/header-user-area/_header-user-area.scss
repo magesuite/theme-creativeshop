@@ -28,11 +28,21 @@
     }
 
     &__link {
+        display: inline-block;
 
         &:hover {
             text-decoration: none;
         }
+        .touch-device &.showcart {
+            display: none !important;
+        }
+        .touch-device &.showcart-mobile {
+            @include media('>laptop') {
+                display: block !important;
+            }
+        }
     }
+
 
     &__badge {
         position: absolute;
@@ -79,4 +89,17 @@
             display: block;
         }
     }
+
+    .ui-dialog {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        @include media('>=laptop') {
+            right: 1.5rem;
+        }
+        @include media('>=desktop') {
+            right: .5rem;
+        }
+    }
+
 }
