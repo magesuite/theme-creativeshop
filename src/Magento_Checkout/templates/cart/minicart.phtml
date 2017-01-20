@@ -10,6 +10,21 @@
 ?>
 
 <div data-block="minicart" class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper">
+
+    <a class="cs-header-user-area__link cs-hide-tablet-desktop" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>" data-bind="scope: 'minicart_content'">
+        <span class="counter qty empty">
+            <span class="cs-header-user-area__icon-wrapper">
+                <span class="cs-header-user-area__badge | cs-badge cs-badge--info" data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }">
+                    <span class="cs-badge__span"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+                </span>
+                <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
+                    <use xlink:href="<?= $this->getViewFileUrl('images/sprites.svg'); ?>#cart"></use>
+                </svg>
+            </span>
+            <span class="cs-header-user-area__label"><?= __('Cart'); ?></span>
+        </span>
+    </a>
+
     <a class="cs-header-user-area__link cs-hide-mobile-tablet | showcart" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
        data-bind="scope: 'minicart_content'">
         <span class="counter qty empty"
@@ -27,7 +42,8 @@
         <span class="cs-header-user-area__label"><?= __('Cart'); ?></span>
         </span>
     </a>
-    <a class="cs-header-user-area__link cs-hide-desktop | showcart-mobile" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
+
+    <a class="cs-header-user-area__link cs-hide-desktop cs-hide-mobile | showcart-mobile" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
        data-bind="scope: 'minicart_content'">
         <span class="counter qty empty"
               data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
@@ -62,8 +78,7 @@
             </div>
             <?php echo $block->getChildHtml('minicart.addons'); ?>
         </div>
-    <?php endif ?>
-    <?php if ($block->getIsNeedToDisplaySideBar()): ?>
+
         <div class="block block-minicart empty"
              data-role="dropdownDialog"
              data-mage-init='{"dropdownDialog":{
