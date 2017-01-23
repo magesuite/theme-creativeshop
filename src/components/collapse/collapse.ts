@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-new object-literal-key-quotes */
+/* tslint:disable:no-unused-new object-literal-key-quotes ordered-imports */
 import {Flyout} from '../flyout/class.flyout';
 import $ from 'jquery';
 

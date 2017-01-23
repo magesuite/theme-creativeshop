@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-new object-literal-key-quotes */
+/* tslint:disable:no-unused-new object-literal-key-quotes max-classes-per-file */
 import $ from 'jquery';
 
 interface IFlyout {
@@ -109,7 +109,7 @@ class Flyout implements IFlyout {
                 onHide: null,
                 onHideCompleted: null,
             },
-            settings
+            settings,
         );
 
         this.name = settings.name;
@@ -182,8 +182,8 @@ class Flyout implements IFlyout {
         this._isTransitioning = true;
 
         if ( this.settings.type === 'collapse' ) {
-            let scrollHeight: number = this.$content[0].scrollHeight;
-            this.$content.css( { 'max-height': scrollHeight + 'px' } );
+            // Let scrollHeight: number = this.$content[0].scrollHeight;
+            // Animation can be added here
         }
 
         // Trigger show event and callback
@@ -240,10 +240,8 @@ class Flyout implements IFlyout {
         this._isTransitioning = true;
 
         if ( this.settings.type === 'collapse' ) {
-            let scrollHeight: number = this.$content.innerHeight();
-            this.$content.css( { 'min-height': this.settings.minHeight  } );
-            this.$content.css( 'height', scrollHeight + 'px' );
-            setTimeout( () => { this.$content.css( { 'height': this.settings.minHeight } ); }, 50 );
+            // Let scrollHeight: number = this.$content.innerHeight();
+            // Animation can be added here
         }
 
         // Trigger hide event and callback

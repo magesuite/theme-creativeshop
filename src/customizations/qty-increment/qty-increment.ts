@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-expression no-unused-new */
+/* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
 import QtyIncrement from '../../../node_modules/creative-patterns/packages/components/qty-increment/src/qty-increment';
 import $ from 'jquery';

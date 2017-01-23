@@ -52,26 +52,49 @@
         <referenceBlock name="product.info.sku" remove="true"/>
         <referenceBlock name="product.info.mailto" remove="true"/>
 
-        <referenceBlock name="product.info.overview">
-            <arguments>
-                <argument name="at_call" xsi:type="string">getShortDescription</argument>
-                <argument name="at_code" xsi:type="string">short_description</argument>
-                <argument name="css_class" xsi:type="string">cs-product-description__content</argument>
-                <argument name="at_label" translate="true" xsi:type="string">none</argument>
-                <argument name="title" translate="true" xsi:type="string">Highlights</argument>
-                <argument name="add_attribute" xsi:type="string">itemprop="description"</argument>
-            </arguments>
-            <action method="setTemplate">
-                <argument name="template" xsi:type="string">Magento_Catalog::product/view/highlights.phtml</argument>
-            </action>
-        </referenceBlock>
-        <move element="product.info.overview" destination="product.details.container.wrapper" before="-"/>
-
         <referenceBlock name="product.info.description">
             <action method="setTemplate">
                 <argument name="template" xsi:type="string">Magento_Catalog::product/view/description.phtml</argument>
             </action>
         </referenceBlock>
+
+
+        <move element="catalog.product.related" destination="product.info.details" after="-" />
+        <move element="product.info.overview" destination="product.info.details"  />
+
+        <referenceBlock name="product.info.details">
+
+            <referenceBlock name="product.info.overview">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Highlights</argument>
+                    <argument name="priority" xsi:type="string">1</argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="product.info.description">
+                <arguments>
+                    <argument name="priority" xsi:type="string">2</argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="product.attributes">
+                <arguments>
+                    <argument name="priority" xsi:type="string">3</argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="reviews.tab">
+                <arguments>
+                    <argument name="priority" xsi:type="string">4</argument>
+                </arguments>
+            </referenceBlock>
+            <referenceBlock name="catalog.product.related"  group="detailed_info">
+                <arguments>
+                    <argument translate="true" name="title" xsi:type="string">Related products</argument>
+                </arguments>
+                <arguments>
+                    <argument name="priority" xsi:type="string">5</argument>
+                </arguments>
+            </referenceBlock>
+        </referenceBlock>
+
         <move element="product.info.details" destination="product.details.container.wrapper"/>
     </body>
 </page>
