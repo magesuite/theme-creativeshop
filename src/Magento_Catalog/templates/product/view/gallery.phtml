@@ -110,3 +110,24 @@
         }
     }
 </script>
+
+<script>
+    require([
+        'jquery'
+    ], function($) {
+
+        function checkIfGalleryLoaded() {
+            if ( $( '.fotorama__loaded--img' ).length ) {
+                var style = $( '.fotorama__stage__shaft').css( 'transform' );
+                $( '.fotorama__stage__shaft').css('transform', '' );
+                setTimeout( function() {
+                    $( '.fotorama__stage__shaft' ).attr('style', style );
+                }, 200 );
+                clearInterval( checkGalleryIntervalId );
+
+            }
+        }
+
+        var checkGalleryIntervalId = setInterval( checkIfGalleryLoaded, 500 );
+    })
+</script>
