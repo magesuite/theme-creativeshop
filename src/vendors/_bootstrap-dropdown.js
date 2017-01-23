@@ -35,7 +35,7 @@ if (typeof jQuery === 'undefined') {
   // =========================
 
   var backdrop = '.cs-html-select__backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
+  var toggle   = '.cs-html-select__trigger[data-toggle="dropdown"]'
   var Dropdown = function (element) {
     $(element).on('click.bs.dropdown', this.toggle)
   }
@@ -181,9 +181,9 @@ if (typeof jQuery === 'undefined') {
 
   $(document)
     .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.rc-dropdown form', function (e) { e.stopPropagation() })
+    .on('click.bs.dropdown.data-api', '.cs-html-select form', function (e) { e.stopPropagation() })
     .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
     .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '.rc-dropdown__menu', Dropdown.prototype.keydown)
+    .on('keydown.bs.dropdown.data-api', '.cs-html-select__menu', Dropdown.prototype.keydown)
 
 }(jQuery);
