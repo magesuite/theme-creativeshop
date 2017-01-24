@@ -116,18 +116,26 @@
         'jquery'
     ], function($) {
 
-        function checkIfGalleryLoaded() {
-            if ( $( '.fotorama__loaded--img' ).length ) {
-                var style = $( '.fotorama__stage__shaft').css( 'transform' );
-                $( '.fotorama__stage__shaft').css('transform', '' );
+        // On iPad/IPhone there is a Magento 2bug - image in gallery does not appear at the beginning. Below fix.
+        var elements = document.getElementsByClassName( 'cs-product-gallery' );
+        var gallery = elements[0];
+
+        // create an observer instance
+        var galleryObserver = new MutationObserver( function( mutations ) {
+            var fotoramaStage = $( '.fotorama__stage__shaft' );
+            var style = fotoramaStage.css( 'transform' );
+            if ( fotoramaStage.length && style ) {
+                fotoramaStage.css('transform', '' );
                 setTimeout( function() {
-                    $( '.fotorama__stage__shaft' ).attr('style', style );
+                    fotoramaStage.css( 'transform', 'translate3d(0px, 0px, 0px)' );
                 }, 200 );
-                clearInterval( checkGalleryIntervalId );
-
+                galleryObserver.disconnect();
             }
-        }
+        });
 
-        var checkGalleryIntervalId = setInterval( checkIfGalleryLoaded, 500 );
+        var galleryObserverConfig = { attributes: true, childList: true, characterData: true };
+
+        galleryObserver.observe( gallery, galleryObserverConfig );
+
     })
 </script>
