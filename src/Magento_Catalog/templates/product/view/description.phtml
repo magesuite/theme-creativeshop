@@ -12,9 +12,11 @@
  * @var $block \Magento\Catalog\Block\Product\View\Description
  */
 ?>
+<?php $text = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($block->getProduct(), $block->getProduct()->getDescription(), 'description'); ?>
+<?php if($text): ?>
 <div class="cs-collapsible-text js-collapsible-text" data-height="100" data-content=".js-collapsible-text-content" data-trigger=".js-collapsible-text-trigger">
         <div class="cs-collapsible-text__content cs-collapsible-text__content--contrast js-collapsible-text-content">
-            <?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Output')->productAttribute($block->getProduct(), $block->getProduct()->getDescription(), 'description') ?>
+            <?php /* @escapeNotVerified */ echo $text; ?>
         </div>
         <button class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger" data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>" data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>">  <?php /* @escapeNotVerified */ echo __('More information'); ?>
             <svg class="cs-button__icon">
@@ -22,5 +24,5 @@
             </svg>
         </button>
 </div>
-
+<?php endif;?>
 
