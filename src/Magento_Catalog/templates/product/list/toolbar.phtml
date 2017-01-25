@@ -49,12 +49,19 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
         "jquery"
     ], function($){
 
-        $( '.js-page-title-product-amount' ).each( function( i, el ) {
-            if ( i === 0 ) {
-                $( el ).appendTo( '.page-title' );
-            } else {
-                $( el ).remove();
-            }
-        } );
+        function updateItemsAmount() {
+            $( '.page-title .js-page-title-product-amount' ).remove();
+            $( '.js-page-title-product-amount' ).each( function( i, el ) {
+                if ( i === 0 ) {
+                    $( el ).appendTo( '.page-title' );
+                }
+            } );
+        }
+
+        updateItemsAmount();
+
+        $( '.cs-aftersearch-nav button' ).on( 'click', updateItemsAmount );
+
     });
 </script>
+
