@@ -1,11 +1,17 @@
 
 @include export-once( 'customizations/checkout' ) {
     .#{$namespace}checkout {
+        $root: &;
 
         display: flex;
         flex-wrap: wrap;
         position: relative;
         justify-content: space-between;
+        margin-bottom: 3.5rem;
+        max-width: 40rem;
+        @include media('>=phone-lg') {
+            max-width: none;
+        }
         @include media('>=tablet') {
             max-width: 95rem;
             margin: 1.5rem auto 0;
@@ -17,6 +23,7 @@
             max-width: 100%;
             padding: 0 1.5rem;
             box-sizing: border-box;
+            margin-bottom: 0;
 
             @include media('>=tablet') {
                 position: absolute;
@@ -47,6 +54,10 @@
                 width: 44%;
             }
 
+            @include media('<tablet') {
+                width: 100%;
+            }
+
             .action-close {
                 @include media('>=tablet') {
                     display: none;
@@ -55,6 +66,25 @@
             .#{$namespace}modal__content {
                 padding-top: 0;
                 padding-bottom: 0;
+            }
+        }
+
+        &__summary {
+
+            @include media('<tablet') {
+                max-width: 40rem;
+            }
+
+            .#{$namespace}modal & {
+                @include media('<tablet') {
+                    max-width: none;
+                }
+            }
+        }
+
+        &__mobile-summary {
+            .#{$namespace}minicart {
+                display: none;
             }
         }
 
@@ -148,10 +178,27 @@
             }
         }
 
+        &__summary-wrapper {
+            #{$root}__summary-title--summary,
+            #{$root}__summary-table,
+            #{$root}__place-order {
+                display: none;
+            }
+
+            #{$root}__summary-title--details {
+                display: block;
+            }
+        }
+
         &__summary-title {
             display: flex;
             justify-content: space-between;
             padding: 2rem 0 1rem;
+            clip: auto;
+            height: auto;
+            margin: 0;
+            position: relative;
+            width: auto;
             @extend .#{$namespace}t-headline;
             @extend .#{$namespace}t-headline--size_2;
             @extend .#{$namespace}t-headline--look_light;
@@ -161,6 +208,10 @@
                 padding-top: 1rem;
                 padding-bottom: .4rem;
                 margin-top: 1rem;
+            }
+
+            &--details {
+                display: none;
             }
         }
 
@@ -195,6 +246,26 @@
             }
         }
 
+        &__button-wrapper,
+        &__estimation-button {
+            width: 100%;
+            @include media('>=phone-lg') {
+                max-width: calc( 50% - 2rem );
+            }
+            @include media('>=tablet') {
+                width: calc( 50% - 2rem );
+            }
+        }
+
+        .methods-shipping .#{$namespace}form__buttons {
+            @include media('>=phone-lg') {
+                max-width: calc( 50% - 2rem );
+            }
+            @include media('>=tablet') {
+                width: calc( 50% - 2rem );
+            }
+        }
+
         &__authentication {
             max-width: 100%;
             margin-top: -11.3rem;
@@ -217,12 +288,14 @@
                     position: absolute;
                     right: -4rem;
                     font-size: 1.4rem;
-                    padding-top: 1rem;
+                    padding-top: 3.5rem;
+                    padding-right: .5rem;
                     @include media('>=phone-lg') {
                         right: -14rem;
                     }
                     @include media('>=tablet') {
                         padding-top: 0;
+                        padding-right: 0;
                         position: static;
                         font-size: 1.2rem;
                     }
@@ -293,7 +366,7 @@
             padding: 0 1.5rem;
             z-index: 2;
             width: 100%;
-            max-width: 40rem;
+            max-width: 60rem;
             @include media('>=tablet') {
                 display: none;
             }
@@ -322,11 +395,11 @@
             margin: 1rem 2rem;
         }
 
-        .cs-button-payment-method {
+        .#{$namespace}button-payment-method {
             visibility: hidden;
             height: 0;
         }
 
-
     }
+
 }
