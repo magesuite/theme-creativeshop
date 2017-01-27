@@ -21,6 +21,7 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
+$heroProduct = true;
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty">
@@ -35,7 +36,7 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
     <?php
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
-        $viewModeClass = 'cs-items-grid';
+        $viewModeClass = $heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
         $image = 'category_page_grid';
         $showDescription = false;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
@@ -54,11 +55,11 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
     <div class="">
         <?php $iterator = 0; ?>
         <ol class="<?php /* @escapeNotVerified */
-        echo $viewModeClass; ?> cs-items-grid--in-column">
+        echo $viewModeClass; ?> cs-items-grid-layout--in-column">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
                 <?php $iterator++; ?>
-                <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item | cs-grid-product">
+                <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item <?php if($iterator==1 && $heroProduct): ?><?php echo $viewModeClass; ?>__item--hero<?php endif; ?> | cs-grid-product">
                     <?php
                         $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
                         $productImageUrl = $_imagehelper->init($_product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
@@ -66,9 +67,10 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                         $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
                     ?>
 
-                    <?php 
+                    <?php
                         $data = [
-                            'showWrapper' => false,
+                            'showWrapper' => true,
+                            'tag' => 'div',
                             'url' => $_product->getProductUrl(),
                             'image' => [
                                 'src' => $productImageUrl,
@@ -89,6 +91,7 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                                     ]
                                 ]
                             ],
+                            'mix' => $iterator==1 && $heroProduct ? 'cs-grid-product--hero' : ''
                         ];
                     ?>
 
@@ -115,7 +118,7 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                         ];
                     ?>
 
-                    <?=$this->getLayout()->createBlock( 
+                    <?=$this->getLayout()->createBlock(
                         'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
                             'data' => $data
                         ]

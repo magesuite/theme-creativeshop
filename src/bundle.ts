@@ -39,6 +39,7 @@ new QtyIncrementCollection();
 import './customizations/hero/hero';
 import './customizations/products-promo/products-promo';
 import './customizations/sticky-block/sticky-block';
+import './customizations/items-grid-layout/items-grid-layout';
 
 import './customizations/reviews/reviews';
 
