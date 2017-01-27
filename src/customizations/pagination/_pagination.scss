@@ -11,10 +11,9 @@
             width: auto;
         }
 
-        &__pager {
-            margin: 0 .2rem 0 .5rem;
-            padding: 0;
-            list-style: none;
+        &__label-wrapper {
+            display: inline-block;
+            margin-right: .5rem;
         }
 
         &__label {
@@ -24,18 +23,88 @@
         &__item {
             margin: 0;
             display: inline-block;
-            margin-right: .25em;
-            font-size: 1.12rem;
+            height: 3.8rem;
+            width: 4rem;
+            border: 1px solid $colorAlto;
+            margin-left: -1px;
+            background: $colorWhite;
+            border-radius: 0;
+            padding: 0;
+            overflow: hidden;
+
+            &:first-child {
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+            }
+
+            &:last-child {
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+
+            &--single {
+                border-radius: 3px;
+            }
         }
 
         &__number {
-            padding: .25em .5em;
+            display: inline-block;
+            width: 100%;
+            line-height: calc( 4rem / 1.1 );
+            text-align: center;
+            font-weight: 400;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: $colorMineShaft !important;
 
             &--current {
-                color: $colorDoveGray;
-                padding: 1rem;
+                background: $colorGallery;
+                box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 );
+                cursor: default;
+                color: $colorBombay;
+            }
+
+            &:hover,
+            &:focus {
+                text-decoration: none;
+                background: darken( $colorGallery, 10% );
             }
         }
+
+        &__separator {
+            color: $colorBombay;
+            display: inline-block;
+            vertical-align: top;
+            padding: 1rem 1rem 0 .3rem;
+            width: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        &__pager {
+            margin: 0 .2rem 0 .5rem;
+            padding: 0;
+            list-style: none;
+            display: flex;
+
+            #{$root}__item {
+                height: 3.5rem;
+                width: 3.7rem;
+                margin-left: -1px;
+            }
+
+            #{$root}__number {
+                line-height: calc( 3.9rem / 1.1 );
+            }
+        }
+
+        &__prev-icon {
+            margin-right: 1rem;
+        }
+
+        &__next-icon {
+            margin-left: 1rem;
+        }
+
 
         &__prev-icon:not( &__prev-icon--disabled ),
         &__next-icon:not( &__next-icon--disabled ) {

@@ -52,11 +52,11 @@
                         </svg>
                     </span>
                 <?php endif;?>
+                <span class="cs-pagination__label-wrapper">
+                    <span class="cs-pagination__label | cs-t-text cs-t-text--look_label"><?php /* @escapeNotVerified */ echo __('Page') ?>: </span>
+                </span>
 
                 <ul class="cs-pagination__pager">
-                    <li class="cs-pagination__item">
-                        <span class="cs-pagination__label | cs-t-text cs-t-text--look_label"><?php /* @escapeNotVerified */ echo __('Page') ?>: </span>
-                    </li>
 
                     <?php if ($block->canShowFirst()): ?>
                         <li class="cs-pagination__item">
@@ -89,12 +89,22 @@
                         </li>
                     <?php endif;?>
 
-                    <?php if ($block->canShowLast()): ?>
-                        <li class="cs-pagination__item">
-                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getLastPageUrl() ?>"><?php /* @escapeNotVerified */ echo $block->getLastPageNum() ?></a>
-                        </li>
-                    <?php endif;?>
+
                 </ul>
+
+                <?php if ($block->getFrameEnd() < $block->getLastPageNum()): ?>
+
+                <ul class="cs-pagination__pager">
+                    <li class="cs-pagination__separator">
+                        <?php /* @escapeNotVerified */ echo __('of'); ?>
+                    </li>
+
+                    <li class="cs-pagination__item cs-pagination__item--single">
+                        <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getLastPageUrl() ?>"><?php /* @escapeNotVerified */ echo $block->getLastPageNum() ?></a>
+                    </li>
+                </ul>
+
+                <?php endif;?>
 
                 <?php if (!$block->isLastPage()): ?>
                     <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : '';?>
