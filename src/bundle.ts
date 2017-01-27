@@ -32,6 +32,8 @@ import { init as collapsibleText } from './components/collapsible-text/collapsib
 collapsibleText();
 
 import './customizations/navigation/navigation';
+import './customizations/offcanvas-navigation/offcanvas-navigation';
+import './customizations/offcanvas/offcanvas';
 
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
