@@ -1,0 +1,57 @@
+@import '../../../node_modules/creative-patterns/packages/components/brand-carousel/src/brand-carousel';
+
+.#{$namespace}brand-carousel {
+    @include teaser();
+    @include brandCarousel();
+
+    &__carousel {
+        padding: 0;
+
+        @include media( '>=tablet' ) {
+            padding-left: 7rem;
+            padding-right: 7rem;
+        }
+    }
+
+    &__slide {
+        margin-bottom: 0;
+    }
+
+    &__pagination {
+        @extend .#{$namespace}products-promo__pagination;
+        margin-top: 2rem;
+
+        @include media( '>=tablet' ) {
+            display: none;
+        }
+
+        &-item {
+            @extend .#{$namespace}products-promo__pagination-item;
+
+            &--active {
+                @extend .#{$namespace}products-promo__pagination-item--active;
+            }
+        }
+
+        &-button {
+            @extend .#{$namespace}products-promo__pagination-button;
+        }
+    }
+
+    &__nav {
+        @extend .#{$namespace}products-promo__nav;
+        z-index: 3;
+
+        @include media( '<tablet' ) {
+            display: none;
+        }
+    }
+
+    &__nav-icon {
+        fill: $colorCeruleanBlue;
+
+        @include media( '<tablet' ) {
+            height: calc( 5.5rem * .75 );
+        }
+    }
+}

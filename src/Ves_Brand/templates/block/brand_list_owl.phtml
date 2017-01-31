@@ -1,0 +1,23 @@
+<?php
+	$_brandCollection = $block->getBrandCollection();
+	$brands = [];
+?>
+
+<?php foreach ($_brandCollection as $_brand) {
+	$brands[] = [
+		'href' => $_brand->getUrl(),
+		'image' => [
+			'src' => $_brand->getThumbnailUrl(),
+			'alt' => $_brand->getName()
+		]
+	];
+} ?>
+
+
+ <?=$this->getLayout()->createBlock( 
+    'Creativestyle\FrontendExtension\Block\Twig', 'brand-carousel', [
+        'data' => [
+	        'brands' => $brands
+        ]
+    ]
+)->setTemplate("brand-carousel/brand-carousel.twig")->toHtml(); ?>
