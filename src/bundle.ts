@@ -38,6 +38,7 @@ new QtyIncrementCollection();
 
 import './customizations/hero/hero';
 import './customizations/products-promo/products-promo';
+import './customizations/brand-carousel/brand-carousel';
 import './customizations/sticky-block/sticky-block';
 
 import './customizations/reviews/reviews';
