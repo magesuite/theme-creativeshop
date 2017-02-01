@@ -11,15 +11,13 @@
 
         <move element="page.messages" destination="main" before="-" />
 
-        <referenceBlock  name="category.products.list">
-            <container name="category.product.list.title" htmlTag="div" as="page.title" before="-" />
+        <referenceBlock name="category.products.list" as="product_list" >
+        <container name="category.page.title" as="page.title" >
+            <block class="Magento\Theme\Block\Html\Title" name="page.main.title" template="Magento_Theme::html/pure-title.phtml"/>
+        </container>
         </referenceBlock>
 
-        <referenceBlock name="page.main.title">
-            <block class="Magento\Catalog\Block\Product\ListProduct" name="title.products.amount" template="Magento_Catalog::product/list/amount.phtml"/>
-        </referenceBlock>
-
-        <move element="page.main.title" destination="category.product.list.title" before="-"/>
+        <move element="page.main.title" destination="category.page.title"/>
 
         <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
 
