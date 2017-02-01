@@ -26,7 +26,9 @@ import 'vendors';
 
 import './components/collapse/collapse';
 import './components/dropdown/dropdown';
-import './customizations/select/select';
+
+import Select from './customizations/select/select';
+export { Select };
 
 import { init as collapsibleText } from './components/collapsible-text/collapsible-text';
 collapsibleText();
@@ -40,7 +42,9 @@ new QtyIncrementCollection();
 
 import './customizations/hero/hero';
 import './customizations/products-promo/products-promo';
+
 import './customizations/brand-carousel/brand-carousel';
+
 import './customizations/sticky-block/sticky-block';
 
 import './customizations/reviews/reviews';
