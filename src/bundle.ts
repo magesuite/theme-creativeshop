@@ -41,6 +41,7 @@ import { QtyIncrementCollection } from './customizations/qty-increment/qty-incre
 new QtyIncrementCollection();
 
 import './customizations/hero/hero';
+import './customizations/image-teaser/image-teaser';
 import './customizations/products-promo/products-promo';
 
 import './customizations/brand-carousel/brand-carousel';
