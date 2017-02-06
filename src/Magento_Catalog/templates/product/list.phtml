@@ -68,9 +68,10 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                 <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item | cs-grid-product">
                     <?php
                         $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
-                        $productImageUrl = $_imagehelper->init($_product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+                        $productImageUrl = $_imagehelper->init($_product, $image)->getUrl();
                         $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                         $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+                        $getIsSalable = $_product->getIsSalable();
                     ?>
 
                     <?php
@@ -91,8 +92,8 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                             'addons' => [
                                 'right' => [
                                     [
-                                        'mix' => $_product->getIsSalable() ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
-                                        'content' => $_product->getIsSalable() ? __('In stock') : __('Out of stock')
+                                        'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                                        'content' => $getIsSalable ? __('In stock') : __('Out of stock')
                                     ]
                                 ]
                             ],

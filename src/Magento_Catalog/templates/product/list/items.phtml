@@ -1,0 +1,277 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
+?>
+
+<?php
+switch ($type = $block->getType()) {
+
+    case 'related-rule':
+        if ($exist = $block->hasItems()) {
+            $type = 'related';
+            $class = $type;
+
+            $image = 'related_products_list';
+            $title = __('Related Products');
+            $items = $block->getAllItems();
+            $limit = $block->getPositionLimit();
+            $shuffle = (int) $block->isShuffled();
+            $canItemsAddToCart = $block->canItemsAddToCart();
+
+            $showAddTo = true;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+        }
+    break;
+
+    case 'related':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Related $block */
+        if ($exist = $block->getItems()->getSize()) {
+            $type = 'related';
+            $class = $type;
+
+            $image = 'related_products_list';
+            $title = __('Related Products');
+            $items = $block->getItems();
+            $limit = 0;
+            $shuffle = 0;
+            $canItemsAddToCart = $block->canItemsAddToCart();
+
+            $showAddTo = true;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+        }
+    break;
+
+    case 'upsell-rule':
+        if ($exist = $block->hasItems()) {
+            $type = 'upsell';
+            $class = $type;
+
+            $image = 'upsell_products_list';
+            $title = __('You might like...');
+            $items = $block->getAllItems();
+            $limit = $block->getPositionLimit();
+            $shuffle = (int) $block->isShuffled();
+
+            $showAddTo = false;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'upsell':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Upsell $block */
+        if ($exist = count($block->getItemCollection()->getItems())) {
+            $type = 'upsell';
+            $class = $type;
+
+            $image = 'upsell_products_list';
+            $title = __('You might like...');
+            $items = $block->getItemCollection()->getItems();
+            $limit = $block->getItemLimit('upsell');
+            $shuffle = 0;
+
+            $showAddTo = false;
+            $showCart = false;
+            $templateType = null;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'crosssell-rule':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+        if ($exist = $block->hasItems()) {
+            $type = 'crosssell';
+            $class = $type;
+
+            $image = 'cart_cross_sell_products';
+            $title = __('More Choices:');
+            $items = $block->getItemCollection();
+
+            $showAddTo = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'crosssell':
+        /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
+        if ($exist = $block->getItemCount()) {
+            $type = 'crosssell';
+            $class = $type;
+
+            $image = 'cart_cross_sell_products';
+            $title = __('More Choices:');
+            $items = $block->getItems();
+
+            $showAddTo = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'new':
+        if ($exist = $block->getProductCollection()) {
+            $type = 'new';
+            $mode = 'grid';
+            $type = $type . ' ' . $mode;
+
+            $class = 'widget' . ' ' . $type;
+
+            $image = 'new_products_content_widget_grid';
+            $title = __('New Products');
+            $items = $exist;
+
+            $showAddTo = true;
+            $showCart = true;
+            $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+            $description = ($mode == 'list') ? true : false;
+            $canItemsAddToCart = false;
+        }
+    break;
+
+    case 'other':
+    break;
+}
+?>
+
+<?php if ($exist):?>
+    <?php $products = []; ?>
+
+    <?php if ($type == 'related' || $type == 'upsell'): ?>
+        <?php if ($type == 'related'): ?>
+            <div class="block <?php /* @escapeNotVerified */ echo $class; ?>" data-mage-init='{"relatedProducts":{"relatedCheckbox":".related.checkbox"}}' data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>" data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>">
+        <?php else: ?>
+            <div class="block <?php /* @escapeNotVerified */ echo $class; ?>" data-mage-init='{"upsellProducts":{}}' data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>" data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>">
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="block <?php /* @escapeNotVerified */ echo $class; ?>">
+    <?php endif; ?>
+
+        <?=$this->getLayout()->createBlock( 
+            'Creativestyle\FrontendExtension\Block\Twig', 'carousels-headline-'.$type, [
+                'data' => [
+                    'title' => $title
+                ]
+            ]
+        )->setTemplate("headline/headline.twig")->toHtml(); ?>
+
+        <div class="cs-products-promo">
+            <div class="cs-products-promo__carousel">
+                <div class="cs-products-promo__wrapper">
+                    <ul class="cs-products-promo__slides">
+                        
+                        <?php 
+                            $iterator = 1; 
+                            foreach ($items as $_item): ?>
+                            
+                            <?php 
+                                $getIsSaleable = $_item->getIsSalable();
+                                $productName = $block->escapeHtml($_item->getName()); 
+                                $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+                                $data = [
+                                    'showWrapper' => false,
+                                    'url' => $block->getProductUrl($_item),
+                                    'image' => [
+                                        'src' => $this->helper('Magento\Catalog\Helper\Image')->init($_item, $image)->getUrl(),
+                                        'alt' => $productName
+                                    ],
+                                    'name' => $productName,
+                                    'price' => [
+                                        'content' => $block->getProductPrice($_item)
+                                    ],
+                                    'addons' => [
+                                        'right' => [
+                                            [
+                                                'mix' => $getIsSaleable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                                                'content' => $getIsSaleable ? __('In stock') : __('Out of stock')
+                                            ]
+                                        ]
+                                    ]
+                                ];
+
+                                $ratingData = $csProductHelper->getReviewSummary($_item)['data'];
+
+                                if($ratingData['activeStars']):
+                                    $data['addons']['left'][] = [
+                                        'mix' => 'cs-grid-product__addon--rating',
+                                        'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$type.'-'.$iterator, [
+                                                'data' => [
+                                                    'maxStars' => $ratingData['maxStars'],
+                                                    'activeStars' => $ratingData['activeStars'],
+                                                    'text' => '('.$ratingData['count'].')'
+                                                ]
+                                            ]
+                                        )->setTemplate("star-rating/star-rating.twig")->toHtml()
+                                    ];
+                                endif;
+
+                                if (!$_item->isComposite() && $_item->isSaleable() && $type == 'related'):
+                                    if (!$_item->getRequiredOptions()): ?>
+                                        <?php $data['addons']['left'][] = [
+                                            'content' => '<div class="field choice related |  cs-input--type-checkbox"><input type="checkbox" class="checkbox related | cs-input__checkbox" id="related-checkbox'.$_item->getId().'" name="related_products[]" value="'.$_item->getId().'" /><label class="cs-input__label" for="related-checkbox'.$_item->getId().'"><span>'.__('Add to Cart').'</span></label></div>'
+                                        ]; ?>
+                                    <?php endif;
+                                endif; ?>
+
+                                <?php if ($showCart && $_item->isSaleable()):
+                                    if ($_item->getTypeInstance()->hasRequiredOptions($_item)):
+                                        $jsonData = '{"redirectUrl": {"url": "'.$block->getAddToCartUrl($_item).'"}}';
+                                        $data['addons']['bottom'][] = [
+                                            'content' => '<button class="cs-button cs-button--look_light cs-button--type_wide" data-mage-init=\''.$jsonData.'\' type="button" title="'.__('Add to Cart').'">'.__('Add to Cart').'</button>'
+                                        ]; ?>
+                                    <?php else:
+                                        $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
+                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()]);
+                                        $data['addons']['bottom'][] = [
+                                            'content' => '<button class="cs-button cs-button--look_light cs-button--type_wide" data-post=\''.$postData.'\' type="button" title="'.__('Add to Cart').'">'.__('Add to Cart').'</button>'
+                                        ]
+                                    ?>
+                                <?php endif;
+                            endif; ?>
+
+                            <li class="cs-products-promo__slide | cs-grid-product cs-grid-product--in-carousel">
+                                <?=$this->getLayout()->createBlock( 
+                                    'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$type.'-'.$iterator, [
+                                        'data' => $data
+                                    ]
+                                )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+                            </li>
+
+                            <?php $iterator++; ?>
+                        <?php endforeach ?>
+                    </ul>
+                </div>
+
+                <button class="cs-products-promo__nav cs-products-promo__nav--prev" type="button">
+                    <svg class="cs-products-promo__nav-icon">
+                        <use xlink:href="#icon_arrow-left"></use>
+                    </svg>
+                </button>
+                <button class="cs-products-promo__nav cs-products-promo__nav--next" type="button">
+                    <svg class="cs-products-promo__nav-icon">
+                        <use xlink:href="#icon_arrow-right"></use>
+                    </svg>
+                </button>
+                
+                <ul class="cs-products-promo__pagination"></ul>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
