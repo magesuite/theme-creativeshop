@@ -34,7 +34,10 @@
 {% endif %}
 
 <section class="cs-container cs-container--edge-to-edge">
-    <div class="cs-container__inner">
+    {% if currentScenario.teaserWidth.id == 'c' %}
+        <div class="cs-container__inner">
+    {% endif %}
+
         {% include locate('components/image-teaser/image-teaser.twig') with {
             namespace: 'cs-',
             navigation: {
@@ -56,5 +59,8 @@
                 labelClass: 'cs-button__span'
             }
         } %}
-    </div>
+    
+    {% if currentScenario.teaserWidth.id == 'c' %}
+        </div>
+    {% endif %}
 </section>
