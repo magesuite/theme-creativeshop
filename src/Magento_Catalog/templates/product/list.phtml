@@ -21,6 +21,7 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
+$heroProduct = $block->getIsHeroEnabled();
 ?>
 <div class="page-title-wrapper">
     <h1 class="page-title" id="page-title-heading" aria-labelledby="page-title-heading toolbar-amount">
@@ -45,7 +46,7 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
     <?php
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
-        $viewModeClass = 'cs-items-grid';
+        $viewModeClass = $heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
         $image = 'category_page_grid';
         $showDescription = false;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
@@ -64,11 +65,14 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
     <div class="cs-category-page__products-wrapper">
         <?php $iterator = 0; ?>
         <ol class="<?php /* @escapeNotVerified */
-        echo $viewModeClass; ?> cs-items-grid--in-column">
+        echo $viewModeClass; ?> <?php /* @escapeNotVerified */ echo $viewModeClass; ?>--in-column">
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
-                <?php $iterator++; ?>
-                <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item | cs-grid-product">
+                <?php
+                    $iterator++;
+                    $showHeroProduct = $iterator==1 && $heroProduct;
+                ?>
+                <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__item--hero<?php endif; ?> | cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
                     <?php
                         $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
                         $productImageUrl = $_imagehelper->init($_product, $image)->getUrl();
@@ -79,7 +83,6 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
 
                     <?php
                         $data = [
-                            'showWrapper' => false,
                             'url' => $_product->getProductUrl(),
                             'image' => [
                                 'src' => $productImageUrl,
@@ -99,7 +102,7 @@ $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
                                         'content' => $getIsSalable ? __('In stock') : __('Out of stock')
                                     ]
                                 ]
-                            ],
+                            ]
                         ];
                     ?>
 
