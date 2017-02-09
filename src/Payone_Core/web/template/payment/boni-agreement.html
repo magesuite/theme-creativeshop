@@ -1,0 +1,49 @@
+<!--
+/**
+ * PAYONE Magento 2 Connector is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PAYONE Magento 2 Connector is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with PAYONE Magento 2 Connector. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ *
+ * @category  Payone
+ * @package   Payone_Magento2_Plugin
+ * @author    FATCHIP GmbH <support@fatchip.de>
+ * @copyright 2003 - 2016 Payone GmbH
+ * @license   <http://www.gnu.org/licenses/> GNU Lesser General Public License
+ * @link      http://www.payone.de
+ */
+-->
+<div data-role="checkout-payone-boni-agreement">
+    <div class="checkout-payone-boni-agreement">
+        <!-- ko if: (isVisible()) -->
+        <!-- ko if: (canShowPaymentHintText()) -->
+        <div class="cs-t-tect cs-t-text--look_attention">
+            <span data-bind="html: getPaymentHintText()"></span>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: (canShowAgreementMessage()) -->
+        <div class="cs-input--type-checkbox">
+            <input type="checkbox"
+                   class="cs-input__checkbox"
+                   data-bind="attr: {
+                                        'id': 'payone_boni_agreement',
+                                        'name': 'payone_boni_agreement',
+                                        'value': '1'}" />
+            <label class=cs-input__label" data-bind="attr: {'for': 'payone_boni_agreement'}">
+                <span data-bind="html: getAgreementMessage()"></span>
+            </label>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
