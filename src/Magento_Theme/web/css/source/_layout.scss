@@ -5,11 +5,18 @@ $namespace: 'cs-';
 body,
 html {
     height: 100%;
-    overflow-x: hidden;
+}
+
+body {
+    @include media('>=laptop') {
+        overflow-x: hidden;
+    }
 }
 
 #maincontent { // stylelint-disable-line
-    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto;
 }
 
 .page-wrapper {
@@ -45,7 +52,7 @@ html {
     display: block!important;
 }
 
-.ie11 .#{$namespace}modal__content {
+.ie11 .modal-popup .#{$namespace}modal__content {
     max-height: calc( 100vh - 33rem );
 }
 
@@ -169,7 +176,7 @@ h2 {
     }
 }
 
-.checkout-onepage-success .cs-container__inner {
+.checkout-onepage-success .cs-container--checkout-type .cs-container__inner {
     margin-top: 1.5rem;
 }
 

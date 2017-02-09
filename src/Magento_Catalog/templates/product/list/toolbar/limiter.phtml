@@ -17,9 +17,10 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
 ?>
 <div class="cs-category-page__toolbar-limiter | cs-input">
     <label class="cs-category-page__toolbar-label | cs-t-text cs-t-text--look_label" for="limiter">
-        <?php /* @escapeNotVerified */ echo __('Display') ?>
+        <?php /* @escapeNotVerified */ echo __('Display: ') ?>
     </label>
-    <div class="control cs-input__control">
+
+    <div class="control cs-input__control | cs-visually-hidden">
         <select id="limiter" data-role="limiter" class="cs-input__select">
             <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
                 <option value="<?php /* @escapeNotVerified */ echo $_key ?>"<?php if ($block->isLimitCurrent($_key)): ?>
@@ -29,4 +30,25 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
             <?php endforeach; ?>
         </select>
     </div>
+
+    <div class="cs-pagination cs-pagination--limiter">
+        <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
+            <button class="cs-pagination__item" data-value="<?php /* @escapeNotVerified */ echo $_key ?>">
+                <span class="cs-pagination__number <?php if ($block->isLimitCurrent($_key)): ?> cs-pagination__number--current<?php endif ?>">
+                    <?php /* @escapeNotVerified */ echo $_limit ?>
+                </span>
+            </button>
+        <?php endforeach; ?>
+    </div>
 </div>
+
+<script>
+    require([
+        'jquery'
+    ], function($) {
+        $( '.cs-pagination--limiter .cs-pagination__item' ).on( 'click', function() {
+            $( '#limiter' ).val( $( this ).data('value') ).trigger('change');
+        })
+
+    })
+</script>

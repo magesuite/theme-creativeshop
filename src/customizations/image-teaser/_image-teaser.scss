@@ -1,0 +1,262 @@
+$namespace: 'cs-';
+
+@import '../../../node_modules/creative-patterns/packages/components/teaser/src/teaser';
+@import '../../../node_modules/creative-patterns/packages/components/image-teaser/src/image-teaser';
+
+.#{$namespace}image-teaser {
+    $root: &;
+
+    @include teaser();
+    @include imageTeaser();
+
+    &__slide-link {
+        display: flex;
+        width: 100%;
+    }
+
+    &__content-wrapper {
+        color: $colorMineShaft;
+
+        #{$root}__wrapper--content-display-inside & {
+            padding: 2rem 1rem;
+        }
+
+        #{$root}__wrapper--content-display-outside & {
+            background-color: transparent;
+        }
+
+        &--content-display-scenario-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+    }
+
+    &__cta {
+        white-space: nowrap;
+    }
+
+    &__headline {
+        #{$root}__wrapper--content-display-inside & {
+            width: auto;
+            max-width: 50%;
+            position: relative;
+            z-index: 3;
+            text-align: left;
+            margin-left: -1rem;
+            padding: .5rem 2.5rem .5rem 2rem;
+            background-color: $colorGold;
+            font-weight: 700;
+            text-transform: none;
+            font-size: 1.65rem;
+
+            &:after {
+                display: block;
+                content: '';
+                position: absolute;
+                right: -2rem;
+                top: 0;
+                z-index: -1;
+                background: $colorGold;
+                height: 100%;
+                width: 4.5rem;
+                transform: skew( -18deg );
+            }
+
+            @include media( '>=phone' ) {
+                font-size: 1.85rem;
+            }
+
+            @include media( '>=phone-lg' ) {
+                font-size: 3.75vw;
+            }
+
+            @include media( '>=tablet' ) {
+                font-size: 4vw;
+
+                #{$root}--items-in-row-2:not( #{$root}--slider ) & {
+                    font-size: 2.75vw;
+                }
+
+                #{$root}--items-in-row-3:not( #{$root}--slider ) &,
+                #{$root}--items-in-row-4:not( #{$root}--slider ) & {
+                    font-size: 1.95vw;
+                }
+
+                #{$root}--items-in-row-6:not( #{$root}--slider ) & {
+                    font-size: 1.75vw;
+                }
+            }
+
+            @include media( '>=laptop' ) {
+                font-size: 3vw;
+
+                #{$root}--items-in-row-2:not( #{$root}--slider ) & {
+                    font-size: 2.35vw;
+                }
+
+                #{$root}--items-in-row-3:not( #{$root}--slider ) &,
+                #{$root}--items-in-row-4:not( #{$root}--slider ) & {
+                    font-size: 1.85vw;
+                }
+
+                #{$root}--items-in-row-6:not( #{$root}--slider ) & {
+                    font-size: 1.45vw;
+                }
+            }
+
+            @include media( '>=laptop-lg' ) {
+                font-size: 2.39rem;
+
+                #{$root}--items-in-row-2:not( #{$root}--slider ) & {
+                    font-size: 1.83rem;
+                }
+
+                #{$root}--items-in-row-3:not( #{$root}--slider ) & {
+                    font-size: 2.1rem;
+                }
+
+                #{$root}--items-in-row-4:not( #{$root}--slider ) & {
+                    font-size: 1.95rem;
+                }
+
+                #{$root}--items-in-row-6:not( #{$root}--slider ) & {
+                    font-size: 1.74rem;
+                }
+            }
+        }
+
+        #{$root}__wrapper--content-display-outside & {
+            margin-bottom: .5rem;
+            font-weight: 600;
+
+            @include media( '<phone-lg' ) {
+                font-size: 2rem;
+            }
+
+            @include media( '>=laptop-lg' ) {
+                font-size: 2.89rem;
+
+                #{$root}--items-in-row-2:not( #{$root}--slider ) & {
+                    font-size: 2.43rem;
+                }
+
+                #{$root}--items-in-row-3:not( #{$root}--slider ) & {
+                    font-size: 2.1rem;
+                }
+
+                #{$root}--items-in-row-4:not( #{$root}--slider ) & {
+                    font-size: 1.95rem;
+                }
+
+                #{$root}--items-in-row-6:not( #{$root}--slider ) & {
+                    font-size: 1.74rem;
+                }
+            }
+        }
+    }
+
+    &__subheadline {
+        margin-bottom: 1rem;
+        font-weight: 600;
+
+        #{$root}__wrapper--content-display-outside & {
+            #{$root}--items-in-row-6:not( #{$root}--slider ) & {
+                font-size: 1.45rem;
+            }
+        }
+    }
+
+    &__text {
+        font-size: 1.45rem;
+        line-height: 1.18;
+        color: $colorDoveGray;
+        font-weight: 300;
+
+        @include media( '>=tablet' ) {
+            #{$root}--items-in-row-3:not( #{$root}--slider ) &,
+            #{$root}--items-in-row-4:not( #{$root}--slider ) & {
+                font-size: 1.45rem;
+            }
+
+            #{$root}--items-in-row-6:not( #{$root}--slider ) & {
+                font-size: 1.24rem;
+            }
+        }
+    }
+
+    &__cta {
+        padding: 0 !important;
+
+        .#{$namespace}button--type_long {
+            font-size: 1.19rem;
+
+            @include media( '<laptop' ) {
+                min-width: 10rem;
+                padding-right: 5rem;
+                padding-left: 1.5rem;
+                text-indent: 0;
+                min-height: 3.35rem;
+                padding-top: .65rem;
+                padding-bottom: .65rem;
+            }
+        }
+    }
+
+    &__pagination {
+        @extend .#{$namespace}products-promo__pagination;
+        position: static;
+        transform: none;
+        margin-top: 2rem;
+
+        &-item {
+            @extend .#{$namespace}products-promo__pagination-item;
+
+            &--active {
+                @extend .#{$namespace}products-promo__pagination-item--active;
+            }
+        }
+
+        &-button {
+            @extend .#{$namespace}products-promo__pagination-button;
+        }
+    }
+
+    &__nav {
+        @extend .#{$namespace}products-promo__nav;
+        z-index: 3;
+
+        &--disabled {
+            opacity: .5;
+            cursor: initial !important;
+
+            &:hover {
+                transform: translateY( -50% ) !important;
+            }
+        }
+
+        &--prev {
+            left: 1rem;
+        }
+
+        &--next {
+            right: 1rem;
+        }
+    }
+
+    &__nav-icon {
+        fill: $colorCeruleanBlue;
+
+        @include media( '<tablet' ) {
+            height: calc( 5.5rem * .75 );
+        }
+    }
+
+    &--full-width-slider {
+        width: 77%;
+        padding: 0 11.5%;
+
+        #{$root}__wrapper {
+            overflow: visible;
+        }
+    }
+}

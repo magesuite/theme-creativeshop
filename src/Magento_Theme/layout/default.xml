@@ -8,7 +8,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="head.additional">
-            <block class="Magento\Framework\View\Element\Template" name="fonts" template="Magento_Theme::html/fonts.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="styles" template="Magento_Theme::html/styles.phtml"/>
             <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml"/>
         </referenceBlock>
 
@@ -32,7 +32,9 @@
             </container>
         </referenceContainer>
 
-        <referenceContainer name="header.container" htmlClass="cs-header"/>
+        <referenceContainer name="header.container" htmlClass="cs-header">
+            <block class="Magento\Framework\View\Element\Template" name="top.search.mobile" as="topSearch" template="Magento_Search::form.mini.phtml" after="-"/>
+        </referenceContainer>
         <move element="header.container" destination="header.page.container.inner"/>
 
         <referenceContainer name="page.top">
@@ -59,6 +61,7 @@
 
         <referenceBlock name="navigation.sections" remove="true"/>
         <referenceContainer name="page.top">
+            <block class="Creativestyle\FrontendExtension\Block\Twig" template="offcanvas-navigation/offcanvas-navigation.twig" />
             <container name="navigation.container" htmlTag="section" htmlClass="cs-container">
                 <container name="navigation.container.inner" htmlTag="div" htmlClass="cs-container__inner">
                     <block class="Creativestyle\ContentConstructorFrontendExtension\Block\Component" name="componentjk8k2">

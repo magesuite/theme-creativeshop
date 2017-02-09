@@ -22,6 +22,32 @@ $namespace: 'cs-';
     &__item {
         margin: 0 $mobileGutter 2 * $mobileGutter;
 
+        &:after {
+            display: block;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc( 100% + 1.5rem );
+            margin-left: -.75rem;
+            border-top: 1px solid $colorAlto;
+
+            @include media( '>=tablet' ) {
+                width: calc( 100% + 2rem );
+                margin-left: -1rem;
+            }
+        }
+
+        &:first-child:after {
+            display: none;
+        }
+
+        @include media( '>=phone-lg' ) {
+            &:nth-child( -n+2 ):after {
+                display: none;
+            }
+        }
+
         @include media( '>=phone-lg' ) {
             width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
 
@@ -34,16 +60,40 @@ $namespace: 'cs-';
             margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
             width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
 
+            &:nth-child( -n+3 ):after {
+                display: none;
+            }
+
             #{$root}--in-column & {
                 width: calc( ( 100% / 2 ) - ( 2 * #{$tabletUpGutter} ) );
+
+                &:after {
+                    display: block;
+                }
+
+                &:nth-child( -n+2 ):after {
+                    display: none;
+                }
             }
         }
 
         @include media( '>=laptop' ) {
             width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
 
+            &:nth-child( -n+4 ):after {
+                display: none;
+            }
+
             #{$root}--in-column & {
                 width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
+
+                &:after {
+                    display: block;
+                }
+
+                &:nth-child( -n+3 ):after {
+                    display: none;
+                }
             }
         }
 

@@ -14,28 +14,44 @@
             margin-bottom: 3rem;
         }
 
-        .page-title-wrapper .main {
-            padding: 1rem 0 1.5rem;
+        .page-title-wrapper {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            @include media('>=tablet') {
+                padding: .2rem 0 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
             @include media('>=desktop') {
                 width: 40%;
+            }
+
+            .page-title {
+                padding-bottom: 0;
             }
         }
 
         &__toolbar {
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             flex-wrap: wrap;
             display: flex;
             @include media('>=tablet') {
                 padding-bottom: 2rem;
             }
-            @include media('>=laptop') {
+            @include media('>=desktop') {
                 flex-wrap: nowrap;
             }
         }
 
         &__toolbar-top {
             @include media('<tablet') {
+                display: none;
+            }
+
+            .page-title__span {
                 display: none;
             }
         }
@@ -59,7 +75,7 @@
 
         &__toolbar-label {
             white-space: nowrap;
-            padding-right: .5rem;
+            padding-right: .8rem;
             display: inline-block;
         }
 
@@ -79,8 +95,15 @@
             padding-top: 0;
         }
 
-        .#{$namespace}pagination {
-            margin-bottom: 1rem;
+        &__toolbar-sorter {
+            .#{$namespace}html-select,
+            .#{$namespace}html-select__trigger {
+                height: 3.8rem;
+            }
+            .#{$namespace}html-select__trigger-text {
+                font-size: 1.3rem;
+                line-height: 2.4rem;
+            }
         }
 
         .column.main {

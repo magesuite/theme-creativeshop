@@ -7,7 +7,12 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="main.content" htmlClass="cs-container cs-container--spacious | cs-container--pdp"/>
+        <referenceContainer name="main.content" htmlClass="cs-container cs-container--spacious | cs-container--pdp">
+            <container name="product.carousels.container" htmlTag="section" htmlClass="cs-container" after="-">
+                <container name="product.carousels.container.content" htmlTag="div" htmlClass="cs-container__inner" />
+            </container>
+        </referenceContainer>
+
         <referenceContainer name="content">
             <container name="product.media.container" htmlTag="section" htmlClass="cs-container cs-product-gallery__container" before="-">
                 <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
@@ -58,8 +63,6 @@
             </action>
         </referenceBlock>
 
-
-        <move element="catalog.product.related" destination="product.info.details" after="-" />
         <move element="product.info.overview" destination="product.info.details"  />
 
         <referenceBlock name="product.info.details">
@@ -96,5 +99,8 @@
         </referenceBlock>
 
         <move element="product.info.details" destination="product.details.container.wrapper"/>
+
+        <move element="catalog.product.related" destination="product.carousels.container.content" />
+        <move element="product.info.upsell" destination="product.carousels.container.content" />
     </body>
 </page>

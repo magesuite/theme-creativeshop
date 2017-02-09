@@ -23,6 +23,16 @@ $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
 $heroProduct = $block->getIsHeroEnabled();
 ?>
+<div class="page-title-wrapper">
+    <h1 class="page-title" id="page-title-heading" aria-labelledby="page-title-heading toolbar-amount">
+        <span class="base" data-ui-id="page-title-wrapper">
+            <?php echo $block->getChildHtml('page.title') ?>
+        </span>
+    </h1>
+        <span class="page-title__span">(<?php $toolbar = $block->getToolbarBlock(); $collection = $toolbar->getCollection(); echo $toolbar->getTotalNum(); ?>)</span>
+</div>
+
+
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty">
         <div><?php /* @escapeNotVerified */
@@ -52,7 +62,7 @@ $heroProduct = $block->getIsHeroEnabled();
      */
     $pos = $block->getPositioned();
     ?>
-    <div class="">
+    <div class="cs-category-page__products-wrapper">
         <?php $iterator = 0; ?>
         <ol class="<?php /* @escapeNotVerified */
         echo $viewModeClass; ?> <?php /* @escapeNotVerified */ echo $viewModeClass; ?>--in-column">
@@ -62,9 +72,10 @@ $heroProduct = $block->getIsHeroEnabled();
                 <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item <?php if($iterator==1 && $heroProduct): ?><?php echo $viewModeClass; ?>__item--hero<?php endif; ?> | cs-grid-product">
                     <?php
                         $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
-                        $productImageUrl = $_imagehelper->init($_product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+                        $productImageUrl = $_imagehelper->init($_product, $image)->getUrl();
                         $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                         $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+                        $getIsSalable = $_product->getIsSalable();
                     ?>
 
                     <?php
@@ -86,8 +97,8 @@ $heroProduct = $block->getIsHeroEnabled();
                             'addons' => [
                                 'right' => [
                                     [
-                                        'mix' => $_product->getIsSalable() ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
-                                        'content' => $_product->getIsSalable() ? __('In stock') : __('Out of stock')
+                                        'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                                        'content' => $getIsSalable ? __('In stock') : __('Out of stock')
                                     ]
                                 ]
                             ],
@@ -114,7 +125,7 @@ $heroProduct = $block->getIsHeroEnabled();
 
                     <?php
                         $data['addons']['left'][] = [
-                            'content' => '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="'.$block->escapeHtml(__('Add to Wish List')).'" aria-label="'.$block->escapeHtml(__('Add to Wish List')).'" data-post=\''.$block->getAddToWishlistParams($_product).'\' data-action="add-to-wishlist" role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href="'.$this->getViewFileUrl('images/sprites.svg').'#heart"></use></svg>'.__('Add to Wishlist').'</a></li></ul>'
+                            'content' => '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="'.$block->escapeHtml(__('Add to Wish List')).'" aria-label="'.$block->escapeHtml(__('Add to Wish List')).'" data-post=\''.$block->getAddToWishlistParams($_product).'\' data-action="add-to-wishlist" role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href="#heart"></use></svg>'.__('Add to Wishlist').'</a></li></ul>'
                         ];
                     ?>
 

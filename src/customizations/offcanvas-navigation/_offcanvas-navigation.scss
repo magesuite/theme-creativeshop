@@ -1,0 +1,78 @@
+@import '../../../node_modules/creative-patterns/packages/components/offcanvas-navigation/src/offcanvas-navigation';
+
+.cs-offcanvas-navigation {
+    @include offcanvas-navigation();
+    height: 100%;
+
+    &__item {
+        margin: 0;
+
+        & + & {
+            border-top: 1px $colorAlto solid;
+        }
+
+        &:last-of-type {
+            border-bottom: 1px $colorAlto solid;
+        }
+    }
+
+    &__link {
+        display: flex;
+        width: 100%;
+        padding: 2.4rem 2rem;
+        font-size: 1.4rem;
+        align-items: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        box-sizing: border-box;
+
+        &,
+        &:hover,
+        &:visited {
+            color: $colorCeruleanBlue;
+        }
+
+        &--sign-in {
+            &:after {
+                content: '';
+                float: right;
+                display: inline-block;
+                width: 2.3rem;
+                height: 2.5rem;
+                margin-left: auto;
+                background: url('images/sign-in.png') center no-repeat;
+                background-size: contain;
+            }
+        }
+
+        &--return {
+            &:before {
+                content: '';
+                display: inline-block;
+                width: .6rem;
+                height: 1rem;
+                background: url('images/button-arrow-dark.png') center no-repeat;
+                background-size: contain;
+                margin-left: 0;
+                margin-right: 2rem;
+                transform: rotate( 180deg );
+            }
+        }
+
+        &--parent {
+            font-weight: 700;
+            text-transform: uppercase;
+
+            &:after {
+                content: '';
+                float: right;
+                display: inline-block;
+                width: .6rem;
+                height: 1rem;
+                background: url('images/button-arrow-dark.png') center no-repeat;
+                background-size: contain;
+                margin-left: auto;
+            }
+        }
+    }
+}

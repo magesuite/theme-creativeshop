@@ -1,5 +1,5 @@
 /**
- *  redcoon's Gulp tasker configuration
+ * creativeshop Gulp tasker configuration
  */
 import gulp from 'gulp';
 import path from 'path';
@@ -76,7 +76,7 @@ gulp.task( 'serve', ( done ) => {
 /**
  *  Task that fires project linting on every commit attempt.
  */
-gulp.task( 'pre-commit', ( done ) => {
+gulp.task( 'pre-push', ( done ) => {
     sequence( 'lint', done );
 } );
 

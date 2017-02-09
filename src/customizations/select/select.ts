@@ -4,3 +4,5 @@ import Select from '../../../node_modules/creative-patterns/packages/components/
 import $ from 'jquery';
 
 new Select( $( '.cs-select' ) );
+
+export default Select;

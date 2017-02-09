@@ -26,18 +26,26 @@ import 'vendors';
 
 import './components/collapse/collapse';
 import './components/dropdown/dropdown';
-import './customizations/select/select';
+
+import Select from './customizations/select/select';
+export { Select };
 
 import { init as collapsibleText } from './components/collapsible-text/collapsible-text';
 collapsibleText();
 
 import './customizations/navigation/navigation';
+import './customizations/offcanvas-navigation/offcanvas-navigation';
+import './customizations/offcanvas/offcanvas';
 
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
 
 import './customizations/hero/hero';
+import './customizations/image-teaser/image-teaser';
 import './customizations/products-promo/products-promo';
+
+import './customizations/brand-carousel/brand-carousel';
+
 import './customizations/sticky-block/sticky-block';
 import './customizations/items-grid-layout/items-grid-layout';
 

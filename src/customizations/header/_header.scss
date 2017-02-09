@@ -7,46 +7,136 @@
 
     font-size: 1rem;
 
+    @include media('<tablet') {
+        padding-top: 5rem; // To compensate for fixed navigation space.
+    }
+
     &__content {
         @include container-wrapper();
 
-        padding: 1em 0 0;
+        padding: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: $colorWhite;
+        z-index: 201;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
+        justify-content: space-between;
 
         @include media('>=tablet') {
+            position: static;
             border-bottom: 1px solid $colorGallery;
             padding: 1.6em 0;
             flex-wrap: nowrap;
-            justify-content: space-between;
         }
     }
 
 
     &__burger {
-        width: 4rem;
+        display: flex;
+        padding: 1.5rem;
         order: 1;
         flex: 0 1 4rem;
-        margin-top: .5rem;
+        border: 0;
+        align-items: center;
+        margin-right: .5rem;
+        align-self: stretch;
+
+        &,
+        &:active,
+        &:focus,
+        &:hover {
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            transform: scale(0);
+            transform-origin: left;
+            background: $colorCeruleanBlue;
+            transition: transform .3s;
+            bottom: -1px;
+            left: 0;
+        }
+
         @include media('>=tablet') {
             display: none;
+        }
+
+        &--active {
+            &,
+            &:active,
+            &:focus,
+            &:hover {
+                background: $colorCeruleanBlue;
+            }
+
+            &:after {
+                transform: scale(1);
+            }
+
+            #{$root}__burger-icon {
+                transform: rotate(-45deg);
+
+                &,
+                &:before,
+                &:after {
+                    background: $colorWhite;
+                }
+
+                &:before,
+                &:after {
+                    transform: rotate(90deg);
+                }
+            }
         }
     }
 
     &__burger-icon {
-        width: 2.3rem;
-        height: 1.3rem;
-        fill: $colorCeruleanBlue;
-        &:hover {
-            fill: $colorCeruleanBlueHover;
+        padding: 0;
+        margin: 0;
+        position: relative;
+
+        &,
+        &:before,
+        &:after {
+            width: 1.8rem;
+            height: .2rem;
+            background: $colorCeruleanBlue;
+            transition: background-color .3s, transform .3s;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+        }
+
+        &:before {
+            transform: translateY( -250% );
+            transform: translate3d( 0, -250%, 0 );
+        }
+
+        &:after {
+            transform: translatey( 250% );
+            transform: translate3d( 0, 250%, 0 );
         }
     }
 
     &__logo {
         display: flex;
         order: 2;
-        flex: 0 1 12.5rem;
+        flex: 0 1 12rem;
 
         @media screen and ( min-width: 360px ) {
             flex: 0 1 15.5rem;
@@ -63,28 +153,37 @@
     }
 
     &__search {
+        display: none;
         margin-top: 1.5rem;
         width: 100%;
         order: 4;
+
         @include media('>=tablet') {
-            margin-top: 0;
+            display: block;
+            margin-top: .8rem;
             flex: 0 1 32%;
             order: 2;
+            align-self: center;
+        }
+    }
+    // Ugly hack for duplicated search input.
+    & > &__search {
+        display: block;
+        margin-top: 0;
+
+        @include media('>=tablet') {
+            display: none;
         }
     }
 
     &__user-area {
         display: flex;
-        width: calc( 100% - 16.5rem );
         justify-content: flex-end;
         order: 3;
-        @media screen and ( min-width: 360px ) {
-            width: calc( 100% - 19.5rem );
-        }
+        flex: 0 1 25%;
+
         @include media('>=tablet') {
             justify-content: space-between;
-            width: auto;
-            flex: 0 1 20%;
         }
     }
 }
