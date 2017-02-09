@@ -20,11 +20,5 @@ var config = {
         'isMobile': {
             exports: 'isMobile',
         },
-    },
-    map: {
-        "*": {
-            "swatches-renderer": "js/swatches-renderer-extended"
-        }
-
     }
 };
