@@ -4,6 +4,7 @@ var config = {
         'vendors': 'vendors',
         'Stickyfill': 'stickyfill',
         'isMobile': 'ismobile',
+        'cssPolyfills': 'csspolyfills'
     },
     shim: {
         'vendors': {
@@ -20,5 +21,8 @@ var config = {
         'isMobile': {
             exports: 'isMobile',
         },
-    }
+        'cssPolyfills': {
+            export: 'cssPolyfills',
+        }
+    },
 };
