@@ -20,5 +20,5 @@ var config = {
         'isMobile': {
             exports: 'isMobile',
         },
-    },
+    }
 };
