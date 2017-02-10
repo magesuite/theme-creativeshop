@@ -5,11 +5,16 @@
 ?>
 <ol class="cs-aftersearch-nav__filter-items | items">
     <?php /** @var \Magento\Catalog\Model\Layer\Filter\Item[] $filterItems */ ?>
+    <?php $index = 0; ?>
     <?php foreach ($filterItems as $filterItem): ?>
         <?php
             $requestVar = $filterItem->getFilter()->getRequestVar();
             $value = $filterItem->getValue();
             $htmlId = 'aw-filter-option-' . $requestVar . '-' . $value;
+            $index = $index + 1;
+            if ( $index > 5 && count($filterItems) != 6 ) {
+                break;
+            }
         ?>
         <li class="cs-aftersearch-nav__filter-item | item">
             <div class="cs-aftersearch-nav__filter-input cs-aftersearch-nav__filter-input--type_checkbox | cs-input cs-input--type-checkbox">
@@ -28,4 +33,59 @@
             </div>
         </li>
     <?php endforeach ?>
-</ol>
+    </ol>
+
+    <div class="cs-collapse-inside">
+
+        <div class="cs-collapse-inside__content">
+            <ol class="cs-aftersearch-nav__filter-items cs-aftersearch-nav__filter-items--inside | items">
+            <?php $index = 0; ?>
+            <?php foreach ($filterItems as $filterItem): ?>
+                <?php
+                $requestVar = $filterItem->getFilter()->getRequestVar();
+                $value = $filterItem->getValue();
+                $htmlId = 'aw-filter-option-' . $requestVar . '-' . $value;
+                $index = $index + 1;
+                ?>
+
+                <?php if ( $index > 5 && count($filterItems) != 6 ): ?>
+                    <li class="cs-aftersearch-nav__filter-item cs-aftersearch-nav__filter-item | item">
+                        <div class="cs-aftersearch-nav__filter-input cs-aftersearch-nav__filter-input--type_checkbox | cs-input cs-input--type-checkbox">
+                            <input
+                                id="<?php /* @escapeNotVerified */ echo $htmlId ?>"
+                                type="checkbox"
+                                class="cs-input__checkbox"
+                                name="<?php /* @escapeNotVerified */ echo $requestVar ?>"
+                                value ="<?php /* @escapeNotVerified */ echo $value ?>"
+                                <?php if ($block->isActiveItem($filterItem)) { /* @escapeNotVerified */ echo 'checked'; }?>
+                                <?php if (!$filterItem->getCount() && !$block->isActiveItem($filterItem)) { /* @escapeNotVerified */ echo 'disabled'; } ?>
+                                data-mage-init='{"awLayeredNavFilterItem": {}}'
+                                data-role="aw-layered-nav-filter-item"
+                                />
+                            <label for="<?php /* @escapeNotVerified */ echo $htmlId ?>" class="cs-input__label"><?php /* @escapeNotVerified */ echo __($filterItem->getLabel()) ?></label>
+                        </div>
+                    </li>
+                <?php endif; ?>
+
+            <?php endforeach ?>
+            </ol>
+        </div>
+
+        <?php if ( count($filterItems) > 5 && count($filterItems) != 6 ): ?>
+        <button
+            class="cs-collapse-inside__trigger cs-collapse-inside__trigger--no-arrow | cs-button cs-button--look_light cs-button--size_300">
+            <span
+                class="cs-button__span"
+                data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less Filters'); ?>"
+                data-show-more-text="<?php /* @escapeNotVerified */ echo __('More Filters'); ?>"
+            >
+                <?php /* @escapeNotVerified */ echo __('More filters') ?>
+            </span>
+            <svg class="cs-button__icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </button>
+        <?php endif; ?>
+
+    </div>
+
