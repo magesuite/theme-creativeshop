@@ -8,13 +8,13 @@
     <?php $index = 0; ?>
     <?php foreach ($filterItems as $filterItem): ?>
         <?php
-            $requestVar = $filterItem->getFilter()->getRequestVar();
-            $value = $filterItem->getValue();
-            $htmlId = 'aw-filter-option-' . $requestVar . '-' . $value;
-            $index = $index + 1;
-            if ( $index > 5 && count($filterItems) != 6 ) {
-                break;
-            }
+        $requestVar = $filterItem->getFilter()->getRequestVar();
+        $value = $filterItem->getValue();
+        $htmlId = 'aw-filter-option-' . $requestVar . '-' . $value;
+        $index = $index + 1;
+        if ( $index > 5 && count($filterItems) != 6 ) {
+            break;
+        }
         ?>
         <li class="cs-aftersearch-nav__filter-item | item">
             <div class="cs-aftersearch-nav__filter-input cs-aftersearch-nav__filter-input--type_checkbox | cs-input cs-input--type-checkbox">
@@ -28,21 +28,23 @@
                     <?php if (!$filterItem->getCount() && !$block->isActiveItem($filterItem)) { /* @escapeNotVerified */ echo 'disabled'; } ?>
                     data-mage-init='{"awLayeredNavFilterItem": {}}'
                     data-role="aw-layered-nav-filter-item"
-                    />
-                <label for="<?php /* @escapeNotVerified */ echo $htmlId ?>" class="cs-input__label"><?php /* @escapeNotVerified */ echo __($filterItem->getLabel()) ?></label>
+                />
+                <label for="<?php /* @escapeNotVerified */ echo $htmlId ?>" class="cs-input__label">
+                    <?php /* @escapeNotVerified */ echo __($filterItem->getLabel()) ?>
+                </label>
             </div>
         </li>
     <?php endforeach ?>
-    </ol>
+</ol>
 
-    <input
-        class="cs-visually-hidden | cs-aftersearch-nav__more-filters-checkbox"
-        role="checkbox"
-        type="checkbox"
-        id="<?php /* @escapeNotVerified */ echo $requestVar?>"
-    />
-    <div class="cs-aftersearch-nav__more-filters">
-        <ol class="cs-aftersearch-nav__filter-items cs-aftersearch-nav__filter-items--inside | items">
+<input
+    class="cs-visually-hidden | cs-aftersearch-nav__more-filters-checkbox"
+    role="checkbox"
+    type="checkbox"
+    id="<?php /* @escapeNotVerified */ echo $requestVar?>"
+/>
+<div class="cs-aftersearch-nav__more-filters">
+    <ol class="cs-aftersearch-nav__filter-items cs-aftersearch-nav__filter-items--inside | items">
         <?php $index = 0; ?>
         <?php foreach ($filterItems as $filterItem): ?>
             <?php
@@ -65,19 +67,24 @@
                             <?php if (!$filterItem->getCount() && !$block->isActiveItem($filterItem)) { /* @escapeNotVerified */ echo 'disabled'; } ?>
                             data-mage-init='{"awLayeredNavFilterItem": {}}'
                             data-role="aw-layered-nav-filter-item"
-                            />
-                        <label for="<?php /* @escapeNotVerified */ echo $htmlId ?>" class="cs-input__label"><?php /* @escapeNotVerified */ echo __($filterItem->getLabel()) ?></label>
+                        />
+                        <label for="<?php /* @escapeNotVerified */ echo $htmlId ?>" class="cs-input__label">
+                            <?php /* @escapeNotVerified */ echo __($filterItem->getLabel()) ?>
+                        </label>
                     </div>
                 </li>
             <?php endif; ?>
 
         <?php endforeach ?>
-        </ol>
-    </div>
+    </ol>
+</div>
 
-    <?php if ( count($filterItems) > 5 && count($filterItems) != 6 ): ?>
-    <label for="<?php /* @escapeNotVerified */ echo $requestVar?>"
-        class="cs-aftersearch-nav__more-filters-button | cs-collapse-inside__trigger cs-collapse-inside__trigger--no-arrow | cs-button cs-button--look_light cs-button--size_300">
+<?php if ( count($filterItems) > 5 && count($filterItems) != 6 ): ?>
+    <label
+        for="<?php /* @escapeNotVerified */ echo $requestVar?>"
+        class="cs-aftersearch-nav__more-filters-button | cs-collapse-inside__trigger cs-collapse-inside__trigger--no-arrow |
+           cs-button cs-button--look_light cs-button--size_300 | cs-hide-mobile"
+    >
         <span
             class="cs-button__span"
             data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less Filters'); ?>"
@@ -85,11 +92,11 @@
         >
         </span>
         <span class="cs-visually-hidden">
-            <?php /* @escapeNotVerified */ echo __('Check'. $requestVar . 'checkbox to see more filters. Uncheck it to see less filters'); ?></span>
+            <?php /* @escapeNotVerified */ echo __('Check'. $requestVar . 'checkbox to see more filters. Uncheck it to see less filters'); ?>
+        </span>
         <svg class="cs-button__icon">
             <use xlink:href="#arrow_next"></use>
         </svg>
     </label>
-    <?php endif; ?>
-
+<?php endif; ?>
 

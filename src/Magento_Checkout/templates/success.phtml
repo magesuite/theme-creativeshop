@@ -1,21 +1,27 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 ?>
 <?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
 <div class="checkout-success | cs-info-page__section">
     <?php if ($block->getOrderId()):?>
         <?php if ($block->getCanViewOrder()) :?>
-            <p class="cs-info-page__subheadline"><?php echo __('Your order number is: %1.', sprintf('<a href="%s" class="order-number | cs-link"><strong>%s</strong></a>', $block->escapeHtml($block->getViewOrderUrl()), $block->escapeHtml($block->getOrderId()))) ?></p>
+            <p class="cs-info-page__subheadline">
+                <?php
+                    echo __('Your order number is: %1.', sprintf(
+                        '<a href="%s" class="order-number | cs-link"><strong>%s</strong></a>',
+                        $block->escapeHtml($block->getViewOrderUrl()),
+                        $block->escapeHtml($block->getOrderId()))
+                    )
+                ?>
+            </p>
         <?php  else :?>
-            <p class="cs-info-page__subheadline"><?php echo __('Your order # is: <span>%1</span>', $block->escapeHtml($block->getOrderId())) ?></p>
+            <p class="cs-info-page__subheadline">
+                <?php echo __('Your order # is: <span>%1</span>', $block->escapeHtml($block->getOrderId())) ?>
+            </p>
         <?php endif;?>
-        <p class="cs-info-page__text"><?php /* @escapeNotVerified */ echo __('We\'ll email you an order confirmation with details and tracking info.') ?></p>
+        <p class="cs-info-page__text">
+            <?php /* @escapeNotVerified */ echo __('We\'ll email you an order confirmation with details and tracking info.') ?>
+        </p>
     <?php endif;?>
 
     <?php echo $block->getAdditionalInfoHtml() ?>

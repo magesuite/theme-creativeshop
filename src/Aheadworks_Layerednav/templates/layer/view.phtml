@@ -3,10 +3,11 @@
 
 // @codingStandardsIgnoreFile
 ?>
-<div id="layered-filter-block"
-     class="cs-aftersearch-nav | block filter | cs-collapse cs-collapse--only-mobile"
-     data-role="filter-block"
-     data-mage-init='{"collapsible":{
+<div
+    id="layered-filter-block"
+    class="cs-aftersearch-nav | block filter | cs-collapse cs-collapse--only-mobile"
+    data-role="filter-block"
+    data-mage-init='{"collapsible":{
             "openedState": "active",
             "collapsible": true,
             "active": true,
@@ -14,19 +15,28 @@
                 "openedState": "filter-active",
                 "element": "body"
             }
-         }}'>
-    <div id="aw-layered-nav-popup"
-         class="cs-aftersearch-nav__popover | aw-layered-nav-popover aw-layered-nav-popover"
-         data-role="aw-layered-nav-popover"
-         data-mage-init='{"awLayeredNavPopover": {
+         }}'
+>
+    <div
+        id="aw-layered-nav-popup"
+        class="cs-aftersearch-nav__popover | aw-layered-nav-popover aw-layered-nav-popover"
+        data-role="aw-layered-nav-popover"
+        data-mage-init='{"awLayeredNavPopover": {
                 "filtersContainer": "#layered-filter-block",
-                "hasActiveFilters": <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->hasActiveFilters()) ?>}}'>
+                "hasActiveFilters": <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->hasActiveFilters()) ?>}}'
+    >
         <div class="cs-aftersearch-nav__popover-content | aw-layered-nav-popover__content">
-            <div id="aw-layered-nav-popover__items" data-role="items-count-container" class="cs-aftersearch-nav__popover-items | aw-layered-nav-popover__items"></div>
-            <div class="cs-aftersearch-nav__popover-loader | aw-layered-nav-popover__loader"><div class="aw-layered-nav-popover__loader-itself"></div></div>
+            <div
+                id="aw-layered-nav-popover__items"
+                data-role="items-count-container"
+                class="cs-aftersearch-nav__popover-items | aw-layered-nav-popover__items"
+            ></div>
+            <div class="cs-aftersearch-nav__popover-loader | aw-layered-nav-popover__loader">
+                <div class="aw-layered-nav-popover__loader-itself"></div>
+            </div>
             <div class="cs-aftersearch-nav__popover-action | aw-layered-nav-popover__action">
                 <button data-role="show-button" class="cs-button cs-button--look_default cs-button--size_300 | show-button">
-                     <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Show');?></span>
+                    <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Show');?></span>
                     <svg class="cs-button__icon">
                         <use xlink:href="#arrow_next"></use>
                     </svg>
@@ -46,18 +56,32 @@
         <div class="cs-aftersearch-nav__filter-options | filter-options" id="narrow-by-list">
             <?php foreach ($block->getFilters() as $filter): ?>
                 <?php if ($filter->getItemsCount()): ?>
-                    <div class="cs-aftersearch-nav__filter | filter-options-item<?php if ($block->getPageLayout() != '1column'): ?> active<?php endif; ?>"
-                         data-mage-init='{"awLayeredNavCollapse": {}}'>
-                        <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php echo $block->escapeHtml(__($filter->getName())) ?><span class="cs-aftersearch-nav__filter-arrow | arrow"></span></div>
-                        <div data-role="content" class="cs-aftersearch-nav__filter-content | filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                    <div
+                        class="cs-aftersearch-nav__filter | filter-options-item<?php if ($block->getPageLayout() != '1column'): ?> active<?php endif; ?>"
+                        data-mage-init='{"awLayeredNavCollapse": {}}'
+                    >
+                        <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title">
+                            <?php echo $block->escapeHtml(__($filter->getName())) ?>
+                            <span class="cs-aftersearch-nav__filter-arrow | arrow"></span>
+                        </div>
+                        <div
+                            data-role="content"
+                            class="cs-aftersearch-nav__filter-content | filter-options-content"
+                        >
+                            <?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?>
+                        </div>
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <div class="cs-aftersearch-nav__button-list | button-list aw-layered-nav-popover__action"
-                 data-role="aw-layered-nav-actions"
-                 data-mage-init='{"awLayeredNavFilterActions": {}}'>
-                <button data-role="show-button"
-                        class="cs-aftersearch-nav__button cs-aftersearch-nav__button--apply-filters | cs-button cs-button--look_default cs-button--type_long cs-button--type_wide | show-button<?php if (!$block->hasActiveFilters()): ?> cs-aftersearch-nav__button--disabled disabled<?php endif; ?>">
+            <div
+                class="cs-aftersearch-nav__button-list | button-list aw-layered-nav-popover__action"
+                data-role="aw-layered-nav-actions"
+                data-mage-init='{"awLayeredNavFilterActions": {}}'
+            >
+                <button
+                    data-role="show-button"
+                    class="cs-aftersearch-nav__button cs-aftersearch-nav__button--apply-filters | cs-button cs-button--look_default cs-button--type_long cs-button--type_wide | show-button<?php if (!$block->hasActiveFilters()): ?> cs-aftersearch-nav__button--disabled disabled<?php endif; ?>"
+                >
                     <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Update Filters');?></span>
                     <svg class="cs-button__icon">
                         <use xlink:href="#arrow_next"></use>
@@ -96,7 +120,6 @@
         if ( !$( '.columns > .page-title-wrapper' ).length ) {
             $( '.page-title-wrapper' ).clone().prependTo( '.columns' ).addClass( 'page-title-wrapper--checkout-type page-title-wrapper--wide cs-hide-tablet-desktop' );
             $( '.main .page-title-wrapper' ).addClass( 'cs-hide-mobile' );
-
         }
 
     });

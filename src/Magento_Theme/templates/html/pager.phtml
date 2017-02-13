@@ -1,16 +1,7 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
-?>
-<?php
 /**
- * Pager template
- *
  * @see \Magento\Theme\Block\Html\Pager
  */
 ?>
@@ -23,12 +14,13 @@
     <?php if ($block->getShowAmounts()): ?>
         <p class="cs-pager__block">
             <span class="cs-t-text">
+            <?php $totalNum =  $block->getTotalNum(); ?>
             <?php if ($block->getLastPageNum()>1): ?>
-                <?php /* @escapeNotVerified */ echo __('Items %1 to %2 of %3 total', $block->getFirstNum(), $block->getLastNum(), $block->getTotalNum()) ?>
+                <?php /* @escapeNotVerified */ echo __('Items %1 to %2 of %3 total', $block->getFirstNum(), $block->getLastNum(), $totalNum) ?>
             <?php elseif ($block->getTotalNum() == 1): ?>
-                <?php /* @escapeNotVerified */ echo __('%1 Item', $block->getTotalNum()) ?>
+                <?php /* @escapeNotVerified */ echo __('%1 Item', $totalNum) ?>
             <?php else: ?>
-                <?php /* @escapeNotVerified */ echo __('%1 Item(s)', $block->getTotalNum()) ?>
+                <?php /* @escapeNotVerified */ echo __('%1 Item(s)', $totalNum) ?>
             <?php endif; ?>
             </span>
         </p>
@@ -37,21 +29,28 @@
     <?php if ($block->getLastPageNum()>1): ?>
         <div class="cs-pagination">
             <div class="cs-pagination__content">
+                <?php
+                    $anchorTextForPrevious = $block->getAnchorTextForPrevious();
+                    $text = $anchorTextForPrevious ? $anchorTextForPrevious : '';
+                ?>
                 <?php if (!$block->isFirstPage()): ?>
-                    <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : '';?>
-                    <a class="cs-pagination__prev" href="<?php /* @escapeNotVerified */ echo $block->getPreviousPageUrl() ?>" title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Previous') ?>">
+                    <a
+                        class="cs-pagination__prev" 
+                        href="<?php /* @escapeNotVerified */ echo $block->getPreviousPageUrl() ?>" 
+                        title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Previous') ?>"
+                    >
                         <svg class="cs-pagination__prev-icon">
                             <use xlink:href="#icon_arrow-left"></use>
                         </svg>
                     </a>
                 <?php else: ?>
-                    <?php $text = $block->getAnchorTextForPrevious() ? $block->getAnchorTextForPrevious() : '';?>
                     <span class="cs-pagination__prev" title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Previous') ?>">
                         <svg class="cs-pagination__prev-icon cs-pagination__prev-icon--disabled">
                             <use xlink:href="#icon_arrow-left"></use>
                         </svg>
                     </span>
                 <?php endif;?>
+
                 <span class="cs-pagination__label-wrapper">
                     <span class="cs-pagination__label"><?php /* @escapeNotVerified */ echo __('Page') ?>: </span>
                 </span>
@@ -60,24 +59,31 @@
 
                     <?php if ($block->canShowFirst()): ?>
                         <li class="cs-pagination__item">
-                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getFirstPageUrl() ?>">1</a>
+                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getFirstPageUrl() ?>">
+                                1
+                            </a>
                         </li>
                     <?php endif;?>
 
                     <?php if ($block->canShowPreviousJump()): ?>
                         <li class="cs-pagination__item">
-                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getPreviousJumpUrl() ?>">...</a>
+                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getPreviousJumpUrl() ?>">
+                                ...
+                            </a>
                         </li>
                     <?php endif;?>
 
-                    <?php foreach ($block->getFramePages() as $_page): ?>
-                        <?php if ($block->isPageCurrent($_page)): ?>
+                    <?php foreach ($block->getFramePages() as $page): ?>
+                        <?php if ($block->isPageCurrent($page)): ?>
                             <li class="cs-pagination__item current">
-                                <span class="cs-pagination__number cs-pagination__number--current"><?php /* @escapeNotVerified */ echo $_page ?></span>
+                                <span class="cs-pagination__number cs-pagination__number--current">
+                                    <?php /* @escapeNotVerified */ echo $page ?>
+                                </span>
                             </li>
                         <?php else: ?>
                             <li class="cs-pagination__item">
-                                <a href="<?php /* @escapeNotVerified */ echo $block->getPageUrl($_page) ?>" class="cs-pagination__number"><?php /* @escapeNotVerified */ echo $_page ?>
+                                <a href="<?php /* @escapeNotVerified */ echo $block->getPageUrl($page) ?>" class="cs-pagination__number">
+                                    <?php /* @escapeNotVerified */ echo $page ?>
                                 </a>
                             </li>
                         <?php endif;?>
@@ -89,45 +95,54 @@
                         </li>
                     <?php endif;?>
 
-
                 </ul>
 
-                <?php if ($block->getFrameEnd() < $block->getLastPageNum()): ?>
+                <?php $lastPageNum = $block->getLastPageNum(); ?>
+                <?php if ($block->getFrameEnd() < $lastPageNum): ?>
+                    <ul class="cs-pagination__pager">
+                        <li class="cs-pagination__separator">
+                            <?php /* @escapeNotVerified */ echo __('of'); ?>
+                        </li>
 
-                <ul class="cs-pagination__pager">
-                    <li class="cs-pagination__separator">
-                        <?php /* @escapeNotVerified */ echo __('of'); ?>
-                    </li>
-
-                    <li class="cs-pagination__item cs-pagination__item--single">
-                        <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getLastPageUrl() ?>"><?php /* @escapeNotVerified */ echo $block->getLastPageNum() ?></a>
-                    </li>
-                </ul>
-
+                        <li class="cs-pagination__item cs-pagination__item--single">
+                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getLastPageUrl() ?>">
+                                <?php /* @escapeNotVerified */ echo $lastPageNum; ?>
+                            </a>
+                        </li>
+                    </ul>
                 <?php endif;?>
 
+                <?php
+                    $anchorTextForNext = $block->getAnchorTextForNext();
+                    $text = $anchorTextForNext ? $anchorTextForNext : '';
+                ?>
                 <?php if (!$block->isLastPage()): ?>
-                    <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : '';?>
-                    <a class="cs-pagination__next" href="<?php /* @escapeNotVerified */ echo $block->getNextPageUrl() ?>" title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Next') ?>">
+                    <a
+                        class="cs-pagination__next"
+                        href="<?php /* @escapeNotVerified */ echo $block->getNextPageUrl() ?>"
+                        title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Next') ?>"
+                    >
                         <svg class="cs-pagination__next-icon">
                             <use xlink:href="#icon_arrow-right"></use>
                         </svg>
                     </a>
                 <?php else: ?>
-                    <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : '';?>
                     <span class="cs-pagination__next" title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Next') ?>">
                         <svg class="cs-pagination__next-icon cs-pagination__next-icon--disabled">
                             <use xlink:href="#icon_arrow-right"></use>
                         </svg>
                     </span>
                 <?php endif;?>
-
             </div>
+
             <div class="cs-pagination__content-mobile">
 
                 <?php if (!$block->isLastPage()): ?>
-                    <?php $text = $block->getAnchorTextForNext() ? $block->getAnchorTextForNext() : '';?>
-                    <a class="cs-button cs-button--look_light cs-button--type_wide" href="<?php /* @escapeNotVerified */ echo $block->getNextPageUrl() ?>" title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Next page') ?>">
+                    <a
+                        class="cs-button cs-button--look_light cs-button--type_wide"
+                        href="<?php /* @escapeNotVerified */ echo $block->getNextPageUrl() ?>"
+                        title="<?php /* @escapeNotVerified */ echo $text ? $text : __('Next page') ?>"
+                    >
                          <span class="cs-button__span"><?php echo __('Next page'); ?></span>
                         <svg class="cs-button__icon">
                             <use xlink:href="#arrow_next"></use>
@@ -141,13 +156,17 @@
     <?php if ($block->isShowPerPage()): ?>
         <div class="cs-pager__block">
             <div class="cs-pager__input | cs-input cs-input--inline">
-                <label class="cs-pager__input-span | cs-t-text" for="limiter"><?php /* @escapeNotVerified */ echo __('Show') ?></label>
+                <label class="cs-pager__input-span | cs-t-text" for="limiter">
+                    <?php /* @escapeNotVerified */ echo __('Show') ?>
+                </label>
                 <div class="cs-pager__input-span | cs-input__control">
                     <select id="limiter" data-mage-init='{"redirectUrl": {"event":"change"}}' class="cs-input__select">
-                        <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                            <option value="<?php /* @escapeNotVerified */ echo $block->getLimitUrl($_key) ?>"<?php if ($block->isLimitCurrent($_key)): ?>
-                                selected="selected"<?php endif ?>>
-                                <?php /* @escapeNotVerified */ echo $_limit ?>
+                        <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+                            <option
+                                value="<?php /* @escapeNotVerified */ echo $block->getLimitUrl($key) ?>"
+                                <?php if ($block->isLimitCurrent($key)): ?>  selected="selected"<?php endif ?>
+                            >
+                                <?php /* @escapeNotVerified */ echo $limit ?>
                             </option>
                         <?php endforeach; ?>
                     </select>

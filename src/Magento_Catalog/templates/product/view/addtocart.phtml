@@ -1,17 +1,14 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
-<?php $_product = $block->getProduct(); ?>
-<?php $buttonTitle = __('Add to Cart'); ?>
+<?php
+    $product = $block->getProduct();
+    $buttonTitle = __('Add to Cart');
+?>
 
-<?php if ($_product->isSaleable()): ?>
+<?php if ($product->isSaleable()): ?>
     <div class="cs-box-addtocart">
         <div class="cs-box-addtocart__fieldset">
             <?php if ($block->shouldRenderQuantity()): ?>
@@ -19,13 +16,14 @@
                     <label class="cs-label | cs-box-addtocart__label" for="qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></label>
 
                     <div class="cs-box-addtocart__qty-increment">
+                        <?php $productDefaultQty = $block->getProductDefaultQty() * 1; ?>
                         <?=$this->getLayout()->createBlock(
                             'Creativestyle\FrontendExtension\Block\Twig',
                             'add-to-cart-pdp', [
                                 'data' => [
                                     "namespace" => 'cs-',
-                                    "minValue" => /* @escapeNotVerified */ $block->getProductDefaultQty() * 1,
-                                    "initialValue" => /* @escapeNotVerified */ $block->getProductDefaultQty() * 1,
+                                    "minValue" => /* @escapeNotVerified */ $productDefaultQty,
+                                    "initialValue" => /* @escapeNotVerified */ $productDefaultQty,
                                     "maxValue" => 100,
                                     "maxLength" => 12,
                                     "size" => 2,
@@ -43,7 +41,12 @@
             <?php endif; ?>
 
             <div class="cs-box-addtocart__actions">
-                <button type="submit" title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>" class="cs-button cs-button--type_wide cs-button--type_cart" id="product-addtocart-button">
+                <button
+                    type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="cs-button cs-button--type_wide cs-button--type_cart"
+                    id="product-addtocart-button"
+                >
                     <svg class="cs-button__icon cs-button__icon--cart">
                         <use xlink:href="#cart"></use>
                     </svg>

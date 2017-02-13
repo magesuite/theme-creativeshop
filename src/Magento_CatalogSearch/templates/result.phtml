@@ -1,11 +1,5 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 ?>
 <?php if ($block->getResultCount()): ?>
     <?php echo $block->getChildHtml('tagged_product_list_rss_link'); ?>
@@ -25,7 +19,10 @@
 
     <div class="cs-messages">
         <div class="cs-messages__message cs-messages__message--notice">
-            <?php /* @escapeNotVerified */ echo($block->getNoResultText()) ? $block->getNoResultText() : __('Your search returned no results.') ?>
+            <?php
+            $getNoResultText = $block->getNoResultText();
+            /* @escapeNotVerified */ echo($getNoResultText) ? $getNoResultText->getNoResultText() : __('Your search returned no results.')
+            ?>
             <?php echo $block->getAdditionalHtml() ?>
             <?php if ($messages = $block->getNoteMessages()):?>
                 <?php foreach ($messages as $message):?>

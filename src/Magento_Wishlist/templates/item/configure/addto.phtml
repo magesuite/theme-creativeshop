@@ -1,17 +1,16 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 ?>
 
 <ul class="cs-links-block-addto" data-role="add-to-links">
     <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
         <li class="cs-links-block-addto__item">
-            <a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getUpdateParams(); ?>' class="cs-links-block-addto__link | towishlist updated" data-action="add-to-wishlist">
+            <a
+                href="#"
+                data-post='<?php /* @escapeNotVerified */ echo $block->getUpdateParams(); ?>'
+                class="cs-links-block-addto__link | towishlist updated"
+                data-action="add-to-wishlist"
+            >
                 <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
                     <use xlink:href="#heart"></use>
                 </svg>
@@ -19,11 +18,13 @@
             </a>
         </li>
     <?php endif; ?>
-    <?php $_product = $block->getProduct(); ?>
-    <?php $_compareUrl = $this->helper('Magento\Catalog\Helper\Product\Compare')->getAddUrl($_product); ?>
-    <?php if ($_compareUrl) : ?>
+    <?php
+        $product = $block->getProduct(); 
+        $compareUrl = $this->helper('Magento\Catalog\Helper\Product\Compare')->getAddUrl($product); 
+    ?>
+    <?php if ($compareUrl) : ?>
     <li class="cs-links-block-addto__item">
-        <a href="<?php /* @escapeNotVerified */ echo $_compareUrl ?>" class="cs-links-block-addto__link | cs-no-display | tocompare">
+        <a href="<?php /* @escapeNotVerified */ echo $compareUrl ?>" class="cs-links-block-addto__link | cs-no-display | tocompare">
             <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
                 <use xlink:href="#compare"></use>
             </svg>

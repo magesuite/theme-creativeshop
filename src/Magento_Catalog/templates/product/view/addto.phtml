@@ -1,26 +1,22 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 /** @var $block \Magento\Catalog\Block\Product\View*/
 ?>
 <?php
-$_product = $block->getProduct();
-$_wishlistSubmitParams = $this->helper('Magento\Wishlist\Helper\Data')->getAddParams($_product);
-$compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+    $product = $block->getProduct();
+    $wishlistSubmitParams = $this->helper('Magento\Wishlist\Helper\Data')->getAddParams($product);
+    $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
 ?>
 
 <ul class="cs-links-block-addto" data-role="add-to-links">
     <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
         <li class="cs-links-block-addto__item">
-            <a href="#"
-               class="cs-links-block-addto__link"
-               data-post='<?php /* @escapeNotVerified */ echo $_wishlistSubmitParams; ?>'
-               data-action="add-to-wishlist">
+            <a
+                href="#"
+                class="cs-links-block-addto__link"
+                data-post='<?php /* @escapeNotVerified */ echo $wishlistSubmitParams; ?>'
+                data-action="add-to-wishlist"
+            >
                 <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
                     <use xlink:href="#heart"></use>
                 </svg>
@@ -30,9 +26,12 @@ $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
     <?php endif; ?>
 
     <li class="cs-links-block-addto__item cs-no-display">
-        <a href="#" data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($_product);?>'
-           data-role="add-to-links"
-           class="cs-links-block-addto__link">
+        <a
+            href="#"
+            data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($product);?>'
+            data-role="add-to-links"
+            class="cs-links-block-addto__link"
+        >
             <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--compare">
                 <use xlink:href="#compare"></use>
             </svg>

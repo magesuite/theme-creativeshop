@@ -1,20 +1,18 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
-?>
-<?php
 /**
- * Edit customer address template
- *
  * @var $block \Magento\Customer\Block\Address\Edit
  */
 ?>
-<form class="cs-form | form-address-edit" action="<?php /* @escapeNotVerified */ echo $block->getSaveUrl() ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>">
+<?php $address = $block->getAddress(); ?>
+<form
+    class="cs-form | form-address-edit" 
+    action="<?php /* @escapeNotVerified */ echo $block->getSaveUrl() ?>" 
+    method="post" 
+    id="form-validate" 
+    enctype="multipart/form-data" 
+    data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+>
     <fieldset class="cs-form__fieldset cs-form__fieldset--level_1">
 
         <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
@@ -29,21 +27,46 @@
         <input type="hidden" name="error_url" value="<?php /* @escapeNotVerified */ echo $block->getErrorUrl() ?>">
         <?php echo $block->getNameBlockHtml() ?>
         <div class="cs-input | cs-form__field | company">
-            <label class="cs-input__label" for="company"><span><?php /* @escapeNotVerified */ echo __('Company') ?></span></label>
+            <label class="cs-input__label" for="company">
+                <span><?php /* @escapeNotVerified */ echo __('Company') ?></span>
+            </label>
             <div class="cs-input__control">
-                <input type="text" name="company" id="company" title="<?php /* @escapeNotVerified */ echo __('Company') ?>" value="<?php echo $block->escapeHtml($block->getAddress()->getCompany()) ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('company') ?>">
+                <input 
+                    type="text" 
+                    name="company" 
+                    id="company" 
+                    title="<?php /* @escapeNotVerified */ echo __('Company') ?>" 
+                    value="<?php echo $block->escapeHtml($address->getCompany()) ?>" 
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('company') ?>"
+                >
             </div>
         </div>
         <div class="cs-input | cs-form__field | telephone required">
-            <label class="cs-input__label" for="telephone"><span><?php /* @escapeNotVerified */ echo __('Phone Number') ?></span></label>
+            <label class="cs-input__label" for="telephone">
+                <span><?php /* @escapeNotVerified */ echo __('Phone Number') ?></span>
+            </label>
             <div class="cs-input__control">
-                <input type="text" name="telephone" value="<?php echo $block->escapeHtml($block->getAddress()->getTelephone()) ?>" title="<?php /* @escapeNotVerified */ echo __('Phone Number') ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('telephone') ?>" id="telephone">
+                <input 
+                    type="text" 
+                    name="telephone" 
+                    value="<?php echo $block->escapeHtml($address->getTelephone()) ?>" 
+                    title="<?php /* @escapeNotVerified */ echo __('Phone Number') ?>" 
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('telephone') ?>" 
+                    id="telephone"
+                >
             </div>
         </div>
         <div class="cs-input | cs-form__field | fax">
             <label class="cs-input__label" for="fax"><span><?php /* @escapeNotVerified */ echo __('Fax') ?></span></label>
             <div class="cs-input__control">
-                <input type="text" name="fax" id="fax" title="<?php /* @escapeNotVerified */ echo __('Fax') ?>" value="<?php echo $block->escapeHtml($block->getAddress()->getFax()) ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('fax') ?>">
+                <input 
+                    type="text" 
+                    name="fax" 
+                    id="fax" 
+                    title="<?php /* @escapeNotVerified */ echo __('Fax') ?>" 
+                    value="<?php echo $block->escapeHtml($address->getFax()) ?>" 
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('fax') ?>"
+                >
             </div>
         </div>
 
@@ -57,20 +80,36 @@
             </span>
         </legend>
 
-        <?php $_streetValidationClass = $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('street'); ?>
+        <?php $streetValidationClass = $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('street'); ?>
         <div class="cs-input | cs-form__field | street required">
-            <label for="street_1" class="cs-input__label"><span><?php /* @escapeNotVerified */ echo __('Street Address') ?></span></label>
+            <label for="street_1" class="cs-input__label">
+                <span><?php /* @escapeNotVerified */ echo __('Street Address') ?></span>
+            </label>
             <div class="cs-input__control">
-                <input type="text" name="street[]" value="<?php echo $block->escapeHtml($block->getStreetLine(1)) ?>" title="<?php /* @escapeNotVerified */ echo __('Street Address') ?>" id="street_1" class="cs-input__input <?php /* @escapeNotVerified */ echo $_streetValidationClass ?>"  />
+                <input 
+                    type="text" 
+                    name="street[]" 
+                    value="<?php echo $block->escapeHtml($block->getStreetLine(1)) ?>" 
+                    title="<?php /* @escapeNotVerified */ echo __('Street Address') ?>" 
+                    id="street_1" 
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $streetValidationClass ?>"  
+                />
                 <div class="nested">
-                    <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
-                    <?php for ($_i = 1, $_n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $_i < $_n; $_i++): ?>
+                    <?php $streetValidationClass = trim(str_replace('required-entry', '', $streetValidationClass)); ?>
+                    <?php for ($i = 1, $_n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $i < $_n; $i++): ?>
                         <div class="cs-input | cs-form__field cs-form__field--space-top | additional no-required">
-                            <label class="cs-input__label" for="street_<?php /* @escapeNotVerified */ echo $_i+1 ?>">
-                                <span><?php /* @escapeNotVerified */ echo __('Street Address %1', $_i+1) ?></span>
+                            <label class="cs-input__label" for="street_<?php /* @escapeNotVerified */ echo $i+1 ?>">
+                                <span><?php /* @escapeNotVerified */ echo __('Street Address %1', $i+1) ?></span>
                             </label>
                             <div class="cs-input__control">
-                                <input type="text" name="street[]" value="<?php echo $block->escapeHtml($block->getStreetLine($_i+1)) ?>" title="<?php /* @escapeNotVerified */ echo __('Street Address %1', $_i+1) ?>" id="street_<?php /* @escapeNotVerified */ echo $_i+1 ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $_streetValidationClass ?>">
+                                <input 
+                                    type="text" 
+                                    name="street[]" 
+                                    value="<?php echo $block->escapeHtml($block->getStreetLine($i+1)) ?>" 
+                                    title="<?php /* @escapeNotVerified */ echo __('Street Address %1', $i+1) ?>" 
+                                    id="street_<?php /* @escapeNotVerified */ echo $i+1 ?>" 
+                                    class="cs-input__input <?php /* @escapeNotVerified */ echo $streetValidationClass ?>"
+                                >
                             </div>
                         </div>
                     <?php endfor; ?>
@@ -80,35 +119,77 @@
 
         <?php if ($this->helper('Magento\Customer\Helper\Address')->isVatAttributeVisible()) : ?>
             <div class="cs-input | cs-form__field | taxvat">
-                <label class="cs-input__label" for="vat_id"><span><?php /* @escapeNotVerified */ echo __('VAT Number') ?></span></label>
+                <label class="cs-input__label" for="vat_id">
+                    <span><?php /* @escapeNotVerified */ echo __('VAT Number') ?></span>
+                </label>
                 <div class="cs-input__control">
-                    <input type="text" name="vat_id" value="<?php echo $block->escapeHtml($block->getAddress()->getVatId()) ?>" title="<?php /* @escapeNotVerified */ echo __('VAT Number') ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('vat_id') ?>" id="vat_id">
+                    <input 
+                        type="text" 
+                        name="vat_id" 
+                        value="<?php echo $block->escapeHtml($address->getVatId()) ?>" 
+                        title="<?php /* @escapeNotVerified */ echo __('VAT Number') ?>" 
+                        class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('vat_id') ?>" 
+                        id="vat_id"
+                    >
                 </div>
             </div>
         <?php endif; ?>
         <div class="cs-input | cs-form__field | city required">
-            <label class="cs-input__label" for="city"><span><?php /* @escapeNotVerified */ echo __('City') ?></span></label>
+            <label class="cs-input__label" for="city">
+                <span><?php /* @escapeNotVerified */ echo __('City') ?></span>
+            </label>
             <div class="cs-input__control">
-                <input type="text" name="city" value="<?php echo $block->escapeHtml($block->getAddress()->getCity()) ?>" title="<?php /* @escapeNotVerified */ echo __('City') ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('city') ?>" id="city">
+                <input 
+                    type="text" 
+                    name="city" 
+                    value="<?php echo $block->escapeHtml($address->getCity()) ?>" 
+                    title="<?php /* @escapeNotVerified */ echo __('City') ?>" 
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('city') ?>" 
+                    id="city"
+                >
             </div>
         </div>
         <div class="cs-input | cs-form__field | region">
-            <label class="cs-input__label" for="region_id"><span><?php /* @escapeNotVerified */ echo __('State/Province') ?></span></label>
+            <label class="cs-input__label" for="region_id">
+                <span><?php /* @escapeNotVerified */ echo __('State/Province') ?></span>
+            </label>
             <div class="cs-input__control">
-                <select id="region_id" name="region_id" title="<?php /* @escapeNotVerified */ echo __('State/Province') ?>" class="validate-select" <?php echo(!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>>
+                <select
+                    id="region_id"
+                    name="region_id"
+                    title="<?php /* @escapeNotVerified */ echo __('State/Province') ?>"
+                    class="validate-select" <?php echo(!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>
+                >
                     <option value=""><?php /* @escapeNotVerified */ echo __('Please select a region, state or province.') ?></option>
                 </select>
-                <input type="text" id="region" name="region" value="<?php echo $block->escapeHtml($block->getRegion()) ?>"  title="<?php /* @escapeNotVerified */ echo __('State/Province') ?>" class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('region') ?>"<?php echo(!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>/>
+                <input
+                    type="text"
+                    id="region"
+                    name="region"
+                    value="<?php echo $block->escapeHtml($block->getRegion()) ?>"
+                    title="<?php /* @escapeNotVerified */ echo __('State/Province') ?>"
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('region') ?>"<?php echo(!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>
+                />
             </div>
         </div>
         <div class="cs-input | cs-form__field | zip required">
-            <label class="cs-input__label" for="zip"><span><?php /* @escapeNotVerified */ echo __('Zip/Postal Code') ?></span></label>
+            <label class="cs-input__label" for="zip">
+                <span><?php /* @escapeNotVerified */ echo __('Zip/Postal Code') ?></span>
+            </label>
             <div class="cs-input__control">
-                <input type="text" name="postcode" value="<?php echo $block->escapeHtml($block->getAddress()->getPostcode()) ?>" title="<?php /* @escapeNotVerified */ echo __('Zip/Postal Code') ?>" id="zip" class="cs-input__input validate-zip-international <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>">
+                <input
+                    type="text"
+                    name="postcode" value="<?php echo $block->escapeHtml($address->getPostcode()) ?>"
+                    title="<?php /* @escapeNotVerified */ echo __('Zip/Postal Code') ?>"
+                    id="zip"
+                    class="cs-input__input validate-zip-international <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('postcode') ?>"
+                >
             </div>
         </div>
         <div class="cs-input | cs-form__field | country required">
-            <label class="cs-input__label" for="country"><span><?php /* @escapeNotVerified */ echo __('Country') ?></span></label>
+            <label class="cs-input__label" for="country">
+                <span><?php /* @escapeNotVerified */ echo __('Country') ?></span>
+            </label>
             <div class="cs-input__control">
                 <?php echo $block->getCountryHtmlSelect() ?>
             </div>
@@ -154,8 +235,11 @@
     </fieldset>
     <div class="cs-form__buttons">
 
-        <button type="submit" class="cs-button cs-button--type_long cs-button--type_mobile-wide cs-button--look_default" title="<?php /* @escapeNotVerified */
-        echo __('Save Address') ?>">
+        <button
+            type="submit"
+            class="cs-button cs-button--type_long cs-button--type_mobile-wide cs-button--look_default"
+            title="<?php /* @escapeNotVerified */ echo __('Save Address') ?>"
+        >
            <span class="cs-button__span"> <?php /* @escapeNotVerified */ echo __('Save Address') ?></span>
             <svg class="cs-button__icon">
                 <use xlink:href="#arrow_next"></use>

@@ -1,33 +1,48 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 /* @var $block \Magento\Framework\View\Element\Template */
 ?>
-<div class="cs-info-block | cs-no-display | block-compare" data-bind="scope: 'compareProducts'" data-role="compare-products-sidebar">
-
-        <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
-            <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
-                <span id="block-compare-heading" role="heading" aria-level="2"><?php /* @escapeNotVerified */ echo __('Compare Products') ?></span>
-                <span class="cs-t-headline__span | no-display" data-bind="text: '('+compareProducts().countCaption+')', css: {'no-display': !compareProducts().count}"></span>
-            </h2>
-            <!-- ko if: compareProducts().count -->
-            <a id="compare-clear-all" href="#" class="cs-title-block__span | cs-link" data-post="<?=$block->escapeHtml(
-                $this->helper('Magento\Catalog\Helper\Product\Compare')->getPostDataClearList()
-            ) ?>">
-                <span><?php /* @escapeNotVerified */ echo __('Clear All') ?></span>
-            </a>
-            <!-- /ko -->
+<div
+    class="cs-info-block | cs-no-display | block-compare"
+    data-bind="scope: 'compareProducts'"
+    data-role="compare-products-sidebar"
+>
+    <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+            <span id="block-compare-heading" role="heading" aria-level="2">
+                <?php /* @escapeNotVerified */ echo __('Compare Products') ?>
+            </span>
+            <span
+                class="cs-t-headline__span | no-display"
+                data-bind="text: '('+compareProducts().countCaption+')', css: {'no-display': !compareProducts().count}"
+            ></span>
+        </h2>
+        <!-- ko if: compareProducts().count -->
+        <a
+            id="compare-clear-all"
+            href="#"
+            class="cs-title-block__span | cs-link"
+            data-post="<?=$block->escapeHtml($this->helper('Magento\Catalog\Helper\Product\Compare')->getPostDataClearList()) ?>"
+        >
+            <span><?php /* @escapeNotVerified */ echo __('Clear All') ?></span>
+        </a>
+        <!-- /ko -->
     </div>
     <!-- ko if: compareProducts().count -->
-    <div class="cs-info-block__content | no-display" aria-labelledby="block-compare-heading" data-bind="css: {'no-display': !compareProducts().count}">
+    <div
+        class="cs-info-block__content | no-display"
+        aria-labelledby="block-compare-heading"
+        data-bind="css: {'no-display': !compareProducts().count}"
+    >
         <ol id="compare-items" class="cs-list cs-list--unstyled cs-list--multiline" data-bind="foreach: compareProducts().items">
             <li class="cs-list__item cs-list__item--inputs">
                 <input type="hidden" class="compare-item-id" data-bind="value: id"/>
-                <a href="#" data-bind="attr: {'data-post': remove_url}" title="<?php /* @escapeNotVerified */ echo __('Remove This Item') ?>" class="cs-list__link">
+                <a
+                    href="#"
+                    data-bind="attr: {'data-post': remove_url}"
+                    title="<?php /* @escapeNotVerified */ echo __('Remove This Item') ?>"
+                    class="cs-list__link"
+                >
                     <svg class="cs-list__bullet cs-list__bullet--close">
                         <use xlink:href="#close"></use>
                     </svg>
@@ -38,7 +53,7 @@
             </li>
         </ol>
         <div class="cs-info-block__buttons">
-            <a data-bind="attr: {'href': compareProducts().listUrl}" class="cs-button cs-button--look_light  cs-button--size_300">
+            <a data-bind="attr: {'href': compareProducts().listUrl}" class="cs-button cs-button--look_light cs-button--size_300">
                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Compare') ?></span>
                 <svg class="cs-button__icon">
                     <use xlink:href="#arrow_next"></use>
@@ -48,7 +63,9 @@
     </div>
     <!-- /ko -->
     <!-- ko ifnot: compareProducts().count -->
-    <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */ echo __('You have no items to compare.') ?></div>
+    <div class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+        <?php /* @escapeNotVerified */ echo __('You have no items to compare.') ?>
+    </div>
     <!-- /ko -->
 </div>
 <script type="text/x-magento-init">

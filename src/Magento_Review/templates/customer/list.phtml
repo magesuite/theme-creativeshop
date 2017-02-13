@@ -1,9 +1,4 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 /** @var \Magento\Review\Block\Customer\ListCustomer $block */
 ?>
@@ -24,14 +19,20 @@
             <?php $iterator = 0; ?>
             <?php foreach ($block->getReviews() as $_review): ?>
                 <tr>
-                    <td data-th="<?php echo $block->escapeHtml(__('Created')) ?>" class="cs-table__col date"><?php /* @escapeNotVerified */ echo $block->dateFormat($_review->getReviewCreatedAt()); ?></td>
+                    <td data-th="<?php echo $block->escapeHtml(__('Created')) ?>" class="cs-table__col date">
+                        <?php /* @escapeNotVerified */ echo $block->dateFormat($review->getReviewCreatedAt()); ?>
+                    </td>
                     <td data-th="<?php echo $block->escapeHtml(__('Product Name')) ?>" class="cs-table__col item">
                         <strong class="product-name">
-                            <a href="<?php /* @escapeNotVerified */ echo $block->getProductLink() ?>id/<?php /* @escapeNotVerified */ echo $_review->getEntityPkValue() ?>"><?php echo $block->escapeHtml($_review->getName()) ?></a>
+                            <a 
+                                href="<?php /* @escapeNotVerified */ echo $block->getProductLink() ?>id/<?php /* @escapeNotVerified */ echo $review->getEntityPkValue() ?>"
+                            >
+                                <?php echo $block->escapeHtml($review->getName()) ?>
+                            </a>
                         </strong>
                     </td>
                     <td data-th="<?php echo $block->escapeHtml(__('Rating')) ?>" class="cs-table__col summary">
-                        <?php if ($_review->getSum()): ?>
+                        <?php if ($review->getSum()): ?>
                             <div class="rating-summary">
                                 <span class="cs-visually-hidden">
                                     <span><?php /* @escapeNotVerified */ echo __('Rating') ?>:</span>
@@ -44,16 +45,17 @@
                                         'text' => ''
                                     ]
                                     ])->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
-
-
                             </div>
                         <?php endif; ?>
                     </td>
                     <td data-th="<?php echo $block->escapeHtml(__('Review')) ?>" class="cs-table__col description">
-                        <?php echo $this->helper('Magento\Review\Helper\Data')->getDetailHtml($_review->getDetail()) ?>
+                        <?php echo $this->helper('Magento\Review\Helper\Data')->getDetailHtml($review->getDetail()) ?>
                     </td>
                     <td data-th="<?php echo $block->escapeHtml(__('Actions')) ?>" class="cs-table__col  cs-table__col--actions actions">
-                        <a href="<?php /* @escapeNotVerified */ echo $block->getReviewLink() ?>id/<?php /* @escapeNotVerified */ echo $_review->getReviewId() ?>" class="cs-link">
+                        <a
+                            href="<?php /* @escapeNotVerified */ echo $block->getReviewLink() ?>id/<?php /* @escapeNotVerified */ echo $review->getReviewId() ?>"
+                            class="cs-link"
+                        >
                             <?php /* @escapeNotVerified */ echo __('See Details') ?>
                         </a>
                     </td>

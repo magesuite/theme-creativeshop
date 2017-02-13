@@ -1,21 +1,19 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
-<?php $_product = $block->getProduct(); ?>
-<?php $buttonTitle = __('Update Cart'); ?>
-<?php if ($_product->isSaleable()): ?>
+<?php
+    $product = $block->getProduct();
+    $buttonTitle = __('Update Cart');
+?>
+<?php if ($product->isSaleable()): ?>
     <div class="cs-box-addtocart | update">
         <div class="cs-box-addtocart__fieldset">
             <?php if ($block->shouldRenderQuantity()): ?>
                 <div class="cs-box-addtocart__qty-wrapper">
-                    <label class="cs-label | cs-box-addtocart__label" for="qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></label>
+                    <label class="cs-label | cs-box-addtocart__label" for="qty">
+                        <?php /* @escapeNotVerified */ echo __('Qty') ?>
+                    </label>
 
                     <div class="cs-box-addtocart__qty-increment">
                         <?=$this->getLayout()->createBlock(
@@ -41,10 +39,12 @@
                 </div>
             <?php endif; ?>
             <div class="cs-box-addtocart__actions">
-                <button type="submit"
-                        title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
-                        class="cs-button cs-button--type_wide cs-button--type_cart"
-                        id="product-updatecart-button">
+                <button
+                    type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="cs-button cs-button--type_wide cs-button--type_cart"
+                    id="product-updatecart-button"
+                >
                     <svg class="cs-button__icon cs-button__icon--cart">
                         <use xlink:href="#cart"></use>
                     </svg>

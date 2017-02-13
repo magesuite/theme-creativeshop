@@ -1,33 +1,28 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
-?>
-<?php
 /**
- * Product list toolbar
- *
  * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
  */
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
 
 ?>
 <?php if ($block->getCollection()->getSize()): ?>
-    <div class="cs-category-page__toolbar" data-mage-init='<?php /* @escapeNotVerified */
-    echo $block->getWidgetOptionsJson(); ?>'>
+    <div
+        class="cs-category-page__toolbar"
+        data-mage-init='<?php /* @escapeNotVerified */echo $block->getWidgetOptionsJson(); ?>'
+    >
 
         <div class="cs-category-page__toolbar-left">
-            <?php if ($block->isExpanded()): ?>
+            <?php $blockIsExpanded = $block->isExpanded(); ?>
+
+            <?php if ($blockIsExpanded): ?>
                 <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
             <?php endif; ?>
 
             <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
 
-            <?php if ($block->isExpanded()): ?>
+            <?php if ($blockIsExpanded): ?>
                 <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
             <?php endif; ?>
 

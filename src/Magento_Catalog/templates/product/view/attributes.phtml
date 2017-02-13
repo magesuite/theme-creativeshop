@@ -1,9 +1,4 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
 /**
@@ -13,22 +8,30 @@
  */
 ?>
 <?php
-$_helper = $this->helper('Magento\Catalog\Helper\Output');
-$_product = $block->getProduct();
+    $helper = $this->helper('Magento\Catalog\Helper\Output');
+    $product = $block->getProduct();
 ?>
 
-<?php if ($_additional = $block->getAdditionalData()): ?>
-<div class="cs-collapsible-text js-collapsible-text" data-height="100" data-content=".js-collapsible-text-content" data-trigger=".js-collapsible-text-trigger">
+<?php if ($additional = $block->getAdditionalData()): ?>
+<div
+    class="cs-collapsible-text js-collapsible-text"
+    data-height="100"
+    data-content=".js-collapsible-text-content"
+    data-trigger=".js-collapsible-text-trigger"
+>
     <div class="cs-collapsible-text__content cs-collapsible-text__content--contrast js-collapsible-text-content">
         <div class="cs-attributes-list">
             <dl class="cs-attributes-list__list cs-attributes-list__list--columns" id="product-attribute-specs-table">
-                <?php foreach ($_additional as $_data): ?>
-                    <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($_data['label'])) ?>:
+                <?php foreach ($additional as $data): ?>
+                    <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($data['label'])) ?>:
                     </dt>
                     <dd class="cs-attributes-list__item">
                         <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>
                         <?php if ($_data['code'] == 'sku') { ?>
-                            <meta itemprop="sku" content="<?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>" />
+                            <meta
+                                itemprop="sku"
+                                content="<?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>"
+                            />
                         <?php } ?>
                     </dd>
                 <?php endforeach; ?>
@@ -36,11 +39,15 @@ $_product = $block->getProduct();
         </div>
     </div>
 
-    <button class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger" data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>" data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>">
+    <button
+        class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger"
+        data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
+        data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
+    >
          <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
-        <svg class="cs-button__icon">
+         <svg class="cs-button__icon">
             <use xlink:href="#arrow_next"></use>
-        </svg>
+         </svg>
     </button>
 </div>
 <?php endif;?>
