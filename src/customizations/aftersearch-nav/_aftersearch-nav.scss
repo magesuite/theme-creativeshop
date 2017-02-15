@@ -329,4 +329,48 @@
     &__popover-action {
         width: auto !important;
     }
+
+    &__more-filters {
+        overflow: hidden;
+        height: 0;
+        opacity: 0;
+        min-height: initial !important;
+        max-height: initial !important;
+        transform: translateY( -15px );
+        transition: opacity .18s linear, transform .11s ease-in-out;
+        will-change: height;
+
+        @include media('<tablet') {
+            transition: none;
+            height: auto !important;
+            opacity: 1 !important;
+            visibility: visible;
+            transform: translateY( 0 ) !important;
+        }
+    }
+
+    &__more-filters-checkbox:checked + &__more-filters {
+        height: auto !important;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY( 0 );
+    }
+
+    &__more-filters-button {
+        span{
+            &:after {
+                content: attr(data-show-more-text);
+            }
+        }
+    }
+
+    &__more-filters-checkbox:checked + &__more-filters + &__more-filters-button {
+        span{
+            &:after {
+                content: attr(data-show-less-text);
+            }
+        }
+    }
+
+
 }
