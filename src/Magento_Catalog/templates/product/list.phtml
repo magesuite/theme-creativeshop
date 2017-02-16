@@ -22,6 +22,9 @@ $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
 $heroProduct = $block->getIsHeroEnabled();
+
+$salabilityHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product\Salability');
+$salabilityStatus = $salabilityHelper->getSalabilityStatus($_productCollection);
 ?>
 <div class="page-title-wrapper">
     <h1 class="page-title" id="page-title-heading" aria-labelledby="page-title-heading toolbar-amount">
@@ -78,7 +81,7 @@ $heroProduct = $block->getIsHeroEnabled();
                         $productImageUrl = $_imagehelper->init($_product, $image)->getUrl();
                         $_productNameStripped = $block->stripTags($_product->getName(), null, true);
                         $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
-                        $getIsSalable = $_product->getIsSalable();
+                        $getIsSalable = $salabilityStatus[$_product->getId()];
                     ?>
 
                     <?php
