@@ -1,0 +1,191 @@
+$namespace: 'cs-';
+
+@import '../../../node_modules/creative-patterns/packages/components/category-links/src/category-links';
+
+.#{$namespace}category-links {
+    $root: &;
+    @include category-links();
+    font-size: 1.2rem;
+
+    &__title {
+        @extend .#{$namespace}headline__title;
+
+        @include media( '>=laptop' ) {
+            margin: 0 0 1rem !important;
+        }
+
+        @include media( '<laptop' ) {
+            text-align: left;
+
+            &:before,
+            &:after {
+                display: none !important;
+            }
+        }
+    }
+
+    &__subtitle {
+        padding: 1.5rem 1rem 1.5rem 0;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: 1px solid $colorAlto;
+    }
+
+    &__list-wrapper {
+        @include media( '<laptop' ) {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    &__list {
+        @include media( '>=laptop' ) {
+            margin: -1rem 0 0 -2.5rem;
+        }
+
+        &-item {
+            margin: 0;
+
+            @include media( '>=laptop' ) {
+                margin: 1rem 0 0 2.5rem;
+            }
+        }
+    }
+
+    &__list-all {
+        margin: 0 0 .5rem;
+
+        @include media( '>=laptop' ) {
+            position: relative;
+            z-index: 10;
+            margin: 0 0 0 2rem;
+            padding: 0 0 0 2rem;
+            text-transform: uppercase;
+            border: none;
+
+            &:before {
+                position: absolute;
+                left: 0;
+                top: .5rem;
+                bottom: .5rem;
+                content: '';
+                border-left: 1px solid $colorAlto;
+            }
+        }
+
+        &-item {
+            margin: 0;
+
+            #{$root}__link {
+                padding: 0 1rem 1rem;
+
+                @include media ( '>=laptop' ) {
+                    padding: 1.5rem 1rem;
+                }
+
+                &:hover {
+                    color: $colorMineShaft;
+
+                    @include media ( '>=laptop' ){
+                        border-radius: 4px;
+                        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .3);
+                    }
+
+                    #{$root}__qty {
+                        color: $colorMineShaft;
+                    }
+                }
+            }
+        }
+
+        &-icon {
+            margin-left: 1rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            fill: $colorGray;
+            vertical-align: middle;
+
+            @include media ( '<laptop' ) {
+                display: none;
+            }
+        }
+    }
+
+    &__link {
+        display: block;
+        padding: 1.5rem 0;
+        font-weight: 700;
+        color: $colorMineShaft;
+
+        @include media( '<laptop' ) {
+            padding: 0 1rem 1rem;
+        }
+
+        &:visited {
+            color: $colorMineShaft;
+        }
+
+        &:hover,
+        &:hover #{$root}__qty {
+            text-decoration: none;
+            color: $colorCeruleanBlue;
+        }
+    }
+
+    &__qty {
+        font-weight: 400;
+        color: $colorGray;
+    }
+}
+
+.#{$namespace}category-links-dropdown {
+    @include category-links-dropdown();
+
+    &__trigger {
+        &:before,
+        &:after {
+            position: absolute;
+            display: block;
+            right: 0;
+            top: 50%;
+            width: 10px;
+            height:2px;
+            content: '';
+            background: $colorGray;
+            backface-visibility: hidden;
+        }
+
+        &:before {
+            transform: translate3d(0, -50%, 0);
+            transition: transform .3s ease-out, opacity .2s ease-out;
+        }
+
+        &:after {
+            transform: translate3d(0, -50%, 0) rotate(90deg);
+            transition: transform .3s ease-out;
+        }
+
+        &--in {
+            border-color: $colorWhite;
+
+            &:before {
+                opacity: 0;
+                transform: translate3d(0, -50%, 0) rotate(-90deg );
+            }
+
+            &:after {
+                transform: translate3d(0, -50%, 0) rotate(0);
+            }
+        }
+    }
+
+    &__content {
+        @include media( '<laptop' ) {
+            padding-top: 4.8rem;
+            left: -1rem;
+            right: -1rem;
+            width: auto;
+        }
+    }
+}
