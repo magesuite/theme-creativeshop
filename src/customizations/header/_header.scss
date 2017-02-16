@@ -7,8 +7,12 @@
 
     font-size: 1rem;
 
-    @include media('<tablet') {
+    @include media( '<tablet' ) {
         padding-top: 5rem; // To compensate for fixed navigation space.
+    }
+
+    @include media( '>=tablet', '<laptop' ) {
+        padding-top: 8.3rem;
     }
 
     &__content {
@@ -27,7 +31,11 @@
         align-items: center;
         justify-content: space-between;
 
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
+            height: 8.3rem;
+        }
+
+        @include media( '>=laptop' ) {
             position: static;
             border-bottom: 1px solid $colorGallery;
             padding: 1.6em 0;
@@ -45,6 +53,7 @@
         align-items: center;
         margin-right: .5rem;
         align-self: stretch;
+        order: 0;
 
         &,
         &:active,
@@ -61,7 +70,7 @@
             position: absolute;
             height: 2px;
             width: 100%;
-            transform: scale(0);
+            transform: scale( 0 );
             transform-origin: left;
             background: $colorCeruleanBlue;
             transition: transform .3s;
@@ -69,7 +78,7 @@
             left: 0;
         }
 
-        @include media('>=tablet') {
+        @include media( '>=laptop' ) {
             display: none;
         }
 
@@ -82,11 +91,11 @@
             }
 
             &:after {
-                transform: scale(1);
+                transform: scale( 1 );
             }
 
             #{$root}__burger-icon {
-                transform: rotate(-45deg);
+                transform: rotate( -45deg );
 
                 &,
                 &:before,
@@ -96,7 +105,7 @@
 
                 &:before,
                 &:after {
-                    transform: rotate(90deg);
+                    transform: rotate( 90deg );
                 }
             }
         }
@@ -143,7 +152,7 @@
             flex: 0 1 15.5rem;
         }
 
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
             flex: 0 1 20%;
             order: 1;
         }
@@ -155,13 +164,11 @@
 
     &__search {
         display: none;
-        margin-top: 1.5rem;
         width: 100%;
         order: 4;
 
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
             display: block;
-            margin-top: .8rem;
             flex: 0 1 32%;
             order: 2;
             align-self: center;
@@ -172,7 +179,7 @@
         display: block;
         margin-top: 0;
 
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
             display: none;
         }
     }
@@ -183,7 +190,7 @@
         order: 3;
         flex: 0 1 25%;
 
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
             justify-content: space-between;
         }
     }
