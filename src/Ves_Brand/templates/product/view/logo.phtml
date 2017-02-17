@@ -1,0 +1,62 @@
+<?php
+$brandCollection = $this->getBrandCollection();
+$data = $this->helper('Ves\Brand\Helper\Data');
+$brand_layout_listing = $data->getConfig("product_view_page/brand_layout_listing");
+$brand_label = $data->getConfig("product_view_page/brand_text");
+$show_brand_image = $data->getConfig("product_view_page/show_brand_image");
+$show_brand_name = $data->getConfig("product_view_page/show_brand_name");
+?>
+
+<?php if($brandCollection && $brandCollection->count()){ ?>
+	<?php
+		$i = 0;
+		$total = $brandCollection->count();
+
+		if($data->getConfig("product_view_page/show_brand_text") && $brand_label){
+			echo '<span class="brand-label">'.$brand_label.'</span>';
+		}
+	?>
+
+	<?php if($brand_layout_listing) { ?>
+
+		<ul class="product-brands">
+			<?php foreach ($brandCollection as $_brand) { ?>
+				<li class="brand-item">
+					<?php if($show_brand_image): ?>
+						<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
+							<img src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/>
+						</a>
+					<?php endif; ?>
+
+					<?php if($show_brand_name): ?>
+						<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
+							<span itemprop="brand"><?php echo $_brand->getName(); ?></span>
+						</a>
+					<?php endif; ?>
+				</li>
+			<?php } ?>
+		</ul>
+
+	<?php } else {
+
+		foreach ($brandCollection as $_brand) { ?>
+			<span class="brand-image">
+				<?php if($show_brand_image): ?>
+					<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
+						<img src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/>
+					</a>
+				<?php endif; ?>
+
+				<?php if($show_brand_name): ?>
+					<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
+						<span itemprop="brand"><?php echo $_brand->getName(); ?></span>
+					</a>
+				<?php endif; ?>
+			</span>
+			<?php if($i<=($total-2)){ echo ', '; }  ?>
+			<?php $i++; ?>
+	 <?php 
+		}
+	} 
+	?>
+<?php } ?>

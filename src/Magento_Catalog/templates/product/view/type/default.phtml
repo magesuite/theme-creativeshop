@@ -10,6 +10,7 @@
 <?php if ($block->displayProductStockStatus()): ?>
     <?php if ($_product->isAvailable()): ?>
         <div class="cs-product-sale-block__stock-text cs-product-sale-block__stock-text--available" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+            <link itemprop="availability" href="http://schema.org/InStock" />
             <svg class="cs-product-sale-block__stock-icon cs-product-sale-block__stock-icon--available">
                 <use xlink:href="#check"></use>
             </svg>
@@ -17,8 +18,8 @@
         </div>
     <?php else: ?>
         <div class="cs-product-sale-block__stock-text cs-product-sale-block__stock-text--unavailable" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+            <link itemprop="availability" href="http://schema.org/OutOfStock" />
             <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
         </div>
     <?php endif; ?>
 <?php endif; ?>
-
