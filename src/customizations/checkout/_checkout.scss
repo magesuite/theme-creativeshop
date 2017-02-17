@@ -1,407 +1,403 @@
+.#{$namespace}checkout {
+    $root: &;
 
-@include export-once( 'customizations/checkout' ) {
-    .#{$namespace}checkout {
-        $root: &;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+    max-width: 40rem;
+    @include media('>=phone-lg') {
+        max-width: none;
+    }
+    @include media('>=tablet') {
+        max-width: 95rem;
+        margin: 1.5rem auto 0;
+    }
 
+    &__progress-bar {
+        width: auto;
+        list-style: none;
+        max-width: 100%;
+        padding: 0 1.5rem;
+        box-sizing: border-box;
+        margin-bottom: 0;
+
+        @include media('>=tablet') {
+            position: absolute;
+            padding: 0;
+            right: .5rem;
+            top: -7rem;
+            z-index: 2;
+        }
+    }
+
+    &__main-column {
+        padding: 2rem 1.5rem 0;
+        z-index: 2;
+        width: 100%;
+
+        @include media('>=tablet') {
+            padding: 0;
+            width: 54%;
+        }
+    }
+
+    &__sidebar {
+        @include media('>=tablet') {
+            height: 100%;
+            z-index: 2;
+            margin-top: 1rem;
+            box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
+            width: 44%;
+        }
+
+        @include media('<tablet') {
+            width: 100%;
+        }
+
+        .action-close {
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
+        .#{$namespace}modal__content {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    &__summary {
+
+        @include media('<tablet') {
+            max-width: 40rem;
+        }
+
+        .#{$namespace}modal & {
+            @include media('<tablet') {
+                max-width: none;
+            }
+        }
+    }
+
+    &__mobile-summary {
+        .#{$namespace}minicart {
+            display: none;
+        }
+    }
+
+    &__opc {
+        list-style: none inside none;
+        width: 100%;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+
+    &__shipping-address {
+        margin-bottom: 3rem;
+    }
+
+    &__shipping-information {
+        margin-bottom: 2rem;
+    }
+
+    &__step-content {
+        padding: 1.5rem 0 2rem;
+        max-width: 60rem;
+        @include media('>=phone-lg') {
+            padding: 1.5rem 1rem 2rem 0;
+        }
+    }
+
+    &__addresses-wrapper {
         display: flex;
         flex-wrap: wrap;
-        position: relative;
-        justify-content: space-between;
-        margin-bottom: 3.5rem;
-        max-width: 40rem;
+    }
+
+    &__address {
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 0 1.5rem;
+        padding: 1rem;
+        border-radius: 3px;
+        border: 1px solid $colorAlto;
+        display: flex;
+        align-items: center;
+        max-height: 100vh;
+        overflow-y: scroll;
         @include media('>=phone-lg') {
-            max-width: none;
+            width: calc( 50% - 2rem );
+            margin: 0 2rem 2rem 0;
+        }
+
+        &.selected-item {
+            border: 1px solid $colorCeruleanBlue;
+
+            .#{$namespace}input__label:before,
+            .#{$namespace}input__label:after {
+                border-color: $colorCeruleanBlue;
+            }
+
+
+            .#{$namespace}input__label:after {
+                background-color: $colorCeruleanBlue;
+                position: absolute;
+                left: calc( 50% - .4rem );
+            }
+        }
+    }
+    &__address-text {
+        font-size: 1.2rem;
+        font-weight: 300;
+        line-height: 2rem;
+    }
+    &__address-radio {
+        margin-right: .5rem;
+    }
+
+    &__separator {
+        margin: 1rem 0 2rem;
+        width: 100%;
+        height: .1rem;
+        background: $colorAlto;
+    }
+
+    .table-checkout-shipping-method {
+        width: 100%;
+
+        td {
+            padding-top: .8rem;
+            padding-bottom: .8rem;
+        }
+
+        thead {
+            display: block;
+            border-bottom: none;
+        }
+    }
+
+    &__summary-wrapper {
+        #{$root}__summary-title--summary,
+        #{$root}__summary-table,
+        #{$root}__place-order {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
+        #{$root}__summary-title--details {
+            display: block;
+        }
+    }
+
+    &__summary-title {
+        display: flex;
+        justify-content: space-between;
+        padding: 2rem 0 1rem;
+        clip: auto;
+        height: auto;
+        margin: 0;
+        position: relative;
+        width: auto;
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_2;
+        @extend .#{$namespace}t-headline--look_light;
+
+        &--bordered {
+            border-top: 1px solid $colorAlto;
+            padding-top: 1rem;
+            padding-bottom: .4rem;
+            margin-top: 1rem;
+        }
+
+        &--details {
+            display: none;
+        }
+    }
+
+    &__summary-title,
+    &__summary-text {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    &__summary-table {
+
+        td,
+        th {
+            padding: .3rem 2rem 1rem;
+            font-weight: 400;
+            font-size: 1.4rem;
+        }
+
+        .amount {
+            text-align: right;
+        }
+
+        .grand {
+            border-top: 1px solid $colorAlto;
+            th,
+            td {
+                padding-top: 1.4rem;
+                color: $colorMineShaft;
+                font-weight: 700 !important;/* stylelint-disable-line declaration-no-important */
+                font-size: 1.5rem !important;/* stylelint-disable-line declaration-no-important */
+            }
+        }
+    }
+
+    &__button-wrapper,
+    &__estimation-button {
+        width: 100%;
+        @include media('>=phone-lg') {
+            max-width: calc( 50% - 2rem );
         }
         @include media('>=tablet') {
-            max-width: 95rem;
-            margin: 1.5rem auto 0;
+            width: calc( 50% - 2rem );
+        }
+    }
+
+    .methods-shipping .#{$namespace}form__buttons {
+        @include media('>=phone-lg') {
+            max-width: calc( 50% - 2rem );
+        }
+        @include media('>=tablet') {
+            width: calc( 50% - 2rem );
+        }
+    }
+
+    &__authentication {
+        max-width: 100%;
+        margin-top: -11.3rem;
+        width: calc( 100% - 4.4rem );
+        height: 1rem;
+        @include media('>=phone-lg') {
+            width: calc( 100% - 15rem );
+        }
+        @include media('>=tablet') {
+            height: auto;
+            position: absolute;
+            top: -13.2rem;
+            right: .5rem;
+            width: 30rem;
+            margin-top: 0;
         }
 
-        &__progress-bar {
-            width: auto;
-            list-style: none;
-            max-width: 100%;
-            padding: 0 1.5rem;
-            box-sizing: border-box;
-            margin-bottom: 0;
-
-            @include media('>=tablet') {
+        .action-auth-toggle {
+            span {
                 position: absolute;
-                padding: 0;
-                right: .5rem;
-                top: -7rem;
-                z-index: 2;
+                right: -4rem;
+                font-size: 1.4rem;
+                padding-top: 3.5rem;
+                padding-right: .5rem;
+                @include media('>=phone-lg') {
+                    right: -14rem;
+                }
+                @include media('>=tablet') {
+                    padding-top: 0;
+                    padding-right: 0;
+                    position: static;
+                    font-size: 1.2rem;
+                }
             }
         }
 
-        &__main-column {
-            padding: 2rem 1.5rem 0;
-            z-index: 2;
-            width: 100%;
 
-            @include media('>=tablet') {
-                padding: 0;
-                width: 54%;
-            }
-        }
-
-        &__sidebar {
-            @include media('>=tablet') {
-                height: 100%;
-                z-index: 2;
-                margin-top: 1rem;
-                box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
-                width: 44%;
+        .authentication-dropdown {
+            border: none;
+            position: relative;
+            margin-top: 1.5rem;
+            left: 4.4rem;
+            @include media('>=phone-lg') {
+                left: 15rem;
             }
 
-            @include media('<tablet') {
-                width: 100%;
+            @include media('>=tablet') {
+                left: 0;
+            }
+            .modal-inner-wrap {
+                box-shadow: 0 0 21px 0 rgba( 0, 0, 0, .27 );
+            }
+
+            &:before {
+                bottom: calc( 100% - 2.8rem );
+                right: 1.2rem;
+                border: solid transparent;
+                content: '';
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: rgba( 136, 183, 213, 0 );
+                border-top-color: $colorWhite;
+                border-width: 1.4rem;
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                width: 1.5rem;
+                height: 1.5rem;
+                background: $colorWhite;
+                transform: rotate( 45deg );
+                bottom: calc( 100% - .8rem );
+                right: 1.8rem;
+                box-shadow: -1px -1px 10px -2px rgba( 0, 0, 0, .27 );
+                z-index: -1;
             }
 
             .action-close {
-                @include media('>=tablet') {
-                    display: none;
-                }
-            }
-            .#{$namespace}modal__content {
-                padding-top: 0;
-                padding-bottom: 0;
-            }
-        }
-
-        &__summary {
-
-            @include media('<tablet') {
-                max-width: 40rem;
+                margin: 1.5rem;
             }
 
-            .#{$namespace}modal & {
-                @include media('<tablet') {
-                    max-width: none;
-                }
-            }
         }
+    }
 
-        &__mobile-summary {
-            .#{$namespace}minicart {
-                display: none;
-            }
+    &__authentication-content {
+        margin-top: 1.5rem;
+    }
+
+    &__messages {
+        width: 100%;
+        z-index: 2;
+    }
+
+    &__estimation {
+        padding: 0 1.5rem;
+        z-index: 2;
+        width: 100%;
+        max-width: 60rem;
+        @include media('>=tablet') {
+            display: none;
         }
+    }
 
-        &__opc {
-            list-style: none inside none;
-            width: 100%;
-            padding-left: 0;
-            margin-bottom: 0;
+    &__estimation-block {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    &__estimation-label {
+        padding-right: 1rem;
+    }
+
+    .payment-group .step-title {
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_2;
+        margin: 0 1.5rem 1rem;
+        @include media('>=tablet') {
+            margin: 0 0 2rem;
         }
+    }
 
-        &__shipping-address {
-            margin-bottom: 3rem;
-        }
+    &__place-order {
+        margin: 1rem 2rem;
+    }
 
-        &__shipping-information {
-            margin-bottom: 2rem;
-        }
-
-        &__step-content {
-            padding: 1.5rem 0 2rem;
-            max-width: 60rem;
-            @include media('>=phone-lg') {
-                padding: 1.5rem 1rem 2rem 0;
-            }
-        }
-
-        &__addresses-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        &__address {
-            width: 100%;
-            box-sizing: border-box;
-            margin: 0 0 1.5rem;
-            padding: 1rem;
-            border-radius: 3px;
-            border: 1px solid $colorAlto;
-            display: flex;
-            align-items: center;
-            max-height: 100vh;
-            overflow-y: scroll;
-            @include media('>=phone-lg') {
-                width: calc( 50% - 2rem );
-                margin: 0 2rem 2rem 0;
-            }
-
-            &.selected-item {
-                border: 1px solid $colorCeruleanBlue;
-
-                .#{$namespace}input__label:before,
-                .#{$namespace}input__label:after {
-                    border-color: $colorCeruleanBlue;
-                }
-
-
-                .#{$namespace}input__label:after {
-                    background-color: $colorCeruleanBlue;
-                    position: absolute;
-                    left: calc( 50% - .4rem );
-                }
-            }
-        }
-        &__address-text {
-            font-size: 1.2rem;
-            font-weight: 300;
-            line-height: 2rem;
-        }
-        &__address-radio {
-            margin-right: .5rem;
-        }
-
-        &__separator {
-            margin: 1rem 0 2rem;
-            width: 100%;
-            height: .1rem;
-            background: $colorAlto;
-        }
-
-        .table-checkout-shipping-method {
-            width: 100%;
-
-            td {
-                padding-top: .8rem;
-                padding-bottom: .8rem;
-            }
-
-            thead {
-                display: block;
-                border-bottom: none;
-            }
-        }
-
-        &__summary-wrapper {
-            #{$root}__summary-title--summary,
-            #{$root}__summary-table,
-            #{$root}__place-order {
-                @include media('<tablet') {
-                    display: none;
-                }
-            }
-
-            #{$root}__summary-title--details {
-                display: block;
-            }
-        }
-
-        &__summary-title {
-            display: flex;
-            justify-content: space-between;
-            padding: 2rem 0 1rem;
-            clip: auto;
-            height: auto;
-            margin: 0;
-            position: relative;
-            width: auto;
-            @extend .#{$namespace}t-headline;
-            @extend .#{$namespace}t-headline--size_2;
-            @extend .#{$namespace}t-headline--look_light;
-
-            &--bordered {
-                border-top: 1px solid $colorAlto;
-                padding-top: 1rem;
-                padding-bottom: .4rem;
-                margin-top: 1rem;
-            }
-
-            &--details {
-                display: none;
-            }
-        }
-
-        &__summary-title,
-        &__summary-text {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-
-        &__summary-table {
-
-            td,
-            th {
-                padding: .3rem 2rem 1rem;
-                font-weight: 400;
-                font-size: 1.4rem;
-            }
-
-            .amount {
-                text-align: right;
-            }
-
-            .grand {
-                border-top: 1px solid $colorAlto;
-                th,
-                td {
-                    padding-top: 1.4rem;
-                    color: $colorMineShaft;
-                    font-weight: 700 !important;/* stylelint-disable-line declaration-no-important */
-                    font-size: 1.5rem !important;/* stylelint-disable-line declaration-no-important */
-                }
-            }
-        }
-
-        &__button-wrapper,
-        &__estimation-button {
-            width: 100%;
-            @include media('>=phone-lg') {
-                max-width: calc( 50% - 2rem );
-            }
-            @include media('>=tablet') {
-                width: calc( 50% - 2rem );
-            }
-        }
-
-        .methods-shipping .#{$namespace}form__buttons {
-            @include media('>=phone-lg') {
-                max-width: calc( 50% - 2rem );
-            }
-            @include media('>=tablet') {
-                width: calc( 50% - 2rem );
-            }
-        }
-
-        &__authentication {
-            max-width: 100%;
-            margin-top: -11.3rem;
-            width: calc( 100% - 4.4rem );
-            height: 1rem;
-            @include media('>=phone-lg') {
-                width: calc( 100% - 15rem );
-            }
-            @include media('>=tablet') {
-                height: auto;
-                position: absolute;
-                top: -13.2rem;
-                right: .5rem;
-                width: 30rem;
-                margin-top: 0;
-            }
-
-            .action-auth-toggle {
-                span {
-                    position: absolute;
-                    right: -4rem;
-                    font-size: 1.4rem;
-                    padding-top: 3.5rem;
-                    padding-right: .5rem;
-                    @include media('>=phone-lg') {
-                        right: -14rem;
-                    }
-                    @include media('>=tablet') {
-                        padding-top: 0;
-                        padding-right: 0;
-                        position: static;
-                        font-size: 1.2rem;
-                    }
-                }
-            }
-
-
-            .authentication-dropdown {
-                border: none;
-                position: relative;
-                margin-top: 1.5rem;
-                left: 4.4rem;
-                @include media('>=phone-lg') {
-                    left: 15rem;
-                }
-
-                @include media('>=tablet') {
-                    left: 0;
-                }
-                .modal-inner-wrap {
-                    box-shadow: 0 0 21px 0 rgba( 0, 0, 0, .27 );
-                }
-
-                &:before {
-                    bottom: calc( 100% - 2.8rem );
-                    right: 1.2rem;
-                    border: solid transparent;
-                    content: '';
-                    height: 0;
-                    width: 0;
-                    position: absolute;
-                    pointer-events: none;
-                    border-color: rgba( 136, 183, 213, 0 );
-                    border-top-color: $colorWhite;
-                    border-width: 1.4rem;
-                }
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    width: 1.5rem;
-                    height: 1.5rem;
-                    background: $colorWhite;
-                    transform: rotate( 45deg );
-                    bottom: calc( 100% - .8rem );
-                    right: 1.8rem;
-                    box-shadow: -1px -1px 10px -2px rgba( 0, 0, 0, .27 );
-                    z-index: -1;
-                }
-
-                .action-close {
-                    margin: 1.5rem;
-                }
-
-            }
-        }
-
-        &__authentication-content {
-            margin-top: 1.5rem;
-        }
-
-        &__messages {
-            width: 100%;
-            z-index: 2;
-        }
-
-        &__estimation {
-            padding: 0 1.5rem;
-            z-index: 2;
-            width: 100%;
-            max-width: 60rem;
-            @include media('>=tablet') {
-                display: none;
-            }
-        }
-
-        &__estimation-block {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        &__estimation-label {
-            padding-right: 1rem;
-        }
-
-        .payment-group .step-title {
-            @extend .#{$namespace}t-headline;
-            @extend .#{$namespace}t-headline--size_2;
-            margin: 0 1.5rem 1rem;
-            @include media('>=tablet') {
-                margin: 0 0 2rem;
-            }
-        }
-
-        &__place-order {
-            margin: 1rem 2rem;
-        }
-
-        .#{$namespace}button-payment-method {
-            visibility: hidden;
-            height: 0;
-        }
-
+    .#{$namespace}button-payment-method {
+        visibility: hidden;
+        height: 0;
     }
 
 }

@@ -1,23 +1,41 @@
-@import '../visually-hidden/visually-hidden';
 
-@include export-once( 'customizations/table' ) {
+.#{$namespace}table {
+    $root: &;
+    $rootNoChangeMobile: #{$root}--no-change-mobile;
+    font-size: 1rem;
+    max-width: 100%;
+    width: 100%;
 
-    .#{$namespace}table {
-        $root: &;
-        $rootNoChangeMobile: #{$root}--no-change-mobile;
-        font-size: 1rem;
-        max-width: 100%;
-        width: 100%;
+    @include media( '<tablet' ) {
+        border: none;
+        display: block;
+    }
 
-        @include media( '<tablet' ) {
+
+    &--tablet-small {
+        @include media( '<laptop' ) {
+            max-width: 40rem;
             border: none;
             display: block;
+            font-size: 1.4rem;
+            padding: .4rem 1rem;
+
+            &:first-child {
+                padding-top: 2rem;
+            }
+            &:last-child {
+                padding-bottom: 1.2rem;
+            }
         }
 
+        #{$root}__head {
+            @include media('<laptop') {
+                display: none;
+            }
+        }
 
-        &--tablet-small {
+        #{$root}__col {
             @include media( '<laptop' ) {
-                max-width: 40rem;
                 border: none;
                 display: block;
                 font-size: 1.4rem;
@@ -30,204 +48,177 @@
                     padding-bottom: 1.2rem;
                 }
             }
-
-            #{$root}__head {
-                @include media('<laptop') {
-                    display: none;
-                }
-            }
-
-            #{$root}__col {
+            &:before {
                 @include media( '<laptop' ) {
-                    border: none;
-                    display: block;
-                    font-size: 1.4rem;
-                    padding: .4rem 1rem;
-
-                    &:first-child {
-                        padding-top: 2rem;
-                    }
-                    &:last-child {
-                        padding-bottom: 1.2rem;
-                    }
+                    padding-right: 10px;
+                    content: attr( data-th ) ': ';
+                    display: inline-block;
+                    color: $colorMineShaft;
+                    font-weight: 700;
                 }
-                &:before {
-                    @include media( '<laptop' ) {
-                        padding-right: 10px;
-                        content: attr( data-th ) ': ';
-                        display: inline-block;
-                        color: $colorMineShaft;
-                        font-weight: 700;
-                    }
-                }
-
-                &--actions {
-                    @include media( '<laptop' ) {
-                        border-bottom: 1px solid $colorAlto;
-                    }
-                    &:before {
-                        @include media('<laptop') {/* stylelint-disable-line */
-                            @include visually-hidden;/* stylelint-disable-line */
-                        }
-                    }
-                }
-            }
-
-        }
-
-        &--cart {
-            @include media('>=tablet') {
-                border-top: 1px solid $colorAlto;
-                margin-top: 2rem;
-            }
-
-            @include media( '<tablet' ) {
-                padding: .4rem 0;
-            }
-
-        }
-
-        &--no-change-mobile {
-            #{$root}__col {
-                vertical-align: middle;
-            }
-        }
-
-        &__head {
-            border-bottom: 2px solid $colorAlto;
-            @include media( '<tablet' ) {
-                display: none;
-            }
-
-            &--spacious {
-                th {
-                    padding: 1.3rem 1.5rem 1.3rem .1rem;
-                }
-            }
-        }
-
-        &__col-head {
-            @extend .#{$namespace}t-headline;
-            @extend .#{$namespace}t-headline--size_4;
-        }
-
-        &__col {
-            font-size: 1.4rem;
-            color: $colorDoveGray;
-            font-weight: 300;
-            border-bottom: 1px solid $colorAlto;
-            padding: .8rem 1rem;
-
-            #{$root}:not( #{$rootNoChangeMobile} ) & {
-                @include media( '<tablet' ) {
-                    border: none;
-                    display: block;
-                    padding: .4rem 2rem;
-
-                    &:first-child {
-                        padding-top: 2rem;
-                    }
-                    &:last-child {
-                        padding-bottom: 1.2rem;
-                    }
-                }
-
-
-                &:before {
-                    @include media('<tablet') {
-                        padding-right: 10px;
-                        content: attr( data-th ) ': ';
-                        display: inline-block;
-                        color: $colorMineShaft;
-                        font-weight: 700;
-                    }
-                }
-            }
-
-            a {
-                @extend .#{$namespace}link;
-            }
-
-
-            @include media( '>=laptop' ) {
-                font-size: 1.4rem;
-            }
-
-            &--attention {
-                font-weight: 700;
-                color: $colorMineShaft;
             }
 
             &--actions {
-                @include media( '<tablet' ) {
+                @include media( '<laptop' ) {
                     border-bottom: 1px solid $colorAlto;
                 }
                 &:before {
-                    @include media('<tablet') {
-                        @include visually-hidden;
+                    @include media('<laptop') {/* stylelint-disable-line */
+                        @include visually-hidden;/* stylelint-disable-line */
                     }
                 }
             }
+        }
 
-            &.price {
-                .price {
-                    font-weight: 400;
-                    font-size: 1.4rem;
+    }
+
+    &--cart {
+        @include media('>=tablet') {
+            border-top: 1px solid $colorAlto;
+            margin-top: 2rem;
+        }
+
+        @include media( '<tablet' ) {
+            padding: .4rem 0;
+        }
+
+    }
+
+    &--no-change-mobile {
+        #{$root}__col {
+            vertical-align: middle;
+        }
+    }
+
+    &__head {
+        border-bottom: 2px solid $colorAlto;
+        @include media( '<tablet' ) {
+            display: none;
+        }
+
+        &--spacious {
+            th {
+                padding: 1.3rem 1.5rem 1.3rem .1rem;
+            }
+        }
+    }
+
+    &__col-head {
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_4;
+    }
+
+    &__col {
+        font-size: 1.4rem;
+        color: $colorDoveGray;
+        font-weight: 300;
+        border-bottom: 1px solid $colorAlto;
+        padding: .8rem 1rem;
+
+        #{$root}:not( #{$rootNoChangeMobile} ) & {
+            @include media( '<tablet' ) {
+                border: none;
+                display: block;
+                padding: .4rem 2rem;
+
+                &:first-child {
+                    padding-top: 2rem;
+                }
+                &:last-child {
+                    padding-bottom: 1.2rem;
                 }
             }
 
-            &.subtotal,
-            &.total {
-                .price {
+
+            &:before {
+                @include media('<tablet') {
+                    padding-right: 10px;
+                    content: attr( data-th ) ': ';
+                    display: inline-block;
                     color: $colorMineShaft;
-                    font-size: 1.4rem;
-                }
-            }
-
-            &.qty {
-                ul {
-                    list-style: none inside none;
-                    padding-left: 0;
-                    margin-bottom: 0;
-                }
-
-                li {
-                    margin-bottom: 0;
+                    font-weight: 700;
                 }
             }
         }
 
-        &__buttons {
-            margin: 2rem 1.5rem 1.5rem;
-            @include media( '>=tablet' ) {
-                margin: 2rem 0 1.5rem;
-            }
 
-            &--right {
-                text-align: right;
-            }
-        }
-
-        &__tbody {
-            border-bottom: 1px solid $colorAlto;
-        }
-
-        &__foot {
+        @include media( '>=laptop' ) {
             font-size: 1.4rem;
-            @include media('<tablet') {
-                background: $colorGallery;
-            }
+        }
 
-            .mark {
-                text-align: right;
-            }
+        &--attention {
+            font-weight: 700;
+            color: $colorMineShaft;
+        }
 
-            @include media('<tablet') {
-                .amount {
-                    text-align: right;
+        &--actions {
+            @include media( '<tablet' ) {
+                border-bottom: 1px solid $colorAlto;
+            }
+            &:before {
+                @include media('<tablet') {
+                    @include visually-hidden;
                 }
             }
         }
 
+        &.price {
+            .price {
+                font-weight: 400;
+                font-size: 1.4rem;
+            }
+        }
+
+        &.subtotal,
+        &.total {
+            .price {
+                color: $colorMineShaft;
+                font-size: 1.4rem;
+            }
+        }
+
+        &.qty {
+            ul {
+                list-style: none inside none;
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+
+            li {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__buttons {
+        margin: 2rem 1.5rem 1.5rem;
+        @include media( '>=tablet' ) {
+            margin: 2rem 0 1.5rem;
+        }
+
+        &--right {
+            text-align: right;
+        }
+    }
+
+    &__tbody {
+        border-bottom: 1px solid $colorAlto;
+    }
+
+    &__foot {
+        font-size: 1.4rem;
+        @include media('<tablet') {
+            background: $colorGallery;
+        }
+
+        .mark {
+            text-align: right;
+        }
+
+        @include media('<tablet') {
+            .amount {
+                text-align: right;
+            }
+        }
     }
 }

@@ -1,8 +1,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <!--
-            Do not add fonts' stylesheets here, they will block render while loading.
-            See Magento_Theme/templates/html/fonts.phtml file to add fonts there.
+            Every CSS you add here will be loaded synchronously.
+            See: Magento_Theme/templates/html/fonts.phtml or Magento_Theme/templates/html/styles.phtml
+            to load CSS async.
         -->
 
         <!--
@@ -10,11 +11,16 @@
             This allows CSS to be merged into one file.
         -->
         <css src="css/styles-l.css" media="all"/>
-        <css src="css/print.css" media="all"/>
-        <css src="bundle.css" media="all"/>
+        <!--
+            Loading of critical CSS, in this version we just merge all styles to
+            one file instead of inlining it.
+        -->
+        <css src="critical.css" media="all"/>
 
         <!-- We have our own swatches implementation. -->
         <remove src="Magento_Swatches::css/swatches.css"/>
+        <!-- This we will load asynchronously. -->
+        <remove src="css/print.css"/>
 
         <!-- Add loadCSS utility for async CSS loading. -->
         <script src="loadCSS.js"/>

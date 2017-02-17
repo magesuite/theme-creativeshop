@@ -8,8 +8,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="head.additional">
+            <block class="Magento\Framework\View\Element\Template" name="preload" template="Magento_Theme::html/preload.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="fonts" template="Magento_Theme::html/fonts.phtml"/>
             <block class="Magento\Framework\View\Element\Template" name="styles" template="Magento_Theme::html/styles.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml"/>
         </referenceBlock>
 
         <move element="skip_to_content" destination="header.container" before="-"/>
@@ -104,6 +105,7 @@
             <container name="page.bottom.inner" htmlTag="div" htmlClass="cs-container__inner">
                 <block class="Magento\Framework\View\Element\Template" name="page.bottom" template="Magento_Theme::html/page-bottom.phtml"/>
             </container>
+            <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml" after="-"/>
         </container>
 
         <move element="page.bottom.wrapper" destination="page.wrapper" after="-"/>

@@ -1,40 +1,38 @@
-@include export-once('customizations/login-page') {
-    .#{$namespace}login-page {
-        $root: &;
+.#{$namespace}login-page {
+    $root: &;
 
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    @include media('>=tablet') {
+        flex-wrap: nowrap;
+        padding: 0;
+    }
+
+    &__section {
+        width: 100%;
         @include media('>=tablet') {
-            flex-wrap: nowrap;
-            padding: 0;
+            width: 50%;
+
+            &:nth-child( 2n+1 ) {
+                padding-right: 4rem;
+                border-right: 1px solid $colorAlto;
+            }
+            &:nth-child( 2n+2 ) {
+                padding-left: 2rem;
+                margin-left: 2rem;
+            }
         }
 
-        &__section {
-            width: 100%;
-            @include media('>=tablet') {
-                width: 50%;
-
-                &:nth-child( 2n+1 ) {
-                    padding-right: 4rem;
-                    border-right: 1px solid $colorAlto;
-                }
-                &:nth-child( 2n+2 ) {
-                    padding-left: 2rem;
-                    margin-left: 2rem;
-                }
+        @include media('>=laptop') {
+            &:nth-child( 2n+1 ) {
+                padding-right: 8rem;
             }
-
-            @include media('>=laptop') {
-                &:nth-child( 2n+1 ) {
-                    padding-right: 8rem;
-                }
-                &:nth-child( 2n+2 ) {
-                    padding-left: 3rem;
-                    margin-left: 4rem;
-                }
+            &:nth-child( 2n+2 ) {
+                padding-left: 3rem;
+                margin-left: 4rem;
             }
-
         }
+
     }
 }

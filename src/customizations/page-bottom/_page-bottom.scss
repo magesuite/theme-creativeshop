@@ -1,79 +1,77 @@
-@include export-once( 'customizations/page-bottom' ) {
-    .#{$namespace}page-bottom {
+.#{$namespace}page-bottom {
 
-        padding: 1.5rem .5rem;
-        width: 100%;
+    padding: 1.5rem .5rem;
+    width: 100%;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include media('>=tablet') {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    @include media('>=laptop') {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
+    .page-print & {
+        display: none;
+    }
+
+    &__image {
+        height: 3rem;
+        width: auto;
+        &--circle {
+            width: 4.7rem;
+            height: 4.7rem;
+            margin-right: 1rem;
+        }
+    }
+
+    &__text {
+        font-size: 1.2rem;
+        color: $colorDoveGray;
+        margin-bottom: 0;
+        margin-right: .6rem;
+
+        &--small {
+            font-size: 1rem;
+            max-width: 20rem;
+        }
+    }
+
+    &__divider {
+        margin: 0 1rem;
+
+        &:after {
+            margin: 0 1rem;
+            content: '';
+            display: inline-block;
+            width: .2rem;
+            height: 2rem;
+            background: $colorAlto;
+        }
+
         @include media('>=tablet') {
-            flex-wrap: wrap;
-            justify-content: flex-start;
-        }
-        @include media('>=laptop') {
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
-
-        .page-print & {
             display: none;
         }
-
-        &__image {
-            height: 3rem;
-            width: auto;
-            &--circle {
-                width: 4.7rem;
-                height: 4.7rem;
-                margin-right: 1rem;
-            }
+        @include media('>=laptop') {
+            display: block;
         }
-
-        &__text {
-            font-size: 1.2rem;
-            color: $colorDoveGray;
-            margin-bottom: 0;
-            margin-right: .6rem;
-
-            &--small {
-                font-size: 1rem;
-                max-width: 20rem;
-            }
-        }
-
-        &__divider {
-            margin: 0 1rem;
-
-            &:after {
-                margin: 0 1rem;
-                content: '';
-                display: inline-block;
-                width: .2rem;
-                height: 2rem;
-                background: $colorAlto;
-            }
-
-            @include media('>=tablet') {
-                display: none;
-            }
-            @include media('>=laptop') {
-                display: block;
-            }
-        }
-
-        &__group {
-            display: flex;
-            align-items: center;
-            @include media('>=tablet') {
-                width: 100%;
-                padding: 1rem 1.5rem;
-            }
-            @include media('>=laptop') {
-                width: auto;
-                padding: 0;
-            }
-        }
-
     }
+
+    &__group {
+        display: flex;
+        align-items: center;
+        @include media('>=tablet') {
+            width: 100%;
+            padding: 1rem 1.5rem;
+        }
+        @include media('>=laptop') {
+            width: auto;
+            padding: 0;
+        }
+    }
+
 }
