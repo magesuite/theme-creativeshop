@@ -27,6 +27,9 @@ $_product = $block->getProduct();
                     </dt>
                     <dd class="cs-attributes-list__item">
                         <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>
+                        <?php if ($_data['code'] == 'sku') { ?>
+                            <meta itemprop="sku" content="<?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>" />
+                        <?php } ?>
                     </dd>
                 <?php endforeach; ?>
             </dl>
