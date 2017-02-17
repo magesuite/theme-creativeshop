@@ -1,0 +1,26 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Magento\Downloadable\Block\Catalog\Product\Samples
+ */
+?>
+
+<?php if ($block->hasSamples()): ?>
+    <dl class="items samples | cs-product-sale-block__option">
+        <dt class="item-title samples-item-title | cs-product-sale-block__option-label"><?php /* @escapeNotVerified */
+            echo $block->getSamplesTitle()
+            ?></dt>
+        <?php $_samples = $block->getSamples() ?>
+        <div class="cs-list cs-list--unstyled | cs-product-sale-block__option-list">
+            <?php foreach ($_samples as $_sample): ?>
+                <dd class="cs-list__item">
+                    <a href="<?php /* @escapeNotVerified */ echo $block->getSampleUrl($_sample) ?>" <?php echo $block->getIsOpenInNewWindow() ? 'onclick="this.target=\'_blank\'"' : ''; ?>
+                       class="item-link samples-item-link | cs-link">
+                        <?php echo $block->escapeHtml($_sample->getTitle()) ?>
+                    </a>
+                </dd>
+            <?php endforeach; ?>
+        </div>
+
+    </dl>
+<?php endif; ?>

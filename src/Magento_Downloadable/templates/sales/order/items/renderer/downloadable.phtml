@@ -6,49 +6,67 @@
 
 // @codingStandardsIgnoreFile
 
-/** @var  $block \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer */
-$_item = $block->getItem();
+/** @var $block \Magento\Downloadable\Block\Sales\Order\Item\Renderer\Downloadable */
 ?>
+<?php $_item = $block->getItem() ?>
 <tr id="order-item-row-<?php /* @escapeNotVerified */ echo $_item->getId() ?>">
     <td class="cs-table__col | name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
-        <span class="cs-t-text cs-t-text--look_attention | product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></span>
+        <span class="cs-t-text cs-t-text--look_attention | product-item-name">
+            <?php echo $block->escapeHtml($_item->getName()) ?>
+        </span>
         <?php if ($_options = $block->getItemOptions()): ?>
-            <div class="cs-cart-item__options">
+            <dl class="cs-cart-item__options | links">
                 <?php foreach ($_options as $_option) : ?>
                     <dl class="cs-cart-item__options-group | item-options">
                         <dt class="cs-cart-item__options-label">
                             <?php echo $block->escapeHtml($_option['label']) ?>
                         </dt>
-                        <?php if (!$block->getPrintStatus()): ?>
-                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                            <dd class="cs-cart-item__options-value">
-                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?>
-                                <?php else: ?>
-                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
-                                <?php endif; ?>
-                            </dd>
-                        <?php else: ?>
-                            <dd class="cs-cart-item__options-value">
-                                <?php echo nl2br($block->escapeHtml((isset($_option['print_value']) ? $_option['print_value'] : $_option['value']))) ?>
-                            </dd>
-                        <?php endif; ?>
                     </dl>
-                <?php endforeach; ?>
-            </div>
 
+                    <?php if (!$block->getPrintStatus()): ?>
+                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                        <dd class="cs-cart-item__options-value">
+                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?>
+                            <?php else: ?>
+                                <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                            <?php endif; ?>
+                        </dd>
+                    <?php else: ?>
+                        <dd>
+                            <?php echo nl2br($block->escapeHtml((isset($_option['print_value']) ? $_option['print_value'] : $_option['value']))) ?>
+                        </dd>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </dl>
         <?php endif; ?>
+        <?php /* downloadable */ ?>
+        <?php if ($links = $block->getLinks()): ?>
+            <dl class="cs-cart-item__options-group | links">
+                <dt class="cs-cart-item__options-label">
+                    <?php /* @escapeNotVerified */ echo $block->getLinksTitle() ?>
+                </dt>
+                <?php foreach ($links->getPurchasedItems() as $link): ?>
+                    <dd class="cs-cart-item__options-value">
+                        <?php echo $block->escapeHtml($link->getLinkTitle()); ?>
+                    </dd>
+                <?php endforeach; ?>
+            </dl>
+        <?php endif; ?>
+        <?php /* EOF downloadable */ ?>
         <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
         <?php if ($addtInfoBlock) :?>
             <?php echo $addtInfoBlock->setItem($_item)->toHtml(); ?>
         <?php endif; ?>
         <?php echo $block->escapeHtml($_item->getDescription()) ?>
     </td>
-    <td class="cs-table__col | sku" data-th="<?php echo $block->escapeHtml(__('SKU')); ?>"><?php /* @escapeNotVerified */ echo $block->prepareSku($block->getSku()) ?></td>
+    <td class="cs-table__col | sku" data-th="<?php echo $block->escapeHtml(__('SKU')); ?>">
+        <?php /* @escapeNotVerified */ echo $block->prepareSku($block->getSku()) ?>
+    </td>
     <td class="cs-table__col | price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
         <?php echo $block->getItemPriceHtml(); ?>
     </td>
-    <td class="cs-table__col |  qty" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>">
+    <td class="cs-table__col | qty" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>">
         <ul class="items-qty">
             <?php if ($block->getItem()->getQtyOrdered() > 0): ?>
                 <li class="item">
@@ -59,7 +77,7 @@ $_item = $block->getItem();
             <?php if ($block->getItem()->getQtyShipped() > 0): ?>
                 <li class="item">
                     <span class="title"><?php /* @escapeNotVerified */ echo __('Shipped'); ?></span>
-                    <span class="content"><?php /* @escapeNotVerified */ echo $block->getItem()->getQtyShipped()*1 ?></span>
+                    <span class="content"><?php /* @escapeNotVerified */ echo $block->getItem()->getQtyShipped() * 1 ?></span>
                 </li>
             <?php endif; ?>
             <?php if ($block->getItem()->getQtyCanceled() > 0): ?>

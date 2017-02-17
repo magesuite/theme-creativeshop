@@ -21,6 +21,7 @@
             </tr>
             </thead>
             <tbody>
+            <?php $iterator = 0; ?>
             <?php foreach ($block->getReviews() as $_review): ?>
                 <tr>
                     <td data-th="<?php echo $block->escapeHtml(__('Created')) ?>" class="cs-table__col date"><?php /* @escapeNotVerified */ echo $block->dateFormat($_review->getReviewCreatedAt()); ?></td>
@@ -32,10 +33,19 @@
                     <td data-th="<?php echo $block->escapeHtml(__('Rating')) ?>" class="cs-table__col summary">
                         <?php if ($_review->getSum()): ?>
                             <div class="rating-summary">
-                                <span class="label"><span><?php /* @escapeNotVerified */ echo __('Rating') ?>:</span></span>
-                                <div class="rating-result" title="<?php /* @escapeNotVerified */ echo($_review->getSum() / $_review->getCount()) ?>%">
-                                    <span style="width:<?php /* @escapeNotVerified */ echo($_review->getSum() / $_review->getCount()) ?>%;"><span><?php /* @escapeNotVerified */ echo($_review->getSum() / $_review->getCount()) ?>%</span></span>
-                                </div>
+                                <span class="cs-visually-hidden">
+                                    <span><?php /* @escapeNotVerified */ echo __('Rating') ?>:</span>
+                                </span>
+
+                                <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'my-reviews-rating-'.$iterator,
+                                    ['data' => [
+                                        'maxStars' => 5,
+                                        'activeStars' => $_review->getSum()/20,
+                                        'text' => ''
+                                    ]
+                                    ])->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
+
+
                             </div>
                         <?php endif; ?>
                     </td>
@@ -48,6 +58,7 @@
                         </a>
                     </td>
                 </tr>
+                <?php $iterator ++; ?>
             <?php endforeach; ?>
             </tbody>
         </table>
