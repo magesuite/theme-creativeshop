@@ -1,154 +1,151 @@
+.#{$namespace}category-page {
+    $root: &;
 
-@include export-once( 'customizations/category-page' ) {
-    .#{$namespace}category-page {
-        $root: &;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
 
+    @include media('>=tablet') {
+        flex-wrap: nowrap;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid $colorAlto;
+        margin-bottom: 3rem;
+    }
+
+    .page-title-wrapper {
+        padding: 1.5rem;
         display: flex;
-        position: relative;
+        align-items: center;
+        justify-content: flex-start;
+        @include media('>=tablet') {
+            padding: .2rem 0 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @include media('>=desktop') {
+            width: 40%;
+        }
+
+        .page-title {
+            padding-bottom: 0;
+        }
+    }
+
+    &__toolbar {
+        justify-content: space-between;
+        align-items: flex-start;
         flex-wrap: wrap;
+        display: flex;
+        @include media('>=tablet') {
+            padding-bottom: 2rem;
+        }
+        @include media('>=desktop') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__toolbar-top {
+        @include media('<tablet') {
+            display: none;
+        }
+
+        .page-title__span {
+            display: none;
+        }
+    }
+
+    &__toolbar-left {
+        display: none;
+        @include media('>=tablet') {
+            display: flex;
+        }
+    }
+
+    &__toolbar-right {
+        @include media('<tablet') {
+            margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
+            width: 100vw !important;
+        }
+        @include media('>=tablet') {
+            width: auto;
+        }
+    }
+
+    &__toolbar-label {
+        white-space: nowrap;
+        padding-right: .8rem;
+        display: inline-block;
+        @extend .#{$namespace}t-text;
+        @extend .#{$namespace}t-text--look_label;
+        @extend .#{$namespace}t-text--size_250;
+    }
+
+    &__toolbar-amount {
+        display: none;
+    }
+
+    &__modes {
+        display: none;
+    }
+
+    &__toolbar-sorter,
+    &__toolbar-limiter {
+        display: flex;
+        align-items: center;
+        margin: 0 1.5rem 1rem 0!important;// stylelint-disable-line
+        padding-top: 0;
+    }
+
+    &__toolbar-sorter {
+        .#{$namespace}html-select,
+        .#{$namespace}html-select__trigger {
+            height: 3.8rem;
+        }
+        .#{$namespace}html-select__trigger-text {
+            line-height: 2.4rem;
+        }
+    }
+
+    .column.main {
+        box-sizing: border-box;
+        width: 100%;
+        order: 2;
 
         @include media('>=tablet') {
-            flex-wrap: nowrap;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid $colorAlto;
-            margin-bottom: 3rem;
+            width: 70%;
+            flex-basis: 70%;
+            padding-left: 3rem;
+            padding-top: 3rem;
+            border-left: 1px solid $colorAlto;
         }
-
-        .page-title-wrapper {
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            @include media('>=tablet') {
-                padding: .2rem 0 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-
-            @include media('>=desktop') {
-                width: 40%;
-            }
-
-            .page-title {
-                padding-bottom: 0;
-            }
+        @include media('>=laptop') {
+            width: 78%;
+            flex-basis: 78%;
         }
+    }
 
-        &__toolbar {
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            display: flex;
-            @include media('>=tablet') {
-                padding-bottom: 2rem;
-            }
-            @include media('>=desktop') {
-                flex-wrap: nowrap;
-            }
+    .sidebar-main {
+        box-sizing: border-box;
+        width: 100%;
+        border-right: none;
+        order: 1;
+        @include media('>=tablet') {
+            width: 30%;
+            flex-basis: 30%;
+            padding-right: 3rem;
+            padding-top: 3rem;
         }
-
-        &__toolbar-top {
-            @include media('<tablet') {
-                display: none;
-            }
-
-            .page-title__span {
-                display: none;
-            }
+        @include media('>=laptop') {
+            width: 22%;
+            flex-basis: 22%;
+            padding-right: 1.6rem;
         }
-
-        &__toolbar-left {
-            display: none;
-            @include media('>=tablet') {
-                display: flex;
-            }
+        @include media('>=desktop') {
+            padding-right: 3rem;
         }
+    }
 
-        &__toolbar-right {
-            @include media('<tablet') {
-                margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
-                width: 100vw !important;
-            }
-            @include media('>=tablet') {
-                width: auto;
-            }
-        }
-
-        &__toolbar-label {
-            white-space: nowrap;
-            padding-right: .8rem;
-            display: inline-block;
-            @extend .#{$namespace}t-text;
-            @extend .#{$namespace}t-text--look_label;
-            @extend .#{$namespace}t-text--size_250;
-        }
-
-        &__toolbar-amount {
-            display: none;
-        }
-
-        &__modes {
-            display: none;
-        }
-
-        &__toolbar-sorter,
-        &__toolbar-limiter {
-            display: flex;
-            align-items: center;
-            margin: 0 1.5rem 1rem 0!important;// stylelint-disable-line
-            padding-top: 0;
-        }
-
-        &__toolbar-sorter {
-            .#{$namespace}html-select,
-            .#{$namespace}html-select__trigger {
-                height: 3.8rem;
-            }
-            .#{$namespace}html-select__trigger-text {
-                line-height: 2.4rem;
-            }
-        }
-
-        .column.main {
-            box-sizing: border-box;
-            width: 100%;
-            order: 2;
-
-            @include media('>=tablet') {
-                width: 70%;
-                flex-basis: 70%;
-                padding-left: 3rem;
-                padding-top: 3rem;
-                border-left: 1px solid $colorAlto;
-            }
-            @include media('>=laptop') {
-                width: 78%;
-                flex-basis: 78%;
-            }
-        }
-
-        .sidebar-main {
-            box-sizing: border-box;
-            width: 100%;
-            border-right: none;
-            order: 1;
-            @include media('>=tablet') {
-                width: 30%;
-                flex-basis: 30%;
-                padding-right: 3rem;
-                padding-top: 3rem;
-            }
-            @include media('>=laptop') {
-                width: 22%;
-                flex-basis: 22%;
-                padding-right: 1.6rem;
-            }
-            @include media('>=desktop') {
-                padding-right: 3rem;
-            }
-        }
-
-        .sidebar.sidebar-additional {
-            width: 100%;
-        }
+    .sidebar.sidebar-additional {
+        width: 100%;
     }
 }

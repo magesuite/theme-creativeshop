@@ -1,103 +1,101 @@
-@include export-once( 'customizations/form' ) {
-    .#{$namespace}form {
-        $root: &;
-        font-size: 1rem;
-        width: 100%;
+.#{$namespace}form {
+    $root: &;
+    font-size: 1rem;
+    width: 100%;
 
-        &--center-mobile {
-            @include media('<tablet') {
-                display: flex;
-                justify-content: center;
-            }
-        }
-
-        &__fieldset {
-            border: none;
-            padding: 0;
-            margin: 0;
-
-            &--space-bottom {
-                margin-bottom: 2rem;
-            }
-
-            &--level {
-                &_1 {
-                    margin-bottom: 2rem;
-                    border: 0;
-                    padding: 0;
-                }
-                &_2 {
-                    border: 0;
-                    padding: 0;
-                    max-width: 60rem;
-                }
-            }
-
-        }
-
-        &__fieldset-inner {
-            padding-bottom: 1rem;
-            @include media('>=laptop') {
-                border-bottom: 1px solid $colorAlto;
-            }
-        }
-
-        &__field {
-            max-width: 40rem;
-            margin-bottom: 1.5rem;
-            width: 100%;
-
-            &--space-top {
-                margin-top: 2rem;
-            }
-
-            &--full {
-                max-width: none;
-            }
-
-            &--half {
-                @include media('>=tablet') {
-                    max-width: 50%;
-                }
-            }
-
-            &[ name*='prefix' ],
-            &.field-name-prefix {
-                width: 10rem !important;/* stylelint-disable-line declaration-no-important */
-            }
-
-        }
-
-        &__group {
-            border: none;
-            margin-left: 0;
-            margin-right: 0;
-            padding: 0;
-            .#{$namespace}form__field {
-                .#{$namespace}input__label:after {
-                    display: none;
-                }
-            }
-
-        }
-
-        &__reminder {
-            margin-top: 1rem;
-            width: 100%;
-        }
-
-        &__buttons {
-            margin-top: 2rem;
+    &--center-mobile {
+        @include media('<tablet') {
             display: flex;
-            flex-wrap: wrap;
+            justify-content: center;
         }
+    }
 
-        &__actions {
-            display: flex;
-            justify-content: space-between;
+    &__fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+
+        &--space-bottom {
             margin-bottom: 2rem;
-            max-width: 40rem;
+        }
+
+        &--level {
+            &_1 {
+                margin-bottom: 2rem;
+                border: 0;
+                padding: 0;
+            }
+            &_2 {
+                border: 0;
+                padding: 0;
+                max-width: 60rem;
+            }
         }
 
     }
+
+    &__fieldset-inner {
+        padding-bottom: 1rem;
+        @include media('>=laptop') {
+            border-bottom: 1px solid $colorAlto;
+        }
+    }
+
+    &__field {
+        max-width: 40rem;
+        margin-bottom: 1.5rem;
+        width: 100%;
+
+        &--space-top {
+            margin-top: 2rem;
+        }
+
+        &--full {
+            max-width: none;
+        }
+
+        &--half {
+            @include media('>=tablet') {
+                max-width: 50%;
+            }
+        }
+
+        &[ name*='prefix' ],
+        &.field-name-prefix {
+            width: 10rem !important;/* stylelint-disable-line declaration-no-important */
+        }
+
+    }
+
+    &__group {
+        border: none;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0;
+        .#{$namespace}form__field {
+            .#{$namespace}input__label:after {
+                display: none;
+            }
+        }
+
+    }
+
+    &__reminder {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    &__buttons {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        max-width: 40rem;
+    }
+
 }
