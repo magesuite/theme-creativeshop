@@ -45,19 +45,29 @@
     }
 
     &__toolbar-top {
-        @include media('<tablet') {
-            display: none;
-        }
 
         .page-title__span {
             display: none;
         }
+
+        #{$root}__toolbar-right {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
+        #{$root}__toolbar-sorter {
+            @include media('<tablet') {
+                display: flex;
+            }
+        }
     }
 
     &__toolbar-left {
-        display: none;
+        display: flex;
+        flex-wrap: wrap;
         @include media('>=tablet') {
-            display: flex;
+            flex-wrap: nowrap;
         }
     }
 
@@ -94,6 +104,10 @@
         align-items: center;
         margin: 0 1.5rem 1rem 0!important;// stylelint-disable-line
         padding-top: 0;
+
+        @include media('<tablet') {
+            display: none;
+        }
     }
 
     &__toolbar-sorter {
@@ -103,6 +117,10 @@
         }
         .#{$namespace}html-select__trigger-text {
             line-height: 2.4rem;
+        }
+
+        .sort-asc {
+            transform: rotate( 180deg );
         }
     }
 
