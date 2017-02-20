@@ -9,6 +9,14 @@ $namespace: 'cs-';
     @include teaser();
     @include imageTeaser();
 
+    margin-bottom: 3rem;
+
+    &__slide {
+        #{$root}--slider & {
+            margin-bottom: 0;
+        }
+    }
+
     &__slide-link {
         display: flex;
         width: 100%;
@@ -224,6 +232,7 @@ $namespace: 'cs-';
     &__nav {
         @extend .#{$namespace}products-promo__nav;
         z-index: 3;
+        margin-top: -13px;
 
         &--disabled {
             opacity: .5;
@@ -252,11 +261,13 @@ $namespace: 'cs-';
     }
 
     &--full-width-slider {
-        width: 77%;
-        padding: 0 11.5%;
+        @include media( '>tablet' ) {
+            width: 77%;
+            padding: 0 11.5%;
 
-        #{$root}__wrapper {
-            overflow: visible;
+            #{$root}__wrapper {
+                overflow: visible;
+            }
         }
     }
 }
