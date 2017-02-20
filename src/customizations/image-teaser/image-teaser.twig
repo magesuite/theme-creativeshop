@@ -7,7 +7,6 @@
         {% set itemsPerRowMobile = 1 %}
 {% endif %}
 
-
 {% if itemsPerView == 6 %}
     {% set itemsPerViewMobile = 3 %}
     {% set itemsPerRowMobile = 3 %}
@@ -32,6 +31,17 @@
 {% if currentScenario.textPositioning.id == 'over' %}
     {% set displayVariant = 'inside' %}
 {% endif %}
+{# Setting up "sizes" attribute basing on configuration. #}
+{% set sizesMobile = '(max-width: 48em) 100vw' %}
+{% set sizesDesktop = '100' / itemsPerView ~ 'vw' %}
+{% if currentScenario.teaserWidth.id == 'w-s' %}
+    {% set sizesMobile = '(max-width: 48em) 80vw' %}
+    {% set sizesDesktop = '80' / itemsPerView ~ 'vw' %}
+{% elseif currentScenario.teaserWidth.id == 'c' %}
+    {% set sizesDesktop =  '(min-width: 1200px) ' ~ 1200 / itemsPerView ~ 'px, ' ~ sizesDesktop %}
+{% endif %}
+
+{% set sizes = sizesMobile ~ ', ' ~ sizesDesktop %}
 
 <div class="cs-container cs-container--edge-to-edge">
     {% if currentScenario.teaserWidth.id == 'c' %}
@@ -50,6 +60,7 @@
                     },
                 }
             },
+            sizes: sizes,
             button: {
                 class: 'cs-button cs-button--type_long cs-button--look_default',
                 icon: {
@@ -59,7 +70,7 @@
                 labelClass: 'cs-button__span'
             }
         } %}
-    
+
     {% if currentScenario.teaserWidth.id == 'c' %}
         </div>
     {% endif %}
