@@ -12,7 +12,7 @@ export default {
         // JSON except data for templates.
         path.join( paths.src, '**/*.json' ),
         // PHP files
-        path.join( paths.src, '**/*.{php,phtml,html}' ),
+        path.join( paths.src, '**/*.php' ),
         // XML files
         path.join( paths.src, '**/*.xml' ),
         // CSV files
@@ -29,7 +29,7 @@ export default {
         // JSON.
         path.join( paths.src, '**/*.json' ),
         // PHP files
-        path.join( paths.src, '**/*.{php,phtml,html}' ),
+        path.join( paths.src, '**/*.php' ),
         // XML files
         path.join( paths.src, '**/*.xml' ),
         // CSV files

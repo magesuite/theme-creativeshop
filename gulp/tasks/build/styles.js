@@ -4,6 +4,8 @@ import notifier from 'node-notifier';
 import sass from 'gulp-sass';
 import postcss from 'gulp-postcss';
 import browserSync from 'browser-sync';
+import gulpif from 'gulp-if';
+import cleanCSS from 'gulp-clean-css';
 
 import environment from '../../environment';
 import settings from '../../config/build/styles';
@@ -51,6 +53,7 @@ module.exports = function() {
             } )
         )
         .pipe( postcss( settings.postcss ) )
+        .pipe( gulpif( environment.production, cleanCSS( settings.cleancss ) ) )
         .pipe( sourcemaps.write( '.' ) )
         .pipe( this.gulp.dest( settings.dest ) );
 };

@@ -25,6 +25,7 @@ gulp.task( 'build', ( done ) => {
             'build:scripts',
             'build:styles',
 
+            'copy:templates',
             'copy:fonts',
             'copy:images',
             'copy:misc',

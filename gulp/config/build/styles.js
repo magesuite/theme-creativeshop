@@ -1,10 +1,8 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import flexbugs from 'postcss-flexbugs-fixes';
-import cleanCSS from 'postcss-clean';
 
 import paths from '../../paths';
-import environment from '../../environment';
 
 /**
  * Returns information for styles building.
@@ -34,14 +32,11 @@ const config = {
             }
         ),
     ],
+    cleancss: {},
     sass: {
         precision: 10,
         errLogToConsole: true,
     },
 };
-
-if ( environment.production ) {
-    config.postcss.push( cleanCSS() );
-}
 
 export default config;
