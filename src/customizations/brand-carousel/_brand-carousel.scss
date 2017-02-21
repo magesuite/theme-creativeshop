@@ -1,6 +1,8 @@
 @import '../../../node_modules/creative-patterns/packages/components/brand-carousel/src/brand-carousel';
 
 .#{$namespace}brand-carousel {
+    $root: &;
+
     @include teaser();
     @include brandCarousel();
 
@@ -8,13 +10,32 @@
         padding: 0;
 
         @include media( '>=tablet' ) {
-            padding-left: 3.75rem;
-            padding-right: 3.75rem;
+            #{$root}--slider & {
+                padding-left: 3.75rem;
+                padding-right: 3.75rem;
+            }
+        }
+    }
+
+    &__slides {
+        justify-content: center;
+
+        #{$root}--slider & {
+            justify-content: space-between;
         }
     }
 
     &__slide {
         margin-bottom: 0;
+        margin-right: 2rem;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        #{$root}--slider & {
+            margin-right: 0;
+        }
     }
 
     &__image {
@@ -26,9 +47,14 @@
         position: static;
         transform: none;
         margin-top: 2rem;
+        display: none;
+
+        #{$root}--slider & {
+            display: block;
+        }
 
         @include media( '>=tablet' ) {
-            display: none;
+            display: none !important;
         }
 
         &-item {
@@ -47,9 +73,14 @@
     &__nav {
         @extend .#{$namespace}products-promo__nav;
         z-index: 3;
+        display: none;
+
+        #{$root}--slider & {
+            display: block;
+        }
 
         @include media( '<tablet' ) {
-            display: none;
+            display: none !important;
         }
 
         @include media( '>=tablet' ) {
