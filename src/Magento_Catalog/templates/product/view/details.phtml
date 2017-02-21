@@ -1,18 +1,5 @@
-<?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-// @codingStandardsIgnoreFile
-
-?>
-<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
-
-    <?php
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):
     $layout = $block->getLayout();
-    ?>
-    <?php
     $newPriority = array();
     foreach ($detailedInfoGroup as $name) {
         $alias = $layout->getElementAlias($name);
@@ -22,71 +9,71 @@
     usort($newPriority, function($a, $b) {
         return $a['1'] <=> $b['1'];
     });
-    ?>
+?>
     <div class="cs-product-description__nav">
         <ul class="cs-list cs-list--menu cs-list--menu-dark | cs-pdp-nav">
-            <?php foreach ($newPriority as $name): ?>
-                <?php
+            <?php
+            foreach ($newPriority as $name):
                 $name = $name[0];
                 $alias = $layout->getElementAlias($name);
                 $label = $block->getChildData($alias, 'title');
                 $html = $layout->renderElement($name);
+                $id = '#pdp-' . preg_replace("/[\.]/", "-", $alias);
                 if (!trim($html)) {
                     continue;
                 }
-                ?>
-                <?php if($html): ?>
-                <li class="cs-list__item cs-list__item--menu-dark"><a class="cs-list__link" href="<?php echo '#pdp-' . preg_replace("/[\.]/", "-", $alias);?>"><?php /* @escapeNotVerified */ echo __($label) ?></a></li>
-                <?php endif;?>
-            <?php endforeach; ?>
+                if($html):
+            ?>
+                <li class="cs-list__item cs-list__item--menu-dark">
+                    <a class="cs-list__link" href="<?=$id ?>">
+                        <?php /* @escapeNotVerified */ echo __($label) ?>
+                    </a>
+                </li>
+            <?php
+                endif;
+            endforeach;
+            ?>
         </ul>
     </div>
-    <?php foreach ($newPriority as $name): ?>
-        <?php
+    <?php foreach ($newPriority as $name):
         $name = $name[0];
         $html = $layout->renderElement($name);
         if (!trim($html)) {
             continue;
         }
         $alias = $layout->getElementAlias($name);
+        $id = 'pdp-' . preg_replace("/[\.]/", "-", $alias);
         $label = $block->getChildData($alias, 'title');
-        ?>
+        $itemExtraClasses = '';
+        if ($name == 'reviews.tab') {
+            $itemExtraClasses += ' cs-product-description__item--bottom';
+        }
+        elseif ($name == 'product.attributes') {
+            $itemExtraClasses += ' cs-product-description__item--penultimate';
+        }
 
-        <?php if($html): ?>
-            <div class="cs-product-description__item | cs-collapse cs-collapse--only-mobile<?php if($name == 'reviews.tab'): ?> cs-product-description__item--bottom<?php endif;?><?php if($name == 'product.attributes'): ?> cs-product-description__item--penultimate<?php endif;?>" id="<?php echo "pdp-" . preg_replace("/[\.]/", "-", $alias);?>">
-            <?php if($name == 'reviews.tab'): ?>
-                <div class="cs-product-description__item--bottom__inner">
-                <div class="cs-product-description__item--bottom__column">
-            <?php endif;?>
-            <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php /* @escapeNotVerified */
-                echo $label; ?></h2>
-
-            <div class="cs-collapse__content | cs-cms-block">
-                <div class="cs-product-description__content">
-                    <?php /* @escapeNotVerified */
-                    echo $html; ?>
+        if ($html):
+    ?>
+            <div
+                class="cs-product-description__item | cs-collapse cs-collapse--only-mobile<?php echo $itemExtraClasses ?>"
+                id="<?php echo $id ?>">
+                <?php if ($name == 'reviews.tab'): ?>
+                    <div class="cs-product-description__item--bottom__inner">
+                    <div class="cs-product-description__item--bottom__column">
+                <?php endif;?>
+                <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger">
+                    <?php /* @escapeNotVerified */ echo $label; ?>
+                </h2>
+                <div class="cs-collapse__content | cs-cms-block">
+                    <div class="cs-product-description__content">
+                        <?php /* @escapeNotVerified */ echo $html; ?>
+                    </div>
                 </div>
+                <?php if ($name == 'reviews.tab'): ?>
+                    </div>
+                    </div>
+                <?php endif;?>
             </div>
-            <?php if($name == 'reviews.tab'): ?>
-                </div>
-                </div>
-            <?php endif;?>
-            </div
-        <?php endif;?>
-
->
-    <?php endforeach; ?>
-<?php endif; ?>
-<script>
-    require([
-        'jquery'
-    ], function($) {
-
-        $( '.cs-pdp-nav .cs-list__item' ).on( 'click', function( e ) {
-            e.preventDefault();
-            $( 'html, body' ).animate( {
-                scrollTop: $( $( this ).find( 'a' ).attr( 'href') ).offset().top
-            }, 350 );
-        });
-    } );
-</script>
+        <?php endif;
+    <endforeach;
+endif; ?>
