@@ -4,7 +4,7 @@ var config = {
         'vendors': 'vendors',
         'Stickyfill': 'stickyfill',
         'isMobile': 'ismobile',
-        'cssPolyfills': 'csspolyfills'
+        'cssPolyfills': 'csspolyfills',
     },
     shim: {
         'vendors': {
@@ -23,6 +23,6 @@ var config = {
         },
         'cssPolyfills': {
             export: 'cssPolyfills',
-        }
+        },
     },
 };

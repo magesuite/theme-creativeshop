@@ -8,7 +8,6 @@ import util from 'gulp-util';
 
 import environment from '../../environment';
 import paths from '../../paths';
-import names from '../../names';
 // Variable storing bundle cache for faster compilation in watch mode.
 let cache;
 
