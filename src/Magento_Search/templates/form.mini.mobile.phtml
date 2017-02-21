@@ -9,14 +9,14 @@
 /** @var $helper \Magento\Search\Helper\Data */
 $helper = $this->helper('Magento\Search\Helper\Data');
 ?>
-<form class="cs-header__search | cs-header-search | cs-input" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get" id="cs-header-search">
+<form class="cs-header__search | cs-header-search cs-header-search--mobile | cs-input" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get" id="cs-header-search--mobile">
     <input
         class="cs-header-search__input | cs-input__input"
         data-mage-init='{
             "quickSearch":{
-                "formSelector":"#cs-header-search",
+                "formSelector":"#cs-header-search--mobile",
                 "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest', ['_secure' => $block->getRequest()->isSecure()]); ?>",
-                "destinationSelector":"#cs-header-search__autocomplete"
+                "destinationSelector":"#cs-header-search__autocomplete--mobile"
             }
         }'
         type="search"
@@ -27,7 +27,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         aria-haspopup="false"
         aria-autocomplete="both"
         autocomplete="off">
-    <div class="cs-header-search__autocomplete" id="cs-header-search__autocomplete"></div>
+    <div class="cs-header-search__autocomplete cs-header-search__autocomplete--mobile" id="cs-header-search__autocomplete--mobile"></div>
     <div class="cs-input__button">
         <button class="cs-button cs-button--look_default cs-button--look_on-input" type="submit">
             <svg class="cs-button__icon cs-button__icon--center cs-button__icon--search">
