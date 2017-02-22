@@ -7,6 +7,8 @@ new BrandCarousel( $( '.cs-brand-carousel' ), {
     spaceBetween: 50,
     slidesPerView: 6,
     centeredSlides: false,
+    slideMinWidth: 50,
+    roundLengths: false,
     paginationBreakpoint: 10,
     breakpoints: {
         380: {
