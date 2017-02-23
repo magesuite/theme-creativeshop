@@ -233,19 +233,19 @@ switch ($type = $block->getType()) {
                                     if (!$item->getRequiredOptions()): ?>
                                         <?php
                                         $addToCartText = __('Add to Cart');
-                                        $content = <<<HTML
+                                        $content = '
                                             <div class="field choice related |  cs-input--type-checkbox">
                                                 <input
                                                     type="checkbox"
                                                     class="checkbox related | cs-input__checkbox"
-                                                    id="related-checkbox${getId}"
+                                                    id="related-checkbox'.$getId.'"
                                                     name="related_products[]"
-                                                    value="${getId}" />
-                                                <label class="cs-input__label" for="related-checkbox${getId}">
-                                                    <span>${addToCartText}</span>
+                                                    value="'.$getId.'" />
+                                                <label class="cs-input__label" for="related-checkbox'.$getId.'">
+                                                    <span>'.$addToCartText.'</span>
                                                 </label>
                                             </div>
-HTML;
+                                            ';
 
                                         $data['addons']['left'][] = [
                                             'content' => $content

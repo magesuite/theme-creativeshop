@@ -39,10 +39,10 @@
                                 $dividedRating = floor(($rating / 20) * 2) / 2;
                                 $items_wording = ($review->getCount() == 0) ? __('No reviews') : ($review->getCount() == 1) ? __('Review') : __('Reviews');
                                 $review_count = $review->getCount();
-                                $text = <<<HTML
-                                                <span itemprop="ratingValue">${dividedRating}</span> / <span itemprop="bestRating">5</span>
-                                                <span itemprop="reviewCount">(${review_count} ${items_wording})</span>
-HTML;
+                                $text = '
+                                    <span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span>
+                                    <span itemprop="reviewCount">('.$review_count.' '.$items_wording.')</span>
+                                ';
                             ?>
                             <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'rating-summary-grid-product-' . $iterator, [
                                     'data' => [
