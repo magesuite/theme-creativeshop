@@ -5,6 +5,6 @@ import $ from 'jquery';
 
 $( '.cs-hero' ).each( function(): void {
     new Hero( $( this ), {
-        spaceBetween: 2,
+        spaceBetween: 2
     } );
 } );

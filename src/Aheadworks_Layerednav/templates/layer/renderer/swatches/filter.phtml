@@ -4,8 +4,11 @@
 // @codingStandardsIgnoreFile
 ?>
 <?php $swatchData = $block->getSwatchData();?>
-<div class="cs-aftersearch-nav__swatch | swatch-attribute swatch-layered <?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] ?>"
-     attribute-code="<?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] ?>" attribute-id="174">
+<div
+    class="cs-aftersearch-nav__swatch | swatch-attribute swatch-layered <?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] ?>"
+    attribute-code="<?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] ?>"
+    attribute-id="174"
+>
     <div class="cs-swatches__list">
         <?php foreach ($swatchData['options'] as $option => $label): ?>
             <?php if (isset($swatchData['swatches'][$option]['type'])): ?>
@@ -42,23 +45,28 @@
                         $classes .= ' active';
                     }
                 ?>
-                <div id="aw-filter-option-<?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] . '-' . $option ?>"
-                     class="cs-swatches__swatch<?php /* @escapeNotVerified */ echo $classes ?> "
-                     option-type="<?php /* @escapeNotVerified */ echo $swatchData['swatches'][$option]['type'] ?>"
-                     option-id="<?php /* @escapeNotVerified */ echo $option ?>"
-                     option-label="<?php /* @escapeNotVerified */ echo $label['label'] ?>"
-                     option-tooltip-thumb="<?php /* @escapeNotVerified */ echo $swatchTooltipThumb ?>"
-                     option-tooltip-value="<?php /* @escapeNotVerified */ echo $swatchTooltipValue ?>"
-                     data-role="aw-layered-nav-filter-item"
-                     data-attr-code="<?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] ?>"
-                     data-mage-init='{"awLayeredNavFilterItem": {"type": "swatch"}}'
+                <div
+                    id="aw-filter-option-<?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] . '-' . $option ?>"
+                    class="cs-swatches__swatch<?php /* @escapeNotVerified */ echo $classes ?> "
+                    option-type="<?php /* @escapeNotVerified */ echo $swatchData['swatches'][$option]['type'] ?>"
+                    option-id="<?php /* @escapeNotVerified */ echo $option ?>"
+                    option-label="<?php /* @escapeNotVerified */ echo $label['label'] ?>"
+                    option-tooltip-thumb="<?php /* @escapeNotVerified */ echo $swatchTooltipThumb ?>"
+                    option-tooltip-value="<?php /* @escapeNotVerified */ echo $swatchTooltipValue ?>"
+                    data-role="aw-layered-nav-filter-item"
+                    data-attr-code="<?php /* @escapeNotVerified */ echo $swatchData['attribute_code'] ?>"
+                    data-mage-init='{"awLayeredNavFilterItem": {"type": "swatch"}}'
                     <?php if ($type == '2'): ?>
                         style="background: url(<?php /* @escapeNotVerified */ echo $block->getSwatchPath('swatch_image', $swatchData['swatches'][$option]['value']) ?>) no-repeat center; background-size: initial;"
                     <?php elseif ($type == '1'): ?>
                         style="background: <?php /* @escapeNotVerified */ echo $swatchData['swatches'][$option]['value'] ?> no-repeat center; background-size: initial;"
                     <?php endif; ?>
                 >
-                    <input type="hidden" name="<?php /* @escapeNotVerified */ echo $swatchData['attribute_code']?>" value="<?php /* @escapeNotVerified */ echo $option ?>" />
+                    <input
+                        type="hidden"
+                        name="<?php /* @escapeNotVerified */ echo $swatchData['attribute_code']?>"
+                        value="<?php /* @escapeNotVerified */ echo $option ?>"
+                    />
                     <?php if (!in_array($type, ['1', '2', '3'])): ?>
                         <?php /* @escapeNotVerified */ echo $swatchData['swatches'][$option]['value'] ?>
                     <?php endif; ?>

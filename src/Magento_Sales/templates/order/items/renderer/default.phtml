@@ -1,36 +1,31 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
 /** @var  $block \Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer */
-$_item = $block->getItem();
+$item = $block->getItem();
 ?>
-<tr id="order-item-row-<?php /* @escapeNotVerified */ echo $_item->getId() ?>">
+<tr id="order-item-row-<?php /* @escapeNotVerified */ echo $item->getId() ?>">
     <td class="cs-table__col | name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
-        <span class="cs-t-text cs-t-text--look_attention | product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></span>
-        <?php if ($_options = $block->getItemOptions()): ?>
+        <span class="cs-t-text cs-t-text--look_attention | product-item-name"><?php echo $block->escapeHtml($item->getName()) ?></span>
+        <?php if ($options = $block->getItemOptions()): ?>
             <div class="cs-cart-item__options">
-                <?php foreach ($_options as $_option) : ?>
+                <?php foreach ($options as $option) : ?>
                     <dl class="cs-cart-item__options-group | item-options">
                         <dt class="cs-cart-item__options-label">
                             <?php echo $block->escapeHtml($_option['label']) ?>
                         </dt>
                         <?php if (!$block->getPrintStatus()): ?>
-                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
                             <dd class="cs-cart-item__options-value">
-                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?>
+                                <?php if (isset($formatedOptionValue['full_view'])): ?>
+                                    <?php /* @escapeNotVerified */ echo $formatedOptionValue['full_view'] ?>
                                 <?php else: ?>
-                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                                    <?php /* @escapeNotVerified */ echo $formatedOptionValue['value'] ?>
                                 <?php endif; ?>
                             </dd>
                         <?php else: ?>
                             <dd class="cs-cart-item__options-value">
-                                <?php echo nl2br($block->escapeHtml((isset($_option['print_value']) ? $_option['print_value'] : $_option['value']))) ?>
+                                <?php echo nl2br($block->escapeHtml((isset($option['print_value']) ? $option['print_value'] : $option['value']))) ?>
                             </dd>
                         <?php endif; ?>
                     </dl>
@@ -40,11 +35,13 @@ $_item = $block->getItem();
         <?php endif; ?>
         <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
         <?php if ($addtInfoBlock) :?>
-            <?php echo $addtInfoBlock->setItem($_item)->toHtml(); ?>
+            <?php echo $addtInfoBlock->setItem($item)->toHtml(); ?>
         <?php endif; ?>
-        <?php echo $block->escapeHtml($_item->getDescription()) ?>
+        <?php echo $block->escapeHtml($item->getDescription()) ?>
     </td>
-    <td class="cs-table__col | sku" data-th="<?php echo $block->escapeHtml(__('SKU')); ?>"><?php /* @escapeNotVerified */ echo $block->prepareSku($block->getSku()) ?></td>
+    <td class="cs-table__col | sku" data-th="<?php echo $block->escapeHtml(__('SKU')); ?>">
+        <?php /* @escapeNotVerified */ echo $block->prepareSku($block->getSku()) ?>
+    </td>
     <td class="cs-table__col | price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
         <?php echo $block->getItemPriceHtml(); ?>
     </td>

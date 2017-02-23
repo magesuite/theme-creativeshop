@@ -1,9 +1,4 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
 /* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
@@ -156,9 +151,19 @@ switch ($type = $block->getType()) {
 
     <?php if ($type == 'related' || $type == 'upsell'): ?>
         <?php if ($type == 'related'): ?>
-            <div class="block <?php /* @escapeNotVerified */ echo $class; ?>" data-mage-init='{"relatedProducts":{"relatedCheckbox":".related.checkbox"}}' data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>" data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>">
+            <div
+                class="block <?php /* @escapeNotVerified */ echo $class; ?>"
+                data-mage-init='{"relatedProducts":{"relatedCheckbox":".related.checkbox"}}'
+                data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>"
+                data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>"
+            >
         <?php else: ?>
-            <div class="block <?php /* @escapeNotVerified */ echo $class; ?>" data-mage-init='{"upsellProducts":{}}' data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>" data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>">
+            <div
+                class="block <?php /* @escapeNotVerified */ echo $class; ?>"
+                data-mage-init='{"upsellProducts":{}}'
+                data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>"
+                data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>"
+            >
         <?php endif; ?>
     <?php else: ?>
         <div class="block <?php /* @escapeNotVerified */ echo $class; ?>">
@@ -179,22 +184,24 @@ switch ($type = $block->getType()) {
                         
                         <?php 
                             $iterator = 1; 
-                            foreach ($items as $_item): ?>
+                            foreach ($items as $item): ?>
                             
                             <?php 
-                                $getIsSaleable = $_item->getIsSalable();
-                                $productName = $block->escapeHtml($_item->getName()); 
+                                $getIsSaleable = $item->getIsSalable();
+                                $getId = $item->getId();
+                                $getAddToCartUrl = $block->getAddToCartUrl($item);
+                                $productName = $block->escapeHtml($item->getName());
                                 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
                                 $data = [
                                     'showWrapper' => false,
-                                    'url' => $block->getProductUrl($_item),
+                                    'url' => $block->getProductUrl($item),
                                     'image' => [
-                                        'src' => $this->helper('Magento\Catalog\Helper\Image')->init($_item, $image)->getUrl(),
+                                        'src' => $this->helper('Magento\Catalog\Helper\Image')->init($item, $image)->getUrl(),
                                         'alt' => $productName
                                     ],
                                     'name' => $productName,
                                     'price' => [
-                                        'content' => $block->getProductPrice($_item)
+                                        'content' => $block->getProductPrice($item)
                                     ],
                                     'addons' => [
                                         'right' => [
@@ -206,7 +213,7 @@ switch ($type = $block->getType()) {
                                     ]
                                 ];
 
-                                $ratingData = $csProductHelper->getReviewSummary($_item)['data'];
+                                $ratingData = $csProductHelper->getReviewSummary($item)['data'];
 
                                 if($ratingData['activeStars']):
                                     $data['addons']['left'][] = [
@@ -222,25 +229,61 @@ switch ($type = $block->getType()) {
                                     ];
                                 endif;
 
-                                if (!$_item->isComposite() && $_item->isSaleable() && $type == 'related'):
-                                    if (!$_item->getRequiredOptions()): ?>
-                                        <?php $data['addons']['left'][] = [
-                                            'content' => '<div class="field choice related |  cs-input--type-checkbox"><input type="checkbox" class="checkbox related | cs-input__checkbox" id="related-checkbox'.$_item->getId().'" name="related_products[]" value="'.$_item->getId().'" /><label class="cs-input__label" for="related-checkbox'.$_item->getId().'"><span>'.__('Add to Cart').'</span></label></div>'
+                                if (!$item->isComposite() && $getIsSaleable && $type == 'related'):
+                                    if (!$item->getRequiredOptions()): ?>
+                                        <?php
+                                        $addToCartText = __('Add to Cart');
+                                        $content = <<<HTML
+                                            <div class="field choice related |  cs-input--type-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    class="checkbox related | cs-input__checkbox"
+                                                    id="related-checkbox${getId}"
+                                                    name="related_products[]"
+                                                    value="${getId}" />
+                                                <label class="cs-input__label" for="related-checkbox${getId}">
+                                                    <span>${addToCartText}</span>
+                                                </label>
+                                            </div>
+HTML;
+
+                                        $data['addons']['left'][] = [
+                                            'content' => $content
                                         ]; ?>
                                     <?php endif;
                                 endif; ?>
 
-                                <?php if ($showCart && $_item->isSaleable()):
-                                    if ($_item->getTypeInstance()->hasRequiredOptions($_item)):
-                                        $jsonData = '{"redirectUrl": {"url": "'.$block->getAddToCartUrl($_item).'"}}';
+                                <?php if ($showCart && $getIsSaleable):
+                                    if ($item->getTypeInstance()->hasRequiredOptions($item)):
+                                        $jsonData = '{"redirectUrl": {"url": "'.$getAddToCartUrl.'"}}';
                                         $data['addons']['bottom'][] = [
-                                            'content' => '<button class="cs-button cs-button--look_light cs-button--type_wide" data-mage-init=\''.$jsonData.'\' type="button" title="'.__('Add to Cart').'">'.__('Add to Cart').'</button>'
+                                            'content' => sprintf(
+                                                '<button
+                                                    class="cs-button cs-button--look_light cs-button--type_wide"
+                                                    data-mage-init=\'%s\'
+                                                    type="button"
+                                                    title="%s"
+                                                >%s</button>',
+                                                $jsonData,
+                                                __('Add to Cart'),
+                                                __('Add to Cart')
+                                            )
                                         ]; ?>
                                     <?php else:
                                         $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
-                                        $postData = $postDataHelper->getPostData($block->getAddToCartUrl($_item), ['product' => $_item->getEntityId()]);
+                                        $postData = $postDataHelper->getPostData($getAddToCartUrl, ['product' => $item->getEntityId()]);
                                         $data['addons']['bottom'][] = [
-                                            'content' => '<button class="cs-button cs-button--look_light cs-button--type_wide" data-post=\''.$postData.'\' type="button" title="'.__('Add to Cart').'">'.__('Add to Cart').'</button>'
+                                            'content' => sprintf(
+                                                '<button
+                                                    class="cs-button cs-button--look_light cs-button--type_wide"
+                                                    data-post=\'%s\'
+                                                    type="button"
+                                                    title="%s"
+                                                    >%s</button>',
+                                                $postData,
+                                                __('Add to Cart'),
+                                                __('Add to Cart')
+                                                )
                                         ]
                                     ?>
                                 <?php endif;

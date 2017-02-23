@@ -1,19 +1,8 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
-?>
-<?php
 /**
- * Product list toolbar
- *
  * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
  */
-use Magento\Catalog\Model\Product\ProductList\Toolbar;
 ?>
 <div class="cs-category-page__toolbar-limiter | cs-input">
     <label class="cs-category-page__toolbar-label" for="limiter">
@@ -22,20 +11,22 @@ use Magento\Catalog\Model\Product\ProductList\Toolbar;
 
     <div class="control cs-input__control | cs-visually-hidden">
         <select id="limiter" data-role="limiter" class="cs-input__select">
-            <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                <option value="<?php /* @escapeNotVerified */ echo $_key ?>"<?php if ($block->isLimitCurrent($_key)): ?>
-                    selected="selected"<?php endif ?>>
-                    <?php /* @escapeNotVerified */ echo $_limit ?>
+            <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+                <option
+                    value="<?php /* @escapeNotVerified */ echo $key ?>"<?php if ($block->isLimitCurrent($key)): ?>
+                    selected="selected"<?php endif ?>
+                >
+                    <?php /* @escapeNotVerified */ echo $limit ?>
                 </option>
             <?php endforeach; ?>
         </select>
     </div>
 
     <div class="cs-pagination cs-pagination--limiter">
-        <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-            <button class="cs-pagination__item" data-value="<?php /* @escapeNotVerified */ echo $_key ?>">
-                <span class="cs-pagination__number <?php if ($block->isLimitCurrent($_key)): ?> cs-pagination__number--current<?php endif ?>">
-                    <?php /* @escapeNotVerified */ echo $_limit ?>
+        <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+            <button class="cs-pagination__item" data-value="<?php /* @escapeNotVerified */ echo $key ?>">
+                <span class="cs-pagination__number <?php if ($block->isLimitCurrent($key)): ?> cs-pagination__number--current<?php endif ?>">
+                    <?php /* @escapeNotVerified */ echo $limit ?>
                 </span>
             </button>
         <?php endforeach; ?>

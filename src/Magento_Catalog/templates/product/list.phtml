@@ -1,23 +1,13 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-use Magento\Framework\App\Action\Action;
-
 // @codingStandardsIgnoreFile
 
-?>
-<?php
 /**
- * Product list template
- *
  * @var $block \Magento\Catalog\Block\Product\ListProduct
  */
 ?>
 <?php
-$_productCollection = $block->getLoadedProductCollection();
-$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$productCollection = $block->getLoadedProductCollection();
+$helper = $this->helper('Magento\Catalog\Helper\Output');
 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
@@ -32,11 +22,13 @@ $salabilityStatus = $salabilityHelper->getSalabilityStatus($_productCollection);
             <?php echo $block->getChildHtml('page.title') ?>
         </span>
     </h1>
-        <span class="page-title__span">(<?php $toolbar = $block->getToolbarBlock(); $collection = $toolbar->getCollection(); echo $toolbar->getTotalNum(); ?>)</span>
+    <span class="page-title__span">
+        (<?php $toolbar = $block->getToolbarBlock(); $collection = $toolbar->getCollection(); echo $toolbar->getTotalNum(); ?>)
+    </span>
 </div>
 
 
-<?php if (!$_productCollection->count()): ?>
+<?php if (!$productCollection->count()): ?>
     <div class="message info empty">
         <div><?php /* @escapeNotVerified */
             echo __('We can\'t find products matching the selection.') ?></div>
@@ -67,36 +59,35 @@ $salabilityStatus = $salabilityHelper->getSalabilityStatus($_productCollection);
     ?>
     <div class="cs-category-page__products-wrapper">
         <?php $iterator = 0; ?>
-        <ol class="<?php /* @escapeNotVerified */
-        echo $viewModeClass; ?> <?php /* @escapeNotVerified */ echo $viewModeClass; ?>--in-column">
-            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
-            <?php foreach ($_productCollection as $_product): ?>
+        <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?> <?php /* @escapeNotVerified */ echo $viewModeClass; ?>--in-column">
+            <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($productCollection as $product): ?>
                 <?php
                     $iterator++;
                     $showHeroProduct = $iterator==1 && $heroProduct;
                 ?>
                 <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__item--hero<?php endif; ?> | cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
                     <?php
-                        $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
-                        $productImageUrl = $_imagehelper->init($_product, $image)->getUrl();
-                        $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        $imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+                        $productImageUrl = $imagehelper->init($product, $image)->getUrl();
+                        $productNameStripped = $block->stripTags($product->getName(), null, true);
                         $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
                         $getIsSalable = $salabilityStatus[$_product->getId()];
                     ?>
 
                     <?php
                         $data = [
-                            'url' => $_product->getProductUrl(),
+                            'url' => $product->getProductUrl(),
                             'image' => [
                                 'src' => $productImageUrl,
-                                'alt' => $_productNameStripped
+                                'alt' => $productNameStripped
                             ],
-                            'name' => $_helper->productAttribute($_product, $_product->getName(), 'name'),
+                            'name' => $helper->productAttribute($product, $product->getName(), 'name'),
                             'price' => [
-                                'content' => $block->getProductPrice($_product)
+                                'content' => $block->getProductPrice($product)
                             ],
                             'swatches' => [
-                                'content' => $block->getProductDetailsHtml($_product)
+                                'content' => $block->getProductDetailsHtml($product)
                             ],
                             'addons' => [
                                 'right' => [
@@ -110,7 +101,7 @@ $salabilityStatus = $salabilityHelper->getSalabilityStatus($_productCollection);
                     ?>
 
                     <?php
-                        $ratingData = $csProductHelper->getReviewSummary($_product)['data'];
+                        $ratingData = $csProductHelper->getReviewSummary($product)['data'];
                         if($ratingData['activeStars']):
                             $data['addons']['left'][] = [
                                 'mix' => 'cs-grid-product__addon--rating',
@@ -128,7 +119,31 @@ $salabilityStatus = $salabilityHelper->getSalabilityStatus($_productCollection);
 
                     <?php
                         $data['addons']['left'][] = [
-                            'content' => '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="'.$block->escapeHtml(__('Add to Wish List')).'" aria-label="'.$block->escapeHtml(__('Add to Wish List')).'" data-post=\''.$block->getAddToWishlistParams($_product).'\' data-action="add-to-wishlist" role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href="#heart"></use></svg>'.__('Add to Wishlist').'</a></li></ul>'
+                            'content' => sprintf(
+                                '<ul class="cs-links-block-addto" data-role="add-to-links">
+                                    <li class="cs-links-block-addto__item">
+                                        <a
+                                            href="#"
+                                            class="cs-links-block-addto__link towishlist"
+                                            title="%s"
+                                            aria-label="%s"
+                                            data-post=\'%s\'
+                                            data-action="add-to-wishlist"
+                                            role="button"
+                                        >
+                                            <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                                <use xlink:href="#heart"></use>
+                                            </svg>
+                                            %s
+
+                                        </a>
+                                    </li>
+                                </ul>',
+                                $block->escapeHtml(__('Add to Wish List')),
+                                $block->escapeHtml(__('Add to Wish List')),
+                                $block->getAddToWishlistParams($product),
+                                __('Add to Wishlist')
+                                )
                         ];
                     ?>
 

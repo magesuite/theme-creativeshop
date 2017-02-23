@@ -1,16 +1,11 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
 
 ?>
-<?php $_order = $block->getOrder() ?>
+<?php $order = $block->getOrder() ?>
 <div class="cs-info-block | cs-dashboard__block">
     <div class="cs-info-block__buttons">
-        <a href="<?php /* @escapeNotVerified */ echo $block->getPrintAllCreditmemosUrl($_order) ?>"
+        <a href="<?php /* @escapeNotVerified */ echo $block->getPrintAllCreditmemosUrl($order) ?>"
            onclick="this.target='_blank'"
            class="cs-button cs-button--size_300 cs-button--look_default">
             <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Print All Refunds') ?></span>
@@ -19,13 +14,17 @@
             </svg>
         </a>
     </div>
-    <?php foreach ($_order->getCreditmemosCollection() as $_creditmemo): ?>
+    <?php foreach ($order->getCreditmemosCollection() as $creditmemo): ?>
         <div class="cs-info-block__title cs-info-block__title--space-top | cs-title-block cs-title-block--bordered">
-            <div class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('Refund #') ?><?php /* @escapeNotVerified */ echo $_creditmemo->getIncrementId(); ?> </div>
+            <div class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php /* @escapeNotVerified */ echo __('Refund #') ?><?php /* @escapeNotVerified */ echo $creditmemo->getIncrementId(); ?> 
+            </div>
             <span class="cs-t-headline__span">
-                <a href="<?php /* @escapeNotVerified */ echo $block->getPrintCreditmemoUrl($_creditmemo) ?>"
-                   onclick="this.target='_blank'"
-                   class="cs-link">
+                <a 
+                    href="<?php /* @escapeNotVerified */ echo $block->getPrintCreditmemoUrl($creditmemo) ?>"
+                    onclick="this.target='_blank'"
+                    class="cs-link"
+                >
                     <?php /* @escapeNotVerified */ echo __('Print Refund') ?>
                 </a>
             </span>
@@ -33,7 +32,7 @@
         </div>
 
         <div class="cs-table | order-items-creditmemo">
-            <table class="cs-table__body | creditmemo" id="my-refund-table-<?php /* @escapeNotVerified */ echo $_creditmemo->getId(); ?>">
+            <table class="cs-table__body | creditmemo" id="my-refund-table-<?php /* @escapeNotVerified */ echo $creditmemo->getId(); ?>">
                 <caption class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Items Refunded') ?></caption>
                 <thead class="cs-table__head">
                 <tr>
@@ -46,22 +45,22 @@
                     <th class="cs-table__col-head | total"><?php /* @escapeNotVerified */ echo __('Row Total') ?></th>
                 </tr>
                 </thead>
-                <?php $_items = $_creditmemo->getAllItems(); ?>
-                <?php $_count = count($_items) ?>
-                <?php foreach ($_items as $_item): ?>
-                    <?php if ($_item->getOrderItem()->getParentItem()) {
+                <?php $items = $creditmemo->getAllItems(); ?>
+                <?php $count = count($items) ?>
+                <?php foreach ($items as $item): ?>
+                    <?php if ($item->getOrderItem()->getParentItem()) {
                         continue;
                     } ?>
                     <tbody class="cs-table__tbody">
-                    <?php echo $block->getItemHtml($_item) ?>
+                    <?php echo $block->getItemHtml($item) ?>
                     </tbody>
                 <?php endforeach; ?>
                 <tfoot class="cs-table__foot">
-                <?php echo $block->getTotalsHtml($_creditmemo);?>
+                <?php echo $block->getTotalsHtml($creditmemo);?>
                 </tfoot>
             </table>
         </div>
-        <?php echo $block->getCommentsHtml($_creditmemo)?>
+        <?php echo $block->getCommentsHtml($creditmemo)?>
     <?php endforeach; ?>
 
 </div>
