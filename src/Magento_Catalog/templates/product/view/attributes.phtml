@@ -2,16 +2,11 @@
 // @codingStandardsIgnoreFile
 
 /**
- * Product additional attributes template
- *
  * @var $block \Magento\Catalog\Block\Product\View\Attributes
  */
+$helper = $this->helper('Magento\Catalog\Helper\Output');
+$product = $block->getProduct();
 ?>
-<?php
-    $helper = $this->helper('Magento\Catalog\Helper\Output');
-    $product = $block->getProduct();
-?>
-
 <?php if ($additional = $block->getAdditionalData()): ?>
 <div
     class="cs-collapsible-text js-collapsible-text"
@@ -26,11 +21,11 @@
                     <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($data['label'])) ?>:
                     </dt>
                     <dd class="cs-attributes-list__item">
-                        <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>
-                        <?php if ($_data['code'] == 'sku') { ?>
+                        <?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $data['code']) ?>
+                        <?php if ($data['code'] == 'sku') { ?>
                             <meta
                                 itemprop="sku"
-                                content="<?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?>"
+                                content="<?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $_data['code']) ?>"
                             />
                         <?php } ?>
                     </dd>
