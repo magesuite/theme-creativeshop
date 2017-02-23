@@ -30,7 +30,10 @@ $currencySymbol = $block->getCurrencySymbol();
              <?php echo $block->escapeHtml($fromPrice) ?>, <?php echo $block->escapeHtml($toPrice) ?> ]
         }
     }'></div>
-    <div class="cs-aftersearch-nav__price | price-inputs-wrapper" <?php /* @noEscape */ echo $isFromToInputsEnabled ? : 'style="display: none"'; ?>>
+    <?php
+    $priceStyle = $isFromToInputsEnabled ? '' : 'style="display: none"';
+    ?>
+    <div class="cs-aftersearch-nav__price | price-inputs-wrapper" <?php /* @noEscape */ echo $priceStyle;  ?>>
         <div class="cs-aftersearch-nav__price-field cs-aftersearch-nav__price-field--from | cs-input">
             <span class="cs-aftersearch-nav__currency"><?php /* @noEscape */ echo $currencySymbol?></span>
             <input
