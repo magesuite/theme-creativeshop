@@ -19,7 +19,6 @@ loadTasks( path.join( 'gulp', 'tasks' ) );
 gulp.task( 'build', ( done ) => {
     sequence(
         'maintain:clean',
-        'build:sprites:png',
         [
             'build:sprites:svg',
             'build:scripts',
