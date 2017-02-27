@@ -5,15 +5,22 @@
  */
 -->
 <div class="cs-payment | payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
-    <div class="payment-method-title | cs-payment__title | cs-input cs-input--type-radio">
+    <div class="cs-payment__title | cs-input cs-input--type-radio">
         <input type="radio"
                name="payment[method]"
                class="cs-input__radio"
                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
-        <label data-bind="attr: {'for': getCode()}" class="cs-input__label  cs-input__label--big"><span data-bind="text: getTitle()"></span></label>
+        <label data-bind="attr: {'for': getCode()}" class="cs-input__label  cs-input__label--big">
+            <span data-bind="text: getTitle()"></span>
+            <span class="cs-input__label-icon-wrapper">
+                <svg class="cs-input__label-icon">
+                    <use xlink:href="#on_delivery"></use>
+                </svg>
+            </span>
+        </label>
     </div>
 
-    <div class="cs-payment__content | payment-method-content">
+    <div class="cs-payment__content">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->
