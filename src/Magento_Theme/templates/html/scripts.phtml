@@ -14,7 +14,9 @@
         xhr.onload = function () {
             var div = doc.createElement('div');
             div.innerHTML = this.responseText;
-            div.style.display = 'none';
+            div.style.width = div.style.height = 0;
+            div.style.position = 'absolute';
+            div.style.overflow = 'hidden';
             script.parentNode.insertBefore(div, script);
         };
         xhr.open('get', '<?=$this->getViewFileUrl('images/sprites.svg');?>', true);

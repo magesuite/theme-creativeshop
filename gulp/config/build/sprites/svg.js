@@ -19,11 +19,11 @@ export default {
         mode: {
             css: false,
             view: false,
-            defs: false,
-            symbol: {
+            defs: {
                 dest: '',
                 sprite: 'sprites.svg',
             },
+            symbol: false,
             stack: false,
         },
     },

@@ -6,11 +6,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    @include media('>=tablet') {
+    @include media( '>=tablet' ) {
         flex-wrap: wrap;
         justify-content: flex-start;
     }
-    @include media('>=laptop') {
+    @include media( '>=laptop' ) {
         flex-wrap: nowrap;
         justify-content: space-between;
     }
@@ -22,6 +22,7 @@
     &__image {
         height: 3rem;
         width: auto;
+
         &--circle {
             width: 4.7rem;
             height: 4.7rem;
@@ -53,10 +54,10 @@
             background: $colorAlto;
         }
 
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
             display: none;
         }
-        @include media('>=laptop') {
+        @include media( '>=laptop' ) {
             display: block;
         }
     }
@@ -64,13 +65,78 @@
     &__group {
         display: flex;
         align-items: center;
-        @include media('>=tablet') {
+        flex-grow: 1;
+        flex-shrink: 1;
+        justify-content: space-between;
+
+        @include media( '>=tablet' ) {
             width: 100%;
             padding: 1rem 1.5rem;
         }
-        @include media('>=laptop') {
+
+        @include media( '>=laptop' ) {
             width: auto;
             padding: 0;
+        }
+
+        &--info {
+            flex-basis: 15%;
+        }
+
+        &--shipping {
+            flex-basis: 35%;
+        }
+
+        &--payment {
+            flex-basis: 50%;
+        }
+    }
+
+    &__logo {
+        display: flex;
+        flex-shrink: 1;
+
+        @include media( '<laptop' ) {
+            width: auto;
+        }
+
+        &--hermes {
+            height: 2rem;
+            width: 15.2rem;
+        }
+
+        &--dhl {
+            height: 2rem;
+            width: 9.1rem;
+        }
+
+        &--paypal {
+            height: 2rem;
+            width: 6.2rem;
+        }
+
+        &--visa {
+            height: 2rem;
+            width: 5.5rem;
+        }
+
+        &--mastercard {
+            height: 2rem;
+            width: 3.3rem;
+        }
+
+        &--s-u {
+            height: 2rem;
+            width: 6rem;
+        }
+
+        &--klarna {
+            height: 2rem;
+            width: 7rem;
+        }
+
+        & + & {
+            margin-left: .5rem;
         }
     }
 
