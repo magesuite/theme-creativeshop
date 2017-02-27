@@ -1,0 +1,75 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="" data-block="authentication">
+
+    <div class="block-authentication">
+        <!-- ko foreach: getRegion('before') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!-- /ko -->
+        <div class="block block-customer-login"
+             data-bind="attr: {'data-label': $t('or')}">
+            <div class="cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <span id="block-customer-login-heading"
+                      role="heading"
+                      aria-level="2"
+                      data-bind="i18n: 'Sign In'"></span>
+            </div>
+            <!-- ko foreach: getRegion('messages') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+            <div class="cs-checkout__authentication-content" aria-labelledby="block-customer-login-heading">
+                <form data-role="login"
+                      data-bind="submit:login"
+                      method="post"
+                      class="cs-form">
+                    <div class="cs-form__fieldset"
+                         data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+                        <div class="cs-form__field | cs-input | field-email required">
+                            <label class="cs-input__label" for="login-email"><span data-bind="i18n: 'Email Address'"></span></label>
+                            <div class="cs-input__control">
+                                <input type="email"
+                                       class="cs-input__input"
+                                       id="login-email"
+                                       name="username"
+                                       data-bind="attr: {autocomplete: autocomplete}"
+                                       data-validate="{required:true, 'validate-email':true}" />
+                            </div>
+                        </div>
+                        <div class="cs-form__field | cs-input | field-password required">
+                            <label for="login-password" class="cs-input__label"><span data-bind="i18n: 'Password'"></span></label>
+                            <div class="cs-input__control">
+                                <input type="password"
+                                       class="cs-input__input"
+                                       id="login-password"
+                                       name="password"
+                                       data-bind="attr: {autocomplete: autocomplete}"
+                                       data-validate="{required:true}"
+                                       autocomplete="off"/>
+                            </div>
+                        </div>
+                        <!-- ko foreach: getRegion('additional-login-form-fields') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                    <div class="cs-form__buttons">
+                        <input name="context" type="hidden" value="checkout" />
+                        <button type="submit" class="cs-button cs-button--type_long cs-button--type_wide-mobile cs-button--look_default">
+                            <span class="cs-button__span" data-bind="i18n: 'Sign In'"></span>
+                            <span class="cs-button__icon cs-button__icon--bg"></span>
+                        </button>
+                        <div class="cs-form__reminder">
+                            <a class="cs-link cs-link--size_300" data-bind="attr: { href: forgotPasswordUrl }">
+                                <span data-bind="i18n: 'Forgot Your Password?'"></span>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

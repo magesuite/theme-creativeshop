@@ -65,6 +65,25 @@
 
             var checkButtonsIntervalId = setInterval( checkIfButtonsLoaded, 2000 );
 
+            function checkIfAddressLoaded() {
+                if ( $( '#shipping-new-address-form' ).length ) {
+                    clearInterval( checkAddressIntervalId );
+                    $( '#tab-customer-title' ).on( 'click', function() {
+                        $( '#shipping-new-address-form .cs-input' ).addClass( 'cs-input--disabled' ).find( 'input, ' +
+                            'select' ).attr( 'disabled', 'disabled' );
+                    })
+
+                    $( '#tab-new-user-title' ).on( 'click', function() {
+                        $( '#shipping-new-address-form .cs-input' ).removeClass( 'cs-input--disabled' ).find( 'input,' +
+                            ' ' +
+                            'select' ).removeAttr( 'disabled' );
+                    })
+                }
+
+            }
+
+            var checkAddressIntervalId = setInterval( checkIfAddressLoaded, 800 );
+
             blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
             return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
         })

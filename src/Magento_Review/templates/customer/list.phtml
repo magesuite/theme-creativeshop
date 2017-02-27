@@ -17,7 +17,7 @@
             </thead>
             <tbody>
             <?php $iterator = 0; ?>
-            <?php foreach ($block->getReviews() as $_review): ?>
+            <?php foreach ($block->getReviews() as $review): ?>
                 <tr>
                     <td data-th="<?php echo $block->escapeHtml(__('Created')) ?>" class="cs-table__col date">
                         <?php /* @escapeNotVerified */ echo $block->dateFormat($review->getReviewCreatedAt()); ?>
@@ -41,7 +41,7 @@
                                 <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'my-reviews-rating-'.$iterator,
                                     ['data' => [
                                         'maxStars' => 5,
-                                        'activeStars' => $_review->getSum()/20,
+                                        'activeStars' => $review->getSum()/20,
                                         'text' => ''
                                     ]
                                     ])->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
