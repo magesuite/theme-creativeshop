@@ -10,53 +10,102 @@
          class="cs-checkout__step-content"
          data-role="content">
 
-        <!-- ko if: (!quoteIsVirtual) -->
-        <!-- ko foreach: getRegion('customer-email') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
-        <!--/ko-->
+        <!-- ko ifnot: isCustomerLoggedIn -->
+        <div class="cs-checkout__step-tabs" >
+            <div class="cs-tabs" data-bind="mageInit: {'tabs':{'openedState': 'cs-tabs__title--active'}}">
 
-        <!-- ko foreach: getRegion('address-list') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
+                <div class="cs-tabs__triggers">
+                    <div class="cs-tabs__title"
+                         data-role="collapsible" id="tab-label-new-user">
+                        <a class="cs-tabs__title-link"
+                           tabindex="-1"
+                           data-toggle="switch"
+                           href="#tab-new-user"
+                           id="tab-new-user-title"
+                           data-bind="i18n: 'New user'">
 
-        <!-- ko foreach: getRegion('address-list-additional-addresses') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
+                        </a>
+                    </div>
 
-        <!-- Address form pop up -->
-        <!-- ko if: (!isFormInline) -->
+                    <div class="cs-tabs__title"
+                         data-role="collapsible" id="tab-label-customer">
+                        <a class="cs-tabs__title-link"
+                           tabindex="-1"
+                           data-toggle="switch"
+                           href="#tab-new-user"
+                           id="tab-customer-title"
+                           data-bind="i18n: 'I have an account'">
 
-        <div class="cs-checkout__separator"></div>
-        <div class="cs-checkout__button-wrapper">
-            <button type="button"
-                    data-bind="click: showFormPopUp, visible: !isNewAddressAdded()"
-                    class="cs-button cs-button--look_light cs-button--type_wide | action-show-popup">
-                <span class="cs-button__span" data-bind="i18n: 'Add new Address'"></span>
-                <span class="cs-button__icon cs-button__icon--bg"></span>
-            </button>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="cs-tabs__content" id="tab-new-user" data-role="content">
+                    <!-- ko if: (!quoteIsVirtual) -->
+                    <!-- ko foreach: getRegion('customer-email') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!--/ko-->
+                    <!--/ko-->
+                </div>
+
+
+                <div class="cs-tabs__content" id="tab-customer" data-role="content">
+                    <!-- ko foreach: getRegion('authentication-tab') -->
+                    <!-- ko template: 'Magento_Checkout/authentication-tab' --><!-- /ko -->
+                    <!--/ko-->
+                </div>
+
+            </div>
         </div>
 
-        <div id="opc-new-shipping-address" data-bind="visible: isFormPopUpVisible()">
+        <!-- /ko -->
+
+        <div class="cs-checkout__step-form">
+
+            <!-- ko foreach: getRegion('address-list') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- ko foreach: getRegion('address-list-additional-addresses') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- Address form pop up -->
+            <!-- ko if: (!isFormInline) -->
+
+            <div class="cs-checkout__separator"></div>
+            <div class="cs-checkout__button-wrapper">
+                <button type="button"
+                        data-bind="click: showFormPopUp, visible: !isNewAddressAdded()"
+                        class="cs-button cs-button--look_light cs-button--type_wide | action-show-popup">
+                    <span class="cs-button__span" data-bind="i18n: 'Add new Address'"></span>
+                    <span class="cs-button__icon cs-button__icon--bg"></span>
+                </button>
+            </div>
+
+            <div id="opc-new-shipping-address" data-bind="visible: isFormPopUpVisible()">
+                <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- ko foreach: getRegion('before-form') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <!-- Inline address form -->
+            <!-- ko if: (isFormInline) -->
             <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
+            <!-- /ko -->
         </div>
-        <!-- /ko -->
 
-        <!-- ko foreach: getRegion('before-form') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
-
-        <!-- Inline address form -->
-        <!-- ko if: (isFormInline) -->
-        <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
-        <!-- /ko -->
     </div>
 </li>
 
 
 <!--Shipping method template-->
 <li id="opc-shipping_method"
-    class="cs-checkout__shipping-methods | checkout-shipping-method"
+    class="cs-checkout__shipping-methods"
     data-bind="fadeVisible: visible(), blockLoader: isLoading"
     role="presentation">
     <div class="checkout-shipping-method">
@@ -65,7 +114,7 @@
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!-- /ko -->
         <div id="checkout-step-shipping_method"
-             class="cs-checkout__step-content"
+             class="cs-checkout__step-content cs-checkout__step-content--rates"
              data-role="content"
              role="tabpanel"
              aria-hidden="false">
