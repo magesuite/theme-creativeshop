@@ -49,6 +49,7 @@ import './customizations/brand-carousel/brand-carousel';
 import './customizations/category-links/category-links';
 import './customizations/items-grid-layout/items-grid-layout';
 import './customizations/sticky-block/sticky-block';
+import './customizations/pagination/pagination';
 
 import './customizations/reviews/reviews';
 
