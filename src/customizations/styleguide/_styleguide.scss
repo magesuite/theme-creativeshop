@@ -2,6 +2,17 @@
 .#{$namespace}styleguide {
     $root: &;
 
+    &__main-title {
+        color: darken( $colorAlto, 15%);
+        font-weight: 700;
+        padding-bottom: 2rem;
+        font-size: 4rem;
+        border-bottom: 1px solid $colorAlto;
+        max-width: 120rem;
+        margin: 6rem auto 7rem;
+
+    }
+
     &__title {
         height: 4.5rem;
         color: darken( $colorAlto, 15%);
@@ -9,8 +20,17 @@
         font-size: 3.5rem;
         padding-bottom: 1.5rem;
         border-bottom: 1px solid $colorAlto;
-        margin-bottom: 3rem;
-        margin-top: 5rem;
+        max-width: 120rem;
+        margin: 5rem auto 3rem;
+    }
+
+    &__container {
+        padding-top: 1rem;
+        padding-bottom: 4rem;
+
+        &--contrast {
+            box-shadow: inset 0 7rem 7rem -7rem rgba( 0, 0, 0, .1 ), inset  0 -7rem 7rem -7rem rgba( 0, 0, 0, .1 );
+        }
     }
 
     &__section {
@@ -18,6 +38,9 @@
         align-items: flex-start;
         display: flex;
         flex-wrap: wrap;
+        padding: 0 3rem;
+        max-width: 120rem;
+        margin: 0 auto;
 
         > * {
             margin: .5rem 1rem;
@@ -64,27 +87,58 @@
 
     &__separator {
         width: 100%;
-        height: 1px;
-        margin: 2rem 0;
-        background: $colorAlto;
+        height: 2px;
+        background: $colorGallery;
+        max-width: 120rem;
+        margin: 2rem auto;
     }
 
     &__wrapper {
         display: flex;
         flex-wrap: wrap;
     }
-    &__color-color {
+
+    &__box-wrapper {
+
+        &--small {
+            margin: 5px !important;
+
+            #{$root}__box {
+                width: 10rem;
+                height: 9rem;
+                background: $colorGallery;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            #{$root}__box-text {
+                text-align: center;
+            }
+        }
+
+    }
+
+    &__box {
         width: 9rem;
         height: 9rem;
     }
 
-    &__color-text {
+    &__box-text {
         margin-top: .6rem;
         font-size: 1.2rem;
+        text-align: left;
     }
 
-    &__color-section {
+    &__box-group {
         margin-right: 2rem;
         display: flex;
+    }
+
+    &__icon {
+        margin: 1.5rem;
+        max-width: 2.5rem;
+        max-height: 2.5rem;
+
     }
 }
