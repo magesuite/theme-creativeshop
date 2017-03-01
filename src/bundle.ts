@@ -26,6 +26,7 @@ import 'vendors';
 
 import './components/collapse/collapse';
 import './components/dropdown/dropdown';
+import './components/filter-horizontal/filter-horizontal';
 
 import Select from './customizations/select/select';
 export { Select };

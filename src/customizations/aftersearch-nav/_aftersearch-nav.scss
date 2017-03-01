@@ -68,61 +68,74 @@
             border-bottom: 1px solid $colorAlto;
             padding: 0 0 2rem;
         }
+
     }
 
     &__filter-title {
-        padding: 2rem 2rem 2rem 0 !important;
-        font-size: 1.2rem !important;
+        padding: 2rem 2rem 2rem 0;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: block;
+        font-weight: 700;
+        margin: 0;
+        overflow: hidden;
+        position: relative;
+        text-decoration: none;
+        text-transform: uppercase;
+        word-break: break-all;
+        z-index: 1;
+
 
         @include media('<tablet') {
             background-color: $colorGallery;
-            padding: 1.3rem 3rem 1.3rem 1.5rem !important;
+            padding: 1.3rem 3rem 1.3rem 1.5rem;
         }
     }
 
     &__filter-arrow {
-        #{$root}__filter & {
-            background: none !important;
-            position: absolute;
-            width: 10px !important;
-            height: 10px !important;
-            right: 1.5rem;
 
-            @include media('<tablet') {
-                top: 50%;
-                transform: translateY( -50% );
-            }
+        background: none;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        right: 1.5rem;
 
-            @include media('>=tablet') {
-                right: 0;
-            }
-
-            &:before,
-            &:after {
-                content: '';
-                display: block;
-                position: absolute;
-                top: 50%;
-                right: 0;
-                height: 2px;
-                width: 10px;
-                background: $colorCeruleanBlue;
-            }
-
-            &:before {
-                top: 50%;
-                transform: translateY( -50% );
-                transition: transform .3s ease-out, opacity .2s ease-out, background-color .15s linear;
-            }
-
-            &:after {
-                top: 50%;
-                transform: translateY( -50% ) rotate( 90deg );
-                transition: transform .3s ease-out, background-color .15s linear;
-            }
+        @include media('<tablet') {
+            top: 50%;
+            transform: translateY( -50% );
         }
 
-        #{$root}__filter.active & {
+        @include media('>=tablet') {
+            right: 0;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            height: 2px;
+            width: 10px;
+            background: $colorCeruleanBlue;
+        }
+
+        &:before {
+            top: 50%;
+            transform: translateY( -50% );
+            transition: transform .3s ease-out, opacity .2s ease-out, background-color .15s linear;
+        }
+
+        &:after {
+            top: 50%;
+            transform: translateY( -50% ) rotate( 90deg );
+            transition: transform .3s ease-out, background-color .15s linear;
+        }
+
+
+        #{$root}__filter.active &,
+        .#{$namespace}filter-horizontal__trigger--in & {
             &:before {
                 background: $colorGray;
                 transform: translateY( -50% ) rotate( -90deg );
@@ -131,17 +144,14 @@
 
             &:after {
                 background: $colorGray;
-                transform: translateY( -50% ) rotate( 0 );
+                transform: translateY( -50% ) rotate( 0deg );
             }
         }
     }
 
     &__filter-content {
-        padding-top: .3rem !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        padding: .3rem 0 1rem;
         position: relative;
-
     }
 
     &__price-input {
@@ -172,31 +182,33 @@
 
         &--from {
             width: calc( 100% / 2 - 1.5rem ) !important;
-            @include media('>=laptop') {
+            @include media( '>=laptop' ) {
                 width: calc( 100% / 2 - 2rem ) !important;
             }
         }
 
         &--to {
             width: calc( 100% / 2 + 1.5rem ) !important;
-            @include media('>=laptop') {
+            @include media( '>=laptop' ) {
                 width: calc( 100% / 2 + 2rem ) !important;
             }
         }
     }
 
-    &__filter-item:first-child {
-        @include media('>=tablet') {
-            margin-top: 0 !important;
+    &__filter-item {
+        &:first-child {
+            @include media( '>=tablet' ) {
+                margin-top: 0 !important;
+            }
         }
     }
 
     &__price {
         display: flex;
-        @include media('<tablet') {
+        @include media( '<tablet' ) {
             margin-top: 1rem;
         }
-        @include media('>=tablet') {
+        @include media( '>=tablet' ) {
             flex-direction: row;
         }
     }
@@ -238,7 +250,7 @@
         @include media('<tablet') {
             background-color: $colorGallery;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px 0 rgba( 0, 0, 0, .35 ); //stylelint-disable-line
+            box-shadow: 0 1px 3px 0 rgba( 0, 0, 0, .35 );
             margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
             width: 100vw !important;
         }
@@ -357,20 +369,211 @@
     }
 
     &__more-filters-button {
-        span{
+        span {
             &:after {
-                content: attr(data-show-more-text);
+                content: attr( data-show-more-text );
             }
         }
     }
 
     &__more-filters-checkbox:checked + &__more-filters + &__more-filters-button {
-        span{
+        span {
             &:after {
-                content: attr(data-show-less-text);
+                content: attr( data-show-less-text );
             }
         }
     }
 
+
+    &--horizontal-full {
+        @include media( '>=tablet' ) {
+            z-index: 20;
+            padding-bottom: 0;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
+
+        #{$root}__filter-options {
+            @include media( '>=tablet' ) {
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+
+        #{$root}__filter {
+
+            @include media( '>=tablet' ) {
+                flex-basis: 25%;
+                position: relative;
+                border-bottom: none;
+                box-sizing: border-box;
+            }
+            @include media( '>=laptop' ) {
+                flex-basis: 20%;
+            }
+
+            &:nth-child( 1 ),
+            &:nth-child( 2 ),
+            &:nth-child( 3 ),
+            &:nth-child( 4 ) {
+                @include media('>=tablet') {
+                    border-top: 1px solid $colorGallery;
+                    border-bottom: 1px solid $colorGallery;
+                }
+            }
+
+            &:nth-child( 5 ) {
+                @include media('>=laptop') {
+                    border-top: 1px solid $colorGallery;
+                    border-bottom: 1px solid $colorGallery;
+                }
+            }
+
+            &:nth-child( 9 ),
+            &:nth-child( 10 ) {
+                @include media( '>=tablet' ) {
+                    border-top: 1px solid $colorGallery;
+                    border-bottom: 1px solid $colorGallery;
+                }
+                @include media( '>=laptop' ) {
+                    border-top: none;
+                    border-bottom: none;
+                }
+            }
+
+            &:after {
+                @include media( '>=tablet' ) {
+                    content: '';
+                    display: block;
+                    height: 72%;
+                    width: 1px;
+                    background: $colorGallery;
+                    position: absolute;
+                    top: 14%;
+                    right: 0;
+                }
+            }
+
+            &:last-child {
+                &:after {
+                    @include media( '>=laptop' ) {//stylelint-disable-line
+                        display: none;
+                    }
+                }
+            }
+
+            &:nth-child( 4n+4 ) {
+                &:after {
+                    @include media( '>=tablet' ) {//stylelint-disable-line
+                        display: none;
+                    }
+                    @include media( '>=laptop' ) {//stylelint-disable-line
+                        display: block;
+                    }
+                }
+            }
+
+            &:nth-child( 5n+5 ) {
+                &:after {
+                    @include media( '>=laptop' ) {//stylelint-disable-line
+                        display: none;
+                    }
+                }
+            }
+
+        }
+
+        #{$root}__filters {
+            @include media( '>=tablet' ) {
+                overflow: visible !important;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        #{$root}__filter-arrow {
+            @include media( '>=tablet' ) {
+                margin-top: .2rem;
+                right: .5rem;
+            }
+        }
+
+        #{$root}__filter-title {
+            font-size: 1.1rem;
+            @include media( '>=tablet' ) {
+                overflow: visible;
+                margin: .6rem;
+                padding: 1.1rem .8rem;
+                margin-right: .9rem;
+                background: $colorWhite;
+            }
+
+        }
+
+        #{$root}__filter-content {
+            padding: 0;
+            @include media( '>=tablet' ) {
+                position: absolute;
+                padding: 0 .8rem 1rem;
+                left: .6rem;
+                width: calc( 100% - 1.5rem );
+                box-sizing: border-box;
+            }
+        }
+
+        #{$root}__filter-items {
+            padding-top: 1rem;
+            @include media( '>=tablet' ) {
+                padding-top: .3rem;
+            }
+        }
+
+        #{$root}__more-filters {
+            @include media( '>=tablet' ) {
+                height: auto;
+                opacity: 1;
+                transform: translateY( 0 );
+            }
+            #{$root}__filter-items {
+                padding-top: .3rem;
+            }
+        }
+
+        #{$root}__more-filters-button {
+            @include media( '>=tablet' ) {
+                display: none;
+            }
+        }
+
+        #{$root}__set-apply {
+            display: none;
+            @include media( '>=tablet' ) {
+                margin-top: .8rem;
+                padding-top: .8rem;
+                border-top: 1px solid $colorGallery;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+
+        #{$root}__button-list {
+            @include media( '>=tablet' ) {
+                height: 0;
+                visibility: hidden;
+                margin: 0;
+            }
+        }
+
+        #{$root}__popover {
+            @include media( '>=tablet' ) {
+                display: none !important;
+            }
+        }
+
+        #{$root}__price-slider ~ #{$root}__set-apply {
+            display: none;
+
+        }
+    }
 
 }

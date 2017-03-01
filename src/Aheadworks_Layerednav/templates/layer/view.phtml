@@ -2,10 +2,11 @@
 /* @var $block \Aheadworks\Layerednav\Block\Navigation */
 
 // @codingStandardsIgnoreFile
+$horizontalFiltersLayout = $this->getFiltersLayout();
 ?>
 <div
     id="layered-filter-block"
-    class="cs-aftersearch-nav | block filter | cs-collapse cs-collapse--only-mobile"
+    class="cs-aftersearch-nav <?php echo $horizontalFiltersLayout ? ' cs-aftersearch-nav--' . $horizontalFiltersLayout : ''; ?> | filter | cs-collapse cs-collapse--only-mobile"
     data-role="filter-block"
     data-mage-init='{"collapsible":{
             "openedState": "active",
@@ -53,22 +54,44 @@
     </h2>
 
     <div class="cs-aftersearch-nav__filters | block-content filter-content | cs-collapse__content">
-        <div class="cs-aftersearch-nav__filter-options | filter-options" id="narrow-by-list">
+        <div
+            class="cs-aftersearch-nav__filter-options | filter-options"
+            id="narrow-by-list"
+        >
             <?php foreach ($block->getFilters() as $filter): ?>
                 <?php if ($filter->getItemsCount()): ?>
                     <div
-                        class="cs-aftersearch-nav__filter | filter-options-item<?php if ($block->getPageLayout() != '1column'): ?> active<?php endif; ?>"
+                        class="cs-aftersearch-nav__filter  <?php echo $horizontalFiltersLayout ? '
+                        cs-filter-horizontal ' : ''; ?> | filter-options-item<?php if ($block->getPageLayout() !=
+                        '1column' AND !$horizontalFiltersLayout ): ?> active<?php endif; ?>"
                         data-mage-init='{"awLayeredNavCollapse": {}}'
                     >
-                        <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title">
+                        <div data-role="title" class="cs-aftersearch-nav__filter-title  <?php echo $horizontalFiltersLayout ?  ' cs-filter-horizontal__trigger ' : ''; ?> ">
                             <?php echo $block->escapeHtml(__($filter->getName())) ?>
-                            <span class="cs-aftersearch-nav__filter-arrow | arrow"></span>
+                            <span class="cs-aftersearch-nav__filter-arrow"></span>
                         </div>
+
                         <div
                             data-role="content"
-                            class="cs-aftersearch-nav__filter-content | filter-options-content"
+                            class="cs-aftersearch-nav__filter-content  <?php echo $horizontalFiltersLayout ? ' cs-filter-horizontal__content' : ''; ?>"
                         >
                             <?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?>
+
+                            <?php if ($horizontalFiltersLayout): ?>
+                                <div class="cs-aftersearch-nav__set-apply">
+                                    <button
+                                        data-role="show-button"
+                                        class="cs-aftersearch-nav__set-apply-button | cs-button cs-button--look_default
+                                        cs-button--size_300"
+                                        >
+                                        <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Apply');
+                                            ?></span>
+                                        <svg class="cs-button__icon">
+                                            <use xlink:href="#arrow_next"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -114,13 +137,28 @@
         $('.pages').awLayeredNavPager({});
 
         if( $( window ).width() < 768 ) {
-            $( '.filter-options-item:gt( 0 )' ).removeClass( 'active' );
+            if ( $( '.cs-filter-horizontal' ).length ) {
+                $( '.filter-options-item' ).removeClass( 'active' );
+            } else {
+                $( '.filter-options-item:gt( 0 )' ).removeClass( 'active' );
+
+            }
         }
 
         if ( !$( '.columns > .page-title-wrapper' ).length ) {
             $( '.page-title-wrapper' ).clone().prependTo( '.columns' ).addClass( 'page-title-wrapper--checkout-type page-title-wrapper--wide cs-hide-tablet-desktop' );
-            $( '.main .page-title-wrapper' ).addClass( 'cs-hide-mobile' );
+            $( '.cs-category-page__main .page-title-wrapper' ).addClass( 'cs-hide-mobile' );
         }
+
+        $( '.cs-aftersearch-nav__set-apply-button' ).on( 'click', function() {
+            $( '.cs-aftersearch-nav__button--apply-filters' ).trigger( 'click' );
+        } );
+
+        $( '.price-filter-button' ).on( 'click', function() {
+                setTimeout( function(){
+                    $( '.cs-aftersearch-nav__button--apply-filters' ).trigger( 'click' );
+                }, 1500 )
+        } );
 
     });
 </script>

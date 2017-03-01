@@ -98,6 +98,7 @@ class Flyout implements IFlyout {
     public constructor( $element: JQuery, settings: IFlyoutSettings ) {
 
         // Extend component's defaults with given optional settings.
+
         this.settings = $.extend(
             {
                 transitionTime: 350,
@@ -108,6 +109,7 @@ class Flyout implements IFlyout {
                 onShowCompleted: null,
                 onHide: null,
                 onHideCompleted: null,
+                initiallyShown: false,
             },
             settings,
         );
@@ -133,8 +135,9 @@ class Flyout implements IFlyout {
         this.$element.data( `${this.name}-instance`, this );
 
         // Show initial in
-        if ( this.settings.initiallyShown === true ) {
+        if ( this.settings.initiallyShown === true || $element.find(`.${settings.name}__content--initial-in`).length  ) {
             this.show();
+            this.$content.removeClass( `${this.name}__content--initial-in` );
         }
 
     }
@@ -286,7 +289,7 @@ class Flyout implements IFlyout {
             return;
         }
 
-        if ( !$( event.currentTarget ).is( this.$element )) {
+        if ( !$( event.target ).is( this.$element ) && !this.$element.find( $( event.target ) ).length ) {
             this.toggleState();
         }
     }

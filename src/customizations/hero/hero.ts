@@ -7,10 +7,10 @@ $( '.cs-hero' ).each( function(): void {
     new Hero( $( this ), {
         spaceBetween: 2,
         callbacks: { 
-            onInit: function() { 
-                $( `.cs-hero` ).find( `.cs-hero__slide--clone` ).each( function( i: number, el: JQuery ) { 
-                    let clonedSlideImg = $(el).find( 'img' ); 
-                    let clonedSlideImgAlt = clonedSlideImg.attr( 'alt' ); 
+            onInit: function(): void { 
+                $( `.cs-hero` ).find( `.cs-hero__slide--clone` ).each( function( i: number, el: JQuery ): void { 
+                    const clonedSlideImg: JQuery = $(el).find( 'img' ); 
+                    const clonedSlideImgAlt: string = clonedSlideImg.attr( 'alt' ); 
                     clonedSlideImg.attr( 'alt', `${clonedSlideImgAlt}-duplicated-${i}`); 
                 } ); 
             } 
