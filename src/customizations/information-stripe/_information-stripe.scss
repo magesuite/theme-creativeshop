@@ -63,10 +63,23 @@
         }
     }
 
-    &__wrapper > ul.#{$namespace}information-stripe__list--featured > li:last-child {
-        margin-right: 0;
-        padding-right: 0;
-        border-right: none;
+    &__wrapper > ul.#{$namespace}information-stripe__list--featured {
+        opacity: 1;
+        transition: opacity .3s;
+
+        @include media( '<laptop-lg' ) {
+            opacity: 0; // Hide featured for smaller screens but let it take space to keep flex-justify.
+        }
+
+        .page-wrapper--checkout & {
+            opacity: 0; // Hide completely on checkout.
+        }
+
+        & > li:last-child {
+            margin-right: 0;
+            padding-right: 0;
+            border-right: none;
+        }
     }
 
     &__phone-number {
@@ -114,8 +127,8 @@
     }
 
     &__account-icon {
-        max-width: 1.1rem;
-        max-height: 1.1rem;
+        max-width: 1.8rem;
+        height: 1em;
         padding-right: .5rem;
         fill: $colorGray;
     }
