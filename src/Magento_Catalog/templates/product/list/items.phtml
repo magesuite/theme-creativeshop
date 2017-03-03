@@ -169,7 +169,7 @@ switch ($type = $block->getType()) {
         <div class="block <?php /* @escapeNotVerified */ echo $class; ?>">
     <?php endif; ?>
 
-        <?=$this->getLayout()->createBlock( 
+        <?=$this->getLayout()->createBlock(
             'Creativestyle\FrontendExtension\Block\Twig', 'carousels-headline-'.$type, [
                 'data' => [
                     'title' => $title
@@ -181,18 +181,19 @@ switch ($type = $block->getType()) {
             <div class="cs-products-promo__carousel">
                 <div class="cs-products-promo__wrapper">
                     <ul class="cs-products-promo__slides">
-                        
-                        <?php 
-                            $iterator = 1; 
+
+                        <?php
+                            $iterator = 1;
                             foreach ($items as $item): ?>
-                            
-                            <?php 
+
+                            <?php
                                 $getIsSaleable = $item->getIsSalable();
                                 $getId = $item->getId();
                                 $getAddToCartUrl = $block->getAddToCartUrl($item);
                                 $productName = $block->escapeHtml($item->getName());
                                 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
                                 $data = [
+                                    'lazyload' => $iterator > 9,
                                     'showWrapper' => false,
                                     'url' => $block->getProductUrl($item),
                                     'image' => [
@@ -290,7 +291,7 @@ switch ($type = $block->getType()) {
                             endif; ?>
 
                             <li class="cs-products-promo__slide | cs-grid-product cs-grid-product--in-carousel">
-                                <?=$this->getLayout()->createBlock( 
+                                <?=$this->getLayout()->createBlock(
                                     'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$type.'-'.$iterator, [
                                         'data' => $data
                                     ]
@@ -312,7 +313,7 @@ switch ($type = $block->getType()) {
                         <use xlink:href="#icon_arrow-right"></use>
                     </svg>
                 </button>
-                
+
                 <ul class="cs-products-promo__pagination"></ul>
             </div>
         </div>
