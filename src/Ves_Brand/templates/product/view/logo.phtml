@@ -40,19 +40,23 @@ $show_brand_name = $data->getConfig("product_view_page/show_brand_name");
 	<?php } else {
 
 		foreach ($brandCollection as $_brand) { ?>
-			<span class="brand-image">
+			<div class="cs-product-info-brand">
 				<?php if($show_brand_image): ?>
-					<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
-						<img src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/>
-					</a>
+					<div class="cs-product-info-brand__row">
+						<a class="cs-product-info-brand__name" href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
+							<img class="cs-product-info-brand__logo"src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/>
+						</a>
+					</div>
 				<?php endif; ?>
 
 				<?php if($show_brand_name): ?>
-					<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
-						<span itemprop="brand"><?php echo $_brand->getName(); ?></span>
-					</a>
+					<div class="cs-product-info-brand__row">
+						<a class="cs-product-info-brand__name" href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>"<?php if($show_brand_image): ?> rel="nofollow"<?php endif;?>>
+							<span itemprop="brand"><?php echo $_brand->getName(); ?></span>
+						</a>
+					</div>
 				<?php endif; ?>
-			</span>
+			</div>
 			<?php if($i<=($total-2)){ echo ', '; }  ?>
 			<?php $i++; ?>
 	 <?php 

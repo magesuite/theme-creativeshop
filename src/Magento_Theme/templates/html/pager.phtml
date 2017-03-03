@@ -66,8 +66,8 @@ $inputInsteadOfLinks = true;
 
                         <?php
                             $_pages = array();
-                            foreach ($block->getPages() as $page) {
-                                array_push($_pages, $block->getPageUrl($page));
+                            for ($i = 1; $i <= $lastPageNum; $i++) {
+                                array_push($_pages, $block->getPageUrl($i));
                             }
                         ?>
 
@@ -130,21 +130,21 @@ $inputInsteadOfLinks = true;
 
                     </ul>
 
+                    <?php if ($block->getFrameEnd() < $lastPageNum): ?>
+                        <ul class="cs-pagination__pager">
+                            <li class="cs-pagination__separator">
+                                <?php /* @escapeNotVerified */ echo __('of'); ?>
+                            </li>
+
+                            <li class="cs-pagination__item cs-pagination__item--single">
+                                <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getLastPageUrl() ?>">
+                                    <?php /* @escapeNotVerified */ echo $lastPageNum; ?>
+                                </a>
+                            </li>
+                        </ul>
+                    <?php endif;?>
+
                 <?php endif; ?>
-
-                <?php if ($block->getFrameEnd() < $lastPageNum): ?>
-                    <ul class="cs-pagination__pager">
-                        <li class="cs-pagination__separator">
-                            <?php /* @escapeNotVerified */ echo __('of'); ?>
-                        </li>
-
-                        <li class="cs-pagination__item cs-pagination__item--single">
-                            <a class="cs-pagination__number" href="<?php /* @escapeNotVerified */ echo $block->getLastPageUrl() ?>">
-                                <?php /* @escapeNotVerified */ echo $lastPageNum; ?>
-                            </a>
-                        </li>
-                    </ul>
-                <?php endif;?>
 
                 <?php
                     $anchorTextForNext = $block->getAnchorTextForNext();
