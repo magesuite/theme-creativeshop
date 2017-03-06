@@ -99,7 +99,7 @@ export function renderUserAction(): string {
     const $accountLink: JQuery = $( `.${infoStripeClassName}__account-link` );
     const accountLinkHref: string = $accountLink.attr( 'href' );
     const accountLinkText: string = $accountLink.text().trim();
-    const accountActionType: string = accountLinkText.toLowerCase().indexOf( 'out' ) === -1 ? 'in' : 'out';
+    const accountActionType: string = accountLinkHref.toLowerCase().indexOf( 'out' ) === -1 ? 'in' : 'out';
 
     return `<li class="${offNavClassName}__item">
         <a class="${offNavClassName}__link ${offNavClassName}__link--sign-${accountActionType}" href="${accountLinkHref}">
