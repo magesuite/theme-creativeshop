@@ -136,17 +136,6 @@
                         <tr class="row" data-bind="click: $parent.selectShippingMethod">
                             <td class="cs-table__col | cs-input cs-input--type-radio | col col-method">
                                 <!-- ko ifnot: method.error_message -->
-                                <!-- ko if: $parent.rates().length == 1 -->
-                                <input class="cs-input__radio"
-                                       type="radio"
-                                       data-bind="attr: {
-                                                    checked: $parent.rates().length == 1,
-                                                    'value' : method.carrier_code + '_' + method.method_code,
-                                                    'id': 's_method_' + method.method_code,
-                                                    'aria-labelledby': 'label_method_' + method.method_code + '_' + method.carrier_code + ' ' + 'label_carrier_' + method.method_code + '_' + method.carrier_code
-                                                 }" />
-                                <!-- /ko -->
-                                <!--ko ifnot: ($parent.rates().length == 1)-->
                                 <input type="radio"
                                        data-bind="
                                                 value: method.carrier_code + '_' + method.method_code,
@@ -158,7 +147,6 @@
                                                 click: $parent.selectShippingMethod"
                                        class="cs-input__radio"/>
                                 <label data-bind="attr: {'id': 's_method_' + method.carrier_code + '_' + method.method_code}" class="cs-input__label"></label>
-                                <!--/ko-->
                                 <!-- /ko -->
                             </td>
                             <td class="cs-table__col | col col-price">

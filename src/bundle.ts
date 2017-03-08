@@ -11,6 +11,7 @@
 // =============================================================================
 
 import 'vendors';
+import $ from 'jquery';
 
 // =============================================================================
 // Utilities
@@ -52,6 +53,10 @@ import './customizations/sticky-block/sticky-block';
 import './customizations/pagination/pagination';
 
 import './customizations/reviews/reviews';
+
+import AddressAutofill from './customizations/address-autofill/address-autofill';
+
+export { AddressAutofill };
 
 window.addEventListener('touchstart', function onFirstTouch(): void {
     document.body.classList.add('touch-device');

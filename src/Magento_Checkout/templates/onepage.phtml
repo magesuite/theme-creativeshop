@@ -29,8 +29,80 @@
         require([
             'mage/url',
             'Magento_Ui/js/block-loader',
-            'jquery'
-        ], function(url, blockLoader, $) {
+            'jquery',
+            'bundle'
+        ], function(url, blockLoader, $, bundle) {
+
+            var checkout = document.getElementById('checkout');
+            var phoneTriggered = false;
+            var addressTriggered = false;
+
+            var checkoutStep1Observer = new MutationObserver( function( mutations ) {
+                var $phoneInputs = $( 'input[name="telephone"]' );
+                var $addressForm = $( '#shipping-new-address-form select[name="country_id"]' );
+
+                if ( $phoneInputs.length && !phoneTriggered) {
+                    phoneTriggered = true;
+                    setPhoneOptional();
+                    setZipCityFields();
+                }
+
+                if ( $addressForm.length && !addressTriggered ) {
+                    addressTriggered = true;
+                    startTabs();
+
+                    bundle.AddressAutofill(
+                        {
+                            streetField: $( '#shipping-new-address-form input[name="street[0]"]'),
+                            zipField: $( '#shipping-new-address-form input[name="postcode"]'),
+                            cityField: $( '#shipping-new-address-form input[name="city"]'),
+                            countrySelect: $( '#shipping-new-address-form select[name="country_id"]'),
+                        }
+                    );
+
+                }
+
+
+                if( phoneTriggered  && addressTriggered ) {
+                    checkoutStep1Observer.disconnect();
+                }
+
+            });
+
+            var checkoutObserverConfig = { attributes: true, childList: true, characterData: true };
+
+            checkoutStep1Observer.observe( checkout, checkoutObserverConfig );
+
+
+            // TEMPORARY FIX to make phone number optional
+            // PLEASE CHECK if this feature is already implemeneted in Magento : https://github.com/magento/magento2/pull/8519
+
+            function setPhoneOptional() {
+                var $phoneInputs = $( 'input[name="telephone"]' );
+                if( $phoneInputs.val() === '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ) {
+                    $phoneInputs.css( 'color', 'transparent' )
+                }
+
+                $phoneInputs.on( 'focus', function(){
+                    $phoneInputs.css( 'color', '' )
+                });
+
+                $phoneInputs.parents( '.cs-input' ).removeClass( '_required required')
+                $( '#shipping-method-buttons-container button' ).on( 'click', function() {
+                    $phoneInputs.each( function(){
+                        if( !$( this ).val() ) {
+                            $( this ).css( 'color', 'transparent' ).val( '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ).change();
+                        }
+                    })
+                } );
+            }
+
+            // end of phone fix
+
+            function setZipCityFields() {
+                $( 'input[name="postcode"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_small');
+                $( 'input[name="city"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_medium');
+            }
 
             function checkActiveButton() {
                 var activeButton = $( '.payment-method._active .cs-button-payment-method[type="submit"]:not(disabled):not(".disabled")');
@@ -42,6 +114,20 @@
                 }
 
                 return activeButton;
+            }
+
+
+            function startTabs() {
+                $( '#tab-customer-title' ).on( 'click', function() {
+                    $( '#shipping-new-address-form .cs-input' ).addClass( 'cs-input--disabled' ).find( 'input, ' +
+                        'select' ).attr( 'disabled', 'disabled' );
+                });
+
+                $( '#tab-new-user-title' ).on( 'click', function() {
+                    $( '#shipping-new-address-form .cs-input' ).removeClass( 'cs-input--disabled' ).find( 'input,' +
+                        ' ' +
+                        'select' ).removeAttr( 'disabled' );
+                });
             }
 
             function checkIfButtonsLoaded() {
@@ -63,26 +149,9 @@
 
             }
 
-            var checkButtonsIntervalId = setInterval( checkIfButtonsLoaded, 2000 );
+            var checkButtonsIntervalId = setInterval( checkIfButtonsLoaded, 800 );
 
-            function checkIfAddressLoaded() {
-                if ( $( '#shipping-new-address-form' ).length ) {
-                    clearInterval( checkAddressIntervalId );
-                    $( '#tab-customer-title' ).on( 'click', function() {
-                        $( '#shipping-new-address-form .cs-input' ).addClass( 'cs-input--disabled' ).find( 'input, ' +
-                            'select' ).attr( 'disabled', 'disabled' );
-                    })
 
-                    $( '#tab-new-user-title' ).on( 'click', function() {
-                        $( '#shipping-new-address-form .cs-input' ).removeClass( 'cs-input--disabled' ).find( 'input,' +
-                            ' ' +
-                            'select' ).removeAttr( 'disabled' );
-                    })
-                }
-
-            }
-
-            var checkAddressIntervalId = setInterval( checkIfAddressLoaded, 800 );
 
             blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
             return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
