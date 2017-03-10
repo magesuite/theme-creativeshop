@@ -22,9 +22,6 @@
             margin-bottom: 1.5rem;
         }
 
-        @include media('>=desktop') {
-            width: 40%;
-        }
 
         .page-title {
             padding-bottom: 0;
@@ -124,7 +121,7 @@
         }
     }
 
-    .column.main {
+    &__main {
         box-sizing: border-box;
         width: 100%;
         order: 2;
@@ -140,8 +137,15 @@
             width: 78%;
             flex-basis: 78%;
         }
+
+        > .page-title-wrapper {
+            @include media('>=tablet') {
+                padding-bottom: 1rem;
+            }
+        }
     }
 
+    &--filters-full-top #{$root}__inner-sidebar,
     .sidebar-main {
         box-sizing: border-box;
         width: 100%;
@@ -163,7 +167,64 @@
         }
     }
 
+
     .sidebar.sidebar-additional {
         width: 100%;
+    }
+
+    &--filters-full-top {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: none;
+
+        #{$root}__main {
+            padding-left: 0;
+            border-left: none;
+            flex-basis: 100%;
+            width: 100%;
+        }
+
+        #{$root}__products-wrapper {
+            display: flex;
+            border-top: 1px solid $colorGallery;
+            border-bottom: 1px solid $colorGallery;
+            margin-bottom: 2rem;
+        }
+
+        #{$root}__inner-sidebar {
+            display: none;
+
+            @include media('>=tablet') {
+                display: block;
+                padding-top: 1rem;
+                margin-right: 3rem;
+                border-right: 1px solid $colorGallery;
+                width: 33%;
+                flex-basis: 33%;
+                padding-right: 3rem;
+            }
+            @include media('>=laptop') {
+                width: 25%;
+                flex-basis: 25%;
+                padding-right: 1.6rem;
+            }
+            @include media('>=desktop') {
+                padding-right: 3rem;
+            }
+        }
+
+        .#{$namespace}items-grid {
+            order: 2;
+            @include media('>=tablet') {
+                width: 67%;
+                flex-basis: 67%;
+            }
+            @include media('>=laptop') {
+                width: 75%;
+                flex-basis: 75%;
+            }
+        }
+
+
     }
 }

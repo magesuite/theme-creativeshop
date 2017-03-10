@@ -15,6 +15,7 @@ $heroProduct = $block->getIsHeroEnabled();
 
 $salabilityHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product\Salability');
 $salabilityStatus = $salabilityHelper->getSalabilityStatus($productCollection);
+$filtersLayout = $this->getFiltersLayout();
 ?>
 <div class="page-title-wrapper">
     <h1 class="page-title" id="page-title-heading" aria-labelledby="page-title-heading toolbar-amount">
@@ -34,10 +35,11 @@ $salabilityStatus = $salabilityHelper->getSalabilityStatus($productCollection);
             echo __('We can\'t find products matching the selection.') ?></div>
     </div>
 <?php else: ?>
+    <?php echo $block->getAdditionalHtml() ?>
+
     <div class="cs-category-page__toolbar-top">
         <?php echo $block->getToolbarHtml() ?>
     </div>
-    <?php echo $block->getAdditionalHtml() ?>
     <?php
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
@@ -58,6 +60,12 @@ $salabilityStatus = $salabilityHelper->getSalabilityStatus($productCollection);
     $pos = $block->getPositioned();
     ?>
     <div class="cs-category-page__products-wrapper">
+        <div class="cs-category-page__inner-sidebar">
+            <?php
+                echo $block->getChildHtml('inner-sidebar');
+            ?>
+        </div>
+
         <?php $iterator = 0; ?>
         <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?> <?php /* @escapeNotVerified */ echo $viewModeClass; ?>--in-column">
             <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
