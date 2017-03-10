@@ -1,18 +1,7 @@
-{% set namespace = 'cs-' %}
-{% set mix = 'cs-button--type_more-content' %}
-
 <div>
-<a href="{{ target }}" class="{{ namespace }}button {{ mix }}">
-    {{ label }}
-
-    {% if number_of_products is not empty %}
-    <span class="{{ namespace }}button__span">
-        ({{ number_of_products }})
-    </span>
-    {% endif %}
-
-    <svg class="cs-button__icon">
-        <use xlink:href="#arrow_next"></use>
-    </svg>
-</a>
+{% include locate('components/button/button.twig') with {
+    'namespace': 'cs-',
+    'mix': 'cs-button--type_more-content',
+    'icon': 'arrow_next'
+} %}
 </div>
