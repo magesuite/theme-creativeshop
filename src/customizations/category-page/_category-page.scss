@@ -33,9 +33,8 @@
         align-items: flex-start;
         flex-wrap: wrap;
         display: flex;
-        @include media('>=tablet') {
-            padding-bottom: 2rem;
-        }
+        padding-bottom: 1rem;
+
         @include media('>=desktop') {
             flex-wrap: nowrap;
         }
@@ -60,21 +59,30 @@
         }
     }
 
+    &__toolbar-left,
+    &__toolbar-right {
+        padding-bottom: 1rem;
+    }
+
     &__toolbar-left {
         display: flex;
         flex-wrap: wrap;
+        flex-grow: 1;
+
         @include media('>=tablet') {
             flex-wrap: nowrap;
         }
     }
 
     &__toolbar-right {
-        @include media('<tablet') {
-            margin: 0 calc( ((100vw - 100%) / 2) * -1 ) 1rem calc( ((100vw - 100%) / 2) * -1 ) !important;
-            width: 100vw !important;
-        }
+        flex-grow: 1;
+
         @include media('>=tablet') {
             width: auto;
+        }
+
+        @include media('>laptop') {
+            flex-grow: 0;
         }
     }
 
@@ -99,7 +107,6 @@
     &__toolbar-limiter {
         display: flex;
         align-items: center;
-        margin: 0 1.5rem 1rem 0!important;// stylelint-disable-line
         padding-top: 0;
 
         @include media('<tablet') {
