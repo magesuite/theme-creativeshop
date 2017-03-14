@@ -37,6 +37,8 @@ export default class AddressAutofill {
             }
         } );
 
+        console.log(options);
+
     }
 
     /**
