@@ -159,9 +159,12 @@ export default class GoogleDetector {
         let params: {} = this.apiParams;
         params.address = query;
 
+        console.log(params);
+
         return axios
             .get(this.baseApiUrl, {params: params})
             .then((res) => {
+                console.log(res);
                 const data = res.data;
                 if (data.status === 'OK') {
                     return data.results || null;
