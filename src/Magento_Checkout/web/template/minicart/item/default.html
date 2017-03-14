@@ -22,9 +22,7 @@
         <!-- /ko -->
 
         <div class="cs-minicart-product__details">
-            <div class="cs-minicart-product__inner">
 
-            </div>
             <div class="cs-minicart-product__name-wrapper">
                 <!-- ko if: product_has_url -->
                 <a class="cs-minicart-product__name" data-bind="attr: {href: product_url}, text: product_name"></a>
@@ -60,22 +58,19 @@
                 </div>
 
 
-                <div class="product-item-pricing">
-                    <!-- ko if: canApplyMsrp -->
+                <!-- ko if: canApplyMsrp -->
 
-                    <div class="details-map">
-                        <span class="label" data-bind="i18n: 'Price'"></span>
-                        <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
-                    </div>
-                    <!-- /ko -->
-                    <!-- ko ifnot: canApplyMsrp -->
-                    <!-- ko foreach: $parent.getRegion('priceSidebar') -->
-                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
-                    <!-- /ko -->
-                    <!-- /ko -->
-
-
+                <div class="details-map">
+                    <span class="label" data-bind="i18n: 'Price'"></span>
+                    <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
                 </div>
+                <!-- /ko -->
+                <!-- ko ifnot: canApplyMsrp -->
+                <!-- ko foreach: $parent.getRegion('priceSidebar') -->
+                <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+
 
             </div>
         </div>

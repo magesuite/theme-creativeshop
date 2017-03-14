@@ -16,6 +16,7 @@
         padding: 0;
         margin: 0;
 
+
         &--space-bottom {
             margin-bottom: 2rem;
         }
@@ -23,16 +24,20 @@
         &--level {
             &_1 {
                 margin-bottom: 2rem;
-                border: 0;
-                padding: 0;
+                max-width: 45rem;
             }
             &_2 {
-                border: 0;
-                padding: 0;
                 max-width: 60rem;
             }
         }
 
+    }
+
+    &__fields-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 45rem;
     }
 
     &__fieldset-inner {
@@ -66,6 +71,21 @@
             width: 10rem !important;/* stylelint-disable-line declaration-no-important */
         }
 
+        &--type_small {
+            @include media('>=tablet') {
+                width: 25%;
+                max-width: calc(25 * 45rem / 100);
+            }
+        }
+
+        &--type_medium {
+            @include media('>=tablet') {
+
+                width: 72%;
+                max-width: calc(72 * 45rem / 100);
+            }
+        }
+
     }
 
     &__group {
@@ -73,6 +93,7 @@
         margin-left: 0;
         margin-right: 0;
         padding: 0;
+        width: 100%;
         .#{$namespace}form__field {
             .#{$namespace}input__label:after {
                 display: none;
