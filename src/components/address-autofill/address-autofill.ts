@@ -1,9 +1,10 @@
 import bundle from 'bundle';
 import $ from 'jquery';
 import $translate from 'mage/translate';
-import { GoogleDetector } from '../google-detector/google-detector';
 
-interface IAddressAutofillOptions {
+import GoogleDetector from '../google-detector/google-detector';
+
+export interface IAddressAutofillOptions {
     streetField: JQuery;
     zipField: JQuery;
     cityField: JQuery;
@@ -11,8 +12,8 @@ interface IAddressAutofillOptions {
     language: string;
     region: string;
     apiKey: string;
-    dev: boolean
-}
+    dev: boolean;
+};
 
 export default class AddressAutofill {
 
@@ -22,21 +23,14 @@ export default class AddressAutofill {
         this.cityField = options.cityField;
         this.countrySelect = options.countrySelect;
 
-        $.ajax( {
-            url: '//freegeoip.net/json/',
-            type: 'POST',
-            dataType: 'jsonp',
-            success: ( location ) => {
-                options.region = location.country_code;
-
-                options.language = window.navigator.userLanguage || window.navigator.language;
-
-                this.googleAddressDetector = new GoogleDetector( options );
-                this._initStreetField();
-                this._initZipField();
-            }
+        $.getJSON( 'https://freegeoip.net/json/', ( location: any ): void => {
+            options.region = location.country_code;
+            options.language = window.navigator.userLanguage || window.navigator.language;
+        } ).always( () => {
+            this.googleAddressDetector = new GoogleDetector( options );
+            this._initStreetField();
+            this._initZipField();
         } );
-
     }
 
     /**
@@ -48,7 +42,7 @@ export default class AddressAutofill {
         let typeTimer: any;
         const typeInterval: number = 1000;
 
-        this.streetField.on( 'keyup', ( e: Event ): void => {
+        this.streetField.on( 'keyup', ( e: KeyboardEvent ): void => {
 
             clearTimeout( typeTimer );
 
@@ -74,7 +68,7 @@ export default class AddressAutofill {
         this.googleAddressDetector.getResults( query ).then(
             ( data: any ) => {
                 this._buildAutosuggestSelect( data, query );
-            }
+            },
         );
     }
 
@@ -123,7 +117,7 @@ export default class AddressAutofill {
      * @private
      */
     private _buildAutosuggestSelect( data: any, query: string ): void {
-
+        console.log(data);
         // Remove old note and all select
         const inputParent: JQuery = this.streetField.parents( '.cs-input' );
         inputParent.find( '.cs-html-select' ).remove();
@@ -140,7 +134,8 @@ export default class AddressAutofill {
 
             let optionsHtml: string = '';
             for ( const result of data) {
-                const address: string = this.googleAddressDetector.getFormattedAddress( result );
+                console.log(result);
+                const address: object = this.googleAddressDetector.getFormattedAddress( result );
 
                 const addressZip: string = this._getZipFromResult( result );
                 const addressCity: string = this._getCityFromResult( result );
@@ -188,8 +183,8 @@ export default class AddressAutofill {
      * Init events on build select
      * @private
      */
-    private _initSelectEvents( jsSelect: JQuery, realSelect: JQuery ) {
-        jsSelect.find( '.cs-html-select__menu-item' ).on( 'click keyup', ( e: Event ) => {
+    private _initSelectEvents( jsSelect: JQuery, realSelect: JQuery ): void {
+        jsSelect.find( '.cs-html-select__menu-item' ).on( 'click keyup', ( e: KeyboardEvent ) => {
 
             if ( e.type === 'keyup' ) {
                 if ( e.which === 40 && $( e.currentTarget ).is( ':last-child' ) ) {
@@ -207,8 +202,7 @@ export default class AddressAutofill {
                 }
             }
 
-
-            let clickedValues: {} = realSelect.find( 'option' ).eq( $( e.currentTarget ).data( 'original-index') ).data( 'value' );
+            const clickedValues: object = realSelect.find( 'option' ).eq( $( e.currentTarget ).data( 'original-index') ).data( 'value' );
             this.zipField.val( clickedValues.zip );
             this.cityField.val( clickedValues.city );
 
@@ -242,7 +236,10 @@ export default class AddressAutofill {
     private _getStreetFromResult( result: any ): string {
         let street: string;
         for ( const component of result.address_components ) {
-            component.types.indexOf('route') >= 0 ? street = component.long_name : null;
+            if ( component.types.indexOf('route') >= 0 ) {
+                street = component.long_name;
+                break;
+            }
         }
         return street ? street : '';
     }
@@ -254,7 +251,10 @@ export default class AddressAutofill {
     private _getZipFromResult( result: any ): string {
         let zip: string;
         for ( const component of result.address_components ) {
-            component.types.indexOf('postal_code') >= 0 ? zip = component.long_name : null;
+            if ( component.types.indexOf('postal_code') >= 0 ) {
+                zip = component.long_name;
+                break;
+            }
         }
         return zip ? zip : '';
     }
@@ -266,7 +266,10 @@ export default class AddressAutofill {
     private _getCityFromResult( result: any ): string {
         let city: string;
         for ( const component of result.address_components ) {
-            component.types.indexOf('locality') >= 0 ? city = component.long_name : null;
+            if ( component.types.indexOf('locality') >= 0 ) {
+                city = component.long_name;
+                break;
+            }
         }
 
         return city ? city : '';
@@ -279,7 +282,7 @@ export default class AddressAutofill {
     private _getCountryFromResult( result: any ): string {
         let country: string;
         for ( const component of result.address_components ) {
-            component.types.indexOf('country') >= 0 ? country = component.long_name : null;
+            country = component.types.indexOf('country') >= 0 ? component.long_name : null;
         }
         return country ? country : '';
     }
@@ -291,10 +294,10 @@ export default class AddressAutofill {
     private _getCountryCodeFromResult( result: any ): string {
         let country: string;
         for ( const component of result.address_components ) {
-            component.types.indexOf('country') >= 0 ? country = component.short_name : null;
+            country = component.types.indexOf('country') >= 0 ? component.short_name : null;
         }
         return country ? country : '';
     }
 }
 
-export {AddressAutofill};
+export { AddressAutofill };

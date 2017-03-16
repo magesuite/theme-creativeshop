@@ -56,7 +56,6 @@ import './customizations/pagination/pagination';
 import './customizations/reviews/reviews';
 
 import AddressAutofill from './customizations/address-autofill/address-autofill';
-
 export { AddressAutofill };
 
 window.addEventListener('touchstart', function onFirstTouch(): void {

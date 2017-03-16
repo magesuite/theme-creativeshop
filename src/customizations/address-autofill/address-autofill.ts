@@ -1,9 +1,8 @@
 import $ from 'jquery';
 
-import AddressAutofill from '../../components/address-autofill/address-autofill';
+import { AddressAutofill, IAddressAutofillOptions } from '../../components/address-autofill/address-autofill';
 
-
-export default options => {
+export default (options: IAddressAutofillOptions): AddressAutofill => {
     options = $.extend({
         language: 'de',
         region: 'DE',
@@ -11,5 +10,5 @@ export default options => {
         dev: false,
     }, options);
 
-  return new AddressAutofill( options );
+    return new AddressAutofill( options );
 };
