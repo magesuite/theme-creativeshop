@@ -17,14 +17,24 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        margin-bottom: 1.5rem;
+        padding-top: 0;
+        width: 100vw;
+        margin-left: -1.5rem;
         @include media('>=tablet') {
             padding: .2rem 0 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-left: 0;
+            width: auto;
         }
 
 
         .page-title {
             padding-bottom: 0;
+            @include media('<tablet') {
+                text-transform: uppercase;
+                font-size: 1.6rem;
+                padding-bottom: 0;
+            }
         }
     }
 
@@ -42,9 +52,6 @@
 
     &__toolbar-top {
 
-        .page-title__span {
-            display: none;
-        }
 
         #{$root}__toolbar-right {
             @include media('<tablet') {
@@ -143,12 +150,6 @@
         @include media('>=laptop') {
             width: 78%;
             flex-basis: 78%;
-        }
-
-        > .page-title-wrapper {
-            @include media('>=tablet') {
-                padding-bottom: 1rem;
-            }
         }
     }
 
