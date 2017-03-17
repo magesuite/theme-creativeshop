@@ -1,11 +1,11 @@
 .#{$namespace}payment {
 
     &__title {
-        margin: 0 1.5rem !important;/* stylelint-disable-line declaration-no-important */
-        padding: 1.5rem 0 1.8rem !important;/* stylelint-disable-line declaration-no-important */
-        border-top: 1px solid $colorAlto !important;/* stylelint-disable-line declaration-no-important */
+        margin: 0 1.5rem;
+        padding: 1.5rem 0 1.5rem;
+        border-top: 1px solid $colorAlto;
         @include media('>=laptop') {
-            margin: 0 !important;/* stylelint-disable-line declaration-no-important */
+            margin: 0;
         }
     }
 
@@ -26,7 +26,7 @@
 
 
     &__billing-details {
-        padding: 0 0 0 3rem !important;/* stylelint-disable-line declaration-no-important */
+        padding: 0 0 0 3rem;
         color: $colorDoveGray;
         line-height: 1.6;
         font-weight: 300;
@@ -35,10 +35,20 @@
 
 
     &__content {
-        padding: 0 0 2rem 4rem !important;/* stylelint-disable-line declaration-no-important */
-        line-height: 150% !important;/* stylelint-disable-line declaration-no-important */
-        @include media('>=tablet') {
-            padding: 0 0 2rem 2.8rem !important;/* stylelint-disable-line declaration-no-important */
+        line-height: 150%;
+        overflow: hidden;
+        height: 0;
+        transform: translateY( -15px );
+        transition: opacity .18s linear, transform .11s ease-in-out;
+
+        .checkout-payment-method .payment-method._active & {
+            padding: 0 0 2rem 4rem;
+            opacity: 1;
+            transform: translateY( 0 );
+            height: auto !important;
+            @include media('>=tablet') {
+                padding: 0 0 2rem 2.8rem;
+            }
         }
     }
 
