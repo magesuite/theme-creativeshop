@@ -4,8 +4,27 @@
  * Copyright Oleg Korsunsky | http://wd.dizaina.net/
  *
  * MIT License
+ *
+ *
+ * This plugin was altered by CS:
+ * - Added AMD support.
+ * - Added passive events support.
  */
-(function(doc, win) {
+
+(function (document, window, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery'], function ($) {
+            // Also create a global in case some scripts
+            // that are loaded still are looking for
+            // a global even when an AMD loader is in use.
+            return (window.Stickyfill = factory(document, window, $));
+        });
+    } else {
+        // Browser globals
+        window.Stickyfill = factory(document, window, window.jQuery);
+    }
+}(document, window, function(doc, win, $) {
     var watchArray = [],
         scroll,
         initialized = false,
@@ -371,8 +390,17 @@
         updateScrollPos();
         initAll();
 
-        win.addEventListener('scroll', onScroll);
-        win.addEventListener('wheel', onWheel);
+        var passiveOption = undefined;
+        try {
+          var opts = Object.defineProperty({}, 'passive', {
+            get: function() {
+              passiveOption = { passive: true };
+            }
+          });
+          win.addEventListener('test', null, opts);
+        } catch (e) {}
+        win.addEventListener('scroll', onScroll, passiveOption);
+        win.addEventListener('wheel', onWheel, passiveOption);
 
         //watch for width changes
         win.addEventListener('resize', rebuild);
@@ -452,8 +480,15 @@
         };
     }
 
-    //expose Stickyfill
-    win.Stickyfill = {
+    $.fn.Stickyfill = function(options) {
+        this.each(function() {
+            add(this);
+        });
+
+        return this;
+    };
+
+    return {
         stickies: watchArray,
         add: add,
         remove: remove,
@@ -463,18 +498,4 @@
         stop: stop,
         kill: kill
     };
-})(document, window);
-
-
-//if jQuery is available -- create a plugin
-if (window.jQuery) {
-    (function($) {
-        $.fn.Stickyfill = function(options) {
-            this.each(function() {
-                Stickyfill.add(this);
-            });
-
-            return this;
-        };
-    })(window.jQuery);
-}
+}));
