@@ -15,22 +15,21 @@ $show_brand_name = $data->getConfig("product_view_page/show_brand_name");
 		if($data->getConfig("product_view_page/show_brand_text") && $brand_label){
 			echo '<span class="brand-label">'.$brand_label.'</span>';
 		}
-	?>
 
-	<?php if($brand_layout_listing) { ?>
+    if($brand_layout_listing) { ?>
 
 		<ul class="product-brands">
-			<?php foreach ($brandCollection as $_brand) { ?>
+			<?php foreach ($brandCollection as $brand) { ?>
 				<li class="brand-item">
 					<?php if($show_brand_image): ?>
-						<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
-							<img src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/>
+						<a href="<?php echo $brand->getUrl(); ?>" title="<?php echo $brand->getName(); ?>">
+							<img src="<?php echo $brand->getThumbnailUrl(); ?>" alt="<?php echo $brand->getName(); ?>"/>
 						</a>
 					<?php endif; ?>
 
 					<?php if($show_brand_name): ?>
-						<a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
-							<span itemprop="brand"><?php echo $_brand->getName(); ?></span>
+						<a href="<?php echo $brand->getUrl(); ?>" title="<?php echo $brand->getName(); ?>">
+							<span itemprop="brand"><?php echo $brand->getName(); ?></span>
 						</a>
 					<?php endif; ?>
 				</li>
@@ -39,28 +38,28 @@ $show_brand_name = $data->getConfig("product_view_page/show_brand_name");
 
 	<?php } else {
 
-		foreach ($brandCollection as $_brand) { ?>
+		foreach ($brandCollection as $brand) { ?>
 			<div class="cs-product-info-brand">
-				<?php if($show_brand_image): ?>
+				<?php if($show_brand_image && $brand->getThumbnailUrl()): ?>
 					<div class="cs-product-info-brand__row">
-						<a class="cs-product-info-brand__name" href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>">
-							<img class="cs-product-info-brand__logo"src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/>
-						</a>
+						<span class="cs-product-info-brand__name" title="<?php echo $brand->getName(); ?>">
+							<img class="cs-product-info-brand__logo"src="<?php echo $brand->getThumbnailUrl(); ?>" alt="<?php echo $brand->getName(); ?>"/>
+						</span>
 					</div>
 				<?php endif; ?>
 
 				<?php if($show_brand_name): ?>
 					<div class="cs-product-info-brand__row">
-						<a class="cs-product-info-brand__name" href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>"<?php if($show_brand_image): ?> rel="nofollow"<?php endif;?>>
-							<span itemprop="brand"><?php echo $_brand->getName(); ?></span>
-						</a>
+						<span class="cs-product-info-brand__name" title="<?php echo $brand->getName(); ?>">
+							<span itemprop="brand"><?php echo $brand->getName(); ?></span>
+						</span>
 					</div>
 				<?php endif; ?>
 			</div>
 			<?php if($i<=($total-2)){ echo ', '; }  ?>
 			<?php $i++; ?>
-	 <?php 
+	 <?php
 		}
-	} 
-	?>
-<?php } ?>
+	}
+}
+?>
