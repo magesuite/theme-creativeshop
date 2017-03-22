@@ -12,12 +12,6 @@ var config = {
                 'jquery',
             ],
         },
-        'Stickyfill': {
-            deps: [
-                'jquery',
-            ],
-            exports: 'Stickyfill',
-        },
         'isMobile': {
             exports: 'isMobile',
         },
