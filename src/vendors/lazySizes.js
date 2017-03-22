@@ -1,5 +1,6 @@
 /**
  * LazySizes 3.0.0
+ * CS: increased hFac to make this plugin not affect image carousels.
  */
 (function(window, factory) {
 	var lazySizes = factory(window, window.document);
@@ -655,7 +656,7 @@
 			customMedia: {},
 			init: true,
 			expFactor: 1.5,
-			hFac: 0.8,
+			hFac: 2,
 			loadMode: 2
 		};
 
