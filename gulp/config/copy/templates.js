@@ -21,5 +21,6 @@ export default {
         minifyCSS: true,
         minifyJS: true,
         quoteCharacter: '\'',
+        preventAttributesEscaping: true,
     },
 };
