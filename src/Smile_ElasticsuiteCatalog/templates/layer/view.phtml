@@ -1,0 +1,61 @@
+<?php
+/**
+ * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation
+ */
+?>
+
+<?php if ($block->canShowBlock()) : ?>
+    <?php $filters = count($block->getFilters());?>
+    <?php $horizontalFiltersLayout = $this->getFiltersLayout(); ?>
+    <?php $activeFilters = $horizontalFiltersLayout ? 0 : $block->getActiveFilters(); ?>
+    <?php /*$activeFilters = "[0, 1, 2]" ;*/?>
+
+    <div class="cs-aftersearch-nav<?php echo $horizontalFiltersLayout ? ' cs-aftersearch-nav--' . $horizontalFiltersLayout : ''; ?> | block filter | cs-collapse cs-collapse--only-mobile" id="layered-filter-block" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+        <?php $filtered = count($block->getLayer()->getState()->getFilters()) ?>
+
+        <h2 class="cs-aftersearch-nav__filters-trigger | cs-collapse__trigger cs-collapse__trigger--arrowed cs-collapse__trigger--only-mobile">
+            <?php /* @escapeNotVerified */ echo __('Filters');?>
+            <svg class="cs-aftersearch-nav__filters-trigger-icon | cs-collapse__trigger-icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </h2>
+
+        <div class="cs-aftersearch-nav__filters | block-content filter-content | cs-collapse__content">
+            <?php if ($block->getLayer()->getState()->getFilters()) : ?>
+                <div class="cs-aftersearch-nav__state">
+                    <?php echo $block->getChildHtml('state') ?>
+
+                    <div class="cs-aftersearch-nav__state-clear-all | block-actions filter-actions">
+                        <a href="<?php /* @escapeNotVerified */ echo $block->getClearUrl() ?>" class="cs-aftersearch-nav__more-filters-button | cs-button cs-button--look_light cs-button--size_300 | cs-aftersearch-nav__state-clear | action clear filter-clear"><span><?php /* @escapeNotVerified */ echo __('Clear All') ?></span></a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php $wrapOptions = false; ?>
+            <?php foreach ($block->getFilters() as $filter) : ?>
+                <?php if ($filter->getItemsCount()) : ?>
+                    <?php if (!$wrapOptions) : ?>
+                        <dl class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
+                        cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
+                            <?php $wrapOptions = true;?>
+                    <?php endif; ?>
+                    <dt data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></dt>
+                    <dd data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
+                        <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                    </dd>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <?php if ($wrapOptions) : ?>
+                </dl>
+            <?php else : ?>
+                <script>
+                    require([
+                        'jquery'
+                    ], function ($) {
+                        $('#layered-filter-block').addClass('filter-no-options');
+                    });
+                </script>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>

@@ -9,8 +9,6 @@
     }
 
     &__filter-options {
-        margin-top: 2rem;
-
         @include media('<tablet') {
             display: flex;
             flex-wrap: wrap;
@@ -18,7 +16,7 @@
         }
 
         @include media('>=tablet') {
-            margin-top: .2rem;
+            margin-top: -1rem;
         }
     }
 
@@ -60,19 +58,20 @@
 
     &__filters {
         margin-bottom: 1rem;
-        padding: 0 2rem 2rem;
+        padding: 0 0 2rem;
 
         @include media('>=tablet') {
             margin-top: -1.5rem !important;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid $colorAlto;
-            padding: 0 0 2rem;
+            margin-bottom: 0;
+            border-bottom: none;
+            padding: 0;
         }
 
     }
 
     &__filter-title {
         padding: 2rem 2rem 2rem 0;
+        border-top: 1px solid $colorAlto;
         font-size: 1.2rem;
         cursor: pointer;
         display: block;
@@ -85,11 +84,26 @@
         word-break: break-all;
         z-index: 1;
 
+        &:first-child {
+            border-top: none;
+        }
 
         @include media('<tablet') {
+            width: 100%;
             background-color: $colorGallery;
-            padding: 1.3rem 3rem 1.3rem 1.5rem;
+            padding: 1.3rem 3rem 1.3rem 2rem;
         }
+    }
+
+    &__filter-input,
+    &__filter-input:visited {
+        font-size: 1.29rem;
+        transition: color .15s linear;
+        text-decoration: none !important;
+    }
+
+    &__filter-count {
+        color: $colorGray;
     }
 
     &__filter-arrow {
@@ -99,6 +113,7 @@
         width: 10px;
         height: 10px;
         right: 1.5rem;
+        
 
         @include media('<tablet') {
             top: 50%;
@@ -107,6 +122,7 @@
 
         @include media('>=tablet') {
             right: 0;
+            margin-top: .3rem;
         }
 
         &:before,
@@ -135,6 +151,7 @@
 
 
         #{$root}__filter.active &,
+        #{$root}__filter-title[aria-expanded="true"] &,
         .#{$namespace}filter-horizontal__trigger--in & {
             &:before {
                 background: $colorGray;
@@ -150,8 +167,15 @@
     }
 
     &__filter-content {
-        padding: .3rem 0 1rem;
+        width: 100%;
+        margin: 0;
+        padding: 0 2rem;
         position: relative;
+
+        @include media( '>=tablet' ) {
+            padding: 0;
+            width: auto;
+        }
     }
 
     &__price-input {
@@ -160,11 +184,37 @@
         padding-right: 2rem;
     }
 
+    &__price-apply-button {
+        min-width: 5rem;
+    }
+
+    &__rangeSlider {
+        &-actions-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        &-msg {
+            flex-grow: 3;
+            padding: 0 1rem 0 0 !important;
+        }
+    }
+
     &__filter-items {
         list-style: none;
         padding: 0;
-        margin: 0;
+        margin: 2rem 0;
         max-height: none !important;
+
+        @include media( '<tablet' ) {
+            columns: 2;
+        }
+
+        @include media( '>=tablet' ) {
+            margin-top: 0;
+        }
 
         &--inside {
             #{$root}__filter-item:first-child {
@@ -172,6 +222,18 @@
             }
         }
 
+    }
+
+    &__swatch {
+        margin: 2rem 0 2rem -.32rem;
+
+        @include media( '>=tablet' ) {
+            margin-top: 0;
+        }
+
+        &-link {
+            text-decoration: none !important;
+        }
     }
 
     &__price-field {
@@ -196,19 +258,19 @@
     }
 
     &__filter-item {
+        margin: 1rem 0 0 !important;
+
         &:first-child {
-            @include media( '>=tablet' ) {
-                margin-top: 0 !important;
-            }
+            margin-top: 0 !important;
         }
     }
 
     &__price {
         display: flex;
-        @include media( '<tablet' ) {
-            margin-top: 1rem;
-        }
+        margin-top: 2rem;
+
         @include media( '>=tablet' ) {
+            margin-top: 0;
             flex-direction: row;
         }
     }
@@ -256,119 +318,9 @@
         }
     }
 
-    &__popover {
-        background: $colorWhite;
-        border: 2px solid $colorCeruleanBlue;
-        border-radius: 3px;
-        box-sizing: border-box;
-        display: none;
-        height: 4.2rem;
-        padding: .4rem;
-        position: absolute;
-        width: auto;
-        min-width: 18rem;
-        z-index: 10;
-
-        &:before,
-        &:after {
-            border: solid transparent;
-            content: '';
-            display: block;
-            height: 0;
-            position: absolute;
-            top: 50%;
-            width: 0;
-            right: 100%;
-        }
-
-        &:before {
-            border-width: 2.1rem;
-            margin-top: -2.1rem;
-            border-right-color: $colorCeruleanBlue !important;
-        }
-
-        &:after {
-            border-width: 1.9rem;
-            margin-top: -1.9rem;
-            border-right-color: $colorWhite;
-        }
-    }
-
-    &__popover-content {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    &__popover-items {
-        color: $colorDoveGray;
-        font-size: 1.2rem;
-        white-space: nowrap;
-        margin-right: 1.5rem;
-    }
-
-    .aw-layered-nav-popover--loading &__popover-items {
-        display: none;
-    }
-    .aw-layered-nav-popover--loading &__popover-loader {
-        display: block;
-    }
-
-    @keyframes aw-layered-nav-rotate {
-        0% {
-            transform: rotate( 0deg ) scale( 1 );
-        }
-        50% {
-            transform: rotate( 180deg ) scale( .6 );
-        }
-        100% {
-            transform: rotate( 360deg ) scale( 1 );
-        }
-    }
-
-    &__popover-loader {
-        animation: aw-layered-nav-rotate .75s 0s linear infinite; //stylelint-disable-line
-        animation-fill-mode: both;
-        background: transparent !important;
-        border: 2px solid $colorCeruleanBlue;
-        border-bottom-color: transparent;
-        border-radius: 50%;
-        display: none;
-        height: 1.8rem;
-        width: 1.8rem;
-    }
-
-    &__popover-action {
-        width: auto !important;
-    }
-
-    &__more-filters {
-        overflow: hidden;
-        height: 0;
-        opacity: 0;
-        min-height: initial !important;
-        max-height: initial !important;
-        transform: translateY( -15px );
-        transition: opacity .18s linear, transform .11s ease-in-out;
-        will-change: height;
-
-        @include media('<tablet') {
-            transition: none;
-            height: auto !important;
-            opacity: 1 !important;
-            visibility: visible;
-            transform: translateY( 0 ) !important;
-        }
-    }
-
-    &__more-filters-checkbox:checked + &__more-filters {
-        height: auto !important;
-        opacity: 1;
-        visibility: visible;
-        transform: translateY( 0 );
-    }
-
     &__more-filters-button {
+        margin-bottom: 2rem;
+
         span {
             &:after {
                 content: attr( data-show-more-text );
@@ -384,7 +336,62 @@
         }
     }
 
+    /* STATE block */
+    &__state {
+        padding: 2rem 2rem 0;
+        border-bottom: 1px solid $colorAlto;
 
+        + #{$root}__filter-options {
+            margin-top: 0;
+        }
+
+        @include media('>=tablet') {
+            padding: 0;
+        }
+
+        &-items {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        &-item {
+            display: flex;
+            margin: 1rem 0 0 !important; 
+            font-size: 1.29rem;
+            align-items: flex-start;
+        }
+
+        &-label {
+            font-weight: 700;
+
+            &:after {
+                content: ': '
+            }
+        }
+
+        &-remove {
+            display: block;
+            margin-right: .8rem;
+            border: 1px solid $colorAlto;
+            border-radius: 2px;
+            font-size: 0;
+            transition: border-color .15s linear;
+
+            &:hover {
+                border-color: $colorCeruleanBlue;
+            }
+
+            &-icon {
+                padding: .5rem;
+            }
+        }
+
+        &-data {
+            padding-top: .25rem;
+        }
+    }
+
+    /* Horizontal */
     &--horizontal-full {
         @include media( '>=tablet' ) {
             z-index: 20;
@@ -493,7 +500,7 @@
 
         #{$root}__filter-arrow {
             @include media( '>=tablet' ) {
-                margin-top: .2rem;
+                margin-top: .3rem;
                 right: .5rem;
             }
         }
