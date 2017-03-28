@@ -41,8 +41,6 @@ export default class aftersearchNav {
     }
 
     protected _setInitialValues(): void {
-        console.log( this.ElasticSearchRangeSlider );
-
         this.$priceFrom.val( this.ElasticSearchRangeSlider.from );
         this.$priceTo.val( this.ElasticSearchRangeSlider.to );
     }
