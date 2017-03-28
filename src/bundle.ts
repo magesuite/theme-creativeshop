@@ -42,6 +42,8 @@ import './customizations/offcanvas/offcanvas';
 import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
 
+import './customizations/aftersearch-nav/aftersearch-nav';
+
 import './customizations/hero/hero';
 import './customizations/image-teaser/image-teaser';
 import './customizations/products-promo/products-promo';
