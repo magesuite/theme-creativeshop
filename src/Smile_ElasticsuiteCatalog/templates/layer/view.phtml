@@ -34,19 +34,37 @@
             <?php $wrapOptions = false; ?>
             <?php foreach ($block->getFilters() as $filter) : ?>
                 <?php if ($filter->getItemsCount()) : ?>
-                    <?php if (!$wrapOptions) : ?>
-                        <dl class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
-                        cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
-                            <?php $wrapOptions = true;?>
+                    <?php if ($horizontalFiltersLayout): ?>
+
+                        <?php if (!$wrapOptions) : ?>
+                            <ul class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
+                            cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": <?php echo $horizontalFiltersLayout ? 'false' : 'true' ?>}}'>
+                                <?php $wrapOptions = true; ?>
+                        <?php endif; ?>
+                        <li class="cs-aftersearch-nav__filter">
+                            <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></div>
+                            <div data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
+                                <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                            </div>
+                        </li>
+
+                    <?php else: ?>
+
+                        <?php if (!$wrapOptions) : ?>
+                            <dl class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
+                            cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
+                                <?php $wrapOptions = true; ?>
+                        <?php endif; ?>
+                        <dt data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></dt>
+                        <dd data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
+                            <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                        </dd>
+
                     <?php endif; ?>
-                    <dt data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></dt>
-                    <dd data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
-                        <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
-                    </dd>
                 <?php endif; ?>
             <?php endforeach; ?>
             <?php if ($wrapOptions) : ?>
-                </dl>
+                <?php echo $horizontalFiltersLayout ? '</ul>' : '</dl>' ?>
             <?php else : ?>
                 <script>
                     require([
