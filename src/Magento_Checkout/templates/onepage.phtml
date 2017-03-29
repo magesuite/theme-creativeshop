@@ -33,6 +33,11 @@
             'bundle'
         ], function(url, blockLoader, $, bundle) {
 
+            //Creativestyle adjustments below
+
+            // Checkout is loaded some time after script is loaded. We need mutation observer here to know when to
+            // initialize field watching or tabs
+
             var checkout = document.getElementById('checkout');
             var phoneTriggered = false;
             var addressTriggered = false;
@@ -51,19 +56,19 @@
                     addressTriggered = true;
                     startTabs();
 
+                    var $form = $( '#shipping-new-address-form' );
+
                     bundle.AddressAutofill(
                         {
-                            streetField: $( '#shipping-new-address-form input[name="street[0]"]'),
-                            zipField: $( '#shipping-new-address-form input[name="postcode"]'),
-                            cityField: $( '#shipping-new-address-form input[name="city"]'),
-                            countrySelect: $( '#shipping-new-address-form select[name="country_id"]'),
+                            streetField: $form.find( 'input[name="street[0]"]' ),
+                            zipField: $form.find( 'input[name="postcode"]'),
+                            cityField: $form.find( 'input[name="city"]'),
+                            countrySelect: $form.find( 'select[name="country_id"]' ),
                         }
                     );
-
                 }
 
-
-                if( phoneTriggered  && addressTriggered ) {
+                if ( phoneTriggered  && addressTriggered ) {
                     checkoutStep1Observer.disconnect();
                 }
 
@@ -74,7 +79,7 @@
             checkoutStep1Observer.observe( checkout, checkoutObserverConfig );
 
 
-            // TEMPORARY FIX to make phone number optional
+            // TEMPORARY WORKAROUND to make phone number optional
             // PLEASE CHECK if this feature is already implemeneted in Magento : https://github.com/magento/magento2/pull/8519
 
             function setPhoneOptional() {
@@ -96,13 +101,16 @@
                     })
                 } );
             }
+            // end of phone workaround
 
-            // end of phone fix
 
+            // Set zip and city in one line
             function setZipCityFields() {
-                $( 'input[name="postcode"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_small');
+                $( 'input[name="postcode"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_small' )
+                    .after();
                 $( 'input[name="city"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_medium');
             }
+
 
             function checkActiveButton() {
                 var activeButton = $( '.payment-method._active .cs-button-payment-method[type="submit"]:not(disabled):not(".disabled")');
@@ -149,9 +157,11 @@
 
             }
 
+            // Payment methods step does not work with mutation observer. Mutation observer is lost while payment
+            // step is reloaded. We need watch fo step2 in intervals
             var checkButtonsIntervalId = setInterval( checkIfButtonsLoaded, 800 );
 
-
+            //Creativestyle adjustments end
 
             blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
             return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
