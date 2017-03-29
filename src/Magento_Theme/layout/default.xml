@@ -34,9 +34,7 @@
             </container>
         </referenceContainer>
 
-        <referenceContainer name="header.container" htmlClass="cs-header">
-            <block class="Magento\Framework\View\Element\Template" name="top.search.mobile" as="topSearchMobile" template="Magento_Search::form.mini.mobile.phtml" after="-"/>
-        </referenceContainer>
+        <referenceContainer name="header.container" htmlClass="cs-header" />
         <move element="header.container" destination="header.page.container.inner"/>
 
         <referenceContainer name="page.top">
@@ -49,6 +47,13 @@
 
         <referenceContainer name="header-wrapper" htmlClass="cs-header__content">
             <container name="header.user-area" htmlTag="div" htmlClass="cs-header__user-area | cs-header-user-area"/>
+            <container name="header.search.placeholder" htmlTag="div" htmlClass="cs-header__search-placeholder">
+                <block class="Magento\Framework\View\Element\Text" name="header.search.placeholder.text">
+                    <arguments>
+                        <argument name="text" xsi:type="string"><![CDATA[<!-- -->]]></argument>
+                    </arguments>
+                </block>
+            </container>
             <block class="Magento\Framework\View\Element\Template" name="header.burger" template="Magento_Theme::html/burger.phtml"/>
         </referenceContainer>
         <move element="minicart" destination="header.user-area" after="-"/>
