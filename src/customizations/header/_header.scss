@@ -25,14 +25,16 @@
         left: 0;
         right: 0;
         background: $colorWhite;
-        z-index: 201;
+        z-index: 202;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
+        will-change: z-index, height, position;
 
         @include media( '>=tablet' ) {
             height: 8.3rem;
+            z-index: 201;
         }
 
         @include media( '>=laptop' ) {
@@ -162,7 +164,7 @@
         }
     }
 
-    &__search {
+    &__search-placeholder {
         display: none;
         width: 100%;
         order: 4;
@@ -174,13 +176,34 @@
             align-self: center;
         }
     }
-    // Ugly hack for duplicated search input.
-    & > &__search {
-        display: block;
-        margin-top: 0;
-
+    
+    &__search {
         @include media( '>=tablet' ) {
+            position: fixed;
+            width: calc( 32% - 3rem );
+            top: 2.2rem;
+            left: 37%;
+            z-index: 300;
+        }
+
+        @include media( '>=laptop' ) {
+            width: 32%;
+            position: absolute;
+            top: 3.8rem;
+            left: 32%;
+        }
+
+        &-placeholder {
             display: none;
+            width: 100%;
+            order: 4;
+
+            @include media( '>=tablet' ) {
+                display: block;
+                flex: 0 1 32%;
+                order: 2;
+                align-self: center;
+            }
         }
     }
 
