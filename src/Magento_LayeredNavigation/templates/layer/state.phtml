@@ -16,40 +16,51 @@
 ?>
 <?php $_filters = $block->getActiveFilters() ?>
 <?php if (!empty($_filters)): ?>
-    <strong class="cs-aftersearch-nav__state-title | block-subtitle filter-current-subtitle"
-            role="heading"
-            aria-level="2"
-            data-count="<?php echo count($_filters); ?>"><?php /* @escapeNotVerified */ echo __('Now Shopping by') ?></strong>
-    <ol class="cs-aftersearch-nav__state-items | items">
-        <?php foreach ($_filters as $_filter): ?>
-            <li class="cs-aftersearch-nav__state-item | item">
-                <?php
-                $clearLinkUrl = $_filter->getClearLinkUrl();
-                $currentFilterName = $block->escapeHtml(__($_filter->getName())) . " " . $block->stripTags($_filter->getLabel());
-                if ($clearLinkUrl):
-                    ?>
-                    <a class="action previous" href="<?php /* @escapeNotVerified */ echo $_filter->getRemoveUrl() ?>"
-                       title="<?php /* @escapeNotVerified */ echo __('Previous') ?>">
-                        <span><?php /* @escapeNotVerified */ echo __('Previous') ?></span>
-                    </a>
-                    <a class="action remove"
-                       title="<?php echo $block->escapeHtml($_filter->getFilter()->getClearLinkText()) ?>"
-                       href="<?php /* @escapeNotVerified */ echo $clearLinkUrl ?>">
-                        <span><?php echo $block->escapeHtml($_filter->getFilter()->getClearLinkText()) ?></span>
-                    </a>
-                <?php else: ?>
-                    <a class="cs-button--look-remove | cs-aftersearch-nav__state-remove | action remove" href="<?php /* @escapeNotVerified */ echo $_filter->getRemoveUrl() ?>"
-                       title="<?php /* @escapeNotVerified */ echo $block->escapeHtml(__('Remove')) . " " . $currentFilterName;?>">
-                       <svg class="cs-button__remove-icon | cs-aftersearch-nav__state-remove-icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg>
-                        <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Remove This Item') ?></span>
-                    </a>
-                <?php endif; ?>
+    <div class="cs-aftersearch-nav__state">
+        <ol class="cs-aftersearch-nav__state-items | items">
+            <?php foreach ($_filters as $_filter): ?>
+                <li class="cs-aftersearch-nav__state-item | item">
+                    <?php
+                    $clearLinkUrl = $_filter->getClearLinkUrl();
+                    $currentFilterName = $block->escapeHtml(__($_filter->getName())) . " " . $block->stripTags($_filter->getLabel());
+                    if ($clearLinkUrl):
+                        ?>
+                        <a class="action previous" href="<?php /* @escapeNotVerified */ echo $_filter->getRemoveUrl() ?>"
+                           title="<?php /* @escapeNotVerified */ echo __('Previous') ?>">
+                            <span><?php /* @escapeNotVerified */ echo __('Previous') ?></span>
+                        </a>
+                        <a class="action remove"
+                           title="<?php echo $block->escapeHtml($_filter->getFilter()->getClearLinkText()) ?>"
+                           href="<?php /* @escapeNotVerified */ echo $clearLinkUrl ?>">
+                            <span><?php echo $block->escapeHtml($_filter->getFilter()->getClearLinkText()) ?></span>
+                        </a>
+                    <?php else: ?>
+                        <a class="cs-button--look-remove | cs-aftersearch-nav__state-remove | action remove" href="<?php /* @escapeNotVerified */ echo $_filter->getRemoveUrl() ?>"
+                           title="<?php /* @escapeNotVerified */ echo $block->escapeHtml(__('Remove')) . " " . $currentFilterName;?>">
+                           <svg class="cs-button__remove-icon | cs-aftersearch-nav__state-remove-icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg>
+                            <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Remove This Item') ?></span>
+                        </a>
+                    <?php endif; ?>
 
-                <div class="cs-aftersearch-nav__state-data">
-                    <span class="cs-aftersearch-nav__state-label | filter-label"><?php echo $block->escapeHtml(__($_filter->getName())); ?></span>
-                    <span class="cs-aftersearch-nav__state-value | filter-value"><?php /* @escapeNotVerified */ echo $block->stripTags($_filter->getLabel()) ?></span>
-                </div>
-            </li>
-        <?php endforeach; ?>
-    </ol>
+                    <div class="cs-aftersearch-nav__state-data">
+                        <span class="cs-aftersearch-nav__state-label | filter-label"><?php echo $block->escapeHtml(__($_filter->getName())); ?></span>
+                        <span class="cs-aftersearch-nav__state-value | filter-value"><?php /* @escapeNotVerified */ echo $block->stripTags($_filter->getLabel()) ?></span>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+
+            <?php if ( count($_filters) > 1 ): ?>
+                <li class="cs-aftersearch-nav__state-item cs-aftersearch-nav__state-item--clear | item">
+                    <a class="cs-button--look-remove | cs-aftersearch-nav__state-remove | action remove" href="<?php /* @escapeNotVerified */ echo $block->getClearUrl() ?>" title="<?php /* @escapeNotVerified */ echo $block->escapeHtml(__('Remove all filters')) ?>">
+                        <svg class="cs-button__remove-icon | cs-aftersearch-nav__state-remove-icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use></svg>
+                        <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Remove all filters') ?></span>
+                    </a>
+
+                    <div class="cs-aftersearch-nav__state-data">
+                        <span class="cs-aftersearch-nav__state-label cs-aftersearch-nav__state-label--pure | filter-label"><?php /* @escapeNotVerified */ echo __('Clear All') ?></span>
+                    </div>
+                </li>
+            <?php endif; ?>
+        </ol>
+    </div>
 <?php endif; ?>

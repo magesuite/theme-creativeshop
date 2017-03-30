@@ -339,56 +339,79 @@
 
     /* STATE block */
     &__state {
-        padding: 2rem 2rem 0;
-        border-bottom: 1px solid $colorAlto;
-
-        + #{$root}__filter-options {
-            margin-top: 0;
-        }
-
-        @include media('>=tablet') {
-            padding: 0;
-        }
+        padding: 1.5rem 0;
+        border-top: 1px solid $colorGallery;
+        border-bottom: 1px solid $colorGallery;
 
         &-items {
-            margin-top: 2rem;
-            margin-bottom: 2rem;
+            width: calc( 100% + 1rem );
+            margin: 0 -.5rem;
+            display: flex;
+            flex-wrap: wrap;
         }
 
         &-item {
             display: flex;
-            margin: 1rem 0 0 !important; 
             font-size: 1.29rem;
             align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+            margin: .5rem !important;
+            padding: .6rem 1.2rem .6rem 3.7rem;
+            border: 1px solid $colorCeruleanBlue;
+            border-radius: 3px;
+
+            &--clear {
+                @include media( '>=laptop-lg' ) {
+                    margin-left: auto !important;
+                }
+            }
         }
 
         &-label {
             font-weight: 700;
 
-            &:after {
+            &:not( #{$root}__state-label--pure ):after {
                 content: ': '
             }
         }
 
         &-remove {
-            display: block;
-            margin-right: .8rem;
-            border: 1px solid $colorAlto;
-            border-radius: 2px;
-            font-size: 0;
-            transition: border-color .15s linear;
+            position: absolute;
+            top: -1px;
+            left: -.5rem;
+            height: calc( 100% + 2px );
+            width: 3rem;
+            border: none;
+            transform: translate3d( 0, 0, 0 ) skew( -18deg );
+            backface-visibility: hidden;
+            border-right: 1px solid $colorCeruleanBlue;
+            transition: background-color .15s linear;
 
             &:hover {
-                border-color: $colorCeruleanBlue;
-            }
+                background-color: $colorCeruleanBlue;
 
-            &-icon {
-                padding: .5rem;
+                #{$root}__state-remove-icon {
+                    fill: $colorWhite;
+                }
             }
         }
 
+        &-remove-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: .8rem;
+            height: .8rem;
+            transform: translate3d( -50%, -50%, 0 ) skew( 18deg );
+            padding: 0;
+            margin-left: .3rem;
+            fill: $colorCeruleanBlue;
+            transition: fill .15s linear;
+        }
+
         &-data {
-            padding-top: .25rem;
+            font-size: 90%;
         }
     }
 
@@ -518,85 +541,6 @@
         #{$root}__filter-items {
             @include media( '>=tablet' ) {
                 padding-top: .3rem;
-            }
-        }
-
-        #{$root}__state {
-            @include media( '>=tablet' ) {
-                margin-top: .5rem;
-                border-bottom: none;
-                border-top: 1px solid $colorGallery;
-            }
-        }
-
-        #{$root}__state-title,
-        #{$root}__state-clear-all {
-            @include media( '>=tablet' ) {
-                display: none;
-            }
-        }
-
-        #{$root}__state-items {
-            @include media( '>=tablet' ) {
-                margin: 0 -.5rem;
-                padding: 1.5rem 0 1rem;
-                display: flex;
-                flex-wrap: wrap;
-            }
-        }
-
-        #{$root}__state-item {
-            @include media( '>=tablet' ) {
-                position: relative;
-                overflow: hidden;
-                margin: .5rem !important;
-                padding: .4rem .8rem .4rem 3.3rem;
-                border: 1px solid $colorCeruleanBlue;
-                border-radius: 3px;
-            }
-        }
-
-        #{$root}__state-remove {
-            @include media( '>=tablet' ) {
-                position: absolute;
-                top: -1px;
-                left: -.5rem;
-                height: calc( 100% + 2px );
-                width: 2.8rem;
-                border: none;
-                transform: skew( -18deg );
-                border-right: 1px solid $colorCeruleanBlue;
-                transition: background-color .15s linear;
-
-                &:hover {
-                    background-color: $colorCeruleanBlue;
-
-                    #{$root}__state-remove-icon {
-                        fill: $colorWhite;
-                    }
-                }
-            }
-        }
-
-        #{$root}__state-remove-icon {
-            @include media( '>=tablet' ) {
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                width: .8rem;
-                height: .8rem;
-                transform: translate3d( -50%, -50%, 0 ) skew( 18deg );
-                padding: 0;
-                margin-left: .3rem;
-                fill: $colorCeruleanBlue;
-                transition: fill .15s linear;
-            }
-        }
-
-        #{$root}__state-data {
-            @include media( '>=tablet' ) {
-                padding-top: 0;
-                font-size: 90%;
             }
         }
     }
