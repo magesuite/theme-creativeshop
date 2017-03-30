@@ -1,3 +1,5 @@
+/* tslint:disable:no-console no-unused-expression*/
+
 import $ from 'jquery';
 
 /**
@@ -11,7 +13,7 @@ import $ from 'jquery';
  * Roadmap:
  *  - Add dependency injection for different ajax clients
  */
-export default class GoogleDetector {
+export default class GoogleAddressDetector {
     /**
      *
      * @param {Object} options - Options for service
@@ -21,7 +23,7 @@ export default class GoogleDetector {
      * @param {String} options.region - Region in which results will be restricted. 2 letter, ISO code, uppercase (PL, DE)
      * @constructor
      */
-    constructor(options) {
+    constructor( options: { dev: boolean, apiKey: string, language: string, region: string } ) {
         this.dev = options.dev;
 
         this.baseApiUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
@@ -30,10 +32,11 @@ export default class GoogleDetector {
             language: options.language,
             region: options.region,
             key: this.apiKey || null,
-            components: 'country:' + options.region.toUpperCase()
+            components: `country:${options.region.toUpperCase()}`,
         };
 
         this._setCallParams();
+
     }
 
     /**
@@ -42,8 +45,8 @@ export default class GoogleDetector {
      * @returns {Promise} addressResults - Promise with pure google geocode objects with all data
      * @public
      */
-    getResults(query) {
-        return this._callGoogleApi(query);
+    public getResults( query: string ): any {
+        return this._callGoogleApi( query );
     }
 
     /**
@@ -51,12 +54,12 @@ export default class GoogleDetector {
      * @param query
      * @returns {Promise.<T>} Promise with array of formatted result matches
      */
-    getFormattedResults(query) {
-        return this._callGoogleApi(query).then(results => {
-            let formattedResults = [];
+    public getFormattedResults( query: string ): any {
+        return this._callGoogleApi( query ).then( ( results: any ): any => {
+            const formattedResults: any = [];
 
-            results.map(result => {
-                formattedResults.push(this.getFormattedAddress(result));
+            results.map( ( result: any ): any => {
+                formattedResults.push( this.getFormattedAddress( result ) );
             });
 
             return formattedResults;
@@ -70,18 +73,18 @@ export default class GoogleDetector {
      * use formatted address
      * @public
      */
-    getFormattedAddress(result) {
-        const components = result.address_components;
+    public getFormattedAddress( result: any ): { full: any, streetNumber?: string, street?: string, city?: string, postalCode?: string } {
+        const components: any = result.address_components;
 
-        let address = {
-            full: result.formatted_address
+        const address: object = {
+            full: result.formatted_address,
         };
 
-        for (const component of components) {
-            component.types.indexOf('street_number') >= 0 ? address.streetNumber = component.long_name : null;
-            component.types.indexOf('route') >= 0 ? address.street = component.long_name : null;
-            component.types.indexOf('locality') >= 0 ? address.city = component.long_name : null;
-            component.types.indexOf('postal_code') >= 0 ? address.postalCode = component.long_name : null;
+        for ( const component of components ) {
+            component.types.indexOf( 'street_number' ) >= 0 ? address.streetNumber = component.long_name : null;
+            component.types.indexOf( 'route' ) >= 0 ? address.street = component.long_name : null;
+            component.types.indexOf( 'locality' ) >= 0 ? address.city = component.long_name : null;
+            component.types.indexOf( 'postal_code' ) >= 0 ? address.postalCode = component.long_name : null;
         }
 
         return address;
@@ -93,12 +96,12 @@ export default class GoogleDetector {
      * @returns {Promise.String} - Promise with string with city
      * @public
      */
-    getCityByPostalCode(postalCode) {
-        return this._callGoogleApi(postalCode)
-            .then((result) => {
-                return this.getFormattedAddress(result[0]).city;
+    public getCityByPostalCode( postalCode: string ): string {
+        return this._callGoogleApi( postalCode )
+            .then( ( result: any ): any => {
+                return this.getFormattedAddress( result[ 0 ] ).city;
 
-            });
+            } );
     }
 
     /**
@@ -107,11 +110,11 @@ export default class GoogleDetector {
      * @returns {Promise.String} - Promise with string with postal code
      * @public
      */
-    getPostalCodeByFullStreet(streetQuery) {
+    public getPostalCodeByFullStreet( streetQuery: string ): string {
 
-        return this._callGoogleApi(streetQuery)
-            .then((result) => {
-                return this.getFormattedAddress(result[0]).postalCode;
+        return this._callGoogleApi( streetQuery )
+            .then( ( result: any ): any => {
+                return this.getFormattedAddress( result[ 0 ] ).postalCode;
 
             });
     }
@@ -122,10 +125,10 @@ export default class GoogleDetector {
      * @returns {Promise.String|null} - Promise with string with street or null if matches
      * @public
      */
-    getCorrectStreetName(streetQuery) {
-        return this._callGoogleApi(streetQuery)
-            .then((result) => {
-                const street = this.getFormattedAddress(result[0]).street;
+    public getCorrectStreetName( streetQuery: string ): string {
+        return this._callGoogleApi( streetQuery )
+            .then( ( result: any ): any => {
+                const street: string = this.getFormattedAddress( result[ 0 ] ).street;
 
                 return street === streetQuery ? null : street;
 
@@ -136,14 +139,14 @@ export default class GoogleDetector {
      * Sets api parameters for call once
      * @private
      */
-    _setCallParams() {
+    private _setCallParams(): void {
         this.apiParams = {
             language: this.basicParams.language,
             region: this.basicParams.region,
-            components: this.basicParams.components
+            components: this.basicParams.components,
         };
 
-        if (this.basicParams.key) {
+        if ( this.basicParams.key ) {
             this.apiParams.key = this.apiKey;
         }
     }
@@ -154,26 +157,26 @@ export default class GoogleDetector {
      * @returns {Promise.<T>}
      * @private
      */
-    _callGoogleApi(query) {
+    private _callGoogleApi( query: string ): any {
 
-        let params = this.apiParams;
+        const params: object = this.apiParams;
         params.address = query;
 
         return $
             .get(this.baseApiUrl, params)
-            .then((data) => {
-                if (data.status === 'OK') {
+            .then( ( data: any ): any => {
+                if ( data.status === 'OK' ) {
 
                     return data.results || null;
 
-                } else if (data.status !== 'OK' && this.dev) {
-                    console.log('error with api');
+                } else if ( data.status !== 'OK' && this.dev ) {
+                    console.log( 'error with api' );
 
                 } else if (data.status === 'OK' && !data.results.length && this.dev) {
-                    console.log('no results');
+                    console.log( 'no results' );
                 }
-            }, (err) => {
-                console.log(err);
+            }, ( err: string ): void => {
+                console.log( err );
             });
     }
 }
