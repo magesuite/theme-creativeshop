@@ -28,6 +28,7 @@ $filtersLayout = $this->getFiltersLayout();
         $viewMode = 'grid';
         $viewModeClass = $heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
         $image = 'category_page_grid';
+        $image2x = 'category_page_grid@2x';
         $showDescription = false;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
     } else {
@@ -61,6 +62,8 @@ $filtersLayout = $this->getFiltersLayout();
                     <?php
                     $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
                     $productImageUrl = $imageHelper->init($product, $image)->getUrl();
+                    $productImageUrl2x = $imageHelper->init($product, $image2x)->getUrl();
+                    $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
                     $productNameStripped = $block->stripTags($product->getName(), null, true);
                     $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
                     $getIsSalable = $salabilityStatus[$product->getId()];
@@ -70,6 +73,7 @@ $filtersLayout = $this->getFiltersLayout();
                         'url' => $product->getProductUrl(),
                         'image' => [
                             'src' => $productImageUrl,
+                            'srcset' => $productImageSrcset,
                             'alt' => $productNameStripped,
                             'width' => '216',
                             'height' => '270'
