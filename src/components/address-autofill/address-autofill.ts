@@ -33,10 +33,12 @@ export default class AddressAutofill {
         this.detectorType = '';
         this.optionsList = '';
 
-        $.getJSON( 'http://ip-api.com/json', ( location: any ): void => {
-            options.region = location.countryCode;
+        $.getJSON( 'https://freegeoip.net/json/', ( location: any ): void => {
             options.language = window.navigator.userLanguage || window.navigator.language;
-            this.countrySelect.val( location.countryCode ).change();
+            if ( location.countryCode ) {
+                options.region = location.countryCode;
+                this.countrySelect.val( location.countryCode ).change();
+            }
         }).always(() => {
             // Two detectors will be used based on level of query specificity
             this.googleAddressDetector = new GoogleAddressDetector( options );
