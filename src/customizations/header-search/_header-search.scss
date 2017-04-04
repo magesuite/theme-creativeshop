@@ -120,7 +120,6 @@
 
                 &:last-child {
                     border-bottom: none;
-                    margin-bottom: -1rem;
                 }
 
                 .product-image-box {
@@ -192,6 +191,10 @@
                 color: $colorGray;
                 font-style: normal;
 
+                &:empty {
+                    display: none;
+                }
+
                 &:after {
                     content: ' > ';
                 }
@@ -220,11 +223,11 @@
                 color: $colorGray;
                 font-size: 1.29rem;
 
-                &:before {
+                &:not( :empty ):before {
                     content: '(';
                 }
 
-                &:after {
+                &:not( :empty ):after {
                     content: ')';
                 }
             }
