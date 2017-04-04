@@ -15,6 +15,8 @@
     &__title {
         border-top: none;
         padding: 0;
+        cursor: pointer;
+
         @include media('>=laptop') {
             margin-bottom: 2rem;
         }
@@ -28,7 +30,14 @@
             width: .6rem;
             height: 1rem;
             transform: rotate( 90deg );
+            transition: transform .3s;
             margin-left: 1rem;
+        }
+
+        &[aria-expanded='true'] {
+            &:after {
+                transform: rotate( -90deg );
+            }
         }
     }
 
