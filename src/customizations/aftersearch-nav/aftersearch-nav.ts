@@ -8,12 +8,15 @@ interface aftersearchNavOptions {
     esPriceTo: string;
     $priceFrom: JQuery;
     $priceTo: JQuery;
+    lockWhileLoading: boolean;
+    $loader: JQuery;
 }
 
 export default class aftersearchNav {
     protected _options: aftersearchNavOptions;
     protected $priceFrom: JQuery;
     protected $priceTo: JQuery;
+    protected $loader: JQuery;
     protected ElasticSearchRangeSlider: any;
 
     public constructor( options?: aftersearchNavOptions ) {
@@ -21,8 +24,13 @@ export default class aftersearchNav {
 
         this.$priceFrom = $( '#price_from' );
         this.$priceTo = $( '#price_to' );
+        this.$loader = this._options.$loader;
         
         this._waitForElasticSearch();
+
+        if ( this._options.lockWhileLoading && this.$loader.length ) {
+            this._initializeLoader();
+        }
     }
 
     protected _waitForElasticSearch(): void {
@@ -56,6 +64,17 @@ export default class aftersearchNav {
             _this.ElasticSearchRangeSlider.to = _this.$priceTo.val();
         } );
     }
+
+    protected _initializeLoader(): void {
+        const _this: any = this;
+
+        $( document ).on( 'click', '.cs-aftersearch-nav__price-apply-button, .cs-aftersearch-nav__filter-input',  function(): void {
+            _this.$loader.show();
+        } );
+    }
 }
 
-new aftersearchNav();
+new aftersearchNav( {
+    lockWhileLoading: true,
+    $loader: $( '.cs-aftersearch-nav__loader' ),
+} );
