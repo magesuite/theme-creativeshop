@@ -355,28 +355,74 @@
             margin: 0 -.5rem;
             display: flex;
             flex-wrap: wrap;
+            position: relative;
+            padding-right: 16.5rem;
+            box-sizing: border-box;
         }
 
         &-item {
-            display: flex;
+            display: none;
             font-size: 1.29rem;
             align-items: flex-start;
+            margin: .5rem !important;
+
+            @include media( '>=tablet' ) {
+                display: flex;
+            }
+
+            &--clear {
+                display: flex;
+
+                @include media( '>=tablet' ) {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
+
+        &-link,
+        &-link:visited {
+            display: block;
             position: relative;
             overflow: hidden;
-            margin: .5rem !important;
             padding: .6rem 1.2rem .6rem 3.7rem;
             border: 1px solid $colorCeruleanBlue;
             border-radius: 3px;
+            color: $colorMineShaft;
+            transition: all .15s linear;
 
-            &--clear {
-                @include media( '>=laptop-lg' ) {
-                    margin-left: auto !important;
+            &:hover {
+                border-color: $colorCeruleanBlueHover;
+                color: $colorCeruleanBlueHover;
+                text-decoration: none;
+
+                #{$root}__state-remove {
+                    background-color: $colorCeruleanBlue;
+                }
+
+                #{$root}__state-remove-icon {
+                    fill: $colorWhite;
                 }
             }
         }
 
         &-label {
             font-weight: 700;
+
+            &--mobile {
+                @include media( '>=tablet' ) {
+                    display: none;
+                }
+            }
+
+            &--tablets {
+                display: none;
+
+                @include media( '>=tablet' ) {
+                    display: inline;
+                }
+            }
 
             &:not( #{$root}__state-label--pure ):after {
                 content: ': '
@@ -385,23 +431,15 @@
 
         &-remove {
             position: absolute;
-            top: -1px;
+            top: -.3rem;
             left: -.5rem;
-            height: calc( 100% + 2px );
-            width: 3rem;
+            height: calc( 100% + .6rem );
+            width: 3.2rem;
             border: none;
             transform: translate3d( 0, 0, 0 ) skew( -18deg );
             backface-visibility: hidden;
             border-right: 1px solid $colorCeruleanBlue;
             transition: background-color .15s linear;
-
-            &:hover {
-                background-color: $colorCeruleanBlue;
-
-                #{$root}__state-remove-icon {
-                    fill: $colorWhite;
-                }
-            }
         }
 
         &-remove-icon {
