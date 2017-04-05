@@ -111,16 +111,22 @@
 
     &__filter-count {
         color: $colorGray;
+
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
     }
 
     &__filter-arrow {
-
         background: none;
         position: absolute;
         width: 10px;
         height: 10px;
         right: 1.5rem;
-        
 
         @include media('<tablet') {
             top: 50%;
@@ -504,14 +510,34 @@
             @include media( '>=tablet' ) {
                 padding: .5rem;
                 margin: 0;
-                flex-basis: 25%;
+                flex-basis: calc( 100% / 3 );
                 position: relative;
                 border-bottom: none;
                 box-sizing: border-box;
             }
 
+            @include media( '>=tablet', '<laptop' ) {
+                &:nth-child( 3n ) #{$root}__filter-title:after {
+                    display: none;
+                }
+            }
+
             @include media( '>=laptop' ) {
+                flex-basis: 25%;
+            }
+
+            @include media( '>=laptop', '<laptop-lg' ) {
+                &:nth-child( 4n ) #{$root}__filter-title:after {
+                    display: none;
+                }
+            }
+
+            @include media( '>=laptop-lg' ) {
                 flex-basis: 20%;
+
+                &:nth-child( 5n ) #{$root}__filter-title:after {
+                    display: none;
+                }
             }
         }
 
