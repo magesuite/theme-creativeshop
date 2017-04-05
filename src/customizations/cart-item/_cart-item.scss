@@ -111,6 +111,7 @@
         }
     }
     &__price {
+        padding: .4rem 0 .4rem 2rem!important;;
         @include media('<laptop') {
             text-align: left;
         }
@@ -118,31 +119,39 @@
 
 
     &__subtotal {
-        padding-right: 2rem;
+        padding: .4rem 2rem .4rem 0!important;
         @include media('>=laptop') {
             padding-right: 0;
         }
         @include media('<laptop') {
             text-align: right;
         }
+
+        &:before {
+            margin-right: 2rem;
+        }
     }
 
     &__price,
     &__subtotal,
     &__qty {
-        padding-right: 2rem;
-        padding-left: 2rem;
         @include media('<laptop') {
             box-sizing: border-box;
-            width: 28%;
+            width: 31%;
             display: inline-block !important;/* stylelint-disable-line declaration-no-important */
             height: 9rem;
+            overflow: hidden;
 
             &:before {
                 content: attr( data-th ) !important;/* stylelint-disable-line declaration-no-important */
-                font-size: 1.1rem;
+                font-size: 1rem;
                 text-transform: uppercase;
                 padding: 0 0 2.1rem !important;/* stylelint-disable-line declaration-no-important */
+            }
+            @include media('>=phone-lg') {
+                &:before {
+                    font-size: 1.1rem;
+                }
             }
         }
         @include media('>=laptop') {
@@ -151,11 +160,13 @@
     }
 
     &__qty {
+        padding: .4rem 0 !important;
+
         @include media('<laptop') {
             padding-right: 0;
             padding-left: 0;
             text-align: center;
-            width: 42%;
+            width: 36%;
             &:before {
                 padding: 0 0 1rem !important;/* stylelint-disable-line declaration-no-important */
             }

@@ -39,22 +39,23 @@
             // initialize field watching or tabs
 
             var checkout = document.getElementById('checkout');
+
+            var step1Loaded = false;
+
             var phoneTriggered = false;
             var addressTriggered = false;
+            var nextButtonTriggered = false;
+            var paymentButtonsTriggered = false;
 
             var checkoutStep1Observer = new MutationObserver( function( mutations ) {
-                var $phoneInputs = $( 'input[name="telephone"]' );
-                var $addressForm = $( '#shipping-new-address-form select[name="country_id"]' );
 
-                if ( $phoneInputs.length && !phoneTriggered) {
-                    phoneTriggered = true;
+                if ( !$( '#checkout-loader' ).length && !step1Loaded ) {
+                    step1Loaded = true;
+
                     setPhoneOptional();
-                    setZipCityFields();
-                }
 
-                if ( $addressForm.length && !addressTriggered ) {
-                    addressTriggered = true;
                     startTabs();
+                    setZipCityFields();
 
                     var $form = $( '#shipping-new-address-form' );
 
@@ -68,13 +69,30 @@
                     );
                 }
 
-                if ( phoneTriggered  && addressTriggered ) {
-                    checkoutStep1Observer.disconnect();
+
+                if ( $( '.cs-checkout-button-next' ).length && !nextButtonTriggered ) {
+                    nextButtonTriggered = true;
+
+                    $( '.cs-checkout-button-next' ).on( 'click', function() {
+                        $( '#shipping-method-buttons-container button' ).trigger( 'click' );
+                    } );
+
+                } else if ( !$( '.cs-checkout-button-next' ).length && nextButtonTriggered ) {
+                    nextButtonTriggered = false;
+                }
+
+                if ( $( '.cs-button-payment-method' ).length && $( '.cs-place-order-button' ).length &&
+                    !paymentButtonsTriggered ) {
+                    paymentButtonsTriggered = true;
+                    setTimeout( checkActiveButton, 500 );
+                    watchStateOfPaymentButton();
+                } else if ( !$( '.cs-button-payment-method' ).length && paymentButtonsTriggered  ) {
+                    paymentButtonsTriggered = false;
                 }
 
             });
 
-            var checkoutObserverConfig = { attributes: true, childList: true, characterData: true };
+            var checkoutObserverConfig = { attributes: true, childList: true, characterData: true, subtree: true };
 
             checkoutStep1Observer.observe( checkout, checkoutObserverConfig );
 
@@ -93,7 +111,7 @@
                 });
 
                 $phoneInputs.parents( '.cs-input' ).removeClass( '_required required')
-                $( '#shipping-method-buttons-container button' ).on( 'click', function() {
+                $( '.cs-checkout-button-next' ).on( 'click', function() {
                     $phoneInputs.each( function(){
                         if( !$( this ).val() ) {
                             $( this ).css( 'color', 'transparent' ).val( '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ).change();
@@ -138,30 +156,21 @@
                 });
             }
 
-            function checkIfButtonsLoaded() {
-                if ( $( '.cs-button-payment-method' ).length ) {
-                    clearInterval( checkButtonsIntervalId );
+
+            function watchStateOfPaymentButton() {
+                $( '#co-payment-form' ).on( 'click', function() {
                     checkActiveButton();
-                    $( '#co-payment-form' ).on( 'click', function() {
-                        checkActiveButton();
-                    });
+                });
 
-                    $( '.cs-place-order-button' ).on( 'click', function() {
-                        var activeButton = checkActiveButton();
-                        if ( activeButton.length ) {
-                            activeButton.trigger( 'click' );
-                        }
+                $( '.cs-place-order-button' ).on( 'click', function() {
+                    var activeButton = checkActiveButton();
+                    if ( activeButton.length ) {
+                        activeButton.trigger( 'click' );
+                    }
 
-                    } );
-                }
-
+                } );
             }
 
-            // Payment methods step does not work with mutation observer. Mutation observer is lost while payment
-            // step is reloaded. We need watch fo step2 in intervals
-            var checkButtonsIntervalId = setInterval( checkIfButtonsLoaded, 800 );
-
-            //Creativestyle adjustments end
 
             blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
             return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');

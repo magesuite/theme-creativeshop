@@ -5,18 +5,19 @@
  */
 -->
 <div class="cs-checkout__sidebar">
-    <div class="cs-checkout__mobile-summary | cs-hide-tablet-desktop">
-        <!-- ko foreach: getRegion('summary') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
-    </div>
+    <div class="cs-checkout__sidebar-inner">
+        <div class="cs-checkout__mobile-summary | cs-hide-tablet-desktop">
+            <!-- ko foreach: getRegion('summary') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
 
-    <div id="opc-sidebar" class="cs-checkout__summary-wrapper"
-         data-bind="afterRender:setModalElement, mageInit: {
+        <div id="opc-sidebar" class="cs-checkout__summary-wrapper"
+             data-bind="afterRender:setModalElement, mageInit: {
     'Magento_Ui/js/modal/modal':{
         'type': 'custom',
         'modalClass': 'opc-summary-wrapper',
-        'wrapperClass': 'cs-checkout__sidebar',
+        'wrapperClass': 'cs-checkout__sidebar-inner',
         'parentModalClass': '_has-modal-custom',
         'responsive': true,
         'responsiveClass': 'custom-slide',
@@ -24,17 +25,22 @@
         'buttons': []
     }}">
 
-        <!-- ko foreach: getRegion('summary') -->
-        <!-- ko template: getTemplate() --><!-- /ko -->
-        <!--/ko-->
-
-        <div class="cs-checkout__shipping-information">
-            <!-- ko foreach: getRegion('shipping-information') -->
+            <!-- ko foreach: getRegion('summary') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
-        </div>
 
+            <div class="cs-checkout__shipping-information">
+                <!-- ko foreach: getRegion('shipping-information') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+            </div>
+
+        </div>
     </div>
+
+    <!-- ko foreach: getRegion('next-button') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
 
 </div>
 
