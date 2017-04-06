@@ -21,6 +21,8 @@ export default {
         path.join( paths.src, '**/requirejs-config.js' ),
         // Less styles.
         path.join( paths.src, '**/*.less' ),
+        //Theme web images
+        path.join( paths.src, '**/*.{gif,png,jpg,webp,svg,ico}' ),
     ],
 
     src: [
@@ -38,6 +40,9 @@ export default {
         path.join( paths.src, '**/requirejs-config.js' ),
         // Less styles.
         path.join( paths.src, '**/*.less' ),
+        //Theme web images
+        path.join( paths.src, '**/*.{gif,png,jpg,webp,svg,ico}' ),
+
     ],
     dest: paths.dist,
 };
