@@ -9,11 +9,11 @@ import paths from '../../paths';
 export default {
     watch: [
         // Images except sprites
-        path.join( paths.src, 'images/**/*.{gif,png,jpg,webp,svg}' ),
+        path.join( paths.src, 'images/**/*.{gif,png,jpg,webp,svg,ico}' ),
     ],
     src: [
         // Images except sprites
-        path.join( paths.src, 'images/**/*.{gif,png,jpg,webp,svg}' ),
+        path.join( paths.src, 'images/**/*.{gif,png,jpg,webp,svg,ico}' ),
     ],
     dest: path.join( paths.dist, 'web/images/' ),
     /**
