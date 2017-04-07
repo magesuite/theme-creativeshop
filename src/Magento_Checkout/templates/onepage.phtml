@@ -28,36 +28,34 @@
     <script>
         require([
             'mage/url',
+            'mage/validation',
             'Magento_Ui/js/block-loader',
             'jquery',
             'bundle'
-        ], function(url, blockLoader, $, bundle) {
+        ], function(url, validation, blockLoader, $, bundle) {
 
             //Creativestyle adjustments below
 
             // Checkout is loaded some time after script is loaded. We need mutation observer here to know when to
             // initialize field watching or tabs
-
             var checkout = document.getElementById('checkout');
 
             var step1Loaded = false;
-
-            var phoneTriggered = false;
-            var addressTriggered = false;
+            var step2Loaded = false;
             var nextButtonTriggered = false;
             var paymentButtonsTriggered = false;
 
             var checkoutStep1Observer = new MutationObserver( function( mutations ) {
+                console.log(mutations);
 
                 if ( !$( '#checkout-loader' ).length && !step1Loaded ) {
                     step1Loaded = true;
+                    var $form = $( '#shipping-new-address-form' );
 
                     setPhoneOptional();
 
                     startTabs();
                     setZipCityFields();
-
-                    var $form = $( '#shipping-new-address-form' );
 
                     bundle.AddressAutofill(
                         {
@@ -67,8 +65,8 @@
                             countrySelect: $form.find( 'select[name="country_id"]' ),
                         }
                     );
-                }
 
+                }
 
                 if ( $( '.cs-checkout-button-next' ).length && !nextButtonTriggered ) {
                     nextButtonTriggered = true;
@@ -86,10 +84,18 @@
                     paymentButtonsTriggered = true;
                     setTimeout( checkActiveButton, 500 );
                     watchStateOfPaymentButton();
+
+                    setTimeout( setPhoneOptional, 3000 );
+
                 } else if ( !$( '.cs-button-payment-method' ).length && paymentButtonsTriggered  ) {
                     paymentButtonsTriggered = false;
                 }
 
+
+                if ( $( '.loading-mask' ).length && !$( '.loading-mask' ).attr( 'style' )  && !step2Loaded ) {
+                    step2Loaded = true;
+                    setPhoneOptional();
+                }
             });
 
             var checkoutObserverConfig = { attributes: true, childList: true, characterData: true, subtree: true };
@@ -102,16 +108,19 @@
 
             function setPhoneOptional() {
                 var $phoneInputs = $( 'input[name="telephone"]' );
-                if( $phoneInputs.val() === '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ) {
-                    $phoneInputs.css( 'color', 'transparent' )
-                }
+                $phoneInputs.each( function() {
+                    if( !/\d/.test( $( this ).val() ) ) {
+                        $phoneInputs.css( 'color', 'transparent' );
+                    }
+                });
 
-                $phoneInputs.on( 'focus', function(){
+                $phoneInputs.on( 'focus', function() {
                     $phoneInputs.css( 'color', '' )
                 });
 
-                $phoneInputs.parents( '.cs-input' ).removeClass( '_required required')
-                $( '.cs-checkout-button-next' ).on( 'click', function() {
+                $phoneInputs.parents( '.cs-input' ).removeClass( '_required required');
+                $phoneInputs.parents( '.cs-form__field' ).removeClass( '_required required');
+                $( '.cs-checkout-button-next, .cs-payment button' ).on( 'click', function() {
                     $phoneInputs.each( function(){
                         if( !$( this ).val() ) {
                             $( this ).css( 'color', 'transparent' ).val( '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ).change();
@@ -124,8 +133,7 @@
 
             // Set zip and city in one line
             function setZipCityFields() {
-                $( 'input[name="postcode"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_small' )
-                    .after();
+                $( 'input[name="postcode"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_small' );
                 $( 'input[name="city"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_medium');
             }
 
