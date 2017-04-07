@@ -1,0 +1,63 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+
+<div class="cs-dashboard__block">
+    <form class="cs-form"
+          action="<?php /* @escapeNotVerified */ echo $block->getFormAction(); ?>"
+          id="contact-form"
+          method="post"
+          data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+          data-mage-init='{"validation":{}}'>
+        <fieldset class="cs-form__fieldset">
+            <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
+                <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('Write Us') ?></span>
+            </legend>
+
+            <p class="cs-t-text cs-t-text--type_wide">
+                <?php /* @escapeNotVerified */ echo __('Jot us a note and we’ll get back to you as quickly as possible.') ?>
+            </p>
+
+            <div class="cs-form__field | cs-input | name required">
+                <label class="cs-input__label" for="name"><span><?php /* @escapeNotVerified */ echo __('Name') ?></span></label>
+                <div class="cs-input__control">
+                    <input name="name" id="name" title="<?php /* @escapeNotVerified */ echo __('Name') ?>" value="<?php echo $block->escapeHtml($this->helper('Magento\Contact\Helper\Data')->getPostValue('name') ?: $this->helper('Magento\Contact\Helper\Data')->getUserName()) ?>" class="cs-input__input" type="text" data-validate="{required:true}"/>
+                </div>
+            </div>
+
+            <div class="cs-form__field | cs-input | email required">
+                <label class="cs-input__label" for="email"><span><?php /* @escapeNotVerified */ echo __('Email') ?></span></label>
+                <div class="cs-input__control">
+                    <input name="email" id="email" title="<?php /* @escapeNotVerified */ echo __('Email') ?>" value="<?php echo $block->escapeHtml($this->helper('Magento\Contact\Helper\Data')->getPostValue('email') ?: $this->helper('Magento\Contact\Helper\Data')->getUserEmail()) ?>" class="cs-input__input" type="email" data-validate="{required:true, 'validate-email':true}"/>
+                </div>
+            </div>
+
+            <div class="cs-form__field | cs-input | telephone">
+                <label class="cs-input__label" for="telephone"><span><?php /* @escapeNotVerified */ echo __('Phone Number') ?></span></label>
+                <div class="control">
+                    <input name="telephone" id="telephone" title="<?php /* @escapeNotVerified */ echo __('Phone Number') ?>" value="<?php echo $block->escapeHtml($this->helper('Magento\Contact\Helper\Data')->getPostValue('telephone')) ?>" class="cs-input__input" type="text" />
+                </div>
+            </div>
+
+            <div class="cs-form__field | cs-input | comment required">
+                <label class="cs-input__label" for="comment"><span><?php /* @escapeNotVerified */ echo __('What’s on your mind?') ?></span></label>
+                <div class="control">
+                    <textarea name="comment" id="comment" title="<?php /* @escapeNotVerified */ echo __('What’s on your mind?') ?>" class="cs-input__textarea cs-input__textarea--high" cols="5" rows="5" data-validate="{required:true}"><?php echo $block->escapeHtml($this->helper('Magento\Contact\Helper\Data')->getPostValue('comment')) ?></textarea>
+                </div>
+            </div>
+
+            <?php echo $block->getChildHtml('form.additional.info'); ?>
+        </fieldset>
+
+        <div class="cs-form__buttons">
+            <input type="hidden" name="hideit" id="hideit" value="" />
+
+            <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Submit') ?>" class="cs-button cs-button--type_long cs-button--type_mobile-wide cs-button--look_default">
+                <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Submit') ?></span>
+                <svg class="cs-button__icon">
+                    <use xlink:href="#arrow_next"></use>
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
