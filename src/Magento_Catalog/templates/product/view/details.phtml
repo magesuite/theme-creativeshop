@@ -75,9 +75,17 @@ endif; ?>
 
         $( '.cs-pdp-nav .cs-list__item' ).on( 'click', function( e ) {
             e.preventDefault();
-            $( 'html, body' ).animate( {
-                scrollTop: $( $( this ).find( 'a' ).attr( 'href' ) ).offset().top
-            }, 350 );
+            if ( $( window ).width() < 1024 ) {
+                $( 'html, body' ).animate( {
+                    scrollTop: $( $( this ).find( 'a' ).attr( 'href' ) ).offset().top - $( '.cs-header__content' )
+                        .height()
+                }, 350 );
+            } else {
+                $( 'html, body' ).animate( {
+                    scrollTop: $( $( this ).find( 'a' ).attr( 'href' ) ).offset().top
+                }, 350 );
+            }
+
         });
     } );
 </script>
