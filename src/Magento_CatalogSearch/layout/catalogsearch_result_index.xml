@@ -12,7 +12,12 @@
         <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main | cs-category-page__sidebar-main"/>
 
         <move element="page.messages" destination="main" before="-" />
-        <move element="page.main.title" destination="content" before="-"/>
         <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
+
+        <referenceContainer name="content" >
+            <block class="Creativestyle\FrontendExtension\Block\Category\View\Headline" name="category.page.headline" template="Magento_Catalog::category/headline.phtml" before="-"/>
+        </referenceContainer>
+
+        <referenceBlock name="page.main.title" remove="true"/>
     </body>
 </page>
