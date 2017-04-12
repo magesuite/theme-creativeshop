@@ -232,6 +232,10 @@ $namespace: 'cs-';
         margin-top: -13px;
         background-color: $colorWhite;
 
+        @include media( '<tablet' ) {
+            display: none;
+        }
+
         &--disabled {
             opacity: .5;
             cursor: initial !important;
@@ -242,11 +246,17 @@ $namespace: 'cs-';
         }
 
         &--prev {
-            left: 1rem;
+            left: 1.5rem;
+            @include media( '>=laptop-lg' ) {
+                left: 0;
+            }
         }
 
         &--next {
-            right: 1rem;
+            right: 1.5rem;
+            @include media( '>=laptop-lg' ) {
+                right: 0;
+            }
         }
     }
 
@@ -266,6 +276,18 @@ $namespace: 'cs-';
             #{$root}__wrapper {
                 overflow: visible;
             }
+        }
+
+        @include media( '>=laptop-lg' ) {
+            width: 120rem;
+            padding: 0;
+            margin: 0 auto;
+            position: static;
+
+            #{$root}__carousel {
+                position: relative;
+            }
+
         }
     }
 }
