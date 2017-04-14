@@ -2,25 +2,34 @@ import $ from 'jquery';
 
 $( '.cs-pagination__selector-input' ).each( ( index: number, element: any ) => {
 
-    $( element ).on( 'keyup', ( event ) => {
+    const _urlPattern: string = $( element ).data( 'url-pattern' );
+    const _lastPage: number = parseInt( $( element ).attr( 'max' ), 10 );
+    const _currentPage: number = parseInt( $(element ).val(), 10 );
+    let timeOut: any;
+    let _goToPage: number;
+    let _url: string;
 
-        const _allPages: Object = $( element ).data( 'pages' );
-        const _goToPage: number = $( element ).val() - 1;
-        const _lastPage: number = $( element ).attr( 'max' ) - 1;
+    $( element ).on( 'keyup', ( event: Event ): void => {
 
-        if ( _goToPage <= _lastPage && _goToPage >= 0 ) {
+        _goToPage = parseInt( $( element ).val(), 10 );
+        _url = _urlPattern.replace( '[page]', _goToPage );
 
-            if ( event.keyCode == 13 ) {
+        clearTimeout( timeOut );
 
-                window.location = _allPages[ _goToPage ];
+        if ( _goToPage > 0 && _goToPage <= _lastPage && _goToPage !== _currentPage ) {
+
+            if ( event.keyCode === 13 ) {
+
+                window.location = _url;
 
             } else {
 
-                setTimeout( () => {
-                    window.location = _allPages[ _goToPage ];
-                }, 1500 );
+                timeOut = setTimeout( () => {
+                    window.location = _url;
+                }, 2000 );
 
             }
+
         }
 
     } );

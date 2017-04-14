@@ -65,10 +65,8 @@ $inputInsteadOfLinks = true;
                     <div class="cs-pagination__selector">
 
                         <?php
-                            $_pages = array();
-                            for ($i = 1; $i <= $lastPageNum; $i++) {
-                                array_push($_pages, $block->getPageUrl($i));
-                            }
+                            $_urlLastPage = $block->getPageUrl($lastPageNum);
+                            $_urlPattern = str_replace($lastPageNum, '[page]', $_urlLastPage);
                         ?>
 
                         <input
@@ -77,7 +75,7 @@ $inputInsteadOfLinks = true;
                             max="<?php /* @escapeNotVerified */ echo $block->getLastPageNum(); ?>"
                             size="2"
                             value="<?php /* @escapeNotVerified */ echo $block->getCurrentPage() ?>"
-                            data-pages='<?php /* @escapeNotVerified */ echo $block->escapeHtml(json_encode($_pages)); ?>'
+                            data-url-pattern='<?php /* @escapeNotVerified */ echo $block->escapeHtml($_urlPattern); ?>'
                         >
 
                         <span class="cs-pagination__selector-lastpage">
