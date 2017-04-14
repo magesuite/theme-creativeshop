@@ -4,7 +4,10 @@
  * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
  */
 ?>
-<?php $totalNum = $block->getTotalNum(); ?>
+<?php 
+    $block->setCollection($block->getCollection());
+    $totalNum = $block->getTotalNum(); 
+?>
 <p class="cs-category-page__toolbar-amount | cs-t-text">
     <?php if ($block->getLastPageNum() > 1): ?>
         <?php /* @escapeNotVerified */ echo __('Items %1-%2 of %3',
