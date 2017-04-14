@@ -21,19 +21,19 @@
 
             {% set leftAddons = leftAddons|merge( [ {
                 mix: 'cs-grid-product__addon--rating',
-                content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="Add to Wish List" aria-label="Add to Wish List" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=#heart></use></svg>Add to Wish List</a></li></ul>'
+                content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="' ~ translate('Add to Wish List') ~ '" aria-label="' ~ translate('Add to Wish List') ~ '" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=#heart></use></svg>' ~ translate('Add to Wish List') ~ '</a></li></ul>'
             } ] ) %}
 
 
             {% if product.stock %}
                 {% set rightAddons = rightAddons|merge( [ {
                     mix: 'cs-grid-product__addon--in-stock',
-                    content: 'In stock'
+                    content: translate('In stock')
                 } ] ) %}
             {% else %}
                 {% set rightAddons = rightAddons|merge( [ {
                     mix: 'cs-grid-product__addon--out-of-stock',
-                    content: 'Out of stock'
+                    content: translate('Out of stock')
                 } ] ) %}
             {% endif %}
 
