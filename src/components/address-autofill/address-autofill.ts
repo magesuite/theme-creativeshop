@@ -34,12 +34,17 @@ export default class AddressAutofill {
         this.optionsList = '';
 
         $.getJSON( 'https://freegeoip.net/json/', ( location: any ): void => {
-            options.language = window.navigator.userLanguage || window.navigator.language;
             if ( location.countryCode ) {
                 options.region = location.countryCode;
                 this.countrySelect.val( location.countryCode ).change();
             }
         }).always(() => {
+            // The most important parameter to set googleDetector region option is value of country select
+            if ( this.countrySelect.val() !== options.region ) {
+                options.region = this.countrySelect.val();
+            }
+            options.language = window.navigator.userLanguage || window.navigator.language;
+
             // Two detectors will be used based on level of query specificity
             this.googleAddressDetector = new GoogleAddressDetector( options );
             this.googlePlaceDetector = new GooglePlaceDetector( options );
@@ -295,7 +300,7 @@ export default class AddressAutofill {
 
                 const clickedValues: object = $items.eq( selectedIndex ).data( 'value' );
                 this._fillFields( clickedValues );
-                this._focusOnRightField();
+                this._focusOnNextEmptyField();
 
                 jsSelect.remove();
 
@@ -306,7 +311,7 @@ export default class AddressAutofill {
             e.preventDefault();
             const clickedValues: object = $( e.currentTarget ).data( 'value' );
             this._fillFields( clickedValues );
-            this._focusOnRightField();
+            this._focusOnNextEmptyField();
 
             jsSelect.remove();
         } );
@@ -350,7 +355,7 @@ export default class AddressAutofill {
      * Focus on first field that need fill
      * @private
      */
-    private _focusOnRightField(): void {
+    private _focusOnNextEmptyField(): void {
         if ( this.detectorType === 'place' && !this.numberField ) {
             this.streetField.focus();
         } else if ( this.numberField ) {
