@@ -5,57 +5,102 @@
 .#{$namespace}side-nav {
     $root: &;
 
-    &__main {
+    &__parent {
+        margin-bottom: 1.5rem;
+        padding: 1.5rem 0;
         font-size: 1.8rem;
         text-transform: uppercase;
-        color: $colorMineShaft;
         font-weight: 700;
-        padding: 1.8rem 0;
-    }
+        border-bottom: 1px solid $colorGallery;
 
-    &__collapse {
-        border-top: 1px solid $colorGallery;
-        &:last-child {
-            border-bottom: 1px solid $colorGallery;
+        &-link,
+        &-link:visited {
+            color: $colorMineShaft;
+            transition: color .15s linear;
+
+            &:hover {
+                color: $colorCeruleanBlue;
+                text-decoration: none;
+            }
         }
     }
 
-    &__collapse-trigger {
-        font-size: 1.4rem;
-        text-transform: uppercase;
-        color: $colorMineShaft;
-        font-weight: 700;
-        padding: 1.3rem 0;
-    }
+    &__products-counter {
+        font-weight: 400;
+        color: $colorGray;
 
-    &__content {
-        padding-bottom: 1rem;
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
     }
 
     &__list {
-        list-style: none inside none;
-        padding-left: 3rem;
-        margin-bottom: .5rem;
+        margin: 0 0 1rem;
+        padding: 0;
+        list-style: none;
+
+        &--subcats {
+            margin: 1rem 0 2rem;
+            padding-left: 2rem;
+
+            #{$root}__link {
+                color: $colorGray;
+
+                &:visited {
+                    color: $colorGray;
+                }
+
+                &--current {
+                    font-weight: 700;
+
+                    &:hover {
+                        color: $colorGray;
+                    }
+                }
+            }
+        }
+    }
+
+    &__item {
+        font-weight: 400;
+        text-transform: none;
+        font-size: 1.4rem;
+        line-height: 1.25;
+
+        &--has-children,
+        &--has-children ~ #{$root}__item {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
     }
 
     &__link {
-        color: inherit;
-        text-decoration: none;
+        color: $colorMineShaft;
+        transition: color .15s linear;
 
-        &:hover,
-        &:visited,
-        &:focus {
-            color: inherit;
+        &:hover {
+            color: $colorCeruleanBlue;
             text-decoration: none;
         }
-    }
 
-    &__list-item {
-        color: $colorDoveGray;
+        &:visited {
+            color: $colorMineShaft;
 
-        &--active {
+            &:hover {
+                color: $colorCeruleanBlue;
+            }
+        }
+
+        &--current {
             font-weight: 700;
+
+            &:hover {
+                color: $colorMineShaft;
+            }
         }
     }
-
 }
