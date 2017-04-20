@@ -16,6 +16,7 @@
 
     td {
         vertical-align: middle;
+
     }
 
     &__product {
@@ -56,9 +57,15 @@
     &__details {
         padding: 0 1rem 1rem 2rem;
 
+        // fix IE issue - no wrapping text inside flexbox
+        .ie11 & {
+            flex-basis: 100%;
+        }
+
         @include media('>=laptop') {
             padding: 0 1rem 0 2rem;
         }
+
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -176,6 +183,12 @@
     }
 
     &__item {
+
+        // fix IE issue - no wrapping text inside flexbox
+        .ie11 & {
+            width: 100%;
+        }
+
         @include media('<laptop') {
             padding-top: 1rem;
             &:before {
