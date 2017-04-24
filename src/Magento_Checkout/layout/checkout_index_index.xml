@@ -71,7 +71,38 @@
 
 
                                                 <item name="totals" xsi:type="array">
-                                                    <item name="sortOrder" xsi:type="string">40</item>
+                                                    <item name="sortOrder" xsi:type="string">15</item>
+                                                </item>
+
+                                                <!-- add agreements -->
+                                                <item name="before-place-order" xsi:type="array">
+                                                    <item name="sortOrder" xsi:type="string">16</item>
+                                                    <item name="component" xsi:type="string">Magento_Checkout/js/before-place-order</item>
+                                                    <item name="displayArea" xsi:type="string">before-place-order</item>
+                                                    <item name="dataScope" xsi:type="string">before-place-order</item>
+                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="template" xsi:type="string">Magento_Checkout/payment/before-place-order</item>
+                                                    </item>
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="agreements" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Magento_CheckoutAgreements/js/view/checkout-agreements</item>
+                                                            <item name="sortOrder" xsi:type="string">100</item>
+                                                            <item name="displayArea" xsi:type="string">before-place-order</item>
+                                                            <item name="dataScope" xsi:type="string">checkoutAgreements</item>
+                                                            <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+
+                                                <!-- add place order -->
+                                                <item name="place-order" xsi:type="array">
+                                                    <item name="sortOrder" xsi:type="string">17</item>
+                                                    <item name="component" xsi:type="string">Magento_Checkout/js/place-order</item>
+                                                    <item name="displayArea" xsi:type="string">place-order</item>
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="template" xsi:type="string">Magento_Checkout/place-order</item>
+                                                    </item>
                                                 </item>
 
                                             </item>
@@ -87,6 +118,27 @@
                                     </item>
 
 
+                                </item>
+
+                                <!-- remove agreements from payments-list -->
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="billing-step" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="payment" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="payments-list" xsi:type="array">
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="before-place-order" xsi:type="array">
+                                                                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
                                 </item>
 
                             </item>

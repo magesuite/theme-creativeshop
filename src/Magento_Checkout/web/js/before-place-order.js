@@ -6,16 +6,17 @@
 define(
     [
         'uiComponent',
-        'Magento_Checkout/js/model/step-navigator',
+        'Magento_Checkout/js/model/step-navigator'
     ],
     function (Component, stepNavigator ) {
         "use strict";
         return Component.extend({
             defaults: {
-                displayArea: 'next-button',
-                template: 'Magento_Checkout/next-button'
+                displayArea: 'before-place-order',
+                template: 'Magento_Checkout/payment/before-place-order'
             },
-            isHidden: function() {
+
+            isVisible: function() {
                 return stepNavigator.getActiveItemIndex() == 1;
             }
         });
