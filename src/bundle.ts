@@ -24,6 +24,7 @@ import $ from 'jquery';
 import './components/collapse/collapse';
 import './components/dropdown/dropdown';
 import './components/filter-horizontal/filter-horizontal';
+import './components/cart/cart';
 
 // =============================================================================
 // Customizations
