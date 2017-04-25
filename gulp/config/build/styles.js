@@ -26,7 +26,9 @@ const config = {
             }
         ),
     ],
-    cleancss: {},
+    cleancss: {
+        level: 2,
+    },
     sass: {
         precision: 10,
         errLogToConsole: true,
