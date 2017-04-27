@@ -374,16 +374,8 @@
 
             &:checked + #{$root}__label:before {
                 content: '';
-                border-width: 1px;
-                border-color: $colorAlto;
-                border-style: solid;
-                width: 2rem;
-                height: 2rem;
                 background-image: url( 'images/check@2x.png' );
-                background-size: 1rem auto;
-                background-position: center;
-                background-repeat: no-repeat;
-                box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 ), 0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
+                background-attachment: initial;
             }
 
             &[ type='checkbox' ]:disabled + #{$root}__label:before {
@@ -423,6 +415,12 @@
                 box-shadow: inset 0 1px 2px rgba( 0, 0, 0, .15 ), 0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
                 top: 0;
                 margin-top: 1rem;
+                background-image: none;
+                background-size: 1rem auto;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                will-change: border-color, background-image, content, background-attachment;
             }
         }
 

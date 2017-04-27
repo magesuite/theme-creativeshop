@@ -64,6 +64,17 @@
                     });
                 </script>
             <?php endif; ?>
+
+            <script>
+                require([
+                    'jquery'
+                ], function ($) {
+                    /* For some reason Safari (also mobile) has problem with background-image rendering for initially hidden parent node. This piece of script forces safari to redraw element when filter options are shown */
+                    $('.cs-aftersearch-nav__filter-content').on( 'dimensionsChanged', function() {
+                        $(this).find('.cs-aftersearch-nav__filter-input--type_checkbox .cs-input__label').css('background-image', 'none').css( 'background-image', '' );
+                    } );
+                });
+            </script>
         </div>
     </div>
 
