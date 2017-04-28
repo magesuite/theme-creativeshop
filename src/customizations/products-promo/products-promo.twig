@@ -10,9 +10,11 @@
                 {% set ratingContent %}
                     {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
                 {% endset %}
+            {% else %}
+                {% set ratingContent = null %}
             {% endif %}
 
-            {% if ratingContent is defined %}
+            {% if ratingContent is not null %}
                 {% set leftAddons = leftAddons|merge( [ {
                     mix: 'cs-grid-product__addon--rating',
                     content: ratingContent
