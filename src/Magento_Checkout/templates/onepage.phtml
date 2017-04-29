@@ -113,7 +113,7 @@
             function setPhoneOptional() {
                 var $phoneInputs = $( 'input[name="telephone"]' );
                 $phoneInputs.each( function() {
-                    if( $( this ).val() === '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ) {
+                    if( $( this ).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>' ) {
                         $phoneInputs.css( 'color', 'transparent' );
                     }
                 });
@@ -131,7 +131,7 @@
                     $( this ).parents( '.cs-form__field' ).removeClass( 'mage-error _error _required required required-entry' );
                 } );
                 $phoneInputs.on( 'focus', function() {
-                    if ( $( this ).val() === '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ) {
+                    if ( $( this ).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>' ) {
                         $( this ).val( '' );
                     }
 
@@ -140,14 +140,13 @@
                 $( '.cs-checkout-button-next, .cs-payment button' ).on( 'click', function() {
                     $phoneInputs.each( function(){
                         if( !$( this ).val() ) {
-                            $( this ).css( 'color', 'transparent' ).val( '<?php /* @escapeNotVerified */ echo __('No phone provided') ?>' ).change();
+                            $( this ).css( 'color', 'transparent' ).val( '<?php /* @escapeNotVerified */ echo __('No phone') ?>' ).change();
                             $phoneInputs.parents( '.cs-form__field' ).removeClass( '_required required required-entry' );
                         }
                     })
                 } );
             }
             // end of phone workaround
-
 
             // Set zip and city in one line
             function setZipCityFields() {
