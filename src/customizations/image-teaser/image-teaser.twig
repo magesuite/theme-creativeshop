@@ -3,13 +3,17 @@
 {% set displayVariant = 'outside' %}
 {% set itemsPerViewMobile = 1 %}
 {% set itemsPerView = currentScenario.desktopLayout.id %}
-{%  if currentScenario.mobileLayout.id == 'large' or currentScenario.mobileLayout.id == 'slider' or currentScenario.mobileLayout.id == 'col' %}
-        {% set itemsPerRowMobile = 1 %}
+{% if currentScenario.mobileLayout.id == 'large' or currentScenario.mobileLayout.id == 'slider' or currentScenario.mobileLayout.id == 'col' %}
+    {% set itemsPerRowMobile = 1 %}
 {% endif %}
 
 {% if itemsPerView == 6 %}
     {% set itemsPerViewMobile = 3 %}
-    {% set itemsPerRowMobile = 3 %}
+    {% if currentScenario.mobileLayout.id == '2-2-2' %}
+        {% set itemsPerRowMobile = 2 %}
+    {% else %}
+        {% set itemsPerRowMobile = 3 %}
+    {% endif %}
 {% endif %}
 
 {% if currentScenario.teaserWidth.id == 'w-s' %}
@@ -21,11 +25,11 @@
 {% endif %}
 
 {% if currentScenario.mobileLayout.id == '1-2' %}
-    {% set mix = 'cs-image-teaser--big-small-small' %}
+    {% set mix = 'cs-image-teaser--mobile-cfg-big-small-small' %}
 {% endif %}
 
 {% if currentScenario.mobileLayout.id == '1-2-1' %}
-    {% set mix = 'cs-image-teaser--big-small-small-big' %}
+    {% set mix = 'cs-image-teaser--mobile-cfg-big-small-small-big' %}
 {% endif %}
 
 {% if currentScenario.textPositioning.id == 'over' %}
@@ -51,6 +55,7 @@
         {% include locate('components/image-teaser/image-teaser.twig') with {
             lazyload: true,
             namespace: 'cs-',
+            mix: mix,
             navigation: {
                 icons: {
                     prev: {
