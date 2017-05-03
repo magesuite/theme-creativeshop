@@ -38,6 +38,12 @@ $namespace: 'cs-';
             border-radius: 4px;
             box-shadow: 0 0 15px 0 rgba( 0, 0, 0, .3 );
         }
+
+        #{$root}--no-subcats & {
+            @include media( '>=tablet' ) {
+                justify-content: flex-end;
+            }
+        }
     }
 
     &__list {
@@ -71,6 +77,15 @@ $namespace: 'cs-';
                 bottom: .5rem;
                 content: '';
                 border-left: 1px solid $colorAlto;
+            }
+
+            #{$root}--no-subcats & {
+                margin: 0;
+                padding: 0;
+
+                &:before {
+                    display: none;
+                }
             }
         }
 
@@ -136,6 +151,13 @@ $namespace: 'cs-';
             text-decoration: none;
             color: $colorCeruleanBlue;
         }
+
+        #{$root}--no-subcats & {
+            @include media( '<tablet' ) {
+                padding: .5rem 0;
+                flex: 0 0 auto;
+            }
+        }
     }
 
     &__qty {
@@ -151,10 +173,16 @@ $namespace: 'cs-';
             content: ')';
         }
     }
+
+    &--no-subcats {
+        margin-bottom: 1rem;
+    }
 }
 
 .#{$namespace}category-links-dropdown {
     @include category-links-dropdown();
+
+    $root: &;
 
     &__trigger {
         &:before,
@@ -205,6 +233,19 @@ $namespace: 'cs-';
         &--in {
             @include media ( '<tablet' ) {
                 transform: translateY( 0 );
+            }
+        }
+    }
+
+    &--no-subcats {
+        #{$root}__content {
+            @include media( '<tablet' ) {
+                position: static;
+                transform: none;
+                height: auto;
+                opacity: 1;
+                box-shadow: none;
+                padding: 0;
             }
         }
     }
