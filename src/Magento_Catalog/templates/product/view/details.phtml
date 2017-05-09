@@ -73,16 +73,18 @@ endif; ?>
         'jquery'
     ], function($) {
 
-        $( '.cs-pdp-nav .cs-list__item' ).on( 'click', function( e ) {
+        $( '.cs-pdp-nav .cs-list__item,  .cs-product-sale-block__no-review' ).on( 'click', function( e ) {
             e.preventDefault();
+            var href = $( this ).find( 'a' ).attr( 'href' );
+            var target = href.substring( 0, 1 ) == '#' ? href : href.substring( href.indexOf( '#' ) );
             if ( $( window ).width() < 1024 ) {
                 $( 'html, body' ).animate( {
-                    scrollTop: $( $( this ).find( 'a' ).attr( 'href' ) ).offset().top - $( '.cs-header__content' )
+                    scrollTop: $( target ).offset().top - $( '.cs-header__content' )
                         .height()
                 }, 350 );
             } else {
                 $( 'html, body' ).animate( {
-                    scrollTop: $( $( this ).find( 'a' ).attr( 'href' ) ).offset().top
+                    scrollTop: $( target ).offset().top
                 }, 350 );
             }
 
