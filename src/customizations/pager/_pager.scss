@@ -4,6 +4,25 @@
     justify-content: space-between;
     position: relative;
 
+    .account & {
+        flex-wrap: wrap;
+        @include media('<phone-lg') {
+            justify-content: center;
+        }
+    }
+
+    &__block {
+        .account &:first-child {
+            @include media('<laptop') {
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+            @include media('<phone-lg') {
+                width: auto;
+            }
+        }
+    }
+
     &__center {
         position: absolute;
         top: 50%;
