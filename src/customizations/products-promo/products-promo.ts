@@ -6,5 +6,9 @@ import $ from 'jquery';
 if ( $( '.cs-products-promo' ).length ) {
     new ProductsPromo( $( '.cs-products-promo' ), {
         slideMinWidth: 240,
+        simulateTouch: false,
+        onSlideChangeStart( swiper: any ): void {
+            $( document ).trigger( 'destroyItemClones' );
+        },
     } );
 }
