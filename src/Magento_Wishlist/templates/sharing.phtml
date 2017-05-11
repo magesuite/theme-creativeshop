@@ -1,0 +1,48 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Wishlist\Block\Customer\Sharing */
+?>
+<form class="cs-form  form wishlist share"
+      action="<?php /* @escapeNotVerified */ echo $block->getSendUrl() ?>"
+      id="form-validate"
+      method="post"
+      data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+      data-mage-init='{"validation":{}}'>
+    <fieldset class="cs-form__fieldset cs-form__fieldset--level_1">
+        <?php echo $block->getBlockHtml('formkey')?>
+        <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
+            <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light"><?php /* @escapeNotVerified */ echo __('Sharing Information') ?></span>
+        </legend>
+
+        <div class="input | cs-form__field | field emails required">
+            <label class="cs-input__label | label" for="email_address"><span><?php /* @escapeNotVerified */ echo __('Email addresses, separated by commas') ?></span></label>
+            <div class="cs-input__control">
+                <textarea class="cs-input__textarea cs-input__textarea--high" name="emails" cols="60" rows="5" id="email_address" data-validate="{required:true,'validate-emails':true}"><?php /* @escapeNotVerified */ echo $block->getEnteredData('emails') ?></textarea>
+            </div>
+        </div>
+        <div class="input | cs-form__field | field text">
+            <label class="cs-input__label | label" for="message"><span><?php /* @escapeNotVerified */ echo __('Message') ?></span></label>
+            <div class="cs-input__control">
+                <textarea id="message" class="cs-input__textarea cs-input__textarea--high" name="message" cols="60" rows="5"><?php /* @escapeNotVerified */ echo $block->getEnteredData('message') ?></textarea>
+            </div>
+        </div>
+        <?php if ($this->helper('Magento\Wishlist\Helper\Rss')->isRssAllow()): ?>
+            <div class="cs-input cs-input--type-checkbox | field choice rss">
+                <input type="checkbox" name="rss_url" id="rss_url" value="1" title="<?php /* @escapeNotVerified */ echo __('Check here to link an RSS feed to your Wish List.') ?>" class="cs-input__checkbox | checkbox">
+                <label class="cs-input__label" for="rss_url">
+                    <?php /* @escapeNotVerified */ echo __('Check here to link an RSS feed to your Wish List.') ?>
+                </label>
+            </div>
+        <?php endif; ?>
+    </fieldset>
+
+    <div class="cs-form__buttons">
+        <button type="submit" title="<?php /* @escapeNotVerified */ echo __('Share Wish List') ?>" class="cs-button cs-button--type_long cs-button--type_mobile-wide cs-button--look_default">
+            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Share Wish List') ?></span>
+            <svg class="cs-button__icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </button>
+    </div>
+</form>
