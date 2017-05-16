@@ -1,16 +1,14 @@
-<?php
-// @codingStandardsIgnoreFile
-
-/* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle */
-?>
+<?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
 <?php $product = $block->getProduct() ?>
+
+<?php $associatedProducts = $block->getAssociatedProducts(); ?>
+<?php $hasAssociatedProducts = count($associatedProducts) > 0; ?>
 <?php if ($block->displayProductStockStatus()): ?>
-    <?php if ($product->isAvailable()): ?>
+    <?php if ($product->isAvailable() && $hasAssociatedProducts): ?>
         <div
             class="cs-product-sale-block__stock-text cs-product-sale-block__stock-text--available"
-            title="<?php /* @escapeNotVerified */ echo __('Availability:') ?>"
-        >
-            <link itemprop="availability" href="http://schema.org/InStock" />
+            title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
+            >
             <svg class="cs-product-sale-block__stock-icon cs-product-sale-block__stock-icon--available">
                 <use xlink:href="#check"></use>
             </svg>
@@ -19,11 +17,9 @@
     <?php else: ?>
         <div
             class="cs-product-sale-block__stock-text cs-product-sale-block__stock-text--unavailable"
-            title="<?php /* @escapeNotVerified */ echo __('Availability:') ?>"
-        >
-            <link itemprop="availability" href="http://schema.org/OutOfStock" />
+            title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
+            >
             <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
         </div>
     <?php endif; ?>
 <?php endif; ?>
-<?php echo $block->getChildHtml('bundle_prices') ?>
