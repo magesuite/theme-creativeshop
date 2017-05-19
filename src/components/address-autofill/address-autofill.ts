@@ -39,11 +39,12 @@ export default class AddressAutofill {
                 this.countrySelect.val( location.countryCode ).change();
             }
         }).always(() => {
-            // The most important parameter to set googleDetector region option is value of country select
+            // The most important parameter to set googleDetector region option and language option is value of country select
             if ( this.countrySelect.val() !== options.region ) {
                 options.region = this.countrySelect.val();
             }
-            options.language = window.navigator.userLanguage || window.navigator.language;
+
+            options.language = this.countrySelect.val() || window.navigator.userLanguage || window.navigator.language;
 
             // Two detectors will be used based on level of query specificity
             this.googleAddressDetector = new GoogleAddressDetector( options );
@@ -402,6 +403,8 @@ export default class AddressAutofill {
 
         this.countrySelect.on( 'change', () => {
             this.options.region = this.countrySelect.val();
+            this.options.language = this.countrySelect.val();
+
             this.googleAddressDetector = new GoogleAddressDetector( this.options );
             this.googlePlaceDetector = new GooglePlaceDetector( this.options );
         } );
