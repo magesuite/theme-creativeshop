@@ -1,0 +1,116 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * Grouped product data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\BaseImage
+ * @var $block \Magento\GroupedProduct\Block\Product\View\Type\Grouped
+ */
+?>
+<?php
+    $block->setPreconfiguredValue();
+    $product = $block->getProduct();
+    $associatedProducts = $block->getAssociatedProducts();
+    $hasAssociatedProducts = count($associatedProducts) > 0;
+?>
+
+<div class="cs-table grouped">
+    <table class="cs-table__body | data grouped" id="super-product-table">
+        <caption class="cs-visually-hidden | table-caption"><?php /* @escapeNotVerified */ echo __('Grouped product
+        items') ?></caption>
+        <thead class="cs-table__head">
+        <tr>
+            <th class="cs-table__col-head | item" scope="col"><?php /* @escapeNotVerified */ echo __('Product Name')
+                ?></th>
+            <?php if ($product->isSaleable()): ?>
+                <th class="cs-table__col-head | qty" scope="col"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+            <?php endif; ?>
+        </tr>
+        </thead>
+
+        <?php if ($hasAssociatedProducts): ?>
+            <?php $productIterator = 0; ?>
+            <?php foreach ($associatedProducts as $item): ?>
+                <tbody>
+                <tr>
+                    <td data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>" class="cs-table__col | item">
+                        <strong class="product-item-name"><?php echo $block->escapeHtml($item->getName()) ?></strong>
+                        <?php if ($block->getCanShowProductPrice($product)): ?>
+                            <?php if ($block->getCanShowProductPrice($item)): ?>
+                                <?php /* @escapeNotVerified */ echo $block->getProductPrice($item) ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </td>
+                    <?php if ($product->isSaleable()): ?>
+                        <td data-th="<?php echo $block->escapeHtml(__('Qty')); ?>" class="cs-table__col | qty">
+                            <?php if ($item->isSaleable()) : ?>
+                                <div class="control qty">
+
+                                    <div class="cs-box-addtocart__qty-increment">
+                                        <?php
+                                            $productDefaultQty = $block->getProductDefaultQty() * 1;
+                                            $inputName = 'super_group['.$item->getId().']';
+                                        ?>
+                                        <?=$this->getLayout()->createBlock(
+                                            'Creativestyle\FrontendExtension\Block\Twig',
+                                            'add-to-cart-pdp-'.$productIterator, [
+                                                'data' => [
+                                                    "namespace" => 'cs-',
+                                                    "initialValue" => /* @escapeNotVerified */ $item->getQty() * 1 ,
+                                                    "maxLength" => 12,
+                                                    "minValue" => 0,
+                                                    "size" => 2,
+                                                    "name" => $inputName,
+                                                    "inputParams" => 'data-validate="'.$block->escapeHtml(json_encode
+                                                        ("'validate-grouped-qty': '#super-product-table'")).'"
+                                                         data-selector="super_group['.$item->getId().']" title="'.__
+                                                        ('Qty').'" data-errors-message-box="#validation-message-box"',
+                                                    "icons" => [
+                                                        "increment" => '#plus',
+                                                        "decrement" => '#minus'
+                                                    ]
+                                                ]
+                                            ]
+                                        )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <div class="cs-t-text cs-t-text--look_error" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+                                    <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+                <?php if ($block->getCanShowProductPrice($product)
+                    && $block->getCanShowProductPrice($item)
+                    && trim($block->getProductPriceHtml(
+                        $item,
+                        \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
+                    ))): ?>
+                    <tr class="row-tier-price">
+                        <td colspan="2">
+                            <?php echo $block->getProductPriceHtml(
+                                $item,
+                                \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
+                            ) ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+                <?php $productIterator = $productIterator + 1; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tbody>
+            <tr>
+                <td class="unavailable"
+                    colspan="<?php if ($product->isSaleable()): ?>4<?php else : ?>3<?php endif; ?>">
+                    <?php /* @escapeNotVerified */ echo __('No options of this product are available.') ?>
+                </td>
+            </tr>
+            </tbody>
+        <?php endif; ?>
+    </table>
+</div>
+<div id="validation-message-box"></div>
