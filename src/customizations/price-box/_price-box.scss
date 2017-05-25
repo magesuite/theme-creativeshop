@@ -5,14 +5,27 @@ $namespace: 'cs-';
 .price-box {
     @include priceBox();
 
+    .page-product-bundle & {
+        padding-top: 1rem;
+        border-top: 1px solid $colorAlto;
+    }
+
     .price {
         color: $colorCeruleanBlue;
         font-size: 1.51rem;
 
         &-label {
             display: block;
-            @extend .#{$namespace}visually-hidden;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding-bottom: .3rem;
+
+            body:not( .page-product-bundle, .page-product-grouped ) & {
+                @extend .#{$namespace}visually-hidden;
+            }
         }
+
     }
 
     .old-price {
@@ -37,12 +50,21 @@ $namespace: 'cs-';
         }
 
     }
+
+    .price-from {
+        margin-right: 1.5rem;
+    }
 }
 
 .#{$namespace}price--pdp {
     padding-bottom: 15px;
     margin-bottom: 10px;
     border-bottom: 1px solid $colorAlto;
+
+    .page-product-bundle & {
+        padding-bottom: 0;
+        padding-top: .5rem;
+    }
 
     .price-box {
         display: flex;
@@ -68,5 +90,9 @@ $namespace: 'cs-';
 
     .old-price .price {
         font-size: 1.2rem !important;/* stylelint-disable-line declaration-no-important */
+    }
+
+    .page-product-grouped & {
+        padding-bottom: 0;
     }
 }
