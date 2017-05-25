@@ -2,7 +2,10 @@
     $root: &;
 
     @include container();
-    margin: 0 calc( ( (100vw - 100%) / 2 ) * -1 );
+    margin: 0 auto;
+    width: 100%;
+    max-width: 189rem;
+    box-sizing: border-box;
 
     &__inner {
         @include container-wrapper();
@@ -136,11 +139,18 @@
     }
 
     &--edge-to-edge {
+        width: 100vw;
+        margin: 0 calc( ( ( 100vw - 100% ) / 2 ) * -1 );
         padding-left: 0;
         padding-right: 0;
-        width: 100vw;
-        max-width: 100vw;
-        overflow-x: hidden;
+
+        @media ( min-width: 1890px ) {
+            margin: 0 auto;
+
+            .#{$namespace}container__inner & {
+                margin: 0 -34.5rem;
+            }
+        }
     }
 
     &--breadcrumbs {
@@ -149,7 +159,8 @@
         background-position: right;
         background-repeat: no-repeat;
         display: none;
-        @include media('>=tablet') {
+
+        @include media( '>=tablet' ) {
             display: block;
         }
     }
