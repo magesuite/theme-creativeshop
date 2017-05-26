@@ -19,4 +19,11 @@ var config = {
             export: 'cssPolyfills',
         },
     },
+    config: {
+        mixins: {
+            'Magento_Checkout/js/view/summary/cart-items': {
+                'Magento_Checkout/js/view/summary/cart-items-ext': true
+            }
+        }
+    }
 };
