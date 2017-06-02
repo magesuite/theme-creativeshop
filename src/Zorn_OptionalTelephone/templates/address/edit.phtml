@@ -59,21 +59,6 @@
                 >
             </div>
         </div>
-        <div class="cs-input | cs-form__field |  fax">
-            <label class="cs-input__label" for="fax">
-                <span><?php /* @escapeNotVerified */ echo __('Fax') ?></span>
-            </label>
-            <div class="cs-input__control">
-                <input
-                    type="text"
-                    name="fax"
-                    id="fax"
-                    title="<?php /* @escapeNotVerified */ echo __('Fax') ?>"
-                    value="<?php echo $block->escapeHtml($block->getAddress()->getFax()) ?>"
-                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('fax') ?>"
-                >
-            </div>
-        </div>
     </fieldset>
 
     <fieldset class="cs-form__fieldset cs-form__fieldset--level_1 | set">
@@ -100,7 +85,7 @@
                 <div class="nested">
                     <?php $_streetValidationClass = trim(str_replace('required-entry', '', $_streetValidationClass)); ?>
                     <?php for ($_i = 1, $_n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $_i < $_n; $_i++): ?>
-                        <div class="cs-input | cs-form__field cs-form__field--space-top | additional">
+                        <div class="cs-input | cs-form__field cs-form__field--space-top | no-required | additional">
                             <label class="cs-input__label" for="street_<?php /* @escapeNotVerified */ echo $_i+1 ?>">
                                 <span><?php /* @escapeNotVerified */ echo __('Street Address %1', $_i+1) ?></span>
                             </label>
@@ -111,7 +96,8 @@
                                     value="<?php echo $block->escapeHtml($block->getStreetLine($_i+1)) ?>"
                                     title="<?php /* @escapeNotVerified */ echo __('Street Address %1', $_i+1) ?>"
                                     id="street_<?php /* @escapeNotVerified */ echo $_i+1 ?>"
-                                    class="cs-input__input <?php /* @escapeNotVerified */ echo $_streetValidationClass ?>"
+                                    class="cs-input__input <?php /* @escapeNotVerified */ echo
+                                    $_streetValidationClass ?>"
                                 >
                             </div>
                         </div>
