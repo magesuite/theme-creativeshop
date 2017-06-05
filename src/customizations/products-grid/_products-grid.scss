@@ -1,0 +1,81 @@
+@import '../../../node_modules/creative-patterns/packages/components/products-grid/src/products-grid';
+
+/* This map contains breakpoint names as keys according to the breakpoints map for RWD
+ * Value represens count of columns per row for given breakpoint
+ * If you need to show all products for given breakpoint, the value should be 0
+ * */
+$colsByBreakpoint: (
+    phone: 1,
+    phone-lg: 2,
+    tablet: 3,
+    laptop: 4,
+    laptop-lg: 4,
+    desktop: 5,
+    tv: 5
+);
+
+/* This map contains breakpoint names as keys according to the breakpoints map for RWD
+ * Value represens size of hero item for given breakpoint
+ * If you don't have any hero items in your project, put 'none' as value for all keys
+ * */
+$heroSizeByBreakpoint: (
+    phone: 0,
+    phone-lg: 0,
+    tablet: 2,
+    laptop: 2,
+    laptop-lg: 2,
+    desktop: 2,
+    tv: 2
+);
+
+$fontSizeBaseHeadline: 13vw;
+$fontSizeBaseSubheadline: 9vw;
+
+.#{$namespace}products-grid {
+    $root: &;
+
+    /* Get Basic styles and show only N first rows logic 
+     * @param $colsByBreakpoint { map } - columns configuration for each breakpoint
+     * @param $heroSizeByBreakpoint { map } - hero size (how many tiles it take) for each breakpoint
+    */
+    @include productsGrid( $colsByBreakpoint, $heroSizeByBreakpoint, $fontSizeBaseHeadline, $fontSizeBaseSubheadline );
+
+    &__hero {
+        &-image {
+            position: static;
+            height: 100%;
+            max-height: 100%;
+            max-width: none;
+            transform: none;
+        }
+
+        &-content-wrapper {
+            align-items: flex-start;
+        }
+
+        &-content {
+            width: 100%;
+        }
+
+        &-headline {
+            @extend .#{$namespace}hero__headline;
+
+            @media screen and ( min-width: 1200px ) {
+                font-size: 4rem;
+            }
+        }
+
+        &-subheadline {
+            @extend .#{$namespace}hero__subheadline;
+
+            @media screen and ( min-width: 1200px ) {
+                font-size: 2.7rem;
+            }
+        }
+
+        &-text {
+            @extend .#{$namespace}hero__text;
+            max-width: 75%;
+        }
+    }
+}

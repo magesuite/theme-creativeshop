@@ -1,9 +1,122 @@
-<div class="cs-container">
-    <div class="cs-container__inner">
-        {% include locate( 'components/products-grid/products-grid.twig' ) with { 
+{% set items = [] %}
+{% set teasersConfig = '' %}
+
+{% set columnsConfig = '{
+    "phone": 1,
+    "phoneLg": 2,
+    "tablet": 3,
+    "laptop": 4,
+    "laptopLg": 4,
+    "desktop": 5,
+    "tv": 6
+}' %}
+
+{% for product in products %}
+
+    {% set leftAddons = [] %}
+    {% set rightAddons = [] %}
+    {% set productMix = 'cs-products-grid__item' %}
+
+    {% if product.rating.data is not null %}
+        {% set ratingContent %}
+            {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
+        {% endset %}
+    {% else %}
+        {% set ratingContent = null %}
+    {% endif %}
+
+    {% if ratingContent is not null %}
+        {% set leftAddons = leftAddons|merge( [ {
+            mix: 'cs-grid-product__addon--rating',
+            content: ratingContent
+        } ] ) %}
+    {% endif %}
+
+    {% set leftAddons = leftAddons|merge( [ {
+        mix: 'cs-grid-product__addon--rating',
+        content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="' ~ translate('Add to Wish List') ~ '" aria-label="' ~ translate('Add to Wish List') ~ '" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=#heart></use></svg>' ~ translate('Add to Wish List') ~ '</a></li></ul>'
+    } ] ) %}
+
+    {% if product.stock %}
+        {% set rightAddons = rightAddons|merge( [ {
+            mix: 'cs-grid-product__addon--in-stock',
+            content: translate('In stock')
+        } ] ) %}
+    {% else %}
+        {% set rightAddons = rightAddons|merge( [ {
+            mix: 'cs-grid-product__addon--out-of-stock',
+            content: translate('Out of stock')
+        } ] ) %}
+    {% endif %}
+
+    {% set content %}
+        {% include locate( 'grid-product/grid-product.twig' ) with {
             namespace: 'cs-',
-            items: products,
-            hero: hero
+            lazyload: true,
+            showWrapper: true,
+            tag: 'div',
+            url: product.url,
+            image: {
+                src: product.image,
+                alt: product.name,
+            },
+            name: product.name,
+            price: {
+                content: product.price
+            },
+            swatches: {
+                mix: 'cs-grid-product__swatches--color-only',
+                content: product.swatches
+            },
+            addons: {
+                left: leftAddons,
+                right: rightAddons
+            },
         } %}
-    </div>
-</div>
+    {% endset %}
+
+    {% set items = items|merge( [ {
+        mix: productMix,
+        content: content
+    } ] ) %}
+{% endfor %}
+
+{% if hero is defined %}
+    {% set teasersConfig = '[
+        {
+            "id": 1,
+            "mobile": false,
+            "size": {
+                "x": 2,
+                "y": 1
+            },
+            "gridPosition": {
+                "x": "' ~ hero.position ~ '",
+                "y": 1
+            }
+        }
+    ]' %}
+
+    {% set hero = hero|merge( {
+        button: {
+            label: hero.button.label,
+            class: 'cs-button cs-button--type_long cs-button--look_default | cs-products-grid__button',
+            labelClass: 'cs-button__span',
+            icon: {
+                class: 'cs-button__icon | cs-products-grid__button-icon',
+                src: '#arrow_next'
+            }
+        },
+        mix: 'cs-grid-layout__brick--x2 cs-grid-layout__brick--teaser | cs-products-grid__hero',
+        teaserId: 1
+    } ) %}
+{% endif %}
+
+
+{% include locate( 'components/products-grid/products-grid.twig' ) with { 
+    namespace: 'cs-',
+    items: items,
+    hero: hero,
+    columnsConfig: columnsConfig,
+    teasersConfig: teasersConfig
+} %}

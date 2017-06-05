@@ -51,6 +51,7 @@ import './customizations/sticky-block/sticky-block';
 import './customizations/pagination/pagination';
 import './customizations/reviews/reviews';
 import './customizations/item-cloner/item-cloner';
+import './customizations/grid-layout/grid-layout';
 import AddressAutofill from './customizations/address-autofill/address-autofill';
 export { AddressAutofill };
 

@@ -1,0 +1,54 @@
+@import '../../../node_modules/creative-patterns/packages/components/grid-layout/src/grid-layout';
+
+$bricksPerRow: (
+    phone: 1,
+    phone-lg: 2,
+    tablet: 3,
+    laptop: 4,
+    laptop-lg: 4,
+    desktop: 4,
+    tv: 4
+);
+
+$bricksHeight: (
+    phone: 336px,
+    phone-lg: 336px,
+    tablet: 406px,
+    laptop: 406px,
+    laptop-lg: 406px,
+    desktop: 406px,
+    tv: 406px
+);
+
+.#{$namespace}grid-layout {
+    @include gridLayout( $bricksPerRow, $bricksHeight, 0 );
+    position: relative;
+
+    &:after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: $colorWhite;
+        z-index: 7;
+        content: '';
+    }
+
+    &__brick {
+        &:after {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: $colorGallery;
+            z-index: 6;
+            content: '';
+        }
+
+        &--teaser:after {
+            display: none;
+        }
+    }
+}
