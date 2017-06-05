@@ -5,11 +5,6 @@ $namespace: 'cs-';
 .price-box {
     @include priceBox();
 
-    .page-product-bundle & {
-        padding-top: 1rem;
-        border-top: 1px solid $colorAlto;
-    }
-
     .price {
         color: $colorCeruleanBlue;
         font-size: 1.51rem;
@@ -21,11 +16,16 @@ $namespace: 'cs-';
             text-transform: uppercase;
             padding-bottom: .3rem;
 
-            body:not( .page-product-bundle, .page-product-grouped ) & {
+            body:not( .page-product-bundle, .page-product-grouped ) p:not( .price-from, .price-to ) & {
                 @extend .#{$namespace}visually-hidden;
             }
         }
 
+    }
+
+    .price-from,
+    .price-to {
+        display: inline-block;
     }
 
     .old-price {
