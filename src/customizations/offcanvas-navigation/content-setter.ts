@@ -113,6 +113,16 @@ export function renderUserAction(): string {
     </li>`;
 }
 
+// add placeholder for storeviewswitcher
+export function renderStoreViewSwitcher(): string {
+    return `<div class="cs-offcanvas-navigation__item-lang-switcher"></div>`;
+}
+
+// move storeviewswitcher to placeholder in offcanvas
+export function moveStoreViewSwitcher(): void {
+    jQuery( `#switcher-language-nav` ).appendTo( `.cs-offcanvas-navigation__item-lang-switcher` );
+}
+
 /**
  * Sets offcanvas navigation content.
  */
@@ -120,7 +130,8 @@ export const contentSetter: Function = ( offcanvasNavigation: OffcanvasNavigatio
     const $navigation: JQuery = $( `.${navClassName}` );
     const $links: JQuery = $navigation.find( `.${navClassName}__link` ).not( `.${navClassName}__link--category, .${navClassName}__link--subcategory` );
     const $offNavList: JQuery = offcanvasNavigation.getElement().find( `.${offNavClassName}__list` );
-    $offNavList.append( renderUserAction() + renderTree( buildTree( $links ) ) );
+    $offNavList.append( renderTree( buildTree( $links ) ) + renderUserAction() + renderStoreViewSwitcher() );
+    moveStoreViewSwitcher();
 };
 
 export default contentSetter;

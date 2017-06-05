@@ -19,6 +19,8 @@
         <move element="top.links" destination="header.user-area" before="-"/>
 
         <referenceContainer name="header.panel" remove="true"/>
+        <move element="store_language" destination="information-stripe" after="authorization-link"/>
+
 
         <!--Welcome message-->
         <referenceBlock name="header" remove="true"/>
@@ -27,6 +29,15 @@
             <container name="information.stripe.container" htmlTag="div" htmlClass="cs-container cs-container--contrast" before="-">
                 <container name="information.stripe.container.inner" htmlTag="div" htmlClass="cs-container__inner cs-container__inner--flex">
                     <block class="Magento\Framework\View\Element\Template" name="information-stripe" template="Magento_Theme::html/information-stripe.phtml"/>
+
+                    <!-- this block is moved by js to offcanvas navigation -->
+                    <container name="store_language_nav_container" htmlTag="div" htmlClass="cs-visually-hidden">
+                        <block class="Magento\Store\Block\Switcher" name="store_language_nav" as="store_language_nav" template="switch/languages.phtml">
+                            <arguments>
+                                <argument name="id_modifier" xsi:type="string">nav</argument>
+                            </arguments>
+                        </block>
+                    </container>
                 </container>
             </container>
 
