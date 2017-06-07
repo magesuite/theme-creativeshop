@@ -1,0 +1,36 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var \Magento\Cookie\Block\Html\Notices $block */ ?>
+<?php if ($this->helper('Magento\Cookie\Helper\Cookie')->isUserNotAllowSaveCookie()): ?>
+    <div class="cs-cookie-message cs-cookie-message--shown" id="notice-cookie-block" style="display: none">
+        <p class="cs-cookie-message__text">
+            <svg class="cs-cookie-message__icon"><use xlink:href="#cookie"></use></svg>
+            <strong><?php /* @escapeNotVerified */ echo __('We use cookies to make your experience better.') ?></strong> <?php /* @escapeNotVerified */ echo __('To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.') ?> <?php /* @escapeNotVerified */ echo __('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()) ?>
+        </p>
+        <div>
+            <button type="button" id="btn-cookie-allow" class="cs-button cs-button--look_default cs-button--size_300 | cs-cookie-message__button">
+                <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Allow Cookies');?></span>
+            </button>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "#notice-cookie-block": {
+                "cookieNotices": {
+                    "cookieAllowButtonSelector": "#btn-cookie-allow",
+                    "cookieName": "<?php /* @escapeNotVerified */ echo \Magento\Cookie\Helper\Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>",
+                    "cookieValue": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Cookie\Helper\Cookie')->getAcceptedSaveCookiesWebsiteIds() ?>,
+                    "cookieLifetime": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Cookie\Helper\Cookie')->getCookieRestrictionLifetime()?>,
+                    "noCookiesUrl": "<?php /* @escapeNotVerified */ echo $block->getUrl('cookie/index/noCookies') ?>"
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
