@@ -44,24 +44,59 @@
         @extend .#{$namespace}list;
         @extend .#{$namespace}list--unstyled;
         margin-bottom: 2rem;
-    }
-
-    li {
-        @extend .#{$namespace}list__item;
         color: $colorDoveGray;
 
-        &:before {
-            content: '';
-            display: inline-block;
-            width: 1.2rem;
-            height: 1.2rem;
-            background-image: url( 'images/check@2x.png' );
-            background-size: 1.2rem auto;
-            background-position: center;
-            background-repeat: no-repeat;
-            margin-right: 1rem;
-        }
+        li {
+            @extend .#{$namespace}list__item;
+            flex-wrap: wrap;
 
+            &:before {
+                content: '';
+                display: inline-block;
+                width: 1.2rem;
+                height: 1.2rem;
+                background-image: url( 'images/check@2x.png' );
+                background-size: 1.2rem auto;
+                background-position: center;
+                background-repeat: no-repeat;
+                margin-right: 1rem;
+            }
+
+            ul {
+                width: 100%;
+                margin: 0;
+                padding: 0 0 0 2.2rem;
+            }
+        }
+    }
+
+    ol {
+        margin: 0 0 2rem 0;
+        padding: 0;
+        list-style: decimal inside;
+        color: $colorDoveGray;
+
+        li {
+            margin: 0;
+            padding: .4em 1.5rem .5rem 0;
+            box-sizing: border-box;
+
+            &:before {
+                display: inline-block;
+                content: '';
+                width: .5rem;
+            }
+
+            ol {
+                list-style-type: lower-alpha;
+                margin: 0;
+                padding: 0 0 0 2.2rem;
+
+                ol {
+                    list-style-type: lower-roman;
+                }
+            }
+        }
     }
 
     img {
