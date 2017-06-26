@@ -18,6 +18,8 @@ $product = $block->getProduct();
         <div class="cs-attributes-list">
             <dl class="cs-attributes-list__list cs-attributes-list__list--columns" id="product-attribute-specs-table">
                 <?php foreach ($additional as $data): ?>
+                    <?php if($data['value'] == __('N/A')) { continue; } ?>
+                    
                     <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($data['label'])) ?>:
                     </dt>
                     <dd class="cs-attributes-list__item">
