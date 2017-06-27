@@ -10,6 +10,16 @@ $bricksPerRow: (
     tv: 4
 );
 
+$bricksPerRowInColumn: (
+    phone: 1,
+    phone-lg: 2,
+    tablet: 2,
+    laptop: 3,
+    laptop-lg: 3,
+    desktop: 3,
+    tv: 3
+);
+
 $bricksHeight: (
     phone: 336px,
     phone-lg: 336px,
@@ -22,8 +32,16 @@ $bricksHeight: (
 
 .#{$namespace}grid-layout {
     @include gridLayout( $bricksPerRow, $bricksHeight, 0 );
-    position: relative;
+}
 
+.#{$namespace}grid-layout_in-column {
+    @include gridLayout( $bricksPerRowInColumn, $bricksHeight, 0 );
+}
+
+.#{$namespace}grid-layout,
+.#{$namespace}grid-layout_in-column {
+    position: relative;
+    
     &:after {
         position: absolute;
         bottom: 0;

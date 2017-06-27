@@ -32,7 +32,7 @@ $filtersLayout = $this->getFiltersLayout();
     <?php
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
-        $viewModeClass = $heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
+        $viewModeClass = 'cs-grid-layout_in-column'; //$heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
         $image = 'category_page_grid';
         $image2x = 'category_page_grid@2x';
         $showDescription = false;
@@ -56,106 +56,163 @@ $filtersLayout = $this->getFiltersLayout();
             ?>
         </div>
 
+        <?php 
+            $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig();
+            $teasersJson = json_encode($teasersConfig['json']);
+        ?>
+
         <?php $iterator = 0; ?>
-        <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?> <?php /* @escapeNotVerified */ echo $viewModeClass; ?>--in-column">
-            <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
-            <?php foreach ($productCollection as $product): ?>
-                <?php
-                    $iterator++;
-                    $showHeroProduct = $iterator==1 && $heroProduct;
-                ?>
-                <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__item <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__item--hero<?php endif; ?> | cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
+        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>" data-columns-configuration='{"phone":1,"phoneLg":2,"tablet":2,"laptop":3,"laptopLg":3,"desktop":3,"tv":3}' data-teasers-configuration='<?php echo $teasersJson ?>'>
+            <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__grid">
+                <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
+                <?php foreach ($productCollection as $product): ?>
                     <?php
-                    $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
-                    $productImageUrl = $imageHelper->init($product, $image)->getUrl();
-                    $productImageUrl2x = $imageHelper->init($product, $image2x)->getUrl();
-                    $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
-                    $productNameStripped = $block->stripTags($product->getName(), null, true);
-                    $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
-                    $getIsSalable = $salabilityStatus[$product->getId()];
+                        $iterator++;
+                        $showHeroProduct = $iterator==1 && $heroProduct;
+                    ?>
+                    <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__brick <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__brick--teaser <?php echo $viewModeClass; ?>__brick--x2 <?php echo $viewModeClass; ?>__brick--y2<?php endif; ?>">
+                        <div class="cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
+                            <?php
+                            $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
+                            $productImageUrl = $imageHelper->init($product, $image)->getUrl();
+                            $productImageUrl2x = $imageHelper->init($product, $image2x)->getUrl();
+                            $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
+                            $productNameStripped = $block->stripTags($product->getName(), null, true);
+                            $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+                            $getIsSalable = $salabilityStatus[$product->getId()];
 
-                    $data = [
-                        'lazyload' => $iterator > 9,
-                        'url' => $product->getProductUrl(),
-                        'image' => [
-                            'src' => $productImageUrl,
-                            'srcset' => $productImageSrcset,
-                            'alt' => $productNameStripped,
-                            'width' => '216',
-                            'height' => '270'
-                        ],
-                        'name' => $helper->productAttribute($product, $product->getName(), 'name'),
-                        'price' => [
-                            'content' => $block->getProductPrice($product)
-                        ],
-                        'swatches' => [
-                            'content' => $block->getProductDetailsHtml($product)
-                        ],
-                        'addons' => [
-                            'right' => [
-                                [
-                                    'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
-                                    'content' => $getIsSalable ? __('In stock') : __('Out of stock')
-                                ]
-                            ]
-                        ]
-                    ];
-
-                    $ratingData = $csProductHelper->getReviewSummary($product)['data'];
-                    if($ratingData['activeStars']):
-                        $data['addons']['left'][] = [
-                            'mix' => 'cs-grid-product__addon--rating',
-                            'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$iterator, [
-                                    'data' => [
-                                        'namespace' => 'cs-',
-                                        'maxStars' => $ratingData['maxStars'],
-                                        'activeStars' => $ratingData['activeStars'],
-                                        'text' => '('.$ratingData['count'].')'
+                            $data = [
+                                'lazyload' => $iterator > 9,
+                                'url' => $product->getProductUrl(),
+                                'image' => [
+                                    'src' => $productImageUrl,
+                                    'srcset' => $productImageSrcset,
+                                    'alt' => $productNameStripped,
+                                    'width' => '216',
+                                    'height' => '270'
+                                ],
+                                'name' => $helper->productAttribute($product, $product->getName(), 'name'),
+                                'price' => [
+                                    'content' => $block->getProductPrice($product)
+                                ],
+                                'swatches' => [
+                                    'content' => $block->getProductDetailsHtml($product)
+                                ],
+                                'addons' => [
+                                    'right' => [
+                                        [
+                                            'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                                            'content' => $getIsSalable ? __('In stock') : __('Out of stock')
+                                        ]
                                     ]
                                 ]
-                            )->setTemplate("star-rating/star-rating.twig")->toHtml()
-                        ];
-                    endif;
+                            ];
 
-                    $data['addons']['left'][] = [
-                        'content' => sprintf(
-                            '<ul class="cs-links-block-addto" data-role="add-to-links">
-                                <li class="cs-links-block-addto__item">
-                                    <a
-                                        href="#"
-                                        class="cs-links-block-addto__link towishlist"
-                                        title="%s"
-                                        aria-label="%s"
-                                        data-post=\'%s\'
-                                        data-action="add-to-wishlist"
-                                        role="button"
-                                    >
-                                        <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
-                                            <use xlink:href="#heart"></use>
-                                        </svg>
-                                        %s
+                            $ratingData = $csProductHelper->getReviewSummary($product)['data'];
+                            if($ratingData['activeStars']):
+                                $data['addons']['left'][] = [
+                                    'mix' => 'cs-grid-product__addon--rating',
+                                    'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$iterator, [
+                                            'data' => [
+                                                'namespace' => 'cs-',
+                                                'maxStars' => $ratingData['maxStars'],
+                                                'activeStars' => $ratingData['activeStars'],
+                                                'text' => '('.$ratingData['count'].')'
+                                            ]
+                                        ]
+                                    )->setTemplate("star-rating/star-rating.twig")->toHtml()
+                                ];
+                            endif;
 
-                                    </a>
-                                </li>
-                            </ul>',
-                            $block->escapeHtml(__('Add to Wish List')),
-                            $block->escapeHtml(__('Add to Wish List')),
-                            $block->getAddToWishlistParams($product),
-                            __('Add to Wishlist')
-                            )
-                    ];
+                            $data['addons']['left'][] = [
+                                'content' => sprintf(
+                                    '<ul class="cs-links-block-addto" data-role="add-to-links">
+                                        <li class="cs-links-block-addto__item">
+                                            <a
+                                                href="#"
+                                                class="cs-links-block-addto__link towishlist"
+                                                title="%s"
+                                                aria-label="%s"
+                                                data-post=\'%s\'
+                                                data-action="add-to-wishlist"
+                                                role="button"
+                                            >
+                                                <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                                %s
 
-                    ?>
+                                            </a>
+                                        </li>
+                                    </ul>',
+                                    $block->escapeHtml(__('Add to Wish List')),
+                                    $block->escapeHtml(__('Add to Wish List')),
+                                    $block->getAddToWishlistParams($product),
+                                    __('Add to Wishlist')
+                                    )
+                            ];
 
-                    <?=$this->getLayout()->createBlock(
-                        'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
-                            'data' => $data
-                        ]
-                    )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+                            ?>
 
-                </li>
-            <?php endforeach; ?>
-        </ol>
+                            <?=$this->getLayout()->createBlock(
+                                'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
+                                    'data' => $data
+                                ]
+                            )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+
+
+                <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
+                    $teaserClass = 'cs-grid-layout_in-column__brick cs-grid-layout_in-column__brick--teaser';
+                    if($teaser['size']['x'] == 2) {
+                        $teaserClass .= ' cs-grid-layout_in-column__brick--x2';
+                    }
+                    if($teaser['size']['y'] == 2) {
+                        $teaserClass .= ' cs-grid-layout_in-column__brick--y2';
+                    } ?>
+
+                    <li class="<?php echo $teaserClass ?>" data-teaser-id="<?php echo $i ?>">
+                        <div class="cs-grid-layout_in-column__teaser cs-grid-layout_in-column__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
+                            <?php if($teaser['href'] != ''): ?>
+                                <a href="<?php echo $teaser['href'] ?>" class="cs-grid-layout_in-column__teaser-content-wrapper">
+                            <?php else: ?>
+                                <div class="cs-grid-layout_in-column__teaser-content-wrapper">
+                            <?php endif; ?>
+
+                                <figure class="cs-grid-layout_in-column__figure">
+                                    <img src="<?php echo $teaser['image'] ?>" alt="teaser" class="cs-grid-layout_in-column__teaser-image">
+                                </figure>
+                                <div class="cs-grid-layout_in-column__teaser-content cs-grid-layout_in-column__teaser-content--<?php echo $teaser['displayVariant'] ?>">
+                                    <?php if($teaser['headline'] != '') {
+                                        echo '<h4 class="cs-grid-layout_in-column__teaser-headline">'.$teaser['headline'].'</h4>';
+                                    }
+                                    if($teaser['subheadline'] != '') {
+                                        echo '<span class="cs-grid-layout_in-column__teaser-subheadline">'.$teaser['subheadline'].'</span>';
+                                    }
+                                    if($teaser['paragraph'] != '') {
+                                        echo '<p class="cs-grid-layout_in-column__teaser-text">'.$teaser['paragraph'].'</p>';
+                                    }
+                                    if($teaser['ctaLabel'] != '' && $teaser['href'] != '') {
+                                        echo '<span role="button" class="cs-button cs-button--type_long cs-button--look_default">
+                                            <span class="cs-button__span">'.$teaser['ctaLabel'].'</span>
+                                            <svg class="cs-button__icon"><use xlink:href="#arrow_next"></use></svg>
+                                        </span>';
+                                    } ?>
+                                </div>
+
+                            <?php if($teaser['href'] != ''): ?>
+                                </a>
+                            <?php else: ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </li>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+            </ol>
+        </div>
     </div>
 
     <?php echo $block->getToolbarHtml() ?>
