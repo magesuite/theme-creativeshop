@@ -56,13 +56,10 @@ $filtersLayout = $this->getFiltersLayout();
             ?>
         </div>
 
-        <?php 
-            $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig();
-            $teasersJson = json_encode($teasersConfig['json']);
-        ?>
+        <?php $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig(); ?>
 
         <?php $iterator = 0; ?>
-        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>" data-columns-configuration='{"phone":1,"phoneLg":2,"tablet":2,"laptop":3,"laptopLg":3,"desktop":3,"tv":3}' data-teasers-configuration='<?php echo $teasersJson ?>'>
+        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>"<?php if($teasersConfig) { ?> data-columns-configuration='{"phone":1,"phoneLg":2,"tablet":2,"laptop":3,"laptopLg":3,"desktop":3,"tv":3}' data-teasers-configuration='<?php echo json_encode($teasersConfig['json']); ?>'<?php } ?>>
             <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__grid">
                 <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
                 <?php foreach ($productCollection as $product): ?>
@@ -163,54 +160,55 @@ $filtersLayout = $this->getFiltersLayout();
                     </li>
                 <?php endforeach; ?>
 
+                <?php if($teasersConfig): ?> 
+                    <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
+                        $teaserClass = 'cs-grid-layout_in-column__brick cs-grid-layout_in-column__brick--teaser';
+                        if($teaser['size']['x'] == 2) {
+                            $teaserClass .= ' cs-grid-layout_in-column__brick--x2';
+                        }
+                        if($teaser['size']['y'] == 2) {
+                            $teaserClass .= ' cs-grid-layout_in-column__brick--y2';
+                        } ?>
 
-                <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
-                    $teaserClass = 'cs-grid-layout_in-column__brick cs-grid-layout_in-column__brick--teaser';
-                    if($teaser['size']['x'] == 2) {
-                        $teaserClass .= ' cs-grid-layout_in-column__brick--x2';
-                    }
-                    if($teaser['size']['y'] == 2) {
-                        $teaserClass .= ' cs-grid-layout_in-column__brick--y2';
-                    } ?>
+                        <li class="<?php echo $teaserClass ?>" data-teaser-id="<?php echo $i ?>">
+                            <div class="cs-grid-layout_in-column__teaser cs-grid-layout_in-column__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
+                                <?php if($teaser['href'] != ''): ?>
+                                    <a href="<?php echo $teaser['href'] ?>" class="cs-grid-layout_in-column__teaser-content-wrapper">
+                                <?php else: ?>
+                                    <div class="cs-grid-layout_in-column__teaser-content-wrapper">
+                                <?php endif; ?>
 
-                    <li class="<?php echo $teaserClass ?>" data-teaser-id="<?php echo $i ?>">
-                        <div class="cs-grid-layout_in-column__teaser cs-grid-layout_in-column__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
-                            <?php if($teaser['href'] != ''): ?>
-                                <a href="<?php echo $teaser['href'] ?>" class="cs-grid-layout_in-column__teaser-content-wrapper">
-                            <?php else: ?>
-                                <div class="cs-grid-layout_in-column__teaser-content-wrapper">
-                            <?php endif; ?>
+                                    <figure class="cs-grid-layout_in-column__teaser-figure">
+                                        <img src="<?php echo $teaser['image']['src'] ?>" srcset="<?php echo $teaser['image']['srcSet'] ?>" alt="teaser" class="cs-grid-layout_in-column__teaser-image">
+                                    </figure>
+                                    <div class="cs-grid-layout_in-column__teaser-content cs-grid-layout_in-column__teaser-content--<?php echo $teaser['displayVariant'] ?>">
+                                        <?php if($teaser['headline'] != '') {
+                                            echo '<h4 class="cs-grid-layout_in-column__teaser-headline">'.$teaser['headline'].'</h4>';
+                                        }
+                                        if($teaser['subheadline'] != '') {
+                                            echo '<span class="cs-grid-layout_in-column__teaser-subheadline">'.$teaser['subheadline'].'</span>';
+                                        }
+                                        if($teaser['paragraph'] != '') {
+                                            echo '<p class="cs-grid-layout_in-column__teaser-text">'.$teaser['paragraph'].'</p>';
+                                        }
+                                        if($teaser['ctaLabel'] != '' && $teaser['href'] != '') {
+                                            echo '<span role="button" class="cs-button cs-button--type_long cs-button--look_default">
+                                                <span class="cs-button__span">'.$teaser['ctaLabel'].'</span>
+                                                <svg class="cs-button__icon"><use xlink:href="#arrow_next"></use></svg>
+                                            </span>';
+                                        } ?>
+                                    </div>
 
-                                <figure class="cs-grid-layout_in-column__figure">
-                                    <img src="<?php echo $teaser['image'] ?>" alt="teaser" class="cs-grid-layout_in-column__teaser-image">
-                                </figure>
-                                <div class="cs-grid-layout_in-column__teaser-content cs-grid-layout_in-column__teaser-content--<?php echo $teaser['displayVariant'] ?>">
-                                    <?php if($teaser['headline'] != '') {
-                                        echo '<h4 class="cs-grid-layout_in-column__teaser-headline">'.$teaser['headline'].'</h4>';
-                                    }
-                                    if($teaser['subheadline'] != '') {
-                                        echo '<span class="cs-grid-layout_in-column__teaser-subheadline">'.$teaser['subheadline'].'</span>';
-                                    }
-                                    if($teaser['paragraph'] != '') {
-                                        echo '<p class="cs-grid-layout_in-column__teaser-text">'.$teaser['paragraph'].'</p>';
-                                    }
-                                    if($teaser['ctaLabel'] != '' && $teaser['href'] != '') {
-                                        echo '<span role="button" class="cs-button cs-button--type_long cs-button--look_default">
-                                            <span class="cs-button__span">'.$teaser['ctaLabel'].'</span>
-                                            <svg class="cs-button__icon"><use xlink:href="#arrow_next"></use></svg>
-                                        </span>';
-                                    } ?>
-                                </div>
-
-                            <?php if($teaser['href'] != ''): ?>
-                                </a>
-                            <?php else: ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </li>
-                    <?php $i++; ?>
-                <?php endforeach; ?>
+                                <?php if($teaser['href'] != ''): ?>
+                                    </a>
+                                <?php else: ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </li>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </ol>
         </div>
     </div>
