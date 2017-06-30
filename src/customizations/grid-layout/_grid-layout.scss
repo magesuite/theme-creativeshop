@@ -10,6 +10,16 @@ $bricksPerRow: (
     tv: 4
 );
 
+$bricksPerRowInColumn: (
+    phone: 1,
+    phone-lg: 2,
+    tablet: 2,
+    laptop: 3,
+    laptop-lg: 3,
+    desktop: 3,
+    tv: 3
+);
+
 $bricksHeight: (
     phone: 336px,
     phone-lg: 336px,
@@ -22,6 +32,15 @@ $bricksHeight: (
 
 .#{$namespace}grid-layout {
     @include gridLayout( $bricksPerRow, $bricksHeight, 0 );
+}
+
+.#{$namespace}grid-layout_in-column {
+    @include gridLayout( $bricksPerRowInColumn, $bricksHeight, 0 );
+}
+
+.#{$namespace}grid-layout,
+.#{$namespace}grid-layout_in-column {
+    $root: &;
     position: relative;
 
     &:after {
@@ -49,6 +68,101 @@ $bricksHeight: (
 
         &--teaser:after {
             display: none;
+        }
+    }
+
+    &__teaser {
+        height: 100%;
+        
+        &-content-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        &-figure {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        &-image {
+            height: auto;
+            max-width: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d( -50%, -50%, 0 );
+        }
+
+        &-content {
+            position: absolute;
+            width: 85%;
+            box-sizing: border-box;
+            padding: 2rem;
+
+            &--variant-1 {
+                top: 50%;
+                left: 0;
+                transform: translate3d( 0, -50%, 0 );
+            }
+
+            &--variant-2 {
+                top: 50%;
+                left: 50%;
+                transform: translate3d( -50%, -50%, 0 );
+                text-align: center;
+            }
+
+            &--variant-3 {
+                top: auto;
+                bottom: 0;
+                left: 0;
+            }
+
+            &--variant-4 {
+                top: auto;
+                bottom: 0;
+                left: 50%;
+                transform: translate3d( -50%, 0, 0 );
+                text-align: center;
+            }
+        }
+
+        &-headline {
+            @extend .#{$namespace}hero__headline;
+            margin: 0 0 .7rem;
+
+            #{$root}__teaser--scheme-light & {
+                color: $colorWhite;
+            }
+
+            @media screen and ( min-width: 1200px ) {
+                font-size: 4rem;
+            }
+        }
+
+        &-subheadline {
+            @extend .#{$namespace}hero__subheadline;
+            display: block;
+            margin: 0 0 .7rem;
+
+            #{$root}__teaser--scheme-light & {
+                color: $colorWhite;
+            }
+
+            @media screen and ( min-width: 1200px ) {
+                font-size: 2.7rem;
+            }
+        }
+
+        &-text {
+            @extend .#{$namespace}hero__text;
+            margin: 0 0 .7rem;
+
+            #{$root}__teaser--scheme-light & {
+                color: $colorWhite;
+            }
         }
     }
 }
