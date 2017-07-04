@@ -157,7 +157,6 @@
 
             function checkActiveButton() {
                 var activeButton = $( '.payment-method._active .cs-button-payment-method[type="submit"]:not(disabled):not(".disabled")');
-
                 if ( activeButton.length ) {
                     $( '.cs-place-order-button' ).prop( 'disabled', false );
                 } else {
@@ -186,6 +185,14 @@
             function watchStateOfPaymentButton() {
                 $( '#checkout-payment-method-load' ).on( 'click', function() {
                     checkActiveButton();
+
+                    var checkActiveButtonIntervalId = setInterval( checkButton, 500 );
+
+                    function checkButton() {
+                        if ( checkActiveButton().length ) {
+                            clearInterval( checkActiveButtonIntervalId );
+                        }
+                    }
                 });
 
                 $( '.cs-place-order-button' ).on( 'click', function() {
