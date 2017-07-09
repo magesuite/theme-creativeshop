@@ -69,7 +69,11 @@ $filtersLayout = $this->getFiltersLayout();
                     ?>
                     <?php echo $this
                         ->getLayout()
-                        ->createBlock('\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator, ['data' => get_defined_vars()])
+                        ->createBlock(
+                            '\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator, 
+                            ['data' => get_defined_vars()]
+                        )
+                        ->setCacheKeyElements($viewMode, $showHeroProduct)
                         ->toHtml()
                     ?>
 
