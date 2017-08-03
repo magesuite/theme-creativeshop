@@ -6,11 +6,11 @@
 ?>
 <?php $address = $block->getAddress(); ?>
 <form
-    class="cs-form | form-address-edit" 
-    action="<?php /* @escapeNotVerified */ echo $block->getSaveUrl() ?>" 
-    method="post" 
-    id="form-validate" 
-    enctype="multipart/form-data" 
+    class="cs-form | form-address-edit"
+    action="<?php /* @escapeNotVerified */ echo $block->getSaveUrl() ?>"
+    method="post"
+    id="form-validate"
+    enctype="multipart/form-data"
     data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
 >
     <fieldset class="cs-form__fieldset cs-form__fieldset--level_1">
@@ -20,7 +20,7 @@
                 <?php /* @escapeNotVerified */ echo __('Contact Information') ?>
             </span>
         </legend>
-  
+
 
         <?php echo $block->getBlockHtml('formkey')?>
         <input type="hidden" name="success_url" value="<?php /* @escapeNotVerified */ echo $block->getSuccessUrl() ?>">
@@ -31,12 +31,12 @@
                 <span><?php /* @escapeNotVerified */ echo __('Company') ?></span>
             </label>
             <div class="cs-input__control">
-                <input 
-                    type="text" 
-                    name="company" 
-                    id="company" 
-                    title="<?php /* @escapeNotVerified */ echo __('Company') ?>" 
-                    value="<?php echo $block->escapeHtml($address->getCompany()) ?>" 
+                <input
+                    type="text"
+                    name="company"
+                    id="company"
+                    title="<?php /* @escapeNotVerified */ echo __('Company') ?>"
+                    value="<?php echo $block->escapeHtml($address->getCompany()) ?>"
                     class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('company') ?>"
                 >
             </div>
@@ -46,12 +46,12 @@
                 <span><?php /* @escapeNotVerified */ echo __('Phone Number') ?></span>
             </label>
             <div class="cs-input__control">
-                <input 
-                    type="text" 
-                    name="telephone" 
-                    value="<?php echo $block->escapeHtml($address->getTelephone()) ?>" 
-                    title="<?php /* @escapeNotVerified */ echo __('Phone Number') ?>" 
-                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('telephone') ?>" 
+                <input
+                    type="text"
+                    name="telephone"
+                    value="<?php echo $block->escapeHtml($address->getTelephone()) ?>"
+                    title="<?php /* @escapeNotVerified */ echo __('Phone Number') ?>"
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('telephone') ?>"
                     id="telephone"
                 >
             </div>
@@ -73,13 +73,13 @@
                 <span><?php /* @escapeNotVerified */ echo __('Street Address') ?></span>
             </label>
             <div class="cs-input__control">
-                <input 
-                    type="text" 
-                    name="street[]" 
-                    value="<?php echo $block->escapeHtml($block->getStreetLine(1)) ?>" 
-                    title="<?php /* @escapeNotVerified */ echo __('Street Address') ?>" 
-                    id="street_1" 
-                    class="cs-input__input <?php /* @escapeNotVerified */ echo $streetValidationClass ?>"  
+                <input
+                    type="text"
+                    name="street[]"
+                    value="<?php echo $block->escapeHtml($block->getStreetLine(1)) ?>"
+                    title="<?php /* @escapeNotVerified */ echo __('Street Address') ?>"
+                    id="street_1"
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $streetValidationClass ?>"
                 />
                 <div class="nested">
                     <?php $streetValidationClass = trim(str_replace('required-entry', '', $streetValidationClass)); ?>
@@ -89,12 +89,12 @@
                                 <span><?php /* @escapeNotVerified */ echo __('Street Address %1', $i+1) ?></span>
                             </label>
                             <div class="cs-input__control">
-                                <input 
-                                    type="text" 
-                                    name="street[]" 
-                                    value="<?php echo $block->escapeHtml($block->getStreetLine($i+1)) ?>" 
-                                    title="<?php /* @escapeNotVerified */ echo __('Street Address %1', $i+1) ?>" 
-                                    id="street_<?php /* @escapeNotVerified */ echo $i+1 ?>" 
+                                <input
+                                    type="text"
+                                    name="street[]"
+                                    value="<?php echo $block->escapeHtml($block->getStreetLine($i+1)) ?>"
+                                    title="<?php /* @escapeNotVerified */ echo __('Street Address %1', $i+1) ?>"
+                                    id="street_<?php /* @escapeNotVerified */ echo $i+1 ?>"
                                     class="cs-input__input <?php /* @escapeNotVerified */ echo $streetValidationClass ?>"
                                 >
                             </div>
@@ -110,12 +110,12 @@
                     <span><?php /* @escapeNotVerified */ echo __('VAT Number') ?></span>
                 </label>
                 <div class="cs-input__control">
-                    <input 
-                        type="text" 
-                        name="vat_id" 
-                        value="<?php echo $block->escapeHtml($address->getVatId()) ?>" 
-                        title="<?php /* @escapeNotVerified */ echo __('VAT Number') ?>" 
-                        class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('vat_id') ?>" 
+                    <input
+                        type="text"
+                        name="vat_id"
+                        value="<?php echo $block->escapeHtml($address->getVatId()) ?>"
+                        title="<?php /* @escapeNotVerified */ echo __('VAT Number') ?>"
+                        class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('vat_id') ?>"
                         id="vat_id"
                     >
                 </div>
@@ -126,12 +126,12 @@
                 <span><?php /* @escapeNotVerified */ echo __('City') ?></span>
             </label>
             <div class="cs-input__control">
-                <input 
-                    type="text" 
-                    name="city" 
-                    value="<?php echo $block->escapeHtml($address->getCity()) ?>" 
-                    title="<?php /* @escapeNotVerified */ echo __('City') ?>" 
-                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('city') ?>" 
+                <input
+                    type="text"
+                    name="city"
+                    value="<?php echo $block->escapeHtml($address->getCity()) ?>"
+                    title="<?php /* @escapeNotVerified */ echo __('City') ?>"
+                    class="cs-input__input <?php /* @escapeNotVerified */ echo $this->helper('Magento\Customer\Helper\Address')->getAttributeValidationClass('city') ?>"
                     id="city"
                 >
             </div>
@@ -224,7 +224,7 @@
 
         <button
             type="submit"
-            class="cs-button cs-button--type_long cs-button--type_mobile-wide cs-button--look_default"
+            class="cs-button cs-button--type_long cs-button--type_wide-mobile cs-button--look_default"
             title="<?php /* @escapeNotVerified */ echo __('Save Address') ?>"
         >
            <span class="cs-button__span"> <?php /* @escapeNotVerified */ echo __('Save Address') ?></span>
