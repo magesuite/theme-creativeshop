@@ -33,26 +33,3 @@
         }
     }
 </script>
-
-<?php // Remove this snippet after upgrade to version 2.2. According to github discussion this is going to be fixed by Magento core team ?>
-<script>
-    require([
-        "jquery"
-    ], function($){
-        $(document).ready(function () {
-            'use strict';
-            var validationErrorMoved = false;
-
-            $( '#product-addtocart-button' ).on( 'click', function() {
-                if ( !validationErrorMoved ) {
-                    $( '.cs-swatches__attribute' ).each(function() {
-                        var attrId = $( this ).attr( 'attribute-id' );
-                        var $validationElement = $( 'input[name="super_attribute[' + attrId + ']"]' );
-                        $validationElement.insertAfter( this );
-                    } );
-                    validationErrorMoved = true;
-                }
-            });
-        });
-    });
-</script>
