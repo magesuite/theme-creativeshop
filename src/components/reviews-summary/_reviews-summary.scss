@@ -1,0 +1,87 @@
+.#{$namespace}reviews-summary {
+    $root: &;
+
+    display: flex;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+
+    @include media( '>=tablet' ) {
+        flex-wrap: nowrap;
+        border-bottom: 1px solid $colorAlto;
+    }
+
+    &__note {
+        font-size: 4rem;
+        line-height: 100%;
+        color: $colorMineShaft;
+        font-weight: 300;
+        margin-bottom: .5rem;
+
+        &-right {
+            color: $colorGray;
+        }
+    }
+
+    &__button {
+        margin-top: 1.2rem;
+        margin-bottom: 2rem;
+
+        @include media( '>=tablet' ) {
+            margin-bottom: 0;
+        }
+    }
+
+    &__stars {
+        margin-right: 4rem;
+    }
+
+    &__bars {
+        display: table;
+        list-style: none inside none;
+    }
+
+    &__bar {
+        height: 1.2rem;
+        position: relative;
+        padding: .8rem 1rem !important;
+        vertical-align: bottom;
+        color: $colorGray;
+        display: table-row !important;
+
+
+        &:before {
+            display: none !important;
+        }
+
+        &-label {
+            display: table-cell;
+            height: 2.6rem;
+        }
+
+        &-progress {
+            position: relative;
+            display: inline-block;
+            min-width: 9rem;
+            height: 12px;
+            vertical-align: middle;
+            width: 9rem;
+            margin: 0 .7rem;
+            background: $colorWhite;
+
+            @include media( '>=tablet' ) {
+                background: $colorGallery;
+            }
+
+            &-inner {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 12px;
+                background: darken( $colorHalfColonialWhite, 15% );
+            }
+
+        }
+
+    }
+
+}
