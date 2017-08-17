@@ -19,7 +19,8 @@ const infoStripeClassName: string = 'cs-information-stripe';
  */
 export function buildSubtree( $link: JQuery ): NavigationTree {
     const $subcategories: JQuery = $link.next();
-    const $sublinks: JQuery = $subcategories.find( `.${navClassName}__link` );
+    const subcategoryClass = $subcategories.hasClass(`${navClassName}__flyout`) ? `.${navClassName}__link--category` : `.${navClassName}__link--subcategory`;
+    const $sublinks: JQuery = $subcategories.find(subcategoryClass);
     const subcategories: NavigationTree[] = $.map( $sublinks, ( sublink: HTMLElement ) => {
         return buildSubtree( $( sublink ) );
     } );
