@@ -10,7 +10,7 @@ $( `.cs-image-teaser` ).each( ( index: number, element: any ): void => {
         onLazyImageReady( swiper: any, slide: any, image: any ): void {
             images.push( image );
 
-            if ( images.length === swiper.slides.length && swiper.container.hasClass( 'cs-image-teaser__wrapper--content-display-outside' ) && swiper.prevButton.length && swiper.nextButton.length ) {
+            if ( swiper.container.hasClass( 'cs-image-teaser__wrapper--content-display-outside' ) && swiper.prevButton.length && swiper.nextButton.length ) {
                 let throttler: number;
                 let $tallestImage: any;
 
@@ -22,11 +22,12 @@ $( `.cs-image-teaser` ).each( ( index: number, element: any ): void => {
                             const $img: any = $( el ).find( '.cs-image-teaser__image' );
                             if ( $img.length && $img.outerHeight() > h ) {
                                 $tallestImage = $( el ).find( '.cs-image-teaser__image' );
+                                h = $tallestImage.outerHeight();
                             }
                         } );
 
                         if ( $tallestImage.length ) {
-                            const newNavPosition: number = $tallestImage.outerHeight() / 2;
+                            const newNavPosition: number = h / 2;
                             swiper.prevButton.css( 'top', newNavPosition );
                             swiper.nextButton.css( 'top', newNavPosition );
                         }
