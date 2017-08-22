@@ -10,7 +10,7 @@ $( `.cs-image-teaser` ).each( ( index: number, element: any ): void => {
         onLazyImageReady( swiper: any, slide: any, image: any ): void {
             images.push( image );
 
-            if ( swiper.container.hasClass( 'cs-image-teaser__wrapper--content-display-outside' ) && swiper.prevButton.length && swiper.nextButton.length ) {
+            if ( images.length >= swiper.params.slidesPerView && swiper.container.hasClass( 'cs-image-teaser__wrapper--content-display-outside' ) && swiper.prevButton.length && swiper.nextButton.length ) {
                 let throttler: number;
                 let $tallestImage: any;
 
@@ -34,10 +34,12 @@ $( `.cs-image-teaser` ).each( ( index: number, element: any ): void => {
                     }
                 };
 
-                $( window ).resize( function(): void {
+                const resizeListener: any = function (): void {
                     clearTimeout( throttler );
                     throttler = setTimeout( setNavButtonsPosition, 250 );
-                } );
+                };
+
+                $( window ).on('resize', resizeListener);
 
                 setNavButtonsPosition();
             }
