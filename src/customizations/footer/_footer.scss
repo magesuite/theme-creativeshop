@@ -4,178 +4,175 @@
  */
 
 .#{$namespace}footer {
-    $root: &;
+  $root: &;
 
-    font-size: 1rem;
-    color: $colorWhite;
-    background-color: $colorBlack;
-    padding-bottom: 2rem;
-    overflow: hidden;
-    padding-left: 0;
-    padding-right: 0;
+  font-size: 1rem;
+  color: $colorWhite;
+  background-color: $colorBlack;
+  padding-bottom: 2rem;
+  overflow: hidden;
+  padding-left: 0;
+  padding-right: 0;
+
+  @include media( '>=tablet' ) {
+    padding-bottom: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  &__wrapper {
+    width: 100%;
+    max-width: 120rem;
+    display: flex;
+    flex-wrap: wrap;
+    @include media( '>=tablet' ) {
+      padding-top: 4rem;
+      padding-bottom: 2rem;
+    }
+
+    @include media( '>=laptop' ) {
+      flex-wrap: nowrap;
+      margin: 0 auto;
+    }
+  }
+
+  &__right,
+  &__left {
+    flex: 1 0 100%;
+  }
+
+  &__right {
+    @include media( '>=tablet' ) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    @include media( '>=laptop' ) {
+      flex-basis: 32%;
+    }
+  }
+
+  &__left {
+    @include media( '>=laptop' ) {
+      flex-basis: 68%;
+    }
+  }
+
+  &__columns {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__column {
+    width: 100%;
 
     @include media( '>=tablet' ) {
-        padding-bottom: 0;
-        padding-left: 15px;
-        padding-right: 15px;
+      width: 33.3%;
+      padding-bottom: 2rem;
     }
 
-    &__wrapper {
+    @include media( '>=laptop' ) {
+      width: 25%;
+    }
+
+    &--first {
+      @include media( '>=tablet' ) {
         width: 100%;
-        max-width: 120rem;
-        display: flex;
-        flex-wrap: wrap;
-        @include media( '>=tablet' ) {
-            padding-top: 4rem;
-            padding-bottom: 2rem;
-        }
-
-        @include media( '>=laptop' ) {
-            flex-wrap: nowrap;
-            margin: 0 auto;
-        }
+      }
+      @include media( '>=laptop' ) {
+        width: 25%;
+      }
     }
 
-    &__right,
-    &__left {
-        flex: 1 0 100%;
-    }
-
-    &__right {
-        @include media( '>=tablet' ) {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        @include media( '>=laptop' ) {
-            flex-basis: 32%;
-        }
-    }
-
-    &__left {
-        @include media( '>=laptop' ) {
-            flex-basis: 68%;
-        }
-
-    }
-
-    &__columns {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    &__column {
+    &--newsletter {
+      border-top: 1px solid $colorGray;
+      @include media( '>=tablet' ) {
+        width: 45%;
+        margin-top: 1.5rem;
+        border-top: none;
+      }
+      @include media( '>=laptop' ) {
         width: 100%;
+        margin-top: 0;
+        max-width: none;
+      }
 
-        @include media( '>=tablet' ) {
-            width: 33.3%;
-            padding-bottom: 2rem;
+      #{$root}__list {
+        @include media( '<tablet' ) {
+          margin: 0 auto;
+          max-width: 40rem;
+          margin-bottom: 3rem;
         }
+      }
+    }
+    &--socials {
+      @include media( '>=tablet' ) {
+        width: 33.3%;
+        margin-top: 1.5rem;
+      }
+      @include media( '>=laptop' ) {
+        width: 100%;
+        margin-top: 0;
+      }
+    }
+  }
 
-        @include media( '>=laptop' ) {
-            width: 25%;
-        }
+  &__column-title {
+    font-size: 1.2rem;
+    color: $colorGray;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: .08rem;
+    position: relative;
+    border-top: 1px solid $colorGray;
+    padding: 2rem;
+    margin: 0;
+    cursor: pointer;
 
-        &--first {
-            @include media( '>=tablet' ) {
-                width: 100%;
-            }
-            @include media( '>=laptop' ) {
-                width: 25%;
-            }
-        }
-
-        &--newsletter {
-            border-top: 1px solid $colorGray;
-            @include media( '>=tablet' ) {
-                width: 45%;
-                margin-top: 1.5rem;
-                border-top: none;
-            }
-            @include media( '>=laptop' ) {
-                width: 100%;
-                margin-top: 0;
-                max-width: none;
-            }
-
-            #{$root}__list {
-                @include media( '<tablet' ) {
-                    margin: 0 auto;
-                    max-width: 40rem;
-                    margin-bottom: 3rem;
-                }
-            }
-        }
-        &--socials {
-            @include media( '>=tablet' ) {
-                width: 33.3%;
-                margin-top: 1.5rem;
-            }
-            @include media( '>=laptop' ) {
-                width: 100%;
-                margin-top: 0;
-            }
-        }
+    &:before,
+    &:after {
+      background-color: $colorGray !important;
     }
 
-    &__column-title {
-        font-size: 1.2rem;
-        color: $colorGray;
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: .08rem;
-        position: relative;
-        border-top: 1px solid $colorGray;
-        padding: 2rem;
-        margin: 0;
-        cursor: pointer;
-
-        &:before,
-        &:after {
-            background-color: $colorGray !important;
-        }
-
-        #{$root}__column:first-child & {
-            border-top: none;
-        }
-
-        @include media( '>=tablet' ) {
-            padding: .3rem 0 2.2rem;
-            cursor: default !important;
-            border-top: none;
-        }
-
-        &--image {
-            width: 13.5rem;
-            height: auto;
-            display: block;
-            margin-top: 0;
-        }
-
-        &--clear {
-            &:before,
-            &:after {
-                display: none;
-            }
-        }
-
-        &--last {
-            border-top: none;
-        }
+    #{$root}__column:first-child & {
+      border-top: none;
     }
 
-    &__list {
-        color: $colorGallery;
-        padding: 0 2rem;
-
-        @include media( '>=tablet' ) {
-            padding: 0 2rem 0 0;
-        }
-
+    @include media( '>=tablet' ) {
+      padding: .3rem 0 2.2rem;
+      cursor: default !important;
+      border-top: none;
     }
 
-    &__banner {
-        display: block;
+    &--image {
+      width: 13.5rem;
+      height: auto;
+      display: block;
+      margin-top: 0;
     }
 
+    &--clear {
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+
+    &--last {
+      border-top: none;
+    }
+  }
+
+  &__list {
+    color: $colorGallery;
+    padding: 0 2rem;
+
+    @include media( '>=tablet' ) {
+      padding: 0 2rem 0 0;
+    }
+  }
+
+  &__banner {
+    display: block;
+  }
 }

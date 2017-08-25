@@ -1,87 +1,84 @@
 @import '../../../node_modules/creative-patterns/packages/components/navigation/src/navigation';
 
 .#{$namespace}navigation {
-    @include navigation();
-    $root: &;
+  @include navigation();
+  $root: &;
 
-    @include media( '<laptop' ) {
-        display: none;
+  @include media( '<laptop' ) {
+    display: none;
+  }
+
+  .page-print & {
+    display: none;
+  }
+
+  &__list {
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+
+    @include media( '>=laptop' ) {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+  }
+
+  &__flyout {
+    z-index: 1001; // Make sure flyouts cover gallery nav.
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, .15);
+    margin-top: -1px;
+  }
+
+  &__item {
+    &:hover {
+      > #{$root}__link {
+        color: $colorCeruleanBlue;
+      }
     }
 
-    .page-print & {
-        display: none;
+    &:first-of-type {
+      > #{$root}__link {
+        padding-left: 0;
+      }
     }
 
-    &__list {
-        max-width: 1200px;
-        margin: 0 auto;
-        flex-wrap: wrap;
+    &:last-of-type {
+      > #{$root}__link {
+        padding-right: 0;
+      }
+    }
+  }
 
-        @include media( '>=laptop' ) {
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
+  &__link {
+    padding: .6rem 1.5rem .6rem 0;
+
+    @include media( '>=laptop' ) {
+      padding: 1.286rem 1.5rem;
     }
 
-    &__flyout {
-        z-index: 1001; // Make sure flyouts cover gallery nav.
-        box-shadow: 2px 2px 5px rgba( 0, 0, 0, .15 );
-        margin-top: -1px;
+    &:hover {
+      text-decoration: none;
+      color: $colorCeruleanBlue;
     }
 
-    &__item {
-        &:hover {
-            > #{$root}__link {
-                color: $colorCeruleanBlue;
-            }
-        }
-
-        &:first-of-type {
-            > #{$root}__link {
-                padding-left: 0;
-            }
-        }
-
-        &:last-of-type {
-            > #{$root}__link {
-                padding-right: 0;
-            }
-        }
+    &--category {
+      padding-bottom: 2rem;
     }
+  }
 
-    &__link {
-        padding: .6rem 1.5rem .6rem 0;
+  &__categories {
+    columns: calc(25vw - 7.5px) 4; // 25vw - 30px padding / 4
+    column-gap: 0;
 
-        @include media( '>=laptop' ) {
-            padding: 1.286rem 1.5rem;
-        }
-
-        &:hover {
-            text-decoration: none;
-            color: $colorCeruleanBlue;
-        }
-
-        &--category {
-            padding-bottom: 2rem;
-        }
-
+    @include media( '>=1200px' ) {
+      columns: 240px 5;
     }
+  }
 
-    &__categories {
-        column-width: calc( 25vw - 7.5px ); // 25vw - 30px padding / 4
-        column-count: 4;
-        column-gap: 0;
-
-        @include media( '>=1200px' ) {
-            column-count: 5;
-            column-width: 240px; // 1200px / 5
-        }
-    }
-
-    &__category,
-    &__banners {
-        box-sizing: border-box;
-        padding: 10px;
-        width: 100%;
-    }
+  &__category,
+  &__banners {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+  }
 }

@@ -1,136 +1,137 @@
 @mixin collapse() {
-    $root: &;
+  $root: &;
 
+  position: relative;
+  overflow: hidden;
+
+  #{$root}__trigger {
+    cursor: pointer;
     position: relative;
-    overflow: hidden;
+    z-index: 2;
 
-    #{$root}__trigger {
-        cursor: pointer;
-        position: relative;
-        z-index: 2;
-
-        &:before,
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-            background: $colorCeruleanBlue;
-            right: 15px;
-            height: 2px;
-            width: 12px;
-            backface-visibility: hidden;
-        }
-
-        &:before {
-            top: 50%;
-            transform: translate3d( 0, -50%, 0 );
-            transition: transform .3s ease-out, opacity .2s ease-out, background-color .15s linear;
-        }
-
-        &:after {
-            top: 50%;
-            transform: translate3d( 0, -50%, 0 ) rotate( 90deg );
-            transition: transform .3s ease-out, background-color .15s linear;
-        }
-
-        &--no-arrow {
-            &:after,
-            &:before {
-                display: none;
-            }
-        }
-
-        &--in,
-        &--initial-in {
-            &:before {
-                background: $colorGray;
-                transform: translate3d( 0, -50%, 0 ) rotate( -90deg );
-                opacity: 0;
-            }
-
-            &:after {
-                background: $colorGray;
-                transform: translate3d( 0, -50%, 0 ) rotate( 0 );
-            }
-
-            #{$root}__icon {
-                transform: rotate( -90deg );
-            }
-        }
-
-        &--only-mobile {
-            @include media('>=tablet') {
-                display: none;
-            }
-        }
-
-        &--upto {
-            &-laptop {
-                @include media('>=laptop') {
-                    display: none;
-                }
-            }
-        }
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      background: $colorCeruleanBlue;
+      right: 15px;
+      height: 2px;
+      width: 12px;
+      backface-visibility: hidden;
     }
 
-    #{$root}__content {
-        overflow: hidden;
-        height: 0;
-        opacity: 0;
-        min-height: initial !important;
-        max-height: initial !important;
-        transform: translateY( -15px );
-        transition: opacity .18s linear, transform .11s ease-in-out;
-        will-change: height;
+    &:before {
+      top: 50%;
+      transform: translate3d(0, -50%, 0);
+      transition: transform .3s ease-out, opacity .2s ease-out,
+        background-color .15s linear;
+    }
 
-        &--initial-in,
-        &--in {
-            height: auto !important;
-            opacity: 1;
-            visibility: visible;
-            transform: translateY( 0 );
-        }
+    &:after {
+      top: 50%;
+      transform: translate3d(0, -50%, 0) rotate(90deg);
+      transition: transform .3s ease-out, background-color .15s linear;
+    }
+
+    &--no-arrow {
+      &:after,
+      &:before {
+        display: none;
+      }
+    }
+
+    &--in,
+    &--initial-in {
+      &:before {
+        background: $colorGray;
+        transform: translate3d(0, -50%, 0) rotate(-90deg);
+        opacity: 0;
+      }
+
+      &:after {
+        background: $colorGray;
+        transform: translate3d(0, -50%, 0) rotate(0);
+      }
+
+      #{$root}__icon {
+        transform: rotate(-90deg);
+      }
     }
 
     &--only-mobile {
-        @include media('>=tablet') {
-            #{$root}__trigger {
-                cursor: initial;
-
-                &:before,
-                &:after {
-                    display: none;
-                }
-            }
-
-            #{$root}__content {
-                transition: none;
-                height: auto !important;
-                opacity: 1;
-                visibility: visible;
-                transform: translateY( 0 );
-            }
-        }
+      @include media('>=tablet') {
+        display: none;
+      }
     }
 
     &--upto {
-        &-laptop {
-            @include media('>=laptop') {
-                #{$root}__trigger {
-                    &:before,
-                    &:after {
-                        display: none;
-                    }
-                }
-
-                #{$root}__content {
-                    transition: none;
-                    height: auto !important;
-                    opacity: 1;
-                    visibility: visible;
-                    transform: translateY( 0 );
-                }
-            }
+      &-laptop {
+        @include media('>=laptop') {
+          display: none;
         }
+      }
     }
+  }
+
+  #{$root}__content {
+    overflow: hidden;
+    height: 0;
+    opacity: 0;
+    min-height: initial !important;
+    max-height: initial !important;
+    transform: translateY(-15px);
+    transition: opacity .18s linear, transform .11s ease-in-out;
+    will-change: height;
+
+    &--initial-in,
+    &--in {
+      height: auto !important;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+
+  &--only-mobile {
+    @include media('>=tablet') {
+      #{$root}__trigger {
+        cursor: initial;
+
+        &:before,
+        &:after {
+          display: none;
+        }
+      }
+
+      #{$root}__content {
+        transition: none;
+        height: auto !important;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &--upto {
+    &-laptop {
+      @include media('>=laptop') {
+        #{$root}__trigger {
+          &:before,
+          &:after {
+            display: none;
+          }
+        }
+
+        #{$root}__content {
+          transition: none;
+          height: auto !important;
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+      }
+    }
+  }
 }

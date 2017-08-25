@@ -1,57 +1,55 @@
 .#{$namespace}product-gallery {
+  @include media( '>=tablet' ) {
+    min-height: 52rem;
+    padding: .5rem 1rem 0 0;
+    margin-top: 0;
+  }
 
-    @include media( '>=tablet' ) {
-        min-height: 52rem;
-        padding: .5rem 1rem 0 0;
-        margin-top: 0;
-    }
+  @include media( '>=laptop' ) {
+    padding: 0;
+  }
+
+  &__container {
+    order: 1 !important;
+    min-height: 100px;
 
     @include media( '>=laptop' ) {
-        padding: 0;
+      overflow: hidden;
+      margin: 0;
+      width: 65%;
+      padding-left: 0;
+      padding-right: 0;
     }
 
-    &__container {
-        order: 1 !important;
-        min-height: 100px;
-
-        @include media( '>=laptop' ) {
-            overflow: hidden;
-            margin: 0;
-            width: 65%;
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        .#{$namespace}container__main-column {
-            @include media( '>=laptop' ) {
-                width: auto;
-                padding-right: 0;
-            }
-        }
+    .#{$namespace}container__main-column {
+      @include media( '>=laptop' ) {
+        width: auto;
+        padding-right: 0;
+      }
     }
+  }
 
-    &__wrapper {
-        padding-bottom: 15px;
-        position: relative;
+  &__wrapper {
+    padding-bottom: 15px;
+    position: relative;
 
-        @include media( '>=tablet' ) {
-            padding: 0;
-        }
+    @include media( '>=tablet' ) {
+      padding: 0;
     }
+  }
 
-    &__loading-mask,
-    &__loading-mask img {
-        position: absolute !important;
+  &__loading-mask,
+  &__loading-mask img {
+    position: absolute !important;
+  }
+
+  &__badge-wrapper {
+    position: absolute;
+    top: 0;
+    right: .4rem;
+
+    @include media( '>=tablet', '<laptop' ) {
+      top: .5rem;
     }
-
-    &__badge-wrapper {
-        position: absolute;
-        top: 0;
-        right: .4rem;
-
-        @include media( '>=tablet', '<laptop' ) {
-            top: .5rem;
-        }
-    }
-
+  }
 }

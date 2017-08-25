@@ -1,194 +1,194 @@
 @import '../../../node_modules/creative-patterns/packages/components/swatches/src/swatches';
 
 .#{$namespace}swatches {
-    @include swatches();
+  @include swatches();
 
-    $root: &;
-    $swatch-size: 4.4rem;
+  $root: &;
+  $swatch-size: 4.4rem;
 
-    .mage-error {
-        width: 100%;
-        margin: 0 0 1rem !important;
+  .mage-error {
+    width: 100%;
+    margin: 0 0 1rem !important;
+  }
+
+  &__attribute {
+    padding: .5rem 0;
+    border: none;
+  }
+
+  &__attribute-label {
+    font-size: 1.15rem;
+    font-weight: 700;
+
+    @include media( '>=tablet' ) {
+      padding-top: 1.45rem;
+      padding-right: 1.45rem;
+    }
+  }
+
+  &__list {
+    position: relative;
+    margin-left: 0;
+    z-index: 2;
+  }
+
+  &__swatch {
+    min-width: $swatch-size;
+    height: $swatch-size * .67;
+    padding: .65rem;
+    font-size: 1.08rem;
+
+    @include media( '>=tablet' ) {
+      min-width: $swatch-size * .67;
     }
 
-    &__attribute {
-        padding: .5rem 0;
-        border: none;
-    }
+    &.color,
+    &--color,
+    &.image,
+    &--image {
+      position: relative;
+      margin: .65rem;
+      background-size: cover !important;
 
-    &__attribute-label {
-        font-size: 1.15rem;
-        font-weight: 700;
+      &:after {
+        border-color: transparent;
+        background-color: lighten($colorGallery, 1.5%);
+        z-index: -1;
+      }
 
-        @include media( '>=tablet' ) {
-            padding-top: 1.45rem;
-            padding-right: 1.45rem;
+      &.active:after,
+      &.selected:after,
+      &.selected:hover:after,
+      &--selected:after,
+      &--selected:hover:after {
+        border-color: $colorCeruleanBlue;
+      }
+
+      &.disabled,
+      &--disabled {
+        opacity: 1;
+
+        &:before {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.55rem;
+          height: 1.54rem;
+          content: '\00d7';
+          font-size: 1.7rem;
+          background: rgba(255, 255, 255, .5);
+          color: $colorMineShaft;
+          z-index: 2;
+          transform: translate(-50%, -50%);
+          border-radius: 20px;
         }
+      }
+
+      @include media( '>=tablet' ) {
+        &.disabled:before,
+        &--disabled:before {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
     }
 
-    &__list {
-        position: relative;
-        margin-left: 0;
-        z-index: 2;
+    &.text,
+    &--text {
+      min-width: calc(#{$swatch-size} + 6px);
+      height: calc(#{$swatch-size} * .67 + 6px);
+      margin: calc(.65rem - 3px);
+      background-color: lighten($colorGallery, 1.5%);
+      color: $colorGray;
+      border: 1px solid lighten($colorGallery, 1.5%);
+
+      @include media( '>=tablet' ) {
+        $swatch-size: $swatch-size * .67;
+        min-width: calc(#{$swatch-size} + 6px);
+      }
+
+      &.disabled,
+      &--disabled,
+      &.disabled:hover,
+      &--disabled:hover {
+        opacity: 1;
+        background-color: transparent;
+        border: 2px solid $colorGallery;
+        color: lighten($colorGray, 35%);
+      }
+
+      &.active,
+      &.selected,
+      &.selected:hover,
+      &--selected,
+      &--selected:hover {
+        background-color: transparent;
+        border-color: $colorCeruleanBlue;
+        color: $colorCeruleanBlue;
+      }
     }
+  }
 
-    &__swatch {
-        min-width: $swatch-size;
-        height: $swatch-size * .67;
-        padding: .65rem;
-        font-size: 1.08rem;
+  &--mini {
+    $swatch-size: $swatch-size * .35;
 
-        @include media( '>=tablet' ) {
-            min-width: $swatch-size * .67;
-        }
+    #{$root}__swatch {
+      min-width: $swatch-size;
+      height: $swatch-size;
 
-        &.color,
-        &--color,
-        &.image,
-        &--image {
-            position: relative;
-            margin: .65rem;
-            background-size: cover !important;
-
-            &:after {
-                border-color: transparent;
-                background-color: lighten( $colorGallery, 1.5% );
-                z-index: -1;
-            }
-
-            &.active:after,
-            &.selected:after,
-            &.selected:hover:after,
-            &--selected:after,
-            &--selected:hover:after {
-                border-color: $colorCeruleanBlue;
-            }
-
-            &.disabled,
-            &--disabled {
-                opacity: 1;
-
-                &:before {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 1.55rem;
-                    height: 1.54rem;
-                    content: '\00d7';
-                    font-size: 1.7rem;
-                    background: rgba( 255, 255, 255, .5 );
-                    color: $colorMineShaft;
-                    z-index: 2;
-                    transform: translate( -50%, -50% );
-                    border-radius: 20px;
-                }
-            }
-
-            @include media( '>=tablet' ) {
-                &.disabled:before,
-                &--disabled:before {
-                    width: 1.5rem;
-                    height: 1.5rem;
-                }
-            }
-        }
-
-        &.text,
-        &--text {
-            min-width: calc( #{$swatch-size} + 6px );
-            height: calc( #{$swatch-size} * .67 + 6px );
-            margin: calc( .65rem - 3px );
-            background-color: lighten( $colorGallery, 1.5% );
-            color: $colorGray;
-            border: 1px solid lighten( $colorGallery, 1.5% );
-
-            @include media( '>=tablet' ) {
-                $swatch-size: $swatch-size * .67;
-                min-width: calc( #{$swatch-size} + 6px );
-            }
-
-            &.disabled,
-            &--disabled,
-            &.disabled:hover,
-            &--disabled:hover {
-                opacity: 1;
-                background-color: transparent;
-                border: 2px solid $colorGallery;
-                color: lighten( $colorGray, 35% );
-            }
-
-            &.active,
-            &.selected,
-            &.selected:hover,
-            &--selected,
-            &--selected:hover {
-                background-color: transparent;
-                border-color: $colorCeruleanBlue;
-                color: $colorCeruleanBlue;
-            }
-        }
+      &.text,
+      &--text {
+        font-size: .85rem;
+      }
     }
-
-    &--mini {
-        $swatch-size: $swatch-size * .35;
-
-        #{$root}__swatch {
-            min-width: $swatch-size;
-            height: $swatch-size;
-
-            &.text,
-            &--text {
-                font-size: .85rem;
-            }
-        }
-    }
+  }
 }
 
 .swatch-option-tooltip {
-    min-width: 3rem;
-    max-width: 10rem;
-    max-height: 12rem;
-    position: absolute;
-    padding: .5rem;
-    background: $colorWhite;
-    box-shadow: -1px -1px 10px -2px rgba( 0, 0, 0, 0.27 );
-    border-radius: 3px;
-    display: none;
-    z-index: 999;
-    text-align: center;
-    box-sizing: border-box;
+  min-width: 3rem;
+  max-width: 10rem;
+  max-height: 12rem;
+  position: absolute;
+  padding: .5rem;
+  background: $colorWhite;
+  box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.27);
+  border-radius: 3px;
+  display: none;
+  z-index: 999;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .swatch-option-tooltip .corner,
 .swatch-option-tooltip-layered .corner {
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    background: #fff;
-    bottom: -.5rem;
-    box-shadow: 3px 3px 6px -2px rgba( 0, 0, 0, 0.27 );
-    transform: rotate( 45deg );
-    margin-left: .7rem;
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  background: #fff;
+  bottom: -.5rem;
+  box-shadow: 3px 3px 6px -2px rgba(0, 0, 0, 0.27);
+  transform: rotate(45deg);
+  margin-left: .7rem;
 }
 
 .swatch-option-tooltip .image,
 .swatch-option-tooltip-layered .image {
-    display: block;
-    min-width: 8rem;
-    width: 100%;
-    max-width: 10rem;
-    padding-bottom: 100%;
-    margin: 0 auto;
+  display: block;
+  min-width: 8rem;
+  width: 100%;
+  max-width: 10rem;
+  padding-bottom: 100%;
+  margin: 0 auto;
 }
 
 .swatch-option-tooltip .title {
-    max-width: 8rem;
-    height: 2rem;
-    color: $colorMineShaft;
-    text-align: center;
-    display: block;
-    overflow: hidden;
+  max-width: 8rem;
+  height: 2rem;
+  color: $colorMineShaft;
+  text-align: center;
+  display: block;
+  overflow: hidden;
 }

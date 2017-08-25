@@ -3,112 +3,110 @@ $namespace: 'cs-';
 @import '../../../node_modules/creative-patterns/packages/components/select/src/select';
 
 .#{$namespace}select {
-    min-width: .5px !important;
+  min-width: .5px !important;
 }
 
 .#{$namespace}html-select {
-    $root: &;
+  $root: &;
 
-    &__trigger {
-        @extend .cs-input__select;
-        min-width: 13rem;
-        display: flex !important;
-        align-items: center;
-        font-weight: 400 !important;
-        background: none !important;
-        border-color: $colorAlto !important;
-        cursor: default;
+  &__trigger {
+    @extend .cs-input__select;
+    min-width: 13rem;
+    display: flex !important;
+    align-items: center;
+    font-weight: 400 !important;
+    background: none !important;
+    border-color: $colorAlto !important;
+    cursor: default;
 
-        &-text {
-            font-size: 1.4rem;
-            color: $colorMineShaft;
-            line-height: 2.7rem;
-        }
-
-        #{$root}--open & {
-            border-top-color: $colorCeruleanBlue !important;
-            border-left-color: $colorCeruleanBlue !important;
-            border-right-color: $colorCeruleanBlue !important;
-        }
-
-        &:hover {
-            border-color: $colorCeruleanBlue !important;
-
-            #{$root}--open & {
-                border-bottom-color: $colorAlto !important;
-                box-shadow: none !important;
-            }
-        }
-
+    &-text {
+      font-size: 1.4rem;
+      color: $colorMineShaft;
+      line-height: 2.7rem;
     }
 
-    &__trigger-caret {
-        top: 20%;
-        height: 60%;
-        border-left-color: lighten( $colorAlto, 8% );
+    #{$root}--open & {
+      border-top-color: $colorCeruleanBlue !important;
+      border-left-color: $colorCeruleanBlue !important;
+      border-right-color: $colorCeruleanBlue !important;
     }
 
-    &__trigger-caret-arrow {
-        #{$root}--open & {
-            transform: translate3d( 50%, -50%, 0 ) !important;
+    &:hover {
+      border-color: $colorCeruleanBlue !important;
 
-            &:before,
-            &:after {
-                background-color: $colorCeruleanBlue;
-            }
-        }
+      #{$root}--open & {
+        border-bottom-color: $colorAlto !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+
+  &__trigger-caret {
+    top: 20%;
+    height: 60%;
+    border-left-color: lighten($colorAlto, 8%);
+  }
+
+  &__trigger-caret-arrow {
+    #{$root}--open & {
+      transform: translate3d(50%, -50%, 0) !important;
+
+      &:before,
+      &:after {
+        background-color: $colorCeruleanBlue;
+      }
+    }
+  }
+
+  &__menu {
+    border-color: $colorCeruleanBlue;
+    background-color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    padding: 0 0 .5rem;
+
+    &-item {
+      margin: 0;
+      padding: 0;
     }
 
-    &__menu {
-        border-color: $colorCeruleanBlue;
+    &-link {
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      color: $colorMineShaft;
+      background-color: #fff;
+      cursor: default;
+
+      #{$root}__menu-item--selected & {
+        color: $colorCeruleanBlue;
         background-color: #fff;
-        font-size: 1.4rem;
-        line-height: 1;
-        padding: 0 0 .5rem;
+      }
 
-        &-item {
-            margin: 0;
-            padding: 0;
-        }
-
-        &-link {
-            height: 4rem;
-            display: flex;
-            align-items: center;
-            padding: 0 1rem;
-            color: $colorMineShaft;
-            background-color: #fff;
-            cursor: default;
-
-            #{$root}__menu-item--selected & {
-                color: $colorCeruleanBlue;
-                background-color: #fff;
-            }
-
-            &:hover,
-            &:focus,
-            #{$root}__menu-item--focused & {
-                color: #fff !important;
-                background-color: $colorCeruleanBlue !important;
-                text-decoration: none !important;
-            }
-        }
-
-        &-text {
-            line-height: 4rem;
-        }
+      &:hover,
+      &:focus,
+      #{$root}__menu-item--focused & {
+        color: #fff !important;
+        background-color: $colorCeruleanBlue !important;
+        text-decoration: none !important;
+      }
     }
 
-    &--autosuggest {
-        padding: 0;
-        #{$root}__menu {
-            overflow-y: hidden;
-            max-height: 220px;
-        }
-        #{$root}__menu-list {
-            overflow-y: scroll;
-            max-height: 220px;
-        }
-
+    &-text {
+      line-height: 4rem;
     }
+  }
+
+  &--autosuggest {
+    padding: 0;
+    #{$root}__menu {
+      overflow-y: hidden;
+      max-height: 220px;
+    }
+    #{$root}__menu-list {
+      overflow-y: scroll;
+      max-height: 220px;
+    }
+  }
 }

@@ -1,167 +1,165 @@
 .#{$namespace}page-bottom {
+  padding: 1.5rem .5rem;
+  width: 100%;
 
-    padding: 1.5rem .5rem;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include media( '>=tablet' ) {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  @include media( '>=laptop' ) {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .page-print & {
+    display: none;
+  }
+
+  &__image {
+    height: 3rem;
+    width: auto;
+
+    &--circle {
+      width: 4.7rem;
+      height: 4.7rem;
+      margin-right: 1rem;
+    }
+  }
+
+  &__text {
+    font-size: 1.2rem;
+    color: $colorDoveGray;
+    margin-bottom: 0;
+    margin-right: .6rem;
+
+    &--small {
+      font-size: 1rem;
+    }
+  }
+
+  &__divider {
+    margin: 0 1rem;
+
+    &:after {
+      margin: 0 1rem;
+      content: '';
+      display: inline-block;
+      width: .2rem;
+      height: 2rem;
+      background: $colorAlto;
+    }
+
     @include media( '>=tablet' ) {
-        flex-wrap: wrap;
-        justify-content: flex-start;
+      display: none;
     }
     @include media( '>=laptop' ) {
-        flex-wrap: nowrap;
-        justify-content: space-between;
+      display: block;
+    }
+  }
+
+  &__group {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    flex-shrink: 1;
+    justify-content: space-between;
+
+    @include media( '>=tablet' ) {
+      width: 100%;
+      padding: 1rem 1.5rem;
     }
 
-    .page-print & {
-        display: none;
+    @include media( '>=laptop' ) {
+      width: auto;
+      padding: 0;
     }
 
-    &__image {
-        height: 3rem;
-        width: auto;
-
-        &--circle {
-            width: 4.7rem;
-            height: 4.7rem;
-            margin-right: 1rem;
-        }
+    &--info {
+      flex-basis: 15%;
+      .ie11 & {
+        display: block;
+      }
     }
 
-    &__text {
-        font-size: 1.2rem;
-        color: $colorDoveGray;
-        margin-bottom: 0;
-        margin-right: .6rem;
-
-        &--small {
-            font-size: 1rem;
-        }
+    &--shipping {
+      flex-basis: 35%;
     }
 
-    &__divider {
-        margin: 0 1rem;
+    &--payment {
+      flex-basis: 50%;
+    }
+  }
 
-        &:after {
-            margin: 0 1rem;
-            content: '';
-            display: inline-block;
-            width: .2rem;
-            height: 2rem;
-            background: $colorAlto;
-        }
+  &__logo {
+    display: flex;
+    flex-shrink: 1;
+    height: 2rem;
 
-        @include media( '>=tablet' ) {
-            display: none;
-        }
-        @include media( '>=laptop' ) {
-            display: block;
-        }
+    @include media( '<laptop' ) {
+      width: auto;
     }
 
-    &__group {
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-        flex-shrink: 1;
-        justify-content: space-between;
-
-        @include media( '>=tablet' ) {
-            width: 100%;
-            padding: 1rem 1.5rem;
-        }
-
-        @include media( '>=laptop' ) {
-            width: auto;
-            padding: 0;
-        }
-
-        &--info {
-            flex-basis: 15%;
-            .ie11 & {
-                display: block;
-            }
-        }
-
-        &--shipping {
-            flex-basis: 35%;
-        }
-
-        &--payment {
-            flex-basis: 50%;
-        }
+    &--hermes {
+      width: 15.2rem;
     }
 
-    &__logo {
-        display: flex;
-        flex-shrink: 1;
-        height: 2rem;
-
-        @include media( '<laptop' ) {
-            width: auto;
-        }
-
-        &--hermes {
-            width: 15.2rem;
-        }
-
-        &--dhl {
-            width: 9.1rem;
-        }
-
-        &--paypal {
-            width: 6.2rem;
-        }
-
-        &--visa {
-            width: 5.5rem;
-        }
-
-        &--mastercard {
-            width: 3.3rem;
-        }
-
-        &--s-u {
-            width: 6rem;
-        }
-
-        &--klarna {
-            width: 7rem;
-        }
-
-        &--gls {
-            width: 5rem;
-        }
-
-        &--giropay {
-            width: 4.8rem;
-        }
-
-        &--ec {
-            width: 1.8rem;
-        }
-
-        &--paydirekt {
-            width: 6rem;
-        }
-
-        &--lastschrift {
-            width: 6.15rem;
-        }
-
-        &--vorkasse {
-            width: 8.3rem;
-        }
-
-        &--rechnung {
-            width: 6.15rem;
-        }
-
-        & + & {
-            margin-left: .5rem;
-        }
+    &--dhl {
+      width: 9.1rem;
     }
 
+    &--paypal {
+      width: 6.2rem;
+    }
+
+    &--visa {
+      width: 5.5rem;
+    }
+
+    &--mastercard {
+      width: 3.3rem;
+    }
+
+    &--s-u {
+      width: 6rem;
+    }
+
+    &--klarna {
+      width: 7rem;
+    }
+
+    &--gls {
+      width: 5rem;
+    }
+
+    &--giropay {
+      width: 4.8rem;
+    }
+
+    &--ec {
+      width: 1.8rem;
+    }
+
+    &--paydirekt {
+      width: 6rem;
+    }
+
+    &--lastschrift {
+      width: 6.15rem;
+    }
+
+    &--vorkasse {
+      width: 8.3rem;
+    }
+
+    &--rechnung {
+      width: 6.15rem;
+    }
+
+    & + & {
+      margin-left: .5rem;
+    }
+  }
 }

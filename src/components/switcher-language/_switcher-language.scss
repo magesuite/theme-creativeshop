@@ -1,86 +1,85 @@
 .cs-switcher-language {
-    $root: &;
-    white-space: nowrap;
+  $root: &;
+  white-space: nowrap;
+
+  @include media( '>=laptop' ) {
+    display: inline-flex;
+    align-items: stretch;
+  }
+
+  &__trigger {
+    @include media ('<laptop') {
+      position: relative;
+      padding: 2.4rem 2rem;
+      font-size: 1.4rem;
+    }
 
     @include media( '>=laptop' ) {
-        display: inline-flex;
-        align-items: stretch;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      margin-left: 1.3rem;
+      transform: skew(-18deg);
+      font-size: 1.1rem;
+      padding-left: 1.7rem;
+      border-left: .2rem solid $colorWhite;
     }
 
-    &__trigger {
-
-        @include media ( '<laptop' ) {
-            position: relative;
-            padding: 2.4rem 2rem;
-            font-size: 1.4rem;
-        }
-
-        @include media( '>=laptop' ) {
-            height: 100%;
-            display: inline-flex;
-            align-items: center;
-            margin-left: 1.3rem;
-            transform: skew( -18deg );
-            font-size: 1.1rem;
-            padding-left: 1.7rem;
-            border-left: .2rem solid $colorWhite;
-        }
-
-        &-span {
-            @include media( '>=laptop' ) {
-                transform: skew( 18deg );
-            }
-        }
-
-        &-icon {
-            margin-left: .5rem;
-            width: .8rem;
-            height: .7rem;
-            transition: transform .3s ease-out;
-
-            @include media( '<laptop' ) {
-                position: absolute;
-                top: 50%;
-                right: 2rem;
-                transform: translateY( -50% );
-            }
-        }
-
-        &.active {
-            #{$root}__trigger-icon {
-                transform: rotate( 180deg );
-            }
-        }
+    &-span {
+      @include media( '>=laptop' ) {
+        transform: skew(18deg);
+      }
     }
 
-    &__list {
-        @extend .#{$namespace}list;
-        list-style: none;
+    &-icon {
+      margin-left: .5rem;
+      width: .8rem;
+      height: .7rem;
+      transition: transform .3s ease-out;
+
+      @include media( '<laptop' ) {
+        position: absolute;
+        top: 50%;
+        right: 2rem;
+        transform: translateY(-50%);
+      }
+    }
+
+    &.active {
+      #{$root}__trigger-icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__list {
+    @extend .#{$namespace}list;
+    list-style: none;
+    font-size: 1.1rem;
+
+    @include media( '>=laptop' ) {
+      position: absolute;
+      top: calc(100% + .2rem);
+      right: 0;
+      background: $colorGallery;
+    }
+
+    &-item {
+      margin: 0;
+    }
+
+    &-item-link {
+      display: block;
+
+      @include media( '<laptop' ) {
+        padding: 1.2rem 2rem;
+        font-size: 1.4rem;
+      }
+
+      @include media( '>=laptop' ) {
+        padding: .6rem 1.3rem;
         font-size: 1.1rem;
-
-        @include media( '>=laptop' ) {
-            position: absolute;
-            top: calc( 100% + .2rem );
-            right: 0;
-            background: $colorGallery;
-        }
-
-        &-item {
-            margin: 0;
-        }
-
-        &-item-link {
-            display: block;
-
-            @include media( '<laptop' ) {
-                padding: 1.2rem 2rem;
-                font-size: 1.4rem;
-            }
-
-            @include media( '>=laptop' ) {
-                padding: .6rem 1.3rem .6rem 1.3rem;
-                font-size: 1.1rem;
-            }
-        }
+      }
     }
+  }
 }

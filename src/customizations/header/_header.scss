@@ -3,218 +3,217 @@
  */
 
 .#{$namespace}header {
-    $root: &;
+  $root: &;
 
-    font-size: 1rem;
+  font-size: 1rem;
 
-    @include media( '<tablet' ) {
-        padding-top: 5rem; // To compensate for fixed navigation space.
+  @include media( '<tablet' ) {
+    padding-top: 5rem; // To compensate for fixed navigation space.
+  }
+
+  @include media( '>=tablet', '<laptop' ) {
+    padding-top: 8.3rem;
+  }
+
+  &__content {
+    @include container-wrapper();
+
+    height: 5rem;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: $colorWhite;
+    z-index: 202;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    will-change: z-index, height, position;
+
+    @include media( '>=tablet' ) {
+      height: 8.3rem;
+      z-index: 201;
     }
 
-    @include media( '>=tablet', '<laptop' ) {
-        padding-top: 8.3rem;
+    @include media( '>=laptop' ) {
+      position: static;
+      border-bottom: 1px solid $colorGallery;
+      padding: 1.6em 0;
+      flex-wrap: nowrap;
+    }
+  }
+
+  &__burger {
+    display: flex;
+    padding: 1.5rem;
+    flex: 0 1 4rem;
+    border: 0;
+    align-items: center;
+    margin-right: .5rem;
+    align-self: stretch;
+    order: 0;
+
+    &,
+    &:active,
+    &:focus,
+    &:hover {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
     }
 
-    &__content {
-        @include container-wrapper();
-
-        height: 5rem;
-        padding: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: $colorWhite;
-        z-index: 202;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        will-change: z-index, height, position;
-
-        @include media( '>=tablet' ) {
-            height: 8.3rem;
-            z-index: 201;
-        }
-
-        @include media( '>=laptop' ) {
-            position: static;
-            border-bottom: 1px solid $colorGallery;
-            padding: 1.6em 0;
-            flex-wrap: nowrap;
-        }
+    &:after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      transform: scale(0);
+      transform-origin: left;
+      background: $colorCeruleanBlue;
+      transition: transform .3s;
+      bottom: 0;
+      left: 0;
     }
 
-
-    &__burger {
-        display: flex;
-        padding: 1.5rem;
-        flex: 0 1 4rem;
-        border: 0;
-        align-items: center;
-        margin-right: .5rem;
-        align-self: stretch;
-        order: 0;
-
-        &,
-        &:active,
-        &:focus,
-        &:hover {
-            border: 0;
-            background: transparent;
-            box-shadow: none;
-            border-radius: 0;
-        }
-
-        &:after {
-            content: '';
-            position: absolute;
-            height: 2px;
-            width: 100%;
-            transform: scale( 0 );
-            transform-origin: left;
-            background: $colorCeruleanBlue;
-            transition: transform .3s;
-            bottom: 0;
-            left: 0;
-        }
-
-        @include media( '>=laptop' ) {
-            display: none;
-        }
-
-        &--active {
-            &,
-            &:active,
-            &:focus,
-            &:hover {
-                background: $colorCeruleanBlue;
-            }
-
-            &:after {
-                transform: scale( 1 );
-            }
-
-            #{$root}__burger-icon {
-                transform: rotate( -45deg );
-
-                &,
-                &:before,
-                &:after {
-                    background: $colorWhite;
-                }
-
-                &:before,
-                &:after {
-                    transform: rotate( 90deg );
-                }
-            }
-        }
+    @include media( '>=laptop' ) {
+      display: none;
     }
 
-    &__burger-icon {
-        padding: 0;
-        margin: 0;
-        position: relative;
+    &--active {
+      &,
+      &:active,
+      &:focus,
+      &:hover {
+        background: $colorCeruleanBlue;
+      }
+
+      &:after {
+        transform: scale(1);
+      }
+
+      #{$root}__burger-icon {
+        transform: rotate(-45deg);
 
         &,
         &:before,
         &:after {
-            width: 1.8rem;
-            height: .2rem;
-            background: $colorCeruleanBlue;
-            transition: background-color .3s, transform .3s;
+          background: $colorWhite;
         }
 
         &:before,
         &:after {
-            content: '';
-            display: block;
-            position: absolute;
+          transform: rotate(90deg);
         }
+      }
+    }
+  }
 
-        &:before {
-            transform: translateY( -250% );
-            transform: translate3d( 0, -250%, 0 );
-        }
+  &__burger-icon {
+    padding: 0;
+    margin: 0;
+    position: relative;
 
-        &:after {
-            transform: translateY( 250% );
-            transform: translate3d( 0, 250%, 0 );
-        }
+    &,
+    &:before,
+    &:after {
+      width: 1.8rem;
+      height: .2rem;
+      background: $colorCeruleanBlue;
+      transition: background-color .3s, transform .3s;
     }
 
-    &__logo {
-        display: flex;
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+    }
+
+    &:before {
+      transform: translateY(-250%);
+      transform: translate3d(0, -250%, 0);
+    }
+
+    &:after {
+      transform: translateY(250%);
+      transform: translate3d(0, 250%, 0);
+    }
+  }
+
+  &__logo {
+    display: flex;
+    order: 2;
+    flex: 0 1 12rem;
+    margin-bottom: 0;
+
+    @media screen and (min-width: 360px) {
+      flex: 0 1 15.5rem;
+    }
+
+    @include media( '>=tablet' ) {
+      flex: 0 1 20%;
+      order: 1;
+    }
+
+    .page-print & {
+      @extend .#{$namespace}container__inner;
+    }
+  }
+
+  &__search-placeholder {
+    display: none;
+    width: 100%;
+    order: 4;
+
+    @include media( '>=tablet' ) {
+      display: block;
+      flex: 0 1 32%;
+      order: 2;
+      align-self: center;
+    }
+  }
+
+  &__search {
+    @include media( '>=tablet' ) {
+      position: fixed;
+      width: calc(32% - 3rem);
+      top: 2.2rem;
+      left: 37%;
+      z-index: 300;
+    }
+
+    @include media( '>=laptop' ) {
+      width: 32%;
+      position: absolute;
+      top: 3.8rem;
+      left: 32%;
+    }
+
+    &-placeholder {
+      display: none;
+      width: 100%;
+      order: 4;
+
+      @include media( '>=tablet' ) {
+        display: block;
+        flex: 0 1 32%;
         order: 2;
-        flex: 0 1 12rem;
-        margin-bottom: 0;
-
-        @media screen and ( min-width: 360px ) {
-            flex: 0 1 15.5rem;
-        }
-
-        @include media( '>=tablet' ) {
-            flex: 0 1 20%;
-            order: 1;
-        }
-
-        .page-print & {
-            @extend .#{$namespace}container__inner;
-        }
+        align-self: center;
+      }
     }
+  }
 
-    &__search-placeholder {
-        display: none;
-        width: 100%;
-        order: 4;
+  &__user-area {
+    display: flex;
+    justify-content: flex-end;
+    order: 3;
+    flex: 0 1 25%;
 
-        @include media( '>=tablet' ) {
-            display: block;
-            flex: 0 1 32%;
-            order: 2;
-            align-self: center;
-        }
+    @include media( '>=tablet' ) {
+      justify-content: space-between;
     }
-    
-    &__search {
-        @include media( '>=tablet' ) {
-            position: fixed;
-            width: calc( 32% - 3rem );
-            top: 2.2rem;
-            left: 37%;
-            z-index: 300;
-        }
-
-        @include media( '>=laptop' ) {
-            width: 32%;
-            position: absolute;
-            top: 3.8rem;
-            left: 32%;
-        }
-
-        &-placeholder {
-            display: none;
-            width: 100%;
-            order: 4;
-
-            @include media( '>=tablet' ) {
-                display: block;
-                flex: 0 1 32%;
-                order: 2;
-                align-self: center;
-            }
-        }
-    }
-
-    &__user-area {
-        display: flex;
-        justify-content: flex-end;
-        order: 3;
-        flex: 0 1 25%;
-
-        @include media( '>=tablet' ) {
-            justify-content: space-between;
-        }
-    }
+  }
 }

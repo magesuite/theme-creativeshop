@@ -1,71 +1,69 @@
 /* Used to visualize attributes of a product in M2's PDP */
 
 .#{$namespace}attributes-list {
-    $root: &;
+  $root: &;
 
-    &__list {
-        @extend .#{$namespace}list;
-        list-style: none;
-        font-size: 1.4rem;
-        text-align: left;
+  &__list {
+    @extend .#{$namespace}list;
+    list-style: none;
+    font-size: 1.4rem;
+    text-align: left;
 
-        &--columns {
-            @include media('>=phone-lg') {
-                columns: 2;
-            }
+    &--columns {
+      @include media('>=phone-lg') {
+        columns: 2;
+      }
+    }
+    &--long-labels {
+      #{$root}__item,
+      #{$root}__item-label {
+        @include media('<tablet') {
+          width: 45%;
         }
-        &--long-labels {
-            #{$root}__item,
-            #{$root}__item-label {
-                @include media('<tablet') {
-                    width: 45%;
-                }
-            }
+      }
+    }
+  }
 
-        }
+  &__item {
+    padding: .2rem 0 .2rem 1.5rem;
+    margin: 0;
+    position: relative;
+    padding-left: 1.5em;
+    display: inline-block;
+    clear: right;
+    width: 45%;
 
+    @include media('>=phone-lg') {
+      width: 65%;
+    }
+  }
+
+  &__item-label {
+    padding: .2rem 0;
+    font-weight: 700;
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+    width: 45%;
+    @include media('>=phone-lg') {
+      width: 22%;
     }
 
-    &__item {
-        padding: .2rem 0 .2rem 1.5rem;
-        margin: 0;
-        position: relative;
-        padding-left: 1.5em;
-        display: inline-block;
-        clear: right;
-        width: 45%;
-
-        @include media('>=phone-lg') {
-            width: 65%;
-        }
+    &--long {
+      width: 40%;
     }
+  }
 
-    &__item-label {
-        padding: .2rem 0;
-        font-weight: 700;
-        display: inline-block;
-        margin: 0;
-        vertical-align: top;
-        width: 45%;
-        @include media('>=phone-lg') {
-            width: 22%;
-        }
+  &__bullet {
+    @extend .#{$namespace}list__bullet;
 
-        &--long {
-            width: 40%;
-        }
+    &--tick {
+      position: absolute;
+      top: 5px;
+      left: 0;
+      width: .75em;
+      height: .7em;
+      fill: $colorApple;
     }
-
-    &__bullet {
-        @extend .#{$namespace}list__bullet;
-
-        &--tick {
-            position: absolute;
-            top: 5px;
-            left: 0;
-            width: .75em;
-            height: .7em;
-            fill: $colorApple;
-        }
-    }
+  }
 }
