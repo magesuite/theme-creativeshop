@@ -342,14 +342,25 @@
     ], function( $, bundle ) {
 
         //Hide region field
-        setTimeout( function() {
-            $( '#region_id[disabled="disabled"' ).parents( '.cs-input' ).hide();
 
-        }, 2000 );
+        // initialize field watching
+        var regionField = document.getElementById('region');
+
+        var regionFieldObserver = new MutationObserver( function( mutations ) {
+            console.log(mutations)
+            if ( regionField.style.display != 'none' ) {
+                $( '#region_id' ).parents( '.cs-input' ).addClass( 'cs-visually-hidden' );
+            } else {
+                $( '#region_id' ).parents( '.cs-input' ).removeClass( 'cs-visually-hidden' );
+            }
+        } );
+
+        var regionFieldConfig = { attributes: true, childList: false, characterData: true, subtree: true };
+
+        regionFieldObserver.observe( regionField, regionFieldConfig );
+
 
         //Init address google autosuggest
-
-
         bundle.AddressAutofill(
             {
                 streetField: $( '#form-validate #street_1'),
