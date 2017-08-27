@@ -3,250 +3,252 @@ $namespace: 'cs-';
 @import '../../../node_modules/creative-patterns/packages/components/category-links/src/category-links';
 
 .#{$namespace}category-links {
-    $root: &;
-    @include category-links();
-    margin: 2rem 0;
-    font-size: 1.2rem;
+  $root: &;
+  @include category-links();
+  margin: 2rem 0;
+  font-size: 1.2rem;
 
-    &__title {
-        @extend .#{$namespace}headline__title;
+  &__title {
+    @extend .#{$namespace}headline__title;
 
-        @include media( '>=tablet' ) {
-            margin: 0 0 1rem !important;
-        }
-
-        @include media( '<tablet' ) {
-            text-align: left;
-
-            &:before,
-            &:after {
-                display: none !important;
-            }
-        }
+    @include media( '>=tablet' ) {
+      margin: 0 0 1rem !important;
     }
 
-    &__subtitle {
-        padding: 1.5rem 1rem 1.5rem 0;
-        font-weight: 700;
-        text-transform: uppercase;
-        border-bottom: 1px solid $colorAlto;
+    @include media( '<tablet' ) {
+      text-align: left;
+
+      &:before,
+      &:after {
+        display: none !important;
+      }
+    }
+  }
+
+  &__subtitle {
+    padding: 1.5rem 1rem 1.5rem 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid $colorAlto;
+  }
+
+  &__list-wrapper {
+    @include media( '<tablet' ) {
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 0 15px 0 rgba(0, 0, 0, .3);
     }
 
-    &__list-wrapper {
-        @include media( '<tablet' ) {
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 0 0 15px 0 rgba( 0, 0, 0, .3 );
-        }
+    #{$root}--no-subcats & {
+      @include media( '>=tablet' ) {
+        justify-content: flex-end;
+      }
+    }
+  }
 
-        #{$root}--no-subcats & {
-            @include media( '>=tablet' ) {
-                justify-content: flex-end;
-            }
-        }
+  &__list {
+    @include media( '>=tablet' ) {
+      margin: -1rem 0 0 -2.5rem;
     }
 
-    &__list {
-        @include media( '>=tablet' ) {
-            margin: -1rem 0 0 -2.5rem;
-        }
+    &-item {
+      margin: 0;
 
-        &-item {
-            margin: 0;
-
-            @include media( '>=tablet' ) {
-                margin: 1rem 0 0 2.5rem;
-            }
-        }
+      @include media( '>=tablet' ) {
+        margin: 1rem 0 0 2.5rem;
+      }
     }
+  }
 
-    &__list-all {
-        margin: 0 0 .5rem;
+  &__list-all {
+    margin: 0 0 .5rem;
 
-        @include media( '>=tablet' ) {
-            position: relative;
-            margin: 0 0 0 1.5rem;
-            padding: 0 0 0 1.5rem;
-            text-transform: uppercase;
-            border: none;
+    @include media( '>=tablet' ) {
+      position: relative;
+      margin: 0 0 0 1.5rem;
+      padding: 0 0 0 1.5rem;
+      text-transform: uppercase;
+      border: none;
 
-            &:before {
-                position: absolute;
-                left: 0;
-                top: .5rem;
-                bottom: .5rem;
-                content: '';
-                border-left: 1px solid $colorAlto;
-            }
+      &:before {
+        position: absolute;
+        left: 0;
+        top: .5rem;
+        bottom: .5rem;
+        content: '';
+        border-left: 1px solid $colorAlto;
+      }
 
-            #{$root}--no-subcats & {
-                margin: 0;
-                padding: 0;
-
-                &:before {
-                    display: none;
-                }
-            }
-        }
-
-        &-item {
-            margin: 0;
-
-            #{$root}__link {
-                flex: 1 0 auto;
-                padding: 0 1rem 1rem;
-
-                @include media ( '>=tablet' ) {
-                    padding: 1.5rem 3rem 1.5rem 1.5rem;
-                }
-
-                &:hover {
-                    color: $colorMineShaft;
-
-                    @include media ( '>=tablet' ) {//stylelint-disable-line
-                        border-radius: 4px;
-                        box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .3 );
-                    }
-
-                    #{$root}__qty {//stylelint-disable-line
-                        color: $colorMineShaft;
-                    }
-                }
-            }
-        }
-
-        &-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            margin-left: 1rem;
-            width: 1.2rem;
-            height: 1.2rem;
-            fill: $colorGray;
-            vertical-align: middle;
-            transform: translate( 0, -50% );
-
-            @include media ( '<tablet' ) {
-                display: none;
-            }
-        }
-    }
-
-    &__link {
-        display: block;
-        padding: 1.5rem 0;
-        font-weight: 700;
-        color: $colorMineShaft;
-
-        @include media( '<tablet' ) {
-            padding: 0 1rem 1rem;
-        }
-
-        &:visited {
-            color: $colorMineShaft;
-        }
-
-        &:hover,
-        &:hover #{$root}__qty {
-            text-decoration: none;
-            color: $colorCeruleanBlue;
-        }
-
-        #{$root}--no-subcats & {
-            @include media( '<tablet' ) {
-                padding: .5rem 0;
-                flex: 0 0 auto;
-            }
-        }
-    }
-
-    &__qty {
-        margin-left: .5rem;
-        font-weight: 400;
-        color: $colorGray;
+      #{$root}--no-subcats & {
+        margin: 0;
+        padding: 0;
 
         &:before {
-            content: '(';
+          display: none;
         }
-
-        &:after {
-            content: ')';
-        }
+      }
     }
 
-    &--no-subcats {
-        margin-bottom: 1rem;
+    &-item {
+      margin: 0;
+
+      #{$root}__link {
+        flex: 1 0 auto;
+        padding: 0 1rem 1rem;
+
+        @include media ('>=tablet') {
+          padding: 1.5rem 3rem 1.5rem 1.5rem;
+        }
+
+        &:hover {
+          color: $colorMineShaft;
+
+          @include media ('>=tablet') {
+            //stylelint-disable-line
+            border-radius: 4px;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, .3);
+          }
+
+          #{$root}__qty {
+            //stylelint-disable-line
+            color: $colorMineShaft;
+          }
+        }
+      }
     }
+
+    &-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      margin-left: 1rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: $colorGray;
+      vertical-align: middle;
+      transform: translate(0, -50%);
+
+      @include media ('<tablet') {
+        display: none;
+      }
+    }
+  }
+
+  &__link {
+    display: block;
+    padding: 1.5rem 0;
+    font-weight: 700;
+    color: $colorMineShaft;
+
+    @include media( '<tablet' ) {
+      padding: 0 1rem 1rem;
+    }
+
+    &:visited {
+      color: $colorMineShaft;
+    }
+
+    &:hover,
+    &:hover #{$root}__qty {
+      text-decoration: none;
+      color: $colorCeruleanBlue;
+    }
+
+    #{$root}--no-subcats & {
+      @include media( '<tablet' ) {
+        padding: .5rem 0;
+        flex: 0 0 auto;
+      }
+    }
+  }
+
+  &__qty {
+    margin-left: .5rem;
+    font-weight: 400;
+    color: $colorGray;
+
+    &:before {
+      content: '(';
+    }
+
+    &:after {
+      content: ')';
+    }
+  }
+
+  &--no-subcats {
+    margin-bottom: 1rem;
+  }
 }
 
 .#{$namespace}category-links-dropdown {
-    @include category-links-dropdown();
+  @include category-links-dropdown();
 
-    $root: &;
+  $root: &;
 
-    &__trigger {
-        &:before,
-        &:after {
-            position: absolute;
-            display: block;
-            right: 0;
-            top: 50%;
-            width: 10px;
-            height: 2px;
-            content: '';
-            background: $colorGray;
-            backface-visibility: hidden;
-        }
-
-        &:before {
-            transform: translate3d( 0, -50%, 0 );
-            transition: transform .3s ease-out, opacity .2s ease-out;
-        }
-
-        &:after {
-            transform: translate3d( 0, -50%, 0 ) rotate( 90deg );
-            transition: transform .3s ease-out;
-        }
-
-        &--in {
-            border-color: $colorWhite;
-
-            &:before {
-                opacity: 0;
-                transform: translate3d (0, -50%, 0 ) rotate( -90deg );
-            }
-
-            &:after {
-                transform: translate3d( 0, -50%, 0 ) rotate( 0deg );
-            }
-        }
+  &__trigger {
+    &:before,
+    &:after {
+      position: absolute;
+      display: block;
+      right: 0;
+      top: 50%;
+      width: 10px;
+      height: 2px;
+      content: '';
+      background: $colorGray;
+      backface-visibility: hidden;
     }
 
-    &__content {
-        @include media( '<tablet' ) {
-            padding-top: 4.8rem;
-            left: -1rem;
-            right: -1rem;
-            width: auto;
-            transform: translateY( 4.8rem );
-        }
-        &--in {
-            @include media ( '<tablet' ) {
-                transform: translateY( 0 );
-            }
-        }
+    &:before {
+      transform: translate3d(0, -50%, 0);
+      transition: transform .3s ease-out, opacity .2s ease-out;
     }
 
-    &--no-subcats {
-        #{$root}__content {
-            @include media( '<tablet' ) {
-                position: static;
-                transform: none;
-                height: auto;
-                opacity: 1;
-                box-shadow: none;
-                padding: 0;
-            }
-        }
+    &:after {
+      transform: translate3d(0, -50%, 0) rotate(90deg);
+      transition: transform .3s ease-out;
     }
+
+    &--in {
+      border-color: $colorWhite;
+
+      &:before {
+        opacity: 0;
+        transform: translate3d (0, -50%, 0) rotate(-90deg);
+      }
+
+      &:after {
+        transform: translate3d(0, -50%, 0) rotate(0deg);
+      }
+    }
+  }
+
+  &__content {
+    @include media( '<tablet' ) {
+      padding-top: 4.8rem;
+      left: -1rem;
+      right: -1rem;
+      width: auto;
+      transform: translateY(4.8rem);
+    }
+    &--in {
+      @include media ('<tablet') {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &--no-subcats {
+    #{$root}__content {
+      @include media( '<tablet' ) {
+        position: static;
+        transform: none;
+        height: auto;
+        opacity: 1;
+        box-shadow: none;
+        padding: 0;
+      }
+    }
+  }
 }

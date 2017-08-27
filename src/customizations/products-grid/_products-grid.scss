@@ -5,13 +5,13 @@
  * If you need to show all products for given breakpoint, the value should be 0
  * */
 $colsByBreakpoint: (
-    phone: 1,
-    phone-lg: 2,
-    tablet: 3,
-    laptop: 4,
-    laptop-lg: 4,
-    desktop: 4,
-    tv: 4
+  phone: 1,
+  phone-lg: 2,
+  tablet: 3,
+  laptop: 4,
+  laptop-lg: 4,
+  desktop: 4,
+  tv: 4
 );
 
 /* This map contains breakpoint names as keys according to the breakpoints map for RWD
@@ -19,82 +19,81 @@ $colsByBreakpoint: (
  * If you don't have any hero items in your project, put 'none' as value for all keys
  * */
 $heroSizeByBreakpoint: (
-    phone: 0,
-    phone-lg: 0,
-    tablet: 2,
-    laptop: 2,
-    laptop-lg: 2,
-    desktop: 2,
-    tv: 2
+  phone: 0,
+  phone-lg: 0,
+  tablet: 2,
+  laptop: 2,
+  laptop-lg: 2,
+  desktop: 2,
+  tv: 2
 );
 
 $fontSizeBaseHeadline: 13vw;
 $fontSizeBaseSubheadline: 9vw;
 
 .#{$namespace}products-grid {
-    $root: &;
+  $root: &;
 
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
 
-    &:after {
-        content: '';
-        display: table;
-        clear: both;
-    }
-
-    /* Get Basic styles and show only N first rows logic
+  /* Get Basic styles and show only N first rows logic
      * @param $colsByBreakpoint { map } - columns configuration for each breakpoint
      * @param $heroSizeByBreakpoint { map } - hero size (how many tiles it take) for each breakpoint
     */
-    @include productsGrid( $colsByBreakpoint, $heroSizeByBreakpoint, $fontSizeBaseHeadline, $fontSizeBaseSubheadline );
+  @include productsGrid( $colsByBreakpoint, $heroSizeByBreakpoint, $fontSizeBaseHeadline, $fontSizeBaseSubheadline );
 
-    &__hero {
-        &-image {
-            position: static;
-            height: 100%;
-            max-height: 100%;
-            max-width: none;
-            transform: none;
-        }
-
-        &-content-wrapper {
-            align-items: flex-start;
-        }
-
-        &-content {
-            width: 100%;
-        }
-
-        &-headline {
-            @extend .#{$namespace}hero__headline;
-
-            #{$root}__hero--scheme-light & {
-                color: $colorWhite !important;
-            }
-
-            @media screen and ( min-width: 1200px ) {
-                font-size: 4rem;
-            }
-        }
-
-        &-subheadline {
-            @extend .#{$namespace}hero__subheadline;
-
-            #{$root}__hero--scheme-light & {
-                color: $colorWhite !important;
-            }
-
-            @media screen and ( min-width: 1200px ) {
-                font-size: 2.7rem;
-            }
-        }
-
-        &-text {
-            @extend .#{$namespace}hero__text;
-            max-width: 75%;
-
-            #{$root}__hero--scheme-light & {
-                color: $colorWhite !important;
-            }
-        }
+  &__hero {
+    &-image {
+      position: static;
+      height: 100%;
+      max-height: 100%;
+      max-width: none;
+      transform: none;
     }
+
+    &-content-wrapper {
+      align-items: flex-start;
+    }
+
+    &-content {
+      width: 100%;
+    }
+
+    &-headline {
+      @extend .#{$namespace}hero__headline;
+
+      #{$root}__hero--scheme-light & {
+        color: $colorWhite !important;
+      }
+
+      @media screen and (min-width: 1200px) {
+        font-size: 4rem;
+      }
+    }
+
+    &-subheadline {
+      @extend .#{$namespace}hero__subheadline;
+
+      #{$root}__hero--scheme-light & {
+        color: $colorWhite !important;
+      }
+
+      @media screen and (min-width: 1200px) {
+        font-size: 2.7rem;
+      }
+    }
+
+    &-text {
+      @extend .#{$namespace}hero__text;
+      max-width: 75%;
+
+      #{$root}__hero--scheme-light & {
+        color: $colorWhite !important;
+      }
+    }
+  }
 }

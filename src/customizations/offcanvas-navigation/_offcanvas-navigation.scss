@@ -1,90 +1,90 @@
 @import '../../../node_modules/creative-patterns/packages/components/offcanvas-navigation/src/offcanvas-navigation';
 
 .cs-offcanvas-navigation {
-    $root: &;
-    @include offcanvas-navigation();
-    height: 100%;
+  $root: &;
+  @include offcanvas-navigation();
+  height: 100%;
 
-    &__list {
-        position: relative;
-        z-index: 1;
+  &__list {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__item {
+    margin: 0;
+
+    & + & {
+      border-top: 1px $colorAlto solid;
     }
 
-    &__item {
-        margin: 0;
+    &:last-of-type {
+      border-bottom: 1px $colorAlto solid;
+    }
+  }
 
-        & + & {
-            border-top: 1px $colorAlto solid;
-        }
+  &__icon {
+    position: absolute;
+    top: 50%;
+    right: 2rem;
+    fill: $colorCeruleanBlue;
+  }
 
-        &:last-of-type {
-            border-bottom: 1px $colorAlto solid;
-        }
+  &__link {
+    display: flex;
+    width: 100%;
+    padding: 2.4rem 2rem;
+    font-size: 1.4rem;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    box-sizing: border-box;
+    position: relative;
+
+    &,
+    &:hover,
+    &:visited {
+      color: $colorMineShaft;
     }
 
-    &__icon {
-        position: absolute;
-        top: 50%;
-        right: 2rem;
-        fill: $colorCeruleanBlue;
+    &--sign-in,
+    &--sign-out {
+      padding-right: 5rem;
+
+      &,
+      &:hover,
+      &:visited {
+        color: $colorCeruleanBlue;
+      }
+
+      #{$root}__icon {
+        height: 2.5rem;
+        margin-top: -1.25rem;
+        width: 2.3rem;
+      }
     }
 
-    &__link {
-        display: flex;
-        width: 100%;
-        padding: 2.4rem 2rem;
-        font-size: 1.4rem;
-        align-items: center;
-        text-transform: uppercase;
-        font-weight: 700;
-        box-sizing: border-box;
-        position: relative;
-
-        &,
-        &:hover,
-        &:visited {
-            color: $colorMineShaft;
-        }
-
-        &--sign-in,
-        &--sign-out {
-            padding-right: 5rem;
-
-            &,
-            &:hover,
-            &:visited {
-                color: $colorCeruleanBlue;
-            }
-
-            #{$root}__icon {
-                height: 2.5rem;
-                margin-top: -1.25rem;
-                width: 2.3rem;
-            }
-        }
-
-        &--parent,
-        &--return {
-            #{$root}__icon {
-                height: 1rem;
-                width: 1rem;
-                margin-top: -.5rem;
-            }
-        }
-
-        &--return {
-            padding-left: 5rem;
-
-            #{$root}__icon {
-                right: auto;
-                left: 2rem;
-            }
-        }
-
-        &--parent {
-            padding-right: 5rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+    &--parent,
+    &--return {
+      #{$root}__icon {
+        height: 1rem;
+        width: 1rem;
+        margin-top: -.5rem;
+      }
     }
+
+    &--return {
+      padding-left: 5rem;
+
+      #{$root}__icon {
+        right: auto;
+        left: 2rem;
+      }
+    }
+
+    &--parent {
+      padding-right: 5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  }
 }

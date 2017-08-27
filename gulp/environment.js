@@ -6,28 +6,28 @@ import util from 'gulp-util';
  */
 
 const environment = {
-    // Dev environment, without unnecessary optimizations.
-    development: false,
-    // Production environment, files from this mode land on production server.
-    production: false,
-    // CI environment, same as production but with custom reporting.
-    ci: false,
-    // Special watch environment, disables breaking build on errors.
-    watch: Boolean( util.env.w ) || Boolean( util.env.watch ),
+  // Dev environment, without unnecessary optimizations.
+  development: false,
+  // Production environment, files from this mode land on production server.
+  production: false,
+  // CI environment, same as production but with custom reporting.
+  ci: false,
+  // Special watch environment, disables breaking build on errors.
+  watch: Boolean(util.env.w) || Boolean(util.env.watch),
 };
 
 // Check "--env" task param.
-switch ( util.env.env ) {
-case 'ci':
+switch (util.env.env) {
+  case 'ci':
     environment.ci = true;
     environment.production = true;
     break;
 
-case 'production':
+  case 'production':
     environment.production = true;
     break;
 
-default:
+  default:
     environment.development = true;
 }
 

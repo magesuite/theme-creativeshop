@@ -1,56 +1,63 @@
-
 .#{$namespace}collapsible-text {
-    &__content {
-        position: relative;
-        transition: all .15s ease-in-out;
-        padding-bottom: 2rem;
+  &__content {
+    position: relative;
+    transition: all .15s ease-in-out;
+    padding-bottom: 2rem;
 
-        &:after {
-            position: absolute;
-            bottom: 0;
-            height: 0;
-            width: 100%;
-            background: linear-gradient( to bottom, rgba( $colorWhite, 0 ) 0%, rgba( $colorWhite, 1 ) 90% );
-            content: '';
-            z-index: 2;
-            visibility: hidden;
-            transition: height .15s ease-in-out;
-            will-change: visibility;
-            display: none;
-            @include media('>=tablet') {
-                display: block;
-            }
-        }
-
-        @include media('>=tablet') {
-            padding-bottom: 0;
-        }
-
-        @include media('<tablet') {
-            height: auto!important;// stylelint-disable-line
-        }
-
-        &--hidden {
-            cursor: pointer;
-
-            &:after {
-                visibility: visible;
-                height: 66%;
-            }
-        }
-
-        &--contrast:after {
-            background: linear-gradient( to bottom, rgba( $colorGallery, 0 ) 0%, rgba( $colorGallery, 1 ) 90% );
-        }
+    &:after {
+      position: absolute;
+      bottom: 0;
+      height: 0;
+      width: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba($colorWhite, 0) 0%,
+        rgba($colorWhite, 1) 90%
+      );
+      content: '';
+      z-index: 2;
+      visibility: hidden;
+      transition: height .15s ease-in-out;
+      will-change: visibility;
+      display: none;
+      @include media('>=tablet') {
+        display: block;
+      }
     }
 
-    &__trigger {
-        @include media('<tablet') {
-            display: none!important;// stylelint-disable-line
-        }
-        @include media('>=tablet') {
-            display: block;
-            margin-top: 1em;
-        }
+    @include media('>=tablet') {
+      padding-bottom: 0;
     }
+
+    @include media('<tablet') {
+      height: auto !important; // stylelint-disable-line
+    }
+
+    &--hidden {
+      cursor: pointer;
+
+      &:after {
+        visibility: visible;
+        height: 66%;
+      }
+    }
+
+    &--contrast:after {
+      background: linear-gradient(
+        to bottom,
+        rgba($colorGallery, 0) 0%,
+        rgba($colorGallery, 1) 90%
+      );
+    }
+  }
+
+  &__trigger {
+    @include media('<tablet') {
+      display: none !important; // stylelint-disable-line
+    }
+    @include media('>=tablet') {
+      display: block;
+      margin-top: 1em;
+    }
+  }
 }

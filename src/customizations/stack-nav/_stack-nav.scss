@@ -3,134 +3,129 @@
  */
 
 .#{$namespace}stack-nav {
-    position: relative;
-    font-size: 1rem;
-    $root: &;
+  position: relative;
+  font-size: 1rem;
+  $root: &;
 
-    &__trigger {
-        padding: 1rem 1.5rem;
+  &__trigger {
+    padding: 1rem 1.5rem;
+    background-color: $colorGallery;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @extend .#{$namespace}t-headline;
+    @extend .#{$namespace}t-headline--size_3;
+
+    @include media( '>=tablet' ) {
+      display: none;
+    }
+  }
+
+  &__content {
+    @include media( '<tablet' ) {
+      background-color: $colorGallery;
+    }
+
+    @include media( '>=tablet' ) {
+      border-radius: 4px;
+      background-color: $colorWhite;
+      box-shadow: 0 0 5px 0 rgba(0, 0, 0, .27);
+      padding: 20px 0;
+    }
+  }
+
+  &__nav {
+    #{$root}__list  li {
+      margin: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    // Link - nav items
+    #{$root}__list  li  a,
+    #{$root}__list  li  strong {
+      font-size: 1.4rem;
+      border-left: none;
+      padding: .75rem 1.5rem;
+      display: block;
+      margin-bottom: .1rem;
+      color: $colorDoveGray;
+      font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      @include media( '>=tablet' ) {
+        padding: .5rem 1.8rem .5rem 2.5rem;
+      }
+    }
+
+    #{$root}__list  li  a:hover {
+      background-color: darken($colorGallery, 5%);
+
+      @include media( '>=tablet' ) {
         background-color: $colorGallery;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        @extend .#{$namespace}t-headline;
-        @extend .#{$namespace}t-headline--size_3;
+      }
+    }
+
+    #{$root}__list  li  strong {
+      border-left: none;
+      border-color: transparent;
+      font-weight: 300;
+      color: $colorMineShaft;
+    }
+
+    // Current item
+    #{$root}__list  li.current strong {
+      border-left: none;
+      border-color: transparent;
+      font-weight: 700;
+      position: relative;
+
+      &:after {
+        position: absolute;
+        left: -6px;
+        top: 0;
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 35px solid $colorGold;
 
         @include media( '>=tablet' ) {
-            display: none;
+          border-top-width: 28px;
         }
+      }
+
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+        display: block;
+        width: 4px;
+        height: 100%;
+        background: $colorGold;
+      }
     }
 
-    &__content {
-        @include media( '<tablet' ) {
-            background-color: $colorGallery;
-        }
-
-        @include media( '>=tablet' ) {
-            border-radius: 4px;
-            background-color: $colorWhite;
-            box-shadow: 0 0 5px 0 rgba( 0, 0, 0, .27 );
-            padding: 20px 0;
-        }
+    // Reset style for a if it is a child of current
+    #{$root}__list  li.current  a {
+      padding: 0;
+      margin-bottom: 0;
     }
 
-    &__nav {
-        #{$root}__list  li {
-            margin: 0;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        // Link - nav items
-        #{$root}__list  li  a,
-        #{$root}__list  li  strong {
-            font-size: 1.4rem;
-            border-left: none;
-            padding: .75rem 1.5rem;
-            display: block;
-            margin-bottom: .1rem;
-            color: $colorDoveGray;
-            font-weight: 300;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
-            @include media( '>=tablet' ) {
-                padding: .5rem 1.8rem .5rem 2.5rem;
-            }
-        }
-
-
-        #{$root}__list  li  a:hover {
-            background-color: darken( $colorGallery, 5% );
-
-            @include media( '>=tablet' ) {
-                background-color: $colorGallery;
-            }
-        }
-
-        #{$root}__list  li  strong {
-            border-left: none;
-            border-color: transparent;
-            font-weight: 300;
-            color: $colorMineShaft;
-        }
-
-        // Current item
-        #{$root}__list  li.current strong {
-            border-left: none;
-            border-color: transparent;
-            font-weight: 700;
-            position: relative;
-
-            &:after {
-                position: absolute;
-                left: -6px;
-                top: 0;
-                content: '';
-                display: block;
-                width: 0;
-                height: 0;
-                border-left: 10px solid transparent;
-                border-right: 10px solid transparent;
-                border-top: 35px solid $colorGold;
-
-                @include media( '>=tablet' ) {
-                    border-top-width: 28px;
-                }
-            }
-
-            &:before {
-                position: absolute;
-                left: 0;
-                top: 0;
-                content: '';
-                display: block;
-                width: 4px;
-                height: 100%;
-                background: $colorGold;
-
-            }
-        }
-
-        // Reset style for a if it is a child of current
-        #{$root}__list  li.current  a {
-            padding: 0;
-            margin-bottom: 0;
-        }
-
-        @include media( '>=tablet' ) {
-            display: block;
-            position: relative;
-
-        }
-
+    @include media( '>=tablet' ) {
+      display: block;
+      position: relative;
     }
+  }
 
-    &__list {
-        list-style: none none;
-        padding: 0;
-        margin: 0;
-    }
-
+  &__list {
+    list-style: none none;
+    padding: 0;
+    margin: 0;
+  }
 }

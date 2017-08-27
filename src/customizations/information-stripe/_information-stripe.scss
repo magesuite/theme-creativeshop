@@ -4,142 +4,142 @@
  */
 
 .#{$namespace}information-stripe {
-    @include information-stripe();
-    display: none;
-    width: 100%;
+  @include information-stripe();
+  display: none;
+  width: 100%;
 
-    .page-print & {
-        display: none;
-    }
+  .page-print & {
+    display: none;
+  }
+
+  @include media( '>=laptop' ) {
+    display: flex;
+    z-index: 302; //because .cs-container--ontop has z-index 301
+  }
+
+  &__wrapper {
+    padding: 0;
+    justify-content: space-between;
+    font-size: 1.1em;
+    flex-wrap: wrap;
+    flex-grow: 1;
 
     @include media( '>=laptop' ) {
-        display: flex;
-        z-index: 302; //because .cs-container--ontop has z-index 301
+      flex-wrap: nowrap;
+    }
+  }
+
+  &__list,
+  &__wrapper > ul {
+    fill: $colorGray;
+    font-size: 1em;
+    height: 2.7rem;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin: 0;
+    min-height: 1.7rem;
+  }
+
+  &__item,
+  &__wrapper > ul > li {
+    padding: 0 .3rem 0 0;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-bottom: 0;
+    transform: skew(-18deg);
+    border-right: .2rem solid $colorWhite;
+    margin-right: .9rem;
+
+    @include media( '>=laptop' ) {
+      padding: 0 1.3rem 0 0;
+      margin-right: 1.7rem;
     }
 
-    &__wrapper {
-        padding: 0;
-        justify-content: space-between;
-        font-size: 1.1em;
-        flex-wrap: wrap;
-        flex-grow: 1;
+    &--last {
+      margin-right: 0;
+      padding-right: 0;
+      border-right: none;
+    }
+  }
 
-        @include media( '>=laptop' ) {
-            flex-wrap: nowrap;
-        }
+  &__wrapper > ul.#{$namespace}information-stripe__list--featured {
+    opacity: 1;
+    transition: opacity .3s;
+
+    @include media( '<laptop-lg' ) {
+      opacity: 0; // Hide featured for smaller screens but let it take space to keep flex-justify.
     }
 
-    &__list,
-    &__wrapper > ul {
-        fill: $colorGray;
-        font-size: 1em;
-        height: 2.7rem;
-        display: flex;
-        flex-wrap: wrap;
-        padding-left: 0;
-        margin: 0;
-        min-height: 1.7rem;
+    .page-wrapper--checkout & {
+      opacity: 0; // Hide completely on checkout.
     }
 
-    &__item,
-    &__wrapper > ul > li {
-        padding: 0 .3rem 0 0;
-        display: inline-flex;
-        align-items: center;
-        white-space: nowrap;
-        margin-bottom: 0;
-        transform: skew( -18deg );
-        border-right: .2rem solid $colorWhite;
-        margin-right: .9rem;
+    & > li:last-child {
+      margin-right: 0;
+      padding-right: 0;
+      border-right: none;
+    }
+  }
 
-        @include media( '>=laptop' ) {
-            padding: 0 1.3rem 0 0;
-            margin-right: 1.7rem;
-        }
+  &__phone-number {
+    color: $colorMineShaft;
+    font-weight: 700;
+    margin-right: .909em;
 
-        &--last {
-            margin-right: 0;
-            padding-right: 0;
-            border-right: none;
-        }
+    @include media( '<laptop' ) {
+      display: none;
     }
 
-    &__wrapper > ul.#{$namespace}information-stripe__list--featured {
-        opacity: 1;
-        transition: opacity .3s;
-
-        @include media( '<laptop-lg' ) {
-            opacity: 0; // Hide featured for smaller screens but let it take space to keep flex-justify.
-        }
-
-        .page-wrapper--checkout & {
-            opacity: 0; // Hide completely on checkout.
-        }
-
-        & > li:last-child {
-            margin-right: 0;
-            padding-right: 0;
-            border-right: none;
-        }
+    &:hover {
+      color: inherit;
+    }
+    &--last {
+      margin-right: 0;
+      padding-right: 0;
+      border-right: none;
     }
 
-    &__phone-number {
-        color: $colorMineShaft;
-        font-weight: 700;
-        margin-right: .909em;
-
-        @include media( '<laptop' ) {
-            display: none;
-        }
-
-        &:hover {
-            color: inherit;
-        }
-        &--last {
-            margin-right: 0;
-            padding-right: 0;
-            border-right: none;
-        }
-
-        &--login {
-            transform: none;
-            border-right: none;
-            padding-right: 0;
-            margin-right: 0;
-        }
+    &--login {
+      transform: none;
+      border-right: none;
+      padding-right: 0;
+      margin-right: 0;
     }
+  }
 
-    &__phone-label {
-        margin-right: .3em;
-    }
+  &__phone-label {
+    margin-right: .3em;
+  }
 
-    &__phone-hours {
-        margin: 0;
-        display: inline-block;
-    }
+  &__phone-hours {
+    margin: 0;
+    display: inline-block;
+  }
 
-    &__account-link {
-        color: $colorCeruleanBlue;
-        font-size: 1.1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: 400;
-    }
+  &__account-link {
+    color: $colorCeruleanBlue;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+  }
 
-    &__account-icon {
-        width: 1.8rem;
-        height: 1em;
-        padding-right: .5rem;
-        fill: $colorGray;
-    }
+  &__account-icon {
+    width: 1.8rem;
+    height: 1em;
+    padding-right: .5rem;
+    fill: $colorGray;
+  }
 
-    &__item-text,
-    &__phone-label,
-    &__phone-number,
-    &__phone-hours,
-    &__account-link,
-    &__wrapper > ul > li > span {
-        transform: skew( 18deg );
-    }
+  &__item-text,
+  &__phone-label,
+  &__phone-number,
+  &__phone-hours,
+  &__account-link,
+  &__wrapper > ul > li > span {
+    transform: skew(18deg);
+  }
 }

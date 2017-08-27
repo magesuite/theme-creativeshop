@@ -6,106 +6,104 @@
 @import '../badge/badge';
 
 .#{$namespace}header-user-area {
+  font-size: 1rem;
+  padding: 0 .75rem;
+
+  @include media( '>=laptop' ) {
+    padding: 0;
+  }
+
+  &__section {
+    padding: 1rem .75rem;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    @include media( '>=tablet' ) {
+      width: 33.3%;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &--minicart {
+      margin: 0;
+      z-index: 300;
+    }
+  }
+
+  &__link {
+    display: inline-block;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    display: none; // Hide by default, let JS show when needed.
+    top: -.5rem;
+    left: 60%;
+
+    &--visible {
+      display: block;
+    }
+  }
+
+  &__icon-wrapper {
+    position: relative;
+    display: flex;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+    }
+  }
+
+  &__icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    display: block;
+    margin: 0 auto;
+    fill: $colorCeruleanBlue;
+
+    &:hover {
+      fill: $colorCeruleanBlueHover;
+    }
+  }
+
+  &__label {
+    margin: 0;
+    text-decoration: none;
+    white-space: nowrap;
+    display: none;
     font-size: 1rem;
-    padding: 0 .75rem;
+    color: $colorDoveGray;
+    text-transform: uppercase;
 
+    &:hover {
+      text-decoration: none;
+    }
+
+    @include media( '>=tablet' ) {
+      display: block;
+    }
+  }
+
+  .ui-dialog {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     @include media( '>=laptop' ) {
-        padding: 0;
+      right: 1.5rem;
     }
-
-    &__section {
-        padding: 1rem .75rem;
-        text-align: center;
-        cursor: pointer;
-        position: relative;
-        @include media( '>=tablet' ) {
-            width: 33.3%;
-        }
-
-        &:hover {
-            text-decoration: none;
-        }
-
-        &--minicart {
-            margin: 0;
-            z-index: 300;
-        }
+    @include media( '>=desktop' ) {
+      right: .5rem;
     }
-
-    &__link {
-        display: inline-block;
-
-        &:hover {
-            text-decoration: none;
-        }
-    }
-
-
-    &__badge {
-        position: absolute;
-        display: none; // Hide by default, let JS show when needed.
-        top: -.5rem;
-        left: 60%;
-
-        &--visible {
-            display: block;
-        }
-    }
-
-    &__icon-wrapper {
-        position: relative;
-        display: flex;
-
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-        }
-    }
-
-    &__icon {
-        width: 2.6rem;
-        height: 2.6rem;
-        display: block;
-        margin: 0 auto;
-        fill: $colorCeruleanBlue;
-
-        &:hover {
-            fill: $colorCeruleanBlueHover;
-        }
-    }
-
-    &__label {
-        margin: 0;
-        text-decoration: none;
-        white-space: nowrap;
-        display: none;
-        font-size: 1rem;
-        color: $colorDoveGray;
-        text-transform: uppercase;
-
-        &:hover {
-            text-decoration: none;
-        }
-
-        @include media( '>=tablet' ) {
-            display: block;
-        }
-    }
-
-    .ui-dialog {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        @include media( '>=laptop' ) {
-            right: 1.5rem;
-        }
-        @include media( '>=desktop' ) {
-            right: .5rem;
-        }
-    }
-
+  }
 }
