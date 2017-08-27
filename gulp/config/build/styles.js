@@ -1,6 +1,7 @@
 import path from 'path';
 import autoprefixer from 'autoprefixer';
 import flexbugs from 'postcss-flexbugs-fixes';
+import moduleImporter from 'sass-module-importer';
 
 import paths from '../../paths';
 
@@ -21,7 +22,8 @@ const config = {
   sass: {
     precision: 10,
     errLogToConsole: true,
-    includePaths: [path.resolve('node_modules'), path.resolve('src')],
+    includePaths: [path.resolve('src')],
+    importer: moduleImporter,
   },
 };
 
