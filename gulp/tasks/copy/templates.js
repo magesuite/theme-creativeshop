@@ -1,4 +1,3 @@
-import htmlmin from 'gulp-htmlmin';
 import environment from '../../environment';
 import settings from '../../config/copy/templates';
 
@@ -11,8 +10,5 @@ module.exports = function() {
     this.gulp.watch([settings.watch], ['copy:templates']);
   }
 
-  return this.gulp
-    .src(settings.src)
-    .pipe(htmlmin(settings.htmlmin))
-    .pipe(this.gulp.dest(settings.dest));
+  return this.gulp.src(settings.src).pipe(this.gulp.dest(settings.dest));
 };
