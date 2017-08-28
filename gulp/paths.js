@@ -8,17 +8,17 @@ const templateInfo = require(path.resolve('composer.json'));
  */
 export default {
   /**
-     * Path to sources directory relative to gulpfile.babel.js file.
+     * Path to sources directory relative to CWD.
      * @type {String}
      */
-  src: 'src/',
+  src: path.resolve('src/'),
   /**
-     * Path to distribution directory relative to gulpfile.babel.js file.
+     * Path to distribution directory relative to CWD.
      * @type {String}
      */
   dist: path.resolve('../../../app/design/frontend/' + templateInfo.name),
   /**
-     * Path to temporary directory relative to gulpfile.babel.js file.
+     * Path to temporary directory relative to CWD.
      * @type {String}
      */
   tmp: '.tmp/',
