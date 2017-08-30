@@ -66,6 +66,8 @@ $filtersLayout = $this->getFiltersLayout();
                     <?php
                         $iterator++;
                         $showHeroProduct = $iterator==1 && $heroProduct;
+                        $productImageUrl = $block->getImage($product, $image)->getImageUrl();
+                        $productImageUrl2x = $block->getImage($product, $image2x)->getImageUrl();
                     ?>
                     <?php echo $this
                         ->getLayout()
@@ -73,7 +75,7 @@ $filtersLayout = $this->getFiltersLayout();
                             '\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator, 
                             ['data' => get_defined_vars()]
                         )
-                        ->setCacheKeyElements($viewMode, $showHeroProduct)
+                        ->setCacheKeyElements($viewMode, $showHeroProduct, $productImageUrl)
                         ->toHtml()
                     ?>
 
