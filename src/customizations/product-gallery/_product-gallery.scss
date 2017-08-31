@@ -9,6 +9,12 @@
     padding: 0;
   }
 
+  @include media( '<tablet' ) {
+    &._block-content-loading {
+      padding-bottom: 100%;
+    }
+  }
+
   &__container {
     order: 1 !important;
     min-height: 100px;
@@ -38,15 +44,25 @@
     }
   }
 
-  &__loading-mask,
-  &__loading-mask img {
-    position: absolute !important;
+  &__loading-mask {
+    position: absolute;
+    background: transparent;
+    z-index: -1;
+  }
+
+  &__loader {
+    & img {
+      position: absolute !important;
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 
   &__badge-wrapper {
     position: absolute;
     top: 0;
     right: .4rem;
+    z-index: 1;
 
     @include media( '>=tablet', '<laptop' ) {
       top: .5rem;
