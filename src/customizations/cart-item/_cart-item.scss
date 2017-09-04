@@ -1,8 +1,11 @@
 .#{$namespace}cart-item {
+  $root: &;
+
   border-top: 1px solid $colorAlto;
   position: relative;
   padding-bottom: 5rem;
-  tbody:nth-child(3) & {
+
+  tbody:nth-child( 3 ) & {
     border-top: none;
   }
 
@@ -10,6 +13,12 @@
     padding-right: 11rem;
     padding-bottom: 0;
     border-top: none;
+  }
+
+  &--no-icons {
+    @include media('>=laptop') {
+      padding-right: 0;
+    }
   }
 
   td {
@@ -37,6 +46,9 @@
   &__name {
     width: 100%;
     padding: 1.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $colorMineShaft;
   }
 
   &__name a {
@@ -132,6 +144,12 @@
     }
     @include media('<laptop') {
       text-align: right;
+    }
+
+    #{$root}--no-icons & {
+      @include media('>=laptop') {
+        text-align: right;
+      }
     }
   }
 

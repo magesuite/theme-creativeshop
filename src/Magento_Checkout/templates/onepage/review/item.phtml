@@ -1,0 +1,72 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var $block Magento\Checkout\Block\Cart\Item\Renderer */
+
+$item = $block->getItem();
+?>
+<tbody>
+
+<tr class="cs-cart-item cs-cart-item--no-icons">
+    <td class="cs-table__col cs-cart-item__item | item" data-th="<?php echo $block->escapeHtml(__('Product Name'));?>">
+        <div class="cs-cart-item__product">
+            <div class="cs-cart-item__image">
+                <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
+            </div>
+            <div class="cs-cart-item__details">
+
+                <span class="cs-cart-item__name"><?php echo $block->escapeHtml($block->getProductName()) ?></span>
+
+                <?php if ($options = $block->getOptionList()):?>
+                    <div class="cs-cart-item__options">
+                        <?php foreach ($options as $option) : ?>
+                            <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
+                            <dl class="cs-cart-item__options-group">
+                                <dt class="cs-cart-item__options-label">
+                                    <?php echo $block->escapeHtml($option['label']) ?>
+                                </dt>
+                                <dd class="cs-cart-item__options-value">
+                                    <?php if (isset($formatedOptionValue['full_view'])): ?>
+                                        <?php /* @escapeNotVerified */ echo $formatedOptionValue['full_view'] ?>
+                                    <?php else: ?>
+                                        <?php /* @escapeNotVerified */ echo $formatedOptionValue['value'] ?>
+                                    <?php endif; ?>
+                                </dd>
+                            </dl>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif;?>
+                <?php if ($addtInfoBlock = $block->getProductAdditionalInformationBlock()):?>
+                    <?php echo $addtInfoBlock->setItem($item)->toHtml() ?>
+                <?php endif;?>
+            </div>
+        </div>
+    </td>
+    <td class="cs-table__col | cs-cart-item__price" data-th="<?php echo $block->escapeHtml(__('Price'));?>">
+        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceInclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
+            <span class="price-including-tax" data-label="<?php echo $block->escapeHtml(__('Incl. Tax'));?>">
+                    <?php echo $block->getUnitPriceInclTaxHtml($item); ?>
+                </span>
+        <?php endif; ?>
+        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceExclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
+            <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                    <?php echo $block->getUnitPriceExclTaxHtml($item); ?>
+                </span>
+        <?php endif; ?>
+    </td>
+    <td class="cs-table__col | cs-cart-item__qty" data-th="<?php echo $block->escapeHtml(__('Qty'));?>"><span class="cs-cart-item__qty-input"><?php /* @escapeNotVerified */ echo $item->getQty() ?></span></td>
+    <td class="cs-table__col | cs-cart-item__subtotal | subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal'));?>">
+        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceInclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
+            <span class="price-including-tax" data-label="<?php echo $block->escapeHtml(__('Incl. Tax'));?>">
+                    <?php echo $block->getRowTotalInclTaxHtml($item); ?>
+                </span>
+        <?php endif; ?>
+        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceExclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
+            <span class="price-excluding-tax" data-label="<?php echo $block->escapeHtml(__('Excl. Tax'));?>">
+                    <?php echo $block->getRowTotalExclTaxHtml($item); ?>
+                </span>
+        <?php endif; ?>
+    </td>
+</tr>
+</tbody>
