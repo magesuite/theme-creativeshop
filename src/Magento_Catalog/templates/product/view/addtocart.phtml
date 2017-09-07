@@ -36,6 +36,32 @@
                             ]
                         )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
                     </div>
+
+                    <?php if ($block->displayProductStockStatus()): ?>
+                        <div class="cs-box-addtocart__stock">
+                            <?php if ($product->isAvailable()): ?>
+                                <div
+                                    class="cs-box-addtocart__stock-text cs-box-addtocart__stock-text--available"
+                                    title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
+                                    >
+                                    <link itemprop="availability" href="http://schema.org/InStock" />
+                                    <svg class="cs-box-addtocart__stock-icon cs-box-addtocart__stock-icon--available">
+                                        <use xlink:href="#check"></use>
+                                    </svg>
+                                    <span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
+                                </div>
+                            <?php else: ?>
+                                <div
+                                    class="cs-box-addtocart__stock-text cs-box-addtocart__stock-text--unavailable"
+                                    title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
+                                    >
+                                    <link itemprop="availability" href="http://schema.org/OutOfStock" />
+                                    <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
             <?php endif; ?>
 
