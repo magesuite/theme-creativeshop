@@ -244,6 +244,8 @@ a {
   border-bottom: none;
 }
 
+//Amazon Pay - payment method
+
 //Style Amazon widget wrapper for iframe/ and iframe element
 
 .amazon-widget {
@@ -267,4 +269,154 @@ a {
     padding: 0;
     margin-top: 0;
   }
+}
+
+
+
+//Amazon Pay login button
+
+//The highest of all amazon pay containers
+//Should not be too long
+//in minicart, sale block, checkout summary it should be center
+
+.amazon-button-container {
+  max-width: 25rem;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 303;
+
+  @include media('>=tablet') {
+    max-width: 32rem;
+  }
+
+  .#{$namespace}checkout__step-content & {
+    max-width: 22rem;
+  }
+
+  img {
+    margin-left: auto;
+    margin-right: auto;
+
+    .#{$namespace}checkout__step-content & {
+      @include media('<tablet') {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  }
+
+  &__cell {
+
+    //Info sign element - is placed absolutely to not take place when button is centered
+    &:nth-child( 2 ) {
+      position: absolute;
+      min-width: 3rem;
+      left: calc( 100% + .6rem );
+      top: 1.9rem;
+
+      @include media('<phone') {
+        left: calc( 100% + .8rem );
+      }
+    }
+
+    //Tooltip style and position
+    //Arrow position
+    .field-tooltip-content {
+      width: 25rem;
+      box-sizing: border-box;
+      box-shadow: 0 0 5px 2px rgba( 0, 0, 0, .17 );
+      border: none;
+      font-size: 1.3rem;
+      padding: .8rem;
+
+      @include media('>=phone-lg') {
+        width: 28rem;
+      }
+
+      &:before {
+        border-right-color: $colorGray;
+      }
+
+      //Move tooltip from right to top because there is no space in our shops on the right
+      .amazon-minicart-container &,
+      .#{$namespace}product-sale-block &,
+      .#{$namespace}cart-summary & {
+        top: auto;
+        bottom: 42px;
+        left: -210px;
+        right: auto;
+
+        @include media('>=tablet') {
+          left: -250px;
+        }
+
+        @include media('>=laptop') {
+          left: -232px;
+        }
+
+        &:before,
+        &:after {
+          top: calc( 100% + 2rem );
+          left: 210px;
+          transform: rotate( -180deg );
+
+          @include media('>=tablet') {
+            bottom: -10px;
+            top: 100%;
+            left: 250px;
+            transform: rotate( -90deg );
+          }
+
+          @include media('>=laptop') {
+            left: 232px;
+          }
+        }
+
+        &:before {
+          left: 210px;
+          @include media('<tablet') {
+            border-right-color: transparent;
+          }
+
+          @include media('>=tablet') {
+            left: 251px;
+            transform: rotate( -90deg );
+          }
+
+          @include media('>=laptop') {
+            left: 233px;
+
+          }
+        }
+
+        @include media('>=laptop') {
+          &:after {
+            transform: rotate( -90deg );
+          }
+        }
+      }
+
+      // Cart summary tooltip needs small adjustments
+      .#{$namespace}cart-summary & {
+        &:before,
+        &:after {
+          @include media('>=tablet') {
+            top: calc( 100% + 2rem );
+            transform: rotate( 180deg );
+          }
+        }
+      }
+
+      // Checkout tooltip can stay as it is - on the right
+      .#{$namespace}checkout__step-content & {
+        &:before {
+          @include media('<tablet') {
+            border-right-color: transparent;
+          }
+        }
+      }
+    }
+  }
+
 }
