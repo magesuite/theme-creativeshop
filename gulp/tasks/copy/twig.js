@@ -14,7 +14,7 @@ import settings from '../../config/copy/twig';
  * @return {string}               Trimmed dependency path.
  */
 function trimDependencyPath(depenencyPath) {
-  return depenencyPath.replace(/^(customizations|components)\//, '');
+    return depenencyPath.replace(/^(customizations|components)\//, '');
 }
 
 const parsedFiles = {};
@@ -29,36 +29,36 @@ const parsedDepenedencies = {};
  * @return {undefined}
  */
 function handleDependency(dependency) {
-  const dependencyArray = dependency.split(/[\\/\\]/);
-  const packageName = dependencyArray[0];
-  const templateName = dependencyArray[dependencyArray.length - 1];
-  const templateCPPath = path.join(
-    settings.componentsPath,
-    packageName,
-    'src',
-    templateName
-  );
-  const templateSourcePath = path.join(
-    paths.src,
-    'components',
-    packageName,
-    templateName
-  );
-  const templateDestPath = path.join(
-    paths.dist,
-    'components',
-    packageName,
-    templateName
-  );
+    const dependencyArray = dependency.split(/[\\/\\]/);
+    const packageName = dependencyArray[0];
+    const templateName = dependencyArray[dependencyArray.length - 1];
+    const templateCPPath = path.join(
+        settings.componentsPath,
+        packageName,
+        'src',
+        templateName
+    );
+    const templateSourcePath = path.join(
+        paths.src,
+        'components',
+        packageName,
+        templateName
+    );
+    const templateDestPath = path.join(
+        paths.dist,
+        'components',
+        packageName,
+        templateName
+    );
 
-  if (fs.existsSync(templateSourcePath) === false) {
-    try {
-      fs.copySync(templateCPPath, templateDestPath);
-      parseDepenedencies(templateCPPath);
-    } catch (e) {
-      // Do nothing.
+    if (fs.existsSync(templateSourcePath) === false) {
+        try {
+            fs.copySync(templateCPPath, templateDestPath);
+            parseDepenedencies(templateCPPath);
+        } catch (e) {
+            // Do nothing.
+        }
     }
-  }
 }
 
 /**
@@ -67,46 +67,46 @@ function handleDependency(dependency) {
  * @return {undefined}
  */
 function parseDepenedencies(file) {
-  if (parsedFiles[file] === true) {
-    return;
-  }
-  parsedFiles[file] = true;
-
-  const fileContents = fs.readFileSync(file, 'utf8');
-  const includePattern = /{%[^\(%}]*locate\(\s*['"]([^'"]+)['"]/gim;
-
-  let dependencyMatch = includePattern.exec(fileContents);
-  let dependency;
-  while (dependencyMatch) {
-    // For every found dependency.
-    if (dependencyMatch[1]) {
-      dependency = trimDependencyPath(dependencyMatch[1]);
-      // Save dependency as parsed and handle it's copying and parsing process.
-      if (!parsedDepenedencies[dependency]) {
-        parsedDepenedencies[dependency] = true;
-        handleDependency(dependency);
-      }
+    if (parsedFiles[file] === true) {
+        return;
     }
-    dependencyMatch = includePattern.exec(fileContents);
-  }
+    parsedFiles[file] = true;
+
+    const fileContents = fs.readFileSync(file, 'utf8');
+    const includePattern = /{%[^\(%}]*locate\(\s*['"]([^'"]+)['"]/gim;
+
+    let dependencyMatch = includePattern.exec(fileContents);
+    let dependency;
+    while (dependencyMatch) {
+        // For every found dependency.
+        if (dependencyMatch[1]) {
+            dependency = trimDependencyPath(dependencyMatch[1]);
+            // Save dependency as parsed and handle it's copying and parsing process.
+            if (!parsedDepenedencies[dependency]) {
+                parsedDepenedencies[dependency] = true;
+                handleDependency(dependency);
+            }
+        }
+        dependencyMatch = includePattern.exec(fileContents);
+    }
 }
 
 let firstRun = true;
 
 module.exports = function() {
-  // If we are in watch mode, add watchers for this task.
-  if (firstRun && environment.watch === true) {
-    firstRun = false;
-    this.gulp.watch([settings.watch], ['copy:twig']);
-  }
+    // If we are in watch mode, add watchers for this task.
+    if (firstRun && environment.watch === true) {
+        firstRun = false;
+        this.gulp.watch([settings.watch], ['copy:twig']);
+    }
 
-  return this.gulp
-    .src(settings.src)
-    .pipe(
-      through.obj((file, enc, cb) => {
-        parseDepenedencies(file.path);
-        return cb(null, file);
-      })
-    )
-    .pipe(this.gulp.dest(settings.dest));
+    return this.gulp
+        .src(settings.src)
+        .pipe(
+            through.obj((file, enc, cb) => {
+                parseDepenedencies(file.path);
+                return cb(null, file);
+            })
+        )
+        .pipe(this.gulp.dest(settings.dest));
 };

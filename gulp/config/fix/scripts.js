@@ -7,12 +7,12 @@ import paths from '../../paths';
  * @type {Object}
  */
 export default {
-  src: [
-    /**
+    src: [
+        /**
          * Lint all TypeScript files.
          */
-    path.join(paths.src, '**/*.ts'),
-    '!' + path.join(paths.src, 'vendors/**/*.ts'),
-  ],
-  dest: paths.src,
+        path.join(paths.src, '**/*.ts'),
+        '!' + path.join(paths.src, 'vendors/**/*.ts'),
+    ],
+    dest: paths.src,
 };
