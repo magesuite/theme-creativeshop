@@ -4,34 +4,36 @@
 /**
  * @var $block \Magento\Catalog\Block\Product\View\Gallery
  */
+
+$galleryImagesJson = $block->getGalleryImagesJson();
+// Extracting main image to show before JS gallery loads
+$galleryImages = json_decode($galleryImagesJson);
+$mainImageUrl  = '';
+for ($imageIndex = 0; $imageIndex < count($galleryImages); $imageIndex++) {
+  $galleryImage = $galleryImages[$imageIndex];
+  if ($galleryImage->isMain) {
+    $mainImageUrl = $galleryImage->img;
+    break;
+  }
+}
 ?>
+
 <div class="cs-product-gallery _block-content-loading" data-gallery-role="gallery-placeholder">
     <div data-role="loader" class="cs-product-gallery__loading-mask | loading-mask">
         <div class="cs-product-gallery__loader loader">
-            <img src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>"
-                 alt="<?php /* @escapeNotVerified */ echo __('Loading...') ?>"
-                 width="64" height="64"
-            >
+            <img src="<?php /* @escapeNotVerified */ echo $mainImageUrl ?>" alt="">
         </div>
     </div>
 </div>
 <!--Fix for jumping content. Loader must be the same size as gallery.-->
 <script>
     var config = {
-            "width": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'width'); ?>,
-            "thumbheight": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_small', 'height')
-                        ?: $block->getImageAttribute('product_page_image_small', 'width'); ?>,
-            "navtype": "<?php /* @escapeNotVerified */  echo $block->getVar("gallery/navtype"); ?>",
-            "height": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'height'); ?>
-        },
-        thumbBarHeight = 0,
-        loader = document.querySelectorAll('.cs-product-gallery__loader')[0];
-
-    if (config.navtype === 'horizontal') {
-        thumbBarHeight = config.thumbheight;
-    }
-
-    loader.style.paddingBottom = ( config.height / config.width * 100) + "%";
+        "width": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'width'); ?>,
+        "thumbheight": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_small', 'height')
+                    ?: $block->getImageAttribute('product_page_image_small', 'width'); ?>,
+        "navtype": "<?php /* @escapeNotVerified */  echo $block->getVar("gallery/navtype"); ?>",
+        "height": <?php /* @escapeNotVerified */ echo $block->getImageAttribute('product_page_image_medium', 'height'); ?>
+    };
 </script>
 <script type="text/x-magento-init">
     {
@@ -39,7 +41,7 @@
             "mage/gallery/gallery": {
                 "mixins":["magnifier/magnify"],
                 "magnifierOpts": <?php /* @escapeNotVerified */ echo $block->getMagnifier(); ?>,
-                "data": <?php /* @escapeNotVerified */ echo $block->getGalleryImagesJson(); ?>,
+                "data": <?php /* @escapeNotVerified */ echo $galleryImagesJson ?>,
                 "options": {
                     "nav": "<?php /* @escapeNotVerified */ echo $block->getVar("gallery/nav"); ?>",
                     <?php if (($block->getVar("gallery/loop"))): ?>
@@ -110,12 +112,9 @@
     require([
         'jquery'
     ], function($) {
-
         // On iPad/IPhone there is a Magento 2bug - image in gallery does not appear at the beginning. Below fix.
-        var elements = document.getElementsByClassName( 'cs-product-gallery' );
-        var gallery = elements[0];
-
-        // create an observer instance
+        var gallery = document.querySelector('.cs-product-gallery');
+        // Create an observer instance
         var galleryObserver = new MutationObserver( function( mutations ) {
             var fotoramaStage = $( '.fotorama__stage__shaft' );
             var style = fotoramaStage.css( 'transform' );
@@ -127,10 +126,7 @@
                 galleryObserver.disconnect();
             }
         });
-
         var galleryObserverConfig = { attributes: true, childList: true, characterData: true };
-
         galleryObserver.observe( gallery, galleryObserverConfig );
-
-    })
+    });
 </script>
