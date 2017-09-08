@@ -185,6 +185,7 @@ class Flyout implements IFlyout {
       return;
     }
 
+    this.$content.css('max-height', '');
     this.$content.removeClass(this.contentOutClass);
     this.$content.addClass(this.contentInClass);
     this.$triggers.addClass(this.triggerInClass);
