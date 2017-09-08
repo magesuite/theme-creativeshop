@@ -2,11 +2,12 @@ import Hero from '../../../node_modules/creative-patterns/packages/components/he
 import $ from 'jquery';
 
 $('.cs-hero').each(function(): void {
-  new Hero($(this), {
+  const hero: JQuery = $(this);
+  new Hero(hero, {
     spaceBetween: 2,
     callbacks: {
       onInit() {
-        $(`.cs-hero`)
+        hero
           .find(`.cs-hero__slide--clone`)
           .each(function(i: number, el: JQuery): void {
             const clonedSlideImg: JQuery = $(el).find('img');
