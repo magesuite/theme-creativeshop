@@ -4,6 +4,6 @@ import settings from '../../config/fix/scripts';
 module.exports = function() {
     return this.gulp
         .src(settings.src)
-        .pipe(prettier())
+        .pipe(prettier(settings.prettier))
         .pipe(this.gulp.dest(settings.dest));
 };
