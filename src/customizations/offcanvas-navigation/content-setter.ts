@@ -5,6 +5,8 @@ import OffcanvasNavigation from '../../../node_modules/creative-patterns/package
 export interface NavigationTree {
     name: string;
     url: string;
+    icon: string;
+    productCount: string;
     subcategories: NavigationTree[];
 }
 
@@ -30,8 +32,14 @@ export function buildSubtree($link: JQuery): NavigationTree {
         }
     );
     const subtree: NavigationTree = {
-        name: $link.text().trim(),
+        name: $link.clone().children().remove().end().text().trim(),
         url: $link.attr('href'),
+        icon: $link.find( `> .${navClassName}__link-icon-wrapper` ).length 
+            ? $link.find( `> .${navClassName}__link-icon-wrapper .${navClassName}__link-icon` ).attr( 'src' ) 
+            : '',
+        productCount: $link.find( `> .${navClassName}__link-products-qty` ).length 
+            ? $link.find( `> .${navClassName}__link-products-qty` ).text() 
+            : '',
         subcategories: subcategories,
     };
 
@@ -59,7 +67,8 @@ export function buildTree($links: JQuery): NavigationTree[] {
  */
 export function renderTree(
     navigationTree: NavigationTree[],
-    parent?: NavigationTree
+    parent?: NavigationTree,
+    settings?: any
 ): string {
     let subtreeHTML: string = parent
         ? `<ul class="${offNavClassName}__list">`
@@ -83,21 +92,31 @@ export function renderTree(
             </li>`;
         }
 
-        subtreeHTML += `<li class="${offNavClassName}__item">`;
+        const categoryIconHTML: string = ( settings.showCategoryIcon && category.icon )
+            ? `<span class="${offNavClassName}__category-icon-wrapper">
+                    <img src="${category.icon}" alt="${category.name}" class="${offNavClassName}__category-icon">
+               </span>` 
+            : '';
+        const productCountHTML: string = ( settings.showProductsCount && category.productCount )
+            ? `<span class="${offNavClassName}__product-qty">${category.productCount}</span>` 
+            : '';
+        const additionalItemClass: string = categoryIconHTML ? `${offNavClassName}__item--with-icon` : '';
+
+        subtreeHTML += `<li class="${offNavClassName}__item ${additionalItemClass}">`;
         if (category.subcategories.length) {
             subtreeHTML += `<a class="${offNavClassName}__link ${offNavClassName}__link--parent" href="${category.url}">
                 <span class="${offNavClassName}__text">
-                    ${category.name}
+                    ${categoryIconHTML} ${category.name} ${productCountHTML}
                 </span>
                 <svg class="${offNavClassName}__icon">
                     <use xlink:href="#arrow_next"></use>
                 </svg>
             </a>
-                ${renderTree(category.subcategories, category)}`;
+                ${renderTree(category.subcategories, category, settings)}`;
         } else {
             subtreeHTML += `<a class="${offNavClassName}__link" href="${category.url}">
                 <span class="${offNavClassName}__text">
-                    ${category.name}
+                    ${categoryIconHTML} ${category.name} ${productCountHTML}
                 </span>
             </a>`;
         }
@@ -155,7 +174,7 @@ export const contentSetter = (
         .getElement()
         .find(`.${offNavClassName}__list`);
     $offNavList.append(
-        renderTree(buildTree($links)) +
+        renderTree(buildTree($links), null, offcanvasNavigation._options) +
             renderUserAction() +
             renderStoreViewSwitcher()
     );

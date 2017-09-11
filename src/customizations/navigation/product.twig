@@ -1,0 +1,60 @@
+{% set leftAddons = [] %}
+{% set rightAddons = [] %}
+{% set productMix = 'cs-grid-product--static cs-grid-product--navigation' %}
+
+{% if product.rating.data is not null %}
+    {% set ratingContent %}
+        {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
+    {% endset %}
+{% else %}
+    {% set ratingContent = null %}
+{% endif %}
+
+{% if ratingContent is not null %}
+    {% set leftAddons = leftAddons|merge( [ {
+        mix: 'cs-grid-product__addon--rating',
+        content: ratingContent
+    } ] ) %}
+{% endif %}
+
+{% set leftAddons = leftAddons|merge( [ {
+    mix: 'cs-grid-product__addon--rating',
+    content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="' ~ translate('Add to Wish List') ~ '" aria-label="' ~ translate('Add to Wish List') ~ '" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=#heart></use></svg>' ~ translate('Add to Wish List') ~ '</a></li></ul>'
+} ] ) %}
+
+{% if product.stock %}
+    {% set rightAddons = rightAddons|merge( [ {
+        mix: 'cs-grid-product__addon--in-stock',
+        content: translate('In stock')
+    } ] ) %}
+{% else %}
+    {% set rightAddons = rightAddons|merge( [ {
+        mix: 'cs-grid-product__addon--out-of-stock',
+        content: translate('Out of stock')
+    } ] ) %}
+{% endif %}
+
+{% include locate( 'grid-product/grid-product.twig' ) with {
+    namespace: 'cs-',
+    mix: productMix,
+    lazyload: true,
+    showWrapper: true,
+    tag: 'div',
+    url: product.url,
+    image: {
+        src: product.image,
+        alt: product.name,
+    },
+    name: product.name,
+    price: {
+        content: product.price
+    },
+    swatches: {
+        mix: 'cs-grid-product__swatches--color-only',
+        content: product.swatches
+    },
+    addons: {
+        left: leftAddons,
+        right: rightAddons
+    },
+} %}
