@@ -33,12 +33,13 @@
                 "parentClass":"active",
                 "buttons":null}}'>
             <?php foreach ($block->getStores() as $_lang): ?>
-                <?php if ($_lang->getId() != $block->getCurrentStoreId()): ?>
-                    <li class="cs-switcher-language__list-item | view-<?php echo $block->escapeHtml($_lang->getCode()); ?> switcher-option">
+                <li class="cs-switcher-language__list-item | view-<?php echo $block->escapeHtml($_lang->getCode()); ?> switcher-option">
+                    <?php if ($_lang->getId() != $block->getCurrentStoreId()): ?>
                         <a class="cs-switcher-language__list-item-link" href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getTargetStorePostData($_lang); ?>'>
-                            <?php echo $block->escapeHtml($_lang->getName()) ?></a>
-                    </li>
-                <?php endif; ?>
+                            <?php echo $block->escapeHtml($_lang->getName()) ?>
+                        </a>
+                    <?php endif; ?>
+                </li>
             <?php endforeach; ?>
         </ul>
     </div>

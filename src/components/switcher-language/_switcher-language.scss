@@ -1,85 +1,130 @@
 .cs-switcher-language {
-  $root: &;
-  white-space: nowrap;
-
-  @include media( '>=laptop' ) {
-    display: inline-flex;
-    align-items: stretch;
-  }
-
-  &__trigger {
-    @include media ('<laptop') {
-      position: relative;
-      padding: 2.4rem 2rem;
-      font-size: 1.4rem;
-    }
+    $root: &;
+    white-space: nowrap;
 
     @include media( '>=laptop' ) {
-      height: 100%;
-      display: inline-flex;
-      align-items: center;
-      margin-left: 1.3rem;
-      transform: skew(-18deg);
-      font-size: 1.1rem;
-      padding-left: 1.7rem;
-      border-left: .2rem solid $colorWhite;
+        position: relative;
+        display: inline-flex;
+        align-items: stretch;
+
+        &:before {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 1.3rem;
+            content: '';
+            border-left: .2rem solid $colorWhite;
+            transform: skew( -18deg );
+        }
     }
 
-    &-span {
-      @include media( '>=laptop' ) {
-        transform: skew(18deg);
-      }
+    &__trigger {
+
+        @include media ( '<laptop' ) {
+            position: relative;
+            padding: .9rem;
+            font-size: 1.4rem;
+        }
+
+        @include media( '>=laptop' ) {
+            height: 100%;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 2rem;
+            font-size: 1.1rem;
+            padding: 0 1.3rem;
+        }
+
+        &-icon {
+            margin-left: .5rem;
+            width: .8rem;
+            height: .7rem;
+            transition: transform .3s ease-out;
+
+            @include media( '<laptop' ) {
+                position: absolute;
+                top: calc( 50% - .35rem );
+                right: .8rem;
+            }
+        }
+
+        &.active {
+            background: $colorWhite;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border-color: $colorCeruleanBlue;
+            border-style: solid;
+            border-width: 1px 1px 0;
+            position: relative;
+
+            @include media ( '<laptop' ) {
+                padding: .8rem;
+            }
+
+            @include media( '>=laptop' ) {
+                padding: 0 1.2rem;
+            }
+
+            &:before {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                content: '';
+                border-bottom: 1px solid $colorAlto;
+                z-index: 1;
+            }
+
+            #{$root}__trigger-span {
+                margin-top: -.2rem;
+            }
+
+            #{$root}__trigger-icon {
+                transform: rotate( 180deg );
+            }
+        }
     }
 
-    &-icon {
-      margin-left: .5rem;
-      width: .8rem;
-      height: .7rem;
-      transition: transform .3s ease-out;
-
-      @include media( '<laptop' ) {
-        position: absolute;
-        top: 50%;
-        right: 2rem;
-        transform: translateY(-50%);
-      }
-    }
-
-    &.active {
-      #{$root}__trigger-icon {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  &__list {
-    @extend .#{$namespace}list;
-    list-style: none;
-    font-size: 1.1rem;
-
-    @include media( '>=laptop' ) {
-      position: absolute;
-      top: calc(100% + .2rem);
-      right: 0;
-      background: $colorGallery;
-    }
-
-    &-item {
-      margin: 0;
-    }
-
-    &-item-link {
-      display: block;
-
-      @include media( '<laptop' ) {
-        padding: 1.2rem 2rem;
-        font-size: 1.4rem;
-      }
-
-      @include media( '>=laptop' ) {
-        padding: .6rem 1.3rem;
+    &__list {
+        @extend .#{$namespace}list;
+        list-style: none;
         font-size: 1.1rem;
-      }
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-color: $colorCeruleanBlue;
+        border-style: solid;
+        border-width: 0 1px 1px;
+
+        @include media( '>=laptop' ) {
+            position: absolute;
+            top: 100%;
+            left: 2rem;
+            right: 0;
+            background: $colorWhite;
+        }
+
+        &-item {
+            margin: 0;
+        }
+
+        &-item-link {
+            display: block;
+            color: $colorMineShaft !important;
+
+            &:hover {
+                color: $colorCeruleanBlue;
+                text-decoration: none;
+            }
+
+            @include media( '<laptop' ) {
+                padding: 0.8rem;
+                font-size: 1.4rem;
+            }
+
+            @include media( '>=laptop' ) {
+                padding: .6rem 1.3rem;
+                font-size: 1.1rem;
+            }
+        }
     }
-  }
 }
