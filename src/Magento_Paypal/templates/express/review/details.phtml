@@ -1,0 +1,32 @@
+<?php
+
+// @codingStandardsIgnoreFile
+/**
+ * @see \Magento\Paypal\Block\Express\Review\Details
+ * @var \Magento\Paypal\Block\Express\Review\Details $block
+ */
+?>
+<div id="details-reload" class="cs-table cs-table--tablet-small cs-table--cart | cart"
+     xmlns="http://www.w3.org/1999/html">
+    <table id="details-table" class="cs-table__body | cart items data table-paypal-review-items">
+        <caption class="cs-visually-hidden"><?php echo $block->escapeHtml(__('Items in Your Shopping Cart')); ?></caption>
+        <thead class="cs-table__head cs-table__head--spacious">
+        <tr>
+            <th class="cs-table__col-head | name" scope="col"><?php echo $block->escapeHtml(__('Item')); ?></th>
+            <th class="cs-table__col-head | price" scope="col"><?php echo $block->escapeHtml(__('Price')); ?></th>
+            <th class="cs-table__col-head | qty" scope="col"><?php echo $block->escapeHtml(__('Qty')); ?></th>
+            <th class="cs-table__col-head cs-table__col-head--right | subtotal" scope="col">
+                <?php echo $block->escapeHtml(__('Subtotal')); ?>
+            </th>
+        </tr>
+        </thead>
+        <?php foreach ($block->getItems() as $item): ?>
+            <?php echo $block->getItemHtml($item) ?>
+        <?php endforeach ?>
+    </table>
+    <table class="cs-table cs-table--footer">
+        <tfoot class="cs-table__foot">
+        <?php echo $block->getChildHtml('totals'); ?>
+        </tfoot>
+    </table>
+</div>

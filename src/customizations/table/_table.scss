@@ -70,10 +70,30 @@
     @include media('>=tablet') {
       border-top: 1px solid $colorAlto;
       margin-top: 2rem;
+
+      #{$root}--cart & {
+        border-top: none;
+      }
     }
 
     @include media( '<tablet' ) {
       padding: .4rem 0;
+    }
+  }
+
+  &--footer{
+    table-layout: fixed;
+    @include media( '<tablet' ) {
+
+      #{$root}__foot {
+        display: block;
+
+        tr {
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+
     }
   }
 
@@ -107,6 +127,10 @@
   &__col-head {
     @extend .#{$namespace}t-headline;
     @extend .#{$namespace}t-headline--size_4;
+
+    &--right {
+      text-align: right;
+    }
   }
 
   &__row {
