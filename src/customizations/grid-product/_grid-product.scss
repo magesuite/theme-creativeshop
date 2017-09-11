@@ -3,175 +3,196 @@ $namespace: 'cs-';
 @import '../../../node_modules/creative-patterns/packages/components/grid-product/src/grid-product';
 
 .#{$namespace}grid-product {
-  @include gridProduct();
+    @include gridProduct();
+    $root: &;
 
-  $root: &;
-
-  .#{$namespace}item-cloner__clone & {
-    width: 100% !important;
-    margin: 0 !important;
-  }
-
-  &:before {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-
-  &--show-details:before {
-    box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, .34);
-  }
-
-  &__main {
-    padding: 1.5rem;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-
-    &:after {
-      #{$root}--show-details & {
-        height: 4.5rem;
-      }
+    .#{$namespace}item-cloner__clone & {
+        width: 100% !important;
+        margin: 0 !important;
     }
-  }
-
-  &__addons {
-    padding: 0 1.5rem .75rem;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    align-items: flex-start;
-
-    #{$root}--show-details & {
-      box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, .34);
-    }
-  }
-
-  &__figure-wrapper {
-    margin: -1.5rem -1.5rem 0;
-    padding: 1.5rem;
-  }
-
-  &__figure {
-    height: 20rem;
-
-    // In nested flexbox element images do not resize properly on ie11.
-    .ie11 & {
-      display: block;
-      position: relative;
-    }
-
-    @include media( '>=tablet' ) {
-      height: 27rem;
-    }
-
-    &--small {
-      height: 8rem;
-
-      @include media( '>=tablet' ) {
-        height: 8rem;
-      }
-    }
-
-    #{$root}--hero & {
-      @include media( '>=tablet' ) {
-        height: 68.5rem;
-      }
-    }
-  }
-
-  &__badges {
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 2;
-  }
-
-  $swatchesHeight: 1.875rem;
-  &__swatches {
-    height: $swatchesHeight;
-    margin-bottom: 1.25rem;
-    overflow: hidden;
-
-    + #{$root}__name {
-      margin-top: 0;
-    }
-  }
-
-  $nameLineHeight: 1.835rem;
-  &__name {
-    margin-top: calc(#{$swatchesHeight} + 1.25rem);
-    margin-bottom: .25rem;
-    height: 2 * $nameLineHeight;
-    line-height: $nameLineHeight;
-    font-weight: 400;
-    font-size: 1.531rem;
-
-    &--no-space {
-      margin-top: .5rem;
-    }
-  }
-
-  &__name-link {
-    color: $colorMineShaft;
-  }
-
-  &__addon {
-    padding-top: .75rem;
-    padding-bottom: .75rem;
-
-    &--in-stock {
-      line-height: 1.63rem;
-      color: $colorApple;
-    }
-
-    &--out-of-stock {
-      line-height: 1.63rem;
-      color: $colorCrimson;
-    }
-  }
-
-  &__comment {
-    margin-bottom: 1.5rem;
-    margin-top: 1rem;
-
-    &-input {
-      max-height: 6rem;
-    }
-  }
-
-  &__remove {
-    top: 1.5rem;
-    right: 1.5rem;
-  }
-
-  &__buttons {
-    display: flex;
-    justify-content: center;
-  }
-
-  &__links {
-    padding-top: 1rem;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &--static {
-    padding: 1.5rem;
-
-    #{$root}__addons {
-      padding: 1rem 0 0;
-      margin-bottom: -1rem;
-    }
-  }
-
-  &--shadow {
-    border-radius: 4px;
 
     &:before {
-      border-radius: 4px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
     }
 
-    @include media( '>=laptop' ) {
-      &:hover {
+    &--show-details:before {
         box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, .34);
-      }
     }
-  }
+
+    &__main {
+        padding: 1.5rem;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        &:after {
+            #{$root}--show-details & {
+                height: 4.5rem;
+            }
+        }
+    }
+
+    &__addons {
+        padding: 0 1.5rem .75rem;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        align-items: flex-start;
+
+        #{$root}--show-details & {
+            box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, .34);
+        }
+    }
+
+    &__figure-wrapper {
+        margin: -1.5rem -1.5rem 0;
+        padding: 1.5rem;
+    }
+
+    &__figure {
+        height: 20rem;
+
+        #{$root}--navigation & {
+            height: 15rem;
+        }
+
+        // In nested flexbox element images do not resize properly on ie11.
+        .ie11 & {
+            display: block;
+            position: relative;
+        }
+
+        @include media( '>=tablet' ) {
+            height: 27rem;
+
+            #{$root}--navigation & {
+                height: 21rem;
+            }
+        }
+
+        &--small {
+            height: 8rem;
+
+            @include media( '>=tablet' ) {
+                height: 8rem;
+            }
+        }
+
+        #{$root}--hero & {
+            @include media( '>=tablet' ) {
+                height: 68.5rem;
+            }
+        }
+    }
+
+    &__badges {
+        top: 1.5rem;
+        left: 1.5rem;
+        z-index: 2;
+    }
+
+    $swatchesHeight: 1.875rem;
+    &__swatches {
+        height: $swatchesHeight;
+        margin-bottom: 1.25rem;
+        overflow: hidden;
+
+        + #{$root}__name {
+            margin-top: 0;
+        }
+    }
+
+    $nameLineHeight: 1.835rem;
+    &__name {
+        margin-top: calc(#{$swatchesHeight} + 1.25rem);
+        margin-bottom: .25rem;
+        height: 2 * $nameLineHeight;
+        line-height: $nameLineHeight;
+        font-weight: 400;
+        font-size: 1.531rem;
+
+        &--no-space {
+            margin-top: .5rem;
+        }
+    }
+
+    &__name-link {
+        color: $colorMineShaft;
+    }
+
+    &__addon {
+        padding-top: .75rem;
+        padding-bottom: .75rem;
+
+        &--in-stock {
+            line-height: 1.63rem;
+            color: $colorApple;
+        }
+
+        &--out-of-stock {
+            line-height: 1.63rem;
+            color: $colorCrimson;
+        }
+    }
+
+    &__comment {
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+
+        &-input {
+            max-height: 6rem;
+        }
+    }
+
+    &__remove {
+        top: 1.5rem;
+        right: 1.5rem;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__links {
+        padding-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &--static {
+        padding: 1.5rem;
+
+        #{$root}__addons {
+            padding: 1rem 0 0;
+            margin-bottom: -1rem;
+        }
+    }
+
+    &--shadow {
+        border-radius: 4px;
+
+        &:before {
+            border-radius: 4px;
+        }
+
+        @include media( '>=laptop' ) {
+            &:hover {
+                box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, .34);
+            }
+        }
+    }
+
+    &--navigation {
+        padding-bottom: .5rem;
+
+        #{$root}__addons {
+            display: none;
+        }
+
+        #{$root}__swatches {
+            margin-bottom: .8rem;
+            height: auto;
+            max-height: 1.875rem;
+        }
+    }
 }

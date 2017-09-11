@@ -15,4 +15,5 @@ new Navigation($(`.${namespace}navigation`), {
     flyoutVisibleClassName: `${namespace}navigation__flyout--visible`,
     flyoutColumnsClassName: `${namespace}navigation__categories`,
     flyoutDefaultColumnCount: 5,
+    showNavigationOverlay: false,
 });

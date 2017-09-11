@@ -8,6 +8,8 @@ const offNavClassName: string = 'cs-offcanvas-navigation';
 const navigaiton: any = new OffcanvasNavigation(null, {
     className: offNavClassName,
     contentSetter: contentSetter,
+    showCategoryIcon: false,
+    showProductsCount: false,
 });
 
 export default navigaiton;

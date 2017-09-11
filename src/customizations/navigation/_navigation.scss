@@ -1,84 +1,158 @@
 @import '../../../node_modules/creative-patterns/packages/components/navigation/src/navigation';
 
 .#{$namespace}navigation {
-  @include navigation();
-  $root: &;
+    @include navigation();
+    $root: &;
 
-  @include media( '<laptop' ) {
-    display: none;
-  }
-
-  .page-print & {
-    display: none;
-  }
-
-  &__list {
-    max-width: 1200px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-
-    @include media( '>=laptop' ) {
-      flex-wrap: nowrap;
-      justify-content: space-between;
+    @include media( '<laptop' ) {
+        display: none;
     }
-  }
 
-  &__flyout {
-    z-index: 1001; // Make sure flyouts cover gallery nav.
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, .15);
-    margin-top: -1px;
-  }
+    .page-print & {
+        display: none;
+    }
 
-  &__item {
-    &:hover {
-      > #{$root}__link {
-        color: $colorCeruleanBlue;
-      }
+    &__list {
+        max-width: 1200px;
+        margin: 0 auto;
+        flex-wrap: wrap;
+
+        @include media( '>=laptop' ) {
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+    }
+
+    &__flyout {
+        z-index: 1001; // Make sure flyouts cover gallery nav.
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, .15);
+        margin-top: -1px;
+    }
+
+    &__item {
+        &:hover {
+            > #{$root}__link {
+              color: $colorCeruleanBlue;
+            }
+        }
     }
 
     &:first-of-type {
-      > #{$root}__link {
-        padding-left: 0;
-      }
+        > #{$root}__link {
+            padding-left: 0;
+        }
     }
 
     &:last-of-type {
-      > #{$root}__link {
-        padding-right: 0;
-      }
-    }
-  }
-
-  &__link {
-    padding: .6rem 1.5rem .6rem 0;
-
-    @include media( '>=laptop' ) {
-      padding: 1.286rem 1.5rem;
+        > #{$root}__link {
+            padding-right: 0;
+        }
     }
 
-    &:hover {
-      text-decoration: none;
-      color: $colorCeruleanBlue;
+    &__link {
+        padding: .6rem 1.5rem .6rem 0;
+
+        @include media( '>=laptop' ) {
+            padding: 1.286rem 1.5rem;
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: $colorCeruleanBlue;
+        }
+
+        &--category {
+            padding-bottom: 2rem;
+            border-color: $colorAlto;
+        }
+
+        &--with-icon {
+            position: relative;
+            padding-left: 2.8rem;
+        }
+
+        &-icon-wrapper {
+            position: absolute;
+            width: 2rem;
+            top: 50%;
+            left: 0;
+            transform: translatey( -50% );
+        }
+
+        &-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d( -50%, -50%, 0 );
+            max-height: 1.8rem;
+
+            #{$root}__link--category & {
+                margin-top: -.5rem;
+            }
+        }
+
+        &-products-qty {
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
+        }
     }
 
-    &--category {
-      padding-bottom: 2rem;
+    &__categories {
+        columns: calc(25vw - 7.5px) 4; // 25vw - 30px padding / 4
+        column-gap: 0;
+
+        @include media( '>=1200px' ) {
+            columns: 240px 5;
+        }
     }
-  }
 
-  &__categories {
-    columns: calc(25vw - 7.5px) 4; // 25vw - 30px padding / 4
-    column-gap: 0;
-
-    @include media( '>=1200px' ) {
-      columns: 240px 5;
+    &__category,
+    &__banners {
+        box-sizing: border-box;
+        padding: 10px;
+        width: 100%;
     }
-  }
 
-  &__category,
-  &__banners {
-    box-sizing: border-box;
-    padding: 10px;
-    width: 100%;
-  }
+    &__products {
+        width: 240px;
+        margin: .5rem 1rem;
+
+        &-header {
+            @extend .#{$namespace}navigation__category;
+            margin: 0;
+            padding: 1.8rem 1.5rem 2rem 1rem;
+            border-bottom: 1px solid $colorAlto;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: .9em;
+        }
+
+        &-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    }
+
+    &__overlay {
+        position: absolute;
+        z-index: 1000;
+        background-color: #000;
+        opacity: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+        transform: translate3d( 0, 30px, 0 );
+        transition: opacity .15s linear, transform .2s cubic-bezier( 0, .97, .05, .99 );
+
+        &--visible {
+            opacity: .8;
+            transform: translate3d( 0, 0, 0 );
+        }
+    }
 }
