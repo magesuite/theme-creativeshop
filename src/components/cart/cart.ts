@@ -1,11 +1,11 @@
 import $ from 'jquery';
 
 window.addEventListener('orientationchange', function() {
-  const cartTable: any = $('#shopping-cart-table');
+    const cartTable: any = $('#shopping-cart-table');
 
-  cartTable.css('display', 'none');
+    cartTable.css('display', 'none');
 
-  setTimeout(function() {
-    cartTable.css('display', '');
-  }, 10);
+    setTimeout(function() {
+        cartTable.css('display', '');
+    }, 10);
 });

@@ -10,8 +10,8 @@
 // Vendors
 // =============================================================================
 
-import "vendors";
-import $ from "jquery";
+import 'vendors';
+import $ from 'jquery';
 
 // =============================================================================
 // Utilities
@@ -21,44 +21,44 @@ import $ from "jquery";
 // Components
 // =============================================================================
 
-import "./components/collapse/collapse";
-import "./components/dropdown/dropdown";
-import "./components/filter-horizontal/filter-horizontal";
-import "./components/cart/cart";
+import './components/collapse/collapse';
+import './components/dropdown/dropdown';
+import './components/filter-horizontal/filter-horizontal';
+import './components/cart/cart';
 
 // =============================================================================
 // Customizations
 // =============================================================================
 
-import "./customizations/header-search/header-search";
-import Select from "./customizations/select/select";
+import './customizations/header-search/header-search';
+import Select from './customizations/select/select';
 export { Select };
-import { init as collapsibleText } from "./components/collapsible-text/collapsible-text";
+import { init as collapsibleText } from './components/collapsible-text/collapsible-text';
 collapsibleText();
-import "./customizations/navigation/navigation";
-import "./customizations/offcanvas-navigation/offcanvas-navigation";
-import "./customizations/offcanvas/offcanvas";
-import { QtyIncrementCollection } from "./customizations/qty-increment/qty-increment";
+import './customizations/navigation/navigation';
+import './customizations/offcanvas-navigation/offcanvas-navigation';
+import './customizations/offcanvas/offcanvas';
+import { QtyIncrementCollection } from './customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
-import "./customizations/aftersearch-nav/aftersearch-nav";
-import "./customizations/hero/hero";
-import "./customizations/image-teaser/image-teaser";
-import "./customizations/products-promo/products-promo";
-import "./customizations/brand-carousel/brand-carousel";
-import "./customizations/category-links/category-links";
-import "./customizations/sticky-block/sticky-block";
-import "./customizations/pagination/pagination";
-import "./customizations/reviews/reviews";
-import "./customizations/item-cloner/item-cloner";
-import "./customizations/grid-layout/grid-layout";
-import AddressAutofill from "./customizations/address-autofill/address-autofill";
+import './customizations/aftersearch-nav/aftersearch-nav';
+import './customizations/hero/hero';
+import './customizations/image-teaser/image-teaser';
+import './customizations/products-promo/products-promo';
+import './customizations/brand-carousel/brand-carousel';
+import './customizations/category-links/category-links';
+import './customizations/sticky-block/sticky-block';
+import './customizations/pagination/pagination';
+import './customizations/reviews/reviews';
+import './customizations/item-cloner/item-cloner';
+import './customizations/grid-layout/grid-layout';
+import AddressAutofill from './customizations/address-autofill/address-autofill';
 export { AddressAutofill };
 
 window.addEventListener(
-  "touchstart",
-  function onFirstTouch(): void {
-    document.body.classList.add("touch-device");
-    window.removeEventListener("touchstart", onFirstTouch, false);
-  },
-  false
+    'touchstart',
+    function onFirstTouch(): void {
+        document.body.classList.add('touch-device');
+        window.removeEventListener('touchstart', onFirstTouch, false);
+    },
+    false
 );

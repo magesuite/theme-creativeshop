@@ -3,9 +3,9 @@ import $translate from 'mage/translate';
 import OffcanvasNavigation from '../../../node_modules/creative-patterns/packages/components/offcanvas-navigation/src/offcanvas-navigation';
 
 export interface NavigationTree {
-  name: string;
-  url: string;
-  subcategories: NavigationTree[];
+    name: string;
+    url: string;
+    subcategories: NavigationTree[];
 }
 
 const navClassName: string = 'cs-navigation';
@@ -18,24 +18,24 @@ const infoStripeClassName: string = 'cs-information-stripe';
  * @return {NavigationTree}       Navigation tree originating in root link.
  */
 export function buildSubtree($link: JQuery): NavigationTree {
-  const $subcategories: JQuery = $link.next();
-  const subcategoryClass = $subcategories.hasClass(`${navClassName}__flyout`)
-    ? `.${navClassName}__link--category`
-    : `.${navClassName}__link--subcategory`;
-  const $sublinks: JQuery = $subcategories.find(subcategoryClass);
-  const subcategories: NavigationTree[] = $.map(
-    $sublinks,
-    (sublink: HTMLElement) => {
-      return buildSubtree($(sublink));
-    }
-  );
-  const subtree: NavigationTree = {
-    name: $link.text().trim(),
-    url: $link.attr('href'),
-    subcategories: subcategories,
-  };
+    const $subcategories: JQuery = $link.next();
+    const subcategoryClass = $subcategories.hasClass(`${navClassName}__flyout`)
+        ? `.${navClassName}__link--category`
+        : `.${navClassName}__link--subcategory`;
+    const $sublinks: JQuery = $subcategories.find(subcategoryClass);
+    const subcategories: NavigationTree[] = $.map(
+        $sublinks,
+        (sublink: HTMLElement) => {
+            return buildSubtree($(sublink));
+        }
+    );
+    const subtree: NavigationTree = {
+        name: $link.text().trim(),
+        url: $link.attr('href'),
+        subcategories: subcategories,
+    };
 
-  return subtree;
+    return subtree;
 }
 
 /**
@@ -44,11 +44,11 @@ export function buildSubtree($link: JQuery): NavigationTree {
  * @return {NavigationTree[]}        Complete navigation tree
  */
 export function buildTree($links: JQuery): NavigationTree[] {
-  const navigationTree: NavigationTree[] = [];
-  $links.each((index: number, link: HTMLElement) => {
-    navigationTree.push(buildSubtree($(link)));
-  });
-  return navigationTree;
+    const navigationTree: NavigationTree[] = [];
+    $links.each((index: number, link: HTMLElement) => {
+        navigationTree.push(buildSubtree($(link)));
+    });
+    return navigationTree;
 }
 
 /**
@@ -58,15 +58,15 @@ export function buildTree($links: JQuery): NavigationTree[] {
  * @return {string}                          Rendered HTML.
  */
 export function renderTree(
-  navigationTree: NavigationTree[],
-  parent?: NavigationTree
+    navigationTree: NavigationTree[],
+    parent?: NavigationTree
 ): string {
-  let subtreeHTML: string = parent
-    ? `<ul class="${offNavClassName}__list">`
-    : '';
-  navigationTree.forEach((category: NavigationTree, index: number) => {
-    if (parent && index === 0) {
-      subtreeHTML += `<li class="${offNavClassName}__item">
+    let subtreeHTML: string = parent
+        ? `<ul class="${offNavClassName}__list">`
+        : '';
+    navigationTree.forEach((category: NavigationTree, index: number) => {
+        if (parent && index === 0) {
+            subtreeHTML += `<li class="${offNavClassName}__item">
                 <a class="${offNavClassName}__link ${offNavClassName}__link--return" href="${parent.url}">
                     <svg class="${offNavClassName}__icon">
                         <use xlink:href="#arrow_prev"></use>
@@ -78,14 +78,14 @@ export function renderTree(
             </li>
             <li class="cs-offcanvas-navigation__item">
                 <a class="cs-offcanvas-navigation__link" href="${parent.url}">${$translate(
-        'All products'
-      )}</a>
+                'All products'
+            )}</a>
             </li>`;
-    }
+        }
 
-    subtreeHTML += `<li class="${offNavClassName}__item">`;
-    if (category.subcategories.length) {
-      subtreeHTML += `<a class="${offNavClassName}__link ${offNavClassName}__link--parent" href="${category.url}">
+        subtreeHTML += `<li class="${offNavClassName}__item">`;
+        if (category.subcategories.length) {
+            subtreeHTML += `<a class="${offNavClassName}__link ${offNavClassName}__link--parent" href="${category.url}">
                 <span class="${offNavClassName}__text">
                     ${category.name}
                 </span>
@@ -94,28 +94,28 @@ export function renderTree(
                 </svg>
             </a>
                 ${renderTree(category.subcategories, category)}`;
-    } else {
-      subtreeHTML += `<a class="${offNavClassName}__link" href="${category.url}">
+        } else {
+            subtreeHTML += `<a class="${offNavClassName}__link" href="${category.url}">
                 <span class="${offNavClassName}__text">
                     ${category.name}
                 </span>
             </a>`;
-    }
-    subtreeHTML += '</li>';
-  });
-  subtreeHTML += parent ? '</ul>' : '';
+        }
+        subtreeHTML += '</li>';
+    });
+    subtreeHTML += parent ? '</ul>' : '';
 
-  return subtreeHTML;
+    return subtreeHTML;
 }
 
 export function renderUserAction(): string {
-  const $accountLink: JQuery = $(`.${infoStripeClassName}__account-link`);
-  const accountLinkHref: string = $accountLink.attr('href');
-  const accountLinkText: string = $accountLink.text().trim();
-  const accountActionType: string =
-    accountLinkHref.toLowerCase().indexOf('out') === -1 ? 'in' : 'out';
+    const $accountLink: JQuery = $(`.${infoStripeClassName}__account-link`);
+    const accountLinkHref: string = $accountLink.attr('href');
+    const accountLinkText: string = $accountLink.text().trim();
+    const accountActionType: string =
+        accountLinkHref.toLowerCase().indexOf('out') === -1 ? 'in' : 'out';
 
-  return `<li class="${offNavClassName}__item">
+    return `<li class="${offNavClassName}__item">
         <a class="${offNavClassName}__link ${offNavClassName}__link--sign-${accountActionType}" href="${accountLinkHref}">
             <span class="${offNavClassName}__text">
                 ${accountLinkText}
@@ -129,37 +129,37 @@ export function renderUserAction(): string {
 
 // add placeholder for storeviewswitcher
 export function renderStoreViewSwitcher(): string {
-  return `<div class="cs-offcanvas-navigation__item-lang-switcher"></div>`;
+    return `<div class="cs-offcanvas-navigation__item-lang-switcher"></div>`;
 }
 
 // move storeviewswitcher to placeholder in offcanvas
 export function moveStoreViewSwitcher(): void {
-  jQuery(`#switcher-language-nav`).appendTo(
-    `.cs-offcanvas-navigation__item-lang-switcher`
-  );
+    jQuery(`#switcher-language-nav`).appendTo(
+        `.cs-offcanvas-navigation__item-lang-switcher`
+    );
 }
 
 /**
  * Sets offcanvas navigation content.
  */
 export const contentSetter = (
-  offcanvasNavigation: OffcanvasNavigation
+    offcanvasNavigation: OffcanvasNavigation
 ): void => {
-  const $navigation: JQuery = $(`.${navClassName}`);
-  const $links: JQuery = $navigation
-    .find(`.${navClassName}__link`)
-    .not(
-      `.${navClassName}__link--category, .${navClassName}__link--subcategory`
+    const $navigation: JQuery = $(`.${navClassName}`);
+    const $links: JQuery = $navigation
+        .find(`.${navClassName}__link`)
+        .not(
+            `.${navClassName}__link--category, .${navClassName}__link--subcategory`
+        );
+    const $offNavList: JQuery = offcanvasNavigation
+        .getElement()
+        .find(`.${offNavClassName}__list`);
+    $offNavList.append(
+        renderTree(buildTree($links)) +
+            renderUserAction() +
+            renderStoreViewSwitcher()
     );
-  const $offNavList: JQuery = offcanvasNavigation
-    .getElement()
-    .find(`.${offNavClassName}__list`);
-  $offNavList.append(
-    renderTree(buildTree($links)) +
-      renderUserAction() +
-      renderStoreViewSwitcher()
-  );
-  moveStoreViewSwitcher();
+    moveStoreViewSwitcher();
 };
 
 export default contentSetter;

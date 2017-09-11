@@ -7,22 +7,22 @@ import settings from '../../../config/build/sprites/svg';
 let firstRun = true;
 
 module.exports = function() {
-  // Initiate watch only the first time.
-  if (firstRun && environment.watch === true) {
-    firstRun = false;
-    this.gulp.watch([settings.watch], ['build:sprites:svg']);
-  }
+    // Initiate watch only the first time.
+    if (firstRun && environment.watch === true) {
+        firstRun = false;
+        this.gulp.watch([settings.watch], ['build:sprites:svg']);
+    }
 
-  return this.gulp
-    .src(settings.src)
-    .pipe(svgSprite(settings.svgSprite))
-    .on('error', error => {
-      if (!environment.watch) {
-        throw error;
-      }
+    return this.gulp
+        .src(settings.src)
+        .pipe(svgSprite(settings.svgSprite))
+        .on('error', error => {
+            if (!environment.watch) {
+                throw error;
+            }
 
-      util.log(error.message);
-      this.emit('end');
-    })
-    .pipe(this.gulp.dest(settings.dest));
+            util.log(error.message);
+            this.emit('end');
+        })
+        .pipe(this.gulp.dest(settings.dest));
 };

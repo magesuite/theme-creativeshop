@@ -14,55 +14,55 @@ let cache;
  * Returns information for scripts building.
  */
 const settings = {
-  /**
+    /**
      * Paths to watch for this task.
      */
-  watch: [path.join(paths.src, '**/*.ts')],
-  /**
+    watch: [path.join(paths.src, '**/*.ts')],
+    /**
      * Rollup configuration.
      * @see https://github.com/rollup/rollup/wiki/JavaScript-API#bundlegenerate-options-
      */
-  rollup: {
-    entry: path.join(paths.src, 'bundle.ts'),
-    cache: cache,
-    plugins: [
-      /**
+    rollup: {
+        entry: path.join(paths.src, 'bundle.ts'),
+        cache: cache,
+        plugins: [
+            /**
              * Rollup typescript plugin configuration.
              * @see https://github.com/rollup/rollup-plugin-typescript
              */
-      typescript({
-        include: '../../**/*.ts',
-      }),
-      commonjs(),
-      globals(),
-    ],
-    onwarn: message => {
-      // Log rollup messages only if "--verbose" flag was used.
-      if (util.env.verbose) {
-        util.log(message);
-      }
+            typescript({
+                include: '../../**/*.ts',
+            }),
+            commonjs(),
+            globals(),
+        ],
+        onwarn: message => {
+            // Log rollup messages only if "--verbose" flag was used.
+            if (util.env.verbose) {
+                util.log(message);
+            }
+        },
     },
-  },
-  rollupBundle: {
-    /**
+    rollupBundle: {
+        /**
          * JavaScript bundle destination directory.
          */
-    dest: path.join(paths.dist, 'web/bundle.js'),
-    format: 'umd',
-    moduleName: 'bundle',
-    amd: {
-      id: 'bundle',
+        dest: path.join(paths.dist, 'web/bundle.js'),
+        format: 'umd',
+        moduleName: 'bundle',
+        amd: {
+            id: 'bundle',
+        },
+        globals: {
+            jQuery: 'jQuery',
+            $: 'jQuery',
+        },
+        sourceMap: !environment.production,
     },
-    globals: {
-      jQuery: 'jQuery',
-      $: 'jQuery',
-    },
-    sourceMap: !environment.production,
-  },
 };
 // Uglify the code if our target is production.
 if (environment.production) {
-  settings.rollup.plugins.push(uglify());
+    settings.rollup.plugins.push(uglify());
 }
 
 export default settings;

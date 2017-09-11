@@ -3,16 +3,22 @@ import path from 'path';
 import paths from '../../paths';
 
 /**
- * Settingf for TypeScript linting task.
+ * Settings for TypeScript linting task.
  * @type {Object}
  */
 export default {
-  src: [
-    /**
+    src: [
+        /**
          * Lint all TypeScript files.
          */
-    path.join(paths.src, '**/*.ts'),
-    '!' + path.join(paths.src, 'vendors/**/*.ts'),
-  ],
-  dest: paths.src,
+        path.join(paths.src, '**/*.ts'),
+        '!' + path.join(paths.src, 'vendors/**/*.ts'),
+    ],
+    prettier: {
+        singleQuote: true,
+        trailingComma: 'es5',
+        bracketSpacing: true,
+        tabWidth: 4,
+    },
+    dest: paths.src,
 };
