@@ -46,7 +46,7 @@ gulp.task('fix', done => {
 /**
  *  Task for project linting.
  */
-gulp.task('lint', done => {
+gulp.task('lint', ['fix'], done => {
     sequence(['lint:scripts', 'lint:styles'], done);
 });
 

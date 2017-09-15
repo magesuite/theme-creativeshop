@@ -5,17 +5,17 @@ import $ from 'jquery';
  */
 interface ReviewsOptions {
     /**
-   * Namespace of the component.
-   * Default: 'cs-'
-   * @type {string}
-   */
+     * Namespace of the component.
+     * Default: 'cs-'
+     * @type {string}
+     */
     namespace?: string;
 
     /**
-   * Minimum input value that can be provided.
-   * Default: '.cs-reviews__rate-feedback'
-   * @type {string}
-   */
+     * Minimum input value that can be provided.
+     * Default: '.cs-reviews__rate-feedback'
+     * @type {string}
+     */
     feedbackElementSelector?: string;
 }
 
@@ -23,9 +23,9 @@ export default class Reviews {
     protected _$wrapper: JQuery;
 
     /**
-   * Creates new Reviews component with optional settings.
-   * @param  {ReviewsOptions} options  Optional settings object.
-   */
+     * Creates new Reviews component with optional settings.
+     * @param  {ReviewsOptions} options  Optional settings object.
+     */
     public constructor($wrapper?: JQuery, options?: ReviewsOptions) {
         this._options = $.extend(this._options, options);
         this._options.namespace = this._options.namespace || 'cs-';

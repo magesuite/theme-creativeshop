@@ -15,14 +15,14 @@ import $ from 'jquery';
  */
 export default class GoogleAddressDetector {
     /**
-   *
-   * @param {Object} options - Options for service
-   * @param {String} options.dev - Flag indicator for debugging
-   * @param {String} options.apiKey - Api key string for production (will work without it on dev)
-   * @param {String} options.language - Language for results
-   * @param {String} options.region - Region in which results will be restricted. 2 letter, ISO code, uppercase (PL, DE)
-   * @constructor
-   */
+     *
+     * @param {Object} options - Options for service
+     * @param {String} options.dev - Flag indicator for debugging
+     * @param {String} options.apiKey - Api key string for production (will work without it on dev)
+     * @param {String} options.language - Language for results
+     * @param {String} options.region - Region in which results will be restricted. 2 letter, ISO code, uppercase (PL, DE)
+     * @constructor
+     */
     constructor(options: {
         dev: boolean;
         apiKey: string;
@@ -44,20 +44,20 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Get all native google geocode addresses
-   * @param {String} query - Phrase to search, the more accurate, the best will be results
-   * @returns {Promise} addressResults - Promise with pure google geocode objects with all data
-   * @public
-   */
+     * Get all native google geocode addresses
+     * @param {String} query - Phrase to search, the more accurate, the best will be results
+     * @returns {Promise} addressResults - Promise with pure google geocode objects with all data
+     * @public
+     */
     public getResults(query: string): any {
         return this._callGoogleApi(query);
     }
 
     /**
-   * Get results but already formatted
-   * @param query
-   * @returns {Promise.<T>} Promise with array of formatted result matches
-   */
+     * Get results but already formatted
+     * @param query
+     * @returns {Promise.<T>} Promise with array of formatted result matches
+     */
     public getFormattedResults(query: string): any {
         return this._callGoogleApi(query).then((results: any): any => {
             const formattedResults: any = [];
@@ -71,12 +71,12 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Gets formatted address from one native google address
-   * @param {Object} result - native google geocode result
-   * @returns {{full: String, streetNumber: String, city: String, postalCode: String}} formattedAddress - Ready for
-   * use formatted address
-   * @public
-   */
+     * Gets formatted address from one native google address
+     * @param {Object} result - native google geocode result
+     * @returns {{full: String, streetNumber: String, city: String, postalCode: String}} formattedAddress - Ready for
+     * use formatted address
+     * @public
+     */
     public getFormattedAddress(
         result: any
     ): {
@@ -111,11 +111,11 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Gets city from postal code
-   * @param {String} postalCode - postal code
-   * @returns {Promise.String} - Promise with string with city
-   * @public
-   */
+     * Gets city from postal code
+     * @param {String} postalCode - postal code
+     * @returns {Promise.String} - Promise with string with city
+     * @public
+     */
     public getCityByPostalCode(postalCode: string): string {
         return this._callGoogleApi(postalCode).then((result: any): any => {
             return this.getFormattedAddress(result[0]).city;
@@ -123,11 +123,11 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Gets city from postal code
-   * @param {String} streetQuery - street & street number query
-   * @returns {Promise.String} - Promise with string with postal code
-   * @public
-   */
+     * Gets city from postal code
+     * @param {String} streetQuery - street & street number query
+     * @returns {Promise.String} - Promise with string with postal code
+     * @public
+     */
     public getPostalCodeByFullStreet(streetQuery: string): string {
         return this._callGoogleApi(streetQuery).then((result: any): any => {
             return this.getFormattedAddress(result[0]).postalCode;
@@ -135,11 +135,11 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Gets corrected street name if differs from provided
-   * @param {String} streetQuery - street query
-   * @returns {Promise.String|null} - Promise with string with street or null if matches
-   * @public
-   */
+     * Gets corrected street name if differs from provided
+     * @param {String} streetQuery - street query
+     * @returns {Promise.String|null} - Promise with string with street or null if matches
+     * @public
+     */
     public getCorrectStreetName(streetQuery: string): string {
         return this._callGoogleApi(streetQuery).then((result: any): any => {
             const street: string = this.getFormattedAddress(result[0]).street;
@@ -149,9 +149,9 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Sets api parameters for call once
-   * @private
-   */
+     * Sets api parameters for call once
+     * @private
+     */
     private _setCallParams(): void {
         this.apiParams = {
             language: this.basicParams.language,
@@ -165,11 +165,11 @@ export default class GoogleAddressDetector {
     }
 
     /**
-   * Get google  results from query
-   * @param {String} query
-   * @returns {Promise.<T>}
-   * @private
-   */
+     * Get google  results from query
+     * @param {String} query
+     * @returns {Promise.<T>}
+     * @private
+     */
     private _callGoogleApi(query: string): any {
         const params: object = this.apiParams;
         params.address = query;

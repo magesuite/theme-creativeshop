@@ -3,112 +3,112 @@ $namespace: 'cs-';
 @import '../../../node_modules/creative-patterns/packages/components/items-grid/src/items-grid';
 
 .#{$namespace}items-grid {
-  @include itemsGrid();
+    @include itemsGrid();
 
-  $root: &;
-  $mobileGutter: .75rem;
-  $tabletUpGutter: 1rem;
+    $root: &;
+    $mobileGutter: .75rem;
+    $tabletUpGutter: 1rem;
 
-  position: relative;
-  z-index: 4;
-  width: calc(100% + (2 * #{$mobileGutter}));
-  margin: 0 -#{$mobileGutter};
-
-  @include media( '>=tablet' ) {
-    width: calc(100% + (2 * #{$tabletUpGutter}));
-    margin: 0 -#{$tabletUpGutter};
-
-    .ie11 & {
-      width: 100%;
-    }
-  }
-
-  &__item {
-    margin: 0 $mobileGutter 2 * $mobileGutter;
     position: relative;
-
-    &:after {
-      display: block;
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: calc(100% + 1.5rem);
-      margin-left: -.75rem;
-      border-top: 1px solid $colorAlto;
-      z-index: 3;
-
-      @include media( '>=tablet' ) {
-        width: calc(100% + 2rem);
-        margin-left: -1rem;
-      }
-    }
-
-    &:first-child:after {
-      display: none;
-    }
-
-    @include media( '>=phone-lg' ) {
-      &:nth-child(-n + 2):after {
-        display: none;
-      }
-    }
-
-    @include media( '>=phone-lg' ) {
-      width: calc( (100% / 2) - (2 * #{$mobileGutter}));
-
-      #{$root}--in-column & {
-        width: calc( (100% / 2) - (2 * #{$mobileGutter}));
-      }
-    }
+    z-index: 4;
+    width: calc(100% + (2 * #{$mobileGutter}));
+    margin: 0 -#{$mobileGutter};
 
     @include media( '>=tablet' ) {
-      margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
-      width: calc( (100% / 3) - (2 * #{$tabletUpGutter}));
+        width: calc(100% + (2 * #{$tabletUpGutter}));
+        margin: 0 -#{$tabletUpGutter};
 
-      &:nth-child(-n + 3):after {
-        display: none;
-      }
+        .ie11 & {
+            width: 100%;
+        }
+    }
 
-      #{$root}--in-column & {
-        width: calc( (100% / 2) - (2 * #{$tabletUpGutter}));
+    &__item {
+        margin: 0 $mobileGutter 2 * $mobileGutter;
+        position: relative;
 
         &:after {
-          display: block;
+            display: block;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(100% + 1.5rem);
+            margin-left: -.75rem;
+            border-top: 1px solid $colorAlto;
+            z-index: 3;
+
+            @include media( '>=tablet' ) {
+                width: calc(100% + 2rem);
+                margin-left: -1rem;
+            }
         }
 
-        &:nth-child(-n + 2):after {
-          display: none;
+        &:first-child:after {
+            display: none;
         }
-      }
+
+        @include media( '>=phone-lg' ) {
+            &:nth-child(-n + 2):after {
+                display: none;
+            }
+        }
+
+        @include media( '>=phone-lg' ) {
+            width: calc( (100% / 2) - (2 * #{$mobileGutter}));
+
+            #{$root}--in-column & {
+                width: calc( (100% / 2) - (2 * #{$mobileGutter}));
+            }
+        }
+
+        @include media( '>=tablet' ) {
+            margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
+            width: calc( (100% / 3) - (2 * #{$tabletUpGutter}));
+
+            &:nth-child(-n + 3):after {
+                display: none;
+            }
+
+            #{$root}--in-column & {
+                width: calc( (100% / 2) - (2 * #{$tabletUpGutter}));
+
+                &:after {
+                    display: block;
+                }
+
+                &:nth-child(-n + 2):after {
+                    display: none;
+                }
+            }
+        }
+
+        @include media( '>=laptop' ) {
+            width: calc( (100% / 4) - (2 * #{$tabletUpGutter}));
+
+            &:nth-child(-n + 4):after {
+                display: none;
+            }
+
+            #{$root}--in-column & {
+                width: calc( (100% / 3) - (2 * #{$tabletUpGutter}));
+
+                &:after {
+                    display: block;
+                }
+
+                &:nth-child(-n + 3):after {
+                    display: none;
+                }
+            }
+        }
+
+        @include media( '>=desktop' ) {
+            width: calc( (100% / 4) - (2 * #{$tabletUpGutter}));
+
+            #{$root}--in-column & {
+                width: calc( (100% / 3) - (2 * #{$tabletUpGutter}));
+            }
+        }
     }
-
-    @include media( '>=laptop' ) {
-      width: calc( (100% / 4) - (2 * #{$tabletUpGutter}));
-
-      &:nth-child(-n + 4):after {
-        display: none;
-      }
-
-      #{$root}--in-column & {
-        width: calc( (100% / 3) - (2 * #{$tabletUpGutter}));
-
-        &:after {
-          display: block;
-        }
-
-        &:nth-child(-n + 3):after {
-          display: none;
-        }
-      }
-    }
-
-    @include media( '>=desktop' ) {
-      width: calc( (100% / 4) - (2 * #{$tabletUpGutter}));
-
-      #{$root}--in-column & {
-        width: calc( (100% / 3) - (2 * #{$tabletUpGutter}));
-      }
-    }
-  }
 }
