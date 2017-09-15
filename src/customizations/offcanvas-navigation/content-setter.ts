@@ -34,11 +34,15 @@ export function buildSubtree($link: JQuery): NavigationTree {
     const subtree: NavigationTree = {
         name: $link.clone().children().remove().end().text().trim(),
         url: $link.attr('href'),
-        icon: $link.find( `> .${navClassName}__link-icon-wrapper` ).length 
-            ? $link.find( `> .${navClassName}__link-icon-wrapper .${navClassName}__link-icon` ).attr( 'src' ) 
+        icon: $link.find(`> .${navClassName}__link-icon-wrapper`).length
+            ? $link
+                  .find(
+                      `> .${navClassName}__link-icon-wrapper .${navClassName}__link-icon`
+                  )
+                  .attr('src')
             : '',
-        productCount: $link.find( `> .${navClassName}__link-products-qty` ).length 
-            ? $link.find( `> .${navClassName}__link-products-qty` ).text() 
+        productCount: $link.find(`> .${navClassName}__link-products-qty`).length
+            ? $link.find(`> .${navClassName}__link-products-qty`).text()
             : '',
         subcategories: subcategories,
     };
@@ -92,15 +96,19 @@ export function renderTree(
             </li>`;
         }
 
-        const categoryIconHTML: string = ( settings.showCategoryIcon && category.icon )
-            ? `<span class="${offNavClassName}__category-icon-wrapper">
+        const categoryIconHTML: string =
+            settings.showCategoryIcon && category.icon
+                ? `<span class="${offNavClassName}__category-icon-wrapper">
                     <img src="${category.icon}" alt="${category.name}" class="${offNavClassName}__category-icon">
-               </span>` 
+               </span>`
+                : '';
+        const productCountHTML: string =
+            settings.showProductsCount && category.productCount
+                ? `<span class="${offNavClassName}__product-qty">${category.productCount}</span>`
+                : '';
+        const additionalItemClass: string = categoryIconHTML
+            ? `${offNavClassName}__item--with-icon`
             : '';
-        const productCountHTML: string = ( settings.showProductsCount && category.productCount )
-            ? `<span class="${offNavClassName}__product-qty">${category.productCount}</span>` 
-            : '';
-        const additionalItemClass: string = categoryIconHTML ? `${offNavClassName}__item--with-icon` : '';
 
         subtreeHTML += `<li class="${offNavClassName}__item ${additionalItemClass}">`;
         if (category.subcategories.length) {

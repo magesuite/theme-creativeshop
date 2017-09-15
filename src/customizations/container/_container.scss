@@ -1,194 +1,194 @@
 .#{$namespace}container {
-  $root: &;
+    $root: &;
 
-  @include container();
-  margin: 0 auto;
-  width: 100%;
-  max-width: 189rem;
-  box-sizing: border-box;
+    @include container();
+    margin: 0 auto;
+    width: 100%;
+    max-width: 189rem;
+    box-sizing: border-box;
 
-  &__inner {
-    @include container-wrapper();
+    &__inner {
+        @include container-wrapper();
 
-    position: relative;
+        position: relative;
 
-    &:after {
-      content: '';
-      display: table;
-      clear: both;
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        &--flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            @include media( '>=tablet' ) {
+                flex-wrap: nowrap;
+            }
+
+            &:after {
+                display: none;
+            }
+        }
+
+        #{$root}--edge-to-edge & {
+            @include media( '>=tablet' ) {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+        }
     }
 
-    &--flex {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    &__aside {
+        @include media( '>=tablet' ) {
+            width: 40%;
+            position: absolute;
+            top: 0;
+            right: 2.2rem;
+            height: 100%;
+        }
+        @include media( '>=laptop' ) {
+            width: 32%;
+        }
+        @include media( '>=desktop' ) {
+            right: 0;
+            width: 30%;
+        }
+        &--space-top {
+            @include media( '>=tablet' ) {
+                padding-top: 5.6rem;
+                box-sizing: border-box;
+            }
+        }
+    }
 
-      @include media( '>=tablet' ) {
-        flex-wrap: nowrap;
-      }
+    &__main-column {
+        width: 56%;
+        position: relative;
 
-      &:after {
+        @include media( '>=laptop' ) {
+            width: 61%;
+        }
+
+        @include media( '>=desktop' ) {
+            width: 67%;
+        }
+
+        @include media( '<tablet' ) {
+            max-width: 100% !important;
+            width: 100% !important;
+            //min-height: 30rem;
+        }
+
+        &--space-top {
+            @include media( '>=laptop' ) {
+                padding-top: 3rem;
+            }
+        }
+    }
+
+    &__reviews {
+        @extend .#{$namespace}container__inner;
+
+        @include media( '>=tablet' ) {
+            background: $colorWhite;
+            margin-top: 3rem;
+            padding: 0 2rem;
+        }
+
+        @include media( '>=desktop' ) {
+            padding: 2rem 0 0;
+        }
+
+        &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        padding-bottom: 2rem;
+    }
+
+    &--contrast {
+        background-color: $colorGallery;
+
+        @include media( '>=laptop' ) {
+            background-image: url('images/background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    }
+
+    &--spacious {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+
+        @include media( '>=laptop' ) {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .catalog-category-view &,
+        .catalogsearch-result-index & {
+            @include media( '>=tablet' ) {
+                padding-top: 0;
+            }
+        }
+    }
+
+    &--edge-to-edge {
+        width: 100vw;
+        margin: 0 calc( ( (100vw - 100%) / 2) * -1);
+        padding-left: 0;
+        padding-right: 0;
+
+        @media (min-width: 1890px) {
+            margin: 0 auto;
+
+            .#{$namespace}container__inner & {
+                margin: 0 -34.5rem;
+            }
+        }
+    }
+
+    &--noscroll {
+        overflow: hidden;
+    }
+
+    &--breadcrumbs {
+        background-image: url('images/breadcrumbs.png');
+        background-size: auto 4.8rem;
+        background-position: right;
+        background-repeat: no-repeat;
         display: none;
-      }
+
+        @include media( '>=tablet' ) {
+            display: block;
+        }
     }
 
-    #{$root}--edge-to-edge & {
-      @include media( '>=tablet' ) {
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-    }
-  }
-
-  &__aside {
-    @include media( '>=tablet' ) {
-      width: 40%;
-      position: absolute;
-      top: 0;
-      right: 2.2rem;
-      height: 100%;
-    }
-    @include media( '>=laptop' ) {
-      width: 32%;
-    }
-    @include media( '>=desktop' ) {
-      right: 0;
-      width: 30%;
-    }
-    &--space-top {
-      @include media( '>=tablet' ) {
-        padding-top: 5.6rem;
-        box-sizing: border-box;
-      }
-    }
-  }
-
-  &__main-column {
-    width: 56%;
-    position: relative;
-
-    @include media( '>=laptop' ) {
-      width: 61%;
+    &--pdp {
+        @include media( '>=laptop' ) {
+            padding-top: 0;
+        }
     }
 
-    @include media( '>=desktop' ) {
-      width: 67%;
+    &--checkout-type {
+        @include media( '<tablet' ) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        @include media( '>=tablet' ) {
+            padding-bottom: 5rem;
+        }
     }
 
-    @include media( '<tablet' ) {
-      max-width: 100% !important;
-      width: 100% !important;
-      //min-height: 30rem;
+    &--ontop {
+        z-index: 301;
     }
 
-    &--space-top {
-      @include media( '>=laptop' ) {
-        padding-top: 3rem;
-      }
+    &--viewport-width {
+        max-width: none;
     }
-  }
-
-  &__reviews {
-    @extend .#{$namespace}container__inner;
-
-    @include media( '>=tablet' ) {
-      background: $colorWhite;
-      margin-top: 3rem;
-      padding: 0 2rem;
-    }
-
-    @include media( '>=desktop' ) {
-      padding: 2rem 0 0;
-    }
-
-    &:after {
-      content: '';
-      display: table;
-      clear: both;
-    }
-
-    padding-bottom: 2rem;
-  }
-
-  &--contrast {
-    background-color: $colorGallery;
-
-    @include media( '>=laptop' ) {
-      background-image: url('images/background.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-  }
-
-  &--spacious {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-
-    @include media( '>=laptop' ) {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
-    }
-
-    .catalog-category-view &,
-    .catalogsearch-result-index & {
-      @include media( '>=tablet' ) {
-        padding-top: 0;
-      }
-    }
-  }
-
-  &--edge-to-edge {
-    width: 100vw;
-    margin: 0 calc( ( (100vw - 100%) / 2) * -1);
-    padding-left: 0;
-    padding-right: 0;
-
-    @media (min-width: 1890px) {
-      margin: 0 auto;
-
-      .#{$namespace}container__inner & {
-        margin: 0 -34.5rem;
-      }
-    }
-  }
-
-  &--noscroll {
-    overflow: hidden;
-  }
-
-  &--breadcrumbs {
-    background-image: url('images/breadcrumbs.png');
-    background-size: auto 4.8rem;
-    background-position: right;
-    background-repeat: no-repeat;
-    display: none;
-
-    @include media( '>=tablet' ) {
-      display: block;
-    }
-  }
-
-  &--pdp {
-    @include media( '>=laptop' ) {
-      padding-top: 0;
-    }
-  }
-
-  &--checkout-type {
-    @include media( '<tablet' ) {
-      padding-left: 0;
-      padding-right: 0;
-    }
-    @include media( '>=tablet' ) {
-      padding-bottom: 5rem;
-    }
-  }
-
-  &--ontop {
-    z-index: 301;
-  }
-
-  &--viewport-width {
-    max-width: none;
-  }
 }

@@ -4,250 +4,252 @@
  */
 
 .#{$namespace}header-search {
-  $root: &;
+    $root: &;
 
-  display: flex;
-  position: relative;
-  font-size: 1rem;
-  background-color: $colorWhite;
-  fill: $colorCeruleanBlue;
-
-  &__input,
-  &__submit {
-    transition: border-color .3s;
+    display: flex;
     position: relative;
-    z-index: 5;
-  }
-
-  &__button-icon {
-    width: 2rem;
-    height: 2.1rem;
-    transition: transform .15s cubic-bezier(0, .78, .23, 1), opacity .15s linear;
-  }
-
-  &__input {
-    border-radius: 3px 0 0 3px;
-    z-index: 201;
-
-    &:focus + #{$root}__button {
-      .ajax-loading & {
-        #{$root}__button-icon {
-          transform: skew(18deg) translate(-8rem, -50%);
-          opacity: 0;
-        }
-
-        #{$root}__autocomplete-loader {
-          transform: skew(18deg) translate3d(0, 0, 0);
-          opacity: 1;
-          z-index: 202;
-        }
-      }
-    }
-  }
-
-  &__submit {
-    border-radius: 0 3px 3px 0;
-  }
-
-  &__button {
-    right: 0;
-    z-index: 201;
-  }
-
-  &__autocomplete-loader {
-    display: block;
-    width: 2.5rem;
-    height: 2.5rem;
-    position: absolute;
-    top: .75rem;
-    right: 1.6rem;
-    z-index: -5;
-    will-change: z-index;
-    transform: translate3d(4rem, 0, 0);
-    transition: transform .15s cubic-bezier(0, .78, .23, 1), opacity .15s linear;
-  }
-
-  &__autocomplete {
-    width: 100% !important;
-    top: 100%;
-    left: 0;
-    margin-top: -3px;
-    padding-top: 3px;
-    box-sizing: border-box;
-    border: 1px solid $colorAlto;
+    font-size: 1rem;
     background-color: $colorWhite;
-    z-index: 200;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .17);
+    fill: $colorCeruleanBlue;
 
-    .autocomplete-list {
-      margin: -1px 0 1rem;
-      border-top: 1px solid $colorAlto;
-
-      &:first-child {
-        border-top: 0;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+    &__input,
+    &__submit {
+        transition: border-color .3s;
+        position: relative;
+        z-index: 5;
     }
 
-    dl dt {
-      border: none;
-      padding: 1.2rem 3rem 1rem 1rem;
-      color: $colorGray;
-      font-weight: 700;
-      text-transform: uppercase;
-      font-size: 1.19rem;
-      letter-spacing: 1px;
+    &__button-icon {
+        width: 2rem;
+        height: 2.1rem;
+        transition: transform .15s cubic-bezier(0, .78, .23, 1),
+            opacity .15s linear;
+    }
 
-      &:not(:empty) {
-        border: none;
-        background-color: transparent;
-      }
+    &__input {
+        border-radius: 3px 0 0 3px;
+        z-index: 201;
 
-      &:hover,
-      &.selected {
+        &:focus + #{$root}__button {
+            .ajax-loading & {
+                #{$root}__button-icon {
+                    transform: skew(18deg) translate(-8rem, -50%);
+                    opacity: 0;
+                }
+
+                #{$root}__autocomplete-loader {
+                    transform: skew(18deg) translate3d(0, 0, 0);
+                    opacity: 1;
+                    z-index: 202;
+                }
+            }
+        }
+    }
+
+    &__submit {
+        border-radius: 0 3px 3px 0;
+    }
+
+    &__button {
+        right: 0;
+        z-index: 201;
+    }
+
+    &__autocomplete-loader {
+        display: block;
+        width: 2.5rem;
+        height: 2.5rem;
+        position: absolute;
+        top: .75rem;
+        right: 1.6rem;
+        z-index: -5;
+        will-change: z-index;
+        transform: translate3d(4rem, 0, 0);
+        transition: transform .15s cubic-bezier(0, .78, .23, 1),
+            opacity .15s linear;
+    }
+
+    &__autocomplete {
+        width: 100% !important;
+        top: 100%;
+        left: 0;
+        margin-top: -3px;
+        padding-top: 3px;
+        box-sizing: border-box;
+        border: 1px solid $colorAlto;
         background-color: $colorWhite;
-      }
+        z-index: 200;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, .17);
 
-      &.title-product ~ dd:not(:empty) {
-        border-bottom: 1px solid $colorAlto;
-        display: flex;
-        align-items: center;
+        .autocomplete-list {
+            margin: -1px 0 1rem;
+            border-top: 1px solid $colorAlto;
 
-        &:last-child {
-          border-bottom: none;
+            &:first-child {
+                border-top: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
 
-        .product-image-box {
-          width: 4.5rem;
-          height: 4.5rem;
-          padding: 0 1rem 0 0;
+        dl dt {
+            border: none;
+            padding: 1.2rem 3rem 1rem 1rem;
+            color: $colorGray;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1.19rem;
+            letter-spacing: 1px;
+
+            &:not(:empty) {
+                border: none;
+                background-color: transparent;
+            }
+
+            &:hover,
+            &.selected {
+                background-color: $colorWhite;
+            }
+
+            &.title-product ~ dd:not(:empty) {
+                border-bottom: 1px solid $colorAlto;
+                display: flex;
+                align-items: center;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                .product-image-box {
+                    width: 4.5rem;
+                    height: 4.5rem;
+                    padding: 0 1rem 0 0;
+                }
+            }
         }
-      }
+
+        dl dd {
+            padding: .5rem 1rem;
+
+            &:not(:empty) {
+                border: none;
+                background-color: transparent;
+                transition: background-color .15s linear;
+            }
+
+            &:hover,
+            &.selected {
+                background-color: $colorGallery;
+            }
+
+            .product-shop {
+                width: calc(100% - 4.5rem);
+                margin: 0;
+            }
+
+            .product-item {
+                .product-name {
+                    font-size: 1.29rem;
+                    color: $colorBlack;
+                    font-weight: 700;
+                }
+
+                img {
+                    display: block;
+                }
+
+                .price-box {
+                    display: flex;
+                    flex-direction: row-reverse;
+                    justify-content: flex-end;
+                    margin: .3rem 0 0;
+
+                    .price {
+                        font-size: 1.29rem;
+                    }
+                }
+
+                .old-price .price {
+                    margin: 0 .5rem 0 0;
+                    color: $colorDoveGray;
+                    text-decoration: line-through;
+                    font-size: 90%;
+                    font-weight: 700;
+                }
+
+                .special-price .price {
+                    color: $colorCrimson;
+                }
+            }
+
+            .category-mini-crumb {
+                margin: 0;
+                display: inline-block;
+                font-size: 1.29rem;
+                color: $colorGray;
+                font-style: normal;
+
+                &:empty {
+                    display: none;
+                }
+
+                &:after {
+                    content: ' > ';
+                }
+            }
+
+            .qs-option-name {
+                font-size: 1.29rem;
+            }
+
+            .product-attribute-label {
+                float: left;
+                margin-top: .2rem;
+                padding-right: .4rem;
+                text-transform: none;
+                font-size: 1.29rem;
+                vertical-align: baseline;
+                color: $colorGray;
+
+                &:after {
+                    content: ' - ';
+                }
+            }
+
+            .amount {
+                position: static;
+                color: $colorGray;
+                font-size: 1.29rem;
+
+                &:not(:empty):before {
+                    content: '(';
+                }
+
+                &:not(:empty):after {
+                    content: ')';
+                }
+            }
+        }
+
+        .price {
+            .price-box__price {
+                line-height: 1.6rem;
+            }
+        }
     }
 
-    dl dd {
-      padding: .5rem 1rem;
-
-      &:not(:empty) {
-        border: none;
-        background-color: transparent;
-        transition: background-color .15s linear;
-      }
-
-      &:hover,
-      &.selected {
-        background-color: $colorGallery;
-      }
-
-      .product-shop {
-        width: calc(100% - 4.5rem);
-        margin: 0;
-      }
-
-      .product-item {
-        .product-name {
-          font-size: 1.29rem;
-          color: $colorBlack;
-          font-weight: 700;
-        }
-
-        img {
-          display: block;
-        }
-
-        .price-box {
-          display: flex;
-          flex-direction: row-reverse;
-          justify-content: flex-end;
-          margin: .3rem 0 0;
-
-          .price {
-            font-size: 1.29rem;
-          }
-        }
-
-        .old-price .price {
-          margin: 0 .5rem 0 0;
-          color: $colorDoveGray;
-          text-decoration: line-through;
-          font-size: 90%;
-          font-weight: 700;
-        }
-
-        .special-price .price {
-          color: $colorCrimson;
-        }
-      }
-
-      .category-mini-crumb {
-        margin: 0;
-        display: inline-block;
-        font-size: 1.29rem;
-        color: $colorGray;
-        font-style: normal;
-
-        &:empty {
-          display: none;
-        }
-
-        &:after {
-          content: ' > ';
-        }
-      }
-
-      .qs-option-name {
-        font-size: 1.29rem;
-      }
-
-      .product-attribute-label {
-        float: left;
-        margin-top: .2rem;
-        padding-right: .4rem;
-        text-transform: none;
-        font-size: 1.29rem;
-        vertical-align: baseline;
-        color: $colorGray;
-
-        &:after {
-          content: ' - ';
-        }
-      }
-
-      .amount {
-        position: static;
-        color: $colorGray;
-        font-size: 1.29rem;
-
-        &:not(:empty):before {
-          content: '(';
-        }
-
-        &:not(:empty):after {
-          content: ')';
-        }
-      }
+    &__icon {
+        width: 2em;
+        height: 2em;
     }
 
-    .price {
-      .price-box__price {
-        line-height: 1.6rem;
-      }
+    &__text {
+        position: absolute;
+        font: 0/0 a;
+        color: transparent;
     }
-  }
-
-  &__icon {
-    width: 2em;
-    height: 2em;
-  }
-
-  &__text {
-    position: absolute;
-    font: 0/0 a;
-    color: transparent;
-  }
 }

@@ -1,90 +1,90 @@
 .#{$namespace}product-description {
-  $root: &;
+    $root: &;
 
-  &__item {
-    border-bottom: 1rem solid $colorWhite;
+    &__item {
+        border-bottom: 1rem solid $colorWhite;
 
-    @include media('>=tablet') {
-      padding: 2.15rem 0 3rem;
-      border-bottom: 1px solid $colorAlto;
+        @include media('>=tablet') {
+            padding: 2.15rem 0 3rem;
+            border-bottom: 1px solid $colorAlto;
 
-      &:last-child {
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        @include media('>=laptop') {
+            margin-right: 35%;
+        }
+
+        &--penultimate {
+            @include media('>=tablet') {
+                border-bottom: none;
+            }
+        }
+
+        &--bottom {
+            @extend .#{$namespace}container;
+            @extend .#{$namespace}container--edge-to-edge;
+            border-bottom: none;
+
+            @include media('>=tablet') {
+                background: $colorWhite;
+                padding-bottom: 0;
+            }
+
+            &_inner {
+                @extend .#{$namespace}container__inner;
+            }
+
+            &_column {
+                @extend .#{$namespace}product-description__item;
+            }
+        }
+    }
+
+    &__headline {
+        padding: 0;
+        margin: 1rem 0 2rem;
         border-bottom: none;
-      }
+
+        @include media('<tablet') {
+            padding: 2.5rem 15px;
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .counter {
+            font-weight: 300;
+
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
+        }
     }
 
-    @include media('>=laptop') {
-      margin-right: 35%;
+    &__content {
+        @include media('<tablet') {
+            padding: 0 15px;
+
+            #{$root}__item--reviews & {
+                padding-bottom: 2rem;
+            }
+        }
     }
 
-    &--penultimate {
-      @include media('>=tablet') {
-        border-bottom: none;
-      }
+    &__nav {
+        padding-top: 2rem;
+        padding-bottom: .5rem;
+        @include media('<tablet') {
+            display: none;
+        }
+        @include media('>=laptop') {
+            margin-right: 35%;
+        }
     }
-
-    &--bottom {
-      @extend .#{$namespace}container;
-      @extend .#{$namespace}container--edge-to-edge;
-      border-bottom: none;
-
-      @include media('>=tablet') {
-        background: $colorWhite;
-        padding-bottom: 0;
-      }
-
-      &_inner {
-        @extend .#{$namespace}container__inner;
-      }
-
-      &_column {
-        @extend .#{$namespace}product-description__item;
-      }
-    }
-  }
-
-  &__headline {
-    padding: 0;
-    margin: 1rem 0 2rem;
-    border-bottom: none;
-
-    @include media('<tablet') {
-      padding: 2.5rem 15px;
-      margin: 0;
-      font-size: 1.4rem;
-    }
-
-    .counter {
-      font-weight: 300;
-
-      &:before {
-        content: '(';
-      }
-
-      &:after {
-        content: ')';
-      }
-    }
-  }
-
-  &__content {
-    @include media('<tablet') {
-      padding: 0 15px;
-
-      #{$root}__item--reviews & {
-        padding-bottom: 2rem;
-      }
-    }
-  }
-
-  &__nav {
-    padding-top: 2rem;
-    padding-bottom: .5rem;
-    @include media('<tablet') {
-      display: none;
-    }
-    @include media('>=laptop') {
-      margin-right: 35%;
-    }
-  }
 }

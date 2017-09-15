@@ -59,9 +59,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * On keyup ( but not arrows, enter, back ) trigger address autofill based on street field value
-   * @private
-   */
+     * On keyup ( but not arrows, enter, back ) trigger address autofill based on street field value
+     * @private
+     */
     private _initStreetField(): void {
         let typeTimer: any;
         const typeInterval: number = 500;
@@ -84,9 +84,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Send request to google api based on street value. Use either places or address API based on query specificity
-   * @private
-   */
+     * Send request to google api based on street value. Use either places or address API based on query specificity
+     * @private
+     */
     private _initGoogleStreetRequest(): void {
         const query: string = this.streetField.val();
 
@@ -112,9 +112,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Trigger city autofill based on zip
-   * @private
-   */
+     * Trigger city autofill based on zip
+     * @private
+     */
     private _initGoogleZipRequest(): void {
         const query: string = this.zipField.val();
 
@@ -132,9 +132,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Send request to google api based on zip value
-   * @private
-   */
+     * Send request to google api based on zip value
+     * @private
+     */
     private _initZipField(): void {
         let typeTimer: any;
         const typeInterval: number = 1000;
@@ -159,9 +159,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Build autoselect and init its events. Markup is the same as .cs-html-select but behaviour is different;
-   * @private
-   */
+     * Build autoselect and init its events. Markup is the same as .cs-html-select but behaviour is different;
+     * @private
+     */
     private _buildAutosuggestSelect(data: any): void {
         const optionsHtml: string = this._buildOptions(data);
 
@@ -227,9 +227,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Build options for autosuggest dropdown
-   * @private
-   */
+     * Build options for autosuggest dropdown
+     * @private
+     */
     private _buildOptions(data: any): string {
         let optionsHtml: string = '';
         for (const result of data) {
@@ -275,9 +275,10 @@ export default class AddressAutofill {
     }
 
     /**
-   * Init events on builded select 9up, down, click, enter. there is always focus on street field
-   * @private
-   */
+     * Init events on builded select 9up, down, click, enter. there is always focus on street field
+     * @private
+     */
+
     private _initSelectEvents(jsSelect: JQuery): void {
         function scrollToOption(
             $items: JQuery,
@@ -353,9 +354,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Fill fields if value available
-   * @private
-   */
+     * Fill fields if value available
+     * @private
+     */
     private _fillFields(clickedValues: object): void {
         this.cityField.val(clickedValues.city).change();
 
@@ -381,9 +382,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Focus on first field that need fill
-   * @private
-   */
+     * Focus on first field that need fill
+     * @private
+     */
     private _focusOnNextEmptyField(): void {
         if (this.detectorType === 'place' && !this.numberField) {
             this.streetField.focus();
@@ -397,9 +398,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Check if last word is a number. If so it is probably house number - return it
-   * @private
-   */
+     * Check if last word is a number. If so it is probably house number - return it
+     * @private
+     */
     private _detectHouseNr(value: string): string {
         const regexp: RegExp = new RegExp('^\\d+[a-zA-Z-]*/*\\w*$', 'gi');
         const words: string[] = value.split(' ');
@@ -408,9 +409,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Get country code from google result
-   * @private
-   */
+     * Get country code from google result
+     * @private
+     */
     private _getCountryCodeFromResult(result: any): string {
         let country: string;
         for (const component of result.address_components) {
@@ -426,9 +427,9 @@ export default class AddressAutofill {
     }
 
     /**
-   * Watch if user changes country select. If yes build google detector with new options
-   * @private
-   */
+     * Watch if user changes country select. If yes build google detector with new options
+     * @private
+     */
     private _watchSelect(): void {
         this.countrySelect.on('change', () => {
             this.options.region = this.countrySelect.val();

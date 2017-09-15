@@ -14,6 +14,12 @@ const settings = {
         '!' + path.join(paths.src, 'vendors/**/*.{css,scss,sass}'),
         '!' + path.join(paths.src, 'utilities/_sprites.scss'),
     ],
+    prettier: {
+        singleQuote: true,
+        trailingComma: 'es5',
+        bracketSpacing: true,
+        tabWidth: 4,
+    },
     dest: paths.src,
 };
 

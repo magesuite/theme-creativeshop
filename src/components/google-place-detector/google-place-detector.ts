@@ -15,14 +15,14 @@ import $ from 'jquery';
  */
 export default class GooglePlaceDetector {
     /**
-   *
-   * @param {Object} options - Options for service
-   * @param {String} options.dev - Flag indicator for debugging
-   * @param {String} options.apiKey - Api key string for production (will work without it on dev)
-   * @param {String} options.language - Language for results
-   * @param {String} options.region - Region in which results will be restricted. 2 letter, ISO code, uppercase (PL, DE)
-   * @constructor
-   */
+     *
+     * @param {Object} options - Options for service
+     * @param {String} options.dev - Flag indicator for debugging
+     * @param {String} options.apiKey - Api key string for production (will work without it on dev)
+     * @param {String} options.language - Language for results
+     * @param {String} options.region - Region in which results will be restricted. 2 letter, ISO code, uppercase (PL, DE)
+     * @constructor
+     */
     constructor(options: {
         dev: boolean;
         apiKey: string;
@@ -46,20 +46,20 @@ export default class GooglePlaceDetector {
     }
 
     /**
-   * Get all native google geocode addresses
-   * @param {String} query - Phrase to search, the more accurate, the best will be results
-   * @returns {Promise} addressResults - Promise with pure google geocode objects with all data
-   * @public
-   */
+     * Get all native google geocode addresses
+     * @param {String} query - Phrase to search, the more accurate, the best will be results
+     * @returns {Promise} addressResults - Promise with pure google geocode objects with all data
+     * @public
+     */
     public getResults(query: string): any {
         return this._callGoogleApi(query);
     }
 
     /**
-   * Get results but already formatted
-   * @param query
-   * @returns {Promise.<T>} Promise with array of formatted result matches
-   */
+     * Get results but already formatted
+     * @param query
+     * @returns {Promise.<T>} Promise with array of formatted result matches
+     */
     public getFormattedResults(query: string): any {
         return this._callGoogleApi(query).then((predictions: any): any => {
             const formattedResults: any = [];
@@ -73,12 +73,12 @@ export default class GooglePlaceDetector {
     }
 
     /**
-   * Gets formatted address from one native google address
-   * @param {Object} result - native google geocode result
-   * @returns {{full: String, streetNumber: String, city: String, postalCode: String}} formattedAddress - Ready for
-   * use formatted address
-   * @public
-   */
+     * Gets formatted address from one native google address
+     * @param {Object} result - native google geocode result
+     * @returns {{full: String, streetNumber: String, city: String, postalCode: String}} formattedAddress - Ready for
+     * use formatted address
+     * @public
+     */
     public getFormattedAddress(result: any): any {
         const components: any = result.terms;
 
@@ -101,9 +101,9 @@ export default class GooglePlaceDetector {
     }
 
     /**
-   * Sets api parameters for call once
-   * @private
-   */
+     * Sets api parameters for call once
+     * @private
+     */
     private _setCallParams(): void {
         this.apiParams = {
             language: this.basicParams.language,
@@ -117,11 +117,11 @@ export default class GooglePlaceDetector {
     }
 
     /**
-   * Get google  results from query
-   * @param {String} query
-   * @returns {Promise.<T>}
-   * @private
-   */
+     * Get google  results from query
+     * @param {String} query
+     * @returns {Promise.<T>}
+     * @private
+     */
     private _callGoogleApi(query: string): any {
         const params: object = this.apiParams;
         params.input = query;

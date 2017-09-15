@@ -9,54 +9,54 @@ interface IFlyout {
 interface IFlyoutSettings {
     name: string;
     /**
-   * Define type: flyout, dropdown or collapse
-   * @type {String}
-   */
+     * Define type: flyout, dropdown or collapse
+     * @type {String}
+     */
     type: string;
     /**
-   * Define transition time in ms
-   * @type {Number}
-   */
+     * Define transition time in ms
+     * @type {Number}
+     */
     transitionTime?: number;
     /**
-   * Define if content is other than <name>__content
-   * @type {Jquery}
-   */
+     * Define if content is other than <name>__content
+     * @type {Jquery}
+     */
     content?: JQuery;
     /**
-   * Define if trigger is other than click
-   * @type {String}
-   */
+     * Define if trigger is other than click
+     * @type {String}
+     */
     trigger?: string;
     /**
-   * Define if flyout/collapse should be shown from the beginning
-   * @type {Boolean}
-   */
+     * Define if flyout/collapse should be shown from the beginning
+     * @type {Boolean}
+     */
     initiallyShown?: boolean;
     /**
-   * Collapse content can have min visible height but default is 0
-   * @type {String}
-   */
+     * Collapse content can have min visible height but default is 0
+     * @type {String}
+     */
     minHeight?: string;
     /**
-   * On show callback - when show transition starts
-   * @type {any}
-   */
+     * On show callback - when show transition starts
+     * @type {any}
+     */
     onShow?: any;
     /**
-   * On show callback - when show transition ends
-   * @type {any}
-   */
+     * On show callback - when show transition ends
+     * @type {any}
+     */
     onShowCompleted?: any;
     /**
-   * On show callback - when hide transition starts
-   * @type {any}
-   */
+     * On show callback - when hide transition starts
+     * @type {any}
+     */
     onHide?: any;
     /**
-   * On show callback - when hide transition ens
-   * @type {any}
-   */
+     * On show callback - when hide transition ens
+     * @type {any}
+     */
     onHideCompleted?: any;
 }
 
@@ -91,10 +91,10 @@ class Flyout implements IFlyout {
     private $close: JQuery;
 
     /**
-   * Creates and initiates new Flyout component with settings.
-   * * @param  {JQuery} $element Optional component settings.
-   * @param  {IFlyoutSettings} settings Optional component settings.
-   */
+     * Creates and initiates new Flyout component with settings.
+     * * @param  {JQuery} $element Optional component settings.
+     * @param  {IFlyoutSettings} settings Optional component settings.
+     */
     public constructor($element: JQuery, settings: IFlyoutSettings) {
         // Extend component's defaults with given optional settings.
 
@@ -146,8 +146,8 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Destroys component, removes all event listeners.
-   */
+     * Destroys component, removes all event listeners.
+     */
     public destroy(): void {
         // Assign reference to allow better minification.
         const eventListeners: IFlyoutEventListeners = this.eventListeners;
@@ -158,8 +158,8 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Toggles flyout state between shown and hidden.
-   */
+     * Toggles flyout state between shown and hidden.
+     */
     public toggleState(): void {
         if (this._shown === false) {
             this.show();
@@ -169,13 +169,13 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Perform show action if element is not transitioning at the moment.
-   * Remove class out for content and add class in. Add aria-expanded true for trigger
-   * Set transitioning flag to true.
-   * If is collapse type calculate height
-   * Trigger event show
-   * Trigger method showComplete after transition time
-   */
+     * Perform show action if element is not transitioning at the moment.
+     * Remove class out for content and add class in. Add aria-expanded true for trigger
+     * Set transitioning flag to true.
+     * If is collapse type calculate height
+     * Trigger event show
+     * Trigger method showComplete after transition time
+     */
     protected show(): void {
         if (
             this._isTransitioning ||
@@ -213,9 +213,9 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Trigger shown event
-   * Set transitioning flag to false. Set shown flag to true
-   */
+     * Trigger shown event
+     * Set transitioning flag to false. Set shown flag to true
+     */
     protected showComplete(): void {
         this._isTransitioning = false;
 
@@ -230,13 +230,13 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Perform hide action if element is not transitioning at the moment.
-   * Remove class in for content and trigger. Add class transitioning for content. Add aria-expanded false for trigger
-   * Set transitioning flag to true.
-   * If is collapse type calculate height
-   * Trigger event hide
-   * Trigger method hideComplete after transition time
-   */
+     * Perform hide action if element is not transitioning at the moment.
+     * Remove class in for content and trigger. Add class transitioning for content. Add aria-expanded false for trigger
+     * Set transitioning flag to true.
+     * If is collapse type calculate height
+     * Trigger event hide
+     * Trigger method hideComplete after transition time
+     */
     protected hide(): void {
         if (
             this._isTransitioning ||
@@ -273,9 +273,9 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Trigger hidden event
-   * Set transitioning flag to false. Set shown flag to false
-   */
+     * Trigger hidden event
+     * Set transitioning flag to false. Set shown flag to false
+     */
     protected hideComplete(): void {
         this.$content
             .removeClass(`${this.contentTransitioningClass}`)
@@ -297,8 +297,8 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Update width of flyout
-   */
+     * Update width of flyout
+     */
     protected closeOnClickOutside(event: Event): void {
         if (this._shown === false || this.settings.type === 'collapse') {
             return;
@@ -313,8 +313,8 @@ class Flyout implements IFlyout {
     }
 
     /**
-   * Attaches all needed event listeners for show / hide behaviour.
-   */
+     * Attaches all needed event listeners for show / hide behaviour.
+     */
     protected attachEventListeners(): void {
         // Assign reference to allow better minification.
         const eventListeners: IFlyoutEventListeners = this.eventListeners;
