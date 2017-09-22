@@ -1,0 +1,173 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Catalog\Block\Product\Compare\ListCompare */
+?>
+<?php $_total = $block->getItems()->getSize() ?>
+<?php if ($_total): ?>
+    <a href="#" class="action print | cs-no-display" title="<?php /* @escapeNotVerified */ echo __('Print This Page') ?>">
+        <span><?php /* @escapeNotVerified */ echo __('Print This Page') ?></span>
+    </a>
+        <div class="table-wrapper comparison">
+            <table class="data table table-comparison" id="product-comparison"
+                data-mage-init='{"compareList":{
+                    "windowPrintSelector":".action.print",
+                    "productsInRow":"5",
+                    "selectors":{
+                        "productAddToCartSelector":"button.action.tocart"}
+                }}'>
+                <caption class="table-caption"><?php /* @escapeNotVerified */ echo __('Compare Products') ?></caption>
+                <thead>
+                <tr>
+                    <?php $_i = 0 ?>
+                    <?php foreach ($block->getItems() as $_item): ?>
+                        <?php if ($_i++ == 0): ?>
+                            <th scope="row" class="cell label remove cs-table-border--hidden"><span><?php /* @escapeNotVerified */ echo __('Remove Product') ?></span></th>
+                        <?php endif; ?>
+                        <td class="cell remove product cs-table-border--hidden">
+                            <?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
+                            <a href="#" data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataRemove($_item); ?>'
+                               class="cs-button--look_remove" title="<?php /* @escapeNotVerified */ echo __('Remove Product') ?>">
+                               <svg class="cs-button__remove-icon">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#close"></use>
+                                </svg>
+                            </a>
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <?php $_i = 0; ?>
+                    <?php $_helper = $this->helper('Magento\Catalog\Helper\Output'); ?>
+                    <?php /** @var $_item \Magento\Catalog\Model\Product */ ?>
+                    <?php foreach ($block->getItems() as $_item): ?>
+                        <?php if ($_i++ == 0): ?>
+                            <th scope="row" class="cell label product cs-table-border"><span><?php /* @escapeNotVerified */ echo __('Product') ?></span></th>
+                        <?php endif; ?>
+                        <td data-th="<?php echo $block->escapeHtml(__('Product')); ?>" class="cell product info">
+                            <a class="cs-grid-product__figure-wrapper" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($_item) ?>" title="<?php /* @escapeNotVerified */ echo $block->stripTags($_item->getName(), null, true) ?>">
+                                <?php echo $block->getImage($_item, 'product_comparison_list')->toHtml(); ?>
+                            </a>
+                            <div class="cs-grid-product__name cs-grid-product__name--no-space">
+                                <a class ="cs-grid-product__name-link" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($_item) ?>" title="<?php /* @escapeNotVerified */ echo $block->stripTags($_item->getName(), null, true) ?>">
+                                    <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_item, $_item->getName(), 'name') ?>
+                                </a>
+                            </div>
+                            <div class="cs-grid-product__price">
+                                <?php echo $block->getReviewsSummaryHtml($_item, 'short') ?>
+                                <?php /* @escapeNotVerified */ echo $block->getProductPrice($_item, '-compare-list-top') ?>
+                            </div>
+                            <div class="product-item-actions">
+                                <div class="product-item-inner">
+                                    <?php if ($_item->isSaleable()): ?>
+                                        <form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Product\Compare')->getAddToCartUrl($_item); ?>" method="post">
+                                            <?php echo $block->getBlockHtml('formkey')?>
+                                            <div class "cs-grid-product__buttons">
+                                                <button type="submit" class="cs-button cs-button--look_default cs-button--type_wide cs-button--size_300">
+                                                    <span class "cs-button__span"><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    <?php else: ?>
+                                        <?php if ($_item->getIsSalable()): ?>
+                                            <div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+                                        <?php else: ?>
+                                            <div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
+                                    <div class="cs-links-block-addto" data-role="add-to-links">
+                                        <a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($_item); ?>' class="cs-links-block-addto__link" data-action="add-to-wishlist">
+                                            <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#heart"></use>
+                                            </svg>
+                                            <span><?php /* @escapeNotVerified */ echo __('Add to Wish List') ?></span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </td>
+                    <?php endforeach; ?>
+                </tr>
+                </tbody>
+                <tbody>
+                <?php foreach ($block->getAttributes() as $_attribute): ?>
+                    <tr>
+                        <?php $_i = 0 ?>
+                        <?php foreach ($block->getItems() as $_item): ?>
+                            <?php if ($_i++ == 0): ?>
+                                <th scope="row" class="cell label cs-table-border">
+                                    <span class="attribute label">
+                                        <?php echo $block->escapeHtml($_attribute->getStoreLabel() ? $_attribute->getStoreLabel() : __($_attribute->getFrontendLabel())) ?>
+                                    </span>
+                                </th>
+                            <?php endif; ?>
+                            <td class="cell product attribute">
+                                <div class="attribute value">
+                                    <?php switch ($_attribute->getAttributeCode()) {
+                                        case "price": ?>
+                                            <?php
+                                                /* @escapeNotVerified */ echo $block->getProductPrice(
+                                                    $_item,
+                                                    '-compare-list-' . $_attribute->getCode()
+                                                )
+                                            ?>
+                                            <?php break;
+                                        case "small_image": ?>
+                                            <?php $block->getImage($_item, 'product_small_image')->toHtml(); ?>
+                                            <?php break;
+                                        default: ?>
+
+                                        <div
+                                            class="cs-collapsible-text js-collapsible-text"
+                                            data-height="150"
+                                            data-content=".js-collapsible-text-content"
+                                            data-trigger=".js-collapsible-text-trigger"
+                                        >
+                                            <div class="cs-collapsible-text__content js-collapsible-text-content">
+                                                <div class="cs-attributes-list">
+                                                    <div class="cs-attributes-list__list" id="product-attribute-specs-table">
+                                                        <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_item, $block->getProductAttributeValue($_item, $_attribute), $_attribute->getAttributeCode()) ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                class="cs-button cs-button--look_light cs-button--size_300 cs-button--type_wide cs-button--type_no-arrow | cs-collapsible-text__trigger js-collapsible-text-trigger"
+                                                data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
+                                                data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
+                                            >
+                                                <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
+                                            </button>
+                                        </div>
+
+                                        <?php break;
+
+                                    } ?>
+                                </div>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php if (!$block->isRedirectToCartEnabled()) : ?>
+            <script type="text/x-magento-init">
+            {
+                "[data-role=tocart-form]": {
+                    "catalogAddToCart": {}
+                }
+            }
+            </script>
+        <?php endif; ?>
+<?php else: ?>
+    <div class="message info empty"><div><?php /* @escapeNotVerified */ echo __('You have no items to compare.') ?></div></div>
+<?php endif; ?>
