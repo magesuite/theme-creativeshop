@@ -206,13 +206,13 @@ export default class AddressAutofill {
                 .addClass('cs-html-select__menu-item--focused');
             this._initSelectEvents($jsSelect);
 
-            // If there is not house number add reminder note
+            // If there is not house number add warning note
             if (
                 this.detectorType === 'place' &&
-                !$('.cs-input__note--reminder').length
+                !$('.cs-input__warning').length
             ) {
                 $jsSelect.after(
-                    '<div class="cs-input__note cs-input__note--reminder">' +
+                    '<div class="cs-input__warning">' +
                         $translate('Do not forget about <strong>') +
                         $translate('street number') +
                         '</strong>.</div>'
@@ -220,7 +220,7 @@ export default class AddressAutofill {
             } else if (this.detectorType === 'address') {
                 this.streetField
                     .parents('.cs-input')
-                    .find('.cs-input__note')
+                    .find('.cs-input__warning')
                     .remove();
             }
         }, 300);

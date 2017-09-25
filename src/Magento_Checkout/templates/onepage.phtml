@@ -51,6 +51,62 @@
                 if ( !$( '#checkout-loader' ).length && !step1Loaded ) {
                     step1Loaded = true;
                     var $form = $( '#shipping-new-address-form' );
+                    var $shippingForm = $( '#co-shipping-form' );
+
+                    $shippingForm.find( 'input' ).each( function() {
+                        if( $( this ).parents('.cs-input' ).hasClass( '_required' ) ||  $( this ).parents( '.cs-input' )
+                                .hasClass( 'required' ) ) {
+
+                            $( this ).attr('data-validate', '{required:true}' );
+
+                            if ( $( this ).parents( '.street' ).length && $( this ).attr( 'name' ) !== 'street[0]'  ) {
+                                $( this ).removeAttr('data-validate' );
+                            }
+                        }
+
+                        // Init validation on every checkout form
+                        $(this ).mage( 'validation', {} );
+
+                        $( this ).on( 'blur change', function() {
+                            if ( $( this ).validation( 'isValid' ) && $( this ).val() !== '' ) {
+                                $( this ).closest( '.cs-input' ).addClass( 'cs-input--success' );
+
+                                if ( $( this ).attr( 'name' ) == 'street[0]' ) {
+                                    var value = $( this ).val();
+
+                                    if ( !/\d/.test(value) ) {
+                                        $( this ).closest( '.cs-input' ).addClass( 'cs-input--warning' );
+                                        if ( !$( this ).next().hasClass( 'cs-input__warning' ) && !$( '' +
+                                                '.cs-html-select--autosuggest' ).length ) {
+                                            $( this ).after( '<div class="cs-input__warning" >' + $.mage.__('Do not forget about your house number.') + '</div>' );
+                                        }
+
+                                    } else {
+                                        $( this ).closest( '.cs-input' ).removeClass( 'cs-input--warning' );
+                                        $( this ).closest( '.cs-input' ).find( '.cs-input__warning' ).remove();
+                                    }
+                                }
+
+                            } else  {
+                                $( this ).closest( '.cs-input' ).removeClass( 'cs-input--success' );
+                            }
+                        } );
+
+                    });
+
+
+                    // ----------------------------------------
+                    // Country select is prefilled- it should already have success class
+                    $shippingForm.find( 'select' ).each( function() {
+                        if( $( this ).attr( 'name' ) === 'country_id' && $( this ).val() ) {
+                            $( this ).parents( '.cs-input' ).addClass( 'cs-input--success' )
+                        }
+                    } );
+
+
+                    // It is becessary to init validation only on form
+                    $shippingForm.mage( 'validation', {} );
+
 
                     setPhoneOptional();
 
@@ -126,7 +182,8 @@
                 $phoneInputs.parents( '.cs-form__field' ).removeClass( '_required required required-entry' );
 
                 $phoneInputs.on( 'blur keyup', function() {
-                    $( this ).parents( '.cs-input' ).find( '.mage-error' ).remove();
+                    $( this ).parents( '.cs-input' ).find( 'div.mage-error' ).remove();
+                    $( this ).removeClass( 'mage-error _error' );
                     $( this ).parents( '.cs-input__control' ).removeClass( 'mage-error _error' );
                     $( this ).parents( '.cs-form__field' ).removeClass( 'mage-error _error _required required required-entry' );
                 } );
