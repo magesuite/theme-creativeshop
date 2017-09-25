@@ -95,6 +95,16 @@
         });
     });
 
+    window.addEventListener( 'orientationchange', function () {
+        var cartTable = document.getElementById( 'shopping-cart-table' );
+        var originalStyle = getComputedStyle(cartTable).getPropertyValue( 'display' );
+        cartTable.style.display = 'none';
+        setTimeout(function () {
+            cartTable.style.display = originalStyle;
+        }, 10);
+    });
+
+
 </script>
 
 
