@@ -244,6 +244,8 @@ export default class AddressAutofill {
                 address = this.googleAddressDetector.getFormattedAddress(
                     result
                 );
+
+                streetNumber = address.streetNumber;
             }
 
             const addressZip: string = address.postalCode
@@ -367,10 +369,8 @@ export default class AddressAutofill {
         if (this.numberField) {
             this.streetField.val(clickedValues.street).change();
             this.numberField.val(clickedValues.streetNumber).change();
-        }
-
-        if (this.detectorType === 'place') {
-            this.streetField.val(clickedValues.street);
+        } else {
+            this.streetField.val(clickedValues.street + ' ' + clickedValues.streetNumber).change();
         }
 
         if (
