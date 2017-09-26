@@ -126,7 +126,10 @@ export default class AddressAutofill {
             .getCityByPostalCode(query)
             .then((data: any) => {
                 if (data) {
-                    this.cityField.val(data, query).change().focus();
+                    this.cityField
+                        .val(data, query)
+                        .change()
+                        .focus();
                 }
             });
     }

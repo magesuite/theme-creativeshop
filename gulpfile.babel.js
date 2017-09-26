@@ -69,7 +69,7 @@ gulp.task('serve', done => {
  *  Task that fires project linting on every commit attempt.
  */
 gulp.task('pre-push', done => {
-    sequence('fix', 'lint', done);
+    sequence('lint', done);
 });
 
 /**

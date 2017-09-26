@@ -32,7 +32,13 @@ export function buildSubtree($link: JQuery): NavigationTree {
         }
     );
     const subtree: NavigationTree = {
-        name: $link.clone().children().remove().end().text().trim(),
+        name: $link
+            .clone()
+            .children()
+            .remove()
+            .end()
+            .text()
+            .trim(),
         url: $link.attr('href'),
         icon: $link.find(`> .${navClassName}__link-icon-wrapper`).length
             ? $link

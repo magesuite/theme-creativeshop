@@ -19,6 +19,7 @@ export default {
         trailingComma: 'es5',
         bracketSpacing: true,
         tabWidth: 4,
+        parser: 'typescript',
     },
     dest: paths.src,
 };
