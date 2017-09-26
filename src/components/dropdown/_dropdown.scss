@@ -3,7 +3,6 @@
  */
 @mixin dropdown() {
     $root: &;
-
     position: relative;
 
     &__trigger {
@@ -13,7 +12,7 @@
     &__content {
         opacity: 0;
         transition-timing-function: ease;
-        transition-duration: .35s;
+        transition-duration: 0.35s;
         transition-property: opacity;
         visibility: hidden;
         background-clip: padding-box;
@@ -40,14 +39,15 @@
         }
 
         &--only-mobile {
-            @include media( '>=tablet' ) {
+            @include media('>=tablet') {
                 opacity: 1;
                 visibility: visible;
             }
+
             #{$root}--transitioning {
                 opacity: 0;
                 visibility: visible;
-                @include media( '>=tablet' ) {
+                @include media('>=tablet') {
                     opacity: 1;
                     visibility: visible;
                 }
@@ -62,7 +62,7 @@
             #{$root}--out {
                 opacity: 0;
                 visibility: hidden;
-                @include media( '>=tablet' ) {
+                @include media('>=tablet') {
                     opacity: 1;
                     visibility: visible;
                 }
