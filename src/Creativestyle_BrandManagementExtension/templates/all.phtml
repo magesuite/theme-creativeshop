@@ -1,0 +1,24 @@
+<?php
+
+/** @var \Creativestyle\BrandManagementExtension\Block\All $block */
+$brands = $block->getAllBrands();
+$brandsByFirstLetter = $block->getBrandsGroupedByFirstLetter();
+
+?>
+
+<div class="cs-brands-container__list">
+    <?php  foreach($brandsByFirstLetter as $letter => $brands): ?>
+        <div class="cs-brands-container__list-item" id="letter-<?=strtoupper($letter)?>">
+            <div class="cs-brands-container__section-left">
+                <p><?=strtoupper($letter)?></p>
+            </div>
+            <div class="cs-brands-container__section-right">
+                <div class="cs-brands-container__brands">
+                    <?php foreach ($brands as $brand) :?>
+                        <a class="cs-brands-container__brand" href="<?php echo $brand->getBrandUrl();?>" target="_blank"><?php echo $brand->getBrandName();?></a>
+                    <?php endforeach;?>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
