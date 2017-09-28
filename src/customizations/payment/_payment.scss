@@ -54,6 +54,15 @@
         }
     }
 
+    &__payment-image {
+        max-width: 10rem;
+        height: auto;
+    }
+
+    &__payment-description {
+        @extend .#{$namespace}t-text;
+    }
+
     &__buttons {
         height: 0;
         transform: translateX(-1.5rem);
@@ -88,5 +97,31 @@
     .number {
         width: 23rem;
         margin: 2rem 0 1rem;
+    }
+
+    .messages {
+        @extend .#{$namespace}messages !optional;
+    }
+
+    .message {
+        @extend .#{$namespace}messages__message;
+
+        div {
+            &:before {
+                display: none;
+            }
+        }
+    }
+
+    .message-info {
+        @extend .#{$namespace}messages__message--notice;
+    }
+
+    .message-error {
+        @extend .#{$namespace}messages__message--error;
+    }
+
+    .message-success {
+        @extend .#{$namespace}messages__message--success;
     }
 }
