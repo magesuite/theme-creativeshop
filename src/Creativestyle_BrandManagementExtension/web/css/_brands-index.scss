@@ -1,6 +1,8 @@
 $namespace:'cs-';
 
-.#{$namespace}brands-container {
+.#{$namespace}brands-index {
+    $root: &;
+
     display: block;
     background: $colorWhite;
     margin: 2rem auto 0;
@@ -9,7 +11,7 @@ $namespace:'cs-';
         max-width: none;
     }
     @include media('>=tablet') {
-        margin: 4rem auto 0;
+        margin: 0 auto;
         max-width: 93rem;
     }
 
@@ -18,47 +20,49 @@ $namespace:'cs-';
         margin: 0 0 2rem;
         display: flex;
         flex-wrap: wrap;
-        @include media('>=tablet') {
-            margin: 4rem 0;
-        }
     }
 
     &__icon {
-        width: calc(50% - 2rem);
+        width: calc(50% - 1rem);
         height: 5rem;
         margin: 0.5rem;
         padding: 0.5rem;
         display: flex;
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
+        position: relative;
+        box-sizing: border-box;
         @include media('>=tablet') {
-            width: calc(25% - 2rem);
+            width: calc(25% - 1rem);
         }
         @include media('>=laptop') {
-            width: calc(20% - 2rem);
+            width: calc(20% - 1rem);
         }
     }
 
     &__img {
-          height: 100%;
-          margin: 0 auto;
+        width: auto;
+        position: absolute;
+        max-width: 90%;
+        max-height: 90%;
+        left: 50%;
+        top: 50%;
+        transform: translate3d(-50%, -50%, 0);
     }
 
     &__list {
+        position: relative;
 
         &-item {
             display: flex;
-            width: calc(100% - 2rem);
+            box-sizing: border-box;
+            width: 100%;
             padding: 2rem 1rem;
             border-bottom: 1px solid $colorGallery;
 
             @include media('>=tablet') {
-                width: calc(100% - 4rem);
                 padding: 4rem 2rem;
             }
 
-            @include media('>=laptop') {
-                width: 100%;
-            }
             &:last-child {
                 border-bottom: 0;
             }
@@ -102,6 +106,11 @@ $namespace:'cs-';
         padding-bottom: 0.5rem;
         width: 50%;
 
+        @include media('<tablet') {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         @include media('>=tablet') {
             width: 33.333%;
         }
@@ -135,5 +144,38 @@ $namespace:'cs-';
         padding: 1rem;
         cursor: pointer;
         color: $colorMineShaft;
+    }
+
+    &__button-wrapper {
+        position: fixed;
+        width: 100%;
+        display: none;
+        bottom: 4rem;
+        margin: 0 auto;
+        max-width: 40rem;
+        @include media('>=phone-lg') {
+            max-width: none;
+        }
+        @include media('>=tablet') {
+            max-width: 93rem;
+        }
+
+        &--update-position {
+            position: absolute;
+            bottom: 1rem;
+        }
+    }
+
+    &__button {
+        position: absolute !important;
+        right: 1rem;
+        bottom: 0;
+        @include media('>=tablet') {
+            right: 3rem;
+        }
+
+        #{$root}__button-wrapper--update-position {
+            right: 0;
+        }
     }
 }

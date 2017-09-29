@@ -6,19 +6,85 @@ $brandsByFirstLetter = $block->getBrandsGroupedByFirstLetter();
 
 ?>
 
-<div class="cs-brands-container__list">
+<div class="cs-brands-index__list">
     <?php  foreach($brandsByFirstLetter as $letter => $brands): ?>
-        <div class="cs-brands-container__list-item" id="letter-<?=strtoupper($letter)?>">
-            <div class="cs-brands-container__section-left">
+        <div class="cs-brands-index__list-item" id="letter-<?=strtoupper($letter)?>">
+            <div class="cs-brands-index__section-left">
                 <p><?=strtoupper($letter)?></p>
             </div>
-            <div class="cs-brands-container__section-right">
-                <div class="cs-brands-container__brands">
+            <div class="cs-brands-index__section-right">
+                <div class="cs-brands-index__brands">
                     <?php foreach ($brands as $brand) :?>
-                        <a class="cs-brands-container__brand" href="<?php echo $brand->getBrandUrl();?>" target="_blank"><?php echo $brand->getBrandName();?></a>
+                        <a class="cs-brands-index__brand" href="<?php echo $brand->getBrandUrl();?>" target="_blank"><?php echo $brand->getBrandName();?></a>
                     <?php endforeach;?>
                 </div>
             </div>
         </div>
     <?php endforeach; ?>
+    <div class="cs-brands-index__button-wrapper">
+        <button class="cs-button cs-brands-index__button">
+            <svg class="cs-button__icon cs-brands-index__button-icon">
+                <use xlink:href="#arrow_up"></use>
+            </svg>
+            <span class="cs-button__span"><?= __( 'To top' ); ?></span>
+        </button>
+    </div>
 </div>
+
+<script>
+    require([
+        'jquery'
+
+    ], function($) {
+
+        function handleToTopScroll(trigger, container, newContainerClass, watchedParentElement) {
+
+            this.trigger = trigger;
+            this.container = container;
+            this.newContainerClass = newContainerClass;
+            this.watchedParentElement = watchedParentElement;
+            this.initialScroll = 200;
+            this.togglePosition = function (detectPosition) {
+
+                if (detectPosition <= ( $(window).height() - 50 )) {
+                    this.container.addClass(this.newContainerClass)
+                } else {
+                    if (this.container.hasClass(this.newContainerClass)) {
+                        this.container.removeClass(this.newContainerClass);
+                    }
+                }
+            },
+            this.showHide = function () {
+
+                if ($(window).scrollTop() > this.initialScroll) {
+                    this.container.fadeIn('fast');
+
+                    var detectWatchedParentElement = document.getElementsByClassName(this.watchedParentElement)[0].getBoundingClientRect().bottom;
+                    this.togglePosition(detectWatchedParentElement);
+                    var thisTrigger = document.getElementsByClassName('cs-brands-index__button')[0];
+                    thisTrigger.addEventListener('click', this.onClick);
+
+                } else {
+                    this.container.fadeOut('fast');
+                }
+            },
+            this.onClick = function () {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 100);
+            }
+        }
+
+        var $triggerLink = $('.cs-brands-index__button');
+        var $buttonContainer = $('.cs-brands-index__button-wrapper');
+        var newButtonContainerClass = 'cs-brands-index__button-wrapper--update-position';
+        var watchedParentElement = 'cs-brands-index__list';
+
+        var toTopButton = new handleToTopScroll($triggerLink, $buttonContainer, newButtonContainerClass, watchedParentElement);
+
+        $(window).on('scroll', function () {
+            window.requestAnimationFrame(toTopButton.showHide.bind(toTopButton));
+        });
+    })
+</script>
+
