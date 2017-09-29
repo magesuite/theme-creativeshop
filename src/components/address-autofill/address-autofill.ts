@@ -373,7 +373,9 @@ export default class AddressAutofill {
             this.streetField.val(clickedValues.street).change();
             this.numberField.val(clickedValues.streetNumber).change();
         } else {
-            this.streetField.val(clickedValues.street + ' ' + clickedValues.streetNumber).change();
+            this.streetField
+                .val(clickedValues.street + ' ' + clickedValues.streetNumber)
+                .change();
         }
 
         if (
