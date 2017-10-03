@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+-->
+
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <container name="cs_faq_wrapper" htmlTag="div" htmlClass="cs-faq-index">
+                <container name="cs_faq_header" htmlTag="div" htmlClass="cs-faq-index__header cs-faq-index__header--bordered">
+                    <block class="Aheadworks\Faq\Block\Category\CategoryList" name="aw_faq.name" template="Aheadworks_Faq::main-title.phtml"  before="-"/>
+                    <block class="Aheadworks\Faq\Block\Search\Search" name="aw_faq.search" ifconfig="faq/general/faq_search_enabled" template="Aheadworks_Faq::search/search_field.phtml" after="aw_faq.name"/>
+                </container>
+                <container name="cs_faq_title_wrapper" htmlTag="div" htmlClass="cs-faq-index__text-wrapper" after="cs_faq_header">
+                    <block class="Aheadworks\Faq\Block\Article\Article" name="aw_faq.article_title" template="Aheadworks_Faq::title.phtml" />
+                </container>
+                <block class="Aheadworks\Faq\Block\Article\Article" name="aw_faq.article" template="Aheadworks_Faq::article.phtml"/>
+                <block class="Aheadworks\Faq\Block\Article\Voting" name="aw_faq.voting" template="Aheadworks_Faq::voting.phtml" cacheable="false" />
+            </container>
+        </referenceContainer>
+    </body>
+</page>

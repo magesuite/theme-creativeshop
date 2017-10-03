@@ -1,0 +1,249 @@
+$namespace: 'cs-';
+
+.#{$namespace}faq-index {
+    $root: &;
+
+    &__header {
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+
+        &--bordered {
+            border-bottom: 1px solid $colorGallery;
+        }
+    }
+
+    &__text-wrapper {
+        margin: 2rem 0;
+    }
+
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin-top: 2rem;
+        margin-bottom: 0;
+
+        &-item {
+            color: $colorDoveGray;
+            margin-bottom: 0;
+            padding: 2rem 1rem;
+            border-bottom: 1px solid $colorGallery;
+            transition: color 0.15s, background 0.15s;
+            position: relative;
+
+            &-icon {
+                width: 1.3rem;
+                height: 1.3rem;
+                fill: $colorCeruleanBlue;
+                position: absolute;
+                right: 1rem;
+                top: calc( 2rem + 1.3rem/5 );
+                margin-left: 2rem;
+            }
+
+            a {
+                transition: color 0.15s;
+                padding: 2rem 1rem;
+                color: $colorDoveGray;
+            }
+
+            &:before {
+                content: '';
+                display: inline-block;
+                height: 0.4rem;
+                width: 0.4rem;
+                transition: background 0.15s;
+                border-radius: 100%;
+                background: $colorDoveGray;
+                margin-right: 2rem;
+                margin-bottom: 0.3rem;
+            }
+
+            &:first-child {
+                border-top: 2px solid $colorGallery;
+            }
+
+            &:last-child {
+                border-bottom: 2px solid $colorGallery;
+            }
+
+            &:hover {
+                cursor: pointer;
+                background: $colorGallery;
+                color: $colorCeruleanBlueHover;
+
+                a {
+                    color: $colorCeruleanBlueHover;
+                }
+
+                &:before {
+                    background: $colorCeruleanBlueHover;
+                }
+            }
+        }
+
+        &-img {
+            display: none;
+        }
+    }
+
+    &__category-section {
+
+        #{$root}__list {
+
+            &:last-child {
+
+                #{$root}__list-item {
+
+                    &:last-child {
+                        border-bottom: 1px solid $colorGallery;
+                    }
+                }
+            }
+        }
+    }
+
+    &__text {
+        color: $colorDoveGray;
+    }
+
+    &__main-title {
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_1;
+        @extend .#{$namespace}t-headline--look_light;
+    }
+
+    &__title {
+        margin: 0;
+        line-height: 110%;
+        font-weight: 400;
+        color: $colorMineShaft;
+        font-size: 2.5rem;
+
+        @include media('>=laptop') {
+            line-height: 1.25;
+        }
+
+        @include media('>=desktop') {
+            font-size: 3rem;
+        }
+
+        a {
+            color: $colorMineShaft;
+        }
+
+        .faq-category-index &,
+        .faq-index-index & {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+    }
+
+    &__category-name {
+        margin-top: 2rem;
+    }
+
+    &__search {
+        position: relative;
+
+        @include media('<tablet') {
+            margin: 2rem 0 0;
+            width: 100%;
+        }
+
+        &-field {
+            width: 100%;
+        }
+
+        &-button {
+            background-color: transparent !important;
+
+            > .#{$namespace}button__icon {
+                fill: $colorCeruleanBlue;
+            }
+        }
+
+        &-input {
+            min-width: calc(100vw - 4rem);
+
+            @include media('>=tablet') {
+                min-width: 30rem !important;
+            }
+        }
+    }
+
+    &__voting {
+        display: flex;
+
+        &-icon {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            margin: 0 1rem;
+            @include media('>=tablet') {
+                width: 3rem;
+                height: 3rem;
+                margin: 0 3rem;
+            }
+
+            &:hover {
+                #{$root}__icon {
+                    fill: $colorCeruleanBlueHover;
+                }
+            }
+        }
+
+        &-separator {
+            display: inline-block;
+            width: 1px;
+            height: 2rem;
+            margin: 0 1rem;
+            background: $colorAlto;
+            @include media('>=tablet') {
+                margin: 0 3rem;
+                height: 3rem;
+            }
+        }
+
+        &-container {
+            display: flex;
+            align-items: center;
+            margin: 4rem 0;
+            @include media('<tablet') {
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    &__icon {
+        fill: $colorAlto;
+        transition: fill 0.15s;
+        height: 100%;
+        width: 100%;
+
+        &--checked {
+            fill: $colorCeruleanBlueHover;
+        }
+    }
+
+    &__rating-text {
+        @include media('<tablet') {
+            width: 100%;
+            margin: 2rem 0;
+        }
+    }
+}
+
+.aw {
+    &_bold {
+        font-weight: bold;
+    }
+
+    &-no-display {
+        display: none;
+    }
+}

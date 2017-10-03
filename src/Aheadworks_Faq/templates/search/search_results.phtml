@@ -1,0 +1,45 @@
+<?php
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Aheadworks\Faq\Block\Search\Search */
+?>
+<?php $searchWords = explode(" ", $block->getSearchQueryString()); ?>
+<?php $searchResults = $block->getData('data');?>
+<div class="cs-faq-index__search-results">
+    <div class="cs-faq-index__results-list">
+        <h3><?php echo $block->escapeHtml(__(
+                'We have found %1 articles for "%2" search query:',
+                [count($searchResults), $block->escapeHtml($block->getSearchQueryString())]
+            )); ?>
+        </h3>
+        <ul class="cs-faq-index__list">
+            <?php foreach($searchResults as $article): ?>
+                <li class="cs-faq-index__list-item">
+                    <?php $articleTitle = $block->escapeHtml($article->getTitle()); ?>
+                    <?php foreach ($searchWords as $word) {
+                        if (stripos($articleTitle, $word) !== false) {
+                            $articleTitle = preg_replace(
+                                '/' . $word . '+/i',
+                                '<strong>' . substr($articleTitle, stripos($articleTitle, $word), strlen($word)) . '</strong>',
+                                $articleTitle
+                            );
+                        }
+                    }
+                    ?>
+                    <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>" 
+                       title="<?php echo $block->escapeHtml(__('Go to %1', $block->escapeHtml($article->getTitle()))); ?>">
+                        <?php /* @noEscape */ echo $articleTitle; ?>
+                    </a>
+                    <svg class="cs-faq-index__list-item-icon">
+                        <use xlink:href="#icon_arrow-right"></use>
+                    </svg>
+                </li>
+            <?php endforeach ?>
+        </ul>
+    </div>
+</div>
