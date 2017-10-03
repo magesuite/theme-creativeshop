@@ -34,21 +34,23 @@
                         <?php if (isset($categoryArticles[$allowedArticlesNumber-1])): ?>
                             <?php $article = $categoryArticles[$allowedArticlesNumber-1]; ?>
                             <li <?php /* @noEscape */ echo $articleListIcon ?> >
-                                <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?></a>
+                                <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?>
+                                    <svg class="cs-faq-index__list-item-icon">
+                                        <use xlink:href="#icon_arrow-right"></use>
+                                    </svg>
+                                </a>
                             </li>
-                            <svg class="cs-faq-index__list-item-icon">
-                                <use xlink:href="#icon_arrow-right"></use>
-                            </svg>
                         <?php endif; ?>
                         <?php $allowedArticlesNumber--; ?>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <?php foreach ($categoryArticles as $article): ?>
                         <li <?php /* @noEscape */ echo $articleListIcon ?> >
-                            <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?></a>
-                            <svg class="cs-faq-index__list-item-icon">
-                                <use xlink:href="#icon_arrow-right"></use>
-                            </svg>
+                            <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?>
+                                <svg class="cs-faq-index__list-item-icon">
+                                    <use xlink:href="#icon_arrow-right"></use>
+                                </svg>
+                            </a>
                         </li>
                     <?php endforeach; ?>
                 <?php endif; ?>
