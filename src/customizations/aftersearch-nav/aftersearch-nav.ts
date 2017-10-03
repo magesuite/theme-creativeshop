@@ -72,9 +72,7 @@ export default class aftersearchNav {
     protected _initializeLoader(): void {
         const _this: any = this;
 
-        $(
-            document
-        ).on(
+        $(document).on(
             'click',
             '.cs-aftersearch-nav__price-apply-button, .cs-aftersearch-nav__filter-input, .cs-aftersearch-nav__swatch-link',
             function(): void {
