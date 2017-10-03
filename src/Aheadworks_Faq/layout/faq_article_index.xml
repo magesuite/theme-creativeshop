@@ -10,16 +10,24 @@
     <body>
         <referenceContainer name="content">
             <container name="cs_faq_wrapper" htmlTag="div" htmlClass="cs-faq-index">
-                <container name="cs_faq_header" htmlTag="div" htmlClass="cs-faq-index__header cs-faq-index__header--bordered">
-                    <block class="Aheadworks\Faq\Block\Category\CategoryList" name="aw_faq.name" template="Aheadworks_Faq::main-title.phtml"  before="-"/>
-                    <block class="Aheadworks\Faq\Block\Search\Search" name="aw_faq.search" ifconfig="faq/general/faq_search_enabled" template="Aheadworks_Faq::search/search_field.phtml" after="aw_faq.name"/>
+                <container name="cs_faq_header" htmlTag="div" htmlClass="cs-faq-index__header">
                 </container>
                 <container name="cs_faq_title_wrapper" htmlTag="div" htmlClass="cs-faq-index__text-wrapper" after="cs_faq_header">
-                    <block class="Aheadworks\Faq\Block\Article\Article" name="aw_faq.article_title" template="Aheadworks_Faq::title.phtml" />
                 </container>
-                <block class="Aheadworks\Faq\Block\Article\Article" name="aw_faq.article" template="Aheadworks_Faq::article.phtml"/>
-                <block class="Aheadworks\Faq\Block\Article\Voting" name="aw_faq.voting" template="Aheadworks_Faq::voting.phtml" cacheable="false" />
             </container>
         </referenceContainer>
+
+        <block class="Aheadworks\Faq\Block\Category\CategoryList" name="aw_faq.name" template="Aheadworks_Faq::main-title.phtml"/>
+        <referenceBlock name="aw_faq.name" class="Aheadworks\Faq\Block\Category\CategoryList">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Aheadworks_Faq::main-title.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <move element="aw_faq.name" destination="cs_faq_header" before="-"/>
+        <move element="aw_faq.search" destination="cs_faq_header" after="aw_faq.name"/>
+        <move element="aw_faq.article_title" destination="cs_faq_title_wrapper" before="-"/>
+        <move element="aw_faq.article" destination="cs_faq_wrapper" after="cs_faq_title_wrapper"/>
+        <move element="aw_faq.voting" destination="cs_faq_wrapper" after="aw_faq.article"/>
     </body>
 </page>
