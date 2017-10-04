@@ -1,0 +1,48 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2017 Amasty (https://www.amasty.com)
+ * @package Amasty_Promo
+ */
+?>
+<?php
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+
+<?php
+/** @var $block \Magento\ConfigurableProduct\Block\Product\View\Type\Configurable*/
+$_product    = $block->getProduct();
+$_attributes = $block->decorateArray($block->getAllowAttributes());
+?>
+<?php if ($_product->isSaleable() && count($_attributes)):?>
+    <?php foreach ($_attributes as $_attribute): ?>
+        <div class="cs-input | field configurable required">
+            <label class="cs-input__label | label" for="attribute<?php echo $_attribute->getAttributeId() ?>">
+                <span><?php echo $block->escapeHtml($_attribute->getProductAttribute()->getStoreLabel()) ?></span>
+            </label>
+            <div class="cs-input__control | control">
+                <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"
+                        data-validate="{required:true}"
+                        id="attribute<?php echo $_attribute->getAttributeId() ?>"
+                        class="cs-select | super-attribute-select">
+                    <option value=""><?php echo __('Choose an Option...') ?></option>
+                </select>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    <script>
+        require(['jquery', 'Amasty_Promo/js/type/configurable'], function( $ ) {
+
+            var spConfig = <?php echo $block->unsetData('allow_products')->getJsonConfig() ?>;
+            spConfig.containerId = "#ampromo_items_form-<?php echo $_product->getId() ?>";
+
+            $('#ampromo_items_form-<?= $_product->getId()?>').ampromoConfigurable({spConfig: spConfig});
+        });
+    </script>
+<?php endif;?>
