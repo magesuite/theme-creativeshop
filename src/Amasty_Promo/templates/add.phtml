@@ -1,0 +1,51 @@
+<?php /** @var \Amasty\Promo\Block\Add $block */ ?>
+
+<div class="cs-promo-products-link | ampromo-items-add" <?php echo $block->hasItems() ? '' : 'style="display:none;"'?>>
+    <svg class="cs-promo-products-link__icon">
+        <use xlink:href="#packaging"></use>
+    </svg>
+    <?php echo $block->getMessage()?>
+</div>
+<script>
+    require([
+        'jquery',
+        'Amasty_Promo/js/popup',
+        'domReady!'
+    ], function ($) {
+
+        var autoOpen = <?php echo $block->isOpenAutomatically() ? 'true' : 'false' ?> || window.location.hash == '#choose-gift';
+        var overlay = $('[data-role=ampromo-overlay]');
+
+        overlay.ampromoPopup({
+            sourceUrl: '<?php echo $block->getUrl('amasty_promo/popup/reload') ?>',
+            uenc:   '<?php echo $block->getCurrentBase64Url() ?>',
+            autoOpen: autoOpen || window.location.hash == '#choose-gift',
+            slickSettings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                dots: true,
+                infinite: false,
+                respondTo: 'slider',
+                responsive: [
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            }
+        });
+
+        overlay.on('reloaded', function (e, itemsCount) {
+            $('.ampromo-items-add').toggle(itemsCount > 0);
+        });
+
+        $('[data-role=ampromo-popup-show]').click(function (){
+            overlay.ampromoPopup('show');
+            return false;
+        });
+
+    });
+</script>
