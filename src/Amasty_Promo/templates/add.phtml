@@ -6,11 +6,11 @@
  */
 ?>
 <?php /** @var \Amasty\Promo\Block\Add $block */ ?>
-<div class="cs-promo-products-link | ampromo-items-add" <?= $block->hasItems() ? '' : 'style="display:none;"'?>>
+<div class="cs-promo-products-link | ampromo-items-add" <?php echo $block->hasItems() ? '' : 'style="display:none;"'?>>
     <svg class="cs-promo-products-link__icon">
         <use xlink:href="#packaging"></use>
     </svg>
-    <?= $block->getMessage()?>
+    <?php echo $block->getMessage()?>
 </div>
 <script>
     require([
@@ -18,12 +18,12 @@
         'Amasty_Promo/js/popup',
         'domReady!'
     ], function ($) {
-        var autoOpen = <?= $block->isOpenAutomatically() ? 'true' : 'false' ?> || window.location.hash == '#choose-gift';
+        var autoOpen = <?php echo $block->isOpenAutomatically() ? 'true' : 'false' ?> || window.location.hash == '#choose-gift';
         var overlay = $('[data-role=ampromo-overlay]');
 
         overlay.ampromoPopup({
-            sourceUrl: '<?= $block->getUrl('amasty_promo/popup/reload') ?>',
-            uenc:   '<?= $block->getCurrentBase64Url() ?>',
+            sourceUrl: '<?php echo $block->getUrl('amasty_promo/popup/reload') ?>',
+            uenc:   '<?php echo $block->getCurrentBase64Url() ?>',
             autoOpen: autoOpen || window.location.hash == '#choose-gift',
             slickSettings: {
                 slidesToShow: 3,
