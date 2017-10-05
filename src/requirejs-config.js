@@ -1,25 +1,26 @@
 var config = {
     paths: {
-        'Swiper': 'swiper',
-        'vendors': 'vendors',
-        'Stickyfill': 'stickyfill',
-        'isMobile': 'ismobile',
+        Swiper: 'swiper',
+        vendors: 'vendors',
+        Stickyfill: 'stickyfill',
+        isMobile: 'ismobile',
     },
     shim: {
-        'vendors': {
-            deps: [
-                'jquery',
-            ],
+        vendors: {
+            deps: ['jquery'],
         },
-        'isMobile': {
+        isMobile: {
             exports: 'isMobile',
         },
     },
     config: {
         mixins: {
             'Magento_Checkout/js/view/summary/cart-items': {
-                'Magento_Checkout/js/view/summary/cart-items-ext': true
-            }
-        }
-    }
+                'Magento_Checkout/js/view/summary/cart-items-ext': true,
+            },
+            'Magento_Checkout/js/view/minicart': {
+                'Magento_Checkout/js/view/minicart-ext': true,
+            },
+        },
+    },
 };
