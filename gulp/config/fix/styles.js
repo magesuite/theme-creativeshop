@@ -19,7 +19,7 @@ const settings = {
         trailingComma: 'es5',
         bracketSpacing: true,
         tabWidth: 4,
-        parser: 'postcss',
+        parser: 'scss',
     },
     dest: paths.src,
 };

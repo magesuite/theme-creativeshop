@@ -23,7 +23,7 @@ define(['jquery'], function($) {
     };
     // Don't hide automatically if user hovers on flyout.
     var minicartCloseTimeout;
-    $minicartDropdown.on('hover', () => {
+    $minicartDropdown.on('hover', function() {
         clearTimeout(minicartCloseTimeout);
     });
 
