@@ -130,7 +130,7 @@ $namespace: 'cs-';
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        padding: 1rem;
+        padding: 0.5rem 1rem;
         border-top: 1px solid $colorGallery;
         border-bottom: 1px solid $colorGallery;
         @include media('>=tablet') {
@@ -139,9 +139,13 @@ $namespace: 'cs-';
     }
 
     &__letter-link {
-        padding: 1rem;
+        display: block;
+        padding: 1rem 1.5rem;
         cursor: pointer;
         color: $colorMineShaft;
+        @include media('>=tablet') {
+            padding: 1rem 1.25rem;
+        }
     }
 
     &__button-wrapper {
@@ -166,13 +170,10 @@ $namespace: 'cs-';
 
     &__button {
         position: absolute !important;
-        right: 1rem;
+        right: 3rem;
         bottom: 0;
-        @include media('>=tablet') {
-            right: 3rem;
-        }
 
-        #{$root}__button-wrapper--update-position {
+        #{$root}__button-wrapper--update-position & {
             right: 0;
         }
     }

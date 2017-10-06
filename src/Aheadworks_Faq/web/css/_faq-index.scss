@@ -24,7 +24,6 @@ $namespace: 'cs-';
     &__list {
         list-style: none;
         padding: 0;
-        margin-top: 2rem;
         margin-bottom: 0;
 
         &-item {
@@ -48,7 +47,7 @@ $namespace: 'cs-';
 
             a {
                 transition: color 0.15s;
-                padding: 2rem 1rem;
+                padding: 2rem 3rem 2rem 1rem;
                 color: $colorDoveGray;
                 width: calc(100% - 4.5rem);
                 display: inline-block;
@@ -65,10 +64,6 @@ $namespace: 'cs-';
                 margin-right: 1rem;
                 margin-left: 1rem;
                 margin-bottom: 0.3rem;
-            }
-
-            &:first-child {
-                border-top: 2px solid $colorGallery;
             }
 
             &:last-child {
@@ -122,13 +117,10 @@ $namespace: 'cs-';
         font-weight: 400;
         color: $colorMineShaft;
         font-size: 2rem;
+        padding: 2rem 0;
 
         @include media('>=laptop') {
             line-height: 1.2;
-        }
-
-        @include media('>=desktop') {
-            font-size: 2.5rem;
         }
 
         a {
@@ -143,7 +135,40 @@ $namespace: 'cs-';
     }
 
     &__category-name {
-        margin-top: 2rem;
+        border-bottom: 2px solid $colorGallery;
+
+        @include media('<tablet') {
+            &:before,
+            &:after {
+                height: 1px !important;
+                width: 10px !important;
+            }
+
+            &:before {
+                transform: rotate(135deg) !important;
+            }
+
+            &:after {
+                transform: rotate(-135deg) !important;
+                right: 8px !important;
+            }
+
+            &.cs-collapse__trigger--in {
+                &:before {
+                    opacity: 1 !important;
+                    transform: rotate(-135deg) !important;
+                }
+
+                &:before,
+                &:after {
+                    background: $colorCeruleanBlueHover !important;
+                }
+
+                &:after {
+                    transform: rotate(135deg) !important;
+                }
+            }
+        }
     }
 
     &__search {
@@ -175,6 +200,13 @@ $namespace: 'cs-';
         }
     }
 
+    &__container {
+        p,
+        span {
+            @extend .#{$namespace}t-text;
+        }
+    }
+
     &__voting {
         display: flex;
 
@@ -188,22 +220,15 @@ $namespace: 'cs-';
                 height: 3rem;
                 margin: 0 3rem;
             }
-
-            &:hover {
-                #{$root}__icon {
-                    fill: $colorCeruleanBlueHover;
-                }
-            }
         }
 
         &-separator {
             display: inline-block;
             width: 1px;
             height: 2rem;
-            margin: 0 1rem;
+            margin: 0 0.5rem;
             background: $colorAlto;
             @include media('>=tablet') {
-                margin: 0 3rem;
                 height: 3rem;
             }
         }
@@ -215,13 +240,13 @@ $namespace: 'cs-';
             @include media('<tablet') {
                 flex-wrap: wrap;
             }
-        }
-    }
 
-    &__container {
-        p,
-        span {
-            @extend .#{$namespace}t-text;
+            .#{$namespace}t-text--look_attention {
+                &:hover {
+                    color: inherit;
+                    font-weight: 700;
+                }
+            }
         }
     }
 
@@ -235,9 +260,33 @@ $namespace: 'cs-';
         transition: fill 0.15s;
         height: 100%;
         width: 100%;
+    }
 
-        &--checked {
-            fill: $colorCeruleanBlueHover;
+    #like {
+        &:hover {
+            #{$root}__icon {
+                fill: $colorApple;
+            }
+        }
+    }
+
+    #dislike {
+        &:hover {
+            #{$root}__icon {
+                fill: $colorCrimson;
+            }
+        }
+    }
+
+    #aw__helpfulness-vote-no {
+        #{$root}__icon--checked {
+            fill: $colorCrimson;
+        }
+    }
+
+    #aw__helpfulness-vote-yes {
+        #{$root}__icon--checked {
+            fill: $colorApple;
         }
     }
 
