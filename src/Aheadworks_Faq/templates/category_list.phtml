@@ -21,14 +21,14 @@
     }
     ?>
     <div class="cs-faq-index__category">
-        <section class="cs-faq-index__category-section">
-            <h2 class="cs-faq-index__title cs-faq-index__category-name">
+        <section class="cs-faq-index__category-section cs-collapse cs-collapse--only-mobile">
+            <h2 class="cs-faq-index__title cs-faq-index__category-name cs-collapse__trigger">
                 <?php if ($block->getCategoryIconUrl($category)) :?>
                     <img class="cs-faq-index__list-img" src="<?php echo $block->escapeUrl($block->getCategoryIconUrl($category)); ?>" alt="<?php echo $block->escapeHtml($category->getName()); ?>" />
                 <?php endif; ?>
                 <a href="<?php echo $block->escapeUrl($block->getCategoryUrl($category)); ?>"><?php echo $block->escapeHtml($category->getName()); ?></a>
             </h2>
-            <ul class="cs-faq-index__list">
+            <ul class="cs-faq-index__list cs-collapse__content">
                 <?php if ($allowedArticlesNumber): ?>
                     <?php while($allowedArticlesNumber): ?>
                         <?php if (isset($categoryArticles[$allowedArticlesNumber-1])): ?>
