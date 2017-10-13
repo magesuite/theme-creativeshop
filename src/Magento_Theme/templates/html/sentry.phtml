@@ -1,13 +1,16 @@
 <?php
 $sentryHelper = $this->helper('Creativestyle\FrontendExtension\Helper\SentryIO');
 $sentryDSN = $sentryHelper->getDataSourceName();
+
 if ($sentryDSN):
+// Getting Magento version.
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$productMetadata = $objectManager->get('Magento\Framework\App\ProductMetadataInterface');
+$magentoVersion = $productMetadata->getVersion();
 ?>
 <script>
 // Ignore list based off: https://gist.github.com/1878283
 var ravenOptions = {
-    // Will cause a deprecation warning, but the demise of `ignoreErrors` is still under discussion.
-    // See: https://github.com/getsentry/raven-js/issues/73
     ignoreErrors: [
         // Random plugins/extensions
         'top.GLOBALS',
@@ -31,7 +34,9 @@ var ravenOptions = {
         'conduitPage',
         // Generic error code from errors outside the security sandbox
         // You can delete this if using raven.js > 1.0, which ignores these automatically.
-        'Script error.'
+        'Script error.',
+        // RequireJS error triggered when user is navigating to another page while modules are loading.
+        'Script error for'
     ],
     ignoreUrls: [
         // Facebook flakiness
@@ -48,9 +53,9 @@ var ravenOptions = {
         /127\.0\.0\.1:4001\/isrunning/i,  // Cacaoweb
         /webappstoolbarba\.texthelp\.com\//i,
         /metrics\.itunes\.apple\.com\.edgesuite\.net\//i
-    ]
+    ],
+    release: '<?=$magentoVersion;?>'
 }
-// Configure Raven and install default handler to capture uncaught exceptions
 Raven.config('<?=$sentryDSN;?>', ravenOptions).install();
 </script>
 <?php endif; ?>

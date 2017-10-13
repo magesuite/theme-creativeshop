@@ -7,8 +7,6 @@ import paths from '../../paths';
  */
 export default {
     watch: [
-        // Preview images.
-        path.join(paths.src, '*.{png,jpg,jpeg}'),
         // JSON except data for templates.
         path.join(paths.src, '**/*.json'),
         // PHP files
@@ -19,15 +17,14 @@ export default {
         path.join(paths.src, '**/*.csv'),
         // Require.js configs.
         path.join(paths.src, '**/requirejs-config.js'),
-        // Less styles.
-        path.join(paths.src, '**/*.less'),
-        //Theme web images
-        path.join(paths.src, '**/*.{gif,png,jpg,webp,svg,ico}'),
+        // Less and CSS styles.
+        path.join(paths.src, '**/*.{less,css}'),
+        // Theme web images
+        path.join(paths.src, '**/*.{gif,png,jpg,jpeg,webp,svg,ico}'),
+        '!' + path.join(paths.src, 'sprites/**/*'),
     ],
 
     src: [
-        // Preview images.
-        path.join(paths.src, '*.{png,jpg,jpeg}'),
         // JSON.
         path.join(paths.src, '**/*.json'),
         // PHP files
@@ -39,9 +36,10 @@ export default {
         // Require.js configs.
         path.join(paths.src, '**/requirejs-config.js'),
         // Less styles.
-        path.join(paths.src, '**/*.less'),
-        //Theme web images
-        path.join(paths.src, '**/*.{gif,png,jpg,webp,svg,ico}'),
+        path.join(paths.src, '**/*.{less,css}'),
+        // Theme web images
+        path.join(paths.src, '**/*.{gif,png,jpg,jpeg,webp,svg,ico}'),
+        '!' + path.join(paths.src, 'sprites/**/*'),
     ],
     dest: paths.dist,
 };

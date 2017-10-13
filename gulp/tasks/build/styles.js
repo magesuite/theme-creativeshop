@@ -17,7 +17,7 @@ module.exports = function() {
 
     return this.gulp
         .src(settings.src)
-        .pipe(sourcemaps.init())
+        .pipe(gulpIf(!environment.production, sourcemaps.init()))
         .pipe(
             sass(settings.sass)
                 .on('error', sass.logError)
@@ -30,6 +30,6 @@ module.exports = function() {
         )
         .pipe(postcss(settings.postcss))
         .pipe(gulpIf(environment.production, cleanCSS(settings.cleanCSS)))
-        .pipe(sourcemaps.write())
+        .pipe(gulpIf(!environment.production, sourcemaps.write()))
         .pipe(this.gulp.dest(settings.dest));
 };
