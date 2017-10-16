@@ -4,22 +4,21 @@
  * Since we can only know how many items are currently in cart we need to store
  * the previous amount in localstorage and check if it is smaller then current one.
  */
-define(['jquery'], function($) {
+define(['jquery', 'Magento_Ui/js/lib/core/storage/local'], function(
+    $,
+    storage
+) {
     'use strict';
     // Cache minicart selectors.
     var $minicart = $('[data-block="minicart"]');
     var $minicartDropdown = $minicart.find('[data-role="dropdownDialog"]');
     // Get number of items stored previously in cart.
     var getPrevNumOfItems = function() {
-        return localStorage
-            ? parseInt(localStorage.getItem('cs-prev-cart-items'))
-            : 0;
+        return parseInt(storage.get('cs-prev-cart-items')) || 0;
     };
     // Update number of remembered items in cart.
     var updateNumOfItems = function(itemsInCart) {
-        if (localStorage) {
-            localStorage.setItem('cs-prev-cart-items', itemsInCart);
-        }
+        storage.set('cs-prev-cart-items', itemsInCart);
     };
     // Don't hide automatically if user hovers on flyout.
     var minicartCloseTimeout;
