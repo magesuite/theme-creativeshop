@@ -62,48 +62,6 @@
             }
 
 
-            // TEMPORARY WORKAROUND to make phone number optional
-            // PLEASE CHECK if this feature is already implemented in Magento 2.2 : https://github.com/magento/magento2/pull/8519
-
-            function setPhoneOptional() {
-                var $phoneInputs = $('input[name="telephone"]');
-                $phoneInputs.each(function() {
-                    if($(this).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>') {
-                        $phoneInputs.css('color', 'transparent');
-                    }
-                });
-
-                $phoneInputs.on('focus', function() {
-                    $phoneInputs.css('color', '')
-                });
-
-                $phoneInputs.parents('.cs-input').removeClass('_required required');
-                $phoneInputs.parents('.cs-form__field').removeClass('_required required required-entry');
-
-                $phoneInputs.on('blur keyup', function() {
-                    $(this).parents('.cs-input').find('div.mage-error').remove();
-                    $(this).removeClass('mage-error _error');
-                    $(this).parents('.cs-input__control').removeClass('mage-error _error');
-                    $(this).parents('.cs-form__field').removeClass('mage-error _error _required required required-entry');
-                });
-                $phoneInputs.on('focus', function() {
-                    if ($(this).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>') {
-                        $(this).val('');
-                    }
-
-                });
-
-                $('.cs-checkout-button-next, .cs-payment button').on('click mouseenter', function() {
-                    $phoneInputs.each(function(){
-                        if(!$(this).val()) {
-                            $(this).css('color', 'transparent').val('<?php /* @escapeNotVerified */ echo __('No phone') ?>').change();
-                            $phoneInputs.parents('.cs-form__field').removeClass('_required required required-entry');
-                        }
-                    })
-                });
-            }
-            // end of phone workaround
-
             // Set zip and city in one line
             function setZipCityFields() {
                 $('input[name="postcode"]').parents('.cs-form__field').addClass('cs-form__field--type_small');
@@ -161,7 +119,7 @@
                     }
 
                     // Init validation on every checkout field
-                    //$(this).mage('validation', {});
+                    $(this).mage('validation', {});
 
                     $(this).on('blur change', function() {
                         if ($(this).validation('isValid') && $(this).val() !== '') {
@@ -202,7 +160,6 @@
                     step1Loaded = true;
                     var $form = $('#shipping-new-address-form');
 
-                    setPhoneOptional();
                     setZipCityFields();
                     initInlineValidation();
 
@@ -237,8 +194,6 @@
                     paymentButtonsTriggered = true;
                     setTimeout(checkActiveButton, 500);
                     watchStateOfPaymentButton();
-
-                    setTimeout(setPhoneOptional, 3000);
 
 
                 } else if (!$('.cs-button-payment-method').length && paymentButtonsTriggered ) {
