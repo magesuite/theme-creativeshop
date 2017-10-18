@@ -31,243 +31,224 @@
             'mage/validation',
             'Magento_Ui/js/block-loader',
             'jquery',
-            'bundle',
-            'uiRegistry'
-        ], function(url, validation, blockLoader, $, bundle, uiRegistry) {
+            'bundle'
+        ], function(url, validation, blockLoader, $, bundle) {
 
             //Creativestyle adjustments below
 
 
+            // Checkout is loaded some time after script is loaded. We need mutation observer (or set interval in case of old browsers) here to know when to initialize field watching
 
-            // Checkout is loaded some time after script is loaded. We need mutation observer here to know when to
-            // initialize field watching or tabs
             var checkout = document.getElementById('checkout');
 
             var step1Loaded = false;
             var nextButtonTriggered = false;
             var paymentButtonsTriggered = false;
 
-            if ( MutationObserver && checkout.nodeType ) {
+            if (MutationObserver && checkout.nodeType) {
 
-                var checkoutStep1Observer = new MutationObserver( function( mutations ) {
+                var checkoutStep1Observer = new MutationObserver(function(mutations) {
                     initCsCustomizations();
                 });
 
-                var checkoutObserverConfig = { attributes: false, childList: true, characterData: false, subtree:
-                    true };
+                var checkoutObserverConfig = {attributes: false, childList: true, characterData: false, subtree:
+                    true};
 
-                checkoutStep1Observer.observe( checkout, checkoutObserverConfig );
+                checkoutStep1Observer.observe(checkout, checkoutObserverConfig);
 
 
             } else {
-                var checkoutInterval = setInterval( initCsCustomizations, 1000 );
+                var checkoutInterval = setInterval(initCsCustomizations, 1000);
             }
 
 
-
             // TEMPORARY WORKAROUND to make phone number optional
-            // PLEASE CHECK if this feature is already implemeneted in Magento : https://github.com/magento/magento2/pull/8519
+            // PLEASE CHECK if this feature is already implemented in Magento 2.2 : https://github.com/magento/magento2/pull/8519
 
             function setPhoneOptional() {
-                var $phoneInputs = $( 'input[name="telephone"]' );
-                $phoneInputs.each( function() {
-                    if( $( this ).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>' ) {
-                        $phoneInputs.css( 'color', 'transparent' );
+                var $phoneInputs = $('input[name="telephone"]');
+                $phoneInputs.each(function() {
+                    if($(this).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>') {
+                        $phoneInputs.css('color', 'transparent');
                     }
                 });
 
-                $phoneInputs.on( 'focus', function() {
-                    $phoneInputs.css( 'color', '' )
+                $phoneInputs.on('focus', function() {
+                    $phoneInputs.css('color', '')
                 });
 
-                $phoneInputs.parents( '.cs-input' ).removeClass( '_required required');
-                $phoneInputs.parents( '.cs-form__field' ).removeClass( '_required required required-entry' );
+                $phoneInputs.parents('.cs-input').removeClass('_required required');
+                $phoneInputs.parents('.cs-form__field').removeClass('_required required required-entry');
 
-                $phoneInputs.on( 'blur keyup', function() {
-                    $( this ).parents( '.cs-input' ).find( 'div.mage-error' ).remove();
-                    $( this ).removeClass( 'mage-error _error' );
-                    $( this ).parents( '.cs-input__control' ).removeClass( 'mage-error _error' );
-                    $( this ).parents( '.cs-form__field' ).removeClass( 'mage-error _error _required required required-entry' );
-                } );
-                $phoneInputs.on( 'focus', function() {
-                    if ( $( this ).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>' ) {
-                        $( this ).val( '' );
+                $phoneInputs.on('blur keyup', function() {
+                    $(this).parents('.cs-input').find('div.mage-error').remove();
+                    $(this).removeClass('mage-error _error');
+                    $(this).parents('.cs-input__control').removeClass('mage-error _error');
+                    $(this).parents('.cs-form__field').removeClass('mage-error _error _required required required-entry');
+                });
+                $phoneInputs.on('focus', function() {
+                    if ($(this).val() === '<?php /* @escapeNotVerified */ echo __('No phone') ?>') {
+                        $(this).val('');
                     }
 
-                } );
+                });
 
-                $( '.cs-checkout-button-next, .cs-payment button' ).on( 'click mouseenter', function() {
-                    $phoneInputs.each( function(){
-                        if( !$( this ).val() ) {
-                            $( this ).css( 'color', 'transparent' ).val( '<?php /* @escapeNotVerified */ echo __('No phone') ?>' ).change();
-                            $phoneInputs.parents( '.cs-form__field' ).removeClass( '_required required required-entry' );
+                $('.cs-checkout-button-next, .cs-payment button').on('click mouseenter', function() {
+                    $phoneInputs.each(function(){
+                        if(!$(this).val()) {
+                            $(this).css('color', 'transparent').val('<?php /* @escapeNotVerified */ echo __('No phone') ?>').change();
+                            $phoneInputs.parents('.cs-form__field').removeClass('_required required required-entry');
                         }
                     })
-                } );
+                });
             }
             // end of phone workaround
 
             // Set zip and city in one line
             function setZipCityFields() {
-                $( 'input[name="postcode"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_small' );
-                $( 'input[name="city"]' ).parents( '.cs-form__field' ).addClass( 'cs-form__field--type_medium');
+                $('input[name="postcode"]').parents('.cs-form__field').addClass('cs-form__field--type_small');
+                $('input[name="city"]').parents('.cs-form__field').addClass('cs-form__field--type_medium');
             }
 
 
             function checkActiveButton() {
-                var activeButton = $( '.payment-method._active .cs-button-payment-method[type="submit"]:not(disabled):not(".disabled")');
-                if ( activeButton.length ) {
-                    $( '.cs-place-order-button' ).prop( 'disabled', false );
+                var activeButton = $('.payment-method._active .cs-button-payment-method[type="submit"]:not(disabled):not(".disabled")');
+                if (activeButton.length) {
+                    $('.cs-place-order-button').prop('disabled', false);
                 } else {
-                    $( '.cs-place-order-button' ).prop( 'disabled', true );
+                    $('.cs-place-order-button').prop('disabled', true);
                 }
 
                 return activeButton;
             }
 
 
-            function startTabs() {
-                $( '#tab-customer-title' ).on( 'click', function() {
-                    $( '#shipping-new-address-form .cs-input' ).addClass( 'cs-input--disabled' ).find( 'input, ' +
-                        'select' ).attr( 'disabled', 'disabled' );
-                    uiRegistry.get( 'checkout.steps.shipping-step.shippingAddress' ).reset();
-                });
-
-                $( '#tab-new-user-title' ).on( 'click', function() {
-                    $( '#shipping-new-address-form .cs-input' ).removeClass( 'cs-input--disabled' ).find( 'input,' +
-                        ' ' +
-                        'select' ).removeAttr( 'disabled' );
-                });
-            }
-
-
             function watchStateOfPaymentButton() {
-                $( '#checkout-payment-method-load' ).on( 'click mouseleave', function() {
+                $('#checkout-payment-method-load').on('click mouseleave', function() {
                     checkActiveButton();
 
-                    var checkActiveButtonIntervalId = setInterval( checkButton, 500 );
+                    var checkActiveButtonIntervalId = setInterval(checkButton, 500);
 
                     function checkButton() {
-                        if ( checkActiveButton().length ) {
-                            clearInterval( checkActiveButtonIntervalId );
+                        if (checkActiveButton().length) {
+                            clearInterval(checkActiveButtonIntervalId);
                         }
                     }
                 });
 
-                $( '.cs-place-order-button' ).on( 'click', function() {
+                $('.cs-place-order-button').on('click', function() {
                     var activeButton = checkActiveButton();
-                    if ( activeButton.length ) {
-                        activeButton.trigger( 'click' );
+                    if (activeButton.length) {
+                        activeButton.trigger('click');
                     }
 
-                } );
+                });
             }
 
 
             function initInlineValidation() {
-                var $shippingForm = $( '#co-shipping-form' );
+                var $shippingForm = $('#co-shipping-form');
 
-                $shippingForm.find( 'input' ).each( function() {
-                    if( $( this ).parents('.cs-input' ).hasClass( '_required' ) ||  $( this ).parents( '.cs-input' )
-                            .hasClass( 'required' ) ) {
+                $shippingForm.find('input').each(function() {
+                    if($(this).parents('.cs-input').hasClass('_required') ||  $(this).parents('.cs-input')
+                            .hasClass('required')) {
 
-                        $( this ).attr('data-validate', '{required:true}' );
+                        $(this).attr('data-validate', '{required:true}');
 
-                        if ( $( this ).parents( '.street' ).length && $( this ).attr( 'name' ) !== 'street[0]'  ) {
-                            $( this ).removeAttr('data-validate' );
+                        if ($(this).parents('.street').length && $(this).attr('name') !== 'street[0]') {
+                            $(this).removeAttr('data-validate');
                         }
                     }
 
                     // Init validation on every checkout field
-                    $( this ).mage( 'validation', {} );
+                    //$(this).mage('validation', {});
 
-                    $( this ).on( 'blur change', function() {
-                        if ( $( this ).validation( 'isValid' ) && $( this ).val() !== '' ) {
-                            $( this ).closest( '.cs-input' ).addClass( 'cs-input--success' );
+                    $(this).on('blur change', function() {
+                        if ($(this).validation('isValid') && $(this).val() !== '') {
+                            $(this).closest('.cs-input').addClass('cs-input--success');
 
-                            if ( $( this ).attr( 'name' ) == 'street[0]' ) {
-                                var value = $( this ).val();
+                            if ($(this).attr('name') == 'street[0]') {
+                                var value = $(this).val();
 
-                                if ( !/\d/.test(value) ) {
-                                    $( this ).closest( '.cs-input' ).addClass( 'cs-input--warning' );
-                                    if ( !$( this ).next().hasClass( 'cs-input__warning' ) && !$( '' +
-                                            '.cs-html-select--autosuggest' ).length ) {
-                                        $( this ).after( '<div class="cs-input__warning" >' + $.mage.__('Do not forget about your house number.') + '</div>' );
+                                if (!/\d/.test(value)) {
+                                    $(this).closest('.cs-input').addClass('cs-input--warning');
+                                    if (!$(this).next().hasClass('cs-input__warning') && !$('' +
+                                            '.cs-html-select--autosuggest').length) {
+                                        $(this).after('<div class="cs-input__warning" >' + $.mage.__('Do not forget about your house number.') + '</div>');
                                     }
 
                                 } else {
-                                    $( this ).closest( '.cs-input' ).removeClass( 'cs-input--warning' );
-                                    $( this ).closest( '.cs-input' ).find( '.cs-input__warning' ).remove();
+                                    $(this).closest('.cs-input').removeClass('cs-input--warning');
+                                    $(this).closest('.cs-input').find('.cs-input__warning').remove();
                                 }
                             }
 
                         } else  {
-                            $( this ).closest( '.cs-input' ).removeClass( 'cs-input--success' );
+                            $(this).closest('.cs-input').removeClass('cs-input--success');
                         }
-                    } );
+                    });
 
                 });
 
                 // It is necessary to init validation on form
-                $shippingForm.mage( 'validation', {} );
+                $shippingForm.mage('validation', {});
             }
 
 
             function initCsCustomizations() {
 
-                if ( !$( '#checkout-loader' ).length && !step1Loaded ) {
+                if (!$('#checkout-loader').length && !step1Loaded) {
 
                     step1Loaded = true;
-                    var $form = $( '#shipping-new-address-form' );
+                    var $form = $('#shipping-new-address-form');
 
                     setPhoneOptional();
-                    startTabs();
                     setZipCityFields();
                     initInlineValidation();
 
                     bundle.AddressAutofill(
                         {
-                            streetField: $form.find( 'input[name="street[0]"]' ),
-                            zipField: $form.find( 'input[name="postcode"]'),
-                            cityField: $form.find( 'input[name="city"]'),
-                            countrySelect: $form.find( 'select[name="country_id"]' ),
+                            streetField: $form.find('input[name="street[0]"]'),
+                            zipField: $form.find('input[name="postcode"]'),
+                            cityField: $form.find('input[name="city"]'),
+                            countrySelect: $form.find('select[name="country_id"]'),
                         }
-                    );
+                   );
 
                 }
 
-                if ( $( '.cs-checkout-button-next' ).length && !nextButtonTriggered ) {
+                if ($('.cs-checkout-button-next').length && !nextButtonTriggered) {
 
                     //Probably there is a problem with: data-bind="css: { 'cs-no-display': isHidden() }" in
                     // next-button.html. In some percentages is isPayment is triggered on is Shipping
-                    $( '.cs-checkout__sidebar-bottom' ).removeClass( 'cs-no-display' );
+                    $('.cs-checkout__sidebar-bottom').removeClass('cs-no-display');
                     nextButtonTriggered = true;
 
-                    $( '.cs-checkout-button-next' ).on( 'click', function() {
-                        $( '#shipping-method-buttons-container button' ).trigger( 'click' );
-                    } );
+                    $('.cs-checkout-button-next').on('click', function() {
+                        $('#shipping-method-buttons-container button').trigger('click');
+                    });
 
-                } else if ( !$( '.cs-checkout-button-next' ).length && nextButtonTriggered ) {
+                } else if (!$('.cs-checkout-button-next').length && nextButtonTriggered) {
                     nextButtonTriggered = false;
                 }
 
-                if ( $( '.cs-button-payment-method' ).length && $( '.cs-place-order-button' ).length &&
-                    !paymentButtonsTriggered ) {
+                if ($('.cs-button-payment-method').length && $('.cs-place-order-button').length &&
+                    !paymentButtonsTriggered) {
                     paymentButtonsTriggered = true;
-                    setTimeout( checkActiveButton, 500 );
+                    setTimeout(checkActiveButton, 500);
                     watchStateOfPaymentButton();
 
-                    setTimeout( setPhoneOptional, 3000 );
+                    setTimeout(setPhoneOptional, 3000);
 
 
-                } else if ( !$( '.cs-button-payment-method' ).length && paymentButtonsTriggered  ) {
+                } else if (!$('.cs-button-payment-method').length && paymentButtonsTriggered ) {
                     paymentButtonsTriggered = false;
                 }
 
 
-                if ( checkoutInterval ) {
-                    if ( step1Loaded  && nextButtonTriggered && paymentButtonsTriggered ) {
-                        clearInterval( checkoutInterval );
+                if (checkoutInterval) {
+                    if (step1Loaded  && nextButtonTriggered && paymentButtonsTriggered) {
+                        clearInterval(checkoutInterval);
                     }
                 }
 
