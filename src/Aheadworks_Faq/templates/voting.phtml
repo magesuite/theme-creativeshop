@@ -1,8 +1,4 @@
 <?php
-/**
-* Copyright 2016 aheadWorks. All rights reserved.
-* See LICENSE.txt for license details.
-*/
 
 // @codingStandardsIgnoreFile
 
@@ -15,11 +11,12 @@
         $ratingMessageNumber = __('%1%', ceil($votesYes / ($votesYes + $votesNo) * 100), ' ');
         $ratingMessage = __('of other people think it was helpful');
     } else {
+        $ratingMessageNumber = '';
         $ratingMessage = __('Be the first to vote!');
     }
 ?>
     <input type="hidden" id="articleId" value="<?php echo (int)$block->getArticle()->getId() ?>">
-    <?php if ($block->isAllowedHelpfulness()): ?>
+    <?php if ( ($block->isAllowedHelpfulness()) > 0 ) : ?>
         <div id="aw-faq__helpfulness" class="cs-faq-index__voting-container">
             <span class="cs-faq-index__text cs-t-text cs-t-text--look_attention | <?php /* @noEscape */ echo $block->isVoted() ? '' : 'aw_bold'?>"><?php /* @noEscape */ echo __('Was this helpful?'); ?></span>
             <span id="aw__helpfulness-vote-yes" class="cs-faq-index__voting-icon | aw_bold <?php echo ($block->getDislikeStatus() || !$block->isVoted()) ? 'aw-no-display' : ''; ?>">
