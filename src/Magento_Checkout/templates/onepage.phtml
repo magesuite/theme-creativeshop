@@ -33,182 +33,167 @@
             'jquery',
             'bundle'
         ], function(url, validation, blockLoader, $, bundle) {
+            // Creativestyle adjustments below
 
-            //Creativestyle adjustments below
+            /**
+             * Makes sure our custom next buttons trigger originals properly.
+             */
+            function handleCustomNextButtons() {
+                var $customNextButtons = $('.cs-checkout-button-next');
+                var $origNextButtons = $('#shipping-method-buttons-container button');
+                if ($customNextButtons.length) {
+                    // Probably there is a problem with: data-bind="css: { 'cs-no-display': isHidden() }" in
+                    // next-button.html. In some percentages is isPayment is triggered on is Shipping
+                    $('.cs-checkout__sidebar-bottom').removeClass('cs-no-display');
 
-
-            // Checkout is loaded some time after script is loaded. We need mutation observer (or set interval in case of old browsers) here to know when to initialize field watching
-
-            var checkout = document.getElementById('checkout');
-
-            var step1Loaded = false;
-            var nextButtonTriggered = false;
-            var paymentButtonsTriggered = false;
-
-            if (MutationObserver && checkout.nodeType) {
-
-                var checkoutStep1Observer = new MutationObserver(function(mutations) {
-                    initCsCustomizations();
-                });
-
-                var checkoutObserverConfig = {attributes: false, childList: true, characterData: false, subtree:
-                    true};
-
-                checkoutStep1Observer.observe(checkout, checkoutObserverConfig);
-
-
-            } else {
-                var checkoutInterval = setInterval(initCsCustomizations, 1000);
-            }
-
-
-            // Set zip and city in one line
-            function setZipCityFields() {
-                $('input[name="postcode"]').parents('.cs-form__field').addClass('cs-form__field--type_small');
-                $('input[name="city"]').parents('.cs-form__field').addClass('cs-form__field--type_medium');
-            }
-
-
-            function checkActiveButton() {
-                var activeButton = $('.payment-method._active .cs-button-payment-method[type="submit"]:not(disabled):not(".disabled")');
-                if (activeButton.length) {
-                    $('.cs-place-order-button').prop('disabled', false);
-                } else {
-                    $('.cs-place-order-button').prop('disabled', true);
+                    $customNextButtons.on('click', function() {
+                        $origNextButtons.trigger('click');
+                    });
                 }
-
-                return activeButton;
             }
+            /**
+             * Makes sure our custom order button gets proper state depending on
+             * selected payment methods and triggers original order buttons properly.
+             */
+            function handleCustomOrderButtons() {
+                var $customPlaceOrderButtons = $('.cs-place-order-button');
+                var $checkoutPaymentMethods = $('#checkout-payment-method-load');
 
-
-            function watchStateOfPaymentButton() {
-                $('#checkout-payment-method-load').on('click mouseleave', function() {
-                    checkActiveButton();
-
-                    var checkActiveButtonIntervalId = setInterval(checkButton, 500);
-
-                    function checkButton() {
-                        if (checkActiveButton().length) {
-                            clearInterval(checkActiveButtonIntervalId);
-                        }
+                $checkoutPaymentMethods.on('click change', function() {
+                    var $origPlaceOrderButton = $('.payment-method._active .cs-button-payment-method[type="submit"]');
+                    if ($origPlaceOrderButton.is(':not(disabled):not(".disabled")')) {
+                        $customPlaceOrderButtons.prop('disabled', false);
+                    } else {
+                        $customPlaceOrderButtons.prop('disabled', true);
                     }
                 });
 
-                $('.cs-place-order-button').on('click', function() {
-                    var activeButton = checkActiveButton();
-                    if (activeButton.length) {
-                        activeButton.trigger('click');
+                $customPlaceOrderButtons.on('click', function() {
+                    var $origPlaceOrderButton = $('.payment-method._active .cs-button-payment-method[type="submit"]');
+                    if ($origPlaceOrderButton.is(':not(disabled):not(".disabled")')) {
+                        $origPlaceOrderButton.trigger('click');
                     }
-
                 });
             }
 
-
+            /**
+             * Sets custom classes for address fields for styling purposes.
+             */
+            function setZipCityFields() {
+                $('input[name="postcode"]').closest('.cs-form__field').addClass('cs-form__field--type_zip');
+                $('input[name="city"]').closest('.cs-form__field').addClass('cs-form__field--type_city');
+            }
+            /**
+             * Sets custom classes for personal information fields for styling purposes.
+             */
+            function setPersonFields() {
+                $('select[name="prefix"]').closest('.cs-form__field').addClass('cs-form__field--type_prefix');
+                $('input[name="firstname"]').closest('.cs-form__field').addClass('cs-form__field--type_firstname');
+                $('input[name="lastname"]').closest('.cs-form__field').addClass('cs-form__field--type_lastname');
+            }
+            /**
+             * Initializes inline validation for shipping information form fields
+             * including custom logic for street name.
+             */
             function initInlineValidation() {
                 var $shippingForm = $('#co-shipping-form');
 
                 $shippingForm.find('input').each(function() {
-                    if($(this).parents('.cs-input').hasClass('_required') ||  $(this).parents('.cs-input')
-                            .hasClass('required')) {
-
-                        $(this).attr('data-validate', '{required:true}');
-
-                        if ($(this).parents('.street').length && $(this).attr('name') !== 'street[0]') {
-                            $(this).removeAttr('data-validate');
+                    var $input = $(this);
+                    var $inputComponent = $input.closest('.cs-input');
+                    if ($inputComponent.hasClass('_required') ||  $inputComponent.hasClass('required')) {
+                        if ($inputComponent.length && $input.attr('name') !== 'street[0]') {
+                            $input.removeAttr('data-validate');
                         }
                     }
 
                     // Init validation on every checkout field
-                    $(this).mage('validation', {});
+                    $input.validation();
 
-                    $(this).on('blur change', function() {
-                        if ($(this).validation('isValid') && $(this).val() !== '') {
-                            $(this).closest('.cs-input').addClass('cs-input--success');
+                    $input.on('blur change', function() {
+                        if ($input.validation('isValid') && $input.val() !== '') {
+                            $inputComponent.addClass('cs-input--success');
 
-                            if ($(this).attr('name') == 'street[0]') {
-                                var value = $(this).val();
-
-                                if (!/\d/.test(value)) {
-                                    $(this).closest('.cs-input').addClass('cs-input--warning');
-                                    if (!$(this).next().hasClass('cs-input__warning') && !$('' +
-                                            '.cs-html-select--autosuggest').length) {
-                                        $(this).after('<div class="cs-input__warning" >' + $.mage.__('Do not forget about your house number.') + '</div>');
+                            if ($input.attr('name') == 'street[0]') {
+                                if (!/\d/.test($input.val())) {
+                                    $inputComponent.addClass('cs-input--warning');
+                                    if (!$input.next().hasClass('cs-input__warning') && !$('.cs-html-select--autosuggest').length) {
+                                        $input.after('<div class="cs-input__warning" >' + $.mage.__('Do not forget about your house number.') + '</div>');
                                     }
-
                                 } else {
-                                    $(this).closest('.cs-input').removeClass('cs-input--warning');
-                                    $(this).closest('.cs-input').find('.cs-input__warning').remove();
+                                    $inputComponent
+                                        .removeClass('cs-input--warning')
+                                        .find('.cs-input__warning')
+                                        .remove();
                                 }
                             }
-
                         } else  {
-                            $(this).closest('.cs-input').removeClass('cs-input--success');
+                            $inputComponent.removeClass('cs-input--success');
                         }
                     });
-
                 });
-
-                // It is necessary to init validation on form
-                $shippingForm.mage('validation', {});
+                $shippingForm.validation();
             }
 
+            /**
+             * Initializes all of our customizations.
+             */
+            function initCsCustomizations($shippingAddressForm) {
+                setZipCityFields();
+                setPersonFields();
+                initInlineValidation();
+                handleCustomNextButtons();
+                handleCustomOrderButtons();
 
-            function initCsCustomizations() {
+                bundle.AddressAutofill({
+                    streetField: $shippingAddressForm.find('input[name="street[0]"]'),
+                    zipField: $shippingAddressForm.find('input[name="postcode"]'),
+                    cityField: $shippingAddressForm.find('input[name="city"]'),
+                    countrySelect: $shippingAddressForm.find('select[name="country_id"]'),
+                });
+            }
 
-                if (!$('#checkout-loader').length && !step1Loaded) {
-
-                    step1Loaded = true;
-                    var $form = $('#shipping-new-address-form');
-
-                    setZipCityFields();
-                    initInlineValidation();
-
-                    bundle.AddressAutofill(
-                        {
-                            streetField: $form.find('input[name="street[0]"]'),
-                            zipField: $form.find('input[name="postcode"]'),
-                            cityField: $form.find('input[name="city"]'),
-                            countrySelect: $form.find('select[name="country_id"]'),
-                        }
-                   );
-
+            /**
+             * Function used for making sure that checkout has already loaded.
+             */
+            function waitForCheckoutToLoad(isObserving) {
+                var $shippingAddressForm = $('#co-shipping-form');
+                var $checkoutLoader = $('#checkout-loader');
+                // If shipping address form already loaded then fire up our tweaks and exit.
+                if ($shippingAddressForm.length && !$checkoutLoader.length) {
+                    if (isObserving) {
+                        checkoutMutationObserver.disconnect();
+                    }
+                    initCsCustomizations($shippingAddressForm);
+                    return;
                 }
-
-                if ($('.cs-checkout-button-next').length && !nextButtonTriggered) {
-
-                    //Probably there is a problem with: data-bind="css: { 'cs-no-display': isHidden() }" in
-                    // next-button.html. In some percentages is isPayment is triggered on is Shipping
-                    $('.cs-checkout__sidebar-bottom').removeClass('cs-no-display');
-                    nextButtonTriggered = true;
-
-                    $('.cs-checkout-button-next').on('click', function() {
-                        $('#shipping-method-buttons-container button').trigger('click');
-                    });
-
-                } else if (!$('.cs-checkout-button-next').length && nextButtonTriggered) {
-                    nextButtonTriggered = false;
-                }
-
-                if ($('.cs-button-payment-method').length && $('.cs-place-order-button').length &&
-                    !paymentButtonsTriggered) {
-                    paymentButtonsTriggered = true;
-                    setTimeout(checkActiveButton, 500);
-                    watchStateOfPaymentButton();
-
-
-                } else if (!$('.cs-button-payment-method').length && paymentButtonsTriggered ) {
-                    paymentButtonsTriggered = false;
-                }
-
-
-                if (checkoutInterval) {
-                    if (step1Loaded  && nextButtonTriggered && paymentButtonsTriggered) {
-                        clearInterval(checkoutInterval);
+                // If not and Mutation Observer has not been hooked already.
+                if(!isObserving) {
+                    var checkoutNode = document.getElementById('checkout');
+                    // If browser supports it and element is ready then use it.
+                    if(MutationObserver && checkoutNode instanceof Node) {
+                        checkoutMutationObserver = new MutationObserver(function(){
+                            waitForCheckoutToLoad(true);
+                        });
+                        checkoutMutationObserver.observe(checkoutNode, {
+                            attributes: false,
+                            childList: true,
+                            characterData: false,
+                            subtree: true
+                        });
+                    } else {
+                        // Otherwise fallback to simple setTimeout and try again.
+                        setTimeout(
+                            function(){
+                                waitForCheckoutToLoad();
+                            },
+                            500
+                        )
                     }
                 }
-
             }
-
+            waitForCheckoutToLoad();
+            // End of creativestyle's customization.
 
             blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
             return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
