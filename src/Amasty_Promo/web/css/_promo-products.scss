@@ -2,6 +2,8 @@
 $namespace: 'cs-';
 
 .#{$namespace}promo-products {
+    $navArrowSize: 5.5rem;
+
     width: 100%;
     height: 100%;
     display: flex;
@@ -45,13 +47,35 @@ $namespace: 'cs-';
     }
 
     &-list {
-        margin: 2rem !important;
+        max-width: 70vw;
+
+        @include media('<tablet') {
+            width: 200px !important;
+            margin: 0.5rem 1rem !important;
+        }
+
+        @include media('<laptop') {
+            width: 250px !important;
+            margin: 2rem 1rem !important;
+        }
 
         &__item {
             border: 1px solid $colorAlto !important;
-            margin: 1rem !important;
-            padding: 2rem !important;
-            min-width: 250px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            min-width: 200px !important;
+
+            @include media('<tablet') {
+                width: auto !important;
+            }
+
+            @include media('>=tablet') {
+                min-width: 250px !important;
+            }
+
+            @include media('>=laptop') {
+                margin: 0 1rem !important;
+            }
         }
 
         &__item-name {
@@ -59,7 +83,12 @@ $namespace: 'cs-';
         }
 
         &__item-image {
-            margin: 1rem auto !important;
+            margin: 0.5rem auto !important;
+            max-height: 10rem;
+
+            &:first-of-type {
+                display: none !important;
+            }
         }
 
         &__item-options {
@@ -129,6 +158,10 @@ $namespace: 'cs-';
                 outline: none !important;
             }
         }
+
+        &__form {
+            padding: 2rem !important;
+        }
     }
 
     &-view {
@@ -179,12 +212,17 @@ $namespace: 'cs-';
     }
 
     &__close {
+        top: 0 !important;
+        right: 0 !important;
         background: none !important;
         width: 4rem !important;
         height: 4rem !important;
-        top: 1rem !important;
-        right: 1rem !important;
         opacity: 1 !important;
+
+        @include media('>=tablet') {
+            top: 1rem !important;
+            right: 1rem !important;
+        }
 
         &-icon {
             width: 50%;
@@ -198,63 +236,55 @@ $namespace: 'cs-';
         margin: 0 !important;
         padding: 2rem !important;
         border: 0 !important;
+        max-height: 80vh;
     }
 
-    h3 {
+    &__nav {
+        @include media('<laptop') {
+            display: none !important;
+        }
+
+        @extend .#{$namespace}products-promo__nav;
+
+        &--prev {
+            @extend .#{$namespace}products-promo__nav--prev;
+        }
+
+        &--next {
+            @extend .#{$namespace}products-promo__nav--next;
+        }
+
+        &-icon {
+            @extend .#{$namespace}products-promo__nav-icon;
+        }
+    }
+
+    &__pagination {
+        position: absolute;
+        bottom: -2.5rem;
+        margin-bottom: 0;
+        display: block;
+        width: 100%;
+        padding: 0;
+        list-style: none;
         text-align: center;
-        margin: 0 0 2rem;
-    }
-}
 
-.slick {
-    &-dots li {
-        border-radius: 2px !important;
-        background-color: $colorGallery !important;
-        width: 2.1rem !important;
-        height: 0.8rem !important;
-        transform: skew(-18deg) !important;
-        margin: 0 0.9rem 0 0 !important;
-        border: none !important;
-        display: inline-block !important;
-        transition: background-color 0.15s, border-color 0.15s !important;
+        li {
+            @extend .#{$namespace}products-promo__pagination-item;
 
-        &:hover,
-        &:focus,
-        &:active {
-            background-color: $colorGallery !important;
-            border: none !important;
-            box-shadow: none !important;
+            &.slick-active {
+                @extend .#{$namespace}products-promo__pagination-item--active;
 
-            @include media('>=tablet') {
-                background: $colorWhite !important;
-            }
-        }
-
-        button {
-            &:before {
-                content: none !important;
-            }
-        }
-
-        &.slick-active {
-            background: $colorGold !important;
-
-            &:hover,
-            &:focus,
-            &:active {
-                background: $colorGold !important;
+                button {
+                    &:before {
+                        content: none;
+                    }
+                }
             }
 
             button {
-                &:before {
-                    content: none !important;
-                }
+                @extend .#{$namespace}products-promo__pagination-button;
             }
         }
-    }
-
-    &-prev:before,
-    &-next:before {
-        content: none !important;
     }
 }
