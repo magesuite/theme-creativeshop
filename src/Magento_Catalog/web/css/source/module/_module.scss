@@ -49,7 +49,6 @@
             background-position: center !important;
             width: 0.9rem !important;
             height: 1.5rem !important;
-            // @include retina-sprite($sprite-arrow-prev-group);
         }
     }
 
@@ -63,7 +62,6 @@
             background-position: center !important;
             width: 0.9rem !important;
             height: 1.5rem !important;
-            // @include retina-sprite($sprite-arrow-next-group);
         }
     }
 
@@ -78,7 +76,7 @@
     }
 
     &__nav-wrap {
-        padding: 2rem 2rem 0;
+        padding: 2rem 1.5rem 0;
 
         @include media('<tablet') {
             padding-top: 0;
@@ -87,8 +85,11 @@
         }
 
         &--horizontal {
+            padding-left: 0;
+            padding-right: 0;
+
             #{$root}__nav--thumbs {
-                height: auto !important; // stylelint-disable-line
+                height: auto !important;
             }
 
             #{$root}__nav__frame--thumb {
@@ -111,21 +112,24 @@
 
     &__nav {
         @include media('<tablet') {
-            width: 100% !important; // stylelint-disable-line
+            width: 100% !important;
             padding: 2rem 0 0;
-            height: auto !important; // stylelint-disable-line
+            height: auto !important;
+            text-align: center;
         }
 
         &__frame {
+            box-sizing: border-box !important;
+
             @include media('<tablet') {
                 border-radius: 2px;
                 background-color: $colorAlto;
-                width: 2.8rem !important; // stylelint-disable-line
-                height: 0.9rem !important; // stylelint-disable-line
+                width: 2.8rem !important;
+                height: 0.9rem !important;
                 transform: skew(-18deg);
-                margin: 0 0.5rem 0 0 !important; // stylelint-disable-line
-                border: none !important; // stylelint-disable-line
-                display: inline-block !important; // stylelint-disable-line
+                margin: 0 0.5rem 0 0 !important;
+                border: none !important;
+                display: inline-block !important;
 
                 &.fotorama__active {
                     background: $colorGold;
@@ -134,13 +138,17 @@
 
             &--thumb {
                 // Adjusting thumbnails
-                padding: 0 !important; // stylelint-disable-line
+                padding: 0 !important;
                 border: 1px solid $colorAlto;
                 box-sizing: border-box;
                 transition: border-color 0.3s;
                 border-radius: 3px;
                 overflow: hidden;
                 cursor: pointer;
+
+                @include media('<tablet') {
+                    display: none !important;
+                }
 
                 &[data-active='true'] {
                     border-color: $colorCeruleanBlue;
@@ -153,8 +161,8 @@
         @include media('<tablet') {
             display: flex;
             justify-content: center;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
+            text-align: center !important;
+            padding: 2rem 0 0;
         }
     }
 
@@ -192,6 +200,8 @@
     }
 
     &__stage__shaft {
+        margin: 0 auto !important;
+
         @include media('<tablet') {
             margin: 0 auto !important;
         }
