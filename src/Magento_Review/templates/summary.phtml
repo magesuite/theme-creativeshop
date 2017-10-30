@@ -1,4 +1,5 @@
-<?php /** @var $block \Magento\Catalog\Block\Product\AbstractProduct */
+<?php
+/** @var $block \Magento\Catalog\Block\Product\AbstractProduct */
 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
 $rating = $csProductHelper->getReviewSummary($block->getProduct(), true);
 $ratingData = $rating["data"];
@@ -9,10 +10,7 @@ $allVotes = array_sum($votes);
 <?php if($allVotes > 0): ?>
 
 <div class="cs-reviews-summary">
-
-
     <div class="cs-reviews-summary__stars">
-
         <div class="cs-reviews-summary__note">
             <span class="cs-reviews-summary__note-left"><?php echo $ratingData['activeStars'] ?></span><span
                 class="cs-reviews-summary__note-right"> / <?php echo $ratingData['maxStars'] ?></span>
@@ -36,49 +34,43 @@ $allVotes = array_sum($votes);
         </button>
     </div>
 
-
     <ul class="cs-reviews-summary__bars">
-
-        <?php for ($i = count($votes); $i > 0; $i--): ?>
+        <?php for ($ratingIndex = 1, $ratingSteps = count($votes); $ratingIndex <= $ratingSteps; $ratingIndex++):
+            $ratingLabel = $ratingIndex;
+            $ratingLabel .= ' ' . ($ratingIndex == 1 ? __('star') : __('stars'));
+            $numOfVotes = $votes[$ratingIndex];
+            $votesPercentage = ceil($numOfVotes * 100 / $allVotes);
+        ?>
             <li class="cs-reviews-summary__bar">
-                <span class="cs-reviews-summary__bar-label"> <?php /* @escapeNotVerified */ echo $i; echo ' '; if( $i
-                        == 1
-                    ) {
-                        echo __
-                    ('star'); } else { echo __('stars'); }  ?></span>
-                <span class="cs-reviews-summary__bar-progress"><span
-                        class="cs-reviews-summary__bar-progress-inner" style="width: <?php echo ceil( ( $votes[$i] ) * 100
-                        /$allVotes) ?>%;"></span></span>
-                <span class="cs-reviews-summary__bar-label"><?php echo $votes[$i] ?></span>
+                <span class="cs-reviews-summary__bar-label"><?= $ratingLabel; ?></span>
+                <span class="cs-reviews-summary__bar-progress">
+                    <span class="cs-reviews-summary__bar-progress-inner" style="width:<?= $votesPercentage; ?>%;"></span>
+                </span>
+                <span class="cs-reviews-summary__bar-label"><?= $numOfVotes; ?></span>
             </li>
         <?php endfor; ?>
-
     </ul>
-
 </div>
 
 <script>
     require([
         'jquery'
     ], function($) {
-
-        $( '.cs-reviews-summary__button' ).on( 'click', function( e ) {
-            e.preventDefault();
-            var href = $( this ).find( 'a' ).attr( 'href' );
-            var target = ( '#review-form' );
-            if ( $( window ).width() < 1024 ) {
-                $( 'html, body' ).animate( {
-                    scrollTop: $( target ).offset().top - $( '.cs-header__content' )
-                        .height()
-                }, 350 );
+        $('.cs-reviews-summary__button').on('click', function(event) {
+            event.preventDefault();
+            var href = $(this).find('a').attr('href');
+            var target = ('#review-form');
+            if ($(window).width() < 1024) {
+                $('html, body').animate({
+                    scrollTop: $(target).offset().top - $('.cs-header__content').height()
+                }, 350);
             } else {
-                $( 'html, body' ).animate( {
-                    scrollTop: $( target ).offset().top
-                }, 350 );
+                $('html, body').animate( {
+                    scrollTop: $(target).offset().top
+                }, 350);
             }
-
         });
-    } );
+    });
 </script>
 
 <?php endif; ?>
