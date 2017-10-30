@@ -20,10 +20,11 @@ $_attributes = $block->decorateArray($block->getAllowAttributes());
         </div>
     <?php endforeach; ?>
     <script>
-        require(['jquery', 'Amasty_Promo/js/type/configurable'], function( $ ) {
+        require(['jquery', 'Amasty_Promo/js/type/configurable', 'bundle'], function( $, bundle ) {
 
             var spConfig = <?php echo $block->unsetData('allow_products')->getJsonConfig() ?>;
             spConfig.containerId = "#ampromo_items_form-<?php echo $_product->getId() ?>";
+            $( '.cs-select' ).selectpicker( 'refresh' );
 
             $('#ampromo_items_form-<?php echo $_product->getId()?>').ampromoConfigurable({spConfig: spConfig});
         });

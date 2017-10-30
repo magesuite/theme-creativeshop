@@ -21,6 +21,9 @@ var config = {
             'Magento_Checkout/js/view/minicart': {
                 'Magento_Checkout/js/view/minicart-ext': true,
             },
+            'Magento_Checkout/js/view/shipping': {
+                'Magento_Checkout/js/view/shipping-ext': true,
+            },
         },
     },
 };

@@ -33,9 +33,9 @@ export default class AddressAutofill {
         this.optionsList = '';
 
         $.getJSON('https://freegeoip.net/json/', (location: any): void => {
-            if (location.countryCode) {
-                options.region = location.countryCode;
-                this.countrySelect.val(location.countryCode).change();
+            if (location.country_code) {
+                options.region = location.country_code;
+                this.countrySelect.val(location.country_code).change();
             }
         }).always(() => {
             // The most important parameter to set googleDetector region option and language option is value of country select

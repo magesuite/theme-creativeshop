@@ -5,6 +5,9 @@ $ratingData = $rating["data"];
 $votes = $rating["data"]["votes"];
 $allVotes = array_sum($votes);
 ?>
+
+<?php if($allVotes > 0): ?>
+
 <div class="cs-reviews-summary">
 
 
@@ -36,7 +39,7 @@ $allVotes = array_sum($votes);
 
     <ul class="cs-reviews-summary__bars">
 
-        <?php for ( $i = 1; $i <= count($votes); $i++ ): ?>
+        <?php for ($i = count($votes); $i > 0; $i--): ?>
             <li class="cs-reviews-summary__bar">
                 <span class="cs-reviews-summary__bar-label"> <?php /* @escapeNotVerified */ echo $i; echo ' '; if( $i
                         == 1
@@ -77,3 +80,5 @@ $allVotes = array_sum($votes);
         });
     } );
 </script>
+
+<?php endif; ?>
