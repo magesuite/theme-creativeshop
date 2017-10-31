@@ -26,4 +26,9 @@ var config = {
             },
         },
     },
+    map: {
+        '*': {
+            checkoutCustomizations:  'Magento_Checkout/js/checkout-customizations'
+        }
+    }
 };
