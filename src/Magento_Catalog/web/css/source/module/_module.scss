@@ -49,7 +49,6 @@
             background-position: center !important;
             width: 0.9rem !important;
             height: 1.5rem !important;
-            // @include retina-sprite($sprite-arrow-prev-group);
         }
     }
 
@@ -63,7 +62,6 @@
             background-position: center !important;
             width: 0.9rem !important;
             height: 1.5rem !important;
-            // @include retina-sprite($sprite-arrow-next-group);
         }
     }
 
@@ -88,7 +86,7 @@
 
         &--horizontal {
             #{$root}__nav--thumbs {
-                height: auto !important; // stylelint-disable-line
+                height: auto !important;
             }
 
             #{$root}__nav__frame--thumb {
@@ -111,21 +109,21 @@
 
     &__nav {
         @include media('<tablet') {
-            width: 100% !important; // stylelint-disable-line
+            width: 100% !important;
             padding: 2rem 0 0;
-            height: auto !important; // stylelint-disable-line
+            height: auto !important;
         }
 
         &__frame {
             @include media('<tablet') {
                 border-radius: 2px;
                 background-color: $colorAlto;
-                width: 2.8rem !important; // stylelint-disable-line
-                height: 0.9rem !important; // stylelint-disable-line
+                width: 2.8rem !important;
+                height: 0.9rem !important;
                 transform: skew(-18deg);
-                margin: 0 0.5rem 0 0 !important; // stylelint-disable-line
-                border: none !important; // stylelint-disable-line
-                display: inline-block !important; // stylelint-disable-line
+                margin: 0 !important;
+                border: none !important;
+                display: inline-block !important;
 
                 &.fotorama__active {
                     background: $colorGold;
@@ -134,13 +132,17 @@
 
             &--thumb {
                 // Adjusting thumbnails
-                padding: 0 !important; // stylelint-disable-line
+                padding: 0 !important;
                 border: 1px solid $colorAlto;
                 box-sizing: border-box;
                 transition: border-color 0.3s;
                 border-radius: 3px;
                 overflow: hidden;
                 cursor: pointer;
+
+                & + & {
+                    margin-left: 0.5rem !important;
+                }
 
                 &[data-active='true'] {
                     border-color: $colorCeruleanBlue;
