@@ -39,7 +39,10 @@ export default class AddressAutofill {
         }).always(() => {
             // The most important parameter to set googleDetector region option and language option is value of country select
             // First check if country select has any value, then check if it is different from geolocation set by IP
-            if (this.countrySelect.val() && (this.countrySelect.val() !== options.region)) {
+            if (
+                this.countrySelect.val() &&
+                this.countrySelect.val() !== options.region
+            ) {
                 options.region = this.countrySelect.val();
             }
 
