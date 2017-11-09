@@ -1,23 +1,24 @@
 <?php
-$items = Array(0, 1);
-$showNew = $items[array_rand($items)];
+$product = $block->getProduct();
+$isNew = $this->helper('Creativestyle\FrontendExtension\Helper\Product')->isNew($product);
+$isOnSale = $this->helper('Creativestyle\FrontendExtension\Helper\Product')->isOnSale($product);
 ?>
-<div class="cs-product-gallery__badge-wrapper">
-    <?php if ($showNew): ?>
 
+<div class="cs-product-gallery__badge-wrapper">
+    <?php if ($isNew): ?>
         <span class="cs-badge cs-badge--new cs-badge--label-big cs-badge--cut">
             <span class="cs-badge__span cs-badge__span--no-space"><?= __('New'); ?></span>
         </span>
 
     <?php endif; ?>
 
-    <?php if ($showNew == 0 && $items[array_rand($items)]): ?>
+    <?php if ($isOnSale): ?>
         <div class="cs-multiple-badges">
             <span class="cs-badge cs-badge--attention cs-badge--label-big cs-badge--cut">
                 <span class="cs-badge__span cs-badge__span--no-space"><?= __('Sale'); ?></span>
             </span>
             <span class="cs-badge cs-badge--label-big">
-                <span class="cs-badge__span"><?= __('-30%'); ?></span>
+                <span class="cs-badge__span"><?= __('%'); ?></span>
             </span>
         </div>
 
