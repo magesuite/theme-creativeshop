@@ -12,16 +12,18 @@ define(['rjsResolver', 'jquery', 'mage/validation', 'bundle'], function(
     /**
      * Makes sure our custom next buttons trigger originals properly.
      */
+
     function handleCustomNextButtons() {
         var $customNextButtons = $('.cs-checkout-button-next');
-        var $origNextButtons = $('#shipping-method-buttons-container button');
+        // ID of a form that has hidden button
+        var $formWithHiddenNextButton = $('#co-shipping-method-form');
         if ($customNextButtons.length) {
             // Probably there is a problem with: data-bind="css: { 'cs-no-display': isHidden() }" in
             // next-button.html. In some percentages is isPayment is triggered on is Shipping
             $('.cs-checkout__sidebar-bottom').removeClass('cs-no-display');
 
             $customNextButtons.on('click', function() {
-                $origNextButtons.trigger('click');
+                $formWithHiddenNextButton.submit();
             });
         }
     }
