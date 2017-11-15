@@ -33,7 +33,7 @@
             <span data-bind="text: getTitle()"></span>
             <span class="cs-input__label-icon-wrapper">
                 <svg class="cs-input__label-icon">
-                    <use xlink:href="#direct_debit"></use>
+                    <use xlink:href="#invoice"></use>
                 </svg>
             </span>
         </label>
@@ -49,63 +49,50 @@
             <!--/ko-->
         </div>
 
-        <form class="debit_form" id="debit_form" action="#" method="post" data-bind="attr: {id: getCode() + '_debit_form'}">
-            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payone_form_debit'}">
-                <div class="cs-input">
-                    <label data-bind="attr: {for: getCode() + '_country'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Bank country'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <select style="width:230px;" name="payment[debit_country]" class="cs-input__select"
-                                data-bind=" attr: {id: getCode() + '_country', 'data-container': getCode() + '_country'},
-                                        enable: true,
-                                        options: getCountries(),
-                                        optionsValue: 'id',
-                                        optionsText: 'title',
-                                        optionsCaption: $t('--Please Select--'),
-                                        value: bankCountry">
-                        </select>
-                    </div>
-                </div>
-
+        <form action="#" method="post" data-bind="attr: {id: getCode() + '_form'}">
+            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode()}">
+                <!-- ko if: requestBirthday() -->
                 <div class="cs-input | number required">
-                    <label data-bind="attr: {for: getCode() + '_iban'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'IBAN'--><!-- /ko --></span>
+                    <label data-bind="attr: {for: getCode() + '_birthday'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Birthday'--><!-- /ko --></span>
                     </label>
-                    <div class="cs-input__control">
-                        <input type="text" name="payment[iban]" class="cs-input__input" value=""
+                    <div class="cs-input__control cs-input__control--birthday">
+                        <input type="text" name="payment[birthday]" class="cs-input__input" value=""
+                               size="3" maxlength="2"
                                data-bind="attr: {
                                     autocomplete: off,
-                                    id: getCode() + '_iban',
-                                    title: $t('IBAN'),
-                                    'data-container': getCode() + '-iban'},
-                              value: iban,
+                                    id: getCode() + '_birthday',
+                                    title: $t('Day of birth'),
+                                    'data-container': getCode() + '-birthday'},
+                              value: birthday,
                               valueUpdate: 'keyup' "/>
-                    </div>
-                </div>
-
-                <!-- ko if: requestBic() -->
-                <div class="cs-input | number required">
-                    <label data-bind="attr: {for: getCode() + '_bic'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'BIC'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <input type="text" name="payment[bic]" class="cs-input__input" value=""
+                        <input type="text" name="payment[birthmonth]" class="cs-input__input" value=""
+                               size="3" maxlength="2"
                                data-bind="attr: {
                                     autocomplete: off,
-                                    id: getCode() + '_bic',
-                                    title: $t('BIC'),
-                                    'data-container': getCode() + '-bic'},
-                              value: bic,
+                                    id: getCode() + '_birthmonth',
+                                    title: $t('Month of birth'),
+                                    'data-container': getCode() + '-birthmonth'},
+                              value: birthmonth,
                               valueUpdate: 'keyup' "/>
+                        <input type="text" name="payment[birthyear]" class="cs-input__input" value=""
+                               size="8" maxlength="4"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthyear',
+                                    title: $t('Year of birth'),
+                                    'data-container': getCode() + '-birthyear'},
+                              value: birthyear,
+                              valueUpdate: 'keyup' "/> 
                     </div>
+                    <span class="cs-input__note"><!-- ko i18n: '(DD.MM.YYYY)'--><!-- /ko --></span>
                 </div>
                 <!--/ko-->
             </fieldset>
         </form>
 
         <p data-bind="html: getInstructions()"></p>
-        <div class="checkout-agreements-block">
+        <div class="cs-payment__agreements | checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
@@ -114,7 +101,7 @@
             <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
                     type="submit"
                     data-bind="
-                    click: (isManageMandateActive() == 1 ? handleDebitPayment : placeOrder),
+                    click: placeOrder,
                     attr: {title: $t('Place Order')},
                     enable: (getCode() == isChecked()),
                     css: {disabled: !isPlaceOrderActionAllowed()}
