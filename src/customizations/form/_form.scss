@@ -116,6 +116,21 @@
                 max-width: calc(72 * 45rem / 100);
             }
         }
+
+        // there is a bug in magento - the `sortOrder` property in XML for individual fields in billing/shipping
+        // address form are ignored and at the end we can't move zip code field before city field
+        // https://github.com/magento/magento2/issues/5849
+        // because zip code and city fields are separated by state/province field, the whole form looks ugly.
+        // => set 100% width for zip code and city fields in billing/shipping address form
+        &--type_zip,
+        &--type_city {
+            .billing-address-form & {
+                @include media('>=tablet') {
+                    width: 100%;
+                    max-width: 45rem;
+                }
+            }
+        }
     }
 
     &__group {
