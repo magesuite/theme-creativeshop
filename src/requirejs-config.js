@@ -24,11 +24,18 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
+            'Magento_Checkout/js/region-updater': {
+                'Magento_Checkout/js/region-updater-ext': true,
+            },
+            'Magento_Catalog/js/catalog-add-to-cart': {
+                'Magento_Catalog/js/catalog-add-to-cart-ext': true,
+            },
         },
     },
     map: {
         '*': {
-            checkoutCustomizations:  'Magento_Checkout/js/checkout-customizations'
-        }
-    }
+            checkoutCustomizations:
+                'Magento_Checkout/js/checkout-customizations',
+        },
+    },
 };
