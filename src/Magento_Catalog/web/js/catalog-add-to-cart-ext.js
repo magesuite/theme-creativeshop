@@ -8,7 +8,7 @@ define(['jquery', 'jquery/ui', 'pageCache'], function($) {
     'use strict';
 
     return function(catalogAddToCart) {
-        return $.widget('mage.catalogAddToCart', catalogAddToCart, {
+        $.widget('mage.catalogAddToCart', catalogAddToCart, {
             _create: function() {
                 // Remove disabled class from "Add to cart" button.
                 this.element
@@ -18,5 +18,7 @@ define(['jquery', 'jquery/ui', 'pageCache'], function($) {
                 this._super();
             },
         });
+
+        return $.mage.catalogAddToCart;
     };
 });
