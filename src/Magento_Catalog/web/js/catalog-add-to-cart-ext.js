@@ -12,7 +12,7 @@ define(['jquery', 'jquery/ui', 'pageCache'], function($) {
             _create: function() {
                 // Remove disabled class from "Add to cart" button.
                 this.element
-                    .find('.' + this.options.addToCartButtonDisabledClass)
+                    .find('#product-addtocart-button')
                     .prop('disabled', false);
                 // Initialize default _create function.
                 this._super();
