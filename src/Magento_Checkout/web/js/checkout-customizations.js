@@ -23,7 +23,12 @@ define(['rjsResolver', 'jquery', 'mage/validation', 'bundle'], function(
             $('.cs-checkout__sidebar-bottom').removeClass('cs-no-display');
 
             $customNextButtons.on('click', function() {
-                $formWithHiddenNextButton.submit();
+                if ($formWithHiddenNextButton.length) {
+                    $formWithHiddenNextButton.submit();
+                } else {
+                    $('#co-shipping-method-form').submit();
+                }
+
             });
         }
     }
