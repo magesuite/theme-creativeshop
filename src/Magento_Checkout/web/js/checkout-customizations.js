@@ -1,10 +1,11 @@
 /**
  * Mount creativestyle customizations after step shipping of the checkout is loaded
  */
-define(['rjsResolver', 'jquery', 'mage/validation', 'bundle'], function(
+define(['rjsResolver', 'jquery', 'mage/validation', 'mage/translate', 'bundle'], function(
     resolver,
     $,
     validation,
+    $translate,
     bundle
 ) {
     'use strict';
@@ -120,7 +121,7 @@ define(['rjsResolver', 'jquery', 'mage/validation', 'bundle'], function(
                             ) {
                                 $input.after(
                                     '<div class="cs-input__warning" >' +
-                                        $.mage.__(
+                                        $translate(
                                             'Do not forget about your house number.'
                                         ) +
                                         '</div>'
