@@ -30,6 +30,9 @@ var config = {
             'Magento_Catalog/js/catalog-add-to-cart': {
                 'Magento_Catalog/js/catalog-add-to-cart-ext': true,
             },
+            'Smile_ElasticsuiteCore/js/form-mini': {
+                'Smile_ElasticsuiteCore/js/form-mini-ext': true,
+            },
         },
     },
     map: {
