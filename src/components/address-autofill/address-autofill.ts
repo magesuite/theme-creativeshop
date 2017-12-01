@@ -223,12 +223,25 @@ export default class AddressAutofill {
                 this.detectorType === 'place' &&
                 !$('.cs-input__warning').length
             ) {
-                $jsSelect.after(
-                    '<div class="cs-input__warning">' +
-                        $translate('Do not forget about <strong>') +
-                        $translate('street number') +
-                        '</strong>.</div>'
-                );
+                const checkoutElement = $('#checkout');
+                let missingStreetMessage = '';
+                const missingStreetDataAttribute =
+                    checkoutElement.attr(
+                        'data-missing-street-number-wording'
+                    ) &&
+                    checkoutElement.data('missing-street-number-wording') !== ''
+                        ? checkoutElement.data('missing-street-number-wording')
+                        : false;
+
+                if (missingStreetDataAttribute) {
+                    missingStreetMessage = missingStreetDataAttribute;
+                } else {
+                    missingStreetMessage =
+                        '<div class="cs-input__warning">' +
+                        $translate('Do not forget about street number') +
+                        '</div>';
+                }
+                $jsSelect.after(missingStreetMessage);
             } else if (this.detectorType === 'address') {
                 this.streetField
                     .parents('.cs-input')
