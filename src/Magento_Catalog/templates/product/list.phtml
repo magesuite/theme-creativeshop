@@ -65,23 +65,24 @@ $filtersLayout = $this->getFiltersLayout();
                 <?php foreach ($productCollection as $product): ?>
                     <?php
                         $iterator++;
-                        $showHeroProduct = $iterator==1 && $heroProduct;
+                        $showHeroProduct = $iterator == 1 && $heroProduct;
                         $productImageUrl = $block->getImage($product, $image)->getImageUrl();
                         $productImageUrl2x = $block->getImage($product, $image2x)->getImageUrl();
+                        $isLazyloaded = $iterator > 9;
                     ?>
-                    <?php echo $this
+                    <?= $this
                         ->getLayout()
                         ->createBlock(
-                            '\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator, 
+                            '\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator,
                             ['data' => get_defined_vars()]
                         )
-                        ->setCacheKeyElements($viewMode, $showHeroProduct, $productImageUrl)
+                        ->setCacheKeyElements($viewMode, $showHeroProduct, $productImageUrl, $isLazyloaded)
                         ->toHtml()
                     ?>
 
                 <?php endforeach; ?>
 
-                <?php if($teasersConfig): ?> 
+                <?php if($teasersConfig): ?>
                     <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
                         $teaserClass = 'cs-grid-layout_in-column__brick cs-grid-layout_in-column__brick--teaser';
                         if($teaser['size']['x'] == 2) {
