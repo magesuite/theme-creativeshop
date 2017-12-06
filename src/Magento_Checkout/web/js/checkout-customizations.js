@@ -24,7 +24,12 @@ define(['rjsResolver', 'jquery', 'mage/validation', 'mage/translate', 'bundle'],
             $('.cs-checkout__sidebar-bottom').removeClass('cs-no-display');
 
             $customNextButtons.on('click', function() {
-                $formWithHiddenNextButton.submit();
+                if ($formWithHiddenNextButton.length) {
+                    $formWithHiddenNextButton.submit();
+                } else {
+                    $('#co-shipping-method-form').submit();
+                }
+
             });
         }
     }
@@ -119,13 +124,21 @@ define(['rjsResolver', 'jquery', 'mage/validation', 'mage/translate', 'bundle'],
                                 !$input.next().hasClass('cs-input__warning') &&
                                 !$('.cs-html-select--autosuggest').length
                             ) {
-                                $input.after(
-                                    '<div class="cs-input__warning" >' +
-                                        $translate(
-                                            'Do not forget about your house number.'
-                                        ) +
-                                        '</div>'
-                                );
+                                var checkoutElement = $('#checkout');
+                                var missingStreetMessage = '';
+                                var missingStreetDataAttribute = checkoutElement.attr('data-missing-street-number-wording') && checkoutElement.data('missing-street-number-wording') !== '' ? checkoutElement.data('missing-street-number-wording') : false;
+
+                                if(missingStreetDataAttribute) {
+                                    missingStreetMessage = '<div class="cs-input__warning" >' +
+                                      missingStreetDataAttribute + '</div>';
+                                } else {
+                                    missingStreetMessage = '<div class="cs-input__warning" >' +
+                                      $translate(
+                                        'Do not forget about street number'
+                                      ) +
+                                      '</div>'
+                                }
+                                $input.after(missingStreetMessage);
                             }
                         } else {
                             $inputComponent

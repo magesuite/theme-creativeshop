@@ -3,8 +3,8 @@
  * including our custom containers and labels when selected country changes.
  *
  * Desired functionality includes:
- * - Showing entire "State/Province" field when USA country is selected.
- * - Hiding it for all the other countries.
+ * - Showing entire "State/Province" field when it is required.
+ * - Hiding it when it is not.
  */
 define(['jquery', 'jquery/ui'], function($) {
     'use strict';
@@ -17,7 +17,10 @@ define(['jquery', 'jquery/ui'], function($) {
                 var $regionInput = $(this.options.regionInputId);
                 var $regionList = $(this.options.regionListId);
 
-                if ($regionInput.css('display') !== 'none') {
+                if (
+                    $regionInput.css('display') !== 'none' ||
+                    $regionList.prop('disabled')
+                ) {
                     $regionList
                         .closest('.cs-input')
                         .addClass('cs-visually-hidden');
