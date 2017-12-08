@@ -14,7 +14,7 @@ const config = {
     postcss: [
         flexbugs(),
         autoprefixer({
-            browsers: ['IE>=10', '>1%', 'last 2 versions'],
+            browsers: ['IE>=10', 'iOS>=8', '>1%', 'last 2 versions'],
         }),
     ],
     cleanCSS: {},
