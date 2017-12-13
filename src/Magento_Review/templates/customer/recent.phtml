@@ -11,8 +11,8 @@
                 <?php /* @escapeNotVerified */ echo __('My Recent Reviews') ?>
             </h2>
             <span class="cs-title-block__span">
-                <a 
-                    class="cs-info-block__title-link | cs-link" 
+                <a
+                    class="cs-info-block__title-link | cs-link"
                     href="<?php /* @escapeNotVerified */ echo $block->getAllReviewsUrl() ?>">
                     <?php /* @escapeNotVerified */ echo __('View All') ?>
                 </a>
@@ -24,8 +24,8 @@
                 <?php $iterator = 1; ?>
                 <?php foreach ($block->getReviews() as $review): ?>
                     <li>
-                        <a 
-                            class="cs-link" 
+                        <a
+                            class="cs-link"
                             href="<?php /* @escapeNotVerified */ echo $block->getReviewUrl($review->getReviewId()) ?>"
                         >
                             <?php echo $block->escapeHtml($review->getName()) ?>
@@ -41,7 +41,7 @@
                                 $review_count = $review->getCount();
                                 $text = '
                                     <span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span>
-                                    <span itemprop="reviewCount">('.$review_count.' '.$items_wording.')</span>
+                                    (<span itemprop="reviewCount">'.$review_count.'</span> '.$items_wording.')
                                 ';
                             ?>
                             <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'rating-summary-grid-product-' . $iterator, [
