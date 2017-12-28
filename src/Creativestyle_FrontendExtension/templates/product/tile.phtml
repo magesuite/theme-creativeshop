@@ -1,0 +1,113 @@
+<?php extract($block->getData()); ?>
+<li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__brick <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__brick--teaser <?php echo $viewModeClass; ?>__brick--x2 <?php echo $viewModeClass; ?>__brick--y2<?php endif; ?>">
+    <div class="cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
+        <?php
+        $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
+        $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
+        $productNameStripped = $block->stripTags($product->getName(), null, true);
+        $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+        $getIsSalable = $salabilityStatus[$product->getId()];
+        $badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+        $newBadge = $badgeHelper->isNew($product);
+        $newBadgeText = 'New';
+        $newBadgeItem = '';
+        $discount= $badgeHelper->getSalePercentage($product);
+        $discountBadge = '';
+
+        if( $discount ) {
+            $discountBadge = '<div class="cs-grid-product__badge cs-badge cs-badge--discount">
+                <span class="cs-badge__span">'  . $discount . '%</span>
+            </div>';
+        }
+
+        if ( $newBadge ) {
+            $newBadgeItem = '<div class="cs-grid-product__badge cs-badge cs-badge--new">
+                <span class="cs-badge__span">' . __($newBadgeText) . '</span>
+            </div>';
+        }
+
+        $data = [
+            'lazyload' => $iterator > 9,
+            'url' => $product->getProductUrl(),
+            'image' => [
+                'src' => $productImageUrl,
+                'srcset' => $productImageSrcset,
+                'alt' => $productNameStripped,
+                'width' => '216',
+                'height' => '270'
+            ],
+            'name' => $helper->productAttribute($product, $product->getName(), 'name'),
+            'price' => [
+                'content' => $block->getProductPrice($product)
+            ],
+            'swatches' => [
+                'content' => $block->getProductDetailsHtml($product)
+            ],
+            'addons' => [
+                'right' => [
+                    [
+                        'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                        'content' => $getIsSalable ? __('In stock') : __('Out of stock')
+                    ]
+                ]
+            ],
+            'hotspots' => [
+                'after' => [
+                    'photo' => ($newBadgeItem || $discountBadge ) ? '<div class="cs-grid-product__badges">' . $newBadgeItem . $discountBadge . '</div>' : '',
+                ]
+            ],
+        ];
+
+        $ratingData = $csProductHelper->getReviewSummary($product)['data'];
+        if($ratingData['activeStars']):
+            $data['addons']['left'][] = [
+                'mix' => 'cs-grid-product__addon--rating',
+                'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$iterator, [
+                        'data' => [
+                            'namespace' => 'cs-',
+                            'maxStars' => $ratingData['maxStars'],
+                            'activeStars' => $ratingData['activeStars'],
+                            'text' => '('.$ratingData['count'].')'
+                        ]
+                    ]
+                )->setTemplate("star-rating/star-rating.twig")->toHtml()
+            ];
+        endif;
+
+        $data['addons']['left'][] = [
+            'content' => sprintf(
+                '<ul class="cs-links-block-addto" data-role="add-to-links">
+                                        <li class="cs-links-block-addto__item">
+                                            <a
+                                                href="#"
+                                                class="cs-links-block-addto__link towishlist"
+                                                title="%s"
+                                                aria-label="%s"
+                                                data-post=\'%s\'
+                                                data-action="add-to-wishlist"
+                                                role="button"
+                                            >
+                                                <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                                %s
+
+                                            </a>
+                                        </li>
+                                    </ul>',
+                $block->escapeHtml(__('Add to Wish List')),
+                $block->escapeHtml(__('Add to Wish List')),
+                $block->getAddToWishlistParams($product),
+                __('Add to Wishlist')
+            )
+        ];
+
+        ?>
+
+        <?=$this->getLayout()->createBlock(
+            'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
+                'data' => $data
+            ]
+        )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+    </div>
+</li>
