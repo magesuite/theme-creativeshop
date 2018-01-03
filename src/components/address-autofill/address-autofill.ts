@@ -330,7 +330,7 @@ export default class AddressAutofill {
         }
 
         let selectedIndex: number = 0;
-        this.streetField.on('keyup', (e: KeyboardEvent) => {
+        this.streetField.on('keyup keypress', (e: KeyboardEvent) => {
             e.preventDefault();
 
             const $items: JQuery = jsSelect.find('.cs-html-select__menu-item');
