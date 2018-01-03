@@ -32,9 +32,25 @@
         padding: 3rem 3rem 1.5rem !important; /* stylelint-disable-line declaration-no-important */
         border-top: 1px solid $colorAlto !important; /* stylelint-disable-line declaration-no-important */
 
+        .confirm & {
+            @include media('<tablet') {
+                flex-wrap: wrap;
+            }
+
+            @include media('>=tablet') {
+                justify-content: space-between;
+            }
+        }
+
         button {
             @extend .#{$namespace}button;
             @extend .#{$namespace}button--look_default;
+
+            .confirm & {
+                @include media('<tablet') {
+                    width: 100%;
+                }
+            }
         }
 
         .action-hide-popup,
