@@ -4,7 +4,6 @@ import ItemCloner from '../../../node_modules/creative-patterns/packages/compone
 import $ from 'jquery';
 
 new ItemCloner($('.cs-grid-product:not(.cs-grid-product--static)'), {
-    originHoverClass: 'cs-grid-product--hidden',
     cloneContentHoverClass: 'cs-grid-product--show-details',
     touch: {
         disableAnimations: false,
