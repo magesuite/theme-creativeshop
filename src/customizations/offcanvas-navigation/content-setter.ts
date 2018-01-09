@@ -43,9 +43,7 @@ export function buildSubtree($link: JQuery): NavigationTree {
         icon: $link.find(`> .${navClassName}__link-icon-wrapper`).length
             ? $link
                   .find(
-                      `> .${navClassName}__link-icon-wrapper .${
-                          navClassName
-                      }__link-icon`
+                      `> .${navClassName}__link-icon-wrapper .${navClassName}__link-icon`
                   )
                   .attr('src')
             : '',
@@ -88,9 +86,9 @@ export function renderTree(
     navigationTree.forEach((category: NavigationTree, index: number) => {
         if (parent && index === 0) {
             subtreeHTML += `<li class="${offNavClassName}__item">
-                <a class="${offNavClassName}__link ${
-                offNavClassName
-            }__link--return" href="${parent.url}">
+                <a class="${offNavClassName}__link ${offNavClassName}__link--return" href="${
+                parent.url
+            }">
                     <svg class="${offNavClassName}__icon">
                         <use xlink:href="#arrow_prev"></use>
                     </svg>
@@ -109,9 +107,9 @@ export function renderTree(
         const categoryIconHTML: string =
             settings.showCategoryIcon && category.icon
                 ? `<span class="${offNavClassName}__category-icon-wrapper">
-                    <img src="${category.icon}" alt="${category.name}" class="${
-                      offNavClassName
-                  }__category-icon">
+                    <img src="${category.icon}" alt="${
+                      category.name
+                  }" class="${offNavClassName}__category-icon">
                </span>`
                 : '';
         const productCountHTML: string =
@@ -124,13 +122,11 @@ export function renderTree(
             ? `${offNavClassName}__item--with-icon`
             : '';
 
-        subtreeHTML += `<li class="${offNavClassName}__item ${
-            additionalItemClass
-        }">`;
+        subtreeHTML += `<li class="${offNavClassName}__item ${additionalItemClass}">`;
         if (category.subcategories.length) {
-            subtreeHTML += `<a class="${offNavClassName}__link ${
-                offNavClassName
-            }__link--parent" href="${category.url}">
+            subtreeHTML += `<a class="${offNavClassName}__link ${offNavClassName}__link--parent" href="${
+                category.url
+            }">
                 <span class="${offNavClassName}__text">
                     ${categoryIconHTML} ${category.name} ${productCountHTML}
                 </span>
@@ -167,9 +163,7 @@ export function renderUserAction(): string {
             accountLinkHref.toLowerCase().indexOf('out') === -1 ? 'in' : 'out';
 
         return `<li class="${offNavClassName}__item">
-        <a class="${offNavClassName}__link ${offNavClassName}__link--sign-${
-            accountActionType
-        }" href="${accountLinkHref}">
+        <a class="${offNavClassName}__link ${offNavClassName}__link--sign-${accountActionType}" href="${accountLinkHref}">
             <span class="${offNavClassName}__text">
                 ${accountLinkText}
             </span>
@@ -203,9 +197,7 @@ export const contentSetter = (
     const $links: JQuery = $navigation
         .find(`.${navClassName}__link`)
         .not(
-            `.${navClassName}__link--category, .${
-                navClassName
-            }__link--subcategory`
+            `.${navClassName}__link--category, .${navClassName}__link--subcategory`
         );
     const $offNavList: JQuery = offcanvasNavigation
         .getElement()

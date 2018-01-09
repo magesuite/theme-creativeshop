@@ -294,9 +294,7 @@ export default class AddressAutofill {
             if (addressStreet && addressCity) {
                 optionsHtml =
                     optionsHtml +
-                    `<li class="cs-html-select__menu-item" data-value='${
-                        dataValues
-                    }'><a class="cs-html-select__menu-link">${
+                    `<li class="cs-html-select__menu-item" data-value='${dataValues}'><a class="cs-html-select__menu-link">${
                         address.full
                     }</a></li>`;
             }
