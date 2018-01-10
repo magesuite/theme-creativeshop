@@ -3,8 +3,8 @@
 import BrandCarousel from '../../../node_modules/creative-patterns/packages/components/brand-carousel/src/brand-carousel';
 import $ from 'jquery';
 
-if ($('.cs-brand-carousel').length) {
-    new BrandCarousel($('.cs-brand-carousel'), {
+$('.cs-brand-carousel').each((index: number, element: HTMLElement) => {
+    new BrandCarousel($(element), {
         spaceBetween: 50,
         slidesPerView: 6,
         centeredSlides: false,
@@ -31,4 +31,4 @@ if ($('.cs-brand-carousel').length) {
             },
         },
     });
-}
+});
