@@ -10,5 +10,10 @@ if ($('.cs-products-promo').length) {
         onSlideChangeStart(swiper: any): void {
             $(document).trigger('destroyItemClones');
         },
+        onPaginationRendered(swiper: any): void {
+            swiper.bullets.length <= 1
+                ? $(swiper.paginationContainer).hide()
+                : $(swiper.paginationContainer).show();
+        },
     });
 }
