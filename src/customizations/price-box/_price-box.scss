@@ -9,7 +9,7 @@ $namespace: 'cs-';
         font-size: 1.51rem;
 
         &-label {
-            display: block;
+            display: none;
             font-size: 1.15rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -66,6 +66,8 @@ $namespace: 'cs-';
 
     .price-box {
         display: flex;
+        margin-top: 1.5rem;
+        flex-direction: column;
     }
 
     .price {
@@ -83,7 +85,9 @@ $namespace: 'cs-';
 
     .old-price {
         transform: translateY(-0.3rem);
+        color: $colorAlto;
         order: 1;
+        text-decoration: none;
     }
 
     .old-price .price {
@@ -92,5 +96,29 @@ $namespace: 'cs-';
 
     .page-product-grouped & {
         padding-bottom: 0;
+    }
+}
+
+.minimal-price-link {
+    margin-top: 0;
+    margin-right: 1.5rem;
+    position: relative;
+
+    &:after {
+        color: $colorCeruleanBlue;
+        display: block;
+        content: '-';
+        right: -1rem;
+        top: 0;
+        position: absolute;
+    }
+}
+
+.catalog-category-view {
+    .special-price,
+    .#{$namespace}item-cloner--visible & {
+        .price {
+            color: $colorCrimson;
+        }
     }
 }
