@@ -2,6 +2,29 @@
 {% set rightAddons = [] %}
 {% set productMix = 'cs-grid-product--static cs-grid-product--navigation' %}
 
+{% if product.getIsNewProduct %}
+    {% set newBadge = '<div class="cs-grid-product__badge cs-badge cs-badge--new">
+                            <span class="cs-badge__span">' ~ translate('New') ~ '</span>
+                        </div>' %}
+{% else %}
+    {% set newBadge = '' %}
+{% endif %}
+
+
+{% if product.getSalePercentage > 0 %}
+    {% set discountBadge = '<div class="cs-grid-product__badge cs-badge cs-badge--discount">
+                        <span class="cs-badge__span">' ~ product.getSalePercentage ~ '%</span>
+                    </div>' %}
+{% else %}
+    {% set discountBadge = '' %}
+{% endif %}
+
+{% if product.getIsNewProduct or product.getSalePercentage > 0 %}
+    {% set badges = '<div class="cs-grid-product__badges">' ~ newBadge ~ discountBadge ~ '</div>' %}
+{% else %}
+    {% set badges = '' %}
+{% endif %}
+
 {% if product.rating.data is not null %}
     {% set ratingContent %}
         {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
@@ -52,6 +75,11 @@
     swatches: {
         mix: 'cs-grid-product__swatches--color-only',
         content: product.swatches
+    },
+    hotspots: {
+        after: {
+            photo: badges,
+        }
     },
     addons: {
         left: leftAddons,
