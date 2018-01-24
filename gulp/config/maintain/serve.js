@@ -9,7 +9,7 @@ const settings = {
      */
     browserSync: {
         proxy: {
-            target: 'http://m2c.dev',
+            target: 'http://creativeshop.me',
         },
         files: [`${paths.dist}/**/*`],
     },
