@@ -1,21 +1,18 @@
-
 /*global define*/
-define(
-    [
-        'uiComponent',
-        'Magento_Checkout/js/model/step-navigator',
-        'Magento_Checkout/js/model/quote'
-    ],
-    function (Component, stepNavigator, quote) {
-        "use strict";
-        return Component.extend({
-            defaults: {
-                displayArea: 'place-order',
-                template: 'Magento_Checkout/place-order'
-            },
-            isVisible: function() {
-                return !quote.isVirtual() && stepNavigator.isProcessed( 'shipping' );
-            }
-        });
-    }
-);
+define(['uiComponent', 'Magento_Checkout/js/model/step-navigator'], function(
+    Component,
+    stepNavigator
+) {
+    'use strict';
+    return Component.extend({
+        defaults: {
+            displayArea: 'place-order',
+            template: 'Magento_Checkout/place-order',
+        },
+        isHidden: function() {
+            var shipping = stepNavigator.steps()[0];
+
+            return shipping.isVisible;
+        },
+    });
+});
