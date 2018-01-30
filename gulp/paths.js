@@ -22,4 +22,9 @@ export default {
      * @type {String}
      */
     tmp: '.tmp/',
+    /**
+     * Web (url) path to theme's frontend assets (without the language part)
+     * @type {String}
+     */
+    distWeb: `/static/frontend/${templateInfo.name.charAt(0).toUpperCase()}${templateInfo.name.slice(1)}`
 };
