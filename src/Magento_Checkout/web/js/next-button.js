@@ -9,7 +9,9 @@ define(
                 template: 'Magento_Checkout/next-button',
             },
             isHidden: function() {
-                var payment = stepNavigator.steps()[1];
+                var payment = stepNavigator.steps().filter(function(step) {
+                    return step.code === 'payment';
+                })[0];
 
                 return payment ? payment.isVisible : ko.observable(false);
             },
