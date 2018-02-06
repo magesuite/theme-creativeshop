@@ -7,7 +7,7 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="main.content" htmlClass="cs-container cs-container--spacious | cs-container--pdp">
+        <referenceContainer name="main.content" htmlClass="cs-container cs-container--spacious cs-container--pdp">
             <container name="product.carousels.container" htmlTag="section" htmlClass="cs-container" after="-">
                 <container name="product.carousels.container.content" htmlTag="div" htmlClass="cs-container__inner" />
             </container>
@@ -21,7 +21,7 @@
             </container>
 
             <container name="product.details.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--edge-to-edge" after="product.info.main">
-                <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner | cs-product-description"/>
+                <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner cs-product-description"/>
             </container>
         </referenceContainer>
         <move element="product.info.media" destination="product.media.container.column" />
@@ -32,7 +32,7 @@
             <block class="Magento\Catalog\Block\Product\View\Description" name="product.badge" template="Magento_Catalog::product/view/badge.phtml"/>
         </referenceContainer>
 
-        <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main | cs-sticky-block cs-sticky-block--pdp | cs-product-sale-block">
+        <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main cs-sticky-block cs-sticky-block--pdp cs-product-sale-block">
             <block class="Creativestyle\FrontendExtension\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-"/>
             <container name="product.info.stock" htmlTag="div" htmlClass="cs-product-sale-block__stock" before="product.details.specials"/>
             <container name="product.details.specials" htmlTag="div" htmlClass="cs-product-sale-block__item">
@@ -43,14 +43,14 @@
 
         <referenceBlock name="page.main.title">
             <arguments>
-                <argument name="css_class" xsi:type="string">cs-product-sale-block__name | cs-t-headline--size_2</argument>
+                <argument name="css_class" xsi:type="string">cs-product-sale-block__name cs-t-headline--size_2</argument>
                 <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
             </arguments>
             <block class="Magento\Framework\View\Element\Template" name="product.info.share" template="Magento_Catalog::product/view/share.phtml"/>
         </referenceBlock>
         <move element="page.main.title" destination="product.info.main" after="product.category.name" />
 
-        <referenceContainer name="product.info.price" htmlClass="product-info-price | cs-price cs-price--pdp"/>
+        <referenceContainer name="product.info.price" htmlClass="product-info-price cs-price cs-price--pdp"/>
 
         <move element="product.info.type" destination="product.info.stock"/>
 
@@ -73,7 +73,7 @@
                 </arguments>
             </referenceBlock>
 
-            <referenceBlock name="catalog.product.related"  group="detailed_info">
+            <referenceBlock name="catalog.product.related">
                 <arguments>
                     <argument translate="true" name="title" xsi:type="string">Related products</argument>
                 </arguments>
