@@ -10,29 +10,35 @@ define(['jquery', 'Magento_Ui/js/lib/core/storage/local'], function(
 ) {
     'use strict';
     // Cache minicart selectors.
+    var isCartPage = $('body').hasClass('checkout-cart-index');
     var $minicart = $('[data-block="minicart"]');
-    var $minicartDropdown = $minicart.find('[data-role="dropdownDialog"]');
-    // Get number of items stored previously in cart.
-    var getPrevNumOfItems = function() {
-        return parseInt(storage.get('cs-prev-cart-items')) || 0;
-    };
-    // Update number of remembered items in cart.
-    var updateNumOfItems = function(itemsInCart) {
-        storage.set('cs-prev-cart-items', itemsInCart);
-    };
-    // Don't hide automatically if user hovers on flyout.
-    var minicartCloseTimeout;
-    $minicartDropdown.on('hover', function() {
-        clearTimeout(minicartCloseTimeout);
-    });
+    var shouldAutoopen = $minicart.data('autoopen') !== 0;
 
     return function(Minicart) {
+        if (!shouldAutoopen) {
+            return Minicart;
+        }
+
+        var $minicartDropdown = $minicart.find('[data-role="dropdownDialog"]');
+        // Get number of items stored previously in cart.
+        var getPrevNumOfItems = function() {
+            return parseInt(storage.get('cs-prev-cart-items')) || 0;
+        };
+        // Update number of remembered items in cart.
+        var updateNumOfItems = function(itemsInCart) {
+            storage.set('cs-prev-cart-items', itemsInCart);
+        };
+        // Don't hide automatically if user hovers on flyout.
+        var minicartCloseTimeout;
+        $minicartDropdown.on('hover', function() {
+            clearTimeout(minicartCloseTimeout);
+        });
+
         return Minicart.extend({
             update: function(updatedCart) {
                 // New number of items in cart.
                 var itemsInCart = updatedCart.summary_count;
-
-                if (itemsInCart > getPrevNumOfItems()) {
+                if (!isCartPage && itemsInCart > getPrevNumOfItems()) {
                     $minicartDropdown.dropdownDialog('open');
 
                     minicartCloseTimeout = setTimeout(function() {
