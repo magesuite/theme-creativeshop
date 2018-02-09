@@ -186,14 +186,35 @@ define(
 
             bundle.AddressAutofill({
                 streetField: $shippingAddressForm.find(
-                    'input[name="street[0]"]'
+                  'input[name="street[0]"]'
                 ),
                 zipField: $shippingAddressForm.find('input[name="postcode"]'),
                 cityField: $shippingAddressForm.find('input[name="city"]'),
                 countrySelect: $shippingAddressForm.find(
-                    'select[name="country_id"]'
+                  'select[name="country_id"]'
                 ),
             });
+
+            $('.billing-address-same-as-shipping-block').on('click', function() {
+                var $newBillingAddressForms = $('.billing-address-form .address');
+
+                $newBillingAddressForms.each(function() {
+                    var $newBillingAddressForm = $(this);
+                    bundle.AddressAutofill({
+                        streetField: $newBillingAddressForm .find(
+                          'input[name="street[0]"]'
+                        ),
+                        zipField: $newBillingAddressForm .find('input[name="postcode"]'),
+                        cityField: $newBillingAddressForm .find('input[name="city"]'),
+                        countrySelect: $newBillingAddressForm .find(
+                          'select[name="country_id"]'
+                        ),
+                    });
+                })
+            })
+
+
+
         }
 
         /**
