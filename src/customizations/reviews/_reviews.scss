@@ -153,6 +153,13 @@
         margin-top: 1rem;
         display: block;
     }
+
+    &__product-photo {
+        @include media('>=tablet', '<laptop') {
+            max-width: 18rem;
+            display: inline-block;
+        }
+    }
 }
 
 .review-control-vote {
@@ -181,7 +188,8 @@
         color: $colorGold;
     }
 
-    input[type='radio']:focus + .#{$namespace}reviews__rate-stars {
+    input[type='radio']:focus:not(:checked)
+        + .#{$namespace}reviews__rate-stars {
         &:before {
             opacity: 0 !important;
         }
