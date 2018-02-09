@@ -2,10 +2,16 @@
 // @codingStandardsIgnoreFile
 
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+
+$cHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Checkout');
+$shouldAutoopen = $cHelper->getMinicartFlag();
 ?>
 
-<div data-block="minicart" class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper">
-
+<div
+    class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper"
+    data-block="minicart"
+    data-autoopen="<?= $shouldAutoopen; ?>"
+>
     <a
         class="cs-header-user-area__link cs-hide-tablet-desktop"
         href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
