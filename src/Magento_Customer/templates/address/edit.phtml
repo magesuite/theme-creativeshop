@@ -72,164 +72,171 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
 
     <fieldset class="cs-form__fieldset cs-form__fieldset--level_1 | set">
 
-        <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
+        <div class="cs-form__fields-wrapper">
+
+            <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
             <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
                 <?= /* @escapeNotVerified */ __('Address') ?>
             </span>
-        </legend>
+            </legend>
 
-        <?php $streetValidationClass = $addressHelper->getAttributeValidationClass('street'); ?>
-        <div class="cs-input | cs-form__field | street required">
-            <label for="street_1" class="cs-input__label">
-                <span><?= /* @escapeNotVerified */ __('Street Address') ?></span>
-            </label>
-            <div class="cs-input__control">
-                <input
-                    type="text"
-                    name="street[]"
-                    value="<?= $block->escapeHtml($block->getStreetLine(1)) ?>"
-                    title="<?= /* @escapeNotVerified */ __('Street Address') ?>"
-                    id="street_1"
-                    class="cs-input__input <?= /* @escapeNotVerified */ $streetValidationClass ?>"
-                />
-                <div class="nested">
-                    <?php $streetValidationClass = trim(str_replace('required-entry', '', $streetValidationClass)); ?>
-                    <?php for ($i = 1, $n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $i < $n; $i++): ?>
-                        <div class="cs-input | cs-form__field cs-form__field--space-top | additional no-required">
-                            <label class="cs-input__label" for="street_<?= /* @noEscape */ $i + 1 ?>">
-                                <span><?= $block->escapeHtml(__('Street Address %1', $i + 1)) ?></span>
-                            </label>
-                            <div class="cs-input__control">
-                                <input
-                                    type="text" name="street[]"
-                                    value="<?= $block->escapeHtmlAttr($block->getStreetLine($i + 1)) ?>"
-                                    title="<?= $block->escapeHtmlAttr(__('Street Address %1', $i + 1)) ?>"
-                                    id="street_<?= /* @noEscape */ $i + 1 ?>"
-                                    class="cs-input__input <?= $block->escapeHtmlAttr($streetValidationClass) ?>"
-                                >
-                            </div>
-                        </div>
-                    <?php endfor; ?>
-                </div>
-            </div>
-        </div>
-
-        <?php if ($this->helper('Magento\Customer\Helper\Address')->isVatAttributeVisible()) : ?>
-            <div class="cs-input | cs-form__field | taxvat">
-                <label class="cs-input__label" for="vat_id">
-                    <span><?= /* @escapeNotVerified */ __('VAT Number'); ?></span>
+            <?php $streetValidationClass = $addressHelper->getAttributeValidationClass('street'); ?>
+            <div class="cs-input | cs-form__field | street required">
+                <label for="street_1" class="cs-input__label">
+                    <span><?= /* @escapeNotVerified */ __('Street Address') ?></span>
                 </label>
                 <div class="cs-input__control">
                     <input
                         type="text"
-                        name="vat_id"
-                        value="<?= $block->escapeHtml($address->getVatId()); ?>"
-                        title="<?= /* @escapeNotVerified */ __('VAT Number'); ?>"
-                        class="cs-input__input <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('vat_id'); ?>"
-                        id="vat_id"
-                    >
+                        name="street[]"
+                        value="<?= $block->escapeHtml($block->getStreetLine(1)) ?>"
+                        title="<?= /* @escapeNotVerified */ __('Street Address') ?>"
+                        id="street_1"
+                        class="cs-input__input <?= /* @escapeNotVerified */ $streetValidationClass ?>"
+                        />
+                    <div class="nested">
+                        <?php $streetValidationClass = trim(str_replace('required-entry', '', $streetValidationClass)); ?>
+                        <?php for ($i = 1, $n = $this->helper('Magento\Customer\Helper\Address')->getStreetLines(); $i < $n; $i++): ?>
+                            <div class="cs-input | cs-form__field cs-form__field--space-top | additional no-required">
+                                <label class="cs-input__label" for="street_<?= /* @noEscape */ $i + 1 ?>">
+                                    <span><?= $block->escapeHtml(__('Street Address %1', $i + 1)) ?></span>
+                                </label>
+                                <div class="cs-input__control">
+                                    <input
+                                        type="text" name="street[]"
+                                        value="<?= $block->escapeHtmlAttr($block->getStreetLine($i + 1)) ?>"
+                                        title="<?= $block->escapeHtmlAttr(__('Street Address %1', $i + 1)) ?>"
+                                        id="street_<?= /* @noEscape */ $i + 1 ?>"
+                                        class="cs-input__input <?= $block->escapeHtmlAttr($streetValidationClass) ?>"
+                                        >
+                                </div>
+                            </div>
+                        <?php endfor; ?>
+                    </div>
                 </div>
             </div>
-        <?php endif; ?>
-        <div class="cs-input | cs-form__field | city required">
-            <label class="cs-input__label" for="city">
-                <span><?= /* @escapeNotVerified */ __('City'); ?></span>
-            </label>
-            <div class="cs-input__control">
-                <input
-                    type="text"
-                    name="city"
-                    value="<?= $block->escapeHtml($address->getCity()); ?>"
-                    title="<?= /* @escapeNotVerified */ __('City'); ?>"
-                    class="cs-input__input <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('city') ?>"
-                    id="city"
-                >
-            </div>
-        </div>
-        <div class="cs-input | cs-form__field | region">
-            <label class="cs-input__label" for="region_id">
-                <span><?= /* @escapeNotVerified */ __('State/Province') ?></span>
-            </label>
-            <div class="cs-input__control">
-                <select
-                    id="region_id"
-                    name="region_id"
-                    title="<?= /* @escapeNotVerified */ __('State/Province') ?>"
-                    class="validate-select" <?= /* @escapeNotVerified */ (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>
-                >
-                    <option value=""><?= /* @escapeNotVerified */ __('Please select a region, state or province.') ?></option>
-                </select>
-                <input
-                    type="text"
-                    id="region"
-                    name="region"
-                    value="<?= $block->escapeHtml($block->getRegion()) ?>"
-                    title="<?= /* @escapeNotVerified */ __('State/Province') ?>"
-                    class="cs-input__input <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('region') ?>"
-                    <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>
-                />
-            </div>
-        </div>
-        <div class="cs-input | cs-form__field | zip required">
-            <label class="cs-input__label" for="zip">
-                <span><?= /* @escapeNotVerified */ __('Zip/Postal Code') ?></span>
-            </label>
-            <div class="cs-input__control">
-                <input
-                    type="text"
-                    name="postcode" value="<?= $block->escapeHtml($address->getPostcode()) ?>"
-                    title="<?= /* @escapeNotVerified */ __('Zip/Postal Code') ?>"
-                    id="zip"
-                    class="cs-input__input validate-zip-international <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('postcode') ?>"
-                >
-            </div>
-        </div>
-        <div class="cs-input | cs-form__field | country required">
-            <label class="cs-input__label" for="country">
-                <span><?= /* @escapeNotVerified */ __('Country') ?></span>
-            </label>
-            <div class="cs-input__control">
-                <?= $block->getCountryHtmlSelect() ?>
-            </div>
-        </div>
 
-        <?php if ($block->isDefaultBilling()): ?>
-            <div class="cs-messages cs-messages--short">
-                <div class="cs-messages__message  cs-messages__message--info">
+            <div class="cs-input | cs-form__field cs-form__field--type_zip | zip required">
+                <label class="cs-input__label" for="zip">
+                    <span><?= /* @escapeNotVerified */ __('Zip/Postal Code') ?></span>
+                </label>
+                <div class="cs-input__control">
+                    <input
+                        type="text"
+                        name="postcode" value="<?= $block->escapeHtml($address->getPostcode()) ?>"
+                        title="<?= /* @escapeNotVerified */ __('Zip/Postal Code') ?>"
+                        id="zip"
+                        class="cs-input__input validate-zip-international <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('postcode') ?>"
+                        >
+                </div>
+            </div>
+            <div class="cs-input | cs-form__field cs-form__field--type_city | city required">
+                <label class="cs-input__label" for="city">
+                    <span><?= /* @escapeNotVerified */ __('City'); ?></span>
+                </label>
+                <div class="cs-input__control">
+                    <input
+                        type="text"
+                        name="city"
+                        value="<?= $block->escapeHtml($address->getCity()); ?>"
+                        title="<?= /* @escapeNotVerified */ __('City'); ?>"
+                        class="cs-input__input <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('city') ?>"
+                        id="city"
+                        >
+                </div>
+            </div>
+            <div class="cs-input | cs-form__field | region">
+                <label class="cs-input__label" for="region_id">
+                    <span><?= /* @escapeNotVerified */ __('State/Province') ?></span>
+                </label>
+                <div class="cs-input__control">
+                    <select
+                        id="region_id"
+                        name="region_id"
+                        title="<?= /* @escapeNotVerified */ __('State/Province') ?>"
+                        class="validate-select" <?= /* @escapeNotVerified */ (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>
+                        >
+                        <option value=""><?= /* @escapeNotVerified */ __('Please select a region, state or province.') ?></option>
+                    </select>
+                    <input
+                        type="text"
+                        id="region"
+                        name="region"
+                        value="<?= $block->escapeHtml($block->getRegion()) ?>"
+                        title="<?= /* @escapeNotVerified */ __('State/Province') ?>"
+                        class="cs-input__input <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('region') ?>"
+                        <?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '';?>
+                        />
+                </div>
+            </div>
+            <div class="cs-input | cs-form__field | country required">
+                <label class="cs-input__label" for="country">
+                    <span><?= /* @escapeNotVerified */ __('Country') ?></span>
+                </label>
+                <div class="cs-input__control">
+                    <?= $block->getCountryHtmlSelect() ?>
+                </div>
+            </div>
+
+            <?php if ($this->helper('Magento\Customer\Helper\Address')->isVatAttributeVisible()) : ?>
+                <div class="cs-input | cs-form__field | taxvat">
+                    <label class="cs-input__label" for="vat_id">
+                        <span><?= /* @escapeNotVerified */ __('VAT Number'); ?></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input
+                            type="text"
+                            name="vat_id"
+                            value="<?= $block->escapeHtml($address->getVatId()); ?>"
+                            title="<?= /* @escapeNotVerified */ __('VAT Number'); ?>"
+                            class="cs-input__input <?= /* @escapeNotVerified */ $addressHelper->getAttributeValidationClass('vat_id'); ?>"
+                            id="vat_id"
+                            >
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($block->isDefaultBilling()): ?>
+                <div class="cs-messages cs-messages--short">
+                    <div class="cs-messages__message  cs-messages__message--info">
                     <span class="cs-messages__text">
                         <?= /* @escapeNotVerified */ __("It's a default billing address.") ?>
                     </span>
+                    </div>
                 </div>
-            </div>
-        <?php elseif ($block->canSetAsDefaultBilling()): ?>
-            <div class="cs-input cs-input--type-checkbox | choice set billing">
-                <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="cs-input__checkbox">
-                <label class="cs-input__label" for="primary_billing">
-                    <?= /* @escapeNotVerified */ __('Use as my default billing address') ?>
-                </label>
-            </div>
-        <?php else: ?>
-            <input type="hidden" name="default_billing" value="1" />
-        <?php endif; ?>
+            <?php elseif ($block->canSetAsDefaultBilling()): ?>
+                <div class="cs-input cs-input--type-checkbox | choice set billing">
+                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="cs-input__checkbox">
+                    <label class="cs-input__label" for="primary_billing">
+                        <?= /* @escapeNotVerified */ __('Use as my default billing address') ?>
+                    </label>
+                </div>
+            <?php else: ?>
+                <input type="hidden" name="default_billing" value="1" />
+            <?php endif; ?>
 
-        <?php if ($block->isDefaultShipping()): ?>
-            <div class="cs-messages cs-messages--short">
-            <div class="cs-messages__message  cs-messages__message--info">
+            <?php if ($block->isDefaultShipping()): ?>
+                <div class="cs-messages cs-messages--short">
+                    <div class="cs-messages__message  cs-messages__message--info">
                 <span class="cs-messages__text">
                     <?= /* @escapeNotVerified */ __("It's a default shipping address.") ?>
                 </span>
-            </div>
+                    </div>
+                </div>
+            <?php elseif ($block->canSetAsDefaultShipping()): ?>
+                <div class="cs-input cs-input--type-checkbox | choice set shipping">
+                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="cs-input__checkbox">
+                    <label class="cs-input__label" for="primary_shipping">
+                        <?= /* @escapeNotVerified */ __('Use as my default shipping address') ?>
+                    </label>
+                </div>
+            <?php else: ?>
+                <input type="hidden" name="default_shipping" value="1">
+            <?php endif; ?>
+
         </div>
-        <?php elseif ($block->canSetAsDefaultShipping()): ?>
-            <div class="cs-input cs-input--type-checkbox | choice set shipping">
-                <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="cs-input__checkbox">
-                <label class="cs-input__label" for="primary_shipping">
-                    <?= /* @escapeNotVerified */ __('Use as my default shipping address') ?>
-                </label>
-            </div>
-        <?php else: ?>
-            <input type="hidden" name="default_shipping" value="1">
-        <?php endif; ?>
+
+
     </fieldset>
     <div class="cs-form__buttons">
 
@@ -264,4 +271,17 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
             }
         }
     }
+</script>
+<script>
+    require(['jquery', 'bundle'], function( $, bundle ) {
+
+        var $newAddressForm = $('.form-address-edit');
+
+        bundle.AddressAutofill({
+            streetField: $newAddressForm.find('input#street_1'),
+            zipField: $newAddressForm.find('input[name="postcode"]'),
+            cityField: $newAddressForm.find('input[name="city"]'),
+            countrySelect: $newAddressForm.find('select[name="country_id"]')
+        });
+    });
 </script>
