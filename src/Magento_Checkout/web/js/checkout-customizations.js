@@ -195,7 +195,7 @@ define(
                 ),
             });
 
-            $('.billing-address-same-as-shipping-block').on('click', function() {
+            $('#co-payment-form').on('click', '.billing-address-same-as-shipping-block', function() {
                 var $newBillingAddressForms = $('.billing-address-form .address');
 
                 $newBillingAddressForms.each(function() {
