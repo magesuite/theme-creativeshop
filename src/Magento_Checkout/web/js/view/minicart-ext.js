@@ -12,7 +12,7 @@ define(['jquery', 'Magento_Ui/js/lib/core/storage/local'], function(
     // Cache minicart selectors.
     var isCartPage = $('body').hasClass('checkout-cart-index');
     var $minicart = $('[data-block="minicart"]');
-    var shouldAutoopen = $minicart.data('autoopen') !== 0;
+    var shouldAutoopen = $minicart.data('autoopen') !== null && $minicart.data('autoopen');
 
     return function(Minicart) {
         if (!shouldAutoopen) {
