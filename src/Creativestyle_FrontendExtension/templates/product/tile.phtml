@@ -10,20 +10,24 @@
         $badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
         $newBadge = $badgeHelper->isNew($product);
         $newBadgeText = 'New';
-        $newBadgeItem = '';
         $discount= $badgeHelper->getSalePercentage($product);
-        $discountBadge = '';
+        $badges = [];
 
         if( $discount ) {
-            $discountBadge = '<div class="cs-grid-product__badge cs-badge cs-badge--discount">
-                <span class="cs-badge__span">'  . $discount . '%</span>
-            </div>';
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--discount">
+                    <span class="cs-badge__span">'  . $discount . '%</span>
+                </span>'
+            ];
+
         }
 
         if ( $newBadge ) {
-            $newBadgeItem = '<div class="cs-grid-product__badge cs-badge cs-badge--new">
-                <span class="cs-badge__span">' . __($newBadgeText) . '</span>
-            </div>';
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--new">
+                    <span class="cs-badge__span">' . __($newBadgeText) . '</span>
+                </span>'
+            ];
         }
 
         $data = [
@@ -51,11 +55,7 @@
                     ]
                 ]
             ],
-            'hotspots' => [
-                'after' => [
-                    'photo' => ($newBadgeItem || $discountBadge ) ? '<div class="cs-grid-product__badges">' . $newBadgeItem . $discountBadge . '</div>' : '',
-                ]
-            ],
+            'badges' => $badges
         ];
 
         $ratingData = $csProductHelper->getReviewSummary($product)['data'];
