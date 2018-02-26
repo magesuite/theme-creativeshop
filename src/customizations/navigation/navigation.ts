@@ -16,4 +16,7 @@ new Navigation($(`.${namespace}navigation`), {
     flyoutColumnsClassName: `${namespace}navigation__categories`,
     flyoutDefaultColumnCount: 5,
     showNavigationOverlay: false,
+    highlightActiveCategory: true,
+    highlightWholeTree: true,
+    activeCategoryClassName: 'active',
 });
