@@ -9,12 +9,22 @@ const settings = {
      */
     browserSync: {
         proxy: {
-            target: 'http://creativeshop.me',
+            target: 'http://creativeshop.me'
         },
+        rewriteRules: [
+            {
+                match: '.creativeshop.me',
+                replace: ''
+            }
+        ],
         files: [`${paths.dist}/**/*`],
-	    serveStatic: [
+        serveStatic: [
             {
                 route: `${paths.distWeb}/en_US`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/en_GB`,
                 dir: `${paths.dist}/web`
             },
             {
