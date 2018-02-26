@@ -7,6 +7,7 @@ export interface NavigationTree {
     url: string;
     icon: string;
     productCount: string;
+    activeClass: string;
     subcategories: NavigationTree[];
 }
 
@@ -31,6 +32,7 @@ export function buildSubtree($link: JQuery): NavigationTree {
             return buildSubtree($(sublink));
         }
     );
+
     const subtree: NavigationTree = {
         name: $link
             .clone()
@@ -49,6 +51,9 @@ export function buildSubtree($link: JQuery): NavigationTree {
             : '',
         productCount: $link.find(`> .${navClassName}__link-products-qty`).length
             ? $link.find(`> .${navClassName}__link-products-qty`).text()
+            : '',
+        activeClass: $link.parent().data('active-class')
+            ? $link.parent().data('active-class')
             : '',
         subcategories: subcategories,
     };
@@ -118,9 +123,13 @@ export function renderTree(
                       category.productCount
                   }</span>`
                 : '';
-        const additionalItemClass: string = categoryIconHTML
+        let additionalItemClass: string = categoryIconHTML
             ? `${offNavClassName}__item--with-icon`
             : '';
+
+        if (category.activeClass.length) {
+            additionalItemClass += ` ${category.activeClass}`;
+        }
 
         subtreeHTML += `<li class="${offNavClassName}__item ${additionalItemClass}">`;
         if (category.subcategories.length) {
