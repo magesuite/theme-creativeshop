@@ -2,15 +2,13 @@
 <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__brick <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__brick--teaser <?php echo $viewModeClass; ?>__brick--x2 <?php echo $viewModeClass; ?>__brick--y2<?php endif; ?>">
     <div class="cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
         <?php
-        $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
         $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
         $productNameStripped = $block->stripTags($product->getName(), null, true);
-        $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
         $getIsSalable = $salabilityStatus[$product->getId()];
-        $badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
         $newBadge = $badgeHelper->isNew($product);
         $newBadgeText = 'New';
-        $discount= $badgeHelper->getSalePercentage($product);
+        $discount = $badgeHelper->getSalePercentage($product);
+        $isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
         $badges = [];
 
         if( $discount ) {
@@ -26,6 +24,14 @@
             $badges[] = [
                 'content' => '<span class="cs-badge cs-badge--new">
                     <span class="cs-badge__span">' . __($newBadgeText) . '</span>
+                </span>'
+            ];
+        }
+
+        if ( $isPopular ) {
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--positive">
+                    <span class="cs-badge__span">' . __('Popular') . '</span>
                 </span>'
             ];
         }

@@ -6,6 +6,7 @@
 
             {% set leftAddons = [] %}
             {% set rightAddons = [] %}
+            {% set badges = [] %}
 
             {% if product.rating.data is not null %}
                 {% set ratingContent %}
@@ -40,6 +41,12 @@
                 } ] ) %}
             {% endif %}
 
+            {% if product.popularIconFlag %}
+                {% set badges = badges|merge( [ {
+                    content: '<span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span">' ~ translate('Popular') ~ '</span></span>'
+                } ] ) %}
+            {% endif %}
+
 
             {% set content %}
                 {% include locate( 'grid-product/grid-product.twig' ) with {
@@ -55,6 +62,7 @@
                     price: {
                         content: product.price
                     },
+                    badges: badges,
                     swatches: {
                         mix: 'cs-grid-product__swatches--color-only',
                         content: product.swatches
