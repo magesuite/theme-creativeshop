@@ -1,0 +1,16 @@
+<!-- ko if: isDisplayed() -->
+<tr class="totals aw-giftcard-totals" repeat="foreach: getGiftcardCodes(), item: '$giftcard'">
+  <th class="mark" scope="row">
+    <a href="#" class="action-delete" data-bind="attr: {'title': $t('Remove')},
+                                                         click: removeByCode.bind($data, $giftcard().giftcard_code)">
+      <svg class="cs-cart-summary__remove">
+        <use xlink:href="#close"></use>
+      </svg>
+    </a>
+    <span class="title" data-bind="i18n: $giftcard().title"></span>
+  </th>
+  <td class="amount" data-bind="attr: {'data-th': $t($giftcard().title) }">
+    <span class="price" data-bind="text: getValue($giftcard().value)"></span>
+  </td>
+</tr>
+<!-- /ko -->
