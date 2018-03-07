@@ -4,11 +4,20 @@
 /* @var \Magento\Wishlist\Model\Item $item */
 $item = $block->getItem();
 $product = $item->getProduct();
+$indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
+$isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
 ?>
 <a
     class="cs-grid-product__figure-wrapper"
     href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>"
     title="<?php echo $block->escapeHtml($product->getName()) ?>"
 >
+    <?php if($isPopular) { ?>
+        <ul class="cs-grid-product__badges">
+            <li class="cs-grid-product__badge">
+                <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Popular'); ?></span></span>
+            </li>
+        </ul>
+    <?php } ?>
     <?php echo $block->getImage($product, 'wishlist_thumbnail')->toHtml(); ?>
 </a>
