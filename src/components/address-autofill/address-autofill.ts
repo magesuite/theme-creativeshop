@@ -5,9 +5,6 @@ import $translate from 'mage/translate';
 // Google address(geocode) API returns address with zip-code but query has to be specific - there is street and house number needed
 import GoogleAddressDetector from '../google-address-detector/google-address-detector';
 
-// Google place API returns places based on string. It will not return zip-code but query can be vague
-import GooglePlaceDetector from '../google-place-detector/google-place-detector';
-
 export interface IAddressAutofillOptions {
     streetField: JQuery;
     numberField?: JQuery;
@@ -28,8 +25,6 @@ export default class AddressAutofill {
         this.cityField = options.cityField;
         this.countrySelect = options.countrySelect;
         this.options = options;
-
-        this.detectorType = '';
         this.optionsList = '';
 
         $.getJSON('https://freegeoip.net/json/', (location: any): void => {
@@ -57,9 +52,7 @@ export default class AddressAutofill {
                 window.navigator.userLanguage ||
                 window.navigator.language;
 
-            // Two detectors will be used based on level of query specificity
             this.googleAddressDetector = new GoogleAddressDetector(options);
-            this.googlePlaceDetector = new GooglePlaceDetector(options);
 
             this._initStreetField();
             this._initZipField();
@@ -104,15 +97,7 @@ export default class AddressAutofill {
         }
 
         if (this._detectHouseNr(query)) {
-            this.detectorType = 'address';
             this.googleAddressDetector.getResults(query).then((data: any) => {
-                if (data) {
-                    this._buildAutosuggestSelect(data);
-                }
-            });
-        } else {
-            this.detectorType = 'place';
-            this.googlePlaceDetector.getResults(query).then((data: any) => {
                 if (data) {
                     this._buildAutosuggestSelect(data);
                 }
@@ -154,7 +139,6 @@ export default class AddressAutofill {
         this.zipField.on('keyup', (): void => {
             if (!this.cityField.val()) {
                 clearTimeout(typeTimer);
-                this.detectorType = 'address';
                 typeTimer = setTimeout(
                     this._initGoogleZipRequest.bind(this),
                     typeInterval
@@ -165,7 +149,6 @@ export default class AddressAutofill {
         this.zipField.on('blur', (): void => {
             if (!this.cityField.val()) {
                 this._initGoogleZipRequest();
-                this.detectorType = 'address';
             }
         });
     }
@@ -218,36 +201,10 @@ export default class AddressAutofill {
                 .addClass('cs-html-select__menu-item--focused');
             this._initSelectEvents($jsSelect);
 
-            // If there is not house number add warning note
-            if (
-                this.detectorType === 'place' &&
-                !$('.cs-input__warning').length
-            ) {
-                const checkoutElement = $('#checkout');
-                let missingStreetMessage = '';
-                const missingStreetDataAttribute =
-                    checkoutElement.attr(
-                        'data-missing-street-number-wording'
-                    ) &&
-                    checkoutElement.data('missing-street-number-wording') !== ''
-                        ? checkoutElement.data('missing-street-number-wording')
-                        : false;
-
-                if (missingStreetDataAttribute) {
-                    missingStreetMessage = missingStreetDataAttribute;
-                } else {
-                    missingStreetMessage =
-                        '<div class="cs-input__warning">' +
-                        $translate('Do not forget about street number') +
-                        '</div>';
-                }
-                $jsSelect.after(missingStreetMessage);
-            } else if (this.detectorType === 'address') {
-                this.streetField
-                    .parents('.cs-input')
-                    .find('.cs-input__warning')
-                    .remove();
-            }
+            this.streetField
+                .parents('.cs-input')
+                .find('.cs-input__warning')
+                .remove();
         }, 300);
     }
 
@@ -260,28 +217,18 @@ export default class AddressAutofill {
         for (const result of data) {
             let address: object;
             let streetNumber: string = '';
-            if (this.detectorType === 'place') {
-                address = this.googlePlaceDetector.getFormattedAddress(result);
-                streetNumber = this._detectHouseNr(
-                    result.structured_formatting.main_text
-                );
-            } else if (this.detectorType === 'address') {
-                address = this.googleAddressDetector.getFormattedAddress(
-                    result
-                );
+            address = this.googleAddressDetector.getFormattedAddress(result);
 
-                streetNumber = address.streetNumber;
-            }
+            streetNumber = address.streetNumber;
 
             const addressZip: string = address.postalCode
                 ? address.postalCode
                 : '';
             const addressCity: string = address.city;
             const addressStreet: string = address.street;
-            const addressCountryCode: string =
-                this.detectorType === 'address'
-                    ? this._getCountryCodeFromResult(result)
-                    : this.options.region;
+            const addressCountryCode: string = this._getCountryCodeFromResult(
+                result
+            );
 
             const dataValues: object = `{
                     "street": "${addressStreet}",
@@ -296,7 +243,7 @@ export default class AddressAutofill {
                     optionsHtml +
                     `<li class="cs-html-select__menu-item" data-value='${dataValues}'><a class="cs-html-select__menu-link">${
                         address.full
-                    }</a></li>`;
+                        }</a></li>`;
             }
         }
 
@@ -329,7 +276,9 @@ export default class AddressAutofill {
 
         let selectedIndex: number = 0;
         this.streetField.on('keyup keypress', (e: KeyboardEvent) => {
-            e.preventDefault();
+            if (e.which === 38 || e.which === 40 || e.which === 13) {
+                e.preventDefault();
+            }
 
             const $items: JQuery = jsSelect.find('.cs-html-select__menu-item');
             const $menu: JQuery = jsSelect.find('.cs-html-select__menu-list');
@@ -415,13 +364,19 @@ export default class AddressAutofill {
      * @private
      */
     private _focusOnNextEmptyField(): void {
-        if (this.detectorType === 'place' && !this.numberField) {
-            this.streetField.focus();
-        } else if (this.numberField) {
+        const $phoneField = this.zipField
+            .closest('form')
+            .find('.cs-input__input[name="telephone"]');
+
+        if (this.numberField) {
             this.numberField.focus();
-        } else if (this.detectorType === 'address' && this.zipField.val()) {
-            $('.cs-input__input[name="telephone"]').focus();
-        } else {
+        } else if (
+            this.zipField.val() &&
+            $phoneField.length &&
+            !$phoneField.val()
+        ) {
+            $phoneField.focus();
+        } else if (!this.zipField.val()) {
             this.zipField.focus();
         }
     }
@@ -467,7 +422,6 @@ export default class AddressAutofill {
             this.googleAddressDetector = new GoogleAddressDetector(
                 this.options
             );
-            this.googlePlaceDetector = new GooglePlaceDetector(this.options);
         });
     }
 }
