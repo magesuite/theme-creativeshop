@@ -26,6 +26,9 @@ import './components/dropdown/dropdown';
 import './components/filter-horizontal/filter-horizontal';
 import './components/cart/cart';
 
+import { Flyout } from './components/flyout/class.flyout';
+export { Flyout };
+
 // =============================================================================
 // Customizations
 // =============================================================================
