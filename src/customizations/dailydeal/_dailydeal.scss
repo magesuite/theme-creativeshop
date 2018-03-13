@@ -1,0 +1,154 @@
+.#{$namespace}dailydeal {
+    $root: &;
+
+    &__header {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-start;
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem;
+    }
+
+    &__title {
+        text-transform: uppercase;
+    }
+
+    &__countdown {
+        display: flex;
+        align-items: stretch;
+        margin: 1rem 1px;
+
+        #{$root}--tile & {
+            margin: 0;
+        }
+
+        &-element {
+            position: relative;
+            text-align: center;
+            z-index: 3;
+            width: 22%;
+            padding: 0.3rem 0.5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+
+            &:before {
+                position: absolute;
+                left: 50%;
+                top: 0;
+                width: calc(100% - 6px);
+                height: 100%;
+                content: '';
+                background: $colorGallery;
+                border-radius: 3px;
+                transform: skew(-12deg) translateX(-50%);
+                z-index: -1;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &:first-child:after,
+            &:last-child:after {
+                position: absolute;
+                width: 50%;
+                height: 100%;
+                content: '';
+                background: $colorGallery;
+                border-radius: 3px;
+                z-index: -2;
+            }
+            &:first-child:after {
+                left: -1px;
+            }
+            &:last-child:after {
+                right: -1px;
+            }
+
+            &--special {
+                width: 16%;
+            }
+
+            &--special:after,
+            &--special:before {
+                background: $colorCrimson !important;
+            }
+        }
+
+        &-icon {
+            width: 1.9rem;
+            height: 2.4rem;
+            margin-left: -4px;
+            fill: $colorWhite;
+        }
+
+        &-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $colorCrimson;
+            padding-top: 0.2rem;
+
+            #{$root}--tile & {
+                font-size: 1.4rem;
+            }
+        }
+
+        &-label {
+            padding-top: 0.2rem;
+            font-size: 1.1rem;
+            color: $colorGray;
+
+            #{$root}--tile & {
+                font-size: 1rem;
+            }
+        }
+    }
+
+    &--tile {
+        position: absolute;
+        left: 1.5rem;
+        bottom: 0;
+        width: calc(100% - 3rem);
+        z-index: 3;
+
+        #{$root}__availability {
+            position: relative;
+            font-size: 1rem;
+            color: $colorWhite;
+            padding: 0.2rem 0.8rem 0.2rem 0.4rem;
+            z-index: 4;
+            font-weight: 300;
+
+            &:before {
+                position: absolute;
+                left: 50%;
+                top: 0;
+                width: calc(100% - 6px);
+                height: 100%;
+                content: '';
+                background: lighten($colorGray, 15%);
+                border-radius: 3px;
+                -webkit-transform: skew(-12deg) translateX(-50%);
+                transform: skew(-12deg) translateX(-50%);
+                z-index: -1;
+            }
+
+            &:after {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 50%;
+                height: 100%;
+                content: '';
+                background: lighten($colorGray, 15%);
+                border-radius: 2px;
+                z-index: -2;
+            }
+        }
+    }
+}
