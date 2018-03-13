@@ -6,6 +6,7 @@
  */
 $helper = $this->helper('Magento\Catalog\Helper\Output');
 $product = $block->getProduct();
+$topAttributeHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\TopAttribute');
 ?>
 <?php if ($additional = $block->getAdditionalData()): ?>
 <div
@@ -27,8 +28,13 @@ $product = $block->getProduct();
                         <?php if ($data['code'] == 'sku') { ?>
                             <meta
                                 itemprop="sku"
-                                content="<?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $_data['code']) ?>"
+                                content="<?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $data['code']) ?>"
                             />
+                        <?php } ?>
+                        <?php if($topAttributeHelper->checkTopAttribute($data['code'], $data['value'])) { ?>
+                            <span class="cs-badge cs-badge--cut cs-badge--amount | cs-indicators__top-attribute">
+                                <span class="cs-badge__span cs-badge__span--no-space | cs-indicators__top-attribute-text"><?php echo __('Top Spec'); ?></span>
+                            </span>
                         <?php } ?>
                     </dd>
                 <?php endforeach; ?>
