@@ -9,9 +9,42 @@
         $getIsSalable = $salabilityStatus[$product->getId()];
         $badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
         $newBadge = $badgeHelper->isNew($product);
-        $newBadgeText = 'New';
-        $discount= $badgeHelper->getSalePercentage($product);
+        $discount = $badgeHelper->getSalePercentage($product);
+        $dailyDealData = $dailyDealHelper->prepareOfferData($product);
         $badges = [];
+
+        if($dailyDealData && $dailyDealData['deal']) {
+            if($dailyDealData['displayType'] == 'badge') {
+                $badges[] = [
+                    'mix' => 'cs-multiple-badges',
+                    'content' => '<span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
+                            <span class="cs-badge__span">' . __('Limited offer!') . ' </span>
+                        </span>
+                        <span class="cs-badge">
+                            <span class="cs-badge__span">' . __('%1 items left', $dailyDealData['items']) . '</span>
+                        </span>'
+                ];
+            } else {
+                $data['hotspots']['after']['badges'] = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
+                        'data' => [
+                            'namespace' => 'cs-',
+                            'mix' => 'cs-dailydeal--tile',
+                            'header' => [
+                                'show' => true,
+                            ],
+                            'items' => [
+                                'textBefore' => '',
+                                'textAfter' => __('items left'),
+                                'amount' => $dailyDealData['items']
+                            ],
+                            'deal' => [
+                                'end' => $dailyDealData['to']
+                            ]
+                        ]
+                    ]
+                )->setTemplate("dailydeal/dailydeal.twig")->toHtml();
+            }
+        }
 
         if( $discount ) {
             $badges[] = [
@@ -25,7 +58,7 @@
         if ( $newBadge ) {
             $badges[] = [
                 'content' => '<span class="cs-badge cs-badge--new">
-                    <span class="cs-badge__span">' . __($newBadgeText) . '</span>
+                    <span class="cs-badge__span">' . __('New') . '</span>
                 </span>'
             ];
         }
@@ -77,24 +110,24 @@
         $data['addons']['left'][] = [
             'content' => sprintf(
                 '<ul class="cs-links-block-addto" data-role="add-to-links">
-                                        <li class="cs-links-block-addto__item">
-                                            <a
-                                                href="#"
-                                                class="cs-links-block-addto__link towishlist"
-                                                title="%s"
-                                                aria-label="%s"
-                                                data-post=\'%s\'
-                                                data-action="add-to-wishlist"
-                                                role="button"
-                                            >
-                                                <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
-                                                    <use xlink:href="#heart"></use>
-                                                </svg>
-                                                %s
+                    <li class="cs-links-block-addto__item">
+                        <a
+                            href="#"
+                            class="cs-links-block-addto__link towishlist"
+                            title="%s"
+                            aria-label="%s"
+                            data-post=\'%s\'
+                            data-action="add-to-wishlist"
+                            role="button"
+                        >
+                            <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                <use xlink:href="#heart"></use>
+                            </svg>
+                            %s
 
-                                            </a>
-                                        </li>
-                                    </ul>',
+                        </a>
+                    </li>
+                </ul>',
                 $block->escapeHtml(__('Add to Wish List')),
                 $block->escapeHtml(__('Add to Wish List')),
                 $block->getAddToWishlistParams($product),
@@ -102,9 +135,7 @@
             )
         ];
 
-        ?>
-
-        <?=$this->getLayout()->createBlock(
+        echo $this->getLayout()->createBlock(
             'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
                 'data' => $data
             ]
