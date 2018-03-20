@@ -1,0 +1,349 @@
+.aw-pq {
+    $root: &;
+
+    &-form {
+        #{$namespace}form__field {
+            margin-bottom: 2rem;
+        }
+
+        &__note-wrapper {
+            margin: 0;
+            margin-top: 1rem;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: $colorDoveGray;
+        }
+
+        &__button-note {
+            margin: 0;
+            font-weight: 300;
+        }
+
+        &__button_position_left {
+            @extend .#{$namespace}button--size_300;
+            @extend .#{$namespace}button--look_light;
+        }
+
+        &__button_position_right {
+            @extend .#{$namespace}button--size_300;
+            @extend .#{$namespace}button--look_light;
+        }
+    }
+
+    &-overlay {
+        position: absolute;
+        opacity: 1 !important;
+        background: url('images/ajax-loader.gif') no-repeat center center / 30px
+            30px rgba($colorWhite, 0.75) !important;
+        z-index: 5;
+    }
+
+    &-question {
+        &-list-wrapper {
+            @include media('>=tablet') {
+                margin-top: 6rem;
+            }
+
+            @include media('<tablet') {
+                background-color: $colorGallery;
+            }
+        }
+
+        &-sort__sortby {
+            min-width: 16rem !important;
+
+            &-label {
+                margin-bottom: 0;
+            }
+        }
+
+        &-sort__icon {
+            width: 1.5rem;
+            height: 1rem;
+            fill: $colorCeruleanBlue;
+            box-sizing: border-box;
+            margin-left: 0.8rem;
+        }
+
+        &-title-desktop {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
+        &-title-mobile {
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
+
+        &-sort {
+            &-block {
+                display: flex;
+                align-items: center;
+            }
+
+            &__dir {
+                &-arrow {
+                    width: 1rem;
+                    height: 1.4rem;
+                }
+            }
+        }
+
+        &-form {
+            &__wrapper {
+                flex: 1 1 100%;
+                margin-top: 2rem;
+                padding: 0;
+            }
+        }
+    }
+
+    &-list {
+        &__button-next {
+            @extend .#{$namespace}button--look_default;
+        }
+
+        &__next-answer-button {
+            @extend .#{$namespace}button--look_default;
+            @extend .#{$namespace}button--size_300;
+        }
+
+        &__question,
+        &__answer {
+            display: flex;
+
+            @include media('<tablet') {
+                flex-direction: column;
+            }
+
+            &-label {
+                color: $colorMineShaft;
+                font-size: 1.2rem;
+                font-weight: 700;
+                line-height: 1.2rem;
+                text-transform: uppercase;
+
+                @include media('>=tablet') {
+                    flex: 0 0 9rem;
+                    padding: 0 2rem 0 4rem;
+                    line-height: 2.5rem;
+                    word-break: break-all;
+                }
+            }
+
+            &-item_hidden {
+                display: none !important;
+            }
+        }
+
+        &__question {
+            margin-bottom: 2.3rem;
+
+            &-date {
+                font-weight: 300;
+                font-size: 1.25rem;
+                color: $colorGray;
+            }
+
+            &-item {
+                display: flex;
+                padding: 3rem 0;
+                border-top: 1px solid $colorAlto;
+
+                @include media('<tablet') {
+                    flex-direction: column-reverse;
+                    padding: 2rem 0;
+                }
+            }
+
+            &-expand {
+                display: none !important;
+            }
+
+            &-content {
+                color: $colorMineShaft;
+                font-size: 1.4rem;
+                font-weight: 400;
+            }
+        }
+
+        &__answer {
+            &-item {
+                margin-bottom: 2.3rem;
+
+                @include media('<tablet') {
+                    margin-bottom: 1.5rem;
+                }
+            }
+
+            &-content {
+                font-weight: 300;
+                font-size: 1.5rem;
+                color: $colorDoveGray;
+            }
+
+            &-date {
+                font-weight: 300;
+                font-size: 1.2rem;
+                color: $colorDoveGray;
+            }
+
+            &-list {
+                display: block !important;
+                flex: 1 1 auto;
+
+                @include media('>=tablet') {
+                    border-left: 1px solid $colorAlto;
+                }
+            }
+
+            &-action-bar {
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+
+                @include media('>=tablet') {
+                    padding-left: 0;
+                }
+            }
+
+            &-wrapper {
+                .ie11 & {
+                    flex-basis: 100%;
+                }
+            }
+        }
+
+        &__next-answer,
+        &__add-answer-button,
+        &__next-question,
+        &__add-question-button {
+            margin: 1rem 1rem 0 0;
+        }
+
+        &__add-question-button {
+            @extend .#{$namespace}button--look_light;
+
+            @include media('<tablet') {
+                width: 100%;
+                margin-bottom: 1.5rem;
+                margin-right: 0;
+            }
+        }
+
+        &__next-question {
+            @include media('<tablet') {
+                width: 100%;
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+
+            a {
+                width: 100%;
+                display: inline-block;
+            }
+        }
+
+        &__next-answer {
+            @include media('>=tablet') {
+                margin-left: 15rem;
+            }
+        }
+
+        &__no-answers {
+            font-weight: 300;
+            font-size: 1.5rem;
+            color: $colorDoveGray;
+            margin-bottom: 1.5rem;
+
+            @include media('>=tablet') {
+                padding-left: 15rem;
+                margin-bottom: 2.3rem;
+            }
+        }
+
+        &__no-questions {
+            margin: 1rem 0 0;
+        }
+
+        &__helpfulness {
+            &-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                @include media('>=tablet') {
+                    flex: 0 0 15rem;
+                    align-items: center;
+                }
+            }
+
+            &-thumb {
+                width: 2.4rem;
+                height: 2.4rem;
+                opacity: 0.25;
+                transition: opacity 0.25s linear;
+
+                #{$root}-list__helpfulness-icon_like_voted &,
+                #{$root}-list__helpfulness-icon_dislike_voted & {
+                    opacity: 1;
+                }
+
+                &:hover {
+                    opacity: 1;
+                }
+
+                &--up {
+                    fill: $colorApple;
+                }
+
+                &--down {
+                    fill: $colorCrimson;
+                }
+            }
+
+            &-layout {
+                margin-top: 2rem;
+                display: flex;
+
+                @include media('>=tablet') {
+                    margin-top: 0;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                &-unit_position_center {
+                    text-align: center;
+                    height: 2.5rem;
+                    line-height: 2.5rem;
+                    padding: 0 1rem;
+
+                    @include media('>=tablet') {
+                        margin-bottom: 0.5rem;
+                    }
+                }
+            }
+        }
+
+        &__action-bar {
+            border-top: 1px solid $colorAlto;
+            padding-top: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+
+            @include media('<tablet') {
+                padding-left: 0;
+                padding-bottom: 2.5rem;
+            }
+        }
+    }
+
+    &_customer {
+        &-subscription-save {
+            margin: 2rem 0;
+            @extend .#{$namespace}button--look_default;
+        }
+    }
+}

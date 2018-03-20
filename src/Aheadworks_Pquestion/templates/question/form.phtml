@@ -1,0 +1,69 @@
+<?php
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+
+// @codingStandardsIgnoreFile
+
+/** @var \Aheadworks\Pquestion\Block\Question\Form $this */
+?>
+<form id="aw-pq-question-form" class="aw-pq-form | cs-form" action="<?php echo $this->escapeUrl($this->getAddQuestionUrl()); ?>" method="post" >
+    <div class="aw-pq-form__fieldset">
+        <div class="field required | cs-form__field cs-form__field--half | cs-input">
+            <label for="question_author_name" class="label | cs-input__label">
+                <span><?php echo $this->escapeHtml(__('Name')); ?></span>
+            </label>
+            <div class="control | cs-input__control">
+                <input type="text" name="author_name" id="question_author_name" class="input-text | cs-input__input" data-validate="{required:true}" aria-required="true" value="<?php echo $this->escapeHtml(trim($this->getCustomerName())); ?>" title="<?php echo $this->escapeHtml(__('Name')); ?>" maxlength="255">
+            </div>
+        </div>
+        <?php if (!$this->isLoggedIn()): ?>
+            <div class="field required | cs-form__field cs-form__field--half | cs-input">
+                <label for="question_author_email" class="label | cs-input__label">
+                    <span><?php echo $this->escapeHtml(__('Email Address')); ?></span>
+                </label>
+                <div class="control | cs-input__control">
+                    <input type="text" name="author_email" id="question_author_email" class="input-text validate-email | cs-input__input" data-validate="{required:true}" aria-required="true" title="<?php echo $this->escapeHtml(__('Email Address')); ?>" maxlength="255">
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="field required | cs-form__field cs-form__field--full | cs-input">
+            <label for="question_content" class="label | cs-input__label">
+                <span><?php echo $this->escapeHtml(__('Question')); ?></span>
+            </label>
+            <div class="control | cs-input__control">
+                <textarea class="cs-input__textarea cs-input__textarea--high" name="content" id="question_content" cols="5" rows="3" data-validate="{required:true}" aria-required="true"></textarea>
+            </div>
+        </div>
+        <?php if ($this->canSpecifyVisibility()) : ?>
+            <div class="aw-pq-form__field-checkbox | cs-form__field cs-form__field--full | cs-input cs-input--type-checkbox">
+                <input type="checkbox" class="cs-input__checkbox" name="is_private" id="question_visibility">
+                <label for="question_visibility" class="aw-pq-form__label aw-pq-form__label_indent_left | cs-input__label">
+                    <span><?php echo $this->escapeHtml(__('Private Question')); ?></span>
+                </label>
+            </div>
+        <?php endif; ?>
+        <button type="submit" class="action submit | cs-button cs-button--look_light">
+        <span class="cs-button__span"><?php echo $this->escapeHtml(__('Send Question')); ?></span>
+            <svg class="cs-button__icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </button>
+    </div>
+    <input type="hidden" name="product_id" value="<?php echo (int)$this->getProduct()->getId(); ?>" />
+</form>
+<script type="text/javascript">
+    require(['prototype'], function() {
+        var formKeyElement = new Element('input');
+        formKeyElement.setAttribute('type', 'hidden');
+        formKeyElement.setAttribute('name', 'form_key');
+        formKeyElement.setAttribute('value', '<?php /* @noEscape */ echo $this->getSessionFormKey(); ?>');
+        $('aw-pq-question-form').appendChild(formKeyElement);
+    });
+</script>
+<script type="text/javascript">
+    require(["jquery","mage/mage"],function($){
+        $('#aw-pq-question-form').mage('validation');
+    });
+</script>
