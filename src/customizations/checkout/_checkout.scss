@@ -182,6 +182,9 @@
     &__addresses-wrapper {
         display: flex;
         flex-wrap: wrap;
+        @include media('>=tablet', '<laptop') {
+            flex-direction: column;
+        }
     }
 
     &__address {
@@ -201,7 +204,7 @@
         }
 
         @include media('>=tablet', '<laptop') {
-            justify-content: center;
+            width: 100%;
         }
 
         &.selected-item {
@@ -228,10 +231,18 @@
         @include media('>=tablet', '<laptop') {
             padding-left: 0;
         }
+
+        .#{$namespace}button {
+            margin-top: 1rem;
+        }
     }
 
     &__address-radio {
         margin-right: 0.5rem;
+
+        @include media('>=tablet', '<laptop') {
+            margin-right: 2rem;
+        }
     }
 
     &__separator {
