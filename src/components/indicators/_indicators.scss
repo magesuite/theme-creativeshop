@@ -1,4 +1,11 @@
+$namespace: 'cs-';
+@import '../../../node_modules/creative-patterns/packages/components/indicators/src/indicators';
+
 .#{$namespace}indicators {
+    @include indicators();
+
+    $root: &;
+
     &__low-stock {
         margin: -0.5rem 0 0.5rem;
         background: $colorAlto;
@@ -69,5 +76,57 @@
         position: absolute;
         top: 0.3rem;
         left: 2.7rem;
+    }
+
+    &__fast-shipping {
+        &-element {
+            &--visible {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        &-label {
+            &:after {
+                display: none;
+            }
+
+            @include media('<tablet') {
+                display: inline-flex !important;
+                padding-right: 1rem;
+            }
+        }
+
+        &-text {
+            width: 78%;
+            padding-left: 0.3rem;
+            color: $colorGray;
+            line-height: 1.25;
+            font-size: 1.3rem;
+        }
+
+        &-important {
+            display: block;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            &--positive {
+                color: $colorApple;
+            }
+        }
+
+        &-icon {
+            fill: $colorApple;
+            width: 3.3rem;
+            height: 2.8rem;
+
+            #{$root}__fast-shipping-element--tomorrow & {
+                height: 3rem;
+            }
+
+            &--disabled {
+                fill: $colorGray;
+            }
+        }
     }
 }
