@@ -35,7 +35,8 @@
     $id = 'pdp-' . preg_replace("/[\.]/", "-", $alias);
     $label = $block->getChildData($alias, 'title');
     $itemExtraClasses = '';
-    if ($name == 'reviews.tab') {
+    $isReviews = $name == 'reviews.tab';
+    if ($isReviews) {
         $itemExtraClasses = $itemExtraClasses . ' cs-product-description__item--bottom';
     }
     elseif ($name == 'product.attributes' ||  $name == 'aw_pq_ajax_container') {
@@ -48,22 +49,22 @@
         <div
             class="cs-product-description__item | cs-collapse cs-collapse--only-mobile<?php echo $itemExtraClasses ?>"
             id="<?php echo $id ?>">
-            <?php if ($name == 'reviews.tab'): ?>
-            <div class="cs-product-description__item--bottom_inner">
-                <div class="cs-product-description__item--bottom_column">
-                    <?php endif;?>
-                    <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger">
-                        <?php /* @escapeNotVerified */ echo $label; ?>
-                    </h2>
-                    <div class="cs-collapse__content | cs-cms-block">
-                        <div class="cs-product-description__content">
-                            <?php /* @escapeNotVerified */ echo $html; ?>
+            <?php if ($isReviews): ?>
+                <div class="cs-product-description__item--bottom_inner" id="reviews">
+                    <div class="cs-product-description__item--bottom_column">
+            <?php endif;?>
+                        <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger">
+                            <?php /* @escapeNotVerified */ echo $label; ?>
+                        </h2>
+                        <div class="cs-collapse__content<?= $isReviews ? '' : ' | cs-cms-block'; ?>">
+                            <div class="cs-product-description__content">
+                                <?php /* @escapeNotVerified */ echo $html; ?>
+                            </div>
                         </div>
+            <?php if ($isReviews): ?>
                     </div>
-                    <?php if ($name == 'reviews.tab'): ?>
                 </div>
-            </div>
-        <?php endif;?>
+            <?php endif;?>
         </div>
     <?php endif;
 endforeach;
