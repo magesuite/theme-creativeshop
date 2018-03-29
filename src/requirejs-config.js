@@ -27,8 +27,8 @@ var config = {
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
-            'Magento_Catalog/js/catalog-add-to-cart': {
-                'Magento_Catalog/js/catalog-add-to-cart-ext': true,
+            'Magento_PageCache/js/page-cache': {
+                'Magento_PageCache/js/submit-button-enabler': true,
             },
             'Smile_ElasticsuiteCore/js/form-mini': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
