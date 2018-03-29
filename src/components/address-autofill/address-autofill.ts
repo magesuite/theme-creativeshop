@@ -243,7 +243,7 @@ export default class AddressAutofill {
                     optionsHtml +
                     `<li class="cs-html-select__menu-item" data-value='${dataValues}'><a class="cs-html-select__menu-link">${
                         address.full
-                        }</a></li>`;
+                    }</a></li>`;
             }
         }
 
