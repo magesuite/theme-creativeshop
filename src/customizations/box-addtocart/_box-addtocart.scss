@@ -1,4 +1,6 @@
 .#{$namespace}box-addtocart {
+    $root: &;
+
     padding-top: 0;
     margin: 0.65rem 0;
     border-top: none;
@@ -8,8 +10,10 @@
         align-items: center;
         position: relative;
 
-        @include media('>=tablet') {
-            padding-bottom: 2rem;
+        &:not(#{$root}--fast-shipping) & {
+            @include media('>=tablet') {
+                padding-bottom: 2rem;
+            }
         }
     }
 
@@ -37,31 +41,34 @@
     }
 
     &__stock {
-        position: absolute;
-        right: 0;
-        top: 1.7rem;
-    }
+        width: 100%;
+        padding: 1.2rem 0 0.7rem;
 
-    &__stock-text {
-        font-size: 1.2rem;
-        color: $colorDoveGray;
-
-        &--unavailable {
-            color: $colorCrimson;
-        }
-    }
-
-    &__stock-icon {
-        width: 1.1rem;
-        height: 1rem;
-        margin-right: 0.5rem;
-
-        &--available {
-            fill: $colorApple;
+        #{$root}--fast-shipping & {
+            position: relative;
         }
 
-        &--unavailable {
-            fill: $colorCrimson;
+        &-text {
+            font-size: 1.2rem;
+            color: $colorDoveGray;
+
+            &--unavailable {
+                color: $colorCrimson;
+            }
+        }
+
+        &-icon {
+            width: 1.1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+
+            &--available {
+                fill: $colorApple;
+            }
+
+            &--unavailable {
+                fill: $colorCrimson;
+            }
         }
     }
 

@@ -1,0 +1,209 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var \Aheadworks\Pquestion\Block\Question\QList $this */
+?>
+<?php $this->getVoteMap();?>
+<?php $questionCollection = $this->getQuestionCollection(); ?>
+<div class="aw-pq-question-list-wrapper">
+
+    <div class="box-collateral cs-collapse cs-collapse--only-mobile">
+
+        <h2 class="aw-pq-question-title-mobile cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger"><?php echo $this->escapeHtml(__('Product Questions')); ?>
+            <?php echo ($questionCollection->getSize() > 0) ? ' <span class="cs-headline__counter">(' .$questionCollection->getSize() .')</span>' : ''; ?>
+        </h2>
+
+        <div class="aw-pq-question-title-desktop | cs-headline">
+            <h2 class="cs-headline__title"><?php echo $this->escapeHtml(__('Product Questions')); ?>
+                <?php echo ($questionCollection->getSize() > 0) ? ' <span class="counter">(' .$questionCollection->getSize() .')</span>' : ''; ?>
+            </h2>
+        </div>
+
+        <div class="cs-collapse__content">
+            <div class="cs-product-description__content | aw-pq-update">
+                <?php if ($questionCollection->getSize() > 1) : ?>
+                    <div class="aw-pq-question-sort pager">
+                        <?php /* @noEscape */ echo $this->getChildHtml('aw_pq_question_sort'); ?>
+                    </div>
+                <?php endif; ?>
+                <div class="aw-pq-list box-content">
+                    <?php if ($questionCollection->getSize() > 0) : ?>
+                        <?php foreach ($questionCollection as $question): ?>
+                            <div class="aw-pq-list__question-item aw-pq-list__question-item_hidden">
+                                <div class="aw-pq-list__helpfulness-wrapper">
+                                    <div class="aw-pq-list__helpfulness">
+                                        <div class="aw-pq-list__helpfulness-layout">
+                                            <div class="aw-pq-list__helpfulness-layout-unit">
+                                                <a title="<?php echo $this->escapeHtml($this->getTitleForQuestionVote());?>" class="aw-pq-list__helpfulness-icon aw-pq-list__helpfulness-icon_like<?php if ($this->isCustomerLikeQuestion($question->getId())) : ?> aw-pq-list__helpfulness-icon_like_voted<?php endif; ?><?php if (!$this->isCustomerCanVoteQuestion()) : ?> aw-pq-list__helpfulness-icon_state_disabled<?php endif;?>" href="<?php echo $this->escapeUrl($this->getLikeQuestionUrl($question)); ?>">
+                                                    <svg class="aw-pq-list__helpfulness-thumb aw-pq-list__helpfulness-thumb--up">
+                                                        <use xlink:href="#thumb_up"></use>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="aw-pq-list__helpfulness-layout-unit aw-pq-list__helpfulness-layout-unit_position_center">
+                                                <span class="aw-pq-list__helpfulness-value"><?php echo $this->escapeHtml($question->getHelpfulness()); ?></span>
+                                                <span class="aw-pg-list__helpfulness-text"><?php echo __('Vote(s)'); ?></span>
+                                                <span class="aw-pq-list__helpfulness-progress" style="display:none;"></span>
+                                            </div>
+                                            <div class="aw-pq-list__helpfulness-layout-unit">
+                                                <a title="<?php echo $this->escapeHtml($this->getTitleForQuestionVote());?>" class="aw-pq-list__helpfulness-icon aw-pq-list__helpfulness-icon_dislike<?php if ($this->isCustomerDislikeQuestion($question->getId())) : ?> aw-pq-list__helpfulness-icon_dislike_voted<?php endif; ?><?php if (!$this->isCustomerCanVoteQuestion()) : ?> aw-pq-list__helpfulness-icon_state_disabled<?php endif;?>" href="<?php echo $this->escapeUrl($this->getDislikeQuestionUrl($question)); ?>">
+                                                    <svg class="aw-pq-list__helpfulness-thumb aw-pq-list__helpfulness-thumb--down">
+                                                        <use xlink:href="#thumb_down"></use>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="aw-pq-list__answer-list">
+                                    <div class="aw-pq-list__question-expand aw-pq-list__question-expand_arrow_right" data-question-id="<?php echo (int)$question->getId();?>"></div>
+                                    <div class="aw-pq-list__question">
+                                        <div class="aw-pq-list__question-label">
+                                            <?php echo __('Question'); ?>
+                                        </div>
+                                        <div class="aw-pq-list__question-wrapper">
+                                            <div class="aw-pq-list__question-content"><?php /* @noEscape */ echo $this->getQuestionContent($question); ?></div>
+                                            <div class="aw-pq-list__question-date">
+                                                <?php $authorName = $this->escapeHtml($question->getAuthorName()); ?>
+                                                <?php if ($question->getIsAdmin()) : ?>
+                                                    <?php $authorName = '<span class="aw-pq-list__admin-name">' . $authorName . ' ' . __('(Admin)') . '</span>'; ?>
+                                                <?php endif; ?>
+                                                <?php /* @noEscape */ echo __('Question by: %1 on %2', $authorName, $this->formatDate($question->getCreatedAt(), \IntlDateFormatter::MEDIUM, true)); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php $answerCollection = $this->getAnswerCollectionForQuestion($question); ?>
+                                    <?php if ($answerCollection->getSize() > 0) : ?>
+                                        <?php foreach ($answerCollection as $answer) : ?>
+                                            <div class="aw-pq-list__answer-item aw-pq-list__answer-item_hidden<?php if ($answer->getIsAdmin()): ?> aw-pq-list__answer-item_type_admin<?php endif; ?>">
+                                                <div class="aw-pq-list__answer">
+                                                    <div class="aw-pq-list__answer-label">
+                                                        <?php echo __('Answer'); ?>
+                                                    </div>
+                                                    <div class="aw-pq-list__answer-wrapper">
+                                                        <div class="aw-pq-list__answer-content"><?php /* @noEscape */ echo $this->getAnswerContent($answer); ?></div>
+                                                        <?php $authorName = $this->escapeHtml($answer->getAuthorName()); ?>
+                                                        <?php if ($answer->getIsAdmin()) : ?>
+                                                            <?php $authorName = '<span class="aw-pq-list__admin-name">' . $authorName . ' ' . __('(Admin)') . '</span>'; ?>
+                                                        <?php endif; ?>
+                                                        <div class="aw-pq-list__answer-date"><?php /* @noEscape */ echo __('Answer by: %1 on %2', $authorName, $this->formatDate($answer->getCreatedAt(), \IntlDateFormatter::MEDIUM, true)); ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+                                        <div class="aw-pq-list__no-answers"><?php echo $this->escapeHtml(__('No answers yet. Be the first to answer the question!')); ?></div>
+                                    <?php endif; ?>
+                                    <div class="aw-pq-list__answer-action-bar">
+                                        <div class="aw-pq-list__next-answer" style="display:none;">
+                                            <a href="javascript:void(0)" class="cs-button aw-pq-list__next-answer-button">
+                                                <span class="cs-button__span"><?php echo $this->escapeHtml(__('Next Answers')); ?></span>
+                                                <svg class="cs-button__icon">
+                                                    <use xlink:href="#arrow_next"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <?php if ($this->canAnswerQuestion()) : ?>
+                                            <button type="button" class="button aw-pq-list__add-answer-button" title="<?php echo $this->escapeHtml(__('Add Answer')); ?>">
+                                                <span class="cs-button__span"><?php echo $this->escapeHtml(__('Add Answer')); ?></span>
+                                                <svg class="cs-button__icon">
+                                                    <use xlink:href="#arrow_next"></use>
+                                                </svg>
+                                            </button>
+                                        <?php else : ?>
+                                            <?php /* @noEscape */ echo $this->getAnswerMessage(); ?>
+                                        <?php endif; ?>
+                                        <div class="aw-pq-question-form__wrapper aw-pq-answer-form" style="display: none;">
+                                            <?php /* @noEscape */ echo $this->getChildBlock('aw_pq_add_answer_form')->setQuestionId($question->getId())->toHtml(); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <div class="aw-pq-list__no-questions"><?php echo $this->escapeHtml(__('No questions yet. Be the first to ask the question!')); ?></div>
+                    <?php endif; ?>
+                    <script type="text/javascript">
+                        require([
+                            'AWPquestion', 'AWPquestionVoter'
+                        ], function($) {
+                            var config = {
+                                'addQuestionButtonSelector': '.aw-pq-list__add-question-button',
+                                'addQuestionButtonTextContainerSelector': 'span span',
+                                'addQuestionButtonText': {
+                                    'inactive': <?php /* @noEscape */ echo \Zend_Json::encode(__('Ask Question'));?>,
+                                    'active': <?php /* @noEscape */ echo \Zend_Json::encode(__('Hide Question Form'));?>
+                                },
+                                'questionFormSelector': '.aw-pq-question-form',
+                                'questionContentSelector': '.aw-pq-list__question-content',
+                                'questionExpandSelector': '.aw-pq-list__question-expand',
+                                'questionExpandStatus': {
+                                    'activeClassName': 'aw-pq-list__question-expand_arrow_right',
+                                    'inactiveClassName': 'aw-pq-list__question-expand_arrow_down'
+                                },
+                                'questionItemContainerSelector': '.aw-pq-list__question-item',
+                                'questionItemHiddenClass': 'aw-pq-list__question-item_hidden',
+                                'nextQuestionsSelector': '.aw-pq-list__next-question',
+                                'questionPageSize': <?php /* @noEscape */ echo $this->getQuestionPageSize();?>,
+                                'answerItemHiddenClass': 'aw-pq-list__answer-item_hidden',
+                                'answerListContainerSelector': '.aw-pq-list__answer-list',
+                                'addAnswerButtonSelector': '.aw-pq-list__add-answer-button',
+                                'addAnswerButtonTextContainerSelector': 'span span',
+                                'addAnswerButtonText': {
+                                    'inactive': <?php /* @noEscape */ echo \Zend_Json::encode(__('Add Answer'));?>,
+                                    'active': <?php /* @noEscape */ echo \Zend_Json::encode(__('Hide Answer Form'));?>
+                                },
+                                'nextAnswersSelector': '.aw-pq-list__next-answer',
+                                'answerFormSelector': '.aw-pq-answer-form',
+                                'answerPageSize': <?php /* @noEscape */ echo $this->getAnswerPageSize();?>
+                            };
+                            new AWPqItemManager(config);
+
+                            var voterManagerConfig = {
+                                'voterContainerSelector': '.aw-pq-list__helpfulness',
+                                'likeSelector': '.aw-pq-list__helpfulness-icon_like',
+                                'disabledClass': 'aw-pq-list__helpfulness-icon_state_disabled',
+                                'votedLikeClass': 'aw-pq-list__helpfulness-icon_like_voted',
+                                'dislikeSelector': '.aw-pq-list__helpfulness-icon_dislike',
+                                'votedDislikeClass': 'aw-pq-list__helpfulness-icon_dislike_voted',
+                                'valueSelector': '.aw-pq-list__helpfulness-value',
+                                'progressSelector': '.aw-pq-list__helpfulness-progress',
+                                'formKey': <?php /* @noEscape */ echo \Zend_Json::encode($this->getSessionFormKey());?>
+                            };
+                            new AWPqVoteManager(voterManagerConfig);
+                        });
+                    </script>
+                </div>
+
+                <div class="aw-pq-list__action-bar">
+                    <?php if ($questionCollection->getSize() > 0) : ?>
+                        <div class="aw-pq-list__next-question" style="display:none;">
+                            <a href="javascript:void(0)" class="cs-button aw-pq-list__button-next">
+                                <span class="cs-button__span"><?php echo $this->escapeHtml(__('Next Questions')); ?></span>
+                                <svg class="cs-button__icon">
+                                    <use xlink:href="#arrow_next"></use>
+                                </svg>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($this->canAskQuestion()) : ?>
+                        <button type="button" class="button aw-pq-list__add-question-button aw-pq-list__button_position_right | cs-button" title="<?php echo $this->escapeHtml(__('Ask Question')); ?>" >
+                            <span class="cs-button__span"><?php echo $this->escapeHtml(__('Ask Question')); ?></span>
+                            <svg class="cs-button__icon">
+                                <use xlink:href="#arrow_next"></use>
+                            </svg>
+                        </button>
+                    <?php else : ?>
+                        <div class="aw-pq-list__please-login-note"><?php /* @noEscape */ echo __("You must be <a href='%1'>logged in</a> to ask questions.", $this->getLoginUrl()); ?></div>
+                    <?php endif; ?>
+                    <?php if ($this->canAskQuestion()) : ?>
+                        <div class="aw-pq-question-form__wrapper aw-pq-question-form" style="display: none;">
+                            <?php /* @noEscape */ echo $this->getChildHtml('aw_pq_ask_question_form'); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

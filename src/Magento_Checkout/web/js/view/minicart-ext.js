@@ -12,7 +12,8 @@ define(['jquery', 'Magento_Ui/js/lib/core/storage/local'], function(
     // Cache minicart selectors.
     var isCartPage = $('body').hasClass('checkout-cart-index');
     var $minicart = $('[data-block="minicart"]');
-    var shouldAutoopen = $minicart.data('autoopen') !== null && $minicart.data('autoopen');
+    var shouldAutoopen =
+        $minicart.data('autoopen') !== null && $minicart.data('autoopen');
 
     return function(Minicart) {
         if (!shouldAutoopen) {
@@ -45,7 +46,10 @@ define(['jquery', 'Magento_Ui/js/lib/core/storage/local'], function(
                         $minicartDropdown.dropdownDialog('close');
                     }, 5000);
                 }
-                updateNumOfItems(itemsInCart);
+
+                if (itemsInCart !== undefined) {
+                    updateNumOfItems(itemsInCart);
+                }
 
                 return this._super(updatedCart);
             },

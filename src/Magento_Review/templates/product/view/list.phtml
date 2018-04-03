@@ -30,13 +30,13 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                 <li class="cs-reviews__item">
                     <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'pdp-review-' . $i, [
                         'data' => [
-                            'title' => $block->escapeHtml($review->getTitle()), 
+                            'title' => $block->escapeHtml($review->getTitle()),
                             'rating' => [
-                                'maxStars' => 5, 
-                                'activeStars' => $overallRating, 
+                                'maxStars' => 5,
+                                'activeStars' => $overallRating,
                                 'text' => $span
-                            ], 
-                            'author' => $block->escapeHtml($review->getNickname()), 
+                            ],
+                            'author' => $block->escapeHtml($review->getNickname()),
                             'datetime' => $block->formatDate($createdAt, $format),
                             'date' => $block->formatDate($createdAt, $format),
                             'content' => nl2br($block->escapeHtml($review->getDetail()))
@@ -46,5 +46,6 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                 </li>
             <?php endforeach; ?>
         </ol>
+        <?= $block->getChildHtml('toolbar') ?>
     </div>
 <?php endif; ?>

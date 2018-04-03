@@ -1,0 +1,68 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \Aheadworks\Pquestion\Block\Question\Sort $this */
+?>
+<div class="aw-pq-question-sort-block | cs-form__field cs-form__field--inline | cs-input">
+    <label class="cs-input__label aw-pq-question-sort__sortby-label">
+        <?php echo $this->escapeHtml(__('Sort by:')) ?>
+    </label>
+    <div class="cs-input__control aw-pq-question-sort__sortby">
+        <select class="cs-select">
+            <?php foreach ($this->getOptions() as $value => $label): ?>
+                <option
+                    value="<?php echo $this->escapeHtml($value); ?>" <?php if ($this->getCurrentOrder() == $value): ?>
+                    selected="selected"<?php endif ?>
+                >
+                    <?php echo $this->escapeHtml($label); ?>
+                </option>
+            <?php endforeach ?>
+        </select>
+    </div>
+
+    <a href="javascript:void(0)" class="aw-pq-question-sort__dir | cs-input__option">
+
+        <svg class="aw-pq-question-sort__icon <?php if ($this->getCurrentDir() == 'DESC'): ?> cs-visually-hidden<?php endif; ?>"><use xlink:href="#arrow_down"></use></svg>
+        <svg class="aw-pq-question-sort__icon <?php if ($this->getCurrentDir() == 'ASC'): ?> cs-visually-hidden<?php endif; ?>"><use xlink:href="#arrow_up"></use></svg>
+
+        <img class="aw-pq-question-sort__dir-arrow cs-visually-hidden" src="<?php echo $this->escapeUrl($this->getImageUrl($this->getCurrentDir())); ?>" alt=<?php echo $this->escapeHtml($this->getTargetDir()); ?>/>
+    </a>
+</div>
+<script type="text/javascript">
+    require([
+        'AWPquestionSorter', 'jquery', 'bundle'
+    ], function(sorter, $, bundle) {
+        var config = {
+            'sortBlockSelector': '.aw-pq-question-sort-block',
+            'sortbySelector': '.aw-pq-question-sort__sortby',
+            'dirSelector': '.aw-pq-question-sort__dir',
+            'updateContainerSelector': '.aw-pq-question-list-wrapper',
+            'sortUrl': <?php /* @noEscape */ echo $this->getSortUrl(); ?>,
+            'sortDirValue': <?php /* @noEscape */ echo \Zend_Json::encode($this->getCurrentDir()); ?>,
+            'sortDirValueTarget': <?php /* @noEscape */ echo $this->getTargetDir(); ?>,
+            'sortByValue': <?php /* @noEscape */ echo \Zend_Json::encode($this->getCurrentOrder()); ?>,
+            'dirImagesUrl': <?php /* @noEscape */ echo $this->getImages(); ?>,
+            'overlayCssClass': 'aw-pq-overlay',
+            'overlayImage': <?php /* @noEscape */ echo $this->getOverlayImage(); ?>,
+            'overlayContainerSelector': '.aw-pq-list.box-content',
+            'product': <?php /* @noEscape */ echo $this->getProduct(); ?>,
+            'formKey': '<?php /* @noEscape */ echo $this->getSessionFormKey(); ?>'
+        };
+        new AWPqSorter(config);
+
+        new bundle.Select($('.aw-pq-question-sort__sortby .cs-select'));
+
+        window.AWPqSorter.prototype._hideOverlay = function() {
+            if (this.overlay) {
+
+                var collapse = new bundle.Flyout($('.aw-pq-question-list-wrapper'), { name: 'cs-collapse', type: 'collapse', initiallyShown: true });
+                new bundle.Select($('.aw-pq-question-sort__sortby .cs-select'));
+
+                this.overlay.remove();
+
+            }
+        };
+
+    });
+</script>

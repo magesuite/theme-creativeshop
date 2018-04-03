@@ -26,6 +26,9 @@ import './components/dropdown/dropdown';
 import './components/filter-horizontal/filter-horizontal';
 import './components/cart/cart';
 
+import { Flyout } from './components/flyout/class.flyout';
+export { Flyout };
+
 // =============================================================================
 // Customizations
 // =============================================================================
@@ -51,6 +54,7 @@ import './customizations/pagination/pagination';
 import './customizations/reviews/reviews';
 import './customizations/item-cloner/item-cloner';
 import './customizations/grid-layout/grid-layout';
+import './customizations/indicators/fast-shipping-init';
 import AddressAutofill from './customizations/address-autofill/address-autofill';
 export { AddressAutofill };
 
