@@ -186,6 +186,8 @@ switch ($type = $block->getType()) {
                             $iterator = 1;
                             $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
                             $indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
+                            $badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+                            $dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
                             foreach ($items as $item): ?>
 
                             <?php
@@ -194,11 +196,72 @@ switch ($type = $block->getType()) {
                                 $getAddToCartUrl = $block->getAddToCartUrl($item);
                                 $productName = $block->escapeHtml($item->getName());
                                 $isPopular = $indicatorsHelper->getPopularIconFlag($item->getId());
+                                $dailyDealData = $dailyDealHelper->prepareOfferData($item);
+                                $newBadge = $badgeHelper->isNew($product);
+                                $discount = $badgeHelper->getSalePercentage($product);
                                 $badges = [];
+
+                                if($dailyDealData && $dailyDealData['deal']) {
+                                    if($dailyDealData['displayType'] == 'badge') {
+                                        $badges[] = [
+                                            'mix' => 'cs-multiple-badges',
+                                            'content' => '<span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
+                                                    <span class="cs-badge__span">' . __('Limited offer!') . ' </span>
+                                                </span>
+                                                <span class="cs-badge">
+                                                    <span class="cs-badge__span">' . __('%1 items left', $dailyDealData['items']) . '</span>
+                                                </span>'
+                                        ];
+                                    } else {
+                                        $data['hotspots']['after']['badges'] = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$type.'-'.$iterator, [
+                                                'data' => [
+                                                    'namespace' => 'cs-',
+                                                    'mix' => 'cs-dailydeal--tile',
+                                                    'header' => [
+                                                        'show' => true,
+                                                    ],
+                                                    'items' => [
+                                                        'textBefore' => '',
+                                                        'textAfter' => __('items left'),
+                                                        'amount' => $dailyDealData['items']
+                                                    ],
+                                                    'deal' => [
+                                                        'end' => $dailyDealData['to']
+                                                    ]
+                                                ]
+                                            ]
+                                        )->setTemplate("dailydeal/dailydeal.twig")->toHtml();
+                                    }
+                                }
 
                                 if ( $isPopular ) {
                                     $badges[] = [
                                         'content' => '<span class="cs-badge cs-badge--positive">
+                                            <span class="cs-badge__span">' . __('Popular') . '</span>
+                                        </span>'
+                                    ];
+                                }
+
+                                if( $discount ) {
+                                    $badges[] = [
+                                        'content' => '<span class="cs-badge cs-badge--discount">
+                                            <span class="cs-badge__span">'  . $discount . '%</span>
+                                        </span>'
+                                    ];
+
+                                }
+
+                                if ( $newBadge ) {
+                                    $badges[] = [
+                                        'content' => '<span class="cs-badge cs-badge--new">
+                                            <span class="cs-badge__span">' . __('New') . '</span>
+                                        </span>'
+                                    ];
+                                }
+
+                                if ( $isPopular ) {
+                                    $badges[] = [
+                                        'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
                                             <span class="cs-badge__span">' . __('Popular') . '</span>
                                         </span>'
                                     ];

@@ -55,6 +55,7 @@ import './customizations/reviews/reviews';
 import './customizations/item-cloner/item-cloner';
 import './customizations/grid-layout/grid-layout';
 import './customizations/indicators/fast-shipping-init';
+import './customizations/dailydeal/dailydeal';
 import AddressAutofill from './customizations/address-autofill/address-autofill';
 export { AddressAutofill };
 
