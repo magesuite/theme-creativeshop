@@ -51,16 +51,17 @@
         } ] ) %}
     {% endif %}
 
-    {% if product.dailyDealOffer is not empty and product.dailyDealOffer.deal %}
+    {% if product.dailyDealOffer is not empty and product.dailyDealOffer.deal and product.dailyDealOffer.displayType != 'none' %}
         {% if product.dailyDealOffer.displayType == 'badge' %}
+            {% set itemsLimit = product.dailyDealOffer.items and product.dailyDealOffer.items > 0 ? '<span class="cs-badge">
+                <span class="cs-badge__span">' ~ translate('%1 item(s) left', product.dailyDealOffer.items) ~ '</span>
+            </span>' : '' %}
+
             {% set badges = badges|merge( [ {
                 mix: 'cs-multiple-badges',
                 content: '<span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
                             <span class="cs-badge__span">' ~ translate('Limited offer!') ~ ' </span>
-                        </span>
-                        <span class="cs-badge">
-                            <span class="cs-badge__span">' ~ translate('%1 items left', product.dailyDealOffer.items) ~ '</span>
-                        </span>'
+                        </span>' ~ itemsLimit
             } ] ) %}
         {% else %}
             {% set dailyDealHtml %}
