@@ -12,20 +12,21 @@
         $discount = $badgeHelper->getSalePercentage($product);
         $dailyDealData = $dailyDealHelper->prepareOfferData($product);
         $badges = [];
+        $dailyDealHtml = '';
 
-        if($dailyDealData && $dailyDealData['deal']) {
-            if($dailyDealData['displayType'] == 'badge') {
+        if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] !== 'none') {
+            if($dailyDealData['displayType'] === 'badge') {
+                $itemsLimit = $dailyDealData['items'] && $dailyDealData['items'] > 0 ? '<span class="cs-badge">
+                    <span class="cs-badge__span">' . __('%1 item(s) left', $dailyDealData['items']) . '</span>
+                </span>' : '';
                 $badges[] = [
                     'mix' => 'cs-multiple-badges',
                     'content' => '<span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
                             <span class="cs-badge__span">' . __('Limited offer!') . ' </span>
-                        </span>
-                        <span class="cs-badge">
-                            <span class="cs-badge__span">' . __('%1 items left', $dailyDealData['items']) . '</span>
-                        </span>'
+                        </span>' . $itemsLimit
                 ];
             } else {
-                $data['hotspots']['after']['badges'] = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
+                $dailyDealHtml = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
                         'data' => [
                             'namespace' => 'cs-',
                             'mix' => 'cs-dailydeal--tile',
@@ -34,7 +35,7 @@
                             ],
                             'items' => [
                                 'textBefore' => '',
-                                'textAfter' => __('items left'),
+                                'textAfter' => __('item(s) left'),
                                 'amount' => $dailyDealData['items']
                             ],
                             'deal' => [
@@ -88,7 +89,12 @@
                     ]
                 ]
             ],
-            'badges' => $badges
+            'badges' => $badges,
+            'hotspots' => [
+                'after' => [
+                    'badges' => $dailyDealHtml
+                ]
+            ]
         ];
 
         $ratingData = $csProductHelper->getReviewSummary($product)['data'];
