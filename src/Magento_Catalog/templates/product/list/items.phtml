@@ -146,9 +146,7 @@ switch ($type = $block->getType()) {
 }
 ?>
 
-<?php if ($exist):?>
-    <?php $products = []; ?>
-
+<?php if ($exist): ?>
     <?php if ($type == 'related' || $type == 'upsell'): ?>
         <?php if ($type == 'related'): ?>
             <div
@@ -197,8 +195,8 @@ switch ($type = $block->getType()) {
                                 $productName = $block->escapeHtml($item->getName());
                                 $isPopular = $indicatorsHelper->getPopularIconFlag($item->getId());
                                 $dailyDealData = $dailyDealHelper->prepareOfferData($item);
-                                $newBadge = $badgeHelper->isNew($product);
-                                $discount = $badgeHelper->getSalePercentage($product);
+                                $newBadge = $badgeHelper->isNew($item);
+                                $discount = $badgeHelper->getSalePercentage($item);
                                 $badges = [];
                                 $dailyDealHtml = '';
 
@@ -267,7 +265,7 @@ switch ($type = $block->getType()) {
                                         </span>'
                                     ];
                                 }
-                                
+
                                 $data = [
                                     'lazyload' => $iterator > 9,
                                     'showWrapper' => false,
