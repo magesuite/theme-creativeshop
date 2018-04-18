@@ -151,6 +151,40 @@ $namespace: 'cs-';
     &__buttons {
         display: flex;
         justify-content: center;
+
+        .#{$namespace}wishlist__products-grid & {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__stock {
+        .#{$namespace}wishlist__products-grid & {
+            flex: 0 1 100%;
+
+            .#{$namespace}t-text--look_error {
+                box-sizing: border-box;
+                display: block;
+                min-height: 3.1rem;
+                padding: 0.9rem 1.5rem;
+                border: 1px solid $colorCrimson;
+                border-radius: 0.3rem;
+                font-size: 1.2rem;
+                line-height: 1.2rem;
+                vertical-align: middle;
+                text-align: center;
+                transition: background-color 0.15s linear, color 0.15s linear;
+                cursor: default;
+
+                &:hover {
+                    color: $colorWhite;
+                    background-color: $colorCrimson;
+                }
+
+                @include media('>=phone-lg') {
+                    padding: 0.8rem 1.5rem;
+                }
+            }
+        }
     }
 
     &__links {
@@ -160,6 +194,10 @@ $namespace: 'cs-';
 
         .#{$namespace}link:first-child {
             display: none;
+        }
+
+        .#{$namespace}wishlist__products-grid & {
+            flex: 0 1 100%;
         }
     }
 
