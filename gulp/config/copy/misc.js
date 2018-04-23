@@ -22,6 +22,8 @@ export default {
         // Theme web images
         path.join(paths.src, '**/*.{gif,png,jpg,jpeg,webp,svg,ico}'),
         '!' + path.join(paths.src, 'sprites/**/*'),
+        // Video media files
+        path.join(paths.src, '**/*.{webm,mp4,ogg}'),
     ],
 
     src: [
@@ -40,6 +42,8 @@ export default {
         // Theme web images
         path.join(paths.src, '**/*.{gif,png,jpg,jpeg,webp,svg,ico}'),
         '!' + path.join(paths.src, 'sprites/**/*'),
+        // Video media files
+        path.join(paths.src, '**/*.{webm,mp4,ogg}'),
     ],
     dest: paths.dist,
 };
