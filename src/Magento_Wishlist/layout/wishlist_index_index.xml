@@ -40,6 +40,13 @@
 
         <referenceContainer name="dashboard.bottom.wishlist" remove="true"/>
 
+        <!--Magento does not show special price on wishlist, here is suggested fix for it.-->
+        <referenceBlock name="product.price.render.wishlist">
+            <arguments>
+                <argument name="price_type_code" xsi:type="string">final_price</argument>
+            </arguments>
+        </referenceBlock>
+
         <!--Remove update wishlist button because we removed comments and there is nothing to update now-->
         <referenceBlock name="customer.wishlist.button.update" remove="true"/>
 
