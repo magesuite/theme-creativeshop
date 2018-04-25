@@ -19,10 +19,8 @@
             </h2>
         </div>
 
-<!--        Container below should have class cs-collapse__content.-->
-<!--        However I am not able to initialise our bundle collapse component because extension js is a bit poorly written-->
-<!--        That require more work.-->
-        <div class="">
+
+        <div class="cs-collapse__content">
             <div class="cs-product-description__content | aw-pq-update">
                 <?php if ($questionCollection->getSize() > 1) : ?>
                     <div class="aw-pq-question-sort pager">
@@ -210,3 +208,13 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    require([
+        'jquery', 'bundle'
+    ], function($, bundle) {
+
+        new bundle.Flyout($('.aw-pq-question-list-wrapper .cs-collapse'), { name: 'cs-collapse', type: 'collapse' });
+
+    });
+</script>
