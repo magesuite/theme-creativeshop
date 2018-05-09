@@ -19,6 +19,11 @@
         align-items: stretch;
         margin: 1rem 1px;
 
+        // target Edge only because of strange bug that appears only there
+        @supports (-ms-ime-align: auto) {
+            overflow: hidden;
+        }
+
         #{$root}--tile & {
             margin: 0;
         }
@@ -65,10 +70,10 @@
                 z-index: -2;
             }
             &:first-child:after {
-                left: -1px;
+                left: 0;
             }
             &:last-child:after {
-                right: -1px;
+                right: 0;
             }
 
             &--special {
