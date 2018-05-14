@@ -39,6 +39,12 @@
     }
 
     &-question {
+        &__question {
+            border-top: 1px solid $colorAlto;
+            padding: 2rem 0 3rem;
+            margin-bottom: 3rem;
+        }
+
         &-list-wrapper {
             @include media('>=tablet') {
                 margin-top: 6rem;
@@ -103,6 +109,12 @@
                 margin-top: 2rem;
                 padding: 0;
             }
+
+            .#{$namespace}button {
+                @include media('<tablet') {
+                    width: 100%;
+                }
+            }
         }
     }
 
@@ -159,7 +171,6 @@
                 border-top: 1px solid $colorAlto;
 
                 @include media('<tablet') {
-                    flex-direction: column-reverse;
                     padding: 2rem 0;
                 }
             }
@@ -176,6 +187,34 @@
         }
 
         &__answer {
+            &-label {
+                .aw-pq-list__helpfulness {
+                    @include media('>=tablet') {
+                        display: inline-block;
+                    }
+                }
+
+                .aw-pq-list__helpfulness-layout {
+                    @include media('>=tablet') {
+                        display: inline-flex;
+                        flex-direction: column;
+                        margin-top: 1rem;
+                    }
+                }
+            }
+
+            &-helpfulness-wrapper {
+                @include media('>=tablet') {
+                    display: inline-flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+            &-label-text {
+                display: inline-block;
+            }
+
             &-item {
                 margin-bottom: 2.3rem;
 
@@ -222,6 +261,12 @@
             }
         }
 
+        &__helpfulness-wrapper {
+            @include media('<tablet') {
+                padding-right: 1rem;
+            }
+        }
+
         &__next-answer,
         &__add-answer-button,
         &__next-question,
@@ -230,8 +275,6 @@
         }
 
         &__add-question-button {
-            @extend .#{$namespace}button--look_light;
-
             @include media('<tablet') {
                 width: 100%;
                 margin-bottom: 1.5rem;
@@ -271,10 +314,15 @@
         }
 
         &__no-questions {
-            margin: 1rem 0 0;
+            margin: 1rem 0;
         }
 
         &__helpfulness {
+            @include media('<tablet') {
+                display: inline-block;
+                padding-left: 1rem;
+            }
+
             &-wrapper {
                 display: flex;
                 flex-direction: column;
@@ -311,13 +359,23 @@
             }
 
             &-layout {
-                margin-top: 2rem;
                 display: flex;
+                margin-bottom: 1rem;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 2rem;
 
                 @include media('>=tablet') {
-                    margin-top: 0;
-                    flex-direction: column;
-                    align-items: center;
+                    margin-top: 2rem;
+                    margin-right: 0;
+                }
+
+                .aw-pq-list__answer & {
+                    @include media('<tablet') {
+                        flex-direction: row;
+                        align-items: flex-start;
+                        margin-right: 0;
+                    }
                 }
 
                 &-unit_position_center {
