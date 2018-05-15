@@ -76,10 +76,9 @@
     }
 
     &__nav-wrap {
-        padding: 2rem 1.5rem 0;
+        padding: 0 1.5rem;
 
         @include media('<tablet') {
-            padding-top: 0;
             position: static !important;
             width: 100% !important;
         }
@@ -101,6 +100,13 @@
 
         &--vertical {
             box-sizing: border-box;
+
+            #{$root}__nav--thumbs {
+                // We gave the whole gallery max height, so container for thumbs also should have it
+                @include media('>=tablet') {
+                    max-height: calc(100vh - 13rem);
+                }
+            }
 
             #{$root}__nav__frame--thumb {
                 & + #{$root}__nav__frame--thumb {
