@@ -2,8 +2,8 @@
  * Mount creativestyle customizations after step shipping of the checkout is loaded
  */
 define(
-    ['rjsResolver', 'jquery', 'mage/validation', 'mage/translate', 'bundle'],
-    function(resolver, $, validation, $translate, bundle) {
+    ['rjsResolver', 'jquery', 'mage/validation', 'bundle', 'mage/translate'],
+    function(resolver, $, validation, bundle) {
         'use strict';
 
         /**
@@ -150,7 +150,7 @@ define(
                                     } else {
                                         missingStreetMessage =
                                             '<div class="cs-input__warning" >' +
-                                            $translate(
+                                            $.mage.__(
                                                 'Do not forget about street number'
                                             ) +
                                             '</div>';
