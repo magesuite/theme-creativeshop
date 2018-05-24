@@ -1,6 +1,6 @@
 import bundle from 'bundle';
 import $ from 'jquery';
-import $translate from 'mage/translate';
+import 'mage/translate';
 
 // Google address(geocode) API returns address with zip-code but query has to be specific - there is street and house number needed
 import GoogleAddressDetector from '../google-address-detector/google-address-detector';

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import $translate from 'mage/translate';
+import 'mage/translate';
 import OffcanvasNavigation from '../../../node_modules/creative-patterns/packages/components/offcanvas-navigation/src/offcanvas-navigation';
 
 export interface NavigationTree {
@@ -105,7 +105,7 @@ export function renderTree(
             <li class="cs-offcanvas-navigation__item">
                 <a class="cs-offcanvas-navigation__link" href="${
                     parent.url
-                }">${$translate('All products')}</a>
+                }">${$.mage.__('All products')}</a>
             </li>`;
         }
 

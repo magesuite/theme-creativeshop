@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import $translate from 'mage/translate';
+import 'mage/translate';
 
 const $pccf: JQuery = $('.pccf');
 const $pccfItem: JQuery = $('.pccf .form-group');
@@ -31,7 +31,7 @@ function createNewsletterCheckboxLabel(): void {
         const helpText: string = $(this)
             .next('p')
             .text();
-        let defaultLabelText: string = `${$translate(
+        let defaultLabelText: string = `${$.mage.__(
             'Subscribe to our newsletter'
         )}`;
 
