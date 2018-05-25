@@ -1,0 +1,79 @@
+@import '../../../node_modules/creative-patterns/packages/components/video-player/src/video-player';
+
+.#{$namespace}video-player {
+    $root: &;
+
+    @include videoPlayer();
+
+    max-height: calc(100vh - 12rem);
+
+    &__modal {
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+
+        @include media('<tablet') {
+            &._show {
+                left: 0;
+
+                .action-close:before {
+                    font-size: 5.5rem;
+                    line-height: 5.5rem;
+                }
+            }
+        }
+
+        @include media('>=tablet') {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-inner-wrap {
+            overflow: hidden;
+
+            @include media('<tablet') {
+                width: 100% !important;
+                background: $colorWhite;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+
+            @include media('>=tablet') {
+                width: 98vw;
+                max-height: 94vh !important;
+                margin: auto !important;
+                padding: 3rem;
+            }
+
+            @include media('>=laptop') {
+                width: 86vw;
+            }
+        }
+
+        .#{$namespace}modal__header {
+            width: 100%;
+            margin: 0;
+            text-align: right;
+            padding: 0 !important;
+            box-sizing: border-box;
+
+            @include media('<tablet') {
+                min-height: 4.5rem;
+            }
+        }
+
+        .#{$namespace}modal__close {
+            margin: 0 !important;
+        }
+
+        .#{$namespace}modal__content {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 !important;
+        }
+    }
+}

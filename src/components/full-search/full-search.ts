@@ -71,11 +71,11 @@ export default class FullSearch {
     public showFullSearch(): void {
         this._$headerSearch.show();
 
-        if(this._options.triggerActiveClass) {
+        if (this._options.triggerActiveClass) {
             this._$fullSearchTrigger.addClass(this._options.triggerActiveClass);
         }
 
-        if(this._options.closeActiveClass) {
+        if (this._options.closeActiveClass) {
             this._$fullSearchClose.addClass(this._options.closeActiveClass);
         }
 
@@ -91,11 +91,13 @@ export default class FullSearch {
     public hideFullSearch(): void {
         this._$headerSearch.hide();
 
-        if(this._options.triggerActiveClass) {
-            this._$fullSearchTrigger.removeClass(this._options.triggerActiveClass);
+        if (this._options.triggerActiveClass) {
+            this._$fullSearchTrigger.removeClass(
+                this._options.triggerActiveClass
+            );
         }
 
-        if(this._options.closeActiveClass) {
+        if (this._options.closeActiveClass) {
             this._$fullSearchClose.removeClass(this._options.closeActiveClass);
         }
     }
