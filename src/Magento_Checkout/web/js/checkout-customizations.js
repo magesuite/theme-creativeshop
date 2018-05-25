@@ -128,33 +128,13 @@ define(
                                         .hasClass('cs-input__warning') &&
                                     !$('.cs-html-select--autosuggest').length
                                 ) {
-                                    var checkoutElement = $('#checkout');
-                                    var missingStreetMessage = '';
-                                    var missingStreetDataAttribute =
-                                        checkoutElement.attr(
-                                            'data-missing-street-number-wording'
-                                        ) &&
-                                        checkoutElement.data(
-                                            'missing-street-number-wording'
-                                        ) !== ''
-                                            ? checkoutElement.data(
-                                                  'missing-street-number-wording'
-                                              )
-                                            : false;
+                                    missingStreetMessage =
+                                        '<div class="cs-input__warning" >' +
+                                        $.mage.__(
+                                            'Do not forget about street number'
+                                        ) +
+                                        '</div>';
 
-                                    if (missingStreetDataAttribute) {
-                                        missingStreetMessage =
-                                            '<div class="cs-input__warning" >' +
-                                            missingStreetDataAttribute +
-                                            '</div>';
-                                    } else {
-                                        missingStreetMessage =
-                                            '<div class="cs-input__warning" >' +
-                                            $.mage.__(
-                                                'Do not forget about street number'
-                                            ) +
-                                            '</div>';
-                                    }
                                     $input.after(missingStreetMessage);
                                 }
                             } else {
