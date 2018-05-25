@@ -57,6 +57,7 @@ import './customizations/grid-layout/grid-layout';
 import './customizations/indicators/fast-shipping-init';
 import './customizations/dailydeal/dailydeal';
 import './customizations/plugincompany-contactforms/plugincompany-contactforms';
+import './customizations/video-player/video-player';
 import AddressAutofill from './customizations/address-autofill/address-autofill';
 export { AddressAutofill };
 
@@ -79,4 +80,3 @@ window.addEventListener(
     },
     false
 );
-
