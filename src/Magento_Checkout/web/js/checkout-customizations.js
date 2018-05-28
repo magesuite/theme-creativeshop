@@ -128,7 +128,7 @@ define(
                                         .hasClass('cs-input__warning') &&
                                     !$('.cs-html-select--autosuggest').length
                                 ) {
-                                    missingStreetMessage =
+                                   var missingStreetMessage =
                                         '<div class="cs-input__warning" >' +
                                         $.mage.__(
                                             'Do not forget about street number'
