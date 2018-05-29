@@ -1,5 +1,11 @@
-<?php /** @var \Magento\Framework\Pricing\Render\Amount $block */ ?>
-<?php $ammountHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Pricing\Render\Amount'); ?>
+<?php
+/**
+ * Template overwritten to:
+ * - Add custom itemref to fix availability scope.
+ * - Add price rounding for itemprop="price" element.
+ */
+/** @var \Magento\Framework\Pricing\Render\Amount $block */
+?>
 
 <span class="price-container <?= /* @escapeNotVerified */ $block->getAdjustmentCssClasses() ?>"
     <?= $block->getSchema() ? ' itemprop="offers" itemscope itemtype="http://schema.org/Offer" itemref="cs-box-addtocart__availability"' : '' ?>>
@@ -17,7 +23,7 @@
         <?= $block->getAdjustmentsHtml() ?>
     <?php endif; ?>
     <?php if ($block->getSchema()): ?>
-        <meta itemprop="price" content="<?= /* @escapeNotVerified */ $ammountHelper->formatCurrencyForSeo($block->getDisplayValue(), false, 2) ?>" />
+        <meta itemprop="price" content="<?= /* @escapeNotVerified */ number_format($block->getDisplayValue(), 2, '.', ''); ?>" />
         <meta itemprop="priceCurrency" content="<?= /* @escapeNotVerified */ $block->getDisplayCurrencyCode() ?>" />
     <?php endif; ?>
 </span>
