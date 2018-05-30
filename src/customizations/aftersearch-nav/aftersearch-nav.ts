@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import Aftersearch from '../../../node_modules/creative-patterns/packages/components/aftersearch-nav/src/aftersearch-nav';
 
 /**
  * component options interface.
@@ -12,7 +13,7 @@ interface aftersearchNavOptions {
     $loader: JQuery;
 }
 
-export default class aftersearchNav {
+export default class aftersearchNav extends Aftersearch {
     protected _options: aftersearchNavOptions;
     protected $priceFrom: JQuery;
     protected $priceTo: JQuery;
@@ -21,7 +22,6 @@ export default class aftersearchNav {
 
     public constructor(options?: aftersearchNavOptions) {
         this._options = options;
-
         this.$priceFrom = $('#price_from');
         this.$priceTo = $('#price_to');
         this.$loader = this._options.$loader;
@@ -31,6 +31,8 @@ export default class aftersearchNav {
         if (this._options.lockWhileLoading && this.$loader.length) {
             this._initializeLoader();
         }
+
+        super();
     }
 
     protected _waitForElasticSearch(): void {

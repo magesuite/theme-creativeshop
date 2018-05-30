@@ -1,4 +1,7 @@
+@import '../../../node_modules/creative-patterns/packages/components/aftersearch-nav/src/aftersearch-nav';
+
 .#{$namespace}aftersearch-nav {
+    @include aftersearch-nav();
     $root: &;
     overflow: visible;
 
@@ -17,7 +20,7 @@
     &__filter-options {
         @include media('<tablet') {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: space-between;
 
             &.#{$namespace}filter-horizontal {
@@ -519,7 +522,6 @@
 
         #{$root}__filter-options {
             @include media('>=tablet') {
-                width: calc(100% + 1rem);
                 margin: 0 0 0 -0.5rem;
                 padding: 0;
                 list-style: none;
@@ -528,45 +530,27 @@
             }
         }
 
-        #{$root}__filter {
+        #{$root}__filter,
+        #{$root}__filter-row {
             @include media('>=tablet') {
                 padding: 0.5rem;
                 margin: 0;
-                flex-basis: calc(100% / 3);
                 position: relative;
                 border-bottom: none;
                 box-sizing: border-box;
             }
+        }
 
-            @include media('>=tablet', '<laptop') {
-                &:nth-child(3n) #{$root}__filter-title:after {
-                    display: none;
-                }
-            }
-
-            @include media('>=laptop') {
-                flex-basis: 25%;
-            }
-
-            @include media('>=laptop', '<laptop-lg') {
-                &:nth-child(4n) #{$root}__filter-title:after {
-                    display: none;
-                }
-            }
-
-            @include media('>=laptop-lg') {
-                flex-basis: 20%;
-
-                &:nth-child(5n) #{$root}__filter-title:after {
-                    display: none;
-                }
+        #{$root}__filter-row {
+            @include media('>=tablet') {
+                flex-wrap: wrap;
             }
         }
 
         #{$root}__filter-arrow {
             @include media('>=tablet') {
-                margin-top: 0.2rem;
-                right: 1.5rem;
+                margin-top: 0;
+                right: 1rem;
 
                 &:before,
                 &:after {
@@ -577,6 +561,9 @@
 
         #{$root}__filter-title {
             @include media('>=tablet') {
+                height: 1.5rem;
+                display: flex;
+                align-items: center;
                 position: relative;
                 overflow: visible;
                 margin: 0;
@@ -585,6 +572,7 @@
                 font-size: 1.1rem;
                 border-top: none;
                 transition: box-shadow 0.15s ease-in-out;
+                word-break: unset;
 
                 &:hover {
                     background-color: darken($colorGallery, 8%);
@@ -597,23 +585,67 @@
             }
         }
 
+        #{$root}__show-more-trigger {
+            @include media('>=tablet') {
+                background: $colorCeruleanBlue;
+                width: 100%;
+                font-size: 1.1rem;
+                font-weight: 700;
+                padding: 1.3rem 2.5rem 1.1rem 1.8rem;
+                color: $colorWhite;
+                box-shadow: none;
+                border: 1px solid $colorCeruleanBlue;
+                border-radius: 0;
+                position: relative;
+                text-align: left;
+                text-transform: uppercase;
+            }
+
+            &:focus,
+            &:hover {
+                background: $colorCeruleanBlueHover;
+                border-color: $colorCeruleanBlueHover;
+            }
+
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
         #{$root}__filter-content {
             @include media('>=tablet') {
                 position: absolute;
                 padding: 0 2rem;
                 left: 0.5rem;
-                width: calc(100% - 1rem);
+                min-width: calc(100% - 1rem);
                 box-sizing: border-box;
                 background-color: $colorWhite;
                 z-index: -1;
                 opacity: 0;
                 transition: box-shadow 0.15s ease-in-out;
+                white-space: nowrap;
+                width: min-content;
+                overflow-y: scroll;
+
+                &:-webkit-scrollbar {
+                    width: 0.5rem;
+                }
+
+                &:-webkit-scrollbar-track {
+                    background-color: $colorCeruleanBlueHover !important;
+                }
+
+                &:-webkit-scrollbar-thumb {
+                    background-color: $colorCeruleanBlue !important;
+                }
 
                 &.active {
                     padding-top: 1rem;
                     z-index: 3;
                     opacity: 1;
                     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
+                    min-width: calc(100% - 1rem);
+                    width: min-content;
 
                     &:before {
                         content: ' ';
@@ -632,6 +664,12 @@
         #{$root}__filter-items {
             @include media('>=tablet') {
                 padding-top: 0.3rem;
+            }
+        }
+
+        #{$root}__price {
+            @include media('>=tablet') {
+                min-width: 17rem;
             }
         }
     }

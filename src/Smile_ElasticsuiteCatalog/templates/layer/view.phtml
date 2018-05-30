@@ -22,6 +22,7 @@
             <?php /* State was here originally */ ?>
 
             <?php $wrapOptions = false; ?>
+            <?php $index = 0; ?>
             <?php foreach ($block->getFilters() as $filter) : ?>
                 <?php if ($filter->getItemsCount()) : ?>
                     <?php if ($horizontalFiltersLayout): ?>
@@ -31,7 +32,7 @@
                             cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": <?php echo $horizontalFiltersLayout ? 'false' : 'true' ?>}}'>
                                 <?php $wrapOptions = true; ?>
                         <?php endif; ?>
-                        <li class="cs-aftersearch-nav__filter">
+                        <li class="cs-aftersearch-nav__filter cs-aftersearch-nav__filter-row">
                             <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></div>
                             <div data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
                                 <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
@@ -51,8 +52,26 @@
                         </dd>
 
                     <?php endif; ?>
+                    <?php $index++; ?>
                 <?php endif; ?>
             <?php endforeach; ?>
+            <?php if ($horizontalFiltersLayout): ?>
+                <li class="cs-aftersearch-nav__filter-row cs-aftersearch-nav__show-more-button cs-aftersearch-nav__filter--more">
+                    <button
+                        class="cs-aftersearch-nav__show-more-trigger"
+                        data-show-text="<?php /* @escapeNotVerified */
+                        echo __('More filters'); ?>"
+                        data-hide-text="<?php /* @escapeNotVerified */
+                        echo __('Less filters'); ?>"
+                        >
+                        <span class="cs-aftersearch-nav__show-more-trigger-text">
+                            <?php /* @escapeNotVerified */ echo __('More filters'); ?>
+                        </span>
+                        <span class="cs-aftersearch-nav__filter-plus"></span>
+                    </button>
+                </li>
+            <?php endif; ?>
+
             <?php if ($wrapOptions) : ?>
                 <?php echo $horizontalFiltersLayout ? '</ul>' : '</dl>' ?>
             <?php else : ?>
