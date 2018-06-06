@@ -4,7 +4,6 @@
     $root: &;
 
     @include videoPlayer();
-
     max-height: calc(100vh - 12rem);
 
     &__wrapper {
@@ -16,9 +15,17 @@
     }
 
     &__modal {
+        display: block;
         width: 100vw;
         height: 100vh;
         left: 0;
+        top: 50%;
+
+        &._show {
+            .modal-inner-wrap {
+                transform: translateY(-50%);
+            }
+        }
 
         @include media('<tablet') {
             &._show {
@@ -31,21 +38,13 @@
             }
         }
 
-        @include media('>=tablet') {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         .modal-inner-wrap {
             overflow: hidden;
+            top: 50%;
 
             @include media('<tablet') {
                 width: 100% !important;
                 background: $colorWhite;
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 padding: 1rem;
                 box-sizing: border-box;
             }
