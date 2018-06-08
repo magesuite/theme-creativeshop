@@ -8,6 +8,7 @@
         $newBadge = $badgeHelper->isNew($product);
         $discount = $badgeHelper->getSalePercentage($product);
         $isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
+        $isFreeShipped = ($indicatorsHelper->isFreeShipped($product) && $indicatorsHelper->showFreeShippingInProductTiles());
         $dailyDealData = $dailyDealHelper->prepareOfferData($product);
         $badges = [];
         $dailyDealHtml = '';
@@ -66,6 +67,14 @@
             $badges[] = [
                 'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
                     <span class="cs-badge__span">' . __('Popular') . '</span>
+                </span>'
+            ];
+        }
+
+        if ( $isFreeShipped ) {
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
+                    <span class="cs-badge__span">' . __('Free Shipping') . '</span>
                 </span>'
             ];
         }
