@@ -79,7 +79,12 @@
                     content: '<span class="cs-badge cs-badge--cut cs-badge--positive"><span class="cs-badge__span">' ~ translate('Popular') ~ '</span></span>'
                 } ] ) %}
             {% endif %}
-
+            
+            {% if product.isFreeShipped %}
+                {% set badges = badges|merge( [ {
+                    content: '<span class="cs-badge cs-badge--cut cs-badge--positive"><span class="cs-badge__span">' ~ translate('Free Shipping') ~ '</span></span>'
+                } ] ) %}
+            {% endif %}
 
             {% set content %}
                 {% include locate( 'grid-product/grid-product.twig' ) with {

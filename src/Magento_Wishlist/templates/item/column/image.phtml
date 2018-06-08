@@ -6,6 +6,7 @@ $item = $block->getItem();
 $product = $item->getProduct();
 $indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
 $isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
+$isFreeShipped = $indicatorsHelper->isFreeShipped($product->getId());
 $dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
 $dailyDealData = $dailyDealHelper->prepareOfferData($product);
 ?>
@@ -32,6 +33,12 @@ $dailyDealData = $dailyDealHelper->prepareOfferData($product);
         <?php if($isPopular) { ?>
             <li class="cs-grid-product__badge">
                 <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Popular'); ?></span></span>
+            </li>
+        <?php } ?>
+
+        <?php if ( $isFreeShipped ) { ?>
+            <li class="cs-grid-product__badge">
+                <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Free Shipping'); ?></span></span>
             </li>
         <?php } ?>
     </ul>
