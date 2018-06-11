@@ -58,6 +58,7 @@ import './customizations/indicators/fast-shipping-init';
 import './customizations/dailydeal/dailydeal';
 import './customizations/plugincompany-contactforms/plugincompany-contactforms';
 import './customizations/video-player/video-player';
+import './customizations/searchresults-switcher/searchresults-switcher';
 import AddressAutofill from './customizations/address-autofill/address-autofill';
 export { AddressAutofill };
 
