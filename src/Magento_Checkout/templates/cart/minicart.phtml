@@ -1,0 +1,91 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+
+$cHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Checkout');
+$shouldAutoopen = $cHelper->getMinicartFlag();
+?>
+
+<div
+    class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper"
+    data-block="minicart"
+    data-autoopen="<?= $shouldAutoopen; ?>"
+>
+    <a
+        class="cs-header-user-area__link cs-hide-tablet-desktop"
+        href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
+        data-bind="scope: 'minicart_content'"
+    >
+        <span class="counter qty empty">
+            <span class="cs-header-user-area__icon-wrapper">
+                <span
+                    class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short"
+                    data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }"
+                >
+                    <span class="cs-badge__span"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+                </span>
+                <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
+                    <use xlink:href="#cart"></use>
+                </svg>
+            </span>
+            <span class="cs-header-user-area__label"><?= __('Cart'); ?></span>
+        </span>
+    </a>
+
+    <a
+        class="cs-header-user-area__link cs-hide-mobile | showcart"
+        href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
+        data-bind="scope: 'minicart_content'"
+    >
+        <span class="counter qty empty"
+              data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
+        <span class="cs-header-user-area__icon-wrapper">
+
+            <span
+                class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short"
+                data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }"
+            >
+                <span class="cs-badge__span"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+            </span>
+
+            <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
+                <use xlink:href="#cart"></use>
+            </svg>
+        </span>
+        <span class="cs-header-user-area__label"><?= __('Cart'); ?></span>
+        </span>
+    </a>
+    <?php if ($block->getIsNeedToDisplaySideBar()): ?>
+        <div class="block block-minicart empty"
+             data-role="dropdownDialog"
+             data-mage-init='{"dropdownDialog":{
+                "triggerEvent": "touchstart mouseenter",
+                "appendTo":"[data-block=minicart]",
+                "triggerTarget":".showcart",
+                "timeout": "2000",
+                "closeOnMouseLeave": false,
+                "closeOnEscape": true,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":[]}}'>
+            <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            </div>
+            <?php echo $block->getChildHtml('minicart.addons'); ?>
+        </div>
+    <?php endif ?>
+    <script>
+        window.checkout = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getConfig()); ?>;
+    </script>
+    <script type="text/x-magento-init">
+    {
+        "[data-block='minicart']": {
+            "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>"
+        }
+    }
+    </script>
+</div>

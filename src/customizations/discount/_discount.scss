@@ -1,0 +1,86 @@
+.#{$namespace}discount {
+    padding: 1.5rem 1.5rem 0;
+    border-top: 1px solid $colorAlto;
+
+    @include media('>=laptop') {
+        padding: 1.5rem 2rem 0 0;
+        border-top: none;
+        width: 30rem;
+    }
+
+    .#{$namespace}checkout {
+        padding: 1.5rem;
+    }
+
+    .#{$namespace}cart-page &:not(:only-child) {
+        width: 100%;
+
+        @include media('>=laptop') {
+            width: calc(50% - 1.5rem);
+        }
+    }
+
+    &.aw-giftcard {
+        margin-bottom: 0;
+    }
+
+    &--gift {
+        .checkout-index-index & {
+            @include media('<tablet') {
+                margin-top: 1.5rem;
+            }
+        }
+    }
+
+    &__content {
+        padding: 0.5rem 0 1rem;
+    }
+
+    &__title {
+        border-top: none;
+        padding: 0;
+        cursor: pointer;
+
+        @include media('>=laptop') {
+            margin-bottom: 2rem;
+        }
+
+        &:after {
+            content: '';
+            display: inline-block;
+            background-image: url('images/button-arrow-dark.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 0.6rem;
+            height: 1rem;
+            transform: rotate(90deg);
+            transition: transform 0.3s;
+            margin-left: 1rem;
+        }
+
+        &[aria-expanded='true'] {
+            &:after {
+                transform: rotate(-90deg);
+            }
+        }
+
+        &-text {
+            @extend .#{$namespace}t-text;
+            @extend .#{$namespace}t-text--size_300;
+        }
+    }
+
+    &__text {
+        @extend .#{$namespace}t-text;
+        @extend .#{$namespace}t-text--size_300;
+    }
+
+    &__form {
+        padding-top: 1.5rem;
+        margin-bottom: 1rem;
+
+        @include media('>=tablet') {
+            padding-top: 0.5rem;
+        }
+    }
+}

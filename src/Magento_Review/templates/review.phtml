@@ -1,0 +1,26 @@
+<?php
+$reviewsCount = $block->getCollectionSize();
+
+echo $block->getChildHtml('reviews_summary');
+
+if ($reviewsCount === 0): ?>
+<div class="cs-product-description__no-reviews">
+    <?= __('Be the first to review this product');?>
+</div>
+<?php endif; ?>
+<!--
+Both role and class attributes values of #product-review-container are needed
+for AJAX script to work because we no longer have tabs in CreativeShop.
+-->
+<div id="product-review-container" data-role="product-review" role="tab" class="active"></div>
+<?php echo $block->getChildHtml('review_form'); ?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Review/js/process-reviews": {
+            "productReviewUrl": "<?= $block->escapeJs($block->escapeUrl($block->getProductReviewUrl())) ?>",
+            "reviewsTabSelector": "#product-review-container"
+        }
+    }
+}
+</script>

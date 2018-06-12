@@ -1,0 +1,268 @@
+.#{$namespace}category-page {
+    $root: &;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+
+    @include media('>=tablet') {
+        flex-wrap: nowrap;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid $colorAlto;
+        margin-bottom: 3rem;
+        justify-content: flex-end;
+    }
+
+    .page-title-wrapper {
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 1.5rem;
+        padding-top: 0;
+        width: 100%;
+        margin-left: 0;
+        padding-left: 0;
+        @include media('>=tablet') {
+            padding: 0.2rem 0 1.5rem;
+            margin-left: 0;
+            width: auto;
+        }
+
+        .page-title {
+            padding-bottom: 0;
+            @include media('<tablet') {
+                text-transform: uppercase;
+                font-size: 1.6rem;
+                padding-bottom: 0;
+            }
+        }
+    }
+
+    &__toolbar {
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        display: flex;
+        padding-bottom: 1rem;
+
+        @include media('>=desktop') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__toolbar-top {
+        #{$root}__toolbar-right {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
+        #{$root}__toolbar-sorter {
+            @include media('<tablet') {
+                display: flex;
+                width: 100%;
+            }
+        }
+    }
+
+    &__toolbar-left,
+    &__toolbar-right {
+        padding-bottom: 1rem;
+    }
+
+    &__toolbar-left {
+        display: flex;
+        flex-wrap: wrap;
+        flex-grow: 1;
+
+        @include media('>=tablet') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__toolbar-right {
+        flex-grow: 1;
+
+        @include media('<tablet') {
+            width: 100%;
+        }
+
+        @include media('>=tablet') {
+            width: auto;
+        }
+
+        @include media('>laptop') {
+            flex-grow: 0;
+        }
+    }
+
+    &__toolbar-label {
+        white-space: nowrap;
+        padding-right: 0.8rem;
+        padding-top: 0.4rem;
+        display: inline-block;
+        @extend .#{$namespace}t-text;
+        @extend .#{$namespace}t-text--look_label;
+        @extend .#{$namespace}t-text--size_250;
+    }
+
+    &__toolbar-amount {
+        display: none;
+    }
+
+    &__modes {
+        display: none;
+    }
+
+    &__toolbar-sorter,
+    &__toolbar-limiter {
+        display: flex;
+        align-items: center;
+        padding-top: 0;
+
+        @include media('<tablet') {
+            display: none;
+        }
+    }
+
+    &__toolbar-sorter {
+        width: 100%;
+
+        .#{$namespace}html-select,
+        .#{$namespace}html-select__trigger {
+            height: 3.8rem;
+        }
+
+        .#{$namespace}html-select__trigger-text {
+            line-height: 2.4rem;
+        }
+    }
+
+    &__sorter-direction {
+        display: flex;
+        align-self: stretch;
+        align-items: stretch;
+        margin-left: auto;
+        margin-right: -1rem;
+
+        @include media('>=phone-lg') {
+            margin-left: 0.5rem;
+            margin-right: 1.5rem;
+        }
+
+        &-btn {
+            position: relative;
+            width: 3.5rem;
+
+            @include media('>=phone-lg') {
+                width: 4rem;
+            }
+
+            &:first-child {
+                border-right: 1px solid $colorAlto;
+            }
+        }
+
+        &-icon {
+            width: 1.5rem;
+            height: 1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            fill: $colorGray;
+            transition: fill 0.15s linear;
+
+            #{$root}__sorter-direction-btn--current &,
+            #{$root}__sorter-direction-btn:hover & {
+                fill: $colorCeruleanBlue;
+            }
+        }
+    }
+
+    &__main {
+        box-sizing: border-box;
+        width: 100%;
+        order: 2;
+
+        @include media('>=tablet') {
+            max-width: 70%;
+            padding-left: 3rem;
+            padding-top: 3rem;
+            border-left: 1px solid $colorAlto;
+
+            .ie11 & {
+                flex-shrink: 0;
+            }
+        }
+
+        @include media('>=laptop') {
+            max-width: 78%;
+        }
+    }
+
+    &--filters-full-top #{$root}__inner-sidebar,
+    .sidebar-main {
+        box-sizing: border-box;
+        width: 100%;
+        border-right: none;
+        order: 1;
+
+        @include media('>=tablet') {
+            max-width: 30%;
+            padding-right: 3rem;
+            padding-top: 3rem;
+        }
+
+        @include media('>=laptop') {
+            max-width: 22%;
+            padding-right: 1.6rem;
+        }
+
+        @include media('>=desktop') {
+            padding-right: 3rem;
+        }
+    }
+
+    .sidebar.sidebar-additional {
+        width: 100%;
+    }
+
+    &--filters-full-top {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: none;
+
+        #{$root}__main {
+            padding-left: 0;
+            border-left: none;
+            max-width: 100%;
+        }
+
+        #{$root}__products-wrapper {
+            display: flex;
+            border-top: 1px solid $colorGallery;
+            border-bottom: 1px solid $colorGallery;
+            margin-bottom: 2rem;
+        }
+
+        .cs-aftersearch-nav__state + #{$root}__products-wrapper {
+            border-top: none;
+        }
+
+        #{$root}__inner-sidebar {
+            display: none;
+        }
+
+        .#{$namespace}items-grid {
+            order: 2;
+
+            @include media('>=tablet') {
+                width: 67%;
+            }
+            @include media('>=laptop') {
+                width: 75%;
+            }
+        }
+    }
+}

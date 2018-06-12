@@ -1,0 +1,35 @@
+$namespace: 'cs-';
+@import '../../../node_modules/creative-patterns/packages/components/sticky-block/src/sticky-block';
+
+.#{$namespace}sticky-block {
+    box-sizing: border-box;
+
+    &--pdp {
+        @include media('>=tablet') {
+            position: relative;
+            z-index: 3;
+            margin-right: calc(15px - 0.5rem);
+        }
+
+        @include media('>=laptop') {
+            @include stickyBlock;
+            top: 3rem;
+            margin-right: 15px;
+        }
+
+        @media screen and (min-width: 1230px) {
+            margin-right: 0;
+        }
+    }
+
+    &--no-mobile {
+        @include media('>=tablet') {
+            @include stickyBlock;
+            position: sticky;
+            top: 8.5rem;
+        }
+        @include media('>=laptop') {
+            top: 1.5rem;
+        }
+    }
+}

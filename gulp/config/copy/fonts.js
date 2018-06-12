@@ -8,12 +8,12 @@ import paths from '../../paths';
 export default {
     watch: [
         // Fonts.
-        path.join( paths.src, '**/*.{ttf,woff,woff2,eot}' ),
+        path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
     ],
 
     src: [
         // Fonts.
-        path.join( paths.src, '**/*.{ttf,woff,woff2,eot}' ),
+        path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
     ],
-    dest: path.join( paths.dist, 'web/' ),
+    dest: path.join(paths.dist, 'web/'),
 };

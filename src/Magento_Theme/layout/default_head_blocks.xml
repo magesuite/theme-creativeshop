@@ -1,5 +1,32 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="bundle.css" after="-"/>
+        <attribute name="prefix" value="og: http://ogp.me/ns#"/>
+        <link src="Magento_Theme::apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+        <link src="Magento_Theme::favicon-32x32.png" rel="icon" type="image/png" sizes="32x32" />
+        <link src="Magento_Theme::favicon-16x16.png" rel="icon" type="image/png" sizes="16x16" />
+
+        <!--
+            Every CSS you add here will be loaded synchronously.
+            See: Magento_Theme/templates/html/fonts.phtml or Magento_Theme/templates/html/styles.phtml
+            to load CSS async.
+        -->
+
+        <!--
+            We remove styles so we can add them back without media attributes.
+            This allows CSS to be merged into one file = less requests.
+        -->
+        <css src="mage/calendar.css" media="all"/>
+        <css src="css/styles-m.css" media="all"/>
+        <css src="css/styles-l.css" media="all"/>
+        <css src="css/print.css" media="all"/>
+        <css src="bundle.css" media="all"/>
+
+        <!-- We have our own swatches implementation. -->
+        <remove src="Magento_Swatches::css/swatches.css"/>
+
+        <!-- Add loadCSS utility for async CSS loading. -->
+        <script src="loadCSS.js"/>
+        <!-- Add utility for images lazyloading. -->
+        <script src="lazySizes.js"/>
     </head>
 </page>

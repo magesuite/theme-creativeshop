@@ -1,0 +1,41 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \Aheadworks\Pquestion\Block\Customer\Subscribe $this */
+?>
+    <h4><?php echo $this->escapeHtml(__('Subscribe to:'));?></h4>
+<?php $notificationTypes = $this->getNotificationTypes(); ?>
+<?php if (count($notificationTypes) > 0): ?>
+    <form
+        action="<?php echo $this->escapeUrl($this->getActionUrl())?>"
+        method="POST" id="aw_pq_subscribe_to_form"
+        class="cs-form"
+    >
+
+        <ul class="cs-list">
+            <?php foreach ($notificationTypes as $type): ?>
+                <li class="cs-input cs-input--type-checkbox">
+                    <input
+                        type="checkbox"
+                        id="aw_pq_customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
+                        name="aw_pq_customer_subscribe_to[]"
+                        value="<?php echo $this->escapeHtml($type['value'])?>"
+                        class="cs-input__checkbox"
+                        <?php echo $type['checked']?'checked':'';?>
+                    />
+                    <label
+                        for="aw_pq_customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
+                        class="cs-input__label"
+                    >
+                        <?php echo $this->escapeHtml($type['label']);?>
+                    </label>
+                </li>
+            <?php endforeach;?>
+        </ul>
+
+        <button type="submit" title="<?php echo $this->escapeHtml(__('Save'));?>" class="cs-button aw-pq_customer-subscription-save">
+            <span><span><?php echo $this->escapeHtml(__('Save'));?></span></span>
+        </button>
+    </form>
+<?php endif;?>

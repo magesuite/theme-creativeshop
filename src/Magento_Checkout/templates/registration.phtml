@@ -1,0 +1,33 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+<div id="registration" data-bind="scope:'registration'" class="cs-info-page__section">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#registration": {
+                "Magento_Ui/js/core/app": {
+                   "components": {
+                        "registration": {
+                            "component": "Magento_Checkout/js/view/registration",
+                            "config": {
+                                "registrationUrl": "<?php /* @escapeNotVerified */ echo $block->getCreateAccountUrl(); ?>",
+                                "email": "<?php /* @escapeNotVerified */ echo $block->getEmailAddress(); ?>"
+                            },
+                            "children": {
+                                "errors": {
+                                    "component": "Magento_Ui/js/view/messages",
+                                    "sortOrder": 0,
+                                    "displayArea": "messages",
+                                    "config": {
+                                        "autoHideTimeOut": -1
+                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</div>

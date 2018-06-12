@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="checkout_cart_item_renderers"/>
+    <body>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">cart</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Shopping Cart</item>
+                    <item name="label" xsi:type="string" translate="true">Shopping Cart</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container  cs-container--checkout-type cs-container--spacious"/>
+
+        <referenceContainer name="main" htmlClass="cs-cart-page"/>
+        <move element="page.main.title" destination="main" before="-"/>
+
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">page-title-wrapper--checkout-type</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="checkout.cart.container">
+            <container name="checkout.cart.aside" htmlTag="div" htmlClass="cs-container__aside cs-container__aside--space-top"/>
+            <container name="checkout.cart.column" htmlTag="div" htmlClass="cs-container__main-column">
+                <!--Container that keep discount code and gift cars collapses-->
+                <container name="checkout.cart.coupons" htmlTag="div" htmlClass="cs-container__cart-coupons" after="-" />
+            </container>
+        </referenceContainer>
+
+        <move element="checkout.cart.form"  destination="checkout.cart.column" before="-" />
+        <move element="checkout.cart.widget"  destination="checkout.cart.column" after="checkout.cart.form"/>
+
+        <referenceContainer name="cart.summary" htmlClass="cs-cart-summary cs-sticky-block cs-sticky-block--no-mobile" />
+        <move element="cart.summary" destination="checkout.cart.aside" before="-" />
+
+        <referenceBlock name="checkout.cart.summary.title">
+            <arguments>
+                <argument translate="true" name="text" xsi:type="string">Summary</argument>
+                <argument name="tag" xsi:type="string">strong</argument>
+                <argument name="css_class" xsi:type="string">cs-cart-summary__title cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light</argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="checkout.cart.coupon" destination="checkout.cart.coupons" before="-"/>
+
+    </body>
+</page>

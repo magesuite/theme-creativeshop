@@ -1,0 +1,129 @@
+.#{$namespace}minicart {
+    background: $colorWhite;
+
+    .action.close {
+        top: 0.8rem;
+    }
+
+    &__title {
+        border-bottom: 1px solid $colorAlto;
+        padding: 2rem 2rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_2;
+        @extend .#{$namespace}t-headline--look_light;
+    }
+
+    &__title-qty {
+        color: $colorDoveGray;
+        font-size: 1.4rem;
+    }
+
+    &__edit-link {
+        font-weight: 700;
+
+        .#{$namespace}link__icon {
+            padding: 0 0 0 1rem;
+        }
+    }
+
+    &__content {
+        height: auto !important;
+    }
+
+    &__list {
+        padding: 0;
+        list-style: none;
+        margin-bottom: 0;
+
+        &--scroll {
+            height: auto !important;
+            max-height: calc(100vh - 36rem);
+            overflow-y: scroll;
+            @include media('>=tablet') {
+                max-height: calc(100vh - 38rem);
+
+                .is-tablet & {
+                    max-height: calc(100vh - 43rem);
+                }
+            }
+        }
+    }
+
+    &__list-item {
+        padding: 1rem 2rem;
+        border-bottom: 1px solid $colorAlto;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &__buttons {
+        padding: 2rem 2rem 0.5rem;
+        border-top: 1px solid $colorAlto;
+        box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.27);
+    }
+
+    &__button {
+        margin-top: 1rem;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    &__subtotal {
+        font-weight: 700;
+        font-size: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+    }
+
+    &__subtotal-price {
+        .price {
+            font-weight: 700;
+            font-size: 1.5rem !important;
+        }
+    }
+}
+
+.minicart-wrapper .block-minicart {
+    box-shadow: 0 0 21px 0 rgba(0, 0, 0, 0.27);
+    right: -0.3rem;
+    border: none;
+    width: 29.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+
+    &:before {
+        display: none;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        width: 1.5rem;
+        height: 1.5rem;
+        background: $colorWhite;
+        transform: rotate(45deg);
+        top: -0.8rem;
+        right: 3.5rem;
+        left: auto;
+        border: none;
+        box-shadow: -1px -1px 10px -2px rgba(0, 0, 0, 0.27);
+        z-index: -4;
+        @include media('>=laptop') {
+            right: 2.6rem;
+        }
+        @include media('>=laptop-lg') {
+            right: 3rem;
+        }
+        @include media('>=desktop') {
+            right: 4.1rem;
+        }
+    }
+}

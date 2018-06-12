@@ -1,0 +1,619 @@
+@import '../../../node_modules/creative-patterns/packages/components/cs-input/src/cs-input';
+
+.#{$namespace}input {
+    $root: &;
+    $boxShadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    font-size: 1rem;
+    position: relative;
+
+    &.required,
+    &._required,
+    &.required-entry {
+        #{$root}__label {
+            &:after {
+                content: '*';
+                color: $colorCrimson;
+                font-size: 1.2rem;
+                margin: 0 0 0 0.4rem;
+            }
+        }
+    }
+
+    &.no-required {
+        #{$root}__label {
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    &__label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: $colorMineShaft;
+        padding: 0;
+        text-align: left;
+        width: auto;
+        float: none;
+        margin-bottom: 0.5rem;
+        padding-right: 0.5rem;
+        white-space: normal;
+        position: relative;
+
+        &--no-space {
+            margin-bottom: 0;
+        }
+
+        &--big {
+            font-size: 1.5rem;
+            font-weight: 400 !important; /* stylelint-disable-line declaration-no-important */
+
+            &:before {
+                top: 45% !important; /* stylelint-disable-line declaration-no-important */
+            }
+
+            &:after {
+                top: calc(
+                    45% - 0.01rem
+                ) !important; /* stylelint-disable-line declaration-no-important */
+            }
+
+            #{$root}--type-checkbox & {
+                &:before {
+                    margin-top: 0.3rem !important;
+                }
+
+                &:after {
+                    margin-top: 0.3rem !important;
+                }
+            }
+        }
+
+        .#{$namespace}category-page--filters-full-top & {
+            white-space: nowrap;
+        }
+    }
+
+    &__label-icon-wrapper {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4rem;
+        height: 2.5rem;
+    }
+
+    &__label-icon {
+        max-width: 100%;
+        max-height: 100%;
+
+        &--image {
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
+        }
+
+        &--barzhalen {
+            background-image: url('images/payment-logo-barzhalen.png');
+        }
+
+        &--billsafe {
+            background-image: url('images/payment-logo-billsafe.png');
+        }
+
+        &--ideal {
+            background-image: url('images/payment-logo-ideal.jpg');
+        }
+
+        &--eps {
+            background-image: url('images/payment-logo-eps.jpg');
+        }
+
+        &--payolution {
+            background-image: url('images/payment-logo-payolution.png');
+        }
+
+        &--postfinance {
+            background-image: url('images/payment-logo-postfinance.jpg');
+        }
+
+        &--postfinance-card {
+            background-image: url('images/payment-logo-postfinance-card.png');
+        }
+
+        &--przelewy24 {
+            background-image: url('images/payment-logo-przelewy24.png');
+        }
+
+        &--paypal-agreement {
+            background-image: url('images/payment-logo-paypal-agreement.png');
+        }
+    }
+
+    &__control {
+        position: relative;
+
+        &--year {
+            padding-left: 1rem;
+            float: left;
+        }
+
+        &--month {
+            float: left;
+        }
+
+        &--birthday {
+            display: flex;
+            justify-content: space-between;
+
+            #{$root}__input {
+                width: calc(33.33% - 1.3rem);
+
+                .#{$namespace}checkout__step-content & {
+                    padding-right: 0.9rem !important;
+                }
+            }
+        }
+    }
+
+    input[type='text'],
+    &__input[type='text'],
+    input[type='email'],
+    &__input[type='email'],
+    input[type='password'],
+    &__input[type='password'],
+    input[type='number'],
+    &__input[type='number'],
+    input[type='url'],
+    &__input[type='url'],
+    input[type='search'],
+    &__input[type='search'],
+    input[type='datetime'],
+    &__input[type='datetime'],
+    input[type='date'],
+    &__input[type='date'],
+    &__input {
+        color: $colorMineShaft;
+        border-color: darken($colorAlto, 3%);
+        border-style: solid;
+        background-color: $colorWhite;
+        border-radius: 3px;
+        height: 4rem;
+        box-shadow: $boxShadow;
+        font-size: 1.4rem;
+
+        &:hover:not(:disabled):not(:focus),
+        &:focus,
+        &:active {
+            border-color: $colorCeruleanBlue;
+            box-shadow: $boxShadow;
+            outline: none;
+        }
+
+        &.mage-error,
+        ._error & {
+            border-color: $colorCrimson;
+        }
+
+        .fieldset-fullname &,
+        .form-login & {
+            width: 100% !important; /* stylelint-disable-line declaration-no-important */
+        }
+
+        &:disabled {
+            background-color: $colorGallery !important;
+        }
+
+        // For now only checkout fields have tick icon. There is no way to set modifier class for input because input template is in html and used globally
+        .#{$namespace}checkout__step-content & {
+            padding-right: 3.5rem;
+        }
+    }
+    /* stylelint-disable */
+    input,
+    &__input {
+        &._has-datepicker {
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+        }
+    }
+
+    &__input {
+        &--with-button {
+            padding-right: 6rem !important;
+        }
+    }
+
+    &__textarea {
+        @extend #{$root}__input;
+        padding-top: 1.2rem;
+        padding-bottom: 1.2rem;
+
+        &--high {
+            min-height: 15rem;
+        }
+
+        &:not([disabled]):focus {
+            box-shadow: $boxShadow;
+        }
+    }
+
+    /* stylelint-enable */
+
+    &__select {
+        @extend #{$root}__input;
+        font-size: 1.4rem;
+        width: 100%;
+        background-image: url('images/dropdown-arrows-bg.png');
+        background-size: 3.2rem 3.2rem;
+        background-position: right;
+        min-width: 7rem;
+        padding-right: 4rem;
+        padding-top: 0.7rem;
+
+        &:hover:not(:disabled):not(:focus),
+        &:not([disabled]):focus {
+            background-image: url('images/dropdown-arrows-bg-open.png');
+            border-color: $colorCeruleanBlue;
+            box-shadow: $boxShadow;
+            outline: none;
+        }
+
+        &:disabled {
+            background-image: url('images/dropdown-arrows-bg.png');
+        }
+
+        /* stylelint-disable */
+        &--short {
+            max-width: 10rem !important;
+            min-width: 10rem !important;
+        }
+
+        &::-ms-expand {
+            display: none;
+        }
+        /* stylelint-enable */
+    }
+
+    &__radio[type='radio'] {
+        opacity: 0.01 !important;
+
+        &:checked + #{$root}__label:before,
+        &:checked + #{$root}__label:after {
+            color: $colorCeruleanBlue;
+            border-color: $colorCeruleanBlue;
+        }
+
+        &:hover:not(:disabled) + #{$root}__label:before {
+            border-color: $colorCeruleanBlueHover;
+        }
+
+        &:checked + #{$root}__label:after,
+        .selected-item #{$root}__label:after {
+            border-radius: 50%;
+            width: 0.7rem;
+            height: 0.7rem;
+            top: 50%;
+            left: 0.6rem;
+            background-color: $colorCeruleanBlue;
+        }
+    }
+
+    select {
+        @extend #{$root}__select;
+    }
+
+    // For now only checkout fields have tick icon. There is no way to set modifier class for input because input template is in html and used globally
+    &__icon {
+        width: 1.7rem;
+        height: 1.7rem;
+        position: absolute;
+        right: 0.8rem;
+        top: 1.2rem;
+        display: none;
+
+        .#{$namespace}checkout__step-content #{$root}--success & {
+            display: block;
+            fill: $colorApple;
+        }
+
+        .#{$namespace}checkout__step-content .mage-error &,
+        .#{$namespace}checkout__step-content &.mage-error,
+        .#{$namespace}checkout__step-content ._error & {
+            display: none !important;
+        }
+
+        .#{$namespace}checkout__step-content #{$root}--warning & {
+            display: block;
+            fill: $colorGold;
+        }
+
+        #{$root}--disabled & {
+            display: none;
+        }
+
+        //Icons is on the right so it will cover down arrow for select. It has to be hidde.
+
+        select ~ & {
+            display: none !important;
+        }
+    }
+
+    &__note {
+        font-size: 1.2rem;
+        padding: 0.3rem 0 0;
+        display: block;
+        color: $colorGray;
+    }
+
+    &__warning {
+        margin-top: 0.3rem;
+        font-size: 1.2rem;
+        color: $colorGamboge;
+    }
+
+    &__link {
+        color: $colorMineShaft;
+        white-space: nowrap;
+        padding-right: 2rem;
+
+        &:hover {
+            text-decoration: none;
+            color: $colorMineShaft;
+        }
+    }
+
+    &__button {
+        position: absolute;
+        right: -0.1rem;
+        top: 0;
+        z-index: 100;
+        width: 5rem;
+        overflow: hidden;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+    }
+
+    &__tooltip-wrapper {
+        cursor: default;
+        position: static;
+    }
+
+    ::placeholder {
+        color: $colorGray;
+    }
+
+    &--inline {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+    }
+
+    &--disabled {
+        #{$root}__label {
+            color: $colorGray;
+        }
+    }
+
+    &--type-radio {
+        #{$root}__label {
+            margin-bottom: 0;
+            vertical-align: middle;
+
+            &:before {
+                width: 1.65rem;
+                height: 1.65rem;
+                border: 1px solid darken($colorGallery, 8%);
+                box-shadow: $boxShadow;
+                line-height: 1.6rem;
+            }
+
+            &:after {
+                width: 0.7rem;
+                height: 0.7rem;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                content: '';
+            }
+
+            &--big {
+                vertical-align: middle;
+                vertical-align: -moz-middle-with-baseline;
+                display: block;
+                padding-left: 2.5rem;
+
+                &:after,
+                &:before {
+                    margin-top: 0;
+                }
+            }
+        }
+
+        #{$root}__radio {
+            opacity: 0.01 !important; /* stylelint-disable-line declaration-no-important */
+        }
+
+        #{$root}__radio:disabled + #{$root}__label {
+            &:before {
+                background: $colorGallery;
+            }
+        }
+    }
+
+    &--type-checkbox {
+        font-size: 1rem;
+
+        #{$root}__checkbox {
+            &:hover:not(:disabled) + #{$root}__label:before {
+                border-color: $colorCeruleanBlue;
+            }
+
+            &:checked + #{$root}__label:before {
+                content: '';
+                background-image: url('images/check@2x.png');
+                background-attachment: initial;
+            }
+
+            &[type='checkbox']:disabled + #{$root}__label:before {
+                background: $colorGallery;
+            }
+
+            &[type='checkbox']:disabled {
+                opacity: 0.01;
+            }
+
+            &:disabled:hover + #{$root}__label:before {
+                border-color: $colorAlto;
+            }
+        }
+
+        #{$root}__label {
+            font-size: 1.2rem;
+            color: $colorGray;
+            font-weight: 400;
+            padding-left: 3rem;
+            margin-bottom: 0;
+            min-height: 2rem;
+            margin-right: 1rem;
+            line-height: 1.5;
+            margin-top: 0.2rem;
+            vertical-align: middle;
+            vertical-align: -moz-middle-with-baseline;
+
+            &:hover {
+                &:before {
+                    border-color: $colorCeruleanBlue;
+                }
+            }
+
+            .#{$namespace}link {
+                font-size: 1.2rem;
+            }
+
+            &:before {
+                content: '';
+                border-width: 1px;
+                border-color: $colorAlto;
+                border-style: solid;
+                width: 2rem;
+                height: 2rem;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15),
+                    0 -1px 1px $colorWhite, 0 1px 0 $colorWhite;
+                top: 0;
+                margin-top: 1rem;
+                background-image: none;
+                background-size: 1rem auto;
+                background-position: center;
+                background-repeat: no-repeat;
+                will-change: border-color, background-image, content,
+                    background-attachment;
+            }
+        }
+
+        &._error #{$root}__label,
+        #{$root}__checkbox.mage-error + #{$root}__label {
+            &:before {
+                border-color: $colorCrimson;
+            }
+        }
+
+        div.mage-error[generated] {
+            display: inline-block;
+            margin-top: 0;
+            vertical-align: middle;
+            vertical-align: -moz-middle-with-baseline;
+        }
+    }
+
+    &__fields-row {
+        display: flex;
+        margin: 1rem 0;
+        width: 23rem;
+
+        .month {
+            flex-basis: 60%;
+            width: 60%;
+        }
+
+        .year {
+            flex-basis: 40%;
+        }
+    }
+}
+
+.#{$namespace}input + .#{$namespace}input {
+    margin-top: 0;
+}
+
+.#{$namespace}input--type-checkbox + .#{$namespace}input--type-checkbox {
+    margin-top: 1.5rem;
+}
+
+.#{$namespace}input--type-radio + .#{$namespace}input--type-radio {
+    margin-top: 1.5rem;
+}
+
+div.mage-error[generated] {
+    /* stylelint-disable-line */
+    margin-top: 0.3rem;
+}
+
+.ui-datepicker {
+    .ui-datepicker-month,
+    .ui-datepicker-year {
+        @extend .#{$namespace}input__select;
+    }
+}
+
+._has-datepicker ~ .ui-datepicker-trigger {
+    @extend .#{$namespace}button;
+    @extend .#{$namespace}button--look_default;
+    @extend .#{$namespace}button--look_on-input;
+    @extend .#{$namespace}input__button;
+    position: absolute !important; /* stylelint-disable-line declaration-no-important */
+
+    &:before {
+        color: $colorWhite;
+        transform: skew(18deg) translateX(-0.4rem);
+    }
+}
+
+.customer-dob {
+    width: calc(100% + 0.1rem);
+    overflow: hidden;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.#{$namespace}input .field-tooltip .field-tooltip-content {
+    @extend .#{$namespace}input__note;
+    background: $colorWhite;
+    border: none;
+    width: 100%;
+    position: static;
+    word-wrap: break-word;
+
+    &:before,
+    &:after {
+        display: none;
+    }
+}
+
+.#{$namespace}input .field-tooltip {
+    cursor: default;
+    position: static;
+}
+
+.#{$namespace}input .field-tooltip-action {
+    display: none;
+}
+
+//Below is style for input ad select for payone creditcard iframes it has to be inserted (uncommented) in admin in Payone->General->Payment Creditcard:
+
+//border-radius: 3px; height: 40px; box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);  font-size: 14px; color: #212121;  border-color: #cfcfcf;  background-color: #fff; transition: border-color .15s linear; outline: none; line-height: 1.42857143; padding: 0 9px; vertical-align: baseline; width: 100%; box-sizing: border-box; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #ffffff;  background-clip: padding-box; border: 1px solid #c2c2c2;

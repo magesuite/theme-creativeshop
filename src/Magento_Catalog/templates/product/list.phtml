@@ -1,0 +1,144 @@
+<?php
+
+$productCollection = $block->getLoadedProductCollection();
+$helper = $this->helper('Magento\Catalog\Helper\Output');
+$csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+/** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
+$pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
+$imageHelper = $this->helper('Magento\Catalog\Helper\Image');
+$compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+$indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
+$badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+$dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
+$heroProduct = $block->getIsHeroEnabled();
+
+$salabilityHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product\Salability');
+$salabilityStatus = $salabilityHelper->getSalabilityStatus($productCollection);
+$filtersLayout = $this->getFiltersLayout();
+?>
+
+<?php if (!$productCollection->count()): ?>
+    <div class="cs-messages">
+        <div class="messages | cs-messages__inner">
+            <div class="cs-messages__message cs-messages__message--info">
+                <div class=""><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div>
+            </div>
+        </div>
+    </div>
+<?php else: ?>
+    <?php echo $block->getAdditionalHtml() ?>
+
+    <div class="cs-category-page__toolbar-top">
+        <?php echo $block->getToolbarHtml() ?>
+    </div>
+
+    <?php echo $block->getChildHtml('state'); ?>
+
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $viewModeClass = $block->getData('filters_layout') ? 'cs-grid-layout' : 'cs-grid-layout_in-column'; //cs-grid-layout_in-column'; $heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
+        $image = 'category_page_grid';
+        $image2x = 'category_page_grid@2x';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    } else {
+        $viewMode = 'list';
+        $viewModeClass = 'cs-items-list';
+        $image = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+    ?>
+    <div class="cs-category-page__products-wrapper">
+        <div class="cs-category-page__inner-sidebar">
+            <?php
+                echo $block->getChildHtml('inner-sidebar');
+            ?>
+        </div>
+
+        <?php $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig(); ?>
+
+        <?php $iterator = 0; ?>
+        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>"<?php if($teasersConfig) { ?> data-columns-configuration='{"phone":1,"phoneLg":2,"tablet":2,"laptop":3,"laptopLg":3,"desktop":3,"tv":3}' data-teasers-configuration='<?php echo json_encode($teasersConfig['json']); ?>'<?php } ?>>
+            <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__grid">
+                <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
+                <?php foreach ($productCollection as $product): ?>
+                    <?php
+                        $iterator++;
+                        $showHeroProduct = $iterator == 1 && $heroProduct;
+                        $productImageUrl = $block->getImage($product, $image)->getImageUrl();
+                        $productImageUrl2x = $block->getImage($product, $image2x)->getImageUrl();
+                        $isLazyloaded = $iterator > 9;
+                    ?>
+                    <?= $this
+                        ->getLayout()
+                        ->createBlock(
+                            '\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator,
+                            ['data' => get_defined_vars()]
+                        )
+                        ->setCacheKeyElements($viewMode, $showHeroProduct, $productImageUrl, $isLazyloaded)
+                        ->toHtml()
+                    ?>
+
+                <?php endforeach; ?>
+
+                <?php if($teasersConfig): ?>
+                    <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
+                        $teaserClass = 'cs-grid-layout_in-column__brick cs-grid-layout_in-column__brick--teaser';
+                        if($teaser['size']['x'] == 2) {
+                            $teaserClass .= ' cs-grid-layout_in-column__brick--x2';
+                        }
+                        if($teaser['size']['y'] == 2) {
+                            $teaserClass .= ' cs-grid-layout_in-column__brick--y2';
+                        } ?>
+
+                        <li class="<?php echo $teaserClass ?>" data-teaser-id="<?php echo $i ?>">
+                            <div class="cs-grid-layout_in-column__teaser cs-grid-layout_in-column__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
+                                <?php if($teaser['href'] != ''): ?>
+                                    <a href="<?php echo $teaser['href'] ?>" class="cs-grid-layout_in-column__teaser-content-wrapper">
+                                <?php else: ?>
+                                    <div class="cs-grid-layout_in-column__teaser-content-wrapper">
+                                <?php endif; ?>
+
+                                    <figure class="cs-grid-layout_in-column__teaser-figure">
+                                        <img src="<?php echo $teaser['image']['src'] ?>" srcset="<?php echo $teaser['image']['srcSet'] ?>" alt="teaser" class="cs-grid-layout_in-column__teaser-image">
+                                    </figure>
+                                    <div class="cs-grid-layout_in-column__teaser-content cs-grid-layout_in-column__teaser-content--<?php echo $teaser['displayVariant'] ?>">
+                                        <?php if($teaser['headline'] != '') {
+                                            echo '<h4 class="cs-grid-layout_in-column__teaser-headline">'.$teaser['headline'].'</h4>';
+                                        }
+                                        if($teaser['subheadline'] != '') {
+                                            echo '<span class="cs-grid-layout_in-column__teaser-subheadline">'.$teaser['subheadline'].'</span>';
+                                        }
+                                        if($teaser['paragraph'] != '') {
+                                            echo '<p class="cs-grid-layout_in-column__teaser-text">'.$teaser['paragraph'].'</p>';
+                                        }
+                                        if($teaser['ctaLabel'] != '' && $teaser['href'] != '') {
+                                            echo '<span role="button" class="cs-button cs-button--type_long cs-button--look_default">
+                                                <span class="cs-button__span">'.$teaser['ctaLabel'].'</span>
+                                                <svg class="cs-button__icon"><use xlink:href="#arrow_next"></use></svg>
+                                            </span>';
+                                        } ?>
+                                    </div>
+
+                                <?php if($teaser['href'] != ''): ?>
+                                    </a>
+                                <?php else: ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </li>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </ol>
+        </div>
+    </div>
+
+    <?php echo $block->getToolbarHtml() ?>
+<?php endif; ?>

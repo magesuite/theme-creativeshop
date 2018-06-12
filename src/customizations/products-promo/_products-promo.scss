@@ -1,0 +1,126 @@
+$namespace: 'cs-';
+@import '../../../node_modules/creative-patterns/packages/components/teaser/src/teaser';
+@import '../../../node_modules/creative-patterns/packages/components/products-promo/src/products-promo';
+
+.#{$namespace}products-promo {
+    @include teaser();
+    @include productsPromo();
+    $root: &;
+    $sliderWidth: 77%;
+    $navArrowSize: 5.5rem;
+
+    &__nav {
+        background: $colorWhite;
+        top: 50%;
+        transform: translateY(-50%);
+        outline: none;
+        transition: transform 0.15s ease-in-out;
+        border-radius: 6px;
+        background-color: $colorWhite;
+        box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.25);
+        text-align: center;
+        width: calc(#{$navArrowSize} * 0.75);
+        height: calc(#{$navArrowSize} * 0.75);
+        z-index: 201;
+        display: none;
+
+        @include media('>=tablet') {
+            display: block;
+            width: $navArrowSize;
+            height: $navArrowSize;
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+            background: $colorWhite;
+            border: none;
+        }
+
+        &:hover:not(#{$root}__nav--disabled) {
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        &-icon {
+            fill: $colorCeruleanBlue;
+            height: calc(#{$navArrowSize} * 0.75);
+
+            @include media('>=tablet') {
+                height: $navArrowSize;
+            }
+        }
+
+        &--prev {
+            left: 0;
+
+            @media (min-width: 1285px) {
+                left: calc(-#{$navArrowSize} / 2);
+            }
+        }
+
+        &--next {
+            right: 0;
+
+            @media (min-width: 1285px) {
+                right: calc(-#{$navArrowSize} / 2);
+            }
+        }
+
+        &--disabled {
+            opacity: 0;
+        }
+    }
+
+    &__pagination {
+        color: $colorDoveGray;
+
+        @include media('<tablet') {
+            bottom: 0.5rem;
+        }
+
+        &-item {
+            border-radius: 2px;
+            background-color: $colorGallery;
+            width: 2.1rem;
+            height: 0.8rem;
+            transform: skew(-18deg);
+            margin: 0 0.9rem 0 0;
+            border: none;
+            display: inline-block;
+            transition: background-color 0.15s, border-color 0.15s;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: darken($colorGallery, 8%);
+                border: none;
+                box-shadow: none;
+            }
+
+            &--active {
+                background: $colorGold;
+
+                &:hover,
+                &:focus,
+                &:active {
+                    background: $colorGold;
+                }
+            }
+        }
+
+        &-button {
+            display: block;
+            font-size: 0;
+            opacity: 0;
+            width: 2.1rem;
+            height: 0.8rem;
+            padding: 0;
+            border: 0;
+            margin: 0;
+        }
+    }
+
+    &__number--current {
+        color: $colorGold;
+    }
+}

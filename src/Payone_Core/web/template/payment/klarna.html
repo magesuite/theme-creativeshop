@@ -1,0 +1,207 @@
+<!--
+/**
+ * PAYONE Magento 2 Connector is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PAYONE Magento 2 Connector is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with PAYONE Magento 2 Connector. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ *
+ * @category  Payone
+ * @package   Payone_Magento2_Plugin
+ * @author    FATCHIP GmbH <support@fatchip.de>
+ * @copyright 2003 - 2016 Payone GmbH
+ * @license   <http://www.gnu.org/licenses/> GNU Lesser General Public License
+ * @link      http://www.payone.de
+ */
+-->
+<div class="cs-payment | payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="cs-payment__title | cs-input cs-input--type-radio">
+        <input type="radio"
+               name="payment[method]"
+               class="cs-input__radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="cs-input__label cs-input__label--big">
+            <span data-bind="text: getTitle()"></span>
+            <span class="cs-input__label-icon-wrapper">
+                <svg class="cs-input__label-icon">
+                    <use xlink:href="#klarna"></use>
+                </svg>
+            </span>
+
+        </label>
+    </div>
+
+    <div class="cs-payment__content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="cs-payment__billing | payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <form action="#" method="post" data-bind="attr: {id: getCode() + '_form'}">
+            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode()}">
+                <!-- ko if: requestTelephone() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_telephone'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Telephone'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input type="text" name="payment[telephone]" class="cs-input__input" value=""
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_telephone',
+                                    title: $t('Telephone'),
+                                    'data-container': getCode() + '-telephone'},
+                              value: telephone,
+                              valueUpdate: 'keyup' "/>
+                    </div>
+                </div>
+                <!--/ko-->
+
+                <!-- ko if: requestBirthday() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_birthday'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Birthday'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input type="text" name="payment[birthday]" class="cs-input__input" value=""
+                               style="width:auto;margin-right:10px;"
+                               size="3" maxlength="2"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthday',
+                                    title: $t('Day of birth'),
+                                    'data-container': getCode() + '-birthday'},
+                              value: birthday,
+                              valueUpdate: 'keyup' "/>
+                        <input type="text" name="payment[birthmonth]" class="cs-input__input" value=""
+                               style="width:auto;margin-right:10px;"
+                               size="3" maxlength="2"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthmonth',
+                                    title: $t('Month of birth'),
+                                    'data-container': getCode() + '-birthmonth'},
+                              value: birthmonth,
+                              valueUpdate: 'keyup' "/>
+                        <input type="text" name="payment[birthyear]" class="cs-input__input" value=""
+                               style="width:auto;margin-right:10px;"
+                               size="8" maxlength="4"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthyear',
+                                    title: $t('Year of birth'),
+                                    'data-container': getCode() + '-birthyear'},
+                              value: birthyear,
+                              valueUpdate: 'keyup' "/> <!-- ko i18n: '(DD.MM.YYYY)'--><!-- /ko -->
+                    </div>
+                </div>
+                <!--/ko-->
+
+                <!-- ko if: requestAddressAddInfo() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_addinfo'}" class="label">
+                        <span><!-- ko i18n: 'Additional info'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input type="text" name="payment[addinfo]" class="cs-input__input" value=""
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_addinfo',
+                                    title: $t('Additional info'),
+                                    'data-container': getCode() + '-addinfo'},
+                              value: addinfo,
+                              valueUpdate: 'keyup' "/>
+                    </div>
+                </div>
+                <!--/ko-->
+
+                <!-- ko if: requestDelAddressAddInfo() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_del_addinfo'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Additional info del. address'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input type="text" name="payment[del_addinfo]" class="cs-input__input" value=""
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_del_addinfo',
+                                    title: $t('Additional info del. address'),
+                                    'data-container': getCode() + '-del_addinfo'},
+                              value: delAddinfo,
+                              valueUpdate: 'keyup' "/>
+                    </div>
+                </div>
+                <!--/ko-->
+
+                <!-- ko if: requestGender() -->
+                <div class="cs-input | required">
+                    <label data-bind="attr: {for: getCode() + '_gender'}" class="label">
+                        <span><!-- ko i18n: 'Gender'--><!-- /ko --></span>
+                    </label>
+                    <div class='cs-input__control'>
+                        <select style="width:220px;" name="payment[klarna_gender]" class="cs-input__select"
+                                data-bind=" attr: {id: getCode() + '_gender', 'data-container': getCode() + '_gender'},
+                                        enable: true,
+                                        value: gender">
+                            <option value=""><!-- ko i18n: '--Please Select--'--><!-- /ko --></option>
+                            <option value="m"><!-- ko i18n: 'Male'--><!-- /ko --></option>
+                            <option value="f"><!-- ko i18n: 'Female'--><!-- /ko --></option>
+                        </select>
+                    </div>
+                </div>
+                <!--/ko-->
+
+                <!-- ko if: requestPersonalId() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_personal_id'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Personal-ID'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input type="text" name="payment[personal_id]" class="cs-input__input" value=""
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_personal_id',
+                                    title: $t('Personal-ID'),
+                                    'data-container': getCode() + '-personal_id'},
+                              value: personalId,
+                              valueUpdate: 'keyup' "/>
+                    </div>
+                </div>
+                <!--/ko-->
+            </fieldset>
+        </form>
+
+        <p data-bind="html: getInstructions()"></p>
+        <div class="cs-payment__agreements | checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="cs-payment__buttons">
+            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
+                    type="submit"
+                    data-bind="
+                    click: continueToPayone,
+                    attr: {title: $t('Place Order')},
+                    enable: (getCode() == isChecked()),
+                    css: {disabled: !isPlaceOrderActionAllowed()}
+                    "
+                    disabled>
+                <span data-bind="i18n: 'Place Order'"></span>
+            </button>
+        </div>
+    </div>
+</div>

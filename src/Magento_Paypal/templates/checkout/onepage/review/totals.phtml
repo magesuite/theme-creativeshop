@@ -1,0 +1,21 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @see \Magento\Checkout\Block\Cart\Totals
+ */
+?>
+<?php if ($block->getTotals()): ?>
+    <?php $colspan = 4; ?>
+    <?php /* @escapeNotVerified */ echo $block->renderTotals(null, $colspan); ?>
+    <?php /* @escapeNotVerified */ echo $block->renderTotals('footer', $colspan); ?>
+    <?php if ($block->needDisplayBaseGrandtotal()):?>
+        <tr class="totals charge">
+            <th class="mark" colspan="<?php /* @escapeNotVerified */ echo $colspan; ?>" scope="row">
+                <?php /* @escapeNotVerified */ echo __('Your credit card will be charged for') ?>
+            </th>
+            <td class="amount" data-th="<?php echo $block->escapeHtml(__('Your credit card will be charged for')); ?>">
+                <?php /* @escapeNotVerified */ echo $block->displayBaseGrandtotal() ?>
+            </td>
+        </tr>
+    <?php endif?>
+<?php endif; ?>

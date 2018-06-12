@@ -1,0 +1,78 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<li class="cs-minicart__list-item | product-item" data-role="product-item">
+    <div class="cs-minicart-product">
+        <!-- ko if: product_has_url -->
+        <a data-bind="attr: {href: product_url, title: product_name}" tabindex="-1" class="cs-minicart-product__image-container">
+            <!-- ko foreach: $parent.getRegion('itemImage') -->
+            <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
+            <!-- /ko -->
+        </a>
+        <!-- /ko -->
+        <!-- ko ifnot: product_has_url -->
+        <span class="cs-minicart-product__image-container">
+            <!-- ko foreach: $parent.getRegion('itemImage') -->
+                <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
+            <!-- /ko -->
+        </span>
+        <!-- /ko -->
+
+        <div class="cs-minicart-product__details">
+
+            <div class="cs-minicart-product__name-wrapper">
+                <!-- ko if: product_has_url -->
+                <a class="cs-minicart-product__name" data-bind="attr: {href: product_url}, text: product_name"></a>
+                <!-- /ko -->
+                <!-- ko ifnot: product_has_url -->
+                <!-- ko text: product_name --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+
+            <div class="cs-minicart-product__options-wrapper cs-minicart-product__options-wrapper--column">
+                <!-- ko if: options.length -->
+                    <!-- ko foreach: { data: options, as: 'option' } -->
+                    <dl class="cs-minicart-product__options-group">
+                        <dt class="cs-minicart-product__options-label"><!-- ko text: option.label --><!-- /ko --></dt>
+                        <dd class="cs-minicart-product__options-value">
+                            <!-- ko if: Array.isArray(option.value) -->
+                            <span data-bind="html: option.value.join('<br>')"></span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: Array.isArray(option.value) -->
+                            <span data-bind="html: option.value"></span>
+                            <!-- /ko -->
+                        </dd>
+                    </dl>
+                    <!-- /ko -->
+                <!-- /ko -->
+
+                <div class="cs-minicart-product__options-group">
+
+                    <span class="cs-minicart-product__options-label" data-bind="i18n: 'Qty'">
+                    </span>
+                    <span class="cs-minicart-product__options-value" data-bind="i18n: qty">
+                    </span>
+                </div>
+
+
+                <!-- ko if: canApplyMsrp -->
+
+                <div class="details-map">
+                    <span class="label" data-bind="i18n: 'Price'"></span>
+                    <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: canApplyMsrp -->
+                <!-- ko foreach: $parent.getRegion('priceSidebar') -->
+                <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+
+
+            </div>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,18 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+<?php if ($block->isPossibleOnepageCheckout()):?>
+    <button type="button"
+            data-role="proceed-to-checkout"
+            title="<?php /* @escapeNotVerified */ echo __('Proceed to Checkout') ?>"
+            data-mage-init='{"Magento_Checkout/js/proceed-to-checkout":{"checkoutUrl":"<?php /* @escapeNotVerified */ echo $block->getCheckoutUrl(); ?>"}}'
+            class="cs-button cs-button--look_default cs-button--type_long cs-button--type_wide <?php echo($block->isDisabled()) ? ' disabled' : ''; ?>"
+            <?php if ($block->isDisabled()):?>disabled="disabled"<?php endif; ?>>
+        <span class="cs-button__wrapper">    
+            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Proceed to Checkout') ?></span>
+            <svg class="cs-button__icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </span>
+    </button>
+<?php endif?>

@@ -1,0 +1,54 @@
+.#{$namespace}breadcrumbs {
+    color: $colorGray;
+    padding-top: 1.3rem;
+    padding-bottom: 1.3rem;
+    font-size: 1.18rem;
+    font-weight: 400;
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        @include container-wrapper();
+    }
+
+    &__item {
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 0 2em 0 0;
+        cursor: pointer;
+
+        &:last-child {
+            padding: 0;
+            color: $colorMineShaft;
+            cursor: default;
+        }
+
+        &:not(:last-child):after {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            content: '\2044';
+            transform: translateY(-50%);
+            line-height: 1;
+            color: $colorGray;
+        }
+    }
+
+    &__link {
+        display: inline-block;
+        color: $colorGray;
+        transition: color 0.15s linear;
+        font-size: 1.2rem;
+
+        &:visited {
+            color: $colorGray;
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: $colorMineShaft;
+        }
+    }
+}

@@ -1,0 +1,79 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+?>
+<div class="cs-category-page__toolbar-sorter | cs-input | sorter">
+    <label class="cs-category-page__toolbar-label">
+        <?php /* @escapeNotVerified */ echo __('Sort By: ') ?>
+    </label>
+
+    <?php 
+        $options = [];
+
+        foreach ($block->getAvailableOrders() as $key => $order){
+            $orders = [
+                'value' => $key,
+                'label' => $block->escapeHtml(__($order))
+            ];
+
+            if($block->isOrderCurrent($key)) {
+                $orders['params'] = 'selected=selected';
+            }
+
+            $options[] = $orders;
+        }
+    ?>
+
+    <?=$this->getLayout()->createBlock( 
+            'Creativestyle\FrontendExtension\Block\Twig', 'select-sorter', [
+                'data' => [
+                    'params' => 'data-role=sorter',
+                    'options' => $options
+                ]
+            ]
+        )->setTemplate("select/select.twig")->toHtml();
+    ?>
+
+    <div class="cs-category-page__sorter-direction">
+        <?php if ($block->getCurrentDirection() == 'desc'): ?>
+            <span
+                title="<?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?>"
+                class="cs-category-page__sorter-direction-btn cs-category-page__sorter-direction-btn--current"
+            >
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_down"></use></svg>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?></span>
+            </span>
+            <a
+                title="<?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?>"
+                href="#" 
+                class="cs-category-page__sorter-direction-btn"
+                data-role="direction-switcher"
+                data-value="asc"
+            >
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_up"></use></svg>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?></span>
+            </a>
+        <?php else: ?>
+            <a
+                title="<?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?>"
+                href="#"
+                class="cs-category-page__sorter-direction-btn"
+                data-role="direction-switcher"
+                data-value="desc"
+            >
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_down"></use></svg>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?></span>
+            </a>
+            <span
+                title="<?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?>"
+                class="cs-category-page__sorter-direction-btn cs-category-page__sorter-direction-btn--current"
+            >
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_up"></use></svg>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?></span>
+            </span>
+        <?php endif; ?>
+    </div>
+</div>

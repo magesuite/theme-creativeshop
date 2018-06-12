@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright 2016 aheadWorks. All rights reserved.
+* See LICENSE.txt for license details.
+*/
+-->
+
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceContainer name="content">
+            <container name="cs_faq_wrapper" htmlTag="div" htmlClass="cs-faq-index">
+                <container name="cs_faq_header" htmlTag="div" htmlClass="cs-faq-index__header">
+                </container>
+
+            </container>
+        </referenceContainer>
+
+        <referenceBlock name="aw_faq.search_title">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Aheadworks_Faq::main-title.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <move element="aw_faq.search_title" destination="cs_faq_header" before="-"/>
+        <move element="aw_faq.search" destination="cs_faq_header" after="aw_faq.name"/>
+        <move element="aw_faq.search_results" destination="cs_faq_wrapper" after="aw_faq.search"/>
+    </body>
+</page>

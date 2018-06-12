@@ -1,8 +1,4 @@
-/* eslint-env node */
-/* eslint-disable global-require, no-sync, no-empty */
-
-import path from 'path';
-import util from 'gulp-util';
+import paths from '../../paths';
 
 /**
  * Settings for serve task.
@@ -12,24 +8,51 @@ const settings = {
      * BrowserSync configuration.
      */
     browserSync: {
-        notify: false,
-        port: 9000,
-        server: {
-            baseDir: [ 'dist' ],
-            directory: true,
+        proxy: {
+            target: 'http://creativeshop.me'
         },
+        rewriteRules: [
+            {
+                match: '.creativeshop.me',
+                replace: ''
+            }
+        ],
+        files: [`${paths.dist}/**/*`],
+        serveStatic: [
+            {
+                route: `${paths.distWeb}/en_US`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/en_GB`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/de_DE`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/en_DE`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/de_AT`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/en_AT`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/de_CH`,
+                dir: `${paths.dist}/web`
+            },
+            {
+                route: `${paths.distWeb}/en_CH`,
+                dir: `${paths.dist}/web`
+            }
+        ]
     },
 };
-
-let browserSync = null;
-try {
-    browserSync = require( path.resolve( 'browserSync.json' ) );
-} catch ( e ) {
-    util.log( 'No browserSync.json file found in project root, loading default config.' );
-}
-
-if ( browserSync ) {
-    settings.browserSync = browserSync;
-}
 
 export default settings;

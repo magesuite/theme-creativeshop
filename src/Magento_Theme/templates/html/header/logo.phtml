@@ -1,0 +1,27 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * @var \Magento\Theme\Block\Html\Header\Logo $block
+ */
+?>
+<?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
+<?php if ($block->isHomePage()):?>
+    <div class="cs-header__logo | cs-logo cs-logo--text">
+<?php else: ?>
+    <a class="cs-header__logo | cs-logo cs-logo--link" href="<?php echo $block->getUrl(''); ?>" title="<?php /* @escapeNotVerified */ echo $storeName ?>">
+<?php endif ?>
+        <img class="cs-logo__image"
+             src="<?php /* @escapeNotVerified */ echo $block->getLogoSrc() ?>"
+             alt="<?php /* @escapeNotVerified */ echo $block->getLogoAlt() ?>"
+             <?php echo $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
+             <?php echo $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+        />
+<?php if (!$block->isHomePage()):?>
+
+
+
+    </a>
+<?php else:?>
+    </div>
+<?php endif?>

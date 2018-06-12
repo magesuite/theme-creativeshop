@@ -1,0 +1,49 @@
+/**
+ * Footer-list component customization that is often included in footer component.
+ * export-once mixin makes sure it is only included once in the styles.
+ */
+
+.#{$namespace}footer-list {
+    $root: &;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+
+    &--inline {
+        display: flex;
+
+        @include media('<tablet') {
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        #{$root}__item {
+            margin-right: 0.8rem;
+        }
+    }
+
+    &__item:last-child {
+        @include media('<tablet') {
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__link {
+        font-size: 1.2rem;
+        color: $colorGallery;
+
+        &:visited,
+        &:hover {
+            color: $colorGallery;
+        }
+
+        &:last-child {
+            padding-bottom: 2rem;
+
+            @include media('>=tablet') {
+                padding-bottom: 0;
+            }
+        }
+    }
+}

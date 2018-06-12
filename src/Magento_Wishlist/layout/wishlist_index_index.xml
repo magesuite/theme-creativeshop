@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+
+        <referenceBlock name="account.newsletter.breadcrumbs" remove="true"/>
+        <referenceBlock name="account.orders.breadcrumbs" remove="true"/>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">account</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">My account</item>
+                    <item name="label" xsi:type="string" translate="true">My account</item>
+                    <item name="link" xsi:type="string">/customer/account/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">wishlist</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Wishlist</item>
+                    <item name="label" xsi:type="string" translate="true">Wishlist</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="dashboard.bottom.wishlist" remove="true"/>
+
+        <!--Magento does not show special price on wishlist, here is suggested fix for it.-->
+        <referenceBlock name="product.price.render.wishlist">
+            <arguments>
+                <argument name="price_type_code" xsi:type="string">final_price</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!--Remove update wishlist button because we removed comments and there is nothing to update now-->
+        <referenceBlock name="customer.wishlist.button.update" remove="true"/>
+
+        <referenceBlock name="customer.wishlist.item.actions">
+            <arguments>
+                <argument name="css_class" xsi:type="string">cs-grid-product__links</argument>
+            </arguments>
+        </referenceBlock>
+
+    </body>
+</page>

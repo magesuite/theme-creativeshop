@@ -1,0 +1,56 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="cs-discount | payment-option _collapsible opc-payment-additional discount-code"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="cs-discount__title | field choice" data-role="title">
+        <span class="cs-discount__text | action action-toggle" id="block-discount-heading" role="heading" aria-level="2">
+            <!-- ko i18n: 'Apply Discount Code'--><!-- /ko -->
+        </span>
+    </div>
+    <div class="cs-discount__content" data-role="content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <form class="cs-discount__form | cs-form | form form-discount" id="discount-form">
+            <div class="cs-form__fieldset | payment-option-inner">
+                <div class="cs-form__field | cs-input">
+                    <label class="cs-input__label" for="discount-code">
+                        <span data-bind="i18n: 'Enter discount code'"></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input class="cs-input__input"
+                               type="text"
+                               id="discount-code"
+                               name="discount_code"
+                               data-validate="{'required-entry':true}"
+                               data-bind="value: couponCode, attr:{placeholder: $t('Enter discount code')} " />
+                    </div>
+                </div>
+            </div>
+            <div class="cs-form__buttons">
+                <!-- ko ifnot: isApplied() -->
+                <button class="cs-button cs-button--look_default cs-button--size_300 | action-apply" type="submit" data-bind="'value': $t('Apply Discount'), click: apply">
+                    <span class="cs-button__span"><!-- ko i18n: 'Apply Discount'--><!-- /ko --></span>
+                    <svg class="cs-button__icon">
+                        <use xlink:href="#arrow_next"></use>
+                    </svg>
+
+                </button>
+                <!-- /ko -->
+                <!-- ko if: isApplied() -->
+                <button class="cs-button cs-button--size_300 cs-button--look_light |  action-cancel" type="submit" data-bind="'value': $t('Cancel'), click: cancel">
+                    <span><!-- ko i18n: 'Cancel coupon'--><!-- /ko --></span>
+                    <svg class="cs-button__icon">
+                        <use xlink:href="#arrow_next"></use>
+                    </svg>
+
+                </button>
+                <!-- /ko -->
+            </div>
+        </form>
+    </div>
+</div>

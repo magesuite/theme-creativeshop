@@ -1,0 +1,27 @@
+$namespace: 'cs-' !default;
+
+.#{$namespace}searchresults-switcher {
+    $root: &;
+
+    display: none;
+
+    &__content {
+        padding: 2rem 0 !important;
+
+        &:not(&--active) {
+            display: none;
+        }
+
+        @include media('>=desktop') {
+            padding: 3rem 0 !important;
+        }
+
+        .#{$namespace}t-headline {
+            margin-bottom: 1.5rem;
+        }
+
+        &--active + &--active {
+            border-top: 1px solid $colorAlto;
+        }
+    }
+}

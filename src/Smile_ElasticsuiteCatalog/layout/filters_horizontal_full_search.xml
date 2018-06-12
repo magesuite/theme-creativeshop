@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="catalogsearch.leftnav">
+            <arguments>
+                <argument name="filters_layout" xsi:type="string">horizontal-full</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="columns" htmlClass="columns cs-category-page cs-category-page--filters-full-top"/>
+        <move element="sidebar.main" destination="columns" before="-"/>
+
+        <referenceBlock name="search_result_list">
+            <arguments>
+                <argument name="filters_layout" xsi:type="string">horizontal-full</argument>
+            </arguments>
+            
+            <container name="category.product.list.additional" as="additional" />
+            <container name="category.inner.sidebar" as="inner-sidebar">
+                <block class="Magento\Catalog\Block\Navigation" name="category.tree" template="Magento_Catalog::category-tree.phtml"/>
+            </container>
+        </referenceBlock>
+
+        <move element="catalogsearch.leftnav" destination="category.product.list.additional"/>
+
+    </body>
+</page>

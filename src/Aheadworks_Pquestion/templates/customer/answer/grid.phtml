@@ -1,0 +1,81 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var \Aheadworks\Pquestion\Block\Customer\Answer\Grid $this */
+?>
+
+<div class="cs-info-block | cs-dashboard__block">
+
+    <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+            <?php echo $this->escapeHtml(__('Your Answers'));?>
+        </h2>
+    </div>
+
+    <div class="cs-info-block__content">
+        <?php $answerCollection = $this->getCollection(); ?>
+        <?php if ($answerCollection->getSize()) : ?>
+            <div class="table-wrapper cs-table">
+                <table class="data-table cs-table__body" id="aw-pq-customer-answers-table">
+                    <col width="150" />
+                    <col width="220" />
+                    <col width="220"/>
+                    <col width="50" />
+                    <thead class="cs-table__head">
+                    <tr>
+                        <th class="cs-table__col-head">
+                            <span class="nobr"><?php echo $this->escapeHtml(__('Product')); ?></span>
+                        </th>
+                        <th class="cs-table__col-head">
+                            <span class="nobr"><?php echo $this->escapeHtml(__('Question')); ?></span>
+                        </th>
+                        <th class="cs-table__col-head">
+                            <span class="nobr"><?php echo $this->escapeHtml(__('Answer')); ?></span>
+                        </th>
+                        <th class="cs-table__col-head">
+                            <span class="nobr"><?php echo $this->escapeHtml(__('Status')); ?></span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($answerCollection as $answer) : ?>
+                        <tr>
+                            <td
+                                class="cs-table__col"
+                                data-th="<?php echo $this->escapeHtml(__('Product')); ?>"
+                            >
+                                <a
+                                    href="<?php echo $this->escapeUrl($this->getProductUrlByAnswer($answer));?>"
+                                    title="<?php echo $this->escapeHtml($this->getProductNameByAnswer($answer));?>"
+                                    class="cs-link"
+                                >
+                                    <?php echo $this->escapeHtml($this->getProductNameByAnswer($answer));?>
+                                </a>
+                            </td>
+                            <td
+                                title="<?php echo $this->escapeHtml($answer->getQuestion()->getContent());?>"
+                                data-th="<?php echo $this->escapeHtml(__('Question')); ?>"
+                            >
+                                <?php echo $this->escapeHtml($this->truncateString($this->escapeHtml($answer->getQuestion()->getContent()), 150));?>
+                            </td>
+                            <td
+                                title="<?php echo $this->escapeHtml($answer->getContent());?>"
+                                data-th=""
+                                class="cs-table__col"
+                                >
+                                <?php echo $this->escapeHtml($this->truncateString($this->escapeHtml($answer->getContent()), 150));?>
+                            </td>
+                            <td><?php echo $this->escapeHtml($this->getStatusLabelByAnswer($answer)); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else: ?>
+            <p class="cs-t-text cs-t-text--look_light"><?php echo $this->escapeHtml(__('There are no answers yet.')); ?></p>
+        <?php endif ?>
+    </div>
+
+</div>
+
+

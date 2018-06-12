@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation\FilterRenderer
+ */
+?>
+
+<ol class="cs-aftersearch-nav__filter-items | items">
+    <?php foreach ($filterItems as $filterItem): ?>
+        <li class="cs-aftersearch-nav__filter-item | item">
+            <?php if ($filterItem->getCount() > 0): ?>
+                <a class="cs-aftersearch-nav__filter-input cs-aftersearch-nav__filter-input--type_checkbox | cs-input cs-input--type-checkbox" href="<?php echo $block->escapeUrl($filterItem->getUrl()) ?>" rel="nofollow" >
+                    <?php if ($this->isMultipleSelectEnabled()) : ?>
+                        <label class="cs-input__label" onclick="this.parentNode.click();">
+                            <input class="cs-input__checkbox" type="checkbox" <?php if($filterItem->getIsSelected()) : ?>checked<?php endif; ?> />
+                            <?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?>
+                        </label>
+                    <?php else: ?>
+                        <span class="cs-aftersearch-nav__filter-text"><?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?></span>
+                    <?php endif; ?>
+                    
+                    <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="cs-aftersearch-nav__filter-count | count"><?php /* @escapeNotVerified */ echo $filterItem->getCount()?></span>
+                    <?php endif; ?>
+                </a>
+            <?php else:?>
+                <?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?>
+                <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
+                    <span class="cs-aftersearch-nav__filter-count | count"><?php /* @escapeNotVerified */ echo $filterItem->getCount()?></span>
+                <?php endif; ?>
+            <?php endif; ?>
+        </li>
+    <?php endforeach ?>
+</ol>

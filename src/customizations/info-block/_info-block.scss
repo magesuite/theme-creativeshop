@@ -1,0 +1,175 @@
+.#{$namespace}info-block {
+    $root: &;
+    font-size: 1rem;
+
+    &--space {
+        margin: 2rem 0 3.5rem;
+    }
+
+    &--flex {
+        display: flex;
+        flex-wrap: wrap;
+        @include media('>=tablet') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &--paypal-details {
+        #{$root}__title {
+            display: none;
+        }
+
+        #{$root}__box-title {
+            @extend .#{$namespace}t-headline;
+            @extend .#{$namespace}t-headline--size_4;
+        }
+
+        #{$root}__line {
+            @extend .#{$namespace}t-text;
+            @extend .#{$namespace}t-text--look_light;
+        }
+    }
+
+    &--paypal-items {
+        #{$root}__title-span {
+            @extend .#{$namespace}t-headline;
+            @extend .#{$namespace}t-headline--size_2;
+            @extend .#{$namespace}t-headline--look_light;
+        }
+    }
+
+    &--paypal-discount {
+        #{$root}__title {
+            display: none;
+        }
+    }
+
+    &__title {
+        margin-bottom: 0.9rem;
+
+        &--up {
+            margin-bottom: 0.3rem;
+        }
+
+        &--space-top {
+            margin-top: 2rem;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 2rem 0 0;
+
+        .sales-order-history & {
+            @include media('<laptop') {
+                margin-top: 0;
+            }
+        }
+
+        &--up {
+            margin: 0;
+        }
+
+        &.no-display {
+            display: none;
+        }
+    }
+
+    &__box-title {
+        width: 100%;
+    }
+
+    &__box {
+        width: 100%;
+        margin-bottom: 2rem;
+        box-sizing: border-box;
+
+        @include media('>=phone-lg') {
+            width: 48%;
+        }
+
+        @include media('>=tablet') {
+            width: 100%;
+        }
+
+        @include media('>=laptop') {
+            width: 48%;
+        }
+
+        &--3-in-row {
+            @include media('>=tablet') {
+                width: 33%;
+                padding-right: 3rem;
+            }
+        }
+    }
+
+    &__box-content {
+        margin-top: 0.5rem;
+    }
+
+    &__box-actions {
+        margin-top: 0.5rem;
+    }
+
+    &__line {
+        margin-bottom: 0;
+
+        dt {
+            font-weight: 400;
+        }
+    }
+
+    &__title-link {
+        padding-left: 0.5rem;
+    }
+
+    &__link-info {
+        font-size: 1.4rem;
+        font-weight: 400;
+    }
+
+    &__buttons {
+        width: 100%;
+        margin-top: 2rem;
+        display: flex;
+
+        &--right {
+            @include media('>=tablet') {
+                text-align: right;
+                justify-content: flex-end;
+            }
+        }
+
+        &--space {
+            justify-content: space-between;
+        }
+
+        @include media('<phone-lg') {
+            flex-wrap: wrap;
+
+            #{$root}__button {
+                width: 100%;
+                margin: 0 0 1rem;
+            }
+        }
+    }
+
+    &__button {
+        margin-right: 1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    &__toolbar {
+        position: relative;
+        font-size: 1.4rem;
+        width: 100%;
+        margin-top: 2rem;
+    }
+}
+
+dl {
+    font-size: 1.4rem;
+}

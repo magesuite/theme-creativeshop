@@ -1,0 +1,459 @@
+@import '../../../../components/container/container';
+$namespace: 'cs-';
+
+body,
+html {
+    height: 100%;
+    max-width: 100vw;
+}
+
+.no-scroll {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+#maincontent {
+    flex: 1 0 auto;
+}
+
+.page-wrapper {
+    //@include container-wrapper(); Don't remove it yet, might be needed
+    display: block !important;
+    min-height: 100%;
+
+    @include media('>=tablet') {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    &--checkout {
+        @include media('<tablet') {
+            max-width: 100vw;
+            overflow: hidden;
+        }
+
+        .#{$namespace}information-stripe {
+            max-width: 93rem;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+    }
+}
+
+.ie11 .page-wrapper {
+    display: block !important;
+}
+
+.ie11
+    .modal-popup:not(.#{$namespace}video-player__modal)
+    .#{$namespace}modal__content {
+    max-height: calc(100vh - 33rem);
+}
+
+.rss {
+    @extend .#{$namespace}link;
+}
+
+.gift-options-cart-item {
+    display: none;
+}
+
+.#{$namespace}checkout-header {
+    max-width: 93rem;
+    margin: 0.5rem auto 1rem;
+    @include media('>=tablet') {
+        margin: 1.5rem auto 1rem;
+    }
+
+    .#{$namespace}logo {
+        padding-left: 1.5rem;
+        @include media('>=laptop') {
+            padding-left: 0;
+        }
+    }
+}
+
+.checkout-payment-method .payment-methods {
+    @include media('<tablet') {
+        max-width: 100vw;
+        padding-right: 0.5rem;
+        box-sizing: border-box;
+    }
+}
+
+.#{$namespace}cart-page {
+    position: relative;
+    width: 100%;
+    @include media('<tablet') {
+        max-width: 45rem;
+        margin: 0 auto;
+
+        .page-title {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+}
+
+.page-main {
+    max-width: none !important; // stylelint-disable-line
+    padding: 0 !important; // stylelint-disable-line
+}
+
+h2 {
+    margin: 0 0 0.75em;
+    font-size: 2.2rem;
+    font-weight: 400;
+}
+
+a {
+    color: $colorCeruleanBlue;
+
+    &:visited {
+        color: $colorCeruleanBlue;
+    }
+
+    &:hover {
+        color: $colorCeruleanBlueHover;
+    }
+}
+
+.columns .column.main {
+    width: auto;
+    padding-bottom: 0;
+    max-width: 100%;
+    min-height: 10rem;
+}
+
+.category-image {
+    margin: 2rem 0;
+}
+
+.product-info-main .page-title-wrapper .page-title {
+    margin: 0;
+}
+
+.page-layout-1column {
+    .product-info-wrapper {
+        width: 100%;
+
+        @include media('>=tablet') {
+            position: absolute;
+            right: 0;
+            height: 100%;
+            width: 40%;
+        }
+
+        @include media('>=laptop') {
+            width: 30%;
+        }
+    }
+
+    .product-info-main {
+        width: 100%;
+    }
+}
+
+.catalog-product-view .column.main {
+    @include media('<tablet') {
+        padding-top: 15px;
+        border-top: 1px solid $colorAlto;
+    }
+
+    > section,
+    > div {
+        order: 3;
+    }
+}
+
+@include media('>=tablet') {
+    .page-layout-2columns-left {
+        .sidebar-main,
+        .sidebar-additional {
+            width: 22.5%;
+            padding-right: 40px;
+            border-right: 1px solid $colorGallery;
+        }
+    }
+}
+
+.checkout-onepage-success {
+    .cs-container--checkout-type .cs-container__inner {
+        margin-top: 1.5rem;
+    }
+
+    .print {
+        @include media('>=tablet') {
+            float: left;
+        }
+    }
+}
+
+// Hide sidebar with products compare, wishlist and last ordered items.
+.sidebar-additional {
+    display: none;
+}
+
+.page-product-downloadable {
+    .product-options-bottom,
+    .product-options-wrapper {
+        float: none;
+        width: 100%;
+    }
+
+    .product-add-form {
+        margin-bottom: 0;
+    }
+}
+
+.frontend-styleguide-index .page-wrapper {
+    max-width: none;
+
+    #maincontent {
+        padding: 0;
+
+        .#{$namespace}container__inner {
+            max-width: none;
+        }
+    }
+}
+
+.search.results {
+    .message {
+        margin: 0 0 20px;
+        @include media('>=tablet') {
+            margin: 0 0 40px;
+        }
+    }
+}
+
+//Paypal module
+
+.paypal-express-review .page-title-wrapper {
+    @include media('>=tablet') {
+        padding: 0 1.5rem;
+    }
+}
+
+.paypal-review.view {
+    @include media('<laptop') {
+        .#{$namespace}cart-item__price {
+            padding-left: 0 !important;
+        }
+
+        .#{$namespace}cart-item__subtotal {
+            padding-right: 0 !important;
+        }
+    }
+
+    @include media('>=tablet') {
+        padding: 0 1.5rem;
+    }
+
+    @include media('>=laptop') {
+        .#{$namespace}table.#{$namespace}table--footer {
+            border-top: 1rem solide $colorWhite;
+        }
+    }
+}
+
+.paypal.checkout {
+    text-align: center;
+
+    &.after,
+    &.before {
+        &:before {
+            content: attr(data-label);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 1rem 0.5rem 0.2rem;
+        }
+    }
+
+    input {
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+
+.paypal-express-in-context-mini-cart-container {
+    margin-top: 1rem;
+}
+
+.paypal-review-discount {
+    border-bottom: none;
+}
+
+//Amazon Pay - payment method
+
+//Style Amazon widget wrapper for iframe/ and iframe element
+
+.amazon-widget {
+    width: 100%;
+    max-width: 100%;
+    height: 25rem;
+    margin-top: 0;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
+    margin-bottom: 2rem;
+
+    iframe {
+        border: none !important;
+    }
+}
+
+.amazon-payment-method {
+    .payment-method-content,
+    .payment-method-title {
+        padding: 0;
+        margin-top: 0;
+    }
+}
+
+//Amazon Pay login button
+
+//The highest of all amazon pay containers
+//Should not be too long
+//in minicart, sale block, checkout summary it should be center
+
+.amazon-button-container {
+    max-width: 25rem;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 303;
+
+    @include media('>=tablet') {
+        max-width: 32rem;
+    }
+
+    .#{$namespace}checkout__step-content & {
+        max-width: 22rem;
+    }
+
+    img {
+        margin-left: auto;
+        margin-right: auto;
+
+        .#{$namespace}checkout__step-content & {
+            @include media('<tablet') {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__cell {
+        //Info sign element - is placed absolutely to not take place when button is centered
+        &:nth-child(2) {
+            position: absolute;
+            min-width: 3rem;
+            left: calc(100% + 0.6rem);
+            top: 1.9rem;
+
+            @include media('<phone') {
+                left: calc(100% + 0.8rem);
+            }
+        }
+
+        //Tooltip style and position
+        //Arrow position
+        .field-tooltip-content {
+            width: 25rem;
+            box-sizing: border-box;
+            box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.17);
+            border: none;
+            font-size: 1.3rem;
+            padding: 0.8rem;
+
+            @include media('>=phone-lg') {
+                width: 28rem;
+            }
+
+            &:before {
+                border-right-color: $colorGray;
+            }
+
+            //Move tooltip from right to top because there is no space in our shops on the right
+            .amazon-minicart-container &,
+            .#{$namespace}product-sale-block &,
+            .#{$namespace}cart-summary & {
+                top: auto;
+                bottom: 42px;
+                left: -210px;
+                right: auto;
+
+                @include media('>=tablet') {
+                    left: -250px;
+                }
+
+                @include media('>=laptop') {
+                    left: -232px;
+                }
+
+                &:before,
+                &:after {
+                    top: calc(100% + 2rem);
+                    left: 210px;
+                    transform: rotate(-180deg);
+
+                    @include media('>=tablet') {
+                        bottom: -10px;
+                        top: 100%;
+                        left: 250px;
+                        transform: rotate(-90deg);
+                    }
+
+                    @include media('>=laptop') {
+                        left: 232px;
+                    }
+                }
+
+                &:before {
+                    left: 210px;
+                    @include media('<tablet') {
+                        border-right-color: transparent;
+                    }
+
+                    @include media('>=tablet') {
+                        left: 251px;
+                        transform: rotate(-90deg);
+                    }
+
+                    @include media('>=laptop') {
+                        left: 233px;
+                    }
+                }
+
+                @include media('>=laptop') {
+                    &:after {
+                        transform: rotate(-90deg);
+                    }
+                }
+            }
+
+            // Cart summary tooltip needs small adjustments
+            .#{$namespace}cart-summary & {
+                &:before,
+                &:after {
+                    @include media('>=tablet') {
+                        top: calc(100% + 2rem);
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+
+            // Checkout tooltip can stay as it is - on the right
+            .#{$namespace}checkout__step-content & {
+                &:before {
+                    @include media('<tablet') {
+                        border-right-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+}

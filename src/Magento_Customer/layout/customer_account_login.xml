@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">login</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Login</item>
+                    <item name="label" xsi:type="string" translate="true">Login</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container  cs-container--spacious" />
+
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument name="title" translate="true" xsi:type="string">You are signed out</argument>
+                <argument name="htmlClass" xsi:type="string">cs-t-headline cs-t-headline--size_1</argument>
+            </action>
+            <arguments>
+                <argument name="css_class" xsi:type="string">page-title-wrapper--checkout-type</argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="customer_form_login" destination="container.section.login"/>
+        <move element="customer.new" destination="container.section.register"/>
+
+        <referenceContainer name="customer.login.container" htmlClass="cs-login-page">
+            <container name="container.section.login" label="Customer Login Container" htmlTag="div" htmlClass="cs-login-page__section"/>
+            <container name="container.section.register" label="Customer Register Container" htmlTag="div" htmlClass="cs-login-page__section"/>
+        </referenceContainer>
+
+    </body>
+</page>

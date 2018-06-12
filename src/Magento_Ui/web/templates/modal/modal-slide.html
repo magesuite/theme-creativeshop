@@ -1,0 +1,58 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<aside
+        class="modal-<%= data.type %> <%= data.modalClass %>
+           <% if(data.innerScroll){ %><%= data.innerScrollClass %><% } %> | cs-modal"
+        data-role="modal"
+        data-type="<%= data.type %>"
+        tabindex="0">
+    <div data-role="focusable-start" tabindex="0"></div>
+    <div class="modal-inner-wrap| cs-modal__inner"
+         data-role="focusable-scope">
+        <header class="modal-header | cs-modal__header">
+            <h1 class="cs-modal__title  | cs-t-headline cs-t-headline--size_2"
+                data-role="title">
+                <% if(data.title){ %>
+                <%= data.title %>
+                <% } %>
+                <span data-role="subTitle">
+                    <% if(data.subTitle){ %>
+                        <%= data.subTitle %>
+                    <% } %>
+                </span>
+            </h1>
+            <button
+                    class="action-close"
+                    data-role="closeBtn"
+                    type="button">
+                <span><%= data.closeText %></span>
+            </button>
+            <% if(data.buttons.length > 0){ %>
+            <div class="page-main-actions">
+                <div class="page-actions">
+                    <div class="page-actions-buttons">
+                        <% _.each(data.buttons, function(button) { %>
+                        <button
+                                class="<%= button.class %>"
+                                type="button"
+                                data-role="action"><span><%= button.text %></span>
+                            <svg class="cs-button__icon">
+                                <use xlink:href="#arrow_next"></use>
+                            </svg>
+
+                        </button>
+                        <% }); %>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </header>
+        <div class="modal-content | cs-modal__content" data-role="content"></div>
+    </div>
+    <div data-role="focusable-end" tabindex="0"></div>
+</aside>

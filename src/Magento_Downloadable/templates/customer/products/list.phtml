@@ -1,0 +1,90 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Magento\Downloadable\Block\Customer\Products\ListProducts
+ */
+?>
+
+
+<div class="cs-info-block  | cs-dashboard__block">
+    <?php $items = $block->getItems(); ?>
+
+    <div class="cs-info-block__content">
+
+    <?php if (count($items)): ?>
+        <div class="cs-table | downloadable-products">
+            <table id="my-downloadable-products-table" class="cs-table__body | table-downloadable-products">
+                <caption class="cs-visually-hidden"><?php /* @escapeNotVerified */echo __('Downloadable Products') ?></caption>
+                <thead class="cs-table__head">
+                <tr>
+                    <th scope="col" class="cs-table__col-head id">
+                        <?php /* @escapeNotVerified */echo __('Order #') ?>
+                    </th>
+                    <th scope="col" class="cs-table__col-head date">
+                        <?php /* @escapeNotVerified */echo __('Date') ?>
+                    </th>
+                    <th scope="col" class="cs-table__col-head title">
+                        <?php /* @escapeNotVerified */echo __('Title') ?>
+                    </th>
+                    <th scope="col" class="cs-table__col-head status">
+                        <?php /* @escapeNotVerified */echo __('Status') ?>
+                    </th>
+                    <th scope="col" class="cs-table__col-head remaining">
+                        <?php /* @escapeNotVerified */echo __('Remaining Downloads') ?>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($items as $item): ?>
+                    <?php $purchased = $item->getPurchased(); ?>
+                    <tr>
+                        <td data-th="<?php echo $block->escapeHtml(__('Order #')) ?>" class="cs-table__col id">
+                            <a
+                                href="<?php /* @escapeNotVerified */echo $block->getOrderViewUrl($purchased->getOrderId()) ?>"
+                                title="<?php echo $block->escapeHtml(__('View Order')) ?>"
+                            >
+                                <?php /* @escapeNotVerified */echo $purchased->getOrderIncrementId() ?>
+                            </a>
+                        </td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Date')) ?>" class="cs-table__col date">
+                            <?php /* @escapeNotVerified */echo $block->formatDate($purchased->getCreatedAt()) ?>
+                        </td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Title')) ?>" class="cs-table__col cs-table__col--attention title">
+                            <?php echo $block->escapeHtml($item->getPurchased()->getProductName()) ?>
+                            <?php if ($item->getStatus() == \Magento\Downloadable\Model\Link\Purchased\Item::LINK_STATUS_AVAILABLE): ?>
+                                <a
+                                    href="<?php /* @escapeNotVerified */echo $block->getDownloadUrl($item) ?>"
+                                    title="<?php echo $block->escapeHtml(__('Start Download')) ?>"
+                                    class="action download"
+                                    <?php echo $block->getIsOpenInNewWindow() ? 'onclick="this.target=\'_blank\'"' : ''; ?>
+                                >
+                                    <?php echo $block->escapeHtml($item->getLinkTitle()) ?>
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Status')) ?>" class="cs-table__col status">
+                            <?php /* @escapeNotVerified */echo __(ucfirst($item->getStatus())) ?>
+                        </td>
+                        <td data-th="<?php echo $block->escapeHtml(__('Remaining Downloads')) ?>" class="cs-table__col remaining">
+                            <?php /* @escapeNotVerified */echo $block->getRemainingDownloads($item) ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php $pager = $block->getChildHtml('pager'); ?>
+        <?php if ($pager): ?>
+            <div class="cs-info-block__toolbar | downloadable-products-toolbar">
+                <?php echo $pager; ?>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <div class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+            <span><?php /* @escapeNotVerified */echo __('You have not purchased any downloadable products yet.'); ?></span>
+        </div>
+    <?php endif; ?>
+
+    </div>
+
+</div>

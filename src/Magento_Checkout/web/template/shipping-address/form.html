@@ -1,0 +1,25 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form class="cs-form | form-shipping-address" id="co-shipping-form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+    <!-- ko foreach: getRegion('before-fields') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    <div id="shipping-new-address-form" class="cs-form__fields-wrapper | address">
+
+        <!-- ko foreach: getRegion('additional-fieldsets') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <!-- ko if: (isCustomerLoggedIn) -->
+        <div class="cs-form__field | cs-input cs-input--type-checkbox | choice" data-bind="visible: !isFormInline">
+            <input type="checkbox" class="cs-input__checkbox" id="shipping-save-in-address-book" data-bind="checked: saveInAddressBook" />
+            <label class="cs-input__label" for="shipping-save-in-address-book">
+                <span data-bind="i18n: 'Save in address book'"></span>
+            </label>
+        </div>
+        <!-- /ko -->
+    </div>
+</form>

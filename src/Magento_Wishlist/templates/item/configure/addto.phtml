@@ -1,0 +1,44 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+
+<ul class="cs-links-block-addto" data-role="add-to-links">
+    <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
+        <li class="cs-links-block-addto__item">
+            <a
+                href="#"
+                data-post='<?php /* @escapeNotVerified */ echo $block->getUpdateParams(); ?>'
+                class="cs-links-block-addto__link | towishlist updated"
+                data-action="add-to-wishlist"
+            >
+                <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                    <use xlink:href="#heart"></use>
+                </svg>
+                <?php /* @escapeNotVerified */ echo __('Update Wish List') ?>
+            </a>
+        </li>
+    <?php endif; ?>
+    <?php
+        $product = $block->getProduct(); 
+        $compareUrl = $this->helper('Magento\Catalog\Helper\Product\Compare')->getAddUrl($product); 
+    ?>
+    <?php if ($compareUrl) : ?>
+    <li class="cs-links-block-addto__item">
+        <a href="<?php /* @escapeNotVerified */ echo $compareUrl ?>" class="cs-links-block-addto__link | cs-no-display | tocompare">
+            <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                <use xlink:href="#compare"></use>
+            </svg>
+            <?php /* @escapeNotVerified */ echo __('Add to Compare') ?>
+
+        </a>
+    </li>
+
+    <?php endif; ?>
+</ul>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "addToWishlist": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getWishlistOptions())?>
+        }
+    }
+</script>

@@ -1,0 +1,47 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Language switcher template
+ */
+?>
+
+<?php if (count($block->getStores())>1): ?>
+<?php $id = $block->getIdModifier() ? '-' . $block->getIdModifier() : ''?>
+<div class="cs-switcher-language | switcher language switcher-language" data-ui-id="language-switcher" id="switcher-language<?php /* @escapeNotVerified */ echo $id?>">
+    <strong class="cs-visually-hidden label switcher-label"><span><?php /* @escapeNotVerified */ echo __('Language') ?></span></strong>
+    <div class="actions dropdown options switcher-options">
+        <div class="cs-switcher-language__trigger | action toggle switcher-trigger" id="switcher-language-trigger<?php /* @escapeNotVerified */ echo $id?>">
+            <span class="cs-switcher-language__trigger-span | view-<?php echo $block->escapeHtml($block->getCurrentStoreCode()) ?>">
+                <?php echo $block->escapeHtml($block->getStoreName()) ?>
+                <svg class="cs-switcher-language__trigger-icon"><use xlink:href="#arrow_down"></use></svg>
+            </span>
+        </div>
+        <ul class="cs-switcher-language__list | dropdown switcher-dropdown"
+            data-mage-init='{"dropdownDialog":{
+                "appendTo":"#switcher-language<?php /* @escapeNotVerified */ echo $id ?> > .options",
+                "triggerTarget":"#switcher-language-trigger<?php /* @escapeNotVerified */ echo $id ?>",
+                "closeOnMouseLeave": false,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":null}}'>
+            <?php foreach ($block->getStores() as $_lang): ?>
+                <li class="cs-switcher-language__list-item | view-<?php echo $block->escapeHtml($_lang->getCode()); ?> switcher-option">
+                    <?php if ($_lang->getId() != $block->getCurrentStoreId()): ?>
+                        <a class="cs-switcher-language__list-item-link" href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getTargetStorePostData($_lang); ?>'>
+                            <?php echo $block->escapeHtml($_lang->getName()) ?>
+                        </a>
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+<?php endif; ?>

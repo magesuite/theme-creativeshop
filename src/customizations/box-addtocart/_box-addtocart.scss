@@ -1,0 +1,78 @@
+.#{$namespace}box-addtocart {
+    $root: &;
+
+    padding-top: 0;
+    margin: 0.65rem 0;
+    border-top: none;
+
+    &__qty-wrapper {
+        @extend .#{$namespace}swatches__attribute;
+        align-items: center;
+        position: relative;
+
+        &:not(#{$root}--fast-shipping) & {
+            @include media('>=tablet') {
+                padding-bottom: 2rem;
+            }
+        }
+    }
+
+    &__label {
+        display: none;
+        @extend .#{$namespace}swatches__attribute-label;
+        line-height: 48px;
+        padding-top: 0;
+
+        @include media('>=tablet') {
+            display: inline-flex;
+            padding-top: 0;
+            line-height: 1;
+        }
+    }
+
+    &__qty-increment {
+        @extend .#{$namespace}swatches__list;
+        margin: 0.38em 0 1.2rem;
+
+        @include media('>=tablet') {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+
+    &__stock {
+        width: 100%;
+        padding: 1.2rem 0 0.7rem;
+
+        #{$root}--fast-shipping & {
+            position: relative;
+        }
+
+        &-text {
+            font-size: 1.2rem;
+            color: $colorDoveGray;
+
+            &--unavailable {
+                color: $colorCrimson;
+            }
+        }
+
+        &-icon {
+            width: 1.1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+
+            &--available {
+                fill: $colorApple;
+            }
+
+            &--unavailable {
+                fill: $colorCrimson;
+            }
+        }
+    }
+
+    &__actions {
+        margin-bottom: 1.3em;
+    }
+}

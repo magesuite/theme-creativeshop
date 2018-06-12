@@ -1,0 +1,53 @@
+.#{$namespace}headline {
+    text-align: center;
+    font-size: 1rem;
+    padding: 2em 0;
+    margin: 2rem 0;
+
+    &__title {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_1;
+
+        @include media('<tablet') {
+            display: block;
+        }
+
+        &:before,
+        &:after {
+            display: flex;
+            height: 1px;
+            flex-grow: 1;
+            background-color: $colorAlto;
+            @include media('>=tablet') {
+                content: '';
+            }
+        }
+
+        &:before {
+            margin-right: 0.6em;
+        }
+
+        &:after {
+            margin-left: 0.6em;
+        }
+    }
+
+    &__subtitle {
+        color: $colorGray;
+        font-size: 1.3em;
+        margin: 0;
+        display: none;
+        @include media('>=tablet') {
+            display: block;
+        }
+    }
+
+    &__counter {
+        color: lighten($colorDoveGray, 7%);
+        font-weight: 300;
+        padding-left: 0.5rem;
+    }
+}

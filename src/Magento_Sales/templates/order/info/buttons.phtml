@@ -1,0 +1,32 @@
+<?php
+// @codingStandardsIgnoreFile
+
+?>
+<div class="cs-info-block cs-info-block--flex">
+    <?php  $order = $block->getOrder() ?>
+    <div class="cs-info-block__buttons">
+        <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($order->getEntityId())) : ?>
+            <a
+                class="cs-info-block__button | cs-button cs-button--size_300 cs-button--look_default"
+                href="<?php /* @escapeNotVerified */ echo $block->getReorderUrl($order) ?>"
+            >
+                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Reorder') ?></span>
+                <svg class="cs-button__icon">
+                    <use xlink:href="#arrow_next"></use>
+                </svg>
+            </a>
+        <?php endif ?>
+        <a
+            class="cs-info-block__button | cs-button cs-button--size_300 cs-button--look_light"
+            href="<?php /* @escapeNotVerified */ echo $block->getPrintUrl($order) ?>"
+            onclick="this.target='_blank';"
+        >
+            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Print Order') ?></span>
+            <svg class="cs-button__icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </a>
+    </div>
+
+    <?php echo $block->getChildHtml(); ?>
+</div>

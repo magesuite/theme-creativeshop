@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="sales_order_item_renderers"/>
+    <update handle="sales_order_item_price"/>
+    <update handle="sales_order_info_links"/>
+    <body>
+
+        <referenceContainer name="page.main.title">
+            <container name="order.attributes" htmlTag="div" htmlClass="cs-attributes-list">
+                <container name="order.attributes.inner" htmlTag="div" htmlClass="cs-attributes-list__list cs-attributes-list__list--long-labels">
+                </container>
+            </container>
+        </referenceContainer>
+
+        <referenceBlock name="sales.order.info.links.information">
+            <arguments>
+                <argument name="path" xsi:type="string">sales/order/view</argument>
+                <argument name="label" xsi:type="string" translate="true">Order details</argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="order.status" destination="order.attributes.inner"/>
+        <move element="order.date" destination="order.attributes.inner"/>
+
+        <move element="page.main.title" destination="content" before="-"/>
+
+        <move element="order.actions.container" destination="page.main.title" after="-"/>
+
+    </body>
+</page>

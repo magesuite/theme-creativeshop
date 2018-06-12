@@ -1,0 +1,45 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+?>
+<div class="cs-category-page__toolbar-limiter | cs-input">
+    <label class="cs-category-page__toolbar-label">
+        <?php /* @escapeNotVerified */ echo __('Display: ') ?>
+    </label>
+
+    <div class="control cs-input__control | cs-visually-hidden">
+        <select data-role="limiter" class="cs-input__select">
+            <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+                <option
+                    value="<?php /* @escapeNotVerified */ echo $key ?>"<?php if ($block->isLimitCurrent($key)): ?>
+                    selected="selected"<?php endif ?>
+                >
+                    <?php /* @escapeNotVerified */ echo $limit ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="cs-pagination cs-pagination--limiter">
+        <?php foreach ($block->getAvailableLimit() as $key => $limit): ?>
+            <button class="cs-pagination__item" data-value="<?php /* @escapeNotVerified */ echo $key ?>">
+                <span class="cs-pagination__number <?php if ($block->isLimitCurrent($key)): ?> cs-pagination__number--current<?php endif ?>">
+                    <?php /* @escapeNotVerified */ echo $limit ?>
+                </span>
+            </button>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery'
+    ], function($) {
+        $( '.cs-pagination--limiter .cs-pagination__item' ).on( 'click', function() {
+            $( '.cs-category-page__toolbar-limiter select' ).val( $( this ).data('value') ).trigger('change');
+        })
+
+    })
+</script>

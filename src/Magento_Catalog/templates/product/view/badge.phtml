@@ -1,0 +1,24 @@
+<?php
+$product = $block->getProduct();
+$isNew = $this->helper('Creativestyle\FrontendExtension\Helper\Product')->isNew($product);
+$isOnSale = $this->helper('Creativestyle\FrontendExtension\Helper\Product')->isOnSale($product);
+?>
+
+<div class="cs-product-gallery__badge-wrapper">
+    <?php if ($isNew): ?>
+        <span class="cs-badge cs-badge--new cs-badge--label-big cs-badge--cut">
+            <span class="cs-badge__span cs-badge__span--no-space"><?= __('New'); ?></span>
+        </span>
+    <?php endif; ?>
+
+    <?php if ($isOnSale): ?>
+        <span class="cs-badge cs-badge--attention cs-badge--label-big cs-badge--cut">
+            <span class="cs-badge__span cs-badge__span--no-space"><?= __('Sale'); ?></span>
+        </span>
+    <?php endif; ?>
+
+    <?php echo $block->getChildHtml('popular.badge') ?>
+    <?php echo $block->getChildHtml('freeshipping.badge') ?>
+</div>
+
+

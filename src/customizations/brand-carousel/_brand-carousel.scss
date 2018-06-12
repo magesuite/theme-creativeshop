@@ -1,0 +1,118 @@
+@import '../../../node_modules/creative-patterns/packages/components/brand-carousel/src/brand-carousel';
+
+.#{$namespace}brand-carousel {
+    $root: &;
+
+    @include teaser();
+    @include brandCarousel();
+
+    &__carousel {
+        padding: 0;
+
+        @include media('>=tablet') {
+            #{$root}--slider & {
+                padding-left: 3.75rem;
+                padding-right: 3.75rem;
+            }
+        }
+    }
+
+    &__slides {
+        justify-content: center;
+
+        #{$root}--slider & {
+            justify-content: space-between;
+        }
+    }
+
+    &__slide {
+        margin-bottom: 0;
+        margin-right: 2rem;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        #{$root}--slider & {
+            margin-right: 0;
+        }
+    }
+
+    &__image {
+        max-height: 85px;
+    }
+
+    &__pagination {
+        @extend .#{$namespace}products-promo__pagination;
+        position: static;
+        transform: none;
+        margin-top: 2rem;
+        display: none;
+
+        #{$root}--slider & {
+            display: block;
+        }
+
+        @include media('>=tablet') {
+            display: none !important;
+        }
+
+        &-item {
+            @extend .#{$namespace}products-promo__pagination-item;
+
+            &--active {
+                @extend .#{$namespace}products-promo__pagination-item--active;
+            }
+        }
+
+        &-button {
+            @extend .#{$namespace}products-promo__pagination-button;
+        }
+    }
+
+    &__nav {
+        @extend .#{$namespace}products-promo__nav;
+        z-index: 3;
+        display: none;
+
+        #{$root}--slider & {
+            display: block;
+        }
+
+        @include media('<tablet') {
+            display: none !important;
+        }
+
+        @include media('>=tablet') {
+            width: 3rem;
+            height: 5rem;
+            background-color: transparent;
+            box-shadow: none;
+
+            &:focus,
+            &:active {
+                box-shadow: none;
+            }
+        }
+
+        &--next {
+            @include media('>=tablet') {
+                right: 1.3rem;
+            }
+        }
+
+        &--prev {
+            @include media('>=tablet') {
+                left: 1.3rem;
+            }
+        }
+    }
+
+    &__nav-icon {
+        fill: $colorCeruleanBlue;
+
+        @include media('<tablet') {
+            height: calc(5.5rem * 0.75);
+        }
+    }
+}

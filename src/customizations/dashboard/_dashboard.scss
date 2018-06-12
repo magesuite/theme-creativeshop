@@ -1,0 +1,84 @@
+.#{$namespace}dashboard {
+    $menuTabletWidth: 27;
+    $menuWidth: 26.5;
+    $menuMarginRight: 3.6;
+    font-size: 1rem;
+
+    &__wrapper {
+        position: relative;
+        margin: 3rem 0;
+
+        @include media('>=tablet') {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-content: stretch;
+            padding: 0 0 2rem;
+        }
+    }
+
+    &__menu {
+        width: 100%;
+
+        @include media('>=tablet') {
+            width: #{$menuTabletWidth}rem;
+            margin-right: #{$menuMarginRight}rem;
+        }
+
+        @include media('>=laptop') {
+            width: #{$menuWidth}rem;
+            margin-right: #{$menuMarginRight}rem;
+        }
+    }
+
+    &__main {
+        padding: 0 1.5rem 2rem;
+        margin-bottom: 2rem;
+
+        @include media('>=tablet') {
+            padding: 0;
+            width: calc(100% - #{$menuTabletWidth + $menuMarginRight}rem);
+        }
+
+        @include media('>=laptop') {
+            width: calc(100% - #{$menuWidth + $menuMarginRight}rem);
+        }
+    }
+
+    &__top {
+        padding: 0 0 2.2rem;
+        font-size: 1.4rem;
+    }
+
+    &__page-title {
+        padding-bottom: 1rem;
+
+        .ie11 & {
+            @include media('>=tablet') {
+                margin-top: 1.5rem;
+            }
+        }
+    }
+
+    &__block {
+        width: 100%;
+        margin: 1.5rem 0 2.5rem;
+
+        @include media('>=phone-lg') {
+            margin: 1.5rem 0 0;
+        }
+    }
+
+    &__bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        border-top: 2px solid $colorAlto;
+        padding-top: 2rem;
+
+        @include media('>=tablet') {
+            width: 100%;
+            padding-top: 4rem;
+        }
+    }
+}

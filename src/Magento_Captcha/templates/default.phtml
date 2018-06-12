@@ -1,0 +1,46 @@
+<?php
+/** @var \Magento\Captcha\Block\Captcha\DefaultCaptcha $block */
+
+/** @var \Magento\Captcha\Model\DefaultModel $captcha */
+$captcha = $block->getCaptchaModel();
+?>
+<div class="cs-form__field cs-input cs-captcha | required" role="<?= $block->escapeHtmlAttr($block->getFormId()) ?>">
+    <label class="cs-input__label" for="captcha_<?= $block->escapeHtmlAttr($block->getFormId()) ?>"><span><?= $block->escapeHtml(__('Please type the letters below')) ?></span></label>
+    <div class="cs-captcha__wrapper">
+        <input
+            class="cs-input__input"
+            name="<?= $block->escapeHtmlAttr(\Magento\Captcha\Helper\Data::INPUT_NAME_FIELD_VALUE) ?>[<?= $block->escapeHtmlAttr($block->getFormId()) ?>]"
+            type="text"
+            data-validate="{required:true}"
+            id="captcha_<?= $block->escapeHtmlAttr($block->getFormId()) ?>" />
+        <div
+            class="cs-captcha__image-controls"
+            data-captcha="<?= $block->escapeHtmlAttr($block->getFormId()) ?>"
+            id="captcha-container-<?= $block->escapeHtmlAttr($block->getFormId()) ?>"
+            data-mage-init='{"captcha":{"url": "<?= $block->escapeUrl($block->getRefreshUrl()) ?>",
+                                    "imageLoader": "<?= $block->escapeUrl($block->getViewFileUrl('images/loader-2.gif')) ?>",
+                                        "type": "<?= $block->escapeHtmlAttr($block->getFormId()) ?>"}}'
+        >
+            <img
+                alt="<?= $block->escapeHtmlAttr(__('Please type the letters below')) ?>"
+                class="cs-captcha__image | captcha-img"
+                height="<?= /* @noEscape */ (float) $block->getImgHeight() ?>"
+                src="<?= $block->escapeUrl($captcha->getImgSrc()) ?>"/>
+            <button
+                type="button"
+                class="cs-captcha__reload cs-button cs-button--look_light | captcha-reload"
+                title="<?= $block->escapeHtmlAttr(__('Reload captcha')) ?>"
+            >
+                <span class="cs-button__span"><?= $block->escapeHtml(__('Reload captcha')) ?></span>
+                <svg class="cs-button__icon">
+                    <use xlink:href="#arrow_next"></use>
+                </svg>
+            </button>
+        </div>
+
+            <div class="cs-captcha__note">
+                <?= $block->escapeHtml(__('<strong>Attention</strong>: Captcha is case sensitive.'), ['strong']) ?>
+            </div>
+
+    </div>
+</div>

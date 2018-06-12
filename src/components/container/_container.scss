@@ -1,0 +1,30 @@
+/**
+ * Mixins for flexible containers declaration.
+ */
+
+/**
+ * Defines page container. This mixin makes sure that the content has always equal padding
+ * for mobile screens on both size of the device.
+ */
+@mixin container($horizontal-padding: 15px) {
+    padding-left: $horizontal-padding;
+    padding-right: $horizontal-padding;
+}
+
+/**
+ * Negates parent container's padding and sets it own.
+ * Somethimes this has to be done to make background even to other containers' content.
+ */
+@mixin container-negated($horizontal-padding: 15px) {
+    @include container($horizontal-padding);
+    margin-left: -$horizontal-padding;
+    margin-right: -$horizontal-padding;
+}
+
+/**
+ * Defines container wrapper that makes sure contnet doesn't extend above certain width and is always centered.
+ */
+@mixin container-wrapper($max-width: 1200px) {
+    max-width: $max-width;
+    margin: 0 auto;
+}

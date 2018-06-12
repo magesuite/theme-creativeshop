@@ -1,0 +1,62 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+$order = $block->getOrder()
+?>
+
+<div class="cs-info-block | cs-dashboard__block">
+    <div class="cs-info-block__buttons">
+        <a 
+            href="<?php /* @escapeNotVerified */ echo $block->getPrintAllInvoicesUrl($order) ?>"
+            target="_blank"
+            class="cs-button cs-button--size_300 cs-button--look_default"
+        >
+            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Print All Invoices') ?></span>
+        </a>
+    </div>
+    <?php foreach ($order->getInvoiceCollection() as $invoice): ?>
+        <div class="cs-info-block__title cs-info-block__title--space-top | cs-title-block cs-title-block--bordered">
+            <div class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php /* @escapeNotVerified */ echo __('Invoice #') ?><?php /* @escapeNotVerified */ echo $invoice->getIncrementId(); ?>
+            </div>
+            <span class="cs-t-headline__span">
+                <a
+                    href="<?php /* @escapeNotVerified */ echo $block->getPrintInvoiceUrl($invoice) ?>"
+                    onclick="this.target='_blank'"
+                    class="cs-link"
+                >
+                    <?php /* @escapeNotVerified */ echo __('Print Invoice') ?>
+                </a>
+            </span>
+
+        </div>
+        <div class="cs-table | invoice">
+            <table class="cs-table__body | invoice" id="my-invoice-table-<?php /* @escapeNotVerified */ echo $invoice->getId(); ?>">
+                <caption class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Items Invoiced') ?></caption>
+                <thead class="cs-table__head">
+                    <tr>
+                        <th class="cs-table__col-head | name"><?php /* @escapeNotVerified */ echo __('Product Name') ?></th>
+                        <th class="cs-table__col-head | sku"><?php /* @escapeNotVerified */ echo __('SKU') ?></th>
+                        <th class="cs-table__col-head | price"><?php /* @escapeNotVerified */ echo __('Price') ?></th>
+                        <th class="cs-table__col-head | qty"><?php /* @escapeNotVerified */ echo __('Qty Invoiced') ?></th>
+                        <th class="cs-table__col-head | subtotal"><?php /* @escapeNotVerified */ echo __('Subtotal') ?></th>
+                    </tr>
+                </thead>
+                <?php $items = $invoice->getAllItems(); ?>
+                <?php $count = count($items) ?>
+                <?php foreach ($items as $item): ?>
+                    <?php if ($item->getOrderItem()->getParentItem()) { continue; } ?>
+                    <tbody>
+                        <?php echo $block->getItemHtml($item) ?>
+                    </tbody>
+                <?php endforeach; ?>
+                <tfoot class="cs-table__foot">
+                <?php echo $block->getInvoiceTotalsHtml($invoice)?>
+                </tfoot>
+            </table>
+        </div>
+        <?php echo $block->getInvoiceCommentsHtml($invoice)?>
+    <?php endforeach; ?>
+
+</div>

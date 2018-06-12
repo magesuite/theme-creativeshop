@@ -1,0 +1,279 @@
+.#{$namespace}cart-item {
+    $root: &;
+    border-top: 1px solid $colorAlto;
+    position: relative;
+    padding-bottom: 5rem;
+
+    tbody:nth-child(3) & {
+        border-top: none;
+    }
+
+    @include media('>=laptop') {
+        padding-right: 11rem;
+        padding-bottom: 0;
+        border-top: none;
+    }
+
+    &--no-icons {
+        @include media('>=laptop') {
+            padding-right: 0;
+        }
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    &__product {
+        display: flex;
+    }
+
+    &__image {
+        width: 13rem;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include media('>=laptop') {
+            width: 10rem;
+        }
+        @include media('>=desktop') {
+            width: 15rem;
+        }
+    }
+
+    &__name {
+        width: 100%;
+        padding: 1.5rem 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $colorMineShaft;
+    }
+
+    &__name a {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: $colorMineShaft;
+
+        &__name {
+            width: 100%;
+            padding: 1.5rem 0;
+
+            a {
+                font-size: 1.4rem;
+            }
+        }
+    }
+
+    &__details {
+        padding: 0 1rem 1rem 2rem;
+
+        // fix IE issue - no wrapping text inside flexbox
+        .ie11 & {
+            flex-basis: 100%;
+        }
+
+        @include media('>=laptop') {
+            padding: 0 1rem 0 2rem;
+        }
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+    }
+
+    &__options {
+        @include media('>=laptop') {
+            display: flex;
+        }
+    }
+
+    &__options-group {
+        margin: 0 2rem 0 0;
+        @include media('>=laptop') {
+            margin: 0 2rem 1rem 0;
+        }
+    }
+
+    &__options-label {
+        width: 7rem;
+        display: inline-block;
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_4;
+        @include media('>=laptop') {
+            width: auto;
+            display: block;
+        }
+    }
+
+    &__options-value {
+        margin-bottom: 0;
+        display: inline-block;
+        @extend .#{$namespace}t-text;
+        @extend .#{$namespace}t-text--look_light;
+        @include media('>=laptop') {
+            width: auto;
+            display: block;
+        }
+    }
+
+    &__price,
+    &__subtotal {
+        .price {
+            font-weight: 300;
+            font-size: 1.4rem;
+            color: $colorDoveGray;
+        }
+    }
+
+    &__price {
+        padding: 0.4rem 0 0.4rem 2rem !important;
+        @include media('<laptop') {
+            text-align: left;
+        }
+        @include media('>=laptop') {
+            padding: 0.4rem 2rem 0.4rem 0 !important;
+        }
+    }
+
+    &__subtotal {
+        padding: 0.4rem 2rem 0.4rem 0 !important;
+        @include media('>=laptop') {
+            padding-right: 0;
+        }
+        @include media('<laptop') {
+            text-align: right;
+        }
+
+        #{$root}--no-icons & {
+            @include media('>=laptop') {
+                text-align: right;
+            }
+        }
+    }
+
+    &__price,
+    &__subtotal,
+    &__qty {
+        @include media('<laptop') {
+            box-sizing: border-box;
+            width: 31%;
+            display: inline-block !important;
+            height: 9rem;
+            overflow: hidden;
+
+            &:before {
+                content: attr(data-th) !important;
+                font-size: 1rem;
+                text-transform: uppercase;
+                padding: 0 0 2.1rem !important;
+            }
+            @include media('>=phone-lg') {
+                &:before {
+                    font-size: 1.1rem;
+                }
+            }
+        }
+        @include media('>=laptop') {
+            padding-left: 0;
+        }
+    }
+
+    &__qty {
+        padding: 0.4rem 0 !important;
+        @include media('>=laptop') {
+            padding: 0.4rem 2rem 0.4rem 0 !important;
+        }
+
+        @include media('<laptop') {
+            padding-right: 0;
+            padding-left: 0;
+            text-align: center;
+            width: 36%;
+
+            &:before {
+                padding: 0 0 1rem !important; /* stylelint-disable-line declaration-no-important */
+            }
+        }
+    }
+
+    &__item {
+        // fix IE issue - no wrapping text inside flexbox
+        .ie11 & {
+            width: 100%;
+        }
+
+        @include media('<laptop') {
+            padding-top: 1rem;
+
+            &:before {
+                display: none !important; /* stylelint-disable-line declaration-no-important */
+            }
+        }
+    }
+
+    &__qty-input {
+        @include media('<laptop') {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &__subtotal-inner {
+        @include media('>=laptop') {
+            display: flex;
+            align-items: center;
+            height: 2.5rem;
+        }
+    }
+
+    &__buttons {
+        width: 100%;
+        align-items: center;
+        position: relative;
+        box-sizing: border-box;
+
+        @include media('>=laptop') {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+
+        &--left {
+            @include media('<laptop') {
+                position: absolute;
+                left: -0.8rem;
+            }
+        }
+
+        &--right {
+            margin-left: 0.3rem;
+            margin-right: 0.3rem;
+            @include media('<laptop') {
+                margin-left: 0;
+                position: absolute;
+                right: -0.2rem;
+            }
+        }
+    }
+
+    &__bottom {
+        @include media('<laptop') {
+            padding-bottom: 3.5rem !important; /* stylelint-disable-line declaration-no-important */
+        }
+
+        @include media('>=laptop') {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        &:before {
+            display: none !important; /* stylelint-disable-line declaration-no-important */
+        }
+    }
+}

@@ -1,0 +1,47 @@
+
+<!-- ko if: (isPwaVisible) -->
+<!-- ko if: (isAmazonAccountLoggedIn) -->
+
+<div class="cs-payment | payment-method amazon-payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="cs-payment__title cs-payment__title--no-space | cs-input cs-input--type-radio | payment-method-title">
+        <input type="radio"
+               name="payment[method]"
+               class="cs-input__radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="cs-input__label cs-input__label--big"><span data-bind="text: getTitle()"></span></label>
+    </div>
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="amazon-widget-container">
+            <div id="walletWidgetDiv" class="amazon-widget amazon-widget--payment" data-bind="afterRender: initPaymentWidget"></div>
+        </div>
+
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <div class="cs-payment__buttons">
+            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
+                    type="submit"
+                    data-bind="
+                            click: placeOrder,
+                            attr: {title: $t('Place Order')},
+                            css: {disabled: isPlaceOrderDisabled()},
+                            enable: (getCode() == isChecked())
+                            "
+                    disabled>
+                <span data-bind="i18n: 'Place Order'" class="cs-button__span"></span>
+                <svg class="cs-button__icon">
+                    <use xlink:href="#arrow_next"></use>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!--/ko-->
+<!--/ko-->

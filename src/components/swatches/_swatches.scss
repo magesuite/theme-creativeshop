@@ -1,0 +1,85 @@
+/* stylelint-disable selector-no-qualifying-type  */
+/**
+ * Swatches component that can be included in any desired custom class.
+ */
+
+@mixin swatches() {
+    &__attribute {
+        display: flex;
+        width: 100%;
+        padding: 1em 0;
+    }
+
+    &__attribute-label {
+        order: 1;
+        width: 25%;
+        padding-right: 4px;
+        text-transform: uppercase;
+        line-height: 2.45em;
+    }
+
+    &__attribute-selected {
+        order: 2;
+        padding-right: 4px;
+        display: none;
+    }
+
+    &__list {
+        order: 10;
+        flex-grow: 2;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    &__swatch {
+        position: relative;
+        min-width: 2.45em;
+        height: 2.45em;
+        padding: 0 0.35em;
+        margin: 0.38em;
+        border: 1px solid inherit; // should be the same as background color of the parent block
+        border-radius: 3px;
+        background-color: #f1f1f1;
+        color: #777;
+        cursor: pointer;
+        line-height: 2.45em;
+        text-align: center;
+        font-size: 1.15rem;
+        box-sizing: border-box;
+        transition: background-color 0.15s linear, opacity 0.15s linear;
+
+        &:after {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 1px solid #f1f1f1;
+            border-radius: 3px;
+            content: '';
+            transition: border-color 0.15s linear;
+        }
+
+        &:hover:after {
+            border-color: lighten(#5b71d9, 25%);
+        }
+
+        &.selected {
+            background-color: inherit; // should be the same as background color of the parent block
+
+            &:after {
+                border-color: #5b71d9;
+            }
+        }
+
+        &.disabled {
+            opacity: 0.35;
+            cursor: default;
+
+            &:hover:after {
+                border-color: #f1f1f1;
+            }
+        }
+    }
+}

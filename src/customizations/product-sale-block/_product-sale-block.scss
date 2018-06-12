@@ -1,0 +1,220 @@
+.#{$namespace}product-sale-block {
+    background: $colorWhite;
+    padding: 15px 0 2rem;
+    border-top: 1px solid $colorAlto;
+    box-sizing: border-box;
+    order: 2 !important;
+
+    @include media('>=tablet') {
+        border: none;
+        padding: 0.5rem;
+    }
+
+    @include media('>=laptop') {
+        border: 1px solid $colorAlto;
+        border-radius: 3px;
+        padding: 1.5em 1.5rem;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
+
+        /* stylelint-disable */
+        @supports (position: sticky) {
+            margin-top: 3rem;
+        }
+        /* stylelint-enable */
+    }
+
+    @include media('>=laptop-lg') {
+        padding-left: 2.2rem;
+        padding-right: 2.2rem;
+    }
+
+    .ie11 & {
+        @include media('>=laptop') {
+            margin-top: 0.8rem !important;
+        }
+    }
+
+    .ie11 & .#{$namespace}star-rating__text {
+        align-self: flex-end;
+    }
+
+    &__item {
+        margin: 1.5rem -15px 0;
+        padding: 2rem 15px 0;
+        border-top: 1px solid $colorAlto;
+
+        @include media('>=tablet') {
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        @include media('>=laptop') {
+            margin-left: -1.5rem;
+            margin-right: -1.5rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        @include media('>=laptop-lg') {
+            margin-left: -2.2rem;
+            margin-right: -2.2rem;
+            padding-left: 2.2rem;
+            padding-right: 2.2rem;
+        }
+    }
+
+    &__category {
+        font-size: 1.2rem;
+        color: $colorDoveGray;
+    }
+
+    &__name {
+        position: relative;
+
+        h1,
+        .page-title {
+            @extend .cs-t-headline;
+            @extend .cs-t-headline--size_2;
+            padding-bottom: 0.6rem;
+        }
+    }
+
+    &__banner {
+        margin: 0.75em 0;
+        padding: 0.5em 1em;
+        text-align: center;
+        background-color: $colorMineShaft;
+        color: $colorWhite;
+        font-size: 1.15rem;
+
+        > p {
+            margin: 0;
+        }
+    }
+
+    &__share {
+        position: absolute;
+        right: 0;
+        bottom: -1.8rem;
+        display: flex;
+        align-items: center;
+
+        .page-product-bundle & {
+            position: static;
+        }
+    }
+
+    &__share-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: $colorCeruleanBlue;
+        margin-right: 0.7rem;
+    }
+
+    &__share-text {
+        font-size: 1.2rem;
+        color: $colorDoveGray;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    &__no-review {
+        @include media('<tablet') {
+            display: none;
+        }
+    }
+
+    &__stock {
+        text-align: right;
+        display: inline-block;
+        float: right;
+        height: 0;
+    }
+
+    &__stock-text {
+        font-size: 1.2rem;
+        color: $colorDoveGray;
+
+        &--available {
+            transform: translateY(-13.6rem);
+
+            .page-product-bundle & {
+                transform: translateY(-12.7rem);
+            }
+        }
+
+        &--unavailable {
+            transform: translateY(-2.2rem);
+            color: $colorCrimson;
+        }
+    }
+
+    &__stock-icon {
+        width: 1.1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+
+        &--available {
+            fill: $colorApple;
+        }
+
+        &--unavailable {
+            fill: $colorCrimson;
+        }
+    }
+
+    &__option {
+        @extend .#{$namespace}swatches__attribute;
+        white-space: nowrap;
+    }
+
+    &__option-label {
+        @extend .#{$namespace}swatches__attribute-label;
+    }
+
+    &__option-list {
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+    }
+
+    &__option-checkbox {
+        margin: 0.5rem 0;
+        width: 100%;
+
+        .price-wrapper {
+            font-weight: 700;
+            padding-left: 0.8rem;
+        }
+    }
+
+    &__bottom {
+        position: relative;
+
+        .price-box {
+            display: none;
+        }
+    }
+
+    &__variants {
+        margin-top: 1.5rem;
+
+        &-label {
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        &-dropdown {
+            margin-top: 0.5rem;
+            z-index: 203;
+
+            .#{$namespace}html-select {
+                display: block !important;
+            }
+        }
+    }
+}

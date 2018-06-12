@@ -1,0 +1,21 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \Aheadworks\Faq\Block\Category\Category $block */
+?>
+<?php $category = $block->getCategory(); ?>
+<div class="cs-faq-index__container">
+    <ul class="cs-faq-index__list">
+        <?php foreach($block->getCategoryArticles() as $article): ?>
+            <li class="cs-faq-index__list-item">
+                <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>">
+                    <?php echo $block->escapeHtml($article->getTitle()); ?>
+                    <svg class="cs-faq-index__list-item-icon">
+                        <use xlink:href="#icon_arrow-right"></use>
+                    </svg>
+                </a>
+            </li>
+        <?php endforeach ?>
+    </ul>
+</div>

@@ -1,0 +1,69 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var $block Aheadworks\Giftcard\Block\Checkout\Cart\Giftcard */
+?>
+<div class="cs-discount cs-collapse block aw-giftcard" id="block-aw-giftcard">
+    <div class="cs-discount__title cs-collapse__trigger cs-collapse__trigger--arrowed" data-role="title">
+        <span class="cs-discount__title-text" id="block-aw-giftcard-heading" role="heading" aria-level="2">
+            <?php echo $block->escapeHtml(__('Gift Card Options')) ?>
+        </span>
+        <svg class="cs-discount__trigger-icon | cs-collapse__trigger-icon">
+            <use xlink:href="#arrow_next"></use>
+        </svg>
+    </div>
+    <div class="cs-discount__content | cs-collapse__content" data-role="content" aria-labelledby="block-aw-giftcard-heading">
+        <?php echo $block->getChildHtml('giftcard_codes') ?>
+        <div id="aw_giftcard__code_info"></div>
+        <form
+            id="discount-aw-giftcard-form"
+            class="cs-discount__form cs-form"
+            action=""
+            method="post"
+            data-mage-init='{"awGiftCardManagement":{}}'
+        >
+            <div class="cs-form__fieldset fieldset aw-giftcard">
+                <div class="cs-form__field | cs-input">
+                    <label for="code" class="cs-input__label">
+                        <span><?php echo $block->escapeHtml(__('Enter Gift Card code')) ?></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input
+                            type="text"
+                            class="cs-input__input"
+                            name="code"
+                            placeholder="<?php echo $block->escapeHtml(__('Enter Gift Card code')) ?>"
+                            data-validate="{required:true}"
+                        />
+                    </div>
+                </div>
+                <div class="cs-form__buttons">
+                    <button
+                        class="cs-button cs-giftcard__button-apply apply-aw-giftcard"
+                        type="submit"
+                        value="<?php echo $block->escapeHtml(__('Apply Gift Card code')) ?>"
+                        data-role="aw-giftcard-apply-action"
+                        data-url="<?php /* @noEscape */ echo $block->escapeUrl($block->getActionUrl()) ?>"
+                    >
+                        <span class="cs-button__span"><?php echo $block->escapeHtml(__('Apply Gift Card code')) ?></span>
+                        <svg class="cs-button__icon">
+                            <use xlink:href="#arrow_next"></use>
+                        </svg>
+                    </button>
+                    <button
+                        class="cs-button cs-giftcard__button-status check-aw-giftcard"
+                        type="button"
+                        value="<?php echo $block->escapeHtml(__('Check Status and Balance')) ?>"
+                        data-role="aw-giftcard-check-code-action"
+                        data-url="<?php /* @noEscape */ echo $block->escapeUrl($block->getCheckCodeUrl()) ?>"
+                    >
+                        <span class="cs-button__span"><?php echo $block->escapeHtml(__('Check Status and Balance')) ?></span>
+                        <svg class="cs-button__icon">
+                            <use xlink:href="#arrow_next"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

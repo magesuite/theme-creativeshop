@@ -1,0 +1,36 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+?>
+<?php if ($block->isEnabledViewSwitcher()): ?>
+    <div class="cs-category-page__modes | modes">
+        <?php $modes = $block->getModes(); ?>
+        <?php if ($modes && count($modes) > 1): ?>
+            <strong class="modes-label"><?php /* @escapeNotVerified */ echo __('View as') ?></strong>
+            <?php foreach ($modes as $code => $label): ?>
+                <?php if ($block->isModeActive($code)): ?>
+                    <strong
+                        title="<?php /* @escapeNotVerified */ echo $label ?>"
+                        class="modes-mode active mode-<?php /* @escapeNotVerified */ echo strtolower($code); ?>"
+                        data-value="<?php /* @escapeNotVerified */ echo strtolower($code); ?>"
+                    >
+                        <span><?php /* @escapeNotVerified */ echo $label ?></span>
+                    </strong>
+                <?php else: ?>
+                    <a
+                        class="modes-mode mode-<?php /* @escapeNotVerified */ echo strtolower($code); ?>"
+                        title="<?php /* @escapeNotVerified */ echo $label ?>"
+                        href="#"
+                        data-role="mode-switcher"
+                        data-value="<?php /* @escapeNotVerified */ echo strtolower($code); ?>"
+                    >
+                        <span><?php /* @escapeNotVerified */ echo $label ?></span>
+                    </a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

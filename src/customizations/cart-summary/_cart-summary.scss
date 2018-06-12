@@ -1,0 +1,91 @@
+.#{$namespace}cart-summary {
+    background: $colorWhite;
+    border-radius: 3px;
+    padding: 1rem 1.5rem 2rem;
+    border-top: 1px solid $colorAlto;
+
+    @include media('>=tablet') {
+        padding: 2rem;
+        border-bottom: none;
+        border-top: none;
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
+    }
+
+    &--empty {
+        border-top: none;
+        padding: 0 2rem;
+        @include media('>=tablet') {
+            box-shadow: none;
+            padding: 2rem 0;
+        }
+    }
+
+    &__title {
+        display: none;
+        @include media('>=tablet') {
+            display: block;
+        }
+    }
+
+    &__trigger {
+        padding: 1.1rem 0.8rem 1.1rem 0;
+
+        @include media('>=tablet') {
+            border-top: 1px solid $colorAlto;
+            margin-top: 1.1rem;
+        }
+    }
+
+    &__label {
+        @extend .#{$namespace}t-text;
+    }
+
+    &__value {
+        @extend .#{$namespace}t-text;
+        @extend .#{$namespace}t-text--look_attention;
+    }
+
+    &__remove {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-right: 0.5rem;
+    }
+
+    &__totals {
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: $colorDoveGray;
+
+        th {
+            padding-left: 0;
+            font-weight: 400;
+            color: $colorDoveGray;
+        }
+
+        td {
+            padding-right: 0;
+            text-align: right;
+        }
+
+        .grand {
+            font-weight: 700 !important; /* stylelint-disable-line declaration-no-important */
+            font-size: 1.5rem !important; /* stylelint-disable-line declaration-no-important */
+            border-top: 1px solid $colorAlto;
+
+            th,
+            td {
+                padding-top: 1.4rem;
+                color: $colorMineShaft;
+            }
+        }
+    }
+
+    .multicheckout,
+    .#{$namespace}cart-summary__shipping {
+        display: none;
+    }
+
+    .checkout-methods-items .item + .item {
+        margin-top: 0 !important; /* stylelint-disable-line declaration-no-important */
+    }
+}

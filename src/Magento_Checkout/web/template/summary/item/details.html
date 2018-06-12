@@ -1,0 +1,44 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<!-- ko foreach: getRegion('before_details') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!-- /ko -->
+<div class="cs-minicart-product__details">
+
+    <div class="cs-minicart-product__name-wrapper">
+        <span class="cs-minicart-product__name" data-bind="text: $parent.name"></span>
+    </div>
+    <div class="cs-minicart-product__options-wrapper">
+
+        <!-- ko if: (JSON.parse($parent.options).length > 0)-->
+        <!--ko foreach: JSON.parse($parent.options)-->
+        <dl class="cs-minicart-product__options-group">
+            <dt class="cs-minicart-product__options-label" data-bind="text: label"></dt>
+            <!-- ko if: ($data.full_view)-->
+            <dd class="cs-minicart-product__options-value" data-bind="html: full_view"></dd>
+            <!-- /ko -->
+            <!-- ko ifnot: ($data.full_view)-->
+            <dd class="cs-minicart-product__options-value" data-bind="html: value"></dd>
+            <!-- /ko -->
+        </dl>
+        <!-- /ko -->
+
+        <!-- /ko -->
+        <div class="cs-minicart-product__options-group">
+            <span class="cs-minicart-product__options-label"><!-- ko i18n: 'Qty' --><!-- /ko --></span>
+            <span class="cs-minicart-product__options-value" data-bind="text: $parent.qty"></span>
+        </div>
+    </div>
+
+
+    <!-- ko foreach: getRegion('after_details') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+
+
+</div>

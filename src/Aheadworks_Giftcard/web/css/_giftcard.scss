@@ -1,0 +1,142 @@
+.#{$namespace}giftcard {
+    &__info {
+        margin: 1.5rem 0;
+        width: 100%;
+
+        &-title {
+            border-bottom: 1px solid $colorAlto;
+            padding-bottom: 0.8rem;
+            margin-bottom: 0.9rem;
+        }
+
+        &-title-span {
+            display: block;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        &-content {
+            .account & {
+                max-width: 45rem;
+            }
+        }
+    }
+
+    &__dashboard-block {
+        width: auto;
+
+        .#{$namespace}info-block__box {
+            width: 100%;
+        }
+    }
+
+    &__table-inline {
+        display: inline;
+    }
+
+    &__button-apply {
+        @extend .cs-button--look_default;
+        @extend .cs-button--size_300;
+        min-width: 55% !important;
+        margin-bottom: 1rem;
+
+        @include media('<tablet') {
+            width: 100%;
+        }
+    }
+
+    &__button-status {
+        @extend .cs-button--look_default;
+        @extend .cs-button--size_300;
+        margin-bottom: 1rem;
+        min-width: 55% !important;
+
+        @include media('<tablet') {
+            width: 100%;
+        }
+    }
+
+    &__button-checkout {
+        @extend .cs-button--look_default;
+        @extend .cs-button--size_300;
+
+        @include media('<tablet') {
+            width: 100%;
+        }
+    }
+
+    &__button-ua {
+        @extend .cs-button--look_default;
+        @extend .cs-button--size_300;
+    }
+
+    &__codes-table {
+        margin: 2rem 0;
+
+        .#{$namespace}table__col.label {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
+        .#{$namespace}table__col {
+            @include media('<tablet') {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+        }
+    }
+
+    &__checkout {
+        &-title-span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: $colorMineShaft;
+            display: inline-block;
+
+            @include media('>=tablet') {
+                margin-bottom: 1.5rem;
+            }
+
+            @include media('<laptop') {
+                margin-top: 1.5rem;
+            }
+        }
+
+        &-box {
+            margin-bottom: 2rem;
+        }
+    }
+}
+
+.aw-giftcard-codes-block {
+    td {
+        padding: 0.8rem 1rem !important;
+    }
+
+    .#{$namespace}table:not(.#{$namespace}table--no-change-mobile)
+        tr:not(:first-child)
+        .#{$namespace}table__col:first-child {
+        @include media('<tablet') {
+            padding-top: 2rem !important;
+        }
+    }
+}
+
+// Cart summary line
+.aw-giftcard-totals {
+    form {
+        position: relative;
+    }
+
+    .action-delete {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .title {
+        display: block;
+        padding-left: 1.8rem;
+    }
+}

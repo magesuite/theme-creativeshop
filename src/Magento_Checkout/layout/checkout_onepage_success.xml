@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">Order success</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Order success</item>
+                    <item name="label" xsi:type="string" translate="true">Order success</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="main.content" htmlClass="cs-container cs-container--checkout-type"/>
+
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Thank you for placing your order</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <container name="info.page" htmlTag="div" htmlClass="cs-container__inner cs-info-page">
+                <container name="info.page.inner" htmlTag="div" htmlClass="cs-info-page__inner">
+                    <block class="Magento\Checkout\Block\Onepage\Success" name="checkout.success" template="success.phtml" cacheable="false"/>
+                    <block class="Magento\Checkout\Block\Registration" name="checkout.registration" template="registration.phtml" cacheable="false"/>
+                </container>
+            </container>
+        </referenceContainer>
+        <move element="page.main.title" destination="info.page" before="-"/>
+        <move element="order.success.additional.info" destination="info.page" after="-"/>
+    </body>
+</page>

@@ -1,0 +1,36 @@
+/**
+ * Shop customizations for collapse component
+ */
+
+.#{$namespace}collapse {
+    $root: &;
+    @include collapse;
+
+    &__trigger {
+        &--arrowed {
+            transition: transform 0.15s linear, fill 0.15s linear;
+
+            &:before,
+            &:after {
+                display: none !important;
+            }
+        }
+
+        &--arrow-right {
+            justify-content: space-between;
+        }
+    }
+
+    &__trigger-icon {
+        margin-left: 1.5rem;
+        width: 6px;
+        height: 10px;
+        fill: $colorGray;
+        transform: rotate(90deg);
+        transition: transform 0.3s;
+
+        #{$root}__trigger--in & {
+            transform: rotate(-90deg);
+        }
+    }
+}

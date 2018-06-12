@@ -1,0 +1,65 @@
+<?php
+// @codingStandardsIgnoreFile
+/** @var $block \Magento\Review\Block\Customer\Recent */
+?>
+
+<?php if ($block->getReviews() && count($block->getReviews())): ?>
+    <div class="cs-info-block | cs-dashboard__block | block-reviews-dashboard">
+
+        <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+            <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php /* @escapeNotVerified */ echo __('My Recent Reviews') ?>
+            </h2>
+            <span class="cs-title-block__span">
+                <a
+                    class="cs-info-block__title-link | cs-link"
+                    href="<?php /* @escapeNotVerified */ echo $block->getAllReviewsUrl() ?>">
+                    <?php /* @escapeNotVerified */ echo __('View All') ?>
+                </a>
+            </span>
+        </div>
+
+        <div class="cs-info-block__content">
+            <ol class="cs-list cs-list--unstyled">
+                <?php $iterator = 1; ?>
+                <?php foreach ($block->getReviews() as $review): ?>
+                    <li>
+                        <a
+                            class="cs-link"
+                            href="<?php /* @escapeNotVerified */ echo $block->getReviewUrl($review->getReviewId()) ?>"
+                        >
+                            <?php echo $block->escapeHtml($review->getName()) ?>
+                        </a>
+                        <?php if ($review->getSum()): ?>
+
+                        <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+
+                            <?php
+                                $rating = $review->getSum() / $review->getCount();
+                                $dividedRating = floor(($rating / 20) * 2) / 2;
+                                $items_wording = ($review->getCount() == 0) ? __('No reviews') : ($review->getCount() == 1) ? __('Review') : __('Reviews');
+                                $review_count = $review->getCount();
+                                $text = '
+                                    <span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span>
+                                    (<span itemprop="reviewCount">'.$review_count.'</span> '.$items_wording.')
+                                ';
+                            ?>
+                            <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'rating-summary-grid-product-' . $iterator, [
+                                    'data' => [
+                                        'namespace' => 'cs-',
+                                        "maxStars" => 5,
+                                        "activeStars" => $dividedRating,
+                                        "text" => $text
+                                    ]
+                                ]
+                            )->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
+                        </div>
+                        <?php endif; ?>
+
+                    </li>
+                    <?php $iterator++ ?>
+                <?php endforeach; ?>
+            </ol>
+        </div>
+    </div>
+<?php endif; ?>

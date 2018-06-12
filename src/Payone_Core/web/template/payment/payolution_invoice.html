@@ -1,0 +1,146 @@
+<!--
+/**
+ * PAYONE Magento 2 Connector is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PAYONE Magento 2 Connector is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with PAYONE Magento 2 Connector. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ *
+ * @category  Payone
+ * @package   Payone_Magento2_Plugin
+ * @author    FATCHIP GmbH <support@fatchip.de>
+ * @copyright 2003 - 2017 Payone GmbH
+ * @license   <http://www.gnu.org/licenses/> GNU Lesser General Public License
+ * @link      http://www.payone.de
+ */
+-->
+<div class="cs-payment | payment-method" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <div class="cs-payment__title | cs-input cs-input--type-radio">
+        <input type="radio"
+               name="payment[method]"
+               class="cs-input__radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="cs-input__label cs-input__label--big">
+            <span data-bind="text: getTitle()"></span>
+            <span class="cs-input__label-icon-wrapper">
+                <span class="cs-input__label-icon cs-input__label-icon--image cs-input__label-icon--payolution"></span>
+            </span>
+        </label>
+    </div>
+
+    <div class="cs-payment__content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="cs-payment__billing | payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+        <form action="#" method="post" data-bind="attr: {id: getCode() + '_form'}">
+            <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode()}">
+                <!-- ko if: isB2bMode() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_tradeRegistryNumber'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Company trade registry number'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control">
+                        <input type="text" name="payment[tradeRegistryNumber]" class="cs-input__input" value=""
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_tradeRegistryNumber',
+                                    title: $t('Company trade registry number'),
+                                    'data-container': getCode() + '-tradeRegistryNumber'},
+                              value: tradeRegistryNumber,
+                              valueUpdate: 'keyup' "/>
+                    </div>
+                </div>
+                <!--/ko-->
+                <!-- ko if: requestBirthday() -->
+                <div class="cs-input | number required">
+                    <label data-bind="attr: {for: getCode() + '_birthday'}" class="cs-input__label">
+                        <span><!-- ko i18n: 'Birthday'--><!-- /ko --></span>
+                    </label>
+                    <div class="cs-input__control cs-input__control--birthday">
+                        <input type="text" name="payment[birthday]" class="cs-input__input" value=""
+                               size="3" maxlength="2"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthday',
+                                    title: $t('Day of birth'),
+                                    'data-container': getCode() + '-birthday'},
+                              value: birthday,
+                              valueUpdate: 'keyup' "/>
+                        <input type="text" name="payment[birthmonth]" class="cs-input__input" value=""
+                               size="3" maxlength="2"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthmonth',
+                                    title: $t('Month of birth'),
+                                    'data-container': getCode() + '-birthmonth'},
+                              value: birthmonth,
+                              valueUpdate: 'keyup' "/>
+                        <input type="text" name="payment[birthyear]" class="cs-input__input" value=""
+                               size="8" maxlength="4"
+                               data-bind="attr: {
+                                    autocomplete: off,
+                                    id: getCode() + '_birthyear',
+                                    title: $t('Year of birth'),
+                                    'data-container': getCode() + '-birthyear'},
+                              value: birthyear,
+                              valueUpdate: 'keyup' "/>
+                    </div>
+                    <span class="cs-input__note"><!-- ko i18n: '(DD.MM.YYYY)'--><!-- /ko --></span>
+                </div>
+                <!--/ko-->
+
+                <div class="cs-form__field cs-input cs-input--type-checkbox">
+                    <input type="checkbox" data-bind="attr: {id: getCode() + '_additional_fields_agreement_checkbox'}, checked: agreement" class="cs-input__checkbox"/>
+                    <label data-bind="attr: {for: getCode() + '_additional_fields_agreement_checkbox'}" class="cs-input__label | required" style="float:none;">
+                        <!-- ko i18n: 'I agree with the transmission of the necessary data to payolution which is needed for processing the purchase, the identity-check and the credit rating.'--><!-- /ko -->
+                        <!-- ko i18n: 'My'--><!-- /ko -->
+                        <a href="#" style="float:none; margin:0;" data-bind="click: displayPayolutionOverlay"><!-- ko i18n: 'acceptance'--><!-- /ko --></a>
+                        <!-- ko i18n: 'can be revoked for the future any time.'--><!-- /ko -->
+                        <em style="float:none; position:relative;">*</em>
+                    </label>
+                </div>
+
+                <div data-bind="attr: {id: getCode() + '_overlay'}" style="display:none;" class="payolution_overlay">
+                    <a href="#" data-bind="click: removePayolutionOverlay"
+                       style="float:right;font-weight:bold;"><!-- ko i18n: 'Close window'--><!-- /ko --></a><br><br>
+                    <div data-bind="html: getPrivacyDeclaration()"></div>
+                </div>
+            </fieldset>
+        </form>
+
+        <p data-bind="html: getInstructions()"></p>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="cs-payment__buttons">
+            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
+                    type="submit"
+                    data-bind="
+                    click: placeOrder,
+                    attr: {title: $t('Place Order')},
+                    enable: (getCode() == isChecked()),
+                    css: {disabled: !isPlaceOrderActionAllowed()}
+                    "
+                    disabled>
+                <span data-bind="i18n: 'Place Order'"></span>
+            </button>
+        </div>
+    </div>
+</div>

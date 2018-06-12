@@ -1,0 +1,165 @@
+<?php extract($block->getData()); ?>
+<li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__brick <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__brick--teaser <?php echo $viewModeClass; ?>__brick--x2 <?php echo $viewModeClass; ?>__brick--y2<?php endif; ?>">
+    <div class="cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
+        <?php
+        $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
+        $productNameStripped = $block->stripTags($product->getName(), null, true);
+        $getIsSalable = $salabilityStatus[$product->getId()];
+        $newBadge = $badgeHelper->isNew($product);
+        $discount = $badgeHelper->getSalePercentage($product);
+        $isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
+        $isFreeShipped = ($indicatorsHelper->isFreeShipped($product) && $indicatorsHelper->showFreeShippingInProductTiles());
+        $dailyDealData = $dailyDealHelper->prepareOfferData($product);
+        $badges = [];
+        $dailyDealHtml = '';
+
+        if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] !== 'none') {
+            if($dailyDealData['displayType'] === 'badge') {
+                $itemsLimit = $dailyDealData['items'] && $dailyDealData['items'] > 0 ? '<span class="cs-badge">
+                    <span class="cs-badge__span">' . __('%1 item(s) left', $dailyDealData['items']) . '</span>
+                </span>' : '';
+                $badges[] = [
+                    'mix' => 'cs-multiple-badges',
+                    'content' => '<span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
+                            <span class="cs-badge__span">' . __('Limited offer!') . ' </span>
+                        </span>' . $itemsLimit
+                ];
+            } else {
+                $dailyDealHtml = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
+                        'data' => [
+                            'namespace' => 'cs-',
+                            'mix' => 'cs-dailydeal--tile',
+                            'header' => [
+                                'show' => true,
+                            ],
+                            'items' => [
+                                'textBefore' => '',
+                                'textAfter' => __('item(s) left'),
+                                'amount' => $dailyDealData['items']
+                            ],
+                            'deal' => [
+                                'end' => $dailyDealData['to']
+                            ]
+                        ]
+                    ]
+                )->setTemplate("dailydeal/dailydeal.twig")->toHtml();
+            }
+        }
+
+        if( $discount ) {
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--discount">
+                    <span class="cs-badge__span">'  . $discount . '%</span>
+                </span>'
+            ];
+
+        }
+
+        if ( $newBadge ) {
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--new">
+                    <span class="cs-badge__span">' . __('New') . '</span>
+                </span>'
+            ];
+        }
+
+        if ( $isPopular ) {
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
+                    <span class="cs-badge__span">' . __('Popular') . '</span>
+                </span>'
+            ];
+        }
+
+        if ( $isFreeShipped ) {
+            $badges[] = [
+                'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
+                    <span class="cs-badge__span">' . __('Free Shipping') . '</span>
+                </span>'
+            ];
+        }
+
+        $data = [
+            'lazyload' => $iterator > 9,
+            'url' => $product->getProductUrl(),
+            'image' => [
+                'src' => $productImageUrl,
+                'srcset' => $productImageSrcset,
+                'alt' => $productNameStripped,
+                'width' => '216',
+                'height' => '270'
+            ],
+            'name' => $helper->productAttribute($product, $product->getName(), 'name'),
+            'price' => [
+                'content' => $block->getProductPrice($product)
+            ],
+            'swatches' => [
+                'content' => $block->getProductDetailsHtml($product)
+            ],
+            'addons' => [
+                'right' => [
+                    [
+                        'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                        'content' => $getIsSalable ? __('In stock') : __('Out of stock')
+                    ]
+                ]
+            ],
+            'badges' => $badges,
+            'hotspots' => [
+                'after' => [
+                    'badges' => $dailyDealHtml
+                ]
+            ]
+        ];
+
+        $ratingData = $csProductHelper->getReviewSummary($product)['data'];
+        if($ratingData['activeStars']):
+            $data['addons']['left'][] = [
+                'mix' => 'cs-grid-product__addon--rating',
+                'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$iterator, [
+                        'data' => [
+                            'namespace' => 'cs-',
+                            'maxStars' => $ratingData['maxStars'],
+                            'activeStars' => $ratingData['activeStars'],
+                            'text' => '('.$ratingData['count'].')'
+                        ]
+                    ]
+                )->setTemplate("star-rating/star-rating.twig")->toHtml()
+            ];
+        endif;
+
+        $data['addons']['left'][] = [
+            'content' => sprintf(
+                '<ul class="cs-links-block-addto" data-role="add-to-links">
+                    <li class="cs-links-block-addto__item">
+                        <a
+                            href="#"
+                            class="cs-links-block-addto__link towishlist"
+                            title="%s"
+                            aria-label="%s"
+                            data-post=\'%s\'
+                            data-action="add-to-wishlist"
+                            role="button"
+                        >
+                            <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                <use xlink:href="#heart"></use>
+                            </svg>
+                            %s
+
+                        </a>
+                    </li>
+                </ul>',
+                $block->escapeHtml(__('Add to Wish List')),
+                $block->escapeHtml(__('Add to Wish List')),
+                $block->getAddToWishlistParams($product),
+                __('Add to Wishlist')
+            )
+        ];
+
+        echo $this->getLayout()->createBlock(
+            'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
+                'data' => $data
+            ]
+        )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+    </div>
+</li>

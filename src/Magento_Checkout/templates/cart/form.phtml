@@ -1,0 +1,112 @@
+<?php
+// @codingStandardsIgnoreFile
+/**  @var $block \Magento\Checkout\Block\Cart */
+?>
+<?php $mergedCells = ($this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices() ? 2 : 1); ?>
+<?php echo $block->getChildHtml('form_before') ?>
+<form
+    action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/updatePost') ?>"
+    method="post"
+    id="form-validate"
+    data-mage-init='{"validation":{}}'
+    class="cs-form"
+>
+    <?php echo $block->getBlockHtml('formkey'); ?>
+    <div class="cs-table cs-table--tablet-small cs-table--cart | cart<?php echo $mergedCells == 2 ? ' detailed' : ''; ?>">
+        <table
+            id="shopping-cart-table"
+            class="cs-table__body | cart items data table"
+            data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
+                                             "updateCartActionContainer": "#update_cart_action_container"}}'
+        >
+            <caption role="heading" aria-level="2" class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Shopping Cart Items') ?></caption>
+            <thead class="cs-table__head cs-table__head--spacious">
+            <tr>
+                <th class="cs-table__col-head | item" scope="col">
+                    <span><?php /* @escapeNotVerified */ echo __('Item') ?></span>
+                </th>
+                <th class="cs-table__col-head | price" scope="col">
+                    <span><?php /* @escapeNotVerified */ echo __('Price') ?></span>
+                </th>
+                <th class="cs-table__col-head | qty" scope="col">
+                    <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
+                </th>
+                <th class="cs-table__col-head | subtotal" scope="col">
+                    <span><?php /* @escapeNotVerified */ echo __('Subtotal') ?></span>
+                </th>
+                <th class="cs-table__col-head | subtotal" scope="col">
+                    <span></span>
+                </th>
+            </tr>
+            </thead>
+            <?php foreach ($block->getItems() as $item): ?>
+                <?php echo $block->getItemHtml($item) ?>
+            <?php endforeach ?>
+        </table>
+            <div class="load indicator | cs-no-display">
+        </div>
+    </div>
+    <div class="cs-table__buttons cs-table__buttons--right | cs-visually-hidden">
+        <button
+            type="submit"
+            id="update-cart-button"
+            name="update_cart_action"
+            data-cart-item-update=""
+            value="update_qty"
+            title="<?php echo $block->escapeHtml(__('Update Shopping Cart')); ?>"
+            class="cs-button cs-button--look_default cs-button--type_long cs-button--type__wide-mobile"
+        >
+            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Update Shopping Cart'); ?></span>
+            <svg class="cs-button__icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </button>
+        <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
+    </div>
+</form>
+<?php echo $block->getChildHtml('checkout.cart.order.actions') ?>
+<?php echo $block->getChildHtml('shopping.cart.table.after'); ?>
+
+<script>
+    require([
+        "jquery"
+    ], function($){
+
+        $( '.cs-qty-increment__button' ).on( 'click', function() {
+            setTimeout( function() {
+
+                $( '#update-cart-button' ).trigger( 'click' );
+                $( '.load.indicator' ).removeClass( 'cs-no-display' );
+
+            }, 1500 );
+
+        } );
+
+        $( '.cs-qty-increment__input' ).each( function( index ) {
+            $( this ).on( 'keydown', function() {
+                setTimeout( function() {
+
+                    $( '#update-cart-button' ).trigger( 'click' );
+                    $( '.load.indicator' ).removeClass( 'cs-no-display' );
+
+                }, 1500 );
+
+            } );
+        });
+    });
+
+    window.addEventListener( 'orientationchange', function () {
+        var cartTable = document.getElementById( 'shopping-cart-table' );
+        var originalStyle = getComputedStyle(cartTable).getPropertyValue( 'display' );
+        cartTable.style.display = 'none';
+        setTimeout(function () {
+            cartTable.style.display = originalStyle;
+        }, 10);
+    });
+
+
+</script>
+
+
+
+

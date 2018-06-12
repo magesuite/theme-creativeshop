@@ -1,0 +1,67 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/* @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+$indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
+$isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
+$isFreeShipped = $indicatorsHelper->isFreeShipped($product->getId());
+$dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
+$dailyDealData = $dailyDealHelper->prepareOfferData($product);
+?>
+<a
+    class="cs-grid-product__figure-wrapper"
+    href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>"
+    title="<?php echo $block->escapeHtml($product->getName()) ?>"
+>
+
+    <ul class="cs-grid-product__badges">
+        <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] == 'badge') { ?>
+            <li class="cs-grid-product__badge cs-multiple-badges">
+                <span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
+                    <span class="cs-badge__span"><?php echo __('Limited offer!'); ?></span>
+                </span>
+                <?php if($dailyDealData['items'] && $dailyDealData['items'] > 0) { ?>
+                    <span class="cs-badge">
+                        <span class="cs-badge__span"><?php echo __('%1 item(s) left', $dailyDealData['items']); ?></span>
+                    </span>
+                <?php } ?>
+            </li>
+        <?php } ?>
+
+        <?php if($isPopular) { ?>
+            <li class="cs-grid-product__badge">
+                <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Popular'); ?></span></span>
+            </li>
+        <?php } ?>
+
+        <?php if ( $isFreeShipped ) { ?>
+            <li class="cs-grid-product__badge">
+                <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Free Shipping'); ?></span></span>
+            </li>
+        <?php } ?>
+    </ul>
+    
+    <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter') {
+        echo $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$product->getId(), [
+                'data' => [
+                    'namespace' => 'cs-',
+                    'mix' => 'cs-dailydeal--tile',
+                    'header' => [
+                        'show' => true,
+                    ],
+                    'items' => [
+                        'textBefore' => '',
+                        'textAfter' => __('items left'),
+                        'amount' => $dailyDealData['items']
+                    ],
+                    'deal' => [
+                        'end' => $dailyDealData['to']
+                    ]
+                ]
+            ]
+        )->setTemplate("dailydeal/dailydeal.twig")->toHtml();
+    } ?>
+    <?php echo $block->getImage($product, 'wishlist_thumbnail')->toHtml(); ?>
+</a>

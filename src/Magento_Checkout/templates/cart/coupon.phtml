@@ -1,0 +1,73 @@
+<?php
+// @codingStandardsIgnoreFile
+
+?>
+<div class="cs-discount | discount | cs-collapse" id="block-discount">
+    <div class="cs-discount__title | cs-collapse__trigger cs-collapse__trigger--arrowed" data-role="title">
+        <span class="cs-discount__title-text" id="block-discount-heading" role="heading" aria-level="2">
+            <?php /* @escapeNotVerified */ echo __('Apply Discount Code') ?>
+        </span>
+        <svg class="cs-discount__trigger-icon | cs-collapse__trigger-icon">
+            <use xlink:href="#arrow_next"></use>
+        </svg>
+    </div>
+    <div class="cs-discount__content | cs-collapse__content" data-role="content" aria-labelledby="block-discount-heading">
+        <form
+            id="discount-coupon-form"
+            action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/couponPost') ?>"
+            method="post"
+            class="cs-discount__form | cs-form"
+            data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code",
+                                               "removeCouponSelector": "#coupon_remove",
+                                               "applyButton": "#coupon_apply",
+                                               "cancelButton": "#coupon_cancel"}}'
+        >
+            <div class="cs-form__fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : '' ?>">
+                <input type="hidden" name="remove" id="coupon_remove" value="0"/>
+
+                <div class="cs-form__field | cs-input">
+                    <label for="coupon_code" class="cs-input__label"><span><?php /* @escapeNotVerified */
+                            echo __('Enter discount code') ?></span></label>
+
+                    <div class="cs-input__control">
+                        <input
+                            type="text"
+                            class="cs-input__input"
+                            id="coupon_code"
+                            name="coupon_code"
+                            value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>"
+                            placeholder="<?php echo $block->escapeHtml(__('Enter discount code')); ?>"
+                        />
+                    </div>
+                </div>
+                <div class="cs-form__buttons">
+                    <?php if (!strlen($block->getCouponCode())): ?>
+                        <button
+                            class="cs-button cs-button--look_default cs-button--size_300"
+                            type="submit"
+                            id="coupon_apply"
+                            value="<?php /* @escapeNotVerified */echo __('Apply Discount') ?>"
+                        >
+                            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Apply Discount') ?></span>
+                            <svg class="cs-button__icon">
+                                <use xlink:href="#arrow_next"></use>
+                            </svg>
+                        </button>
+                    <?php else: ?>
+                        <button
+                            type="button"
+                            class="cs-button cs-button--size_300 cs-button--look_light"
+                            id="coupon_cancel"
+                            value="<?php /* @escapeNotVerified */echo __('Cancel Coupon') ?>"
+                        >
+                            <?php /* @escapeNotVerified */ echo __('Cancel Coupon') ?>
+                            <svg class="cs-button__icon">
+                                <use xlink:href="#arrow_next"></use>
+                            </svg>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

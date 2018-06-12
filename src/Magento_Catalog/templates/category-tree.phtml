@@ -1,0 +1,54 @@
+<?php
+    $category = $this->helper('Creativestyle\FrontendExtension\Helper\Category')->getCategoryNode();
+?>
+
+<?php if($category) { ?>
+    <div class="cs-side-nav">
+        <div class="cs-side-nav__parent">
+            <a class="cs-side-nav__parent-link" href="<?php echo $category['url']; ?>">
+                <span class="cs-side-nav__parent-category-name"><?php /* @escapeNotVerified */ echo $category['name']; ?> </span>
+                <span class="cs-side-nav__products-counter"><?php if($category['products_count']) /* @escapeNotVerified */ echo $category['products_count']; ?></span>
+            </a>
+        </div>
+
+        <?php if(!empty($category['children'])) { ?>
+            <ul class="cs-side-nav__list">
+                <?php foreach($category['children'] as $child) { ?>
+                    <li class="cs-side-nav__item<?php if(!empty($child['children']) && $child['current']) echo ' cs-side-nav__item--has-children' ?>">
+                        <?php if($child['current']) { ?>
+                            <span class="cs-side-nav__link cs-side-nav__link--current">
+                                <span class="cs-side-nav__category-name"><?php /* @escapeNotVerified */ echo $child['name']; ?></span>
+                                <span class="cs-side-nav__products-counter"><?php if($child['products_count']) /* @escapeNotVerified */ echo ' '.$child['products_count']; ?></span>
+                            </span>
+                        <?php } else { ?>
+                            <a class="cs-side-nav__link" href="<?php echo $child['url'] ?>">
+                                <span class="cs-side-nav__category-name"><?php /* @escapeNotVerified */ echo $child['name']; ?></span>
+                                <span class="cs-side-nav__products-counter"><?php if($child['products_count']) /* @escapeNotVerified */ echo ' '.$child['products_count']; ?></span>
+                            </a>
+                        <?php } ?>
+
+                        <?php if(!empty($child['children']) && $child['current']) { ?>
+                            <ul class="cs-side-nav__list cs-side-nav__list--subcats">
+                                <?php foreach($child['children'] as $grandChild) { ?>
+                                    <li class="cs-side-nav__item<?php if($grandChild['current']) echo ' cs-side-nav__item--current' ?>">
+                                        <?php if($grandChild['current']) { ?>
+                                            <span class="cs-side-nav__link cs-side-nav__link--current">
+                                                <span class="cs-side-nav__category-name"><?php /* @escapeNotVerified */ echo $grandChild['name']; ?></span>
+                                                <span class="cs-side-nav__products-counter"><?php if($grandChild['products_count']) /* @escapeNotVerified */ echo ' '.$grandChild['products_count']; ?></span>
+                                            </span>
+                                        <?php } else { ?>
+                                            <a class="cs-side-nav__link" href="<?php echo $grandChild['url'] ?>">
+                                                <span class="cs-side-nav__category-name"><?php /* @escapeNotVerified */ echo $grandChild['name']; ?></span>
+                                                <span class="cs-side-nav__products-counter"><?php if($grandChild['products_count']) /* @escapeNotVerified */ echo ' '.$grandChild['products_count']; ?></span>
+                                            </a>
+                                        <?php } ?>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        <?php } ?>
+                    </li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+    </div>
+<?php } ?>

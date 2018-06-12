@@ -1,10 +1,9 @@
 import path from 'path';
-
-import environment from '../../environment';
 import paths from '../../paths';
+import environment from '../../environment';
 
 /**
- * Settingf for TypeScript linting task.
+ * Settings for TypeScript linting task.
  * @type {Object}
  */
 export default {
@@ -12,14 +11,15 @@ export default {
         /**
          * Lint all TypeScript files.
          */
-        path.join( paths.src, '**/*.ts' ),
-        '!' + path.join( paths.src, 'vendors/**/*.ts' ),
+        path.join(paths.src, '**/*.ts'),
+        '!' + path.join(paths.src, 'vendors/**/*.ts'),
     ],
     tslint: {
-        formatter: 'verbose',
+        formatter: 'stylish',
     },
     tslintReport: {
         emitError: !environment.watch,
         summarizeFailureOutput: true,
+        allowWarnings: true,
     },
 };

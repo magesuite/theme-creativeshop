@@ -5,35 +5,28 @@ import flexbugs from 'postcss-flexbugs-fixes';
 import paths from '../../paths';
 
 /**
- * Returns information for styles building.
- * @returns {object} Styles building task information.
+ * Settings for styles compilation.
  */
-export default {
-    watch: [
-        path.join( paths.src, '**/*.{css,scss,sass}' ),
-    ],
-    src: path.join( paths.src, '**/*.{css,scss,sass}' ),
-    dest: path.join( paths.dist, 'web/' ),
+const config = {
+    watch: path.join(paths.src, '**/*.{css,scss,sass}'),
+    src: path.join(paths.src, '**/*.{css,scss,sass}'),
+    dest: path.join(paths.dist, 'web/'),
     postcss: [
         flexbugs(),
-        autoprefixer(
-            {
-                browsers: [
-                    'ie >= 9',
-                    'ie_mob >= 10',
-                    'ff >= 30',
-                    'chrome >= 34',
-                    'safari >= 7',
-                    'opera >= 23',
-                    'ios >= 7',
-                    'android >= 4.2',
-                    'bb >= 10',
-                ],
-            }
-        ),
+        autoprefixer({
+            browsers: ['IE>=10', 'iOS>=8', '>1%', 'last 2 versions'],
+        }),
     ],
+    cleanCSS: {},
     sass: {
         precision: 10,
         errLogToConsole: true,
+        includePaths: [
+            path.resolve('src'),
+            path.resolve('node_modules'),
+            path.resolve('node_modules/theme-creativeshop/node_modules'),
+        ],
     },
 };
+
+export default config;

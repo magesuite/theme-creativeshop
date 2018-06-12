@@ -1,0 +1,80 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var $block Aheadworks\Giftcard\Block\Customer\Giftcard\Codes */
+$giftcardCodes = $block->getCustomerGiftcardCodes();
+?>
+<?php if (count($giftcardCodes)): ?>
+    <div class="aw-giftcard-codes-block cs-giftcard__dashboard-block cs-info-block cs-dashboard__block">
+        <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
+            <h2 class="cs-title-block__span cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php echo $block->escapeHtml(__('Your Gift Card codes')) ?>
+            </h2>
+        </div>
+        <div class="cs-info-block__content">
+            <div class="cs-info-block__box">
+                <div class="cs-table cs-giftcard__codes-table">
+                    <table class="cs-table__body data table-giftcard-codes">
+                        <?php foreach ($giftcardCodes as $giftcardCode): ?>
+                            <tr>
+                                <td class="cs-table__col code" data-th="<?php echo $block->escapeHtml(__('Code')) ?>">
+                                    <?php if ($this->isAccountPage()): ?>
+                                        <form
+                                            class="cs-giftcard__table-inline"
+                                            action=""
+                                            method="post"
+                                            data-mage-init='{"awGiftCardManagement":{}}'
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="code"
+                                                value="<?php /* @noEscape */ echo $giftcardCode->getCode() ?>"
+                                            >
+                                            <a
+                                                href="#"
+                                                data-role="aw-giftcard-check-code-action"
+                                                data-url="<?php /* @noEscape */ echo $block->escapeUrl($block->getCheckCodeUrl()) ?>"
+                                            >
+                                                <?php echo $block->escapeHtml($giftcardCode->getCode()) ?>
+                                            </a>
+                                        </form>
+                                    <?php else: ?>
+                                        <?php echo $block->escapeHtml($giftcardCode->getCode()) ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="cs-table__col balance" data-th="<?php echo $block->escapeHtml(__('Balance')) ?>">
+                                    <?php /* @noEscape */ echo $block->formatPrice($giftcardCode->getBalance()) ?>
+                                </td>
+                                <?php if (!$this->isAccountPage()): ?>
+                                    <td class="cs-table__col action-apply" data-th="<?php echo $block->escapeHtml(__('Action')) ?>">
+                                        <form
+                                            class=" cs-giftcard__table-inline"
+                                            action=""
+                                            method="post"
+                                            data-mage-init='{"awGiftCardManagement":{}}'
+                                        >
+                                            <input
+                                                type="hidden"
+                                                name="code" value="<?php /* @noEscape */ echo $giftcardCode->getCode() ?>"
+                                            >
+                                            <a
+                                                class="cs-link"
+                                                href="#"
+                                                data-role="aw-giftcard-apply-action"
+                                                data-url="<?php /* @noEscape */ echo $block->escapeUrl($block->getApplyUrl()) ?>"
+                                            >
+                                                <?php echo $block->escapeHtml(__('Apply')) ?>
+                                            </a>
+                                        </form>
+                                    </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+

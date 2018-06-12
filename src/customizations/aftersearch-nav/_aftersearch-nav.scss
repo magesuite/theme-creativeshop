@@ -1,0 +1,681 @@
+@import '../../../node_modules/creative-patterns/packages/components/aftersearch-nav/src/aftersearch-nav';
+
+.#{$namespace}aftersearch-nav {
+    @include aftersearch-nav();
+    $root: &;
+    overflow: visible;
+
+    @include media('<tablet') {
+        width: calc(100% + 3rem);
+        margin: 0 -1.5rem;
+    }
+
+    &__loader-icon {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+    }
+
+    &__filter-options {
+        @include media('<tablet') {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            &.#{$namespace}filter-horizontal {
+                display: block;
+                padding: 0;
+            }
+        }
+
+        @include media('>=tablet') {
+            margin-top: -1rem;
+        }
+    }
+
+    &__filter {
+        position: relative;
+        margin: 0;
+
+        @include media('>=tablet') {
+            padding-bottom: 0;
+            border-bottom: 1px solid $colorAlto;
+        }
+    }
+
+    &__filters-trigger {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        background-color: $colorGallery;
+        box-shadow: 0 4px 3px -2px rgba(0, 0, 0, 0.15);
+        transition-property: background-color, color, box-shadow;
+        transition-duration: 0.15s;
+        @extend .#{$namespace}t-headline;
+        @extend .#{$namespace}t-headline--size_3;
+
+        &.#{$namespace}collapse__trigger--in {
+            background-color: $colorCeruleanBlue;
+            color: $colorWhite;
+            box-shadow: 0 4px 3px -2px rgba(0, 0, 0, 0.25); //stylelint-disable-line
+        }
+
+        &-icon {
+            .#{$namespace}collapse__trigger--in & {
+                fill: $colorWhite;
+            }
+        }
+    }
+
+    &__filters {
+        margin-bottom: 0;
+        padding: 0 0 2rem;
+
+        @include media('>=tablet') {
+            margin-top: -1.5rem !important;
+            margin-bottom: 0;
+            border-bottom: none;
+            padding: 0;
+        }
+    }
+
+    &__filter-title {
+        padding: 2rem 2rem 2rem 0;
+        border-top: 1px solid $colorAlto;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: block;
+        font-weight: 700;
+        margin: 0;
+        overflow: hidden;
+        position: relative;
+        text-decoration: none;
+        text-transform: uppercase;
+        word-break: break-all;
+        z-index: 1;
+
+        @include media('<tablet') {
+            width: 100%;
+            background-color: $colorGallery;
+            padding: 1.3rem 3rem 1.3rem 2rem;
+            box-sizing: border-box;
+        }
+
+        &:after {
+            display: none;
+        }
+    }
+
+    &__filter-input,
+    &__filter-input:visited {
+        font-size: 1.29rem;
+        transition: color 0.15s linear;
+        text-decoration: none !important;
+    }
+
+    &__filter-count {
+        color: $colorGray;
+
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
+    }
+
+    &__filter-arrow {
+        background: none;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        right: 1.5rem;
+
+        @include media('<tablet') {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @include media('>=tablet') {
+            right: 0;
+            margin-top: 0.3rem;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            height: 2px;
+            width: 10px;
+            background: $colorCeruleanBlue;
+        }
+
+        &:before {
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease-out, opacity 0.2s ease-out,
+                background-color 0.15s linear;
+        }
+
+        &:after {
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            transition: transform 0.3s ease-out, background-color 0.15s linear;
+        }
+
+        #{$root}__filter.active &,
+        #{$root}__filter-title[aria-expanded='true'] &,
+        .#{$namespace}filter-horizontal__trigger--in & {
+            &:before {
+                background: $colorGray;
+                transform: translateY(-50%) rotate(-90deg);
+                opacity: 0;
+            }
+
+            &:after {
+                background: $colorGray;
+                transform: translateY(-50%) rotate(0deg);
+            }
+        }
+    }
+
+    &__filter-content {
+        width: 100%;
+        margin: 0;
+        padding: 0 2rem;
+        position: relative;
+        box-sizing: border-box;
+
+        @include media('>=tablet') {
+            padding: 0;
+            width: auto;
+        }
+    }
+
+    &__price-input {
+        height: 3rem;
+        width: 100% !important;
+        padding-right: 2rem;
+    }
+
+    &__price-apply-button {
+        min-width: 5rem;
+    }
+
+    &__rangeslider {
+        &-actions-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        &-msg {
+            flex-grow: 3;
+            padding: 0 1rem 0 0 !important;
+        }
+    }
+
+    &__filter-items {
+        list-style: none;
+        padding: 0;
+        margin: 2rem 0;
+        max-height: none !important;
+
+        @include media('<tablet') {
+            columns: 2;
+        }
+
+        @include media('>=tablet') {
+            margin-top: 0;
+        }
+
+        &--inside {
+            #{$root}__filter-item:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+
+    &__swatch {
+        margin: 2rem 0 2rem -0.32rem;
+
+        @include media('>=tablet') {
+            margin-top: 0;
+        }
+
+        &-link {
+            text-decoration: none !important;
+        }
+    }
+
+    &__price-field {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-top: 0 !important;
+
+        &--from {
+            width: calc(100% / 2 - 1.5rem) !important;
+            @include media('>=laptop') {
+                width: calc(100% / 2 - 2rem) !important;
+            }
+        }
+
+        &--to {
+            width: calc(100% / 2 + 1.5rem) !important;
+            @include media('>=laptop') {
+                width: calc(100% / 2 + 2rem) !important;
+            }
+        }
+    }
+
+    &__filter-item {
+        margin: 1rem 0 0 !important;
+
+        &:first-child {
+            margin-top: 0 !important;
+        }
+
+        //On mobile there are 2 columns for filters. if margin is not enough on below before before content is placed in wrong column
+        @include media('<tablet') {
+            .#{$namespace}input__label {
+                &:before {
+                    margin-top: 1.1rem;
+                }
+
+                > span {
+                    padding-top: 0.2rem;
+                }
+            }
+        }
+    }
+
+    &__price {
+        display: flex;
+        margin-top: 2rem;
+
+        @include media('>=tablet') {
+            margin-top: 0;
+            flex-direction: row;
+        }
+    }
+
+    &__price-slider {
+        padding-bottom: 1.2rem;
+    }
+
+    &__button {
+        z-index: 2;
+        margin-top: 1rem;
+
+        &--apply-filters {
+            margin-top: 0 !important;
+        }
+    }
+
+    &__price-label {
+        font-size: 11px;
+        color: $colorGray;
+        text-transform: lowercase;
+        padding: 0 1rem;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 3.2rem;
+        text-align: center;
+    }
+
+    &__currency {
+        position: absolute;
+        right: 0.5rem;
+        color: $colorGray;
+        top: 50%;
+        font-size: 1.4rem;
+        transform: translate3d(0, -50%, 0);
+        backface-visibility: hidden;
+    }
+
+    &__button-list {
+        @include media('<tablet') {
+            background-color: $colorGallery;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+            margin: 0 calc(((100vw - 100%) / 2) * -1) 1rem
+                calc(((100vw - 100%) / 2) * -1) !important;
+            width: 100vw !important;
+        }
+    }
+
+    &__more-filters-button {
+        margin-bottom: 2rem;
+
+        span {
+            &:after {
+                content: attr(data-show-more-text);
+            }
+        }
+    }
+
+    &__more-filters-checkbox:checked
+        + &__more-filters
+        + &__more-filters-button {
+        span {
+            &:after {
+                content: attr(data-show-less-text);
+            }
+        }
+    }
+
+    /* STATE block */
+    &__state {
+        padding: 1.5rem 0;
+        border-top: 1px solid $colorGallery;
+        border-bottom: 1px solid $colorGallery;
+
+        &-items {
+            width: calc(100% + 1rem);
+            margin: 0 -0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            box-sizing: border-box;
+
+            @include media('>=tablet') {
+                padding-right: 16.5rem;
+            }
+        }
+
+        &-item {
+            display: flex;
+            font-size: 1.29rem;
+            align-items: flex-start;
+            margin: 0.5rem !important;
+
+            &--clear {
+                display: flex;
+
+                @include media('<tablet') {
+                    width: 100%;
+                    margin-top: 2rem !important;
+                }
+
+                @include media('>=tablet') {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                }
+            }
+        }
+
+        &-link,
+        &-link:visited {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            padding: 0.6rem 1.2rem 0.6rem 3.7rem;
+            border: 1px solid $colorCeruleanBlue;
+            border-radius: 3px;
+            color: $colorMineShaft;
+            transition: all 0.15s linear;
+
+            &:hover {
+                border-color: $colorCeruleanBlueHover;
+                color: $colorCeruleanBlueHover;
+                text-decoration: none;
+
+                #{$root}__state-remove {
+                    background-color: $colorCeruleanBlue;
+                }
+
+                #{$root}__state-remove-icon {
+                    fill: $colorWhite;
+                }
+            }
+        }
+
+        &-label {
+            font-weight: 700;
+
+            &--mobile {
+                @include media('>=tablet') {
+                    display: none;
+                }
+            }
+
+            &--tablets {
+                display: none;
+
+                @include media('>=tablet') {
+                    display: inline;
+                }
+            }
+
+            &:not(#{$root}__state-label--pure):after {
+                content: ': ';
+            }
+        }
+
+        &-remove {
+            position: absolute;
+            top: -0.3rem;
+            left: -0.5rem;
+            height: calc(100% + 0.6rem);
+            width: 3.2rem;
+            border: none;
+            transform: translate3d(0, 0, 0) skew(-18deg);
+            backface-visibility: hidden;
+            border-right: 1px solid $colorCeruleanBlue;
+            transition: background-color 0.15s linear;
+        }
+
+        &-remove-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 0.8rem;
+            height: 0.8rem;
+            transform: translate3d(-50%, -50%, 0) skew(18deg);
+            padding: 0;
+            margin-left: 0.3rem;
+            fill: $colorCeruleanBlue;
+            transition: fill 0.15s linear;
+        }
+
+        &-data {
+            font-size: 90%;
+        }
+    }
+
+    /* Horizontal */
+    &--horizontal-full {
+        @include media('>=tablet') {
+            z-index: 20;
+            padding-bottom: 0;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
+
+        #{$root}__filters {
+            @include media('>=tablet') {
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                overflow: visible !important;
+                margin-bottom: 0;
+                padding: 0.5rem 0;
+                border-top: 1px solid $colorGallery;
+                border-bottom: 1px solid $colorGallery;
+            }
+        }
+
+        #{$root}__state {
+            @include media('>=tablet') {
+                width: 100%;
+                order: 2;
+            }
+        }
+
+        #{$root}__filter-options {
+            @include media('>=tablet') {
+                margin: 0 0 0 -0.5rem;
+                padding: 0;
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+
+        #{$root}__filter,
+        #{$root}__filter-row {
+            @include media('>=tablet') {
+                padding: 0.5rem;
+                margin: 0;
+                position: relative;
+                border-bottom: none;
+                box-sizing: border-box;
+            }
+        }
+
+        #{$root}__filter-row {
+            @include media('>=tablet') {
+                flex-wrap: wrap;
+            }
+        }
+
+        #{$root}__filter-arrow {
+            @include media('>=tablet') {
+                margin-top: 0;
+                right: 1rem;
+                bottom: 1.5rem;
+
+                &:before,
+                &:after {
+                    background: $colorMineShaft !important;
+                }
+            }
+        }
+
+        #{$root}__filter-title {
+            @include media('>=tablet') {
+                height: 1.5rem;
+                display: flex;
+                align-items: center;
+                position: relative;
+                overflow: visible;
+                margin: 0;
+                padding: 1.3rem 2.5rem 1.3rem 1.8rem;
+                background-color: $colorGallery;
+                font-size: 1.1rem;
+                border-top: none;
+                transition: box-shadow 0.15s ease-in-out;
+                word-break: unset;
+
+                &:hover {
+                    background-color: darken($colorGallery, 8%);
+                }
+
+                &[aria-expanded='true'] {
+                    background-color: $colorWhite;
+                    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
+                }
+            }
+        }
+
+        #{$root}__show-more-trigger {
+            @include media('>=tablet') {
+                background: $colorCeruleanBlue;
+                width: 100%;
+                font-size: 1.1rem;
+                font-weight: 700;
+                padding: 1.3rem 2.5rem 1.1rem 1.8rem;
+                color: $colorWhite;
+                box-shadow: none;
+                border: 1px solid $colorCeruleanBlue;
+                border-radius: 0;
+                position: relative;
+                text-align: left;
+                text-transform: uppercase;
+            }
+
+            &:focus,
+            &:hover {
+                background: $colorCeruleanBlueHover;
+                border-color: $colorCeruleanBlueHover;
+            }
+
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
+        #{$root}__filter-content {
+            @include media('>=tablet') {
+                position: absolute;
+                padding: 0 2rem;
+                left: 0.5rem;
+                min-width: calc(100% - 1rem);
+                box-sizing: border-box;
+                background-color: $colorWhite;
+                z-index: -1;
+                opacity: 0;
+                transition: box-shadow 0.15s ease-in-out;
+                white-space: nowrap;
+                width: min-content;
+                overflow-y: auto;
+
+                &:-webkit-scrollbar {
+                    width: 0.5rem;
+                }
+
+                &:-webkit-scrollbar-track {
+                    background-color: $colorCeruleanBlueHover !important;
+                }
+
+                &:-webkit-scrollbar-thumb {
+                    background-color: $colorCeruleanBlue !important;
+                }
+
+                &.active {
+                    padding-top: 1rem;
+                    z-index: 3;
+                    opacity: 1;
+                    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
+                    min-width: calc(100% - 1rem);
+                    width: min-content;
+
+                    &:before {
+                        content: ' ';
+                        width: 100%;
+                        height: 10px;
+                        position: absolute;
+                        left: 0;
+                        bottom: 100%;
+                        z-index: 5;
+                        background-color: $colorWhite;
+                    }
+                }
+            }
+        }
+
+        #{$root}__filter-items {
+            @include media('>=tablet') {
+                padding-top: 0.3rem;
+            }
+        }
+
+        #{$root}__price {
+            @include media('>=tablet') {
+                min-width: 17rem;
+            }
+        }
+    }
+
+    &__tick-placeholder {
+        background-image: url('images/check@2x.png');
+    }
+}

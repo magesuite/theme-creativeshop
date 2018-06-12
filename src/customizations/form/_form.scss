@@ -1,0 +1,182 @@
+.#{$namespace}form {
+    $root: &;
+    font-size: 1rem;
+    width: 100%;
+    overflow-x: hidden;
+
+    &--no-overflow {
+        overflow-x: visible;
+    }
+
+    &--center-mobile {
+        @include media('<tablet') {
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &--order-review {
+        text-align: right;
+
+        .#{$namespace}checkout__agreements {
+            border-top: none;
+
+            @include media('>=tablet') {
+                transform: translateX(1rem);
+            }
+        }
+
+        #{$root}__fieldset--level_1 {
+            float: right;
+            width: 100%;
+            @include media('>=tablet') {
+                float: right;
+                min-width: 35rem;
+            }
+        }
+    }
+
+    &__fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+
+        &--space-bottom {
+            margin-bottom: 2rem;
+        }
+
+        &--level {
+            &_1 {
+                margin-bottom: 2rem;
+                max-width: 45rem;
+            }
+
+            &_2 {
+                max-width: 60rem;
+            }
+        }
+    }
+
+    &__fields-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 45rem;
+    }
+
+    &__fieldset-inner {
+        padding-bottom: 1rem;
+        @include media('>=laptop') {
+            border-bottom: 1px solid $colorAlto;
+        }
+    }
+
+    &__field {
+        max-width: 45rem;
+        margin-bottom: 1.5rem;
+        width: 100%;
+
+        &--space-top {
+            margin-top: 2rem;
+        }
+
+        &--full {
+            max-width: none;
+        }
+
+        &--half {
+            @include media('>=tablet') {
+                max-width: 50%;
+            }
+        }
+
+        &[name*='prefix'],
+        &.field-name-prefix {
+            width: 10rem !important; /* stylelint-disable-line declaration-no-important */
+        }
+
+        &--type_zip {
+            @include media('>=tablet') {
+                width: 25%;
+                max-width: calc(25 * 45rem / 100);
+
+                .error,
+                .warning {
+                    width: 400%;
+                    max-width: 45rem;
+                    box-sizing: border-box;
+                    margin-top: 2.7rem;
+                }
+            }
+        }
+
+        &--type_city {
+            @include media('>=tablet') {
+                width: 72%;
+                max-width: calc(72 * 45rem / 100);
+            }
+        }
+
+        // there is a bug in magento - the `sortOrder` property in XML for individual fields in billing/shipping
+        // address form are ignored and at the end we can't move zip code field before city field
+        // https://github.com/magento/magento2/issues/5849
+        // because zip code and city fields are separated by state/province field, the whole form looks ugly.
+        // => set 100% width for zip code and city fields in billing/shipping address form
+        &--type_zip,
+        &--type_city {
+            .billing-address-form & {
+                @include media('>=tablet') {
+                    width: 100%;
+                    max-width: 45rem;
+                }
+            }
+        }
+
+        // There could be part of state field visible even if it had visually hidden class
+        &.cs-visually-hidden {
+            margin: 0;
+            opacity: 0;
+        }
+    }
+
+    &__group {
+        border: none;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0;
+        width: 100%;
+
+        .#{$namespace}form__field {
+            .#{$namespace}input__label:after {
+                display: none;
+            }
+        }
+    }
+
+    &__reminder {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    &__buttons {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+
+        &--no-space {
+            margin-top: 0;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        max-width: 40rem;
+    }
+
+    // There as no space top when message was inserted into form {
+    .#{$namespace}messages {
+        margin-top: 1.5rem;
+    }
+}

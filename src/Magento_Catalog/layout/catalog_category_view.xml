@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Creativestyle\FrontendExtension\Block\Graph\OpenGraph" name="opengraph.category"
+                   template="Magento_Theme::opengraph/category.phtml" before="auto.tel.conversion.prevention" />
+        </referenceBlock>
+
+        <referenceContainer name="columns.top">
+            <container name="cc-top" htmlTag="div" htmlClass="cs-category-page__cc-top" before="-"/>
+        </referenceContainer>
+
+        <referenceContainer name="columns" htmlClass="columns cs-category-page"/>
+
+        <referenceContainer name="main" htmlClass="cs-category-page__main"/>
+        <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main cs-category-page__sidebar-main"/>
+
+        <move element="page.messages" destination="main" before="-" />
+
+        <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
+
+        <move element="category.description" destination="content" after="-" />
+        <move element="category.cms" destination="content" after="-" />
+
+        <referenceContainer name="content" >
+            <block class="Creativestyle\FrontendExtension\Block\Category\View\Headline" name="category.page.headline" template="Magento_Catalog::category/headline.phtml" before="-"/>
+
+            <container name="cc-bottom" htmlTag="div" htmlClass="cs-category-page__cc-bottom" after="-"/>
+        </referenceContainer>
+
+        <referenceBlock name="page.main.title" remove="true"/>
+    </body>
+</page>

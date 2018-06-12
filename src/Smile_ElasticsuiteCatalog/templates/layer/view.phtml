@@ -1,0 +1,105 @@
+<?php
+/**
+ * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation
+ */
+?>
+
+<?php if ($block->canShowBlock()) : ?>
+    <?php $filters = count($block->getFilters());?>
+    <?php $horizontalFiltersLayout = $this->getFiltersLayout(); ?>
+    <?php $activeFilters = $horizontalFiltersLayout ? 0 : $block->getActiveFilters(); ?>
+    <?php /*$activeFilters = "[0, 1, 2]" ;*/?>
+
+    <div class="cs-aftersearch-nav<?php echo $horizontalFiltersLayout ? ' cs-aftersearch-nav--' . $horizontalFiltersLayout : ''; ?> | block filter | cs-collapse cs-collapse--only-mobile" id="layered-filter-block" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+        <h2 class="cs-aftersearch-nav__filters-trigger | cs-collapse__trigger cs-collapse__trigger--arrowed cs-collapse__trigger--only-mobile">
+            <?php /* @escapeNotVerified */ echo __('Filters');?>
+            <svg class="cs-aftersearch-nav__filters-trigger-icon | cs-collapse__trigger-icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
+        </h2>
+
+        <div class="cs-aftersearch-nav__filters | block-content filter-content | cs-collapse__content">
+            <?php /* State was here originally */ ?>
+
+            <?php $wrapOptions = false; ?>
+            <?php $index = 0; ?>
+            <?php foreach ($block->getFilters() as $filter) : ?>
+                <?php if ($filter->getItemsCount()) : ?>
+                    <?php if ($horizontalFiltersLayout): ?>
+
+                        <?php if (!$wrapOptions) : ?>
+                            <ul class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
+                            cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": <?php echo $horizontalFiltersLayout ? 'false' : 'true' ?>}}'>
+                                <?php $wrapOptions = true; ?>
+                        <?php endif; ?>
+                        <li class="cs-aftersearch-nav__filter cs-aftersearch-nav__filter-row">
+                            <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></div>
+                            <div data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
+                                <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                            </div>
+                        </li>
+
+                    <?php else: ?>
+
+                        <?php if (!$wrapOptions) : ?>
+                            <dl class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
+                            cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
+                                <?php $wrapOptions = true; ?>
+                        <?php endif; ?>
+                        <dt data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></dt>
+                        <dd data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
+                            <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
+                        </dd>
+
+                    <?php endif; ?>
+                    <?php $index++; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <?php if ($horizontalFiltersLayout): ?>
+                <li class="cs-aftersearch-nav__filter-row cs-aftersearch-nav__show-more-button cs-aftersearch-nav__filter--more">
+                    <button
+                        class="cs-aftersearch-nav__show-more-trigger"
+                        data-show-text="<?php /* @escapeNotVerified */
+                        echo __('More filters'); ?>"
+                        data-hide-text="<?php /* @escapeNotVerified */
+                        echo __('Less filters'); ?>"
+                        >
+                        <span class="cs-aftersearch-nav__show-more-trigger-text">
+                            <?php /* @escapeNotVerified */ echo __('More filters'); ?>
+                        </span>
+                        <span class="cs-aftersearch-nav__filter-plus"></span>
+                    </button>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($wrapOptions) : ?>
+                <?php echo $horizontalFiltersLayout ? '</ul>' : '</dl>' ?>
+            <?php else : ?>
+                <script>
+                    require([
+                        'jquery'
+                    ], function ($) {
+                        $('#layered-filter-block').addClass('filter-no-options');
+                    });
+                </script>
+            <?php endif; ?>
+
+            <script>
+                require([
+                    'jquery'
+                ], function ($) {
+                    /* For some reason Safari (also mobile) has problem with background-image rendering for initially hidden parent node. This piece of script forces safari to redraw element when filter options are shown */
+                    $('.cs-aftersearch-nav__filter-content').on( 'dimensionsChanged', function() {
+                        $(this).find('.cs-aftersearch-nav__filter-input--type_checkbox .cs-input__label').css('background-image', 'none').css( 'background-image', '' );
+                    } );
+                });
+            </script>
+        </div>
+    </div>
+
+    <div class="loading-mask | cs-aftersearch-nav__loader" data-role="pannel" style="display:none">
+        <img class="cs-aftersearch-nav__loader-icon" src="<?php echo $this->getViewFileUrl('images/loader-2.gif'); ?>" alt="Loading...">
+    </div>
+<!--    On Safari check svg for checkbox is not shown because initially it is hidden. If we show it initially it works also later-->
+    <span class="cs-visually-hidden cs-aftersearch-nav__tick-placeholder"></span>
+<?php endif; ?>
