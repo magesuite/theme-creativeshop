@@ -180,7 +180,9 @@ export default class SearchresultsSwitcher {
     protected _init(): void {
         this._$component = $(`.${this._options.componentClass}`);
         this._$tabs = this._$triggers.parent();
-        const urlParams: object = this._getUrlParams();
+        const urlParams: any = this._getUrlParams();
+
+        this._setResultsCount();
 
         if (
             $(this._options.filtersStateSelector).length ||
@@ -212,6 +214,8 @@ export default class SearchresultsSwitcher {
                 if ($trigger.length) {
                     this.openTab($trigger);
                 }
+            } else {
+                this.showContents();
             }
 
             this._$component.show();
@@ -238,6 +242,45 @@ export default class SearchresultsSwitcher {
             });
 
         return params;
+    }
+
+    protected _setResultsCount(): void {
+        const $cmsResults: JQuery = $(this._options.cmsResultsSelector);
+        const $productsResults: JQuery = $(
+            this._options.productsResultsSelector
+        );
+        let cmsCount: number = 0;
+        let productsCount: number = 0;
+
+        if ($cmsResults.length) {
+            const rawCmsCount: string = $cmsResults.find(
+                '.cs-t-headline__count'
+            ).length
+                ? $cmsResults.find('.cs-t-headline__count').text()
+                : '';
+            if (rawCmsCount.length) {
+                cmsCount = parseInt(rawCmsCount, 10);
+            }
+        }
+
+        if ($productsResults.length) {
+            const rawProductsCount: string = $productsResults.find(
+                '.cs-t-headline__count'
+            ).length
+                ? $productsResults.find('.cs-t-headline__count').text()
+                : '';
+            if (rawProductsCount.length) {
+                productsCount = parseInt(rawProductsCount, 10);
+            }
+        }
+
+        if ($('#count-cms').length) {
+            $('#count-cms').html(cmsCount);
+        }
+
+        if ($('#count-products').length) {
+            $('#count-products').html(productsCount);
+        }
     }
 
     /**
