@@ -89,34 +89,34 @@ $filtersLayout = $this->getFiltersLayout();
 
                 <?php if($teasersConfig): ?>
                     <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
-                        $teaserClass = 'cs-grid-layout_in-column__brick cs-grid-layout_in-column__brick--teaser';
+                        $teaserClass = $viewModeClass . '__brick ' . $viewModeClass . '__brick--teaser';
                         if($teaser['size']['x'] == 2) {
-                            $teaserClass .= ' cs-grid-layout_in-column__brick--x2';
+                            $teaserClass .= ' ' .$viewModeClass . '__brick--x2';
                         }
                         if($teaser['size']['y'] == 2) {
-                            $teaserClass .= ' cs-grid-layout_in-column__brick--y2';
+                            $teaserClass .= ' ' . $viewModeClass. '__brick--y2';
                         } ?>
 
                         <li class="<?php echo $teaserClass ?>" data-teaser-id="<?php echo $i ?>">
-                            <div class="cs-grid-layout_in-column__teaser cs-grid-layout_in-column__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
+                            <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser <?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
                                 <?php if($teaser['href'] != ''): ?>
-                                    <a href="<?php echo $teaser['href'] ?>" class="cs-grid-layout_in-column__teaser-content-wrapper">
+                                    <a href="<?php echo $teaser['href'] ?>" class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content-wrapper">
                                 <?php else: ?>
-                                    <div class="cs-grid-layout_in-column__teaser-content-wrapper">
+                                    <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content-wrapper">
                                 <?php endif; ?>
 
-                                    <figure class="cs-grid-layout_in-column__teaser-figure">
-                                        <img src="<?php echo $teaser['image']['src'] ?>" srcset="<?php echo $teaser['image']['srcSet'] ?>" alt="teaser" class="cs-grid-layout_in-column__teaser-image">
+                                    <figure class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-figure">
+                                        <img src="<?php echo $teaser['image']['src'] ?>" srcset="<?php echo $teaser['image']['srcSet'] ?>" alt="teaser" class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-image">
                                     </figure>
-                                    <div class="cs-grid-layout_in-column__teaser-content cs-grid-layout_in-column__teaser-content--<?php echo $teaser['displayVariant'] ?>">
+                                    <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content <?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content--<?php echo $teaser['displayVariant'] ?>">
                                         <?php if($teaser['headline'] != '') {
-                                            echo '<h4 class="cs-grid-layout_in-column__teaser-headline">'.$teaser['headline'].'</h4>';
+                                            echo '<h4 class="' . $viewModeClass . '__teaser-headline">'.$teaser['headline'].'</h4>';
                                         }
                                         if($teaser['subheadline'] != '') {
-                                            echo '<span class="cs-grid-layout_in-column__teaser-subheadline">'.$teaser['subheadline'].'</span>';
+                                            echo '<span class="' . $viewModeClass . '__teaser-subheadline">'.$teaser['subheadline'].'</span>';
                                         }
                                         if($teaser['paragraph'] != '') {
-                                            echo '<p class="cs-grid-layout_in-column__teaser-text">'.$teaser['paragraph'].'</p>';
+                                            echo '<p class="' . $viewModeClass . '__teaser-text">'.$teaser['paragraph'].'</p>';
                                         }
                                         if($teaser['ctaLabel'] != '' && $teaser['href'] != '') {
                                             echo '<span role="button" class="cs-button cs-button--type_long cs-button--look_default">
