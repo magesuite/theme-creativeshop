@@ -6,7 +6,7 @@ $item = $block->getItem();
 $product = $item->getProduct();
 $indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
 $isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
-$isFreeShipped = $indicatorsHelper->isFreeShipped($product->getId());
+$isFreeShipped = ($indicatorsHelper->isFreeShipped($product) && $indicatorsHelper->showFreeShippingInProductTiles());
 $dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
 $dailyDealData = $dailyDealHelper->prepareOfferData($product);
 ?>
@@ -42,7 +42,7 @@ $dailyDealData = $dailyDealHelper->prepareOfferData($product);
             </li>
         <?php } ?>
     </ul>
-    
+
     <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter') {
         echo $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$product->getId(), [
                 'data' => [
