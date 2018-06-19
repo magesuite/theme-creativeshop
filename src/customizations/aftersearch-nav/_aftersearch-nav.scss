@@ -107,6 +107,51 @@
         }
     }
 
+    &__filter-plus {
+        background: none;
+        position: absolute;
+        width: 1rem;
+        height: 1rem;
+        right: 1.5rem;
+        margin-top: 0.3rem;
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            height: 0.2rem;
+            width: 1rem;
+            background: $colorWhite;
+        }
+
+        &:before {
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease-out, opacity 0.2s ease-out,
+            background-color 0.15s linear;
+        }
+
+        &:after {
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            transition: transform 0.3s ease-out, background-color 0.15s linear;
+        }
+
+        .#{$namespace}aftersearch-nav__show-more-trigger.show & {
+            &:before {
+                transform: translateY(-50%) rotate(-90deg);
+                opacity: 0;
+            }
+
+            &:after {
+                transform: translateY(-50%) rotate(0deg);
+            }
+        }
+    }
+
     &__filter-input,
     &__filter-input:visited {
         font-size: 1.29rem;
@@ -180,6 +225,34 @@
             &:after {
                 background: $colorGray;
                 transform: translateY(-50%) rotate(0deg);
+            }
+        }
+
+        #{$root}__filter--checked & {
+            background-image: url('images/check-green.svg');
+            background-repeat: no-repeat;
+            width: 1.4rem;
+            height: 1.8rem;
+            right: 1rem !important;
+
+            .ie11 & {
+                @include media('>=tablet') {
+                    margin-top: -0.1rem;
+                }
+            }
+
+            @include media('<tablet') {
+                height: 1.4rem;
+                top: 54%;
+                right: 1.3rem !important;
+            }
+
+            &:before {
+                display: none !important;
+            }
+
+            &:after {
+                display: none !important;
             }
         }
     }

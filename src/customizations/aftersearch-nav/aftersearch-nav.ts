@@ -5,22 +5,28 @@ import Aftersearch from '../../../node_modules/creative-patterns/packages/compon
  * component options interface.
  */
 interface aftersearchNavOptions {
-    esPriceFrom: string;
-    esPriceTo: string;
-    $priceFrom: JQuery;
-    $priceTo: JQuery;
-    lockWhileLoading: boolean;
-    $loader: JQuery;
+    esPriceFrom?: string;
+    esPriceTo?: string;
+    $priceFrom?: JQuery;
+    $priceTo?: JQuery;
+    lockWhileLoading?: boolean;
+    $loader?: JQuery;
 }
 
 export default class aftersearchNav extends Aftersearch {
+    protected _$element: JQuery;
     protected _options: aftersearchNavOptions;
     protected $priceFrom: JQuery;
     protected $priceTo: JQuery;
     protected $loader: JQuery;
     protected ElasticSearchRangeSlider: any;
 
-    public constructor(options?: aftersearchNavOptions) {
+    public constructor($element: JQuery, options?: aftersearchNavOptions) {
+        // Don't throw errors if there is no navigation on the website.
+        if ( $element.length === 0 ) {
+            return;
+        }
+
         this._options = options;
         this.$priceFrom = $('#price_from');
         this.$priceTo = $('#price_to');
@@ -32,7 +38,7 @@ export default class aftersearchNav extends Aftersearch {
             this._initializeLoader();
         }
 
-        super();
+        super($element);
     }
 
     protected _waitForElasticSearch(): void {
@@ -84,7 +90,9 @@ export default class aftersearchNav extends Aftersearch {
     }
 }
 
-new aftersearchNav({
-    lockWhileLoading: true,
-    $loader: $('.cs-aftersearch-nav__loader'),
+$('.cs-aftersearch-nav').each((index: number, element: HTMLElement) => {
+    new aftersearchNav($(element), {
+        lockWhileLoading: true,
+        $loader: $('.cs-aftersearch-nav__loader'),
+    });
 });
