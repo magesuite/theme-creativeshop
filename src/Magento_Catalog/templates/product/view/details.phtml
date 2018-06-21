@@ -36,6 +36,7 @@
     $label = $block->getChildData($alias, 'title');
     $itemExtraClasses = '';
     $isReviews = $name == 'reviews.tab';
+    $initialiyOpened = $id == 'pdp-product-info-description' || $id == 'pdp-additional';
     if ($isReviews) {
         $itemExtraClasses = $itemExtraClasses . ' cs-product-description__item--bottom';
     }
@@ -56,7 +57,7 @@
                         <h2 class="cs-product-description__headline | cs-t-headline cs-t-headline--size_2 | cs-collapse__trigger">
                             <?php /* @escapeNotVerified */ echo $label; ?>
                         </h2>
-                        <div class="cs-collapse__content<?= $isReviews ? '' : ' | cs-cms-block'; ?>">
+                        <div class="cs-collapse__content<?= $isReviews ? '' : ' | cs-cms-block'; ?><?= $initialiyOpened ? ' cs-collapse__content--initial-in' : '' ?>">
                             <div class="cs-product-description__content">
                                 <?php /* @escapeNotVerified */ echo $html; ?>
                             </div>
