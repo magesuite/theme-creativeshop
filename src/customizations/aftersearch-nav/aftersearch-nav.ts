@@ -23,7 +23,7 @@ export default class aftersearchNav extends Aftersearch {
 
     public constructor($element: JQuery, options?: aftersearchNavOptions) {
         // Don't throw errors if there is no navigation on the website.
-        if ( $element.length === 0 ) {
+        if ($element.length === 0) {
             return;
         }
 
