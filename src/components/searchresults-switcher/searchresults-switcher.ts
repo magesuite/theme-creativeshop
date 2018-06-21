@@ -254,6 +254,9 @@ export default class SearchresultsSwitcher {
     }
 
     protected _setResultsCount(): void {
+        const $overallResultsCountHeadline: JQuery = $(
+            `.${this._options.componentClass}__overall-count`
+        );
         const $cmsResults: JQuery = $(this._options.cmsResultsSelector);
         const $productsResults: JQuery = $(
             this._options.productsResultsSelector
@@ -289,6 +292,11 @@ export default class SearchresultsSwitcher {
 
         if ($('#count-products').length) {
             $('#count-products').html(productsCount);
+        }
+
+        if ($overallResultsCountHeadline.length) {
+            const overallCount: any = cmsCount + productsCount;
+            $overallResultsCountHeadline.html(overallCount);
         }
     }
 
