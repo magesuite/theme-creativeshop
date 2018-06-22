@@ -63,6 +63,19 @@ $namespace: 'cs-';
                 padding: 4rem 2rem;
             }
 
+            //There is a problem with scroll while sticky header is present on mobile.brands-index
+            //In that case we do not have to scroll a bit lower than the top edge of this element.
+            //The trick with bigger top padding and minus top margin help to achieve it
+            @include media('<laptop') {
+                padding-top: 10.5rem;
+                margin-top: -6.5rem;
+            }
+
+            @include media('<tablet') {
+                padding-top: 7.5rem;
+                margin-top: -5.5rem;
+            }
+
             &:last-child {
                 border-bottom: 0;
             }
