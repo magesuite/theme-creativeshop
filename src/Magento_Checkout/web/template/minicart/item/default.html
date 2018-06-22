@@ -36,7 +36,9 @@
                 <!-- ko if: options.length -->
                     <!-- ko foreach: { data: options, as: 'option' } -->
                     <dl class="cs-minicart-product__options-group">
-                        <dt class="cs-minicart-product__options-label"><!-- ko text: option.label --><!-- /ko --></dt>
+                        <!-- ko if: (option.item && option.item['product_type'] && option.item['product_type'] !== 'bundle') -->
+                            <dt class="cs-minicart-product__options-label"><!-- ko text: option.label --><!-- /ko --></dt>
+                        <!-- /ko -->
                         <dd class="cs-minicart-product__options-value">
                             <!-- ko if: Array.isArray(option.value) -->
                             <span data-bind="html: option.value.join('<br>')"></span>
@@ -49,7 +51,7 @@
                     <!-- /ko -->
                 <!-- /ko -->
 
-                <div class="cs-minicart-product__options-group">
+                <div class="cs-minicart-product__options-group cs-minicart-product__options-group--qty">
 
                     <span class="cs-minicart-product__options-label" data-bind="i18n: 'Qty'">
                     </span>

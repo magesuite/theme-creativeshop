@@ -45,7 +45,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif; ?>
                 </span>
                 <?php if ($options = $block->getOptionList()):?>
-                    <div class="cs-cart-item__options">
+                    <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                         <?php foreach ($options as $option) : ?>
                             <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
                             <dl class="cs-cart-item__options-group">
