@@ -186,6 +186,13 @@
         box-shadow: $boxShadow;
         font-size: 1.4rem;
 
+        /* iOS Safari zooms whole page when focusing input/textarea with font-size less than 16px.
+           So we're setting font-size to 1.6rem ONLY for iOS Safari 
+        */
+        @supports (-webkit-overflow-scrolling: touch) {
+            font-size: 1.6rem !important;
+        }
+
         &:hover:not(:disabled):not(:focus),
         &:focus,
         &:active {
@@ -612,6 +619,16 @@ div.mage-error[generated] {
 
 .#{$namespace}input .field-tooltip-action {
     display: none;
+}
+
+/* iOS Safari zooms whole page when focusing input/textarea with font-size less than 16px.
+   So we're setting font-size to 1.6rem ONLY for iOS Safari 
+*/
+@supports (-webkit-overflow-scrolling: touch) {
+    .#{$namespace}input__textarea,
+    textarea {
+        font-size: 1.6rem !important;
+    }
 }
 
 //Below is style for input ad select for payone creditcard iframes it has to be inserted (uncommented) in admin in Payone->General->Payment Creditcard:
