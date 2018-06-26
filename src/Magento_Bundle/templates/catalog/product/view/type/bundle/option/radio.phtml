@@ -1,0 +1,110 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+<?php /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio */ ?>
+<?php
+    $option = $block->getOption();
+    $selections  = $option->getSelections();
+    $default     = $option->getDefaultSelection();
+    list($defaultQty, $canChangeQty) = $block->getDefaultValues();
+?>
+
+<div class="cs-bundle-box__field field option <?php echo ($option->getRequired()) ? ' required': ''; ?>">
+    <label class="cs-bundle-box__product-name">
+        <?php echo $block->escapeHtml($option->getTitle()) ?>
+    </label>
+    <div class="cs-bundle-box__options-list | cs-input cs-input--type-radio">
+        <div class="nested options-list">
+            <?php if ($block->showSingle()): ?>
+                <?php /* @escapeNotVerified */ echo $block->getSelectionTitlePrice($selections[0]) ?>
+                <input
+                    type="hidden"
+                    class="bundle-option-<?php echo (int)$option->getId() ?>  product bundle option"
+                    name="bundle_option[<?php echo (int)$option->getId() ?>]"
+                    value="<?php echo (int)$selections[0]->getSelectionId() ?>"
+                    id="bundle-option-<?php echo (int)$option->getId() ?>-<?php echo (int)$selections[0]->getSelectionId() ?>"
+                    checked="checked"
+                    />
+            <?php else:?>
+                <?php if (!$option->getRequired()): ?>
+                    <div class="cs-bundle-box__option field choice">
+                        <input
+                            type="radio"
+                            class="cs-input__radio product bundle option"
+                            id="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>"
+                            name="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
+                            data-selector="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
+                            <?php echo ($default && $default->isSalable())?'':' checked="checked" ' ?>
+                            value=""
+                        />
+                        <label
+                            class="cs-input__label  cs-input__label--big"
+                            for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>"
+                        >
+                            <span><?php /* @escapeNotVerified */ echo __('None') ?></span>
+                        </label>
+                    </div>
+                <?php endif; ?>
+                <?php foreach ($selections as $selection): ?>
+                    <div class="cs-bundle-box__option">
+                        <input
+                            type="radio"
+                            class="cs-input__radio product bundle option change-container-classname"
+                            id="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-<?php /* @escapeNotVerified */ echo $selection->getSelectionId() ?>"
+                            <?php if ($option->getRequired()) echo 'data-validate="{\'validate-one-required-by-name\':true}"'?>
+                            name="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
+                            data-selector="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
+                            <?php if ($block->isSelected($selection)) echo ' checked="checked"' ?>
+                            <?php if (!$selection->isSaleable()) echo ' disabled="disabled"' ?>
+                            value="<?php /* @escapeNotVerified */ echo $selection->getSelectionId() ?>"
+                        />
+                        <label
+                            class="cs-input__label  cs-input__label--big"
+                            for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-<?php /* @escapeNotVerified */ echo $selection->getSelectionId() ?>"
+                        >
+                            <span><?php /* @escapeNotVerified */ echo $block->getSelectionTitlePrice($selection) ?></span>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+                <div id="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-container"></div>
+            <?php endif; ?>
+        </div>
+
+        <?php if($canChangeQty): ?>
+            <div class="cs-bundle-box__qty cs-box-addtocart__qty-wrapper | field qty qty-holder">
+                <label class="cs-label | cs-box-addtocart__label" for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-qty-input">
+                    <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
+                </label>
+                <div class="cs-box-addtocart__qty-increment | control">
+                    <?php
+                    $inputName = 'bundle_option_qty['.$option->getId().']';
+                    $disabledClass = !$canChangeQty? ' qty-disabled' : '';
+                    $id = 'bundle-option-'.$option->getId().'-qty-input';
+                    $disabled = !$canChangeQty? ' disabled="disabled"' : '';
+                    ?>
+                    <?=$this->getLayout()->createBlock(
+                        'Creativestyle\FrontendExtension\Block\Twig',
+                        'add-to-cart-pdp-'.$option->getId(), [
+                            'data' => [
+                                "namespace" => 'cs-',
+                                "inputMix" => 'qty '.$disabledClass,
+                                "initialValue" => $defaultQty ,
+                                "maxLength" => 12,
+                                "minValue" => 0,
+                                "size" => 2,
+                                "name" => $inputName,
+                                "inputParams" => 'id="'.$id.'" data-selector="bundle_option_qty['.$option->getId().']"
+                                    title="'.__('Qty').'" '.$disabled,
+                                "icons" => [
+                                    "increment" => '#plus',
+                                    "decrement" => '#minus'
+                                ]
+                            ]
+                        ]
+                    )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
