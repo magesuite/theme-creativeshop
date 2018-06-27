@@ -355,9 +355,17 @@
             margin-top: 0 !important;
         }
 
+        #{$namespace}input__label {
+            white-space: nowrap;
+        }
+
         //On mobile there are 2 columns for filters. if margin is not enough on below before before content is placed in wrong column
         @include media('<tablet') {
             .#{$namespace}input__label {
+                white-space: normal;
+                hyphens: auto;
+                margin-bottom: 0.2rem;
+
                 &:before {
                     margin-top: 1.1rem;
                 }
@@ -655,6 +663,18 @@
                 &[aria-expanded='true'] {
                     background-color: $colorWhite;
                     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
+
+                    &:after {
+                        content: '';
+                        display: block;
+                        position: absolute;
+                        top: 100%;
+                        width: 100%;
+                        left: 0;
+                        height: 1rem;
+                        margin-top: -0.1rem;
+                        background: $colorWhite;
+                    }
                 }
             }
         }
@@ -701,18 +721,6 @@
                 width: min-content;
                 overflow-y: auto;
 
-                &:-webkit-scrollbar {
-                    width: 0.5rem;
-                }
-
-                &:-webkit-scrollbar-track {
-                    background-color: $colorCeruleanBlueHover !important;
-                }
-
-                &:-webkit-scrollbar-thumb {
-                    background-color: $colorCeruleanBlue !important;
-                }
-
                 &.active {
                     padding-top: 1rem;
                     z-index: 3;
@@ -735,6 +743,15 @@
             }
         }
 
+        #{$root}__filter-content {
+            .ie11 & {
+                @include media('>=tablet') {
+                    width: calc(100% - 1rem);
+                    white-space: normal;
+                }
+            }
+        }
+
         #{$root}__filter-items {
             @include media('>=tablet') {
                 padding-top: 0.3rem;
@@ -744,6 +761,19 @@
         #{$root}__price {
             @include media('>=tablet') {
                 min-width: 17rem;
+
+                .ie11 & {
+                    min-width: 0;
+                }
+            }
+        }
+
+        #{$root}__price-label {
+            box-sizing: unset;
+            width: 3.5rem;
+
+            .ie11 & {
+                width: 5.5rem;
             }
         }
     }
