@@ -3,6 +3,7 @@
 $productCollection = $block->getLoadedProductCollection();
 $helper = $this->helper('Magento\Catalog\Helper\Output');
 $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+$ccHelper = $this->helper('Creativestyle\FrontendExtension\Helper\CcConfig');
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
 $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
@@ -61,10 +62,18 @@ $filtersLayout = $this->getFiltersLayout();
             ?>
         </div>
 
-        <?php $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig(); ?>
+        <?php 
+            $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig(); 
+            $isHorizontalFilterLayout = $block->getData('filters_layout') == 'horizontal-full';
+            $columnsConfiguration = $ccHelper->getColumnsConfiguration($isHorizontalFilterLayout);
+        ?>
 
         <?php $iterator = 0; ?>
-        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>"<?php if($teasersConfig) { ?> data-columns-configuration='{"phone":1,"phoneLg":2,"tablet":2,"laptop":3,"laptopLg":3,"desktop":3,"tv":3}' data-teasers-configuration='<?php echo json_encode($teasersConfig['json']); ?>'<?php } ?>>
+        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>"
+            <?php if($teasersConfig && $columnsConfiguration) { ?> 
+                data-columns-configuration='<?php echo $columnsConfiguration; ?>' 
+                data-teasers-configuration='<?php echo json_encode($teasersConfig['json']); ?>'
+            <?php } ?>>
             <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__grid">
                 <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
                 <?php foreach ($productCollection as $product): ?>
