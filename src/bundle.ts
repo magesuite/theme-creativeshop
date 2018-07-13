@@ -24,7 +24,6 @@ import $ from 'jquery';
 import './components/collapse/collapse';
 import './components/dropdown/dropdown';
 import './components/filter-horizontal/filter-horizontal';
-import './components/cart/cart';
 
 import { Flyout } from './components/flyout/class.flyout';
 export { Flyout };
@@ -58,6 +57,7 @@ import './customizations/product-finder/product-finder';
 import './customizations/indicators/fast-shipping-init';
 import './customizations/dailydeal/dailydeal';
 import './customizations/plugincompany-contactforms/plugincompany-contactforms';
+import './customizations/cart/cart';
 import './customizations/video-player/video-player';
 import './customizations/searchresults-switcher/searchresults-switcher';
 import AddressAutofill from './customizations/address-autofill/address-autofill';
