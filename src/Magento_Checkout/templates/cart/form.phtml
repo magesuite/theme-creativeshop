@@ -67,46 +67,6 @@
 <?php echo $block->getChildHtml('checkout.cart.order.actions') ?>
 <?php echo $block->getChildHtml('shopping.cart.table.after'); ?>
 
-<script>
-    require([
-        "jquery"
-    ], function($){
-
-        $( '.cs-qty-increment__button' ).on( 'click', function() {
-            setTimeout( function() {
-
-                $( '#update-cart-button' ).trigger( 'click' );
-                $( '.load.indicator' ).removeClass( 'cs-no-display' );
-
-            }, 1500 );
-
-        } );
-
-        $( '.cs-qty-increment__input' ).each( function( index ) {
-            $( this ).on( 'keydown', function() {
-                setTimeout( function() {
-
-                    $( '#update-cart-button' ).trigger( 'click' );
-                    $( '.load.indicator' ).removeClass( 'cs-no-display' );
-
-                }, 1500 );
-
-            } );
-        });
-    });
-
-    window.addEventListener( 'orientationchange', function () {
-        var cartTable = document.getElementById( 'shopping-cart-table' );
-        var originalStyle = getComputedStyle(cartTable).getPropertyValue( 'display' );
-        cartTable.style.display = 'none';
-        setTimeout(function () {
-            cartTable.style.display = originalStyle;
-        }, 10);
-    });
-
-
-</script>
-
 
 
 
