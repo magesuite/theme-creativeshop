@@ -40,7 +40,9 @@ export default class Cart {
         this._attachEvents();
     }
 
-    protected _triggerUpdate(delay: number = this._options.updateCartActionTimeout): void {
+    protected _triggerUpdate(
+        delay: number = this._options.updateCartActionTimeout
+    ): void {
         if (this._updateTimeout) {
             clearTimeout(this._updateTimeout);
             this._updateTimeout = false;
@@ -70,18 +72,20 @@ export default class Cart {
             }
         );
 
-        document
-            .querySelector(`${this._options.qtyIncrementButtonSelector}`)
-            .addEventListener('click', (): void => this._triggerUpdate());
+        $(`${this._options.qtyIncrementButtonSelector}`).on(
+            'click',
+            (): void => this._triggerUpdate()
+        );
 
-        document
-            .querySelector(`${this._options.qtyIncrementInputSelector}`)
-            .addEventListener(
-                'keydown',
-                (e: KeyboardEvent): void => {
-                    const delay: number = e.keyCode === 13 ? 0 : this._options.updateCartActionTimeout;
-                    this._triggerUpdate(delay);
-                }
-            );
+        $(`${this._options.qtyIncrementInputSelector}`).on(
+            'keydown',
+            (e: KeyboardEvent): void => {
+                const delay: number =
+                    e.keyCode === 13
+                        ? 0
+                        : this._options.updateCartActionTimeout;
+                this._triggerUpdate(delay);
+            }
+        );
     }
 }
