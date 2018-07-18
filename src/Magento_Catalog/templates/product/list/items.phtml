@@ -200,6 +200,10 @@ switch ($type = $block->getType()) {
                                 $discount = $badgeHelper->getSalePercentage($item);
                                 $badges = [];
                                 $dailyDealHtml = '';
+                                $priceHtmlDefault = $block->getProductPrice($item);
+                                $priceHtmlDeal = $dailyDealData && $dailyDealData['deal'] ? $dailyDealData['oldPriceHtmlOnTile'] : '';
+                                $oldDiscount = $dailyDealData && $dailyDealData['deal'] ? $dailyDealData['oldDiscount'] : '';
+                                $priceHtml = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? $priceHtmlDefault . $priceHtmlDeal : $priceHtmlDefault;
 
                                 if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] !== 'none') {
                                     if($dailyDealData['displayType'] === 'badge') {
@@ -251,10 +255,13 @@ switch ($type = $block->getType()) {
                                 }
 
                                 if( $discount ) {
+                                    $oldDiscountHtml = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? '<span class="cs-badge cs-badge--discount cs-badge--discount_old" style="display: none;">
+                                        <span class="cs-badge__span">'  . $oldDiscount . '%</span>
+                                    </span>' : '';
                                     $badges[] = [
                                         'content' => '<span class="cs-badge cs-badge--discount">
                                             <span class="cs-badge__span">'  . $discount . '%</span>
-                                        </span>'
+                                        </span>' . $oldDiscountHtml
                                     ];
 
                                 }
@@ -277,7 +284,8 @@ switch ($type = $block->getType()) {
                                     ],
                                     'name' => $productName,
                                     'price' => [
-                                        'content' => $block->getProductPrice($item)
+                                        'mix' => $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? 'cs-grid-product__price--dailydeal-countdown' : '',
+                                        'content' => $priceHtml
                                     ],
                                     'badges' => $badges,
                                     'addons' => [
