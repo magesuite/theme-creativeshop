@@ -33,6 +33,15 @@ var config = {
             'Smile_ElasticsuiteCore/js/form-mini': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
             },
+            'Magento_CheckoutAgreements/js/view/checkout-agreements': {
+                'Magento_CheckoutAgreements/js/view/checkout-agreements-ext': true,
+            },
+            'Magento_CheckoutAgreements/js/model/agreement-validator': {
+                'Magento_CheckoutAgreements/js/model/agreement-validator-ext': true,
+            },
+            'Magento_CheckoutAgreements/js/model/agreements-assigner': {
+                'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
+            },
         },
     },
     map: {

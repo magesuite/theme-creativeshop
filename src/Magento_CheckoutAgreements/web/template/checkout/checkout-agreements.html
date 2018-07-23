@@ -9,27 +9,30 @@
         <div class="checkout-agreements" data-bind="visible: isVisible">
             <!-- ko foreach: agreements -->
             <!-- ko if: ($parent.isAgreementRequired($data)) -->
-            <div class="checkout-agreement">
-                <input type="checkbox"
-                       data-bind="attr: {
-                                        'id': 'agreement_' + agreementId,
+            <div class="checkout-agreement | cs-input cs-input--type-checkbox | required">
+                <input type="checkbox" class="cs-input__checkbox | required-entry"
+                       data-bind="checked: $parent.checkboxState, attr: {
+                                        'id': $parent.getCheckboxId($parentContext, agreementId),
                                         'name': 'agreement[' + agreementId + ']',
                                         'value': agreementId
-                                        }"
-                       data-validate="{required:true}" />
-                <label data-bind="attr: {'for': 'agreement_' + agreementId}">
-                    <button type="button"
-                            class="action action-show"
-                            data-bind="click: function(data, event) { return $parent.showContent(data, event) }"
-                            >
+                                    }"/>
+                <label class="cs-input__label"
+                       data-bind="attr: {'for': $parent.getCheckboxId($parentContext, agreementId)}">
+                    <span class="cs-link"
+                          data-bind="click: function(data, event) { return $parent.showContent(data, event) }"
+                        >
                         <span data-bind="html: checkboxText"></span>
-                    </button>
+                    </span>
                 </label>
             </div>
             <!-- /ko -->
             <!-- ko ifnot: ($parent.isAgreementRequired($data)) -->
             <div class="checkout-agreement">
-                <span data-bind="html: checkboxText"></span>
+                <span class="cs-link"
+                      data-bind="click: function(data, event) { return $parent.showContent(data, event) }"
+                    >
+                    <span data-bind="html: checkboxText"></span>
+                </span>
             </div>
             <!-- /ko -->
             <!-- /ko -->
