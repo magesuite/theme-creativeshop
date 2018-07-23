@@ -67,13 +67,6 @@
 
         <div class="cs-checkout__step-form">
 
-
-            <!-- ko if: (!quoteIsVirtual) -->
-            <!-- ko foreach: getRegion('customer-email') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-            <!--/ko-->
-            <!--/ko-->
-
             <!-- ko foreach: getRegion('address-list') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
@@ -84,6 +77,7 @@
 
             <!-- Address form pop up -->
             <!-- ko if: (!isFormInline) -->
+
             <div class="cs-checkout__separator"></div>
             <div class="cs-checkout__button-wrapper">
                 <button type="button"
@@ -112,6 +106,7 @@
             <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
             <!-- /ko -->
         </div>
+
     </div>
 </li>
 
@@ -146,23 +141,29 @@
                         <tbody>
 
                         <!--ko foreach: { data: rates(), as: 'method'}-->
-                        <tr class="row" data-bind="click: $parent.selectShippingMethod">
+                        <tr class="row"
+                            data-bind="click: $parent.selectShippingMethod, css: { 'cs-table__row cs-table__row--no-border': $parent.rates().length == 1 }">
                             <td class="cs-table__col | cs-input cs-input--type-radio | col col-method">
                                 <!-- ko ifnot: method.error_message -->
                                 <!-- ko if: $parent.rates().length == 1 -->
-                                <input name="shipping_method"
-                                       class="cs-input__radio"
-                                       type="radio"
-                                       data-bind="attr: {
+                                <input
+                                    name="shipping_method"
+                                    class="cs-input__radio"
+                                    type="radio"
+                                    data-bind="attr: {
                                                     checked: $parent.rates().length == 1,
                                                     'value' : method.carrier_code + '_' + method.method_code,
                                                     'id': 's_method_' + method.method_code,
                                                     'aria-labelledby': 'label_method_' + method.method_code + '_' + method.carrier_code + ' ' + 'label_carrier_' + method.method_code + '_' + method.carrier_code
                                                  }" />
+                                <label data-bind="attr: {'id': 's_method_' + method.carrier_code + '_' + method.method_code}" class="cs-input__label"></label>
                                 <!-- /ko -->
                                 <!--ko ifnot: ($parent.rates().length == 1)-->
-                                <input name="shipping_method" type="radio"
-                                       data-bind="
+                                <input
+                                    name="shipping_method"
+                                    class="cs-input__radio"
+                                    type="radio"
+                                    data-bind="
                                                 value: method.carrier_code + '_' + method.method_code,
                                                 checked: $parent.isSelected,
                                                 attr: {
@@ -170,8 +171,8 @@
                                                     'aria-labelledby': 'label_method_' + method.method_code + '_' + method.carrier_code + ' ' + 'label_carrier_' + method.method_code + '_' + method.carrier_code
                                                 },
                                                 click: $parent.selectShippingMethod"
-                                       class="cs-input__radio"/>
-                                <label class="cs-input__label"></label>
+                                       />
+                                <label data-bind="attr: {'id': 's_method_' + method.carrier_code + '_' + method.method_code}" class="cs-input__label"></label>
                                 <!--/ko-->
                                 <!-- /ko -->
                             </td>
