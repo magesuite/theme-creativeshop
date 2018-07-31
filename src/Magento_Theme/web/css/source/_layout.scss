@@ -229,6 +229,38 @@ a {
     }
 }
 
+// Below is a piece of code to style properly special prices for bundle products
+// Other types of product have different combination of classes - they use .special-price, but not bundles.
+.page-product-bundle {
+    .price-box.price-final_price .price-container.price-final_price {
+        order: 2;
+
+        &:not(:only-child) .price {
+            color: $colorCrimson;
+        }
+    }
+}
+
+.#{$namespace}grid-product {
+    .price-box.price-final_price {
+        .price-container.price-final_price + .old-price {
+            order: 1;
+        }
+
+        .price-container.price-final_price {
+            order: 2;
+        }
+    }
+}
+
+.price-box {
+    .price-container.price-final_price {
+        &:not(:only-child) .price {
+            color: $colorCrimson;
+        }
+    }
+}
+
 //Paypal module
 
 .paypal-express-review .page-title-wrapper {
