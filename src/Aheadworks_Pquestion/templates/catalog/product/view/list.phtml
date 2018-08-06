@@ -86,41 +86,43 @@
                                                             <div class="aw-pq-list__answer-label-text">
                                                                 <?php echo __('Answer'); ?>
                                                             </div>
-                                                            <div class="aw-pq-list__helpfulness">
-                                                                <div class="aw-pq-list__helpfulness-layout">
-                                                                    <div class="aw-pq-list__helpfulness-layout-unit">
-                                                                        <a title="<?php echo $this->escapeHtml($this->getTitleForAnswerVote());?>" data-answer-id="<?php /* @noEscape */ echo $answer->getId(); ?>" class="aw-pq-list__helpfulness-icon aw-pq-list__helpfulness-icon_like<?php if ($this->isCustomerLikeAnswer($answer->getId())) : ?> aw-pq-list__helpfulness-icon_like_voted<?php endif; ?><?php if (!$this->isCustomerCanVoteAnswer()) : ?> aw-pq-list__helpfulness-icon_state_disabled<?php endif;?>" href="#">
-                                                                            <svg class="aw-pq-list__helpfulness-thumb aw-pq-list__helpfulness-thumb--up">
-                                                                                <use xlink:href="#thumb_up"></use>
-                                                                            </svg>
-                                                                        </a>
-
-                                                                    </div>
-                                                                    <div class="aw-pq-list__helpfulness-layout-unit aw-pq-list__helpfulness-layout-unit_position_center">
-                                                                        <span class="aw-pq-list__helpfulness-value"><?php echo $this->escapeHtml($answer->getHelpfulness()); ?></span>
-                                                                        <span class="aw-pq-list__helpfulness-progress" style="display:none;"></span>
-                                                                    </div>
-                                                                    <div class="aw-pq-list__helpfulness-layout-unit">
-                                                                        <a title="<?php echo $this->escapeHtml($this->getTitleForAnswerVote());?>" data-answer-id="<?php /* @noEscape */ echo $answer->getId(); ?>" class="aw-pq-list__helpfulness-icon aw-pq-list__helpfulness-icon_dislike<?php if ($this->isCustomerDislikeAnswer($answer->getId())) : ?> aw-pq-list__helpfulness-icon_dislike_voted<?php endif; ?><?php if (!$this->isCustomerCanVoteAnswer()) : ?> aw-pq-list__helpfulness-icon_state_disabled<?php endif;?>" href="#">
-                                                                            <svg class="aw-pq-list__helpfulness-thumb aw-pq-list__helpfulness-thumb--down">
-                                                                                <use xlink:href="#thumb_down"></use>
-                                                                            </svg>
-                                                                        </a>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
 
                                                     </div>
                                                     <div class="aw-pq-list__answer-wrapper">
 
                                                         <div class="aw-pq-list__answer-content"><?php /* @noEscape */ echo $this->getAnswerContent($answer); ?></div>
+
                                                         <?php $authorName = $this->escapeHtml($answer->getAuthorName()); ?>
                                                         <?php if ($answer->getIsAdmin()) : ?>
                                                             <?php $authorName = '<span class="aw-pq-list__admin-name">' . $authorName . ' ' . __('(Admin)') . '</span>'; ?>
                                                         <?php endif; ?>
                                                         <div class="aw-pq-list__answer-date"><?php /* @noEscape */ echo __('Answer by: %1 on %2', $authorName, $this->formatDate($answer->getCreatedAt(), \IntlDateFormatter::MEDIUM, true)); ?></div>
+                                                        <div class="aw-pq-list__helpfulness aw-pq-list__helpfulness--horizontal">
+                                                            <div class="aw-pq-list__helpfulness-layout">
+                                                                <div class="aw-pq-list__helpfulness-layout-unit">
+                                                                    <a title="<?php echo $this->escapeHtml($this->getTitleForAnswerVote());?>" data-answer-id="<?php /* @noEscape */ echo $answer->getId(); ?>" class="aw-pq-list__helpfulness-icon aw-pq-list__helpfulness-icon_like<?php if ($this->isCustomerLikeAnswer($answer->getId())) : ?> aw-pq-list__helpfulness-icon_like_voted<?php endif; ?><?php if (!$this->isCustomerCanVoteAnswer()) : ?> aw-pq-list__helpfulness-icon_state_disabled<?php endif;?>" href="#">
+                                                                        <svg class="aw-pq-list__helpfulness-thumb aw-pq-list__helpfulness-thumb--up">
+                                                                            <use xlink:href="#thumb_up"></use>
+                                                                        </svg>
+                                                                    </a>
+
+                                                                </div>
+                                                                <div class="aw-pq-list__helpfulness-layout-unit aw-pq-list__helpfulness-layout-unit_position_center">
+                                                                    <span class="aw-pq-list__helpfulness-value"><?php echo $this->escapeHtml($answer->getHelpfulness()); ?></span>
+                                                                    <span class="aw-pq-list__helpfulness-progress" style="display:none;"></span>
+                                                                </div>
+                                                                <div class="aw-pq-list__helpfulness-layout-unit">
+                                                                    <a title="<?php echo $this->escapeHtml($this->getTitleForAnswerVote());?>" data-answer-id="<?php /* @noEscape */ echo $answer->getId(); ?>" class="aw-pq-list__helpfulness-icon aw-pq-list__helpfulness-icon_dislike<?php if ($this->isCustomerDislikeAnswer($answer->getId())) : ?> aw-pq-list__helpfulness-icon_dislike_voted<?php endif; ?><?php if (!$this->isCustomerCanVoteAnswer()) : ?> aw-pq-list__helpfulness-icon_state_disabled<?php endif;?>" href="#">
+                                                                        <svg class="aw-pq-list__helpfulness-thumb aw-pq-list__helpfulness-thumb--down">
+                                                                            <use xlink:href="#thumb_down"></use>
+                                                                        </svg>
+                                                                    </a>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
