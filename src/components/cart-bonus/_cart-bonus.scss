@@ -1,0 +1,294 @@
+$cart-bonus-progress-animation: true !default; // Tells if all progress animations should be enabled.
+$cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill single progress bar.
+
+.#{$namespace}cart-bonus {
+    $root: &;
+    padding: 1.5rem;
+    border-top: 1px solid $colorAlto;
+
+    @include media('>=tablet') {
+        padding: 1.5rem 0;
+        border-top: 0;
+        border-bottom: 1px solid $colorAlto;
+    }
+
+    &--empty-basket {
+        border-top: 1px solid $colorAlto;
+        border-bottom: 0;
+        margin-top: 2rem;
+    }
+
+    &__headline {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $colorMineShaft;
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.75rem;
+    }
+
+    &__gifts-wrapper {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    &__gift {
+        display: flex;
+        flex: 1 1 100%;
+        font-size: 1.3rem;
+        color: $colorGray;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        @include media('>=tablet') {
+            flex-basis: (100% / 6);
+        }
+
+        & + & {
+            margin-top: 2rem;
+
+            @include media('>=tablet') {
+                margin-top: 0;
+            }
+
+            @include media('>=tablet') {
+                #{$root}__progress-wrapper {
+                    border-left: 0;
+                    border-radius: 0 0.4rem 0.4rem 0;
+                }
+            }
+        }
+
+        &--awarded {
+            #{$root}__progress-done {
+                transform: scaleX(1) !important;
+            }
+        }
+
+        @if $cart-bonus-progress-animation {
+            // Here we are setting delays so that every progress bar waits
+            // for the previous one to finish.
+            @for $element-index from 0 to 6 {
+                &:nth-of-type(#{$element-index + 1}) {
+                    #{$root}__icon,
+                    #{$root}__label,
+                    #{$root}__icon-wrapper:after,
+                    #{$root}__tooltip {
+                        transition-delay: (
+                            $element-index *
+                                $cart-bonus-progress-duration +
+                                $cart-bonus-progress-duration
+                        );
+                    }
+
+                    #{$root}__progress-done {
+                        transition-delay: (
+                            $element-index * $cart-bonus-progress-duration
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    &__icon-wrapper {
+        position: relative;
+        order: 2;
+
+        &--gift {
+            align-self: flex-start;
+            fill: $colorAlto;
+            margin: 0 0.6rem 1rem auto;
+
+            @include media('>=tablet') {
+                margin-right: auto;
+            }
+        }
+
+        &--awarded {
+            &:after {
+                content: '\2714';
+                position: absolute;
+                width: 1.5rem;
+                height: 1.5rem;
+                border-radius: 1.5rem;
+                box-shadow: 0 0 0 1px $colorWhite;
+                box-sizing: border-box;
+                background: $colorApple;
+                color: $colorWhite;
+                text-align: center;
+                font-size: 1.3rem;
+                line-height: 1.3rem;
+                right: -0.6rem;
+                bottom: -0.1rem;
+                transform: scale(1);
+                transition: transform 0.3s;
+
+                @if $cart-bonus-progress-animation {
+                    [data-mage-init] & {
+                        transform: scale(0);
+                    }
+                }
+            }
+        }
+    }
+
+    &__icon {
+        width: 2.3rem;
+        height: 2.1rem;
+        transition: fill 0.3s;
+
+        &--headline {
+            margin-right: 1rem;
+        }
+
+        &--gift {
+            fill: $colorAlto;
+        }
+
+        &--awarded {
+            fill: $colorApple;
+
+            @if $cart-bonus-progress-animation {
+                [data-mage-init] & {
+                    fill: $colorAlto;
+                }
+            }
+        }
+    }
+
+    &__progress-wrapper {
+        position: relative;
+        border: solid 1px $colorAlto;
+        border-radius: 0.4rem;
+        height: 2.8rem;
+        width: 100%;
+        padding: 0.4rem;
+        box-sizing: border-box;
+        order: 3;
+
+        @include media('>=tablet') {
+            border-radius: 0.4rem 0 0 0.4rem;
+        }
+    }
+
+    &__progress-possible {
+        position: absolute;
+        height: 1.8rem;
+        background-image: repeating-linear-gradient(
+            -45deg,
+            $colorAlto,
+            $colorAlto 1px,
+            transparent 1px,
+            transparent 5px
+        );
+        border-radius: 0.4rem;
+        top: 0.4rem;
+        left: 0.4rem;
+        right: 0.4rem;
+        border: solid 1px $colorAlto;
+        box-sizing: border-box;
+    }
+
+    &__progress-done {
+        transform: scaleX(0);
+        width: 100%;
+        height: 1.8rem;
+        background: $colorApple;
+        border-radius: 0.4rem;
+        transform-origin: left;
+        transition: transform $cart-bonus-progress-duration linear;
+        z-index: 2;
+
+        @if $cart-bonus-progress-animation {
+            [data-mage-init] & {
+                transform: scaleX(0) !important;
+            }
+        }
+    }
+
+    &__label-wrapper {
+        display: flex;
+        align-items: center;
+        color: $colorGray;
+        margin: 0 0 1rem;
+        font-size: 1.3rem;
+        order: 1;
+        max-width: calc(100% - 3.3rem);
+        transition: color 0.3s;
+
+        &--awarded {
+            color: $colorApple;
+
+            @if $cart-bonus-progress-animation {
+                [data-mage-init] & {
+                    color: $colorGray;
+                }
+            }
+        }
+
+        @include media('>=tablet') {
+            text-align: center;
+            max-width: none;
+            order: 4;
+            margin-top: 1rem;
+        }
+    }
+
+    &__tooltip {
+        top: 0;
+        left: 0.8rem;
+        position: absolute;
+        display: flex;
+        transform: translate3d(-50%, -100%, 0) scaleY(1);
+        flex-wrap: wrap;
+        justify-content: center;
+        transition: transform 0.3s;
+        transform-origin: center bottom;
+
+        &:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            margin-left: -0.4rem;
+            height: 0;
+            border-style: solid;
+            border-width: 0.6rem 0.4rem 0;
+            border-color: $colorApple transparent transparent transparent;
+        }
+
+        &--edge {
+            &_left {
+                #{$root}__tooltip-content {
+                    transform: translateX(35%);
+                }
+            }
+
+            &_right {
+                #{$root}__tooltip-content {
+                    transform: translateX(-35%);
+                }
+            }
+        }
+
+        @if $cart-bonus-progress-animation {
+            [data-mage-init] & {
+                transform: translate3d(-50%, -100%, 0) scaleY(0);
+            }
+        }
+    }
+
+    &__tooltip-content {
+        background: $colorApple;
+        width: 100%;
+        padding: 0.6rem 0.7rem 0.5rem;
+        box-sizing: border-box;
+        font-size: 1rem;
+        color: $colorWhite;
+        border-radius: 0.2rem;
+        text-align: center;
+        margin-bottom: 0.6rem;
+    }
+}
