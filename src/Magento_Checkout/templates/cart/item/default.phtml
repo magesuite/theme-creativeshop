@@ -35,6 +35,11 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
             <?php endif; ?>
 
             <div class="cs-cart-item__details">
+                <?php if($item->getIsGift()): ?>
+                    <span class="cs-cart-item__badge | cs-badge cs-badge--cut cs-badge--positive">
+                        <span class="cs-badge__span"><?php echo __('FREE') ?></span>
+                    </span>
+                <?php endif; ?>
                 <span class="cs-cart-item__name">
                     <?php if ($hasProductUrl):?>
                         <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>">
