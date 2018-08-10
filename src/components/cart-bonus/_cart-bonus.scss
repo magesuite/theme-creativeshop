@@ -55,7 +55,7 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
             @include media('>=tablet') {
                 #{$root}__progress-wrapper {
                     border-left: 0;
-                    border-radius: 0 0.4rem 0.4rem 0;
+                    border-radius: 0 0.2rem 0.2rem 0;
                 }
             }
         }
@@ -92,17 +92,43 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
         }
     }
 
+    &__top-wrapper {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        @include media('>=tablet') {
+            justify-content: center;
+        }
+    }
+
+    &__inline-amount {
+        margin: 0 0.8rem 0 auto;
+        display: flex;
+        align-items: center;
+        color: $colorApple;
+
+        #{$root}__amount {
+            color: $colorApple;
+            margin-right: 0.5ch;
+        }
+
+        @include media('>=tablet') {
+            display: none;
+        }
+    }
+
     &__icon-wrapper {
         position: relative;
-        order: 2;
 
         &--gift {
             align-self: flex-start;
             fill: $colorAlto;
-            margin: 0 0.6rem 1rem auto;
+            margin: 0 0.6rem 1rem 0;
 
             @include media('>=tablet') {
-                margin-right: auto;
+                margin: 0 auto 1rem;
             }
         }
 
@@ -161,21 +187,20 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
     &__progress-wrapper {
         position: relative;
         border: solid 1px $colorAlto;
-        border-radius: 0.4rem;
-        height: 2.8rem;
+        border-radius: 0.2rem;
+        height: 1.4rem;
         width: 100%;
-        padding: 0.4rem;
+        padding: 0.2rem;
         box-sizing: border-box;
-        order: 3;
 
         @include media('>=tablet') {
-            border-radius: 0.4rem 0 0 0.4rem;
+            border-radius: 0.2rem 0 0 0.2rem;
         }
     }
 
     &__progress-possible {
         position: absolute;
-        height: 1.8rem;
+        height: 0.8rem;
         background-image: repeating-linear-gradient(
             -45deg,
             $colorAlto,
@@ -183,20 +208,21 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
             transparent 1px,
             transparent 5px
         );
-        border-radius: 0.4rem;
-        top: 0.4rem;
-        left: 0.4rem;
-        right: 0.4rem;
+        border-radius: 0.2rem;
+        top: 0.2rem;
+        left: 0.2rem;
+        right: 0.2rem;
         border: solid 1px $colorAlto;
         box-sizing: border-box;
     }
 
     &__progress-done {
+        position: relative;
         transform: scaleX(0);
         width: 100%;
-        height: 1.8rem;
+        height: 0.8rem;
         background: $colorApple;
-        border-radius: 0.4rem;
+        border-radius: 0.2rem;
         transform-origin: left;
         transition: transform $cart-bonus-progress-duration linear;
         z-index: 2;
@@ -212,11 +238,18 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
         display: flex;
         align-items: center;
         color: $colorGray;
-        margin: 0 0 1rem;
+        margin: 0;
         font-size: 1.3rem;
-        order: 1;
         max-width: calc(100% - 3.3rem);
         transition: color 0.3s;
+
+        &--top {
+            margin-right: 0.8rem;
+        }
+
+        &--bottom {
+            display: none;
+        }
 
         &--awarded {
             color: $colorApple;
@@ -231,8 +264,15 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
         @include media('>=tablet') {
             text-align: center;
             max-width: none;
-            order: 4;
             margin-top: 1rem;
+
+            &--top {
+                display: none;
+            }
+
+            &--bottom {
+                display: block;
+            }
         }
     }
 
@@ -240,12 +280,16 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
         top: 0;
         left: 0.8rem;
         position: absolute;
-        display: flex;
+        display: none;
         transform: translate3d(-50%, -100%, 0) scaleY(1);
         flex-wrap: wrap;
         justify-content: center;
         transition: transform 0.3s;
         transform-origin: center bottom;
+
+        @include media('>=tablet') {
+            display: flex;
+        }
 
         &:after {
             content: '';
