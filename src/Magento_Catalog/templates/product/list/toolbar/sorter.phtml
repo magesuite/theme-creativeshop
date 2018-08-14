@@ -2,6 +2,10 @@
 // @codingStandardsIgnoreFile
 
 /**
+ * - 14.08.2018 modification: added 4 methods via XML to get sorter's icons and labels for ascending/descending order setup. Therefore template is changed to fetch them by using $block's methods.
+ */
+
+/**
  * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
  */
 ?>
@@ -40,39 +44,39 @@
     <div class="cs-category-page__sorter-direction">
         <?php if ($block->getCurrentDirection() == 'desc'): ?>
             <span
-                title="<?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?>"
+                title="<?php echo $block->getDescendingDirectionLabel(); ?>"
                 class="cs-category-page__sorter-direction-btn cs-category-page__sorter-direction-btn--current"
             >
-                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_down"></use></svg>
-                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?></span>
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="<?php echo $block->getDescendingDirectionIcon(); ?>"></use></svg>
+                <span class="cs-visually-hidden"><?php echo $block->getDescendingDirectionLabel(); ?></span>
             </span>
             <a
-                title="<?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?>"
+                title="<?php echo $block->getAscendingDirectionLabel(); ?>"
                 href="#" 
                 class="cs-category-page__sorter-direction-btn"
                 data-role="direction-switcher"
                 data-value="asc"
             >
-                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_up"></use></svg>
-                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?></span>
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="<?php echo $block->getAscendingDirectionIcon(); ?>"></use></svg>
+                <span class="cs-visually-hidden"><?php echo $block->getAscendingDirectionLabel(); ?></span>
             </a>
         <?php else: ?>
             <a
-                title="<?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?>"
+                title="<?php echo $block->getDescendingDirectionLabel(); ?>"
                 href="#"
                 class="cs-category-page__sorter-direction-btn"
                 data-role="direction-switcher"
                 data-value="desc"
             >
-                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_down"></use></svg>
-                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Descending Direction') ?></span>
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="<?php echo $block->getDescendingDirectionIcon(); ?>"></use></svg>
+                <span class="cs-visually-hidden"><?php echo $block->getDescendingDirectionLabel(); ?></span>
             </a>
             <span
-                title="<?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?>"
+                title="<?php echo $block->getAscendingDirectionLabel(); ?>"
                 class="cs-category-page__sorter-direction-btn cs-category-page__sorter-direction-btn--current"
             >
-                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="#arrow_up"></use></svg>
-                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Set Ascending Direction') ?></span>
+                <svg class="cs-category-page__sorter-direction-icon"><use xlink:href="<?php echo $block->getAscendingDirectionIcon(); ?>"></use></svg>
+                <span class="cs-visually-hidden"><?php echo $block->getAscendingDirectionLabel(); ?></span>
             </span>
         <?php endif; ?>
     </div>
