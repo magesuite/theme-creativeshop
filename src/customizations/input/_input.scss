@@ -248,6 +248,13 @@
         &:not([disabled]):focus {
             box-shadow: $boxShadow;
         }
+
+        /* iOS Safari zooms whole page when focusing input/textarea with font-size less than 16px.
+           So we're setting font-size to 1.6rem ONLY for iOS Safari
+        */
+        @supports (-webkit-overflow-scrolling: touch) {
+            font-size: 1.6rem !important;
+        }
     }
 
     /* stylelint-enable */
