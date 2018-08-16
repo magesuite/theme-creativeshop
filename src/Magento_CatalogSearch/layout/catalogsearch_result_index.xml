@@ -1,15 +1,11 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="columns" htmlClass="columns cs-category-page"/>
         <referenceContainer name="main" htmlClass="cs-category-page__main"/>
         <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main cs-category-page__sidebar-main"/>
+
+        <referenceBlock name="page.main.title" remove="true"/>
 
         <move element="page.messages" destination="main" before="-" />
         <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
@@ -18,6 +14,13 @@
             <block class="Creativestyle\FrontendExtension\Block\Category\View\Headline" name="category.page.headline" template="Magento_Catalog::category/headline.phtml" before="-"/>
         </referenceContainer>
 
-        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceBlock name="product_list_toolbar">
+            <arguments>
+                <argument translate="true" name="descending_direction_label" xsi:type="string">Set Descending Direction</argument>
+                <argument name="descending_direction_icon" xsi:type="string">#arrow_down</argument>
+                <argument translate="true" name="ascending_direction_label" xsi:type="string">Set Ascending Direction</argument>
+                <argument name="ascending_direction_icon" xsi:type="string">#arrow_up</argument>
+            </arguments>
+        </referenceBlock>
     </body>
 </page>
