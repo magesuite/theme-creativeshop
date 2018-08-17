@@ -19,6 +19,17 @@
 {% set sizesDesktop =  '(min-width: 1200px) ' ~ 1200 / itemsPerView ~ 'px, ' ~ sizesDesktop %}
 {% set sizes = sizesMobile ~ ', ' ~ sizesDesktop %}
 
+{# define new array of teaser items because we have to modify text position scenario to the one set globally #}
+{% set teasers = [] %}
+{% if textDisplayVariant is not defined %}
+    {% set textDisplayVariant = 2 %}
+{% endif %}
+
+{% for item in items %}
+    {% set item = item|merge({ 'displayVariant': textDisplayVariant }) %}
+    {% set teasers = teasers|merge( [ item ] ) %}
+{% endfor %}
+
 <div class="cs-container cs-container--edge-to-edge">
     <div class="cs-container__inner">
 
@@ -44,7 +55,8 @@
                     src: '#arrow_next'
                 },
                 labelClass: 'cs-button__span'
-            }
+            },
+            items: teasers
         } %}
     </div>
 </div>
