@@ -43,6 +43,10 @@
             border-top: 1px solid $colorAlto;
             padding: 2rem 0 3rem;
             margin-bottom: 3rem;
+
+            @include media('<tablet') {
+                margin-bottom: 0;
+            }
         }
 
         &-list-wrapper {
@@ -119,8 +123,28 @@
     }
 
     &-list {
-        &__button-next {
+
+        &__helpfulness-progress,
+        &__helpfulness-value {
+            min-width: 1.5rem;
+            display: inline-block;
+        }
+
+        &__please-login-note {
+            margin-top: 1.5rem;
+        }
+
+        &__button-next,
+        &__next-question a {
             @extend .#{$namespace}button--look_default;
+        }
+
+        &__next-question {
+            display: inline-block;
+
+            a {
+                width: auto !important;
+            }
         }
 
         &__next-answer-button {
@@ -262,8 +286,7 @@
 
         &__next-answer,
         &__add-answer-button,
-        &__next-question,
-        &__add-question-button {
+        &__next-question {
             margin: 1rem 1rem 0 0;
         }
 
@@ -278,13 +301,17 @@
         &__next-question {
             @include media('<tablet') {
                 width: 100%;
-                margin-bottom: 0.5rem;
                 margin-right: 0;
             }
 
-            a {
+            .#{$namespace}button {
+                margin-bottom: 1.5rem;
                 width: 100%;
-                display: inline-block;
+
+                @include media('>=tablet') {
+                    margin-bottom: 0;
+                    width: auto;
+                }
             }
         }
 

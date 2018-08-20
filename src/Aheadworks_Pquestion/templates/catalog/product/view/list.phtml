@@ -32,7 +32,7 @@
                 <div class="aw-pq-list box-content">
                     <?php if ($questionCollection->getSize() > 0) : ?>
                         <?php foreach ($questionCollection as $question): ?>
-                            <div class="aw-pq-list__question-item">
+                            <div class="aw-pq-list__question-item aw-pq-list__question-item_hidden">
                                 <div class="aw-pq-list__question-expand aw-pq-list__question-expand_arrow_right" data-question-id="<?php echo (int)$question->getId();?>"></div>
                                 <div class="aw-pq-list__helpfulness-wrapper">
                                     <div class="aw-pq-list__helpfulness">
@@ -128,7 +128,11 @@
                                             </div>
                                         <?php endforeach; ?>
                                     <?php else : ?>
-                                        <div class="aw-pq-list__no-answers"><?php echo $this->escapeHtml(__('No answers yet. Be the first to answer the question!')); ?></div>
+                                        <?php if ($this->canAnswerQuestion()) : ?>
+                                            <div class="aw-pq-list__no-answers"><?php echo $this->escapeHtml(__('No answers yet. Be the first to answer the question!')); ?></div>
+                                        <?php else : ?>
+                                            <div class="aw-pq-list__no-answers"><?php echo $this->escapeHtml(__('No answers yet.')); ?></div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                     <div class="aw-pq-list__answer-action-bar">
                                         <div class="aw-pq-list__next-answer-wrapper" >
@@ -157,13 +161,6 @@
                                 </div>
                             </div>
                         <?php endforeach; ?>
-                        <div class="aw-pq-list__question-action-bar">
-                            <div class="aw-pq-list__next-question-wrapper" >
-                                <p class="aw-pq-list__next-question" style="display:none;">
-                                    <a href="javascript:void(0)"><?php echo $this->escapeHtml(__('Next Questions')); ?></a>
-                                </p>
-                            </div>
-                        </div>
                     <?php else : ?>
                         <div class="aw-pq-list__no-questions"><?php echo $this->escapeHtml(__('No questions yet. Be the first to ask the question!')); ?></div>
                     <?php endif; ?>
@@ -226,6 +223,14 @@
                 </div>
 
                 <div class="aw-pq-question__question">
+                    <p class="aw-pq-list__next-question" style="display:none;">
+                        <button class="cs-button cs-button--look_default">
+                            <span class="cs-button__span"><?php echo $this->escapeHtml(__('Next Questions')); ?></span>
+                            <svg class="cs-button__icon">
+                                <use xlink:href="#arrow_next"></use>
+                            </svg>
+                        </button>
+                    </p>
                     <?php if ($this->canAskQuestion()) : ?>
                         <button type="button" class="cs-button cs-button--look_default aw-pq-list__add-question-button" title="<?php echo $this->escapeHtml(__('Ask Question')); ?>" >
                     <span>
