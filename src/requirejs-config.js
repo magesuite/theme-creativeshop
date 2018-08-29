@@ -18,6 +18,9 @@ var config = {
             'Magento_Ui/js/view/messages': {
                 'Magento_Ui/js/view/messages-ext': true,
             },
+            'Magento_Catalog/js/product/view/provider': {
+                'Magento_Catalog/js/product/view/provider-ext': true,
+            },
             'Magento_Checkout/js/view/summary/cart-items': {
                 'Magento_Checkout/js/view/summary/cart-items-ext': true,
             },
