@@ -2,6 +2,7 @@ $namespace: 'cs-';
 @import '../../../node_modules/creative-patterns/packages/components/price-box/src/price-box';
 
 .price-box {
+    $root: &;
     @include priceBox();
 
     .price {
@@ -60,6 +61,19 @@ $namespace: 'cs-';
     .price-from {
         margin-right: 1.5rem;
     }
+
+    .#{$namespace}grid-product__price--dailydeal-countdown &,
+    .#{$namespace}price--pdp_dailydeal-countdown & {
+        &:not(.price-final_price_without_daily_deal) {
+            display: none;
+        }
+    }
+
+    .#{$namespace}grid-product__price--dailydeal-countdown & {
+        &#{$root}--visible {
+            display: inline-block !important;
+        }
+    }
 }
 
 .#{$namespace}price--pdp {
@@ -77,6 +91,10 @@ $namespace: 'cs-';
         display: flex;
         margin-top: 1.5rem;
         flex-direction: column;
+
+        &.price-box--visible {
+            display: flex !important;
+        }
     }
 
     .price {

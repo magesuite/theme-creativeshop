@@ -1,0 +1,17 @@
+ <?php
+ /**
+  * Additional price block for products with dailydeal (countdown only).
+  *
+  * @see |Creativestyle|DailyDealExtension|Block|Product
+  */
+ ?>
+<?php
+$product = $block->getProduct();
+$dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
+$dailyDealData = $dailyDealHelper->prepareOfferData($product);
+$priceHtmlDeal = $dailyDealData && $dailyDealData['deal'] ? $dailyDealData['oldPriceHtmlOnPdp'] : '';
+
+if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] !== 'none') {
+    echo '<div class="price-box price-final_price_without_daily_deal" style="display: none;">'.$priceHtmlDeal.'</div>';
+}
+?>
