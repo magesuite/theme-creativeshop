@@ -6,11 +6,15 @@ import {
 } from '../../components/address-autofill/address-autofill';
 
 export default (options: IAddressAutofillOptions): AddressAutofill => {
+    const googleApi = $('#google-api-settings');
+    const apiKey = googleApi.data('google-api-key');
+    const language = googleApi.data('google-api-language') || 'de';
+    const region = googleApi.data('google-api-region') || 'DE';
     options = $.extend(
         {
-            language: 'de',
-            region: 'DE',
-            apiKey: 'AIzaSyDwjU7ABFBMRg_i6pU4gYTnGFZvLUS2Y94',
+            language,
+            region,
+            apiKey,
             dev: false,
         },
         options
