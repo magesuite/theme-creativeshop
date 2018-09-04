@@ -12,9 +12,9 @@ export default (options: IAddressAutofillOptions): AddressAutofill => {
     const region = googleApi.data('google-api-region') || 'DE';
     options = $.extend(
         {
-            language,
-            region,
-            apiKey,
+            language: language,
+            region: region,
+            apiKey: apiKey,
             dev: false,
         },
         options
