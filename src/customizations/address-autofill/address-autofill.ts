@@ -7,9 +7,15 @@ import {
 
 export default (options: IAddressAutofillOptions): AddressAutofill => {
     const googleApi = $('#google-api-settings');
-    const apiKey = googleApi.data('google-api-key');
+
+    // Check if element from which we take data exists if it doesn't do not continue
+    if (!googleApi.length) {
+        return;
+    }
     const language = googleApi.data('google-api-language') || 'de';
     const region = googleApi.data('google-api-region') || 'DE';
+    const apiKey = googleApi.data('google-api-key');
+
     options = $.extend(
         {
             language: language,
