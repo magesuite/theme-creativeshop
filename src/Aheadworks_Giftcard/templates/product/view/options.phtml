@@ -1,0 +1,297 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var $block Aheadworks\Giftcard\Block\Product\View */
+?>
+<?php if ($block->canRenderOptions()): ?>
+    <?php $stepCount = 1; ?>
+    <?php if ($block->isFixedAmount()): ?>
+        <?php /* @noEscape */ echo $block->getChildHtml('giftcard_price'); ?>
+    <?php endif; ?>
+    <div class="aw-gc-product-form-options | cs-product-sale-block__giftcard" id="aw-gc-product-form-options" tabindex="0">
+        <?php if ($block->isFixedAmount()): ?>
+            <input type="hidden" name="aw_gc_amount" value="<?php /* @noEscape */ echo $block->getFixedAmount() ?>" />
+        <?php else: ?>
+            <fieldset class="cs-form__fieldset">
+                <?php /* TO DO when magesuite and new styling approach with mixins is ready remove all cs-t-headline classes */ ?>
+                <legend class="cs-product-sale-block__giftcard-headline | cs-t-headline cs-t-headline--size_3">
+                    <span class="aw-gc-product-form-options__step-number | cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
+                    <span><?php echo $block->escapeHtml(__('Choose an amount')) ?></span>
+                </legend>
+                <div class="field required aw-gc-product-form-options__field-full-width">
+                    <label class="cs-input__label" for="aw_gc_amount">
+                        <span><?php echo $block->escapeHtml(__('Card value (%1)', $block->getDisplayCurrencySymbol())) ?></span>
+                    </label>
+                    <div class="cs-form__fieldset">
+                        <?php if ($block->getAmountOptions()): ?>
+                            <div class="cs-form__field | cs-input | aw-gc-product-form-options__amount-control">
+                                <div class="cs-input__control | amount-options">
+                                    <select
+                                        id="aw_gc_amount"
+                                        name="aw_gc_amount"
+                                        class="required-entry aw-gc-amount-entry | cs-select"
+                                        data-mage-init='{"awGiftCardChangeAmount":{}}'>
+                                        <?php foreach ($block->getGiftcardAmounts() as $amount): ?>
+                                            <option value="<?php /* @noEscape */ echo $amount['value'] ?>"
+                                                <?php /* @noEscape */ echo $amount['value'] == $block->getAmountOptionValue() ? 'selected' : '' ?>>
+                                                <?php /* @noEscape */ echo $amount['label'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <input type="hidden" name="aw_gc_amount" value="custom"/>
+                        <?php endif; ?>
+                        <?php if ($block->isAllowOpenAmount()): ?>
+                            <div id="aw-gc-custom-amount-box"
+                                 class="field aw-gc-product-form-options__amount-control"
+                                <?php /* @noEscape */ echo $block->getAmountOptions() ? 'style="display: none"' : '' ?>>
+                                <div class="cs-input__control | amount-custom">
+                                    <input
+                                        type="text"
+                                        name="aw_gc_custom_amount"
+                                        value="<?php /* @noEscape */ echo $block->getCustomAmountOptionValue() ?>"
+                                        placeholder="(<?php /* @noEscape */ echo $block->getMinCustomAmount() . '-' . $block->getMaxCustomAmount() ?>)"
+                                        class="cs-input__input"
+                                        data-validate="{
+                                                number: true,
+                                                required: true,
+                                                min: <?php /* @noEscape */ echo $block->getMinCustomAmount() ?>,
+                                                max: <?php /* @noEscape */ echo $block->getMaxCustomAmount() ?>
+                                            }"
+                                        <?php /* @noEscape */ echo $block->getAmountOptions() ? 'disabled="disabled"' : '' ?>
+                                    />
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </fieldset>
+        <?php endif; ?>
+        <?php if ($block->isAllowDesignSelect()): ?>
+        <fieldset class="cs-form__fieldset">
+            <legend class="cs-product-sale-block__giftcard-headline | cs-t-headline cs-t-headline--size_3">
+                <span class="aw-gc-product-form-options__step-number  | cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
+                <span><?php echo $block->escapeHtml(__('Select a design')) ?></span>
+            </legend>
+            <div class="field required aw-gc-product-form-options__field-full-width">
+                <div class="cs-form__field | cs-input | aw-gc-product-form-options__template-options">
+                    <?php foreach ($block->getGiftcardTemplates() as $template): ?>
+                        <div class="aw-gc-product-form-options__template-option <?php /* @noEscape */ echo $template['value'] === $block->getTemplateOptionValue() ? 'selected' : '' ?>"
+                             data-mage-init='{"awGiftCardChangeDesign":{
+                                                    "value": "<?php /* @noEscape */ echo $template['value'] ?>"
+                               }}'>
+                            <?php if (empty($template['imageUrl'])): ?>
+                                <span class="aw-gc-product-form-options__template-name">
+                                       <?php /* @noEscape */ echo $block->stripTags($template['name']) ?>
+                                   </span>
+                            <?php else: ?>
+                                <img class="aw-gc-product-form-options__template-image"
+                                     src="<?php /* @noEscape */ echo $block->escapeXssInUrl($template['imageUrl']) ?>"
+                                     alt="<?php /* @noEscape */ echo $block->stripTags($template['name']) ?>" />
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+                <?php if ($block->isSingleDesign() || $block->isAllowDesignSelect()): ?>
+                    <div class="cs-input__control aw-gc-product-form-options__template-value hidden">
+                        <input type="text"
+                               id="aw_gc_template"
+                               name="aw_gc_template"
+                               value="<?php /* @noEscape */ echo $block->getTemplateOptionValue() ? : ($block->isSingleDesign() ? $block->getTemplateValue() : '') ?>"
+                               data-validate="{required:true}"
+                               class="required-entry"
+                               style="visibility: hidden; position:absolute; left:-1000px;">
+                    </div>
+                <?php endif; ?>
+                <?php if ($block->isAllowDesignSelect()): ?>
+            </div>
+        </fieldset>
+    <?php endif; ?>
+        <fieldset class="cs-form__fieldset">
+            <?php /* TO DO when magesuite and new styling approach with mixins is ready remove all cs-t-headline classes */ ?>
+            <legend class="cs-product-sale-block__giftcard-headline | cs-t-headline cs-t-headline--size_3">
+                <span class="cs-product-sale-block__giftcard-step-number | cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
+                <span><?php echo $block->escapeHtml($block->isAllowEmail() ? __('Compose your email') : __('Compose your message')) ?></span>
+            </legend>
+            <div>
+                <?php if ($block->isAllowDeliveryDate()): ?>
+                    <div class="email delivery-date">
+                        <div class="fieldset">
+                            <div class="field aw-gc-product-form-options__delivery-date">
+                                <label class="cs-input__label | fromto" for="aw_gc_delivery_date">
+                                    <span><?php echo $block->escapeHtml(__('Delivery Date')) ?></span>
+                                </label>
+                                <div class="cs-input__control delivery-date-name">
+                                    <input
+                                        type="text"
+                                        name="aw_gc_delivery_date"
+                                        placeholder="<?php echo $block->escapeHtml(__('Select Delivery Date')) ?>"
+                                        class="cs-input__input"
+                                        data-mage-init='{"awGiftCardCalendar": {
+                                                "addDays": "<?php /* @noEscape */ echo $block->getDaysOrderBetweenDelivery() ?>",
+                                                "timezoneSelector": "#aw_gc_delivery_date_timezone",
+                                                "timezoneSelectorValue": "<?php /* @noEscape */ echo $block->getDeliveryDateTimezoneValue() ?>"
+                                           }}'
+                                        value="<?php /* @noEscape */ echo $block->getDeliveryDateValue() ?>"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="field aw-gc-product-form-options__delivery-date-timezone">
+                                <label class="cs-input__label | fromto" for="aw_gc_delivery_date_timezone">
+                                    <span><?php echo $block->escapeHtml(__('Delivery Date Timezone')) ?></span>
+                                </label>
+                                <div class="cs-input__control delivery-date-timezone-name">
+                                    <select id="aw_gc_delivery_date_timezone" name="aw_gc_delivery_date_timezone">
+                                        <?php foreach ($block->getTimezones() as $timezone): ?>
+                                            <option value="<?php /* @noEscape */ echo $timezone['value'] ?>"
+                                                <?php /* @noEscape */ echo $timezone['value'] == $block->getDeliveryDateTimezoneValue() ? 'selected' : '' ?>>
+                                                <?php /* @noEscape */ echo $timezone['label'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div class="email fromto">
+                    <div class="fieldset">
+                        <div class="field required aw-gc-product-form-options__fromto">
+                            <label class="cs-input__label | fromto" for="aw_gc_recipient_name">
+                                <span><?php echo $block->escapeHtml(__('To')) ?></span>
+                            </label>
+                            <div class="cs-input__control fromto-name">
+                                <input
+                                    type="text"
+                                    name="aw_gc_recipient_name"
+                                    placeholder="<?php echo $block->escapeHtml(__('Recipient Name')) ?>"
+                                    class="required-entry cs-input__input"
+                                    value="<?php /* @noEscape */ echo $block->getRecipientNameValue() ?>"
+                                />
+                            </div>
+                            <?php if ($block->isAllowEmail()): ?>
+                                <div class="cs-input__control fromto-email aw-gc-product-form-options__email">
+                                    <input
+                                        type="text"
+                                        name="aw_gc_recipient_email"
+                                        placeholder="<?php echo $block->escapeHtml(__('Recipient Email')) ?>"
+                                        class="required-entry cs-input__input validate-email"
+                                        value="<?php /* @noEscape */ echo $block->getRecipientEmailValue() ?>"
+                                    />
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="field required aw-gc-product-form-options__fromto" data-bind="scope: 'awGiftcardCustomer'">
+                            <label class="cs-input__label | fromto" for="aw_gc_recipient_name">
+                                <span><?php echo $block->escapeHtml(__('From')) ?></span>
+                            </label>
+                            <div class="cs-input__control fromto-name">
+                                <input
+                                    type="text"
+                                    name="aw_gc_sender_name"
+                                    placeholder="<?php echo $block->escapeHtml(__('Sender Name')) ?>"
+                                    class="required-entry cs-input__input"
+                                    data-bind="value: <?php /* @noEscape */ echo $block->isDisplayCustomerData()
+                                           ? 'awGiftcardCustomer().fullname'
+                                           : "'" . $block->getSenderNameValue() . "'" ?>
+                                       "
+                                />
+                            </div>
+                            <?php if ($block->isAllowEmail()): ?>
+                                <div class="cs-input__control fromto-email aw-gc-product-form-options__email">
+                                    <input
+                                        type="text"
+                                        name="aw_gc_sender_email"
+                                        placeholder="<?php echo $block->escapeHtml(__('Sender Email')) ?>"
+                                        class="required-entry cs-input__input validate-email"
+                                        data-bind="value: <?php /* @noEscape */ echo $block->isDisplayCustomerData()
+                                               ? 'awGiftcardCustomer().email'
+                                               : "'" . $block->getSenderEmailValue() . "'" ?>
+                                           "
+                                    />
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/x-magento-init">
+                    {
+                        "*": {
+                            "Magento_Ui/js/core/app": {
+                                "components": {
+                                    "awGiftcardCustomer": {
+                                        "component": "Aheadworks_Giftcard/js/view/customer",
+                                        "config": {
+                                            "isLoggedIn": "<?php /* @noEscape */ echo $block->isCustomerLoggedIn() ?>"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                </script>
+                <?php if ($block->isAllowHeadline() || $block->isAllowMessage()): ?>
+                    <div class="email body aw-gc-product-form-options__email-content">
+                        <div class="fieldset">
+                            <?php if ($block->isAllowHeadline()): ?>
+                                <div class="cs-form__field | cs-input | aw-gc-product-form-options__field-full-width">
+                                    <label class="cs-input__label" for="aw_gc_headline">
+                                        <span><?php echo $block->escapeHtml(__('Headline')) ?></span>
+                                    </label>
+                                    <div class="cs-input__control headline">
+                                        <input
+                                            type="text"
+                                            name="aw_gc_headline"
+                                            placeholder="<?php echo $block->escapeHtml(__('Enter your headline here (optional)')) ?>"
+                                            class="cs-input__input"
+                                            value="<?php /* @noEscape */ echo $block->getHeadlineValue() ?>"
+                                        />
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($block->isAllowMessage()): ?>
+                                <div class="field aw-gc-product-form-options__field-full-width">
+                                    <label class="cs-input__label" for="aw_gc_message">
+                                        <span><?php echo $block->escapeHtml(__('Message')) ?></span>
+                                    </label>
+                                    <div class="cs-input__control message">
+                                        <textarea
+                                            name="aw_gc_message"
+                                            placeholder="<?php echo $block->escapeHtml(__('Enter your Gift Card message here (optional)')) ?>"
+                                            class="cs-input__textarea"
+                                            cols="5"
+                                            rows="5"><?php /* @noEscape */ echo $block->getMessageValue() ?></textarea>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <?php if ($block->isAllowPreview()): ?>
+                    <div class="aw-gc-product-form-options__preview | cs-product-sale-block__giftcard-button-wrapper">
+                        <button
+                            type="button"
+                            <?php /* TO DO when magesuite and new styling approach with mixins is ready remove all cs-button classes */ ?>
+                            class="cs-product-sale-block__giftcard-button | cs-button cs-button--look_light cs-button--size_300"
+                            data-mage-init='{"awGiftCardPreview":{
+                                    "url": "<?php /* @noEscape */ echo $block->escapeXssInUrl($block->getPreviewUrl()) ?>"
+                                }}'
+                        >
+                            <?php echo $block->escapeHtml(__('Preview')) ?>
+                            <svg class="cs-button__icon">
+                                <use xlink:href="#arrow_next"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="aw-gc-product-preview-popup" title="Gift Card Preview" style="display: none;"></div>
+                <?php endif; ?>
+            </div>
+        </fieldset>
+    </div>
+<?php else: ?>
+    <?php echo $block->getChildHtml('giftcard_price'); ?>
+<?php endif; ?>

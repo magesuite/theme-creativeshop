@@ -245,10 +245,12 @@ export default class SearchresultsSwitcher {
         document.location.search
             .substr(1)
             .split('&')
-            .forEach((pair: string): any => {
-                const [key, value]: any = pair.split('=');
-                params[key] = value;
-            });
+            .forEach(
+                (pair: string): any => {
+                    const [key, value]: any = pair.split('=');
+                    params[key] = value;
+                }
+            );
 
         return params;
     }
