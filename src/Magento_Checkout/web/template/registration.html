@@ -1,9 +1,3 @@
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <!-- ko foreach: getRegion('messages') -->
 <!-- ko template: getTemplate() --><!-- /ko -->
 <!--/ko-->
@@ -11,7 +5,7 @@
     <!-- ko if: isFormVisible -->
     <p data-bind="i18n: 'You can track your order status by creating an account.'" class="cs-info-page__subheadline"></p>
     <p class="cs-info-page__text"><span data-bind="i18n: 'Email Address'"></span>: <span data-bind="text: getEmailAddress()"></span></p>
-    <form method="post" data-bind="submit: createAccount">
+    <form method="get" data-bind="attr: { action: getUrl() }">
         <button type="submit" class="cs-button cs-button--look_default cs-button--type_long cs-button__type_arrow" data-bind="value: $t('Create an Account'), disable: creationStarted">
             <span class="cs-button__wrapper">
                 <span class="cs-button__span" data-bind="i18n: 'Create an Account'"></span>
