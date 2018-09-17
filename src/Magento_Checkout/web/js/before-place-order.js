@@ -15,7 +15,7 @@ define(
             },
 
             isVisible: function() {
-                return !quote.isVirtual() && stepNavigator.isProcessed( 'shipping' );
+                return stepNavigator.isProcessed( 'shipping' );
             }
         });
     }
