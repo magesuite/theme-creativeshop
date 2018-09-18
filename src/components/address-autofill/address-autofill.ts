@@ -27,11 +27,14 @@ export default class AddressAutofill {
         this.options = options;
         this.optionsList = '';
 
-        $.getJSON('https://freegeoip.net/json/', (location: any): void => {
-            if (location.country_code) {
-                options.region = location.country_code;
+        $.getJSON(
+            'https://freegeoip.net/json/',
+            (location: any): void => {
+                if (location.country_code) {
+                    options.region = location.country_code;
+                }
             }
-        }).always(() => {
+        ).always(() => {
             // The most important parameter to set googleDetector region option and language option is value of country select
             // First check if country select has any value, then check if it is different from geolocation set by IP
             if (
@@ -68,21 +71,24 @@ export default class AddressAutofill {
         let typeTimer: any;
         const typeInterval: number = 500;
 
-        this.streetField.on('keyup', (e: KeyboardEvent): void => {
-            clearTimeout(typeTimer);
+        this.streetField.on(
+            'keyup',
+            (e: KeyboardEvent): void => {
+                clearTimeout(typeTimer);
 
-            if (
-                e.which !== 8 &&
-                e.which !== 38 &&
-                e.which !== 40 &&
-                e.which !== 13
-            ) {
-                typeTimer = setTimeout(
-                    this._initGoogleStreetRequest.bind(this),
-                    typeInterval
-                );
+                if (
+                    e.which !== 8 &&
+                    e.which !== 38 &&
+                    e.which !== 40 &&
+                    e.which !== 13
+                ) {
+                    typeTimer = setTimeout(
+                        this._initGoogleStreetRequest.bind(this),
+                        typeInterval
+                    );
+                }
             }
-        });
+        );
     }
 
     /**
@@ -136,21 +142,27 @@ export default class AddressAutofill {
         let typeTimer: any;
         const typeInterval: number = 1000;
 
-        this.zipField.on('keyup', (): void => {
-            if (!this.cityField.val()) {
-                clearTimeout(typeTimer);
-                typeTimer = setTimeout(
-                    this._initGoogleZipRequest.bind(this),
-                    typeInterval
-                );
+        this.zipField.on(
+            'keyup',
+            (): void => {
+                if (!this.cityField.val()) {
+                    clearTimeout(typeTimer);
+                    typeTimer = setTimeout(
+                        this._initGoogleZipRequest.bind(this),
+                        typeInterval
+                    );
+                }
             }
-        });
+        );
 
-        this.zipField.on('blur', (): void => {
-            if (!this.cityField.val()) {
-                this._initGoogleZipRequest();
+        this.zipField.on(
+            'blur',
+            (): void => {
+                if (!this.cityField.val()) {
+                    this._initGoogleZipRequest();
+                }
             }
-        });
+        );
     }
 
     /**
@@ -324,11 +336,13 @@ export default class AddressAutofill {
         });
 
         // Close on click outside
-        $(document).click((event: Event): void => {
-            if (!$(event.target).closest('.cs-html-select').length) {
-                jsSelect.remove();
+        $(document).click(
+            (event: Event): void => {
+                if (!$(event.target).closest('.cs-html-select').length) {
+                    jsSelect.remove();
+                }
             }
-        });
+        );
     }
 
     /**

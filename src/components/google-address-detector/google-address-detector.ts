@@ -59,15 +59,19 @@ export default class GoogleAddressDetector {
      * @returns {Promise.<T>} Promise with array of formatted result matches
      */
     public getFormattedResults(query: string): any {
-        return this._callGoogleApi(query).then((results: any): any => {
-            const formattedResults: any = [];
+        return this._callGoogleApi(query).then(
+            (results: any): any => {
+                const formattedResults: any = [];
 
-            results.map((result: any): any => {
-                formattedResults.push(this.getFormattedAddress(result));
-            });
+                results.map(
+                    (result: any): any => {
+                        formattedResults.push(this.getFormattedAddress(result));
+                    }
+                );
 
-            return formattedResults;
-        });
+                return formattedResults;
+            }
+        );
     }
 
     /**
@@ -117,9 +121,11 @@ export default class GoogleAddressDetector {
      * @public
      */
     public getCityByPostalCode(postalCode: string): string {
-        return this._callGoogleApi(postalCode).then((result: any): any => {
-            return this.getFormattedAddress(result[0]).city;
-        });
+        return this._callGoogleApi(postalCode).then(
+            (result: any): any => {
+                return this.getFormattedAddress(result[0]).city;
+            }
+        );
     }
 
     /**
@@ -129,9 +135,11 @@ export default class GoogleAddressDetector {
      * @public
      */
     public getPostalCodeByFullStreet(streetQuery: string): string {
-        return this._callGoogleApi(streetQuery).then((result: any): any => {
-            return this.getFormattedAddress(result[0]).postalCode;
-        });
+        return this._callGoogleApi(streetQuery).then(
+            (result: any): any => {
+                return this.getFormattedAddress(result[0]).postalCode;
+            }
+        );
     }
 
     /**
@@ -141,11 +149,14 @@ export default class GoogleAddressDetector {
      * @public
      */
     public getCorrectStreetName(streetQuery: string): string {
-        return this._callGoogleApi(streetQuery).then((result: any): any => {
-            const street: string = this.getFormattedAddress(result[0]).street;
+        return this._callGoogleApi(streetQuery).then(
+            (result: any): any => {
+                const street: string = this.getFormattedAddress(result[0])
+                    .street;
 
-            return street === streetQuery ? null : street;
-        });
+                return street === streetQuery ? null : street;
+            }
+        );
     }
 
     /**
