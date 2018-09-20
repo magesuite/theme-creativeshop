@@ -1,0 +1,150 @@
+{% if namespace is not defined %}
+    {% set namespace = 'cs-' %}
+{% endif %}
+
+{% if showWrapper %}
+    <{{ tag }} class="{{ namespace }}grid-product{% if mode is defined and mode == 'static' %} {{ namespace }}grid-product--static{% endif %} {{ mix }}">
+{% endif %}
+    <div class="{{ namespace }}grid-product__main">
+
+        {% if hotspots.before.photo %}
+            {{ hotspots.before.photo|raw }}
+        {% endif %}
+
+        <a href="{{ url }}" class="{{ namespace }}grid-product__figure-wrapper">
+            {% if badges is defined %}
+                <ul class="{{ namespace }}grid-product__badges">
+                    {% for badge in badges %}
+                        <li class="{{ namespace }}grid-product__badge {{ badge.mix }}">
+                            {{ badge.content|raw }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if hotspots.after.badges %}
+                {{ hotspots.after.badges|raw }}
+            {% endif %}
+
+            <figure class="{{ namespace }}grid-product__figure">
+                {% if lazyload %}
+                    <img
+                        class="{{ namespace }}grid-product__image {{ image.mix }} | lazyload"
+                        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        data-src="{{ image.src }}"
+                        alt="{{ image.alt }}"
+                        {% if image.srcset %}data-srcset="{{ image.srcset }}"{% endif %}
+                        {% if sizes %}sizes="{{ sizes }}"{% endif %}
+                        {% if image.width %}width="{{ image.width }}"{% endif %}
+                        {% if image.height %}height="{{ image.height }}"{% endif %}
+                    >
+                    <noscript>
+                        <img
+                            class="{{ namespace }}grid-product__image {{ image.mix }}"
+                            src="{{ image.src }}"
+                            alt="{{ image.alt }}"
+                            {% if image.srcset %}data-srcset="{{ image.srcset }}"{% endif %}
+                            {% if sizes %}sizes="{{ sizes }}"{% endif %}
+                            {% if image.width %}width="{{ image.width }}"{% endif %}
+                            {% if image.height %}height="{{ image.height }}"{% endif %}
+                        >
+                    </noscript>
+                {% else %}
+                    <img
+                        class="{{ namespace }}grid-product__image {{ image.mix }}"
+                        src="{{ image.src }}"
+                        alt="{{ image.alt }}"
+                        {% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}
+                        {% if sizes %}sizes="{{ sizes }}"{% endif %}
+                        {% if image.width %}width="{{ image.width }}"{% endif %}
+                        {% if image.height %}height="{{ image.height }}"{% endif %}
+                    >
+                {% endif %}
+            </figure>
+        </a>
+
+        {% if hotspots.after.photo %}
+            {{ hotspots.after.photo|raw }}
+        {% endif %}
+
+        {% if swatches is defined and swatches.content is defined and swatches.asAddon == false %}
+            <div class="{{ namespace }}grid-product__swatches {{ swatches.mix }}">
+                {{ swatches.content|raw }}
+            </div>
+        {% endif %}
+
+        {% if hotspots.after.swatches %}
+            {{ hotspots.after.swatches|raw }}
+        {% endif %}
+
+        {% if nameMoved != true %}
+            <div class="{{ namespace }}grid-product__name">
+                <a href="{{ url }}" class="{{ namespace }}grid-product__name-link">{{ name|raw }}</a>
+            </div>
+        {% endif %}
+
+        {% if hotspots.after.name %}
+            {{ hotspots.after.name|raw }}
+        {% endif %}
+
+        {% if priceMoved != true %}
+            <div class="{{ namespace }}grid-product__price {{ price.mix }}">
+                {{ price.content|raw }}
+            </div>
+        {% endif %}
+
+
+        {% if hotspots.after.price %}
+            {{ hotspots.after.price|raw }}
+        {% endif %}
+    </div>
+
+    {% if addons is defined %}
+        <div class="{{ namespace }}grid-product__addons {{ addons.mix }}">
+            {% if addons.top is defined %}
+                <div class="{{ namespace }}grid-product__addons__top">
+                    {% for addon in addons.top %}
+                        <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                            {{ addon.content|raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="{{ namespace }}grid-product__addons__left">
+                {% for addon in addons.left %}
+                    <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                        {{ addon.content|raw }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="{{ namespace }}grid-product__addons__right">
+                {% for addon in addons.right %}
+                    <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                        {{ addon.content|raw }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if addons.bottom is defined %}
+                <div class="{{ namespace }}grid-product__addons__bottom">
+                    {% for addon in addons.bottom %}
+                        <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                            {{ addon.content|raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {% if removeButton %}
+        <div class="{{ namespace }}grid-product__remove">
+            {{ removeButton }}
+        </div>
+    {% endif %}
+
+{% if showWrapper %}
+    </{{ tag }}>
+{% endif %}

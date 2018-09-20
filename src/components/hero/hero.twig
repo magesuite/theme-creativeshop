@@ -1,0 +1,93 @@
+{% set visibilityClass = '' %}
+{% if componentVisibility and componentVisibility.mobile == false %}
+    {% set visibilityClass = namespace ~ 'display-controller--hidden-mobile ' %}
+{% endif %}
+{% if componentVisibility and componentVisibility.desktop == false %}
+    {% set visibilityClass = visibilityClass ~ namespace ~ 'display-controller--hidden-desktop ' %}
+{% endif %}
+
+{% set mobileDisplayVariantClass = '' %}
+{% if mobileDisplayVariant.id == 'list' %}
+    {% set mobileDisplayVariantClass = namespace ~ 'hero--as-list-mobile' %}
+{% elseif mobileDisplayVariant.id == 'hidden' %}
+    {% set mobileDisplayVariantClass = namespace ~ 'hero--hidden-mobile' %}
+{% endif %}
+
+<div class="{{ visibilityClass }}">
+    <div class="{{ namespace }}hero {{ mobileDisplayVariantClass }} {{ mix }}">
+        <div class="{{ namespace }}hero__carousel">
+            <div class="{{ namespace }}hero__wrapper">
+                <ul class="{{ namespace }}hero__slides">
+
+                    {% for item in items %}
+                        <li class="{{ namespace }}hero__slide {{ namespace }}hero__slide--scheme-{{ item.colorScheme }}{% if item.image.src %} {{ namespace }}hero__slide--image-uploaded{% endif %}">
+                            {% if item.href %}
+                                <a href="{{ item.href }}" class="{{ namespace }}hero__slide-link">
+                            {% endif %}
+
+                                {% if item.image.src %}
+                                    <figure class="{{ namespace }}hero__figure">
+                                        <img
+                                            class="{{ namespace }}hero__image"
+                                            src="{{ item.image.src }}"
+                                            srcset="{{ item.image.srcSet }}"
+                                            sizes="{{ sizes }}"
+                                            alt="{% if item.image.alt %}{{ item.image.alt }}
+                                            {% elseif item.headline %}{{ item.headline|raw  }}
+                                            {% elseif item.subheadline %}{{ item.subheadline|raw  }}
+                                            {% else %}Hero carousel slide
+                                            {% endif %}"
+                                        >
+                                    </figure>
+                                {% endif %}
+
+                                <div class="{{ namespace }}hero__content-wrapper {{ namespace }}hero__content-wrapper--{{ item.displayVariant }}">
+                                    <div class="{{ namespace }}hero__content">
+                                        {% if item.headline %}
+                                            <h2 class="{{ namespace }}hero__headline">{{ item.headline|raw }}</h2>
+                                        {% endif %}
+
+                                        {% if item.subheadline %}
+                                            <p class="{{ namespace }}hero__subheadline">{{ item.subheadline|raw }}</p>
+                                        {% endif %}
+
+                                        {% if item.paragraph %}
+                                            <p class="{{ namespace }}hero__text">{{ item.paragraph|raw }}</p>
+                                        {% endif %}
+
+                                        {% if item.href and item.ctaLabel %}
+                                            <div class="{{ namespace }}hero__cta">
+                                                <span role="button" class="{{ button.class }}">
+                                                    <span class="{{ button.labelClass }}">{{ item.ctaLabel|striptags }}</span>
+                                                    {% if button.icon.src %}
+                                                        <svg class="{{ button.icon.class }}"><use xlink:href="{{ button.icon.src }}"></use></svg>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% if item.href %}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+        {% if navigation.show %}
+            <button class="{{ namespace }}hero__nav {{ namespace }}hero__nav--prev {{ navigation.icons.prev.mix }}" type="button">
+                <svg class="{{ namespace }}hero__nav-icon"><use xlink:href="{{ navigation.icons.prev.src }}"></use></svg>
+            </button>
+            <button class="{{ namespace }}hero__nav {{ namespace }}hero__nav--next {{ navigation.icons.next.mix }}" type="button">
+                <svg class="{{ namespace }}hero__nav-icon"><use xlink:href="{{ navigation.icons.next.src }}"></use></svg>
+            </button>
+        {% endif %}
+
+        {% if pagination.show %}
+            <ul class="{{ namespace }}hero__pagination {{ pagination.mix }}"></ul>
+        {% endif %}
+    </div>
+</div>

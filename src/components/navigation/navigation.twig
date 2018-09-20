@@ -1,0 +1,140 @@
+<nav class="{{ namespace }}navigation">
+    <ul class="{{ namespace }}navigation__list">
+        {% for item in items %}
+            <li
+                class=" {{ namespace }}navigation__item{% if item.category_custom_url is not null %} {{ namespace }}navigation__item--custom{% endif %}{% if item.subcategories and item.subcategories|length > 0 and item.do_not_expand_flyout != '1' %} {{ namespace }}navigation__item--with-flyout{% endif %}"
+                data-category-id="{{ item.id }}"
+                {% if item.category_identifier %}data-category-identifier="{{ item.category_identifier }}"{% endif %}
+            >
+                <a href="{% if item.category_custom_url is not null %}{{ item.category_custom_url }}{% else %}{{ item.url }}{% endif %}" class="{{ namespace }}navigation__link{% if showCategoryIconRoot and item.category_icon is defined and item.category_icon|length %} {{ namespace }}navigation__link--with-icon{% endif %}">
+                    {% if showCategoryIconRoot and item.category_icon is defined and item.category_icon|length %}
+                        <span class="{{ namespace }}navigation__link-icon-wrapper {{ namespace }}navigation__link-icon-wrapper--root">
+                            <img src="{{ item.category_icon }}" alt="{{ item.label }}" class="{{ namespace }}navigation__link-icon">
+                        </span>
+                    {% endif %}
+                    {{ item.label }}
+                    {% if showProductsAmountRoot and item.category_custom_url is null %}
+                        <span class="{{ namespace }}navigation__products-qty">{{ item.number_of_products }}</span>
+                    {% endif %}
+                </a>
+                {% if item.subcategories and item.subcategories|length > 0 and item.do_not_expand_flyout != '1' %}
+                    <div class="{{ namespace }}navigation__flyout"{% if item.category_identifier %} data-category-identifier="{{ item.category_identifier }}"{% endif %}>
+                        <div class="{{ namespace }}navigation__categories">
+                            <div class="{{ namespace }}navigation__category{% if item.category_custom_url is not null %} {{ namespace }}navigation__category--custom{% endif %} {{ namespace }}navigation__category--hidden" data-category-id="{{ item.id }}"  {% if item.category_identifier %}data-category-identifier="{{ item.category_identifier }}"{% endif %}>
+                                <a href="{% if item.category_custom_url is not null %}{{ item.category_custom_url }}{% else %}{{ item.url }}{% endif %}" class="{{ namespace }}navigation__touch-link {{ namespace }}navigation__touch-link--category">
+                                    {{ translate("Go to %1", item.label) }}
+                                </a>
+                            </div>
+
+                            {% for category in item.subcategories %}
+                                <div class="{{ namespace }}navigation__category{% if category.category_custom_url is not null %} {{ namespace }}navigation__category--custom{% endif %}" data-category-id="{{ category.id }}"  {% if category.category_identifier %}data-category-identifier="{{ category.category_identifier }}"{% endif %}>
+                                    <a href="{% if category.category_custom_url is not null %}{{ category.category_custom_url }}{% else %}{{ category.url }}{% endif %}" class="{{ namespace }}navigation__link {{ namespace }}navigation__link--category{% if showCategoryIconSubcats and category.category_icon is defined and category.category_icon|length %} {{ namespace }}navigation__link--with-icon{% endif %}">
+                                        {% if showCategoryIconSubcats and category.category_icon is defined and category.category_icon|length %}
+                                            <span class="{{ namespace }}navigation__link-icon-wrapper">
+                                                <img src="{{ category.category_icon }}" alt="{{ category.label }}" class="{{ namespace }}navigation__link-icon">
+                                            </span>
+                                        {% endif %}
+                                        {{ category.label }}
+                                        {% if showProductsAmountSubcats and category.category_custom_url is null %}
+                                            <span class="{{ namespace }}navigation__link-products-qty">{{ category.number_of_products }}</span>
+                                        {% endif %}
+                                    </a>
+                                    <ul class="{{ namespace }}navigation__subcategories">
+                                        {% for subcategory in category.subcategories %}
+                                            <li class="{{ namespace }}navigation__subcategory{% if subcategory.category_custom_url is not null %} {{ namespace }}navigation__subcategory--custom{% endif %}" data-category-id="{{ subcategory.id }}">
+                                                <a href="{% if subcategory.category_custom_url is not null %}{{ subcategory.category_custom_url }}{% else %}{{ subcategory.url }}{% endif %}" class="{{ namespace }}navigation__link {{ namespace }}navigation__link--subcategory{% if showCategoryIconSubcats and subcategory.category_icon is defined and subcategory.category_icon|length %} {{ namespace }}navigation__link--with-icon{% endif %}">
+                                                    {% if showCategoryIconSubcats and subcategory.category_icon is defined and subcategory.category_icon|length %}
+                                                        <span class="{{ namespace }}navigation__link-icon-wrapper">
+                                                            <img src="{{ subcategory.category_icon }}" alt="{{ subcategory.label }}" class="{{ namespace }}navigation__link-icon">
+                                                        </span>
+                                                    {% endif %}
+                                                    {{ subcategory.label }}
+                                                    {% if showProductsAmountSubcats and subcategory.category_custom_url is null %}
+                                                        <span class="{{ namespace }}navigation__link-products-qty">{{ subcategory.number_of_products }}</span>
+                                                    {% endif %}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if showProducts and item.featured_products|length %}
+                            <div class="{{ namespace }}navigation__products">
+                                {% if item.featured_products_header %}
+                                    <p class="{{ namespace }}navigation__products-header">{{ item.featured_products_header }}</p>
+                                {% endif %}
+                                <ul class="{{ namespace }}navigation__products-list">
+                                    {% for product in item.featured_products %}
+                                        <li class="{{ namespace }}navigation__product">
+
+                                            {% include locate( 'navigation/product.twig' ) with {
+                                                'namespace': 'cs-',
+                                                'product': product
+                                            } %}
+
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% if item.image_teaser.image or item.image_teaser.headline or item.image_teaser.subheadline or item.image_teaser.paragraph %}
+                            <div class="{{ namespace }}navigation__teaser">
+                                {% if item.image_teaser.button_link %}
+                                    <a href="{{ item.image_teaser.button_link }}" class="{{ namespace }}navigation__teaser-link">
+                                {% else %}
+                                    <span class="{{ namespace }}navigation__teaser-link">
+                                {% endif %}
+                                    {% if item.image_teaser.image %}
+                                    <figure class="{{ namespace }}navigation__teaser-figure">
+                                        <img
+                                            class="{{ namespace }}navigation__teaser-image"
+                                            src="{{ item.image_teaser.image }}"
+                                            data-src="{{ item.image_teaser.image }}"
+                                            {% if item.image_teaser.src_set %}data-srcset="{{ item.image_teaser.src_set }}"{% endif %}
+                                            alt="{% if item.image_teaser.headline %}{{ item.image_teaser.headline }}{% else %}{{ item.label }}{% endif %}"
+                                        >
+                                    </figure>
+                                    {% endif %}
+                                    {% if item.image_teaser.headline or item.image_teaser.subheadline or item.image_teaser.paragraph or item.image_teaser.button_label %}
+                                        <div class="{{ namespace }}navigation__teaser-content-wrapper">
+                                            <div class="{{ namespace }}navigation__teaser-content">
+                                                {% if item.image_teaser.headline %}
+                                                    <h2 class="{{ namespace }}navigation__teaser-headline">{{ item.image_teaser.headline }}</h2>
+                                                {% endif %}
+                                                {% if item.image_teaser.subheadline %}
+                                                    <p class="{{ namespace }}navigation__teaser-subheadline">{{ item.image_teaser.subheadline }}</p>
+                                                {% endif %}
+                                                {% if item.image_teaser.paragraph %}
+                                                    <p class="{{ namespace }}navigation__teaser-text">{{ item.image_teaser.paragraph }}</p>
+                                                {% endif %}
+                                                {% if item.image_teaser.button_label %}
+                                                    <div class="{{ namespace }}navigation__teaser-cta">
+                                                        <span role="button" class="cs-button cs-button--type_long cs-button--look_default">
+                                                            <span class="cs-button__span">{{ item.image_teaser.button_label }}</span>
+                                                            {% if imageTeaser.buttonIcon %}
+                                                                <svg class="cs-button__icon">
+                                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{ imageTeaser.buttonIcon }}"></use>
+                                                                </svg>
+                                                            {% endif %}
+                                                        </span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% if item.image_teaser.button_link %}
+                                    </a>
+                                {% else %}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

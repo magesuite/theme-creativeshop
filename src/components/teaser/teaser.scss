@@ -1,0 +1,120 @@
+// cs-swiper
+// Base configuration for all carousels used in our projects
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+@import 'vendors/swiper.scss';
+
+@mixin teaser() {
+    $root: &;
+    position: relative;
+
+    &__wrapper {
+        @extend .swiper-container;
+    }
+
+    &__slides {
+        @extend .swiper-wrapper;
+        align-items: stretch;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__slide {
+        @extend .swiper-slide;
+        height: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__figure {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+    }
+
+    &__nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        border: 0;
+        background: transparent;
+        display: block;
+        padding: 0;
+        cursor: pointer;
+
+        &--hidden {
+            display: none;
+        }
+
+        &--disabled {
+            cursor: default;
+            opacity: 0.1;
+        }
+
+        &--prev {
+            left: 0;
+        }
+
+        &--next {
+            right: 0;
+        }
+    }
+
+    &__nav-icon {
+        width: 27px;
+        height: 50px;
+        fill: #222;
+
+        #{$root}__nav--large & {
+            width: 54px;
+            height: 100px;
+        }
+    }
+
+    &__numbers {
+        display: none;
+        text-align: center;
+        margin: 1rem 0 0;
+
+        &--visible {
+            display: block;
+        }
+    }
+
+    &__number {
+        &--current,
+        &--total {
+            font-weight: 700;
+        }
+
+        &--current {
+            color: #e40a18;
+        }
+    }
+
+    &__pagination {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        z-index: 2;
+        bottom: -2rem;
+        left: 50%;
+        transform: translateX(-50%);
+
+        &--hidden {
+            display: none;
+        }
+    }
+
+    &__pagination-item {
+        display: inline-block;
+        margin: 2px;
+    }
+}

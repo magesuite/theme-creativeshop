@@ -1,0 +1,66 @@
+// items-grid
+// Used for listing with flexbox, f.e. products  grid
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+
+@mixin itemsGrid() {
+    $root: &;
+    $mobileGutter: .35rem;
+    $tabletUpGutter: .5rem;
+
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    width: calc( 100% + ( 2 * #{$mobileGutter} ) );
+    margin: 0 -#{$mobileGutter};
+    padding: 0;
+    list-style: none;
+
+    @include media( '>=tablet' ) {
+        width: calc( 100% + ( 2 * #{$tabletUpGutter} ) );
+        margin: 0 -#{$tabletUpGutter};
+    }
+
+    &__item {
+        width: 100%;
+        min-width: 215px;
+        max-width: 400px;
+        margin: 0 $mobileGutter 2 * $mobileGutter;
+        background-color: #fff;
+        box-sizing: border-box;
+
+        @include media( '>=phone-lg' ) {
+            width: calc( ( 100% / 2 ) - ( 2 * #{$mobileGutter} ) );
+
+            #{$root}--in-column & {
+                width: calc( 100% - ( 2 * #{$mobileGutter} ) );
+            }
+        }
+
+        @include media( '>=tablet' ) {
+            margin: 0 $tabletUpGutter 2 * $tabletUpGutter;
+            width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
+
+            #{$root}--in-column & {
+                width: calc( ( 100% / 2 ) - ( 2 * #{$tabletUpGutter} ) );
+            }
+        }
+
+        @include media( '>=laptop' ) {
+            width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
+
+            #{$root}--in-column & {
+                width: calc( ( 100% / 3 ) - ( 2 * #{$tabletUpGutter} ) );
+            }
+        }
+
+        @include media( '>=desktop' ) {
+            width: calc( ( 100% / 5 ) - ( 2 * #{$tabletUpGutter} ) );
+
+            #{$root}--in-column & {
+                width: calc( ( 100% / 4 ) - ( 2 * #{$tabletUpGutter} ) );
+            }
+        }
+    }
+}

@@ -1,0 +1,81 @@
+// Breakpoint
+// Utility for sharing breakpoints between CSS and JS.
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+
+/**
+ * Default project breakpoints, can be overwritten by setting a variable with the same name
+ * before importing this file.
+ */
+$breakpoints: (
+    phone: 23.13em,
+    // 370px
+        phone-lg: 30em,
+    // 480px
+        tablet: 48em,
+    // 768px
+        laptop: 64em,
+    // 1024px
+        laptop-lg: 80em,
+    // 1280px
+        desktop: 90em,
+    // 1440px
+        tv: 120em// 1920px,,,,,
+) !default;
+
+@import '~include-media/dist/include-media';
+
+/**
+ * These atom is responsible for setting aprropriate :before and :after content to body
+ * so that its JS counterpart can read and return current breakpoint to other
+ * scripts.
+ */
+body {
+    /* stylelint-disable string-no-newline */
+    &.checkout-onepage-success:before,
+    &:before {
+        // Keys will be converted from dash-case to camelCase in JS object.
+        content: '{
+            "phone": 370,
+            "phone-lg": 480,
+            "tablet": 768,
+            "laptop": 1024,
+            "laptop-lg": 1280,
+            "desktop": 1440,
+            "tv": 1920
+        }';
+        display: none;
+    }
+    /* stylelint-enable */
+
+    &.checkout-onepage-success:after,
+    &:after {
+        content: '370';
+        display: none;
+
+        @include media('>=phone-lg') {
+            content: '480';
+        }
+
+        @include media('>=tablet') {
+            content: '768';
+        }
+
+        @include media('>=laptop') {
+            content: '1024';
+        }
+
+        @include media('>=laptop-lg') {
+            content: '1280';
+        }
+
+        @include media('>=desktop') {
+            content: '1440';
+        }
+
+        @include media('>=tv') {
+            content: '1920';
+        }
+    }
+}

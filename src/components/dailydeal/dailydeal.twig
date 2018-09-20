@@ -1,0 +1,19 @@
+<div class="{{ namespace }}dailydeal {{ mix }}">
+    {{ hotspot.beforeHeader|raw }}
+    {% if header.show %}
+        <div class="{{ namespace }}dailydeal__header">
+            {% if header.title %}
+                <strong class="{{ namespace }}dailydeal__title">{{ header.title }}</strong>
+            {% endif %}
+            {% if items.amount and items.amount > 0 %}
+                <div class="{{ namespace }}dailydeal__availability">
+                    {{ items.textBefore }} <strong class="{{ namespace }}dailydeal__items-amount" data-dailydeal-items="{{ items.amount }}">{{ items.amount }}</strong> {{ items.textAfter }}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    {{ hotspot.beforeCountdown|raw }}
+    <div class="{{ namespace }}dailydeal__countdown" data-dailydeal-end="{{ deal.end }}"></div>
+    {{ hotspot.afterCountdown|raw }}
+    <input type="hidden" name="{{ namespace }}dailydeal__countdown-labels" class="{{ namespace }}dailydeal__countdown-labels" value="{{ labels|json_encode() }}">
+</div>

@@ -1,0 +1,88 @@
+// qty-increment
+// This component allows to use +/- buttons to increment/decrement input boolean
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+$ns: 'cs-' !default;
+
+.#{$ns}qty-increment {
+    $root: &;
+
+    position: relative;
+    min-width: 86px;
+    max-width: 100px;
+
+    &__input,
+    &__input:focus {
+        appearance: textfield;
+        margin: 0;
+        padding-left: 28px;
+        padding-right: 28px;
+        text-align: center;
+    }
+
+    &__button {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 28px;
+        padding: 0;
+        border: 0;
+        margin: 0;
+        background-color: transparent;
+        font-size: 1.45em;
+        font-weight: 100;
+        cursor: pointer;
+
+        &--decrement {
+            left: 0;
+            border-right: 1px solid #ddd;
+        }
+
+        &--increment {
+            right: 0;
+            border-left: 1px solid #ddd;
+        }
+
+        &:disabled,
+        &--disabled {
+            cursor: default;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        fill: #ddd;
+        transition: opacity .15s linear;
+
+        &--plus {
+            width: 12px;
+            height: 12px;
+            margin-left: -6px;
+            margin-top: -6px;
+        }
+
+        &--minus {
+            width: 12px;
+            height: 3px;
+            margin-left: -6px;
+            margin-top: -1px;
+        }
+
+        &--dec,
+        &--inc {
+            display: none;
+        }
+
+        #{$root}__button--disabled & {
+            opacity: .25;
+        }
+    }
+
+    &--center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

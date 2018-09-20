@@ -1,0 +1,169 @@
+// If switched to yes then there will be a separate back button displayed
+// inside each step instead of the shared one.
+$product-finder-back-button-per-step: false !default;
+// Tells how many options should per each row should be supported at maximum.
+$product-finder-step-option-max-per-row: 6 !default;
+// Vertical gap size between step options.
+$product-finder-step-option-gap: 1rem !default;
+
+@mixin product-finder() {
+    $root: &;
+    position: relative;
+    padding-bottom: 2rem;
+    transition: height 0.3s, padding-bottom 0.3s;
+    overflow: hidden;
+
+    &__back-button {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scale(0);
+        opacity: 0;
+        transition: opacity 0.3s 0.4s;
+
+        &--visible {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+
+            @if $product-finder-back-button-per-step {
+                display: none;
+
+                #{$root}__step & {
+                    display: inline-block;
+                }
+            } @else {
+                #{$root}__step & {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__form {
+        display: none;
+    }
+
+    &__step {
+        position: absolute;
+        display: flex;
+        flex-wrap: wrap;
+        opacity: 0;
+        transition: opacity 0.3s 0.4s;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: -1;
+
+        &--current {
+            position: static;
+            opacity: 1;
+            z-index: 1;
+        }
+    }
+
+    &__step-header {
+        width: 100%;
+        padding-bottom: 1rem;
+    }
+
+    &__step-options {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    &__step-option {
+        flex: 0 1 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        box-sizing: border-box;
+
+        @for $i from 1 to $product-finder-step-option-max-per-row + 1 {
+            $step-option-num-of-gaps: $i - 1;
+
+            #{$root}__step--options-mobile_#{$i} & {
+                flex-basis: calc(
+                    #{100% /
+                        $i} -
+                        #{$step-option-num-of-gaps *
+                        $product-finder-step-option-gap /
+                        $i}
+                );
+            }
+
+            #{$root}__step--options-tablet_#{$i} & {
+                @include media('>=tablet') {
+                    flex-basis: calc(
+                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder-step-option-gap /
+                            $i}
+                    );
+                }
+            }
+
+            #{$root}__step--options-desktop_#{$i} & {
+                @include media('>=laptop') {
+                    flex-basis: calc(
+                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder-step-option-gap /
+                            $i}
+                    );
+                }
+            }
+        }
+
+        & + & {
+            margin-left: 1rem;
+        }
+    }
+
+    &__option-sizer {
+        padding-bottom: 100%;
+    }
+
+    &__option-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /**
+         * We do not autoprefix grid since IE11 has many bugs in its implementation
+         * but in this small case it is working fine as tested.
+         */
+        display: -ms-grid;
+        display: grid;
+        -ms-grid-rows: 1fr auto;
+        grid-template-rows: 1fr auto;
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    &__option-image {
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+        -ms-grid-row: 1;
+        -ms-grid-column-align: center;
+        grid-row: 1;
+    }
+
+    &__option-label {
+        width: 100%;
+        justify-self: flex-end;
+        margin-top: auto;
+        font-weight: bold;
+        padding-top: 0.5rem;
+        text-align: center;
+        -ms-grid-row: 2;
+        grid-row: 2;
+    }
+}

@@ -1,0 +1,120 @@
+{% set visibilityClass = '' %}
+{% if componentVisibility and componentVisibility.mobile == false %}
+    {% set visibilityClass = namespace ~ 'display-controller--hidden-mobile ' %}
+{% endif %}
+{% if componentVisibility and componentVisibility.desktop == false %}
+    {% set visibilityClass = visibilityClass ~ namespace ~ 'display-controller--hidden-desktop ' %}
+{% endif %}
+
+<div class="{{ visibilityClass }}">
+    <div class="{{ namespace }}image-teaser
+             {{ namespace }}image-teaser--items-in-row-{{ itemsPerRow }}
+             {{ namespace }}image-teaser--items-in-row-mobile-{{ itemsPerRowMobile }}
+             {% if isSlider %}{{ namespace }}image-teaser--slider{% endif %}
+             {% if currentScenario.teaserWidth.id == 'w-s' %} {{ namespace }}image-teaser--full-width-slider{% endif %}
+             {{ mix }}"
+        data-items-per-view="{{ itemsPerView }}"
+        {% if itemsPerViewMobile %}data-mobile-items-per-view="{{ itemsPerViewMobile }}" {% endif %}
+        data-is-slider="{{ isSlider }}"
+        data-mobile-is-slider="{{ isSliderMobile }}">
+
+        <div class="{{ namespace }}image-teaser__carousel">
+            <div class="{{ namespace }}image-teaser__wrapper {{ namespace }}image-teaser__wrapper--content-display-{{ displayVariant }}">
+                <ul class="{{ namespace }}image-teaser__slides">
+
+                    {% for item in items %}
+                        <li class="{{ namespace }}image-teaser__slide {{ namespace }}image-teaser__slide--scheme-{{ item.colorScheme }}{% if item.image.src %} {{ namespace }}image-teaser__slide--image-uploaded{% endif %}">
+
+                            {% if item.href %}
+                                <a href="{{ item.href }}" class="{{ namespace }}image-teaser__slide-link">
+                            {% endif %}
+
+                            {% if item.image.src %}
+                                {% set imgSrc = item.image.src %}
+                                {% set isSvg = imgSrc|split('.')|last == 'svg' %}
+                                {% if isSvg == false %}
+                                    {% set imgSrc = isSlider and isSliderMobile ? '' : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' %}
+                                {% endif %}
+                                <figure class="{{ namespace }}image-teaser__figure">
+                                    <img
+                                        class="{{ namespace }}image-teaser__image | {{ isSlider and isSliderMobile ? 'swiper-lazy' : 'lazyload' }}"
+                                        src="{{ imgSrc }}"
+                                        {% if isSvg == false %} data-src="{{ item.image.src }}" {% endif %}
+                                        {% if item.image.srcSet and isSvg == false %}data-srcset="{{ item.image.srcSet }}"{% endif %}
+                                        {% if sizes and isSvg == false %}sizes="{{ sizes }}"{% endif %}
+                                        alt="{% if item.image.alt %}{{ item.image.alt }}
+                                             {% elseif item.headline %}{{ item.headline|raw  }}
+                                             {% elseif item.subheadline %}{{ item.subheadline|raw  }}
+                                             {% else %}Teaser image{% endif %}"
+                                        {% if item.width %}width="{{ item.width }}"{% endif %}
+                                        {% if item.height %}height="{{ item.height }}"{% endif %}
+                                    >
+                                    <noscript>
+                                        <img
+                                            class="{{ namespace }}image-teaser__image"
+                                            src="{{ item.image.src }}"
+                                            {% if item.image.srcSet %}srcset="{{ item.image.srcSet }}"{% endif %}
+                                            {% if sizes %}sizes="{{ sizes }}"{% endif %}
+                                            alt="{% if item.image.alt %}{{ item.image.alt }}
+                                                 {% elseif item.headline %}{{ item.headline|raw  }}
+                                                 {% elseif item.subheadline %}{{ item.subheadline|raw  }}
+                                                 {% else %}Teaser image{% endif %}"
+                                            {% if item.width %}width="{{ item.width }}"{% endif %}
+                                            {% if item.height %}height="{{ item.height }}"{% endif %}
+                                        >
+                                    </noscript>
+                                </figure>
+                            {% endif %}
+
+                            <div class="{{ namespace }}image-teaser__content-wrapper {{ namespace }}image-teaser__content-wrapper--content-display-scenario-{{ item.displayVariant }}">
+                                <div class="{{ namespace }}image-teaser__content">
+                                    {% if item.headline %}
+                                        <h2 class="{{ namespace }}image-teaser__headline">{{ item.headline|raw }}</h2>
+                                    {% endif %}
+
+                                    {% if item.subheadline %}
+                                        <p class="{{ namespace }}image-teaser__subheadline">{{ item.subheadline|raw }}</p>
+                                    {% endif %}
+
+                                    {% if item.paragraph %}
+                                        <p class="{{ namespace }}image-teaser__text">{{ item.paragraph|raw }}</p>
+                                    {% endif %}
+
+                                    {% if item.href and item.ctaLabel %}
+                                        <div class="{{ namespace }}image-teaser__cta">
+                                            <span role="button" class="{{ button.class }}">
+                                                <span class="{{ button.labelClass }}">{{ item.ctaLabel|striptags }}</span>
+                                                {% if button.icon.src %}
+                                                    <svg class="{{ button.icon.class }}"><use xlink:href="{{ button.icon.src }}"></use></svg>
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if item.href %}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+            {% if isSlider or isSliderMobile %}
+                <button class="{{ namespace }}image-teaser__nav {{ namespace }}image-teaser__nav--prev {{ navigation.icons.prev.mix }}" type="button">
+                    <svg class="{{ namespace }}image-teaser__nav-icon"><use xlink:href="{{ navigation.icons.prev.src }}"></use></svg>
+                </button>
+                <button class="{{ namespace }}image-teaser__nav {{ namespace }}image-teaser__nav--next {{ navigation.icons.next.mix }}" type="button">
+                    <svg class="{{ namespace }}image-teaser__nav-icon"><use xlink:href="{{ navigation.icons.next.src }}"></use></svg>
+                </button>
+            {% endif %}
+
+        </div>
+
+        {% if isSliderMobile %}
+            <ul class="{{ namespace }}image-teaser__pagination"></ul>
+        {% endif %}
+    </div>
+</div>

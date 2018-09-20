@@ -1,0 +1,249 @@
+@mixin aftersearch-nav($conf: ()) {
+    $root: &;
+
+    $conf: map-merge(
+        (
+            tabletFilters: 4,
+            laptopFilters: 6,
+            desktopFilters: 6,
+            tabletRows: 1,
+            laptopRows: 1,
+            desktopRows: 1,
+            buttonMoreBottom: false,
+            buttonLessBottom: false,
+        ),
+        $conf
+    );
+
+    &__show-more-button {
+        display: none;
+    }
+
+    @include media('>=tablet', '<laptop') {
+        $row-numbers: map-get($conf, tabletFilters);
+        $button-more-bottom: map-get($conf, buttonMoreBottom);
+        $button-less-bottom: map-get($conf, buttonLessBottom);
+
+        $filters-rows-tablet: map-get($conf, tabletFilters) *
+            map-get($conf, tabletRows);
+
+        &__filter,
+        &__filter-row {
+            flex-basis: calc(100% / #{$row-numbers});
+        }
+
+        &__filter-row {
+            display: block;
+        }
+
+        &__filter-row:last-child:not(&__filter):nth-child(-n
+                + #{$filters-rows-tablet}) {
+            display: none;
+        }
+
+        @if $button-more-bottom == true {
+            $row-numbers: map-get($conf, tabletFilters) + 1;
+
+            .#{$ns}filter-horizontal {
+                padding-bottom: 4.9rem !important;
+            }
+
+            .#{$ns}aftersearch-nav__show-more-button {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: -0.2rem !important;
+                margin: 0 auto !important;
+                min-width: 12rem !important;
+                max-width: 40rem !important;
+
+                #{$root}__show-more-trigger {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        @if $button-less-bottom == true {
+            .#{$ns}filter-horizontal {
+                padding-bottom: 4.9rem !important;
+            }
+
+            .#{$ns}aftersearch-nav__show-more-button {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: -0.2rem !important;
+                margin: 0 auto !important;
+                min-width: 12rem !important;
+                max-width: 40rem !important;
+
+                #{$root}__show-more-trigger {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        &__filter:nth-child(n + #{$row-numbers}) {
+            display: none;
+
+            #{$root}--expanded & {
+                display: block;
+            }
+        }
+    }
+
+    @include media('>=laptop', '<desktop') {
+        $row-numbers: map-get($conf, laptopFilters);
+        $button-more-bottom: map-get($conf, buttonMoreBottom);
+        $button-less-bottom: map-get($conf, buttonLessBottom);
+
+        $filters-rows-laptop: map-get($conf, laptopFilters) *
+            map-get($conf, laptopRows);
+
+        &__filter,
+        &__filter-row {
+            flex-basis: calc(100% / #{$row-numbers});
+        }
+
+        &__filter-row {
+            display: block;
+        }
+
+        &__filter-row:last-child:not(&__filter):nth-child(-n
+                + #{$filters-rows-laptop}) {
+            display: none;
+        }
+
+        @if $button-more-bottom == true {
+            $row-numbers: map-get($conf, laptopFilters) + 1;
+
+            .#{$ns}filter-horizontal {
+                padding-bottom: 4.9rem !important;
+            }
+
+            .#{$ns}aftersearch-nav__show-more-button {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: -0.2rem !important;
+                margin: 0 auto !important;
+                min-width: 12rem !important;
+                max-width: 40rem !important;
+
+                #{$root}__show-more-trigger {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        @if $button-less-bottom == true {
+            .#{$ns}filter-horizontal {
+                padding-bottom: 4.9rem !important;
+            }
+
+            .#{$ns}aftersearch-nav__show-more-button {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: -0.2rem !important;
+                margin: 0 auto !important;
+                min-width: 12rem !important;
+                max-width: 40rem !important;
+
+                #{$root}__show-more-trigger {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        &__filter:nth-child(n + #{$row-numbers}) {
+            display: none;
+
+            #{$root}--expanded & {
+                display: block;
+            }
+        }
+    }
+
+    @include media('>=desktop') {
+        $row-numbers: map-get($conf, desktopFilters);
+        $button-more-bottom: map-get($conf, buttonMoreBottom);
+        $button-less-bottom: map-get($conf, buttonLessBottom);
+
+        $filters-rows-desktop: map-get($conf, desktopFilters) *
+            map-get($conf, desktopRows);
+
+        &__filter,
+        &__filter-row {
+            flex-basis: calc(100% / #{$row-numbers});
+        }
+
+        &__filter-row {
+            display: block;
+        }
+
+        &__filter-row:last-child:not(&__filter):nth-child(-n
+                + #{$filters-rows-desktop}) {
+            display: none;
+        }
+
+        @if $button-more-bottom == true {
+            $row-numbers: map-get($conf, desktopFilters) + 1;
+
+            .#{$ns}filter-horizontal {
+                padding-bottom: 4.9rem !important;
+            }
+
+            .#{$ns}aftersearch-nav__show-more-button {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: -0.2rem !important;
+                margin: 0 auto !important;
+                min-width: 12rem !important;
+                max-width: 40rem !important;
+
+                #{$root}__show-more-trigger {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        @if $button-less-bottom == true {
+            .#{$ns}filter-horizontal {
+                padding-bottom: 4.9rem !important;
+            }
+
+            .#{$ns}aftersearch-nav__show-more-button {
+                position: absolute !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: -0.2rem !important;
+                margin: 0 auto !important;
+                min-width: 12rem !important;
+                max-width: 40rem !important;
+
+                #{$root}__show-more-trigger {
+                    text-align: center !important;
+                }
+            }
+        }
+
+        &__filter:nth-child(n + #{$row-numbers}) {
+            display: none;
+
+            #{$root}--expanded & {
+                display: block;
+            }
+        }
+    }
+
+    @include media('>=desktop') {
+        &__filter-content {
+            &--extremely-right {
+                left: auto !important;
+                right: 0.5rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,179 @@
+// CS Buttons
+// Creativestyle's buttons component that gives you proper base for universal, scalable buttons.
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+$ns: 'cs-' !default;
+
+.#{$ns}button {
+    $root: &;
+
+    display: inline-block;
+    border: 1px solid transparent;
+    background: none;
+    color: inherit;
+    font-size: 1rem;
+    padding: .6em 1em;
+    border-radius: 0;
+    outline-offset: 1px;
+    fill: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &::-moz-focus-inner {
+        border: 0;
+    }
+
+    &:hover {
+        border: none;
+        box-shadow: none;
+        outline: none;
+        text-decoration: none;
+    }
+
+    &:focus {
+        outline: 1px dotted #000;
+    }
+
+    &__remove-icon {
+        width: .75rem;
+        height: .75rem;
+        fill: #999;
+        transition: fill .15s linear;
+    }
+
+    // Different looks of buttons. This modifiers should not define anything
+    // that influence size of the button, only its esthetics.
+    &--look {
+        &_default {
+            background-color: #fff;
+            border-color: #ccc;
+            color: #222;
+
+            &:hover,
+            &:focus {
+                background-color: #e6e6e6;
+                border-color: #adadad;
+                color: #222;
+            }
+        }
+
+        &_attention {
+            color: #fff;
+            fill: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+
+            &:hover,
+            &:focus {
+                background-color: #286090;
+                border-color: #204d74;
+                color: #fff;
+            }
+        }
+
+        &_success {
+            color: #fff;
+            fill: #fff;
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+
+            &:hover,
+            &:focus {
+                background-color: #449d44;
+                border-color: #398439;
+                color: #fff;
+            }
+        }
+
+        &_info {
+            color: #fff;
+            fill: #fff;
+            background-color: #5bc0de;
+            border-color: #46b8da;
+
+            &:hover,
+            &:focus {
+                background-color: #31b0d5;
+                border-color: #269abc;
+                color: #fff;
+            }
+        }
+
+        &_warning {
+            color: #fff;
+            fill: #fff;
+            background-color: #f0ad4e;
+            border-color: #eea236;
+
+            &:hover,
+            &:focus {
+                background-color: #ec971f;
+                border-color: #d58512;
+                color: #fff;
+            }
+        }
+
+        &_danger {
+            color: #fff;
+            fill: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+
+            &:hover,
+            &:focus {
+                background-color: #c9302c;
+                border-color: #ac2925;
+                color: #fff;
+            }
+        }
+
+        &_remove {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 1px solid #999;
+            border-radius: 3px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            transition: border-color .15s linear;
+
+            &:hover {
+                border-color: #333;
+
+                #{$root}__remove-icon {
+                    fill: #333;
+                }
+            }
+        }
+
+        &_disabled {
+            pointer-events: none;
+            opacity: .65;
+        }
+    }
+    // Different size variations.
+    // Bellow convention is based on font-weight idea where 500 is base value.
+    // Using this convention it is almost impossible to run out of possible modifiers
+    // like when you are using small, big, bigger, bigerer etc.
+    // NOTE: Having lots of space for different sizes doesn't mean you should stop
+    // trying to unify them as much as possible with designer's help.
+    &--size {
+        // Tiny
+        &_100 {
+            font-size: .5rem;
+        }
+        // Small
+        &_300 {
+            font-size: .75rem;
+        }
+        // Big
+        &_700 {
+            font-size: 1.25rem;
+        }
+        // Large
+        &_900 {
+            font-size: 1.5rem;
+        }
+    }
+}

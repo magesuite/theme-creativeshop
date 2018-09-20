@@ -1,0 +1,254 @@
+// CS Inputs
+// Creativestyle&#x27;s inputs component which is a good base for scallable inputs styling.
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+
+/*
+ * Base
+ */
+
+$ns: 'cs-' !default;
+
+.#{$ns}input {
+    $root: &;
+
+    &__label {
+        display: inline-block;
+        color: #333;
+        font-size: .88rem;
+        font-weight: 600;
+        line-height: 1.22rem;
+        padding: .5rem 0;
+        white-space: nowrap;
+        word-wrap: break-word;
+        cursor: pointer;
+
+        &--look-top-align {
+            align-self: flex-start;
+        }
+    }
+
+    &__input {
+        width: 100%;
+        height: auto;
+        display: block;
+        min-width: 4rem;
+        max-width: 800px;
+        padding: 6px 10px;
+        border: 1px solid #a8a8a8;
+        border-radius: 1px;
+        color: #333;
+        background-color: #fff;
+        box-sizing: border-box;
+        transition: border-color .15s linear;
+        outline: none;
+        font-size: .88rem;
+
+        &:hover:not( :disabled ):not( :focus ) {
+            border-color: #777;
+        }
+
+        &:focus {
+            border-color: #c90000;
+        }
+
+        &:disabled {
+            border-color: #d1d1d1;
+            background-color: #e6e6e6;
+            cursor: not-allowed;
+            opacity: .5;
+        }
+
+        &[ readonly ] {
+            cursor: not-allowed;
+            color: #797979;
+        }
+
+        &::-ms-clear {
+            display: none;
+        }
+    }
+
+    &__textarea {
+        @extend #{$root}__input;
+        appearance: none;
+        overflow: auto;
+        height: 10rem;
+    }
+
+    &__select {
+        @extend #{$root}__input;
+        width: auto;
+        appearance: none;
+        max-width: 100%;
+        min-width: 15rem;
+        background-image: url( 'images/dropdown-arrows-bg.svg' ), linear-gradient( #e4e4e4, #e4e4e4 ), linear-gradient( #a8a8a8, #a8a8a8 ); // stylelint-disable-line
+        background-position: calc( 100% - 14px ) -35px, 100%, calc( 100% - 2.2rem ) 0;
+        background-size: auto, 2.2rem 100%, 1px 100%;
+        background-repeat: no-repeat;
+        padding-bottom: .38rem;
+        padding-right: 3rem;
+        padding-top: .38rem;
+
+        &:disabled {
+            background-image: url( 'images/dropdown-arrows-bg.svg' ), linear-gradient( #e4e4e4, #e4e4e4 ), linear-gradient( #d1d1d1, #d1d1d1 ); // stylelint-disable-line
+        }
+    }
+
+    &--type-inline {
+        display: flex;
+        align-items: center;
+        max-width: 800px;
+
+        #{$root}__label {
+            width: 17%;
+            min-width: 120px;
+            padding-right: 2rem;
+            text-align: right;
+            line-height: 1.2;
+            word-break: break-word;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        #{$root}__input {
+            width: 83%;
+            min-width: 4rem;
+        }
+
+        #{$root}__select {
+            width: auto;
+            min-width: 15rem;
+
+            + #{$root}__select {
+                margin-left: 1em;
+            }
+        }
+    }
+
+    &--type-textarea {
+        align-self: flex-start;
+        padding-top: .5rem;
+    }
+
+    &--type-checkbox,
+    &--type-radio {
+        position: relative;
+
+        #{$root}__label {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0 0 0 1.75rem;
+            line-height: 1.25rem;
+
+            &:before {
+                width: 1.1rem;
+                height: 1.1rem;
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY( -50% );
+                background-color: #fff;
+                border: 1px solid #a8a8a8;
+                color: transparent;
+                text-align: center;
+                line-height: 1.2rem;
+                text-indent: -2px;
+                content: '';
+            }
+        }
+
+        #{$root}__checkbox,
+        #{$root}__radio {
+            cursor: pointer;
+            opacity: .01;
+            overflow: hidden;
+            position: absolute;
+
+            &:checked + #{$root}__label:before {
+                content: '\2713';
+                color: #333;
+            }
+
+            &:hover:not( :disabled ) + #{$root}__label:before {
+                border-color: #878787;
+            }
+
+            &:disabled + #{$root}__label {
+                cursor: default;
+                opacity: .5;
+            }
+        }
+    }
+
+    &--type-radio {
+        #{$root}__label:before {
+            border-radius: 1.1rem;
+        }
+
+        #{$root}__radio {
+            &:checked + #{$root}__label:before {
+                content: '';
+            }
+
+            &:checked + #{$root}__label:after {
+                width: .55rem;
+                height: .55rem;
+                position: absolute;
+                top: calc( 50% - .03rem );
+                left: .35rem;
+                background-color: #333;
+                border-radius: .55rem;
+                transform: translateY( -50% );
+                content: '';
+            }
+        }
+    }
+
+    &--type-required {
+        > #{$root}__label {
+            position: relative;
+
+            &:after {
+                position: absolute;
+                color: #c90000;
+                content: '*';
+                font-size: 1.35rem;
+                margin-left: 2px;
+                z-index: 1;
+            }
+        }
+    }
+
+    &--type-addon {
+        position: relative;
+
+        #{$root}__input {
+            max-width: 100%;
+        }
+
+        #{$root}__addon {
+            position: absolute;
+            bottom: 1px;
+            right: 1px;
+            width: 34px;
+            height: 31px;
+            border-left: 1px solid #adadad;
+            background: #e3e3e3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #{$root}__addon-icon {
+            width: auto;
+            height: 50%;
+            fill: #434240;
+        }
+    }
+
+    + #{$root} {
+        margin-top: 1rem;
+    }
+}

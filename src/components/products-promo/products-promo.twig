@@ -1,0 +1,42 @@
+{% set visibilityClass = '' %}
+{% if componentVisibility and componentVisibility.mobile == false %}
+    {% set visibilityClass = namespace ~ 'display-controller--hidden-mobile ' %}
+{% endif %}
+{% if componentVisibility and componentVisibility.desktop == false %}
+    {% set visibilityClass = visibilityClass ~ namespace ~ 'display-controller--hidden-desktop ' %}
+{% endif %}
+
+<div class="{{ visibilityClass }}">
+    <div class="{{ namespace }}products-promo {{ mix }}">
+        <div class="{{ namespace }}products-promo__carousel">
+            <div class="{{ namespace }}products-promo__wrapper">
+                <ul class="{{ namespace }}products-promo__slides">
+                    
+                    {% for product in products %}
+                        <li class="{{ namespace }}products-promo__slide {{ product.mix }}">
+                            {{ product.content }}
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+            {% if showNavigation %}
+                <button class="{{ namespace }}products-promo__nav {{ namespace }}products-promo__nav--prev" type="button">
+                    <svg class="{{ namespace }}products-promo__nav-icon">
+                        <use xlink:href="#icon_arrow-left"></use>
+                    </svg>
+                </button>
+                <button class="{{ namespace }}products-promo__nav {{ namespace }}products-promo__nav--next" type="button">
+                    <svg class="{{ namespace }}products-promo__nav-icon">
+                        <use xlink:href="#icon_arrow-right"></use>
+                    </svg>
+                </button>
+            {% endif %}
+            
+            {% if showPagination %}
+                <ul class="{{ namespace }}products-promo__pagination"></ul>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+// cc-category-links
+// Display main category and few subcategories
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+@import 'utils/breakpoint/breakpoint.scss';
+
+@mixin category-links {
+    $root: &;
+
+    // it's visible only on mobile as a dropdown trigger
+    &__subtitle {
+        padding: 1rem;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+
+        @include media('>=tablet') {
+            display: none;
+        }
+    }
+
+    &__list-wrapper {
+        @include media('>=tablet') {
+            display: flex;
+        }
+
+        @include media('<tablet') {
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    &__list,
+    &__list-all {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__list {
+        @include media('>=tablet') {
+            flex: 1 1 auto;
+            margin-top: -0.5rem;
+            margin-left: -0.5rem;
+        }
+
+        &-item {
+            @include media('>=tablet') {
+                display: inline-block;
+                margin-top: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
+    }
+
+    &__list-all {
+        @include media('>=tablet') {
+            flex: 0 1 auto;
+            margin-left: 1rem;
+            padding-left: 1rem;
+            border-left: 1px solid #ccc;
+        }
+
+        &-item {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+    }
+
+    &__link {
+        font-weight: bold;
+        text-decoration: none;
+
+        @include media('<tablet') {
+            display: block;
+            padding: 1rem;
+        }
+
+        @include media('>=tablet') {
+            white-space: nowrap;
+        }
+    }
+
+    &__qty {
+        font-weight: normal;
+    }
+}
+
+@mixin category-links-dropdown {
+    $root: &;
+    position: relative;
+
+    &__trigger {
+        &--in {
+            @include media('<tablet') {
+                position: relative;
+                z-index: 5;
+            }
+        }
+    }
+
+    &__content {
+        @include media('<tablet') {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding-top: 3.5rem;
+
+            overflow: hidden;
+            height: 0;
+            opacity: 0;
+            transform: translateY(3.5rem);
+            transition: opacity 0.05s linear, transform 0.11s ease-in-out;
+        }
+        &--out {
+        }
+        &--in {
+            @include media('<tablet') {
+                z-index: 4;
+                height: auto;
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+@mixin paragraph($gap: 1.5rem, $rule: medium none transparent) {
+    column-gap: $gap;
+    column-rule: $rule;
+
+    @include media('>=tablet') {
+        &--cols-2,
+        &--cols-3,
+        &--cols-4 {
+            column-count: 2;
+
+            li {
+                display: inline-block;
+                width: 100%;
+            }
+
+            img {
+                display: block;
+                max-width: 100%;
+            }
+        }
+    }
+
+    @include media('>=laptop') {
+        &--cols-3,
+        &--cols-4 {
+            column-count: 3;
+        }
+    }
+
+    @include media('>=laptop-lg') {
+        &--cols-4 {
+            column-count: 4;
+        }
+    }
+}

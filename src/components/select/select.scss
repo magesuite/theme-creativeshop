@@ -1,0 +1,303 @@
+// select
+// Custom HTML select version of native select with native fallback on mobiles
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+
+$ns: 'cs-' !default;
+
+.#{$ns}select {
+    $root: &;
+
+    position: absolute !important;
+    bottom: 0;
+    left: 50%;
+    display: block !important;
+    width: .5px !important;
+    height: 100% !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    border: none;
+    font-size: 1rem;
+    line-height: 1;
+
+    &--mobile {
+        top: 0;
+        left: 0;
+        display: block !important;
+        width: 100% !important;
+        z-index: 4;
+    }
+
+    &__icon {
+        vertical-align: middle;
+        margin-right: 4px;
+    }
+}
+
+.#{$ns}html-select {
+    $root: &;
+
+    position: relative;
+    // z-index: 7; fixes dropdowns overlapping each other but possible that this will break sth else - don't remove
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 0;
+    box-sizing: border-box;
+
+    &__trigger {
+        display: flex;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        width: 100%;
+        padding: 0 3em 0 .75em;
+        background-color: #fafafa;
+        box-shadow: inset 0 4px 2px 0 rgba( 214, 214, 214, .2 );
+        border-radius: 3px;
+        height: 2.55em;
+        border: 1px solid #e7e7e7;
+        text-align: left;
+        z-index: 3;
+        outline: none;
+        overflow: hidden;
+        box-sizing: border-box;
+        font-size: 1em;
+
+        #{$root}--open &,
+        #{$root}.open & {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 1px 5px 0 rgba( 100, 100, 100, .1 );
+        }
+
+        &--disabled {
+            color: #a2a2a2;
+            cursor: not-allowed;
+        }
+
+        #{$root}--error & {
+            border-color: #f46667;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:focus {
+            box-shadow: 0 0 5px 0 #3899e2;
+        }
+    }
+
+    &__trigger-text {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1rem;
+        line-height: 1.155em;
+    }
+
+    &__text-content {
+        overflow: hidden;
+        float: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding: .125em .313em .125em 0;
+    }
+
+    &__flag {
+        height: 1em;
+        width: auto;
+        margin: 0 .375em -.125em 0;
+    }
+
+    &__trigger-caret {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2.65em;
+        height: 100%;
+        border-left: 1px solid #e7e7e7;
+    }
+
+    &__trigger-caret-arrow {
+        position: absolute;
+        width: 10px;
+        height: 4px;
+        top: 50%;
+        right: 50%;
+        transform: translate3d( 50%, -50%, 0 );
+        transform-origin: 50% 30%;
+        transition: transform .25s ease;
+
+        #{$root}--open &,
+        #{$root}.open & {
+            transform: rotateX( 180deg ) translate3d( 50%, -50%, 0 );
+        }
+
+        &:before,
+        &:after {
+            position: absolute;
+            top: 0;
+            width: 7px;
+            height: 2px;
+            content: '';
+            background-color: #bfbfbf;
+        }
+
+        &:before {
+            left: 0;
+            transform: rotate( 40deg );
+            transform-origin: 0 50%;
+        }
+
+        &:after {
+            right: 0;
+            transform: rotate( -40deg );
+            transform-origin: 100% 50%;
+        }
+    }
+
+    &__trigger-subtext {
+        position: absolute;
+        right: .625em;
+
+        #{$root}__trigger & {
+            right: 3.275em;
+        }
+    }
+
+    &__menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 5;
+        display: none;
+        width: 100%;
+        background-color: #fafafa;
+        border: 1px solid #e7e7e7;
+        border-top: 0;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        box-shadow: 0 1px 5px 0 rgba( 100, 100, 100, .1 );
+        font-size: 1rem;
+        line-height: 1.125rem;
+        box-sizing: border-box;
+
+        #{$root}--open &,
+        #{$root}.open & {
+            display: block;
+            opacity: 0;
+            transform: translate3d( 0, -10px, 0 );
+            transition: transform .25s ease, opacity .32s ease;
+        }
+
+        #{$root}--animate & {
+            transform: translate3d( 0, 0, 0 ) !important;
+            opacity: 1 !important;
+        }
+
+    }
+
+    &__menu-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__menu-item {
+        &--divider {
+            width: 100%;
+            height: 1px;
+            margin: .313em 0;
+            background-color: #e7e7e7;
+        }
+
+        &--header {
+            padding: .563em .625em .313em;
+            font-size: .6875rem;
+            text-transform: uppercase;
+            color: #676767;
+        }
+
+        &--hidden {
+            display: none;
+        }
+
+        &--no-results {
+            padding: .563em .625em;
+            background-color: #fafafa;
+        }
+    }
+
+    &__menu-item-text {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__menu-link {
+        display: block;
+        position: relative;
+        padding: .563em .625em;
+        cursor: pointer;
+        background-color: #fafafa;
+        transition: background-color .15s linear, color .15s linear;
+
+        &:focus {
+            outline: none;
+            background-color: darken( #fafafa, 5% );
+        }
+
+        &:hover,
+        &:hover:focus {
+            background-color: #c9c9c9;
+            color: #fff;
+        }
+
+        #{$root}__menu-item--selected & {
+            color: #3899e2;
+
+            &:hover {
+                background-color: #3899e2;
+                color: #fff;
+            }
+        }
+
+        #{$root}__menu-item--in-group & {
+            padding-left: 1.25em;
+        }
+
+        #{$root}__menu-item--disabled & {
+            cursor: not-allowed;
+            background-color: #fafafa;
+            color: #c9c9c9;
+            text-decoration: none;
+
+            &:hover {
+                background-color: #fafafa;
+                color: #c9c9c9;
+            }
+        }
+
+        #{$root}__menu-item--active & {
+            background-color: darken( #fafafa, 5% );
+        }
+    }
+
+    &--multi.#{$ns}html-select--mobile {
+        #{$root}__trigger {
+            display: none;
+        }
+
+        .#{$ns}select--mobile {
+            position: static !important;
+            opacity: 1 !important;
+            border: 1px solid #e7e7e7;
+            min-height: 2em;
+            background-color: #fafafa;
+        }
+    }
+}

@@ -1,0 +1,50 @@
+{% set visibilityClass = '' %}
+{% if componentVisibility and componentVisibility.mobile == false %}
+    {% set visibilityClass = namespace ~ 'display-controller--hidden-mobile ' %}
+{% endif %}
+{% if componentVisibility and componentVisibility.desktop == false %}
+    {% set visibilityClass = visibilityClass ~ namespace ~ 'display-controller--hidden-desktop ' %}
+{% endif %}
+
+<div class="{{ visibilityClass }}">
+    <div class="{{ namespace }}category-links{% if categories.sub_categories|length < 1 %} {{ namespace }}category-links--no-subcats{% endif %} {{ mix }}">
+        <{{ titleTag }} class="{{ namespace }}category-links__title">{{ categories.main_category.name }}</{{ titleTag }}>
+
+        <div class="{{ namespace }}category-links__dropdown {{ namespace }}category-links-dropdown{% if categories.sub_categories|length < 1 %} {{ namespace }}category-links-dropdown--no-subcats{% endif %}">
+            {% if categories.sub_categories|length >= 1 %}
+                <div class="{{ namespace }}category-links__subtitle | {{ namespace }}category-links-dropdown__trigger">
+                    {{ allProductsLabel }}{% if shownumbers %} <span class="{{ namespace }}category-links__qty">{{ categories.main_category.products_count }}</span>{% endif %}
+                </div>
+            {% endif %}
+
+            
+            <div class="{{ namespace }}category-links__list-wrapper | {{ namespace }}category-links-dropdown__content">
+                {% if categories.sub_categories|length >= 1 %}
+                    <ul class="{{ namespace }}category-links__list">
+                        {% for category in categories.sub_categories %}
+                            {% set _loopIndex = loop.index %}
+                            <li class="{{ namespace }}category-links__list-item {% for hide in hideLinks %} {% if _loopIndex >= hide.from %} {{ hide.mix }} {% endif %}{% endfor %}">
+                                <a href="{{ category.url }}" class="{{ namespace }}category-links__link">
+                                    {{ category.name }}{% if shownumbers %} <span class="{{ namespace }}category-links__qty">{{ category.products_count }}</span>{% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <ul class="{{ namespace }}category-links__list-all">
+                    <li class="{{ namespace }}category-links__list-all-item">
+                        <a href="{{ categories.main_category.url }}" class="{{ namespace }}category-links__link">
+                            {{ allProductsLabel }}{% if shownumbers %} <span class="{{ namespace }}category-links__qty">{{ categories.main_category.products_count }}</span>{% endif %}
+                            {% if allProductsIcon %}
+                                <svg class="{{ namespace }}category-links__list-all-icon">
+                                    <use xlink:href="#{{ allProductsIcon }}"></use>
+                                </svg>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+{% set visibilityClass = '' %}
+{% if componentVisibility and componentVisibility.mobile == false %}
+    {% set visibilityClass = namespace ~ 'display-controller--hidden-mobile ' %}
+{% endif %}
+{% if componentVisibility and componentVisibility.desktop == false %}
+    {% set visibilityClass = visibilityClass ~ namespace ~ 'display-controller--hidden-desktop ' %}
+{% endif %}
+
+{% set collection = [] %} 
+{% set content = '' %}
+{% set isHeroIncluded = false %}
+{% set linkTag = 'div' %}
+
+{% if items is not defined %}
+    {% set items = [] %}
+{% endif %}
+
+{% if teasersConfig is not defined %}
+    {% set teasersConfig = '' %}
+{% endif %}
+
+{% if hero.position is defined and hero.position != '' %}
+    {% set isHeroIncluded = true %}
+
+    {% if hero.href %}
+        {% set linkTag = 'a' %}
+    {% endif %}
+
+    {% set content %}
+        <{{ linkTag }}{% if hero.href %} href="{{ hero.href }}"{% endif %} class="{{ namespace }}products-grid__hero-link">
+            {% if hero.image.src %}
+                <figure class="{{ namespace }}products-grid__hero-figure">
+                    {% if lazyload %}
+                        <img
+                            class="{{ namespace }}products-grid__hero-image | lazyload"
+                            src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                            data-src="{{ hero.image.src }}"
+                            {% if hero.image.srcSet %}data-srcset="{{ hero.image.srcSet }}"{% endif %}
+                            {% if sizes %}data-sizes="{{ sizes }}"{% endif %}
+                            alt="{% if hero.image.alt %}{{ hero.image.alt|e }}
+                                 {% elseif hero.headline %}{{ hero.headline|e  }}
+                                 {% elseif hero.subheadline %}{{ hero.subheadline|e  }}
+                                 {% else %}Teaser image{% endif %}"
+                        >
+                        <noscript>
+                            <img
+                                class="{{ namespace }}products-grid__hero-image"
+                                src="{{ hero.image.src }}"
+                                {% if hero.image.srcSet %}srcset="{{ hero.image.srcSet }}"{% endif %}
+                                {% if sizes %}sizes="{{ sizes }}"{% endif %}
+                                alt="{% if hero.image.alt %}{{ hero.image.alt|e }}
+                                    {% elseif hero.headline %}{{ hero.headline|e  }}
+                                    {% elseif hero.subheadline %}{{ hero.subheadline|e  }}
+                                    {% else %}Teaser image{% endif %}"
+                            >
+                        </noscript>
+                    {% else %}
+                        <img
+                            class="{{ namespace }}products-grid__hero-image"
+                            src="{{ hero.image.src }}"
+                            {% if hero.image.srcSet %}srcset="{{ hero.image.srcSet }}"{% endif %}
+                            {% if sizes %}sizes="{{ sizes }}"{% endif %}
+                            alt="{% if hero.image.alt %}{{ hero.image.alt|e }}
+                                {% elseif hero.headline %}{{ hero.headline|e  }}
+                                {% elseif hero.subheadline %}{{ hero.subheadline|e  }}
+                                {% else %}Teaser image{% endif %}"
+                        >
+                    {% endif %}
+                </figure>
+            {% endif %}
+
+            <div class="{{ namespace }}products-grid__hero-content-wrapper {{ namespace }}products-grid__hero-content-wrapper--variant-{{ hero.displayVariant }}">
+                <div class="{{ namespace }}products-grid__hero-content">
+                    {% if hero.headline %}
+                        <h2 class="{{ namespace }}products-grid__hero-headline">{{ hero.headline|raw }}</h2>
+                    {% endif %}
+
+                    {% if hero.subheadline %}
+                        <p class="{{ namespace }}products-grid__hero-subheadline">{{ hero.subheadline|raw }}</p>
+                    {% endif %}
+
+                    {% if hero.paragraph %}
+                        <p class="{{ namespace }}products-grid__hero-text">{{ hero.paragraph|raw }}</p>
+                    {% endif %}
+
+                    {% if hero.href and hero.button.label %}
+                        <div class="{{ namespace }}products-grid__hero-cta">
+                            <span role="button" class="{{ hero.button.class }}">
+                                <span class="{{ hero.button.labelClass }}">{{ hero.button.label|striptags }}</span>
+                                {% if hero.button.icon.src %}
+                                    <svg class="{{ hero.button.icon.class }}"><use xlink:href="{{ hero.button.icon.src }}"></use></svg>
+                                {% endif %}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </{{ linkTag }}>
+    {% endset %}
+
+    {% set colorSchemeMix = namespace ~ 'products-grid__hero--scheme-' ~ hero.colorScheme %}
+
+    {% set collection = collection|merge( [ {
+        mix: hero.mix ~ ' ' ~ colorSchemeMix,
+        content: content,
+        teaserId: hero.teaserId
+    } ] ) %}
+{% endif %}
+
+{% set collection = collection|merge( items ) %}
+
+<div class="{{ visibilityClass }}">
+    <div class="{{ namespace }}products-grid {% if isHeroIncluded %}{{ namespace }}products-grid--with-hero{% endif %}" data-rows-mobile="{{ rows_mobile }}" data-rows-tablet="{{ rows_tablet }}" data-rows-desktop="{{ rows_desktop }}">
+        {% include locate('grid-layout/grid-layout.twig') with {
+            namespace: namespace,
+            items: collection,
+            columnsConfiguration: columnsConfig,
+            teasersConfiguration: teasersConfig
+        } %}
+    </div>
+</div>

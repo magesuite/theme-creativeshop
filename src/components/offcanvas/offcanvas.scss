@@ -1,0 +1,50 @@
+// Offcanvas
+// Component for swipable offcanvas drawer.
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+@mixin offcanvas() {
+    $root: &;
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        // Setting 1ms because 0 doesn't seem to work and we need seemles transition for scale here.
+        transition: background-color .3s, transform 1ms .3s; // stylelint-disable-line
+        transform: scale( 0 );
+        cursor: pointer;
+
+
+        &--visible {
+            transform: scale( 1 );
+            background: rgba( 0, 0, 0, .7 );
+            transition: background-color .3s;
+        }
+    }
+
+    &__drawer {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: #fff;
+        transform: translate3d( -105%, 0, 0 );
+        transition: transform .3s;
+        width: 90%;
+        max-width: 400px;
+
+        #{$root}--slide-from-right & {
+            left: auto;
+            right: 0;
+            transform: translate3d( 105%, 0, 0 );
+        }
+
+        &--visible {
+            transform: translate3d( 0, 0, 0 ) !important;
+        }
+    }
+}

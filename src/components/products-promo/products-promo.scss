@@ -1,0 +1,79 @@
+/****     IMPORTANT     ****
+ **** This component requires overflow-x to be set to hidden for both: html and body ****
+ ****/
+
+@mixin productsPromo() {
+    $root: &;
+
+    &__wrapper {
+        overflow: visible;
+
+        @include media( '>=laptop' ) {
+            margin-left: 3rem;
+            margin-right: 3rem;
+        }
+
+        @media ( min-width: ( 1200px + 2 * 48px ) ) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    &__slide {
+        position: relative;
+        opacity: 0;
+        flex-wrap: wrap;
+        transition: opacity .15s linear;
+
+        &:after {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            content: '';
+        }
+
+        &--visible {
+            opacity: 1;
+
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    &__nav {
+        display: none;
+
+        @include media( '>=laptop' ) {
+            top: calc( 50% - 2rem );
+            display: block;
+        }
+
+        &--prev {
+            left: 0;
+
+            @media ( min-width: ( 1200px + 2 * 48px ) ) {
+                left: -3rem;
+            }
+        }
+
+        &--next {
+            right: 0;
+
+            @media ( min-width: ( 1200px + 2 * 48px ) ) {
+                right: -3rem;
+            }
+        }
+    }
+
+    &__pagination {
+        position: static;
+        margin: 1rem 0;
+        text-align: center;
+        transform: none;
+    }
+}
