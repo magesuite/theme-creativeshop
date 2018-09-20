@@ -1,9 +1,50 @@
-@import '../../../node_modules/creative-patterns/packages/components/t-headline/src/t-headline';
+@mixin t-headline(
+    $color,
+    $font-family,
+    $font-size-1,
+    $font-size-2,
+    $font-size-3,
+    $font-size-4,
+    $font-size-5,
+    $font-size-6
+) {
+    font-family: $font-family;
+    color: $color;
+    font-weight: 700;
+    margin: 0;
 
-.#{$namespace}t-headline {
+    &--size {
+        &_1 {
+            font-size: $font-size-1;
+        }
+        &_2 {
+            font-size: $font-size-2;
+        }
+        &_3 {
+            font-size: $font-size-3;
+        }
+        &_4 {
+            font-size: $font-size-4;
+        }
+        &_5 {
+            font-size: $font-size-5;
+        }
+        &_6 {
+            font-size: $font-size-6;
+        }
+    }
+
+    &--look {
+        &_light {
+            font-weight: 400;
+        }
+    }
+}
+
+.#{$ns}t-headline {
     @include t-headline(
-        $colorMineShaft,
-        $base-font-family,
+        $color_mineshaft,
+        $font_family-primary,
         2.6rem,
         1.8rem,
         1.5rem,
@@ -20,7 +61,7 @@
         }
 
         &_bordered {
-            border-bottom: 1px solid $colorAlto;
+            border-bottom: 1px solid $color_alto;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
         }
@@ -30,7 +71,7 @@
     &__count {
         font-weight: 400;
         margin-right: 0.5rem;
-        color: $colorDoveGray;
+        color: $color_dove-gray;
     }
 
     &__span {
@@ -40,7 +81,7 @@
             display: inline-block;
             width: 0.2rem;
             height: 1.2rem;
-            background: $colorAlto;
+            background: $color_alto;
         }
 
         &:last-child {

@@ -1,5 +1,5 @@
-import breakpoint from '../../../node_modules/creative-patterns/packages/utilities/breakpoint/src/breakpoint';
-import ImageTeaser from '../../../node_modules/creative-patterns/packages/components/image-teaser/src/image-teaser';
+import breakpoint from 'utils/breakpoint/breakpoint';
+import ImageTeaser from 'components/image-teaser/image-teaser';
 
 import $ from 'jquery';
 

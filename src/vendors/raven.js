@@ -1044,7 +1044,7 @@
                         }
 
                         // event targets borrowed from bugsnag-js:
-                        // https://github.com/bugsnag/bugsnag-js/blob/master/src/bugsnag.js#L666
+                        // https://github.com/bugsnag/bugsnag-js/blob/master/bugsnag.js#L666
                         var eventTargets = ['EventTarget', 'Window', 'Node', 'ApplicationCache', 'AudioTrackList', 'ChannelMergerNode', 'CryptoOperation', 'EventSource', 'FileReader', 'HTMLUnknownElement', 'IDBDatabase', 'IDBRequest', 'IDBTransaction', 'KeyOperation', 'MediaController', 'MessagePort', 'ModalWindow', 'Notification', 'SVGElementInstance', 'Screen', 'TextTrack', 'TextTrackCue', 'TextTrackList', 'WebSocket', 'WebSocketWorker', 'Worker', 'XMLHttpRequest', 'XMLHttpRequestEventTarget', 'XMLHttpRequestUpload'];
                         for (var i = 0; i < eventTargets.length; i++) {
                             wrapEventTarget(eventTargets[i]);

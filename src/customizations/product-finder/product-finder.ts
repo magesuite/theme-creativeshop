@@ -1,4 +1,4 @@
-import ProductFinder from '../../../node_modules/creative-patterns/packages/components/product-finder/src/product-finder';
+import ProductFinder from 'components/product-finder/product-finder';
 import $ from 'jquery';
 
 $('.cs-product-finder').each(

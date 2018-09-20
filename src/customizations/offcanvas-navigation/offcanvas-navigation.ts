@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import OffcanvasNavigation from '../../../node_modules/creative-patterns/packages/components/offcanvas-navigation/src/offcanvas-navigation';
+import OffcanvasNavigation from 'components/offcanvas-navigation/offcanvas-navigation';
 
 import contentSetter from './content-setter';
 

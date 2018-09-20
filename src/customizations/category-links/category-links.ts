@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { Flyout } from '../../../node_modules/creative-patterns/packages/components/flyout/src/flyout';
+import { Flyout } from 'components/flyout/flyout';
 
 $('.cs-category-links-dropdown').each((index: number, element: any) => {
     new Flyout($(element), {

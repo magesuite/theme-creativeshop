@@ -1,4 +1,4 @@
-import FastShipping from '../../../node_modules/creative-patterns/packages/components/indicators/src/fast-shipping';
+import FastShipping from 'components/indicators/fast-shipping';
 import storage from 'Magento_Ui/js/lib/core/storage/local';
 import $ from 'jquery';
 

@@ -1,4 +1,4 @@
-@import '../../../node_modules/creative-patterns/packages/components/grid-layout/src/grid-layout';
+@import 'components/grid-layout/grid-layout.scss';
 
 $bricksPerRow: (
     phone: 1,
@@ -30,7 +30,7 @@ $bricksHeight: (
     tv: 406px,
 );
 
-.#{$namespace}grid-layout {
+.#{$ns}grid-layout {
     @include gridLayout($bricksPerRow, $bricksHeight, 0);
 
     // IE11 does not keep 100% width without explicit declaration
@@ -39,12 +39,12 @@ $bricksHeight: (
     }
 }
 
-.#{$namespace}grid-layout_in-column {
+.#{$ns}grid-layout_in-column {
     @include gridLayout($bricksPerRowInColumn, $bricksHeight, 0);
 }
 
-.#{$namespace}grid-layout,
-.#{$namespace}grid-layout_in-column {
+.#{$ns}grid-layout,
+.#{$ns}grid-layout_in-column {
     $root: &;
     position: relative;
 
@@ -54,7 +54,7 @@ $bricksHeight: (
         left: 0;
         width: 100%;
         height: 1px;
-        background-color: $colorWhite;
+        background-color: $color_white;
         z-index: 7;
         content: '';
     }
@@ -66,7 +66,7 @@ $bricksHeight: (
             left: 0;
             width: 100%;
             height: 1px;
-            background-color: $colorGallery;
+            background-color: $color_gallery;
             z-index: 6;
             content: '';
         }
@@ -135,11 +135,11 @@ $bricksHeight: (
         }
 
         &-headline {
-            @extend .#{$namespace}hero__headline;
+            @extend .#{$ns}hero__headline;
             margin: 0 0 0.7rem;
 
             #{$root}__teaser--scheme-light & {
-                color: $colorWhite;
+                color: $color_white;
             }
 
             @media screen and (min-width: 1200px) {
@@ -148,12 +148,12 @@ $bricksHeight: (
         }
 
         &-subheadline {
-            @extend .#{$namespace}hero__subheadline;
+            @extend .#{$ns}hero__subheadline;
             display: block;
             margin: 0 0 0.7rem;
 
             #{$root}__teaser--scheme-light & {
-                color: $colorWhite;
+                color: $color_white;
             }
 
             @media screen and (min-width: 1200px) {
@@ -162,11 +162,11 @@ $bricksHeight: (
         }
 
         &-text {
-            @extend .#{$namespace}hero__text;
+            @extend .#{$ns}hero__text;
             margin: 0 0 0.7rem;
 
             #{$root}__teaser--scheme-light & {
-                color: $colorWhite;
+                color: $color_white;
             }
         }
     }

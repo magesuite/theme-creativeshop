@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
-import QtyIncrement from '../../../node_modules/creative-patterns/packages/components/qty-increment/src/qty-increment';
+import QtyIncrement from 'components/qty-increment/qty-increment';
 import $ from 'jquery';
 
 /**

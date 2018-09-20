@@ -1,4 +1,4 @@
-import offcanvas from '../../../node_modules/creative-patterns/packages/components/offcanvas/src/offcanvas';
+import offcanvas from 'components/offcanvas/offcanvas';
 
 export default new offcanvas(null, {
     className: 'cs-offcanvas',

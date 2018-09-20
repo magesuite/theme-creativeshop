@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-new ordered-imports */
-import StickyBlock from '../../../node_modules/creative-patterns/packages/components/sticky-block/src/sticky-block';
-import breakpoint from '../../../node_modules/creative-patterns/packages/utilities/breakpoint/src/breakpoint';
+import StickyBlock from 'components/sticky-block/sticky-block';
+import breakpoint from 'utils/breakpoint/breakpoint';
 import $ from 'jquery';
 
 /**

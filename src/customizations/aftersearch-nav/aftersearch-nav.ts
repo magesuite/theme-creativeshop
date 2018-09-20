@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Aftersearch from '../../../node_modules/creative-patterns/packages/components/aftersearch-nav/src/aftersearch-nav';
+import Aftersearch from 'components/aftersearch-nav/aftersearch-nav';
 
 /**
  * component options interface.

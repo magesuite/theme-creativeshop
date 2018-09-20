@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
-import BrandCarousel from '../../../node_modules/creative-patterns/packages/components/brand-carousel/src/brand-carousel';
+import BrandCarousel from 'components/brand-carousel/brand-carousel';
 import $ from 'jquery';
 
 $('.cs-brand-carousel').each((index: number, element: HTMLElement) => {

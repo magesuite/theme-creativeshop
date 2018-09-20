@@ -1,4 +1,4 @@
-import Hero from '../../../node_modules/creative-patterns/packages/components/hero/src/hero';
+import Hero from 'components/hero/hero';
 import $ from 'jquery';
 
 $('.cs-hero').each(function(): void {

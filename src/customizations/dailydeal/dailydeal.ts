@@ -2,7 +2,7 @@
 
 import $ from 'jquery';
 
-import Dailydeal from '../../../node_modules/creative-patterns/packages/components/dailydeal/src/dailydeal';
+import Dailydeal from 'components/dailydeal/dailydeal';
 
 const namespace: string = 'cs-';
 

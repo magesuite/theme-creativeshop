@@ -2,7 +2,7 @@
 
 import $ from 'jquery';
 
-import Navigation from '../../../node_modules/creative-patterns/packages/components/navigation/src/navigation';
+import Navigation from 'components/navigation/navigation';
 
 const namespace: string = 'cs-';
 /**

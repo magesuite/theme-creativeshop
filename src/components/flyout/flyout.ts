@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-new object-literal-key-quotes */
-import { Flyout } from 'class.flyout';
+import { Flyout } from 'components/flyout/class.flyout';
 import $ from 'jquery';
 
 $('.cs-flyout').each((index: number, element: any) => {

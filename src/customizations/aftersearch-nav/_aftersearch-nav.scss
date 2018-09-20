@@ -1,6 +1,6 @@
-@import '../../../node_modules/creative-patterns/packages/components/aftersearch-nav/src/aftersearch-nav';
+@import 'components/aftersearch-nav/aftersearch-nav.scss';
 
-.#{$namespace}aftersearch-nav {
+.#{$ns}aftersearch-nav {
     @include aftersearch-nav();
     $root: &;
     overflow: visible;
@@ -23,7 +23,7 @@
             flex-wrap: wrap;
             justify-content: space-between;
 
-            &.#{$namespace}filter-horizontal {
+            &.#{$ns}filter-horizontal {
                 display: block;
                 padding: 0;
             }
@@ -40,7 +40,7 @@
 
         @include media('>=tablet') {
             padding-bottom: 0;
-            border-bottom: 1px solid $colorAlto;
+            border-bottom: 1px solid $color_alto;
         }
     }
 
@@ -48,22 +48,22 @@
         display: flex;
         align-items: center;
         padding: 1.5rem;
-        background-color: $colorGallery;
+        background-color: $color_gallery;
         box-shadow: 0 4px 3px -2px rgba(0, 0, 0, 0.15);
         transition-property: background-color, color, box-shadow;
         transition-duration: 0.15s;
-        @extend .#{$namespace}t-headline;
-        @extend .#{$namespace}t-headline--size_3;
+        @extend .#{$ns}t-headline;
+        @extend .#{$ns}t-headline--size_3;
 
-        &.#{$namespace}collapse__trigger--in {
-            background-color: $colorCeruleanBlue;
-            color: $colorWhite;
+        &.#{$ns}collapse__trigger--in {
+            background-color: $color_cerulean-blue;
+            color: $color_white;
             box-shadow: 0 4px 3px -2px rgba(0, 0, 0, 0.25); //stylelint-disable-line
         }
 
         &-icon {
-            .#{$namespace}collapse__trigger--in & {
-                fill: $colorWhite;
+            .#{$ns}collapse__trigger--in & {
+                fill: $color_white;
             }
         }
     }
@@ -82,7 +82,7 @@
 
     &__filter-title {
         padding: 2rem 2rem 2rem 0;
-        border-top: 1px solid $colorAlto;
+        border-top: 1px solid $color_alto;
         font-size: 1.2rem;
         cursor: pointer;
         display: block;
@@ -97,7 +97,7 @@
 
         @include media('<tablet') {
             width: 100%;
-            background-color: $colorGallery;
+            background-color: $color_gallery;
             padding: 1.3rem 3rem 1.3rem 2rem;
             box-sizing: border-box;
         }
@@ -124,7 +124,7 @@
             right: 0;
             height: 0.2rem;
             width: 1rem;
-            background: $colorWhite;
+            background: $color_white;
         }
 
         &:before {
@@ -140,7 +140,7 @@
             transition: transform 0.3s ease-out, background-color 0.15s linear;
         }
 
-        .#{$namespace}aftersearch-nav__show-more-trigger.show & {
+        .#{$ns}aftersearch-nav__show-more-trigger.show & {
             &:before {
                 transform: translateY(-50%) rotate(-90deg);
                 opacity: 0;
@@ -160,7 +160,7 @@
     }
 
     &__filter-count {
-        color: $colorGray;
+        color: $color_gray;
 
         &:before {
             content: '(';
@@ -197,7 +197,7 @@
             right: 0;
             height: 2px;
             width: 10px;
-            background: $colorCeruleanBlue;
+            background: $color_cerulean-blue;
         }
 
         &:before {
@@ -215,15 +215,15 @@
 
         #{$root}__filter.active &,
         #{$root}__filter-title[aria-expanded='true'] &,
-        .#{$namespace}filter-horizontal__trigger--in & {
+        .#{$ns}filter-horizontal__trigger--in & {
             &:before {
-                background: $colorGray;
+                background: $color_gray;
                 transform: translateY(-50%) rotate(-90deg);
                 opacity: 0;
             }
 
             &:after {
-                background: $colorGray;
+                background: $color_gray;
                 transform: translateY(-50%) rotate(0deg);
             }
         }
@@ -355,13 +355,13 @@
             margin-top: 0 !important;
         }
 
-        #{$namespace}input__label {
+        #{$ns}input__label {
             white-space: nowrap;
         }
 
         //On mobile there are 2 columns for filters. if margin is not enough on below before before content is placed in wrong column
         @include media('<tablet') {
-            .#{$namespace}input__label {
+            .#{$ns}input__label {
                 white-space: normal;
                 hyphens: auto;
                 margin-bottom: 0.2rem;
@@ -402,7 +402,7 @@
 
     &__price-label {
         font-size: 11px;
-        color: $colorGray;
+        color: $color_gray;
         text-transform: lowercase;
         padding: 0 1rem;
         display: inline-block;
@@ -414,7 +414,7 @@
     &__currency {
         position: absolute;
         right: 0.5rem;
-        color: $colorGray;
+        color: $color_gray;
         top: 50%;
         font-size: 1.4rem;
         transform: translate3d(0, -50%, 0);
@@ -423,7 +423,7 @@
 
     &__button-list {
         @include media('<tablet') {
-            background-color: $colorGallery;
+            background-color: $color_gallery;
             padding: 1.5rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
             margin: 0 calc(((100vw - 100%) / 2) * -1) 1rem
@@ -455,8 +455,8 @@
     /* STATE block */
     &__state {
         padding: 1.5rem 0;
-        border-top: 1px solid $colorGallery;
-        border-bottom: 1px solid $colorGallery;
+        border-top: 1px solid $color_gallery;
+        border-bottom: 1px solid $color_gallery;
 
         &-items {
             width: calc(100% + 1rem);
@@ -499,22 +499,22 @@
             position: relative;
             overflow: hidden;
             padding: 0.6rem 1.2rem 0.6rem 3.7rem;
-            border: 1px solid $colorCeruleanBlue;
+            border: 1px solid $color_cerulean-blue;
             border-radius: 3px;
-            color: $colorMineShaft;
+            color: $color_mineshaft;
             transition: all 0.15s linear;
 
             &:hover {
-                border-color: $colorCeruleanBlueHover;
-                color: $colorCeruleanBlueHover;
+                border-color: $color_torea-bay;
+                color: $color_torea-bay;
                 text-decoration: none;
 
                 #{$root}__state-remove {
-                    background-color: $colorCeruleanBlue;
+                    background-color: $color_cerulean-blue;
                 }
 
                 #{$root}__state-remove-icon {
-                    fill: $colorWhite;
+                    fill: $color_white;
                 }
             }
         }
@@ -550,7 +550,7 @@
             border: none;
             transform: translate3d(0, 0, 0) skew(-18deg);
             backface-visibility: hidden;
-            border-right: 1px solid $colorCeruleanBlue;
+            border-right: 1px solid $color_cerulean-blue;
             transition: background-color 0.15s linear;
         }
 
@@ -563,7 +563,7 @@
             transform: translate3d(-50%, -50%, 0) skew(18deg);
             padding: 0;
             margin-left: 0.3rem;
-            fill: $colorCeruleanBlue;
+            fill: $color_cerulean-blue;
             transition: fill 0.15s linear;
         }
 
@@ -589,8 +589,8 @@
                 overflow: visible !important;
                 margin-bottom: 0;
                 padding: 0.5rem 0;
-                border-top: 1px solid $colorGallery;
-                border-bottom: 1px solid $colorGallery;
+                border-top: 1px solid $color_gallery;
+                border-bottom: 1px solid $color_gallery;
             }
         }
 
@@ -636,7 +636,7 @@
 
                 &:before,
                 &:after {
-                    background: $colorMineShaft !important;
+                    background: $color_mineshaft !important;
                 }
             }
         }
@@ -650,18 +650,18 @@
                 overflow: visible;
                 margin: 0;
                 padding: 1.3rem 2.5rem 1.3rem 1.8rem;
-                background-color: $colorGallery;
+                background-color: $color_gallery;
                 font-size: 1.1rem;
                 border-top: none;
                 transition: box-shadow 0.15s ease-in-out;
                 word-break: unset;
 
                 &:hover {
-                    background-color: darken($colorGallery, 8%);
+                    background-color: darken($color_gallery, 8%);
                 }
 
                 &[aria-expanded='true'] {
-                    background-color: $colorWhite;
+                    background-color: $color_white;
                     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
 
                     &:after {
@@ -673,7 +673,7 @@
                         left: 0;
                         height: 1rem;
                         margin-top: -0.1rem;
-                        background: $colorWhite;
+                        background: $color_white;
                     }
                 }
             }
@@ -681,14 +681,14 @@
 
         #{$root}__show-more-trigger {
             @include media('>=tablet') {
-                background: $colorCeruleanBlue;
+                background: $color_cerulean-blue;
                 width: 100%;
                 font-size: 1.1rem;
                 font-weight: 700;
                 padding: 1.3rem 2.5rem 1.1rem 1.8rem;
-                color: $colorWhite;
+                color: $color_white;
                 box-shadow: none;
-                border: 1px solid $colorCeruleanBlue;
+                border: 1px solid $color_cerulean-blue;
                 border-radius: 0;
                 position: relative;
                 text-align: left;
@@ -697,8 +697,8 @@
 
             &:focus,
             &:hover {
-                background: $colorCeruleanBlueHover;
-                border-color: $colorCeruleanBlueHover;
+                background: $color_torea-bay;
+                border-color: $color_torea-bay;
             }
 
             @include media('<tablet') {
@@ -713,7 +713,7 @@
                 left: 0.5rem;
                 min-width: calc(100% - 1rem);
                 box-sizing: border-box;
-                background-color: $colorWhite;
+                background-color: $color_white;
                 z-index: -1;
                 opacity: 0;
                 transition: box-shadow 0.15s ease-in-out;
@@ -737,7 +737,7 @@
                         left: 0;
                         bottom: 100%;
                         z-index: 5;
-                        background-color: $colorWhite;
+                        background-color: $color_white;
                     }
                 }
             }

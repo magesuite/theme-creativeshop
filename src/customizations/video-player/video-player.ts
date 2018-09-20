@@ -1,4 +1,4 @@
-import VideoPlayer from '../../../node_modules/creative-patterns/packages/components/video-player/src/video-player';
+import VideoPlayer from 'components/video-player/video-player';
 import modal from 'Magento_Ui/js/modal/modal';
 import $ from 'jquery';
 

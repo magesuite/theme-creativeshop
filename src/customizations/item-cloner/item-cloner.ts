@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
-import ItemCloner from '../../../node_modules/creative-patterns/packages/components/item-cloner/src/item-cloner';
+import ItemCloner from 'components/item-cloner/item-cloner';
 import $ from 'jquery';
 
 new ItemCloner($('.cs-grid-product:not(.cs-grid-product--static)'), {

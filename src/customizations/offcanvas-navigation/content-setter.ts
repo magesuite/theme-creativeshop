@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import 'mage/translate';
-import OffcanvasNavigation from '../../../node_modules/creative-patterns/packages/components/offcanvas-navigation/src/offcanvas-navigation';
+import OffcanvasNavigation from 'components/offcanvas-navigation/offcanvas-navigation';
 
 export interface NavigationTree {
     name: string;
