@@ -15,6 +15,9 @@ var config = {
     },
     config: {
         mixins: {
+            'mage/collapsible': {
+                'js/collapsible-ext': true,
+            },
             'Magento_Ui/js/view/messages': {
                 'Magento_Ui/js/view/messages-ext': true,
             },

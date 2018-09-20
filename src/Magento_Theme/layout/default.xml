@@ -2,10 +2,14 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="head.additional">
-            <block class="Magento\Framework\View\Element\Template" name="auto.tel.conversion.prevention" template="Magento_Theme::html/phone-number-conversion.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="preload" template="Magento_Theme::html/preload.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="fonts" template="Magento_Theme::html/fonts.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="styles" template="Magento_Theme::html/styles.phtml"/>
+            <!-- Fonts definition -->
+            <block class="Magento\Framework\View\Element\Template" name="fonts" template="Magento_Theme::head/fonts.phtml" before="-">
+                <arguments>
+                    <argument name="web_fonts" xsi:type="array">
+                        <item name="libre_franklin" xsi:type="string">https://fonts.googleapis.com/css?family=Libre+Franklin:300,400,700,900</item>
+                    </argument>
+                </arguments>
+            </block>
         </referenceBlock>
 
         <move element="skip_to_content" destination="header.container" before="-"/>
