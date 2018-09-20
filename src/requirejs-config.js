@@ -1,9 +1,9 @@
 var config = {
     paths: {
-        Swiper: 'swiper',
+        Swiper: 'js/vendor/swiper',
         vendors: 'vendors',
-        Stickyfill: 'stickyfill',
-        isMobile: 'ismobile',
+        Stickyfill: 'js/vendor/stickyfill',
+        isMobile: 'js/vendor/ismobile',
     },
     shim: {
         vendors: {
