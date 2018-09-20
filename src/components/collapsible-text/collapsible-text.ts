@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 const namespace: string = 'cs-';
 
 // Initialize collapsible text

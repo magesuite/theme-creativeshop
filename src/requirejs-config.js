@@ -1,14 +1,12 @@
 var config = {
     paths: {
+        bundle: 'js/bundle',
         Swiper: 'js/vendor/swiper',
         vendors: 'vendors',
         Stickyfill: 'js/vendor/stickyfill',
         isMobile: 'js/vendor/ismobile',
     },
     shim: {
-        vendors: {
-            deps: ['jquery'],
-        },
         isMobile: {
             exports: 'isMobile',
         },

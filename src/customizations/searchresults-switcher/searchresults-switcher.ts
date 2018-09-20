@@ -1,4 +1,4 @@
 import SearchresultsSwitcher from '../../components/searchresults-switcher/searchresults-switcher';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 new SearchresultsSwitcher();

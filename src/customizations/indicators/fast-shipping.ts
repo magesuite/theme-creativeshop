@@ -1,6 +1,6 @@
 import FastShipping from 'components/indicators/fast-shipping';
 import storage from 'Magento_Ui/js/lib/core/storage/local';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 /**
  * Defines caching time (in minutes)

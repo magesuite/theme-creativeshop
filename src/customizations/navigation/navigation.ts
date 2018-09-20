@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-new */
 
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 import Navigation from 'components/navigation/navigation';
 

@@ -1,5 +1,5 @@
 import Hero from 'components/hero/hero';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 $('.cs-hero').each(function(): void {
     const hero: JQuery = $(this);

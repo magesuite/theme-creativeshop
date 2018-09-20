@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
 import QtyIncrement from 'components/qty-increment/qty-increment';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 /**
  * Initializes all flyouts on the page.

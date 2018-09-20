@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 import OffcanvasNavigation from 'components/offcanvas-navigation/offcanvas-navigation';
 
 import contentSetter from './content-setter';

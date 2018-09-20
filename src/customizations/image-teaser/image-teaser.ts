@@ -1,7 +1,7 @@
 import breakpoint from 'utils/breakpoint/breakpoint';
 import ImageTeaser from 'components/image-teaser/image-teaser';
 
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 $(`.cs-image-teaser`).each(
     (index: number, element: any): void => {

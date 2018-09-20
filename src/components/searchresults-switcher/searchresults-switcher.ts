@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 /**
  * component options interface.

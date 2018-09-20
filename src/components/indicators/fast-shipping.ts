@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 /**
  * This component is part of Indicators, but works standalone.

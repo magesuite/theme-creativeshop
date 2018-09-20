@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 import 'mage/translate';
 
 const $pccf: JQuery = $('.pccf');

@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 /**
  * Product finder component options interface.

@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 import GridLayout from 'components/grid-layout/grid-layout';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 $('.cs-grid-layout').each(function(): void {
     new GridLayout($(this));

@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-new object-literal-key-quotes max-classes-per-file */
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 import breakpoint from 'utils/breakpoint/breakpoint';
 

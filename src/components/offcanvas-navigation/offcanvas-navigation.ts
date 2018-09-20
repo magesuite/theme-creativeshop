@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 import Offcanvas from '../../offcanvas/src/offcanvas';
 
 /**

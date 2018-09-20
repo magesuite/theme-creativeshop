@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-new */
 
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 import Dailydeal from 'components/dailydeal/dailydeal';
 

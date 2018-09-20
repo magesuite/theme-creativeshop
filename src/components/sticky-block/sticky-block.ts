@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 import Stickyfill from 'Stickyfill';
 
 import breakpoint from 'utils/breakpoint/breakpoint';

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
 import BrandCarousel from 'components/brand-carousel/brand-carousel';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 $('.cs-brand-carousel').each((index: number, element: HTMLElement) => {
     new BrandCarousel($(element), {

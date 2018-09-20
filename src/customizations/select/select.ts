@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
 import Select from 'components/select/select';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 new Select($('.cs-select'));
 

@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 $('.cs-pagination__selector-input').each((index: number, element: any) => {
     const _urlPattern: string = $(element).data('url-pattern');

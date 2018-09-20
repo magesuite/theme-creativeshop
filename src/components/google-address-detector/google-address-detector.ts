@@ -1,6 +1,6 @@
 /* tslint:disable:no-console no-unused-expression*/
 
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 /**
  * Google geocode detector class

@@ -1,6 +1,6 @@
 import VideoPlayer from 'components/video-player/video-player';
 import modal from 'Magento_Ui/js/modal/modal';
-import $ from 'jquery';
+import * as $ from 'jquery';
 
 new VideoPlayer({
     modalHandlers: {

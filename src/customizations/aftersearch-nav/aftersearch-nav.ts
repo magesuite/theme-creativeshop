@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import * as $ from 'jquery';
 import Aftersearch from 'components/aftersearch-nav/aftersearch-nav';
 
 /**
