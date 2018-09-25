@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import Swiper from 'Swiper';
+import * as Swiper from 'Swiper';
 
 /*
 * Product teaser
@@ -11,17 +11,23 @@ import Swiper from 'Swiper';
  * @param  {Object} settings Custom settings that will be passed along to Swiper.
  * @return {Object} New teaser object instance.
  */
-const csTeaser: any = function( $element: any, settings: any ): void {
+const csTeaser: any = function($element: any, settings: any): void {
     /**
      * Required variables initialization.
      */
     settings = settings || {};
     const teaser: any = this;
-    const teaserName: string = settings.teaserName ? settings.teaserName : 'cs-teaser';
+    const teaserName: string = settings.teaserName
+        ? settings.teaserName
+        : 'cs-teaser';
     const teaserClass: string = `.${teaserName}`;
-    const $teaserWrapper: any = $element.find( `${teaserClass}__wrapper` );
-    const paginationName: string = settings.paginationName ? settings.paginationName : `${teaserName}__pagination`;
-    const fractionPaginationSeparator: string = settings.fractionPaginationSeparator ? settings.fractionPaginationSeparator : '/';
+    const $teaserWrapper: any = $element.find(`${teaserClass}__wrapper`);
+    const paginationName: string = settings.paginationName
+        ? settings.paginationName
+        : `${teaserName}__pagination`;
+    const fractionPaginationSeparator: string = settings.fractionPaginationSeparator
+        ? settings.fractionPaginationSeparator
+        : '/';
     /**
      * Holds current Swiper instance.
      */
@@ -35,7 +41,7 @@ const csTeaser: any = function( $element: any, settings: any ): void {
     /**
      * Attaches component to HTML element.
      */
-    $element.data( teaserName, this );
+    $element.data(teaserName, this);
 
     /**
      * Tells if teaser should have dynamic or fixed number of visible slides.
@@ -44,7 +50,8 @@ const csTeaser: any = function( $element: any, settings: any ): void {
      * value, e.g. when settings.slidesPerView = 1 teaser will always show only one slide.
      * @type {Boolean}
      */
-    let dynamicNumOfSlides: any = !settings.slidesPerView || settings.slidesPerView === 'auto';
+    let dynamicNumOfSlides: any =
+        !settings.slidesPerView || settings.slidesPerView === 'auto';
 
     /**
      * Contains current settings of slider.
@@ -62,10 +69,10 @@ const csTeaser: any = function( $element: any, settings: any ): void {
         slideNextClass: `${teaserName}__slide--next`,
         slidePrevClass: `${teaserName}__slide--prev`,
         wrapperClass: `${teaserName}__slides`,
-        nextButton: $element.find( `${teaserClass}__nav--next` )[ 0 ],
-        prevButton: $element.find( `${teaserClass}__nav--prev` )[ 0 ],
+        nextButton: $element.find(`${teaserClass}__nav--next`)[0],
+        prevButton: $element.find(`${teaserClass}__nav--prev`)[0],
         buttonDisabledClass: `${teaserName}__nav--disabled`,
-        pagination: $element.find( `.${paginationName}` ),
+        pagination: $element.find(`.${paginationName}`),
         /**
          * Maximum number of groups that will be still visible as dots.
          * If you want pagination to always be dots you can either don't add
@@ -79,66 +86,87 @@ const csTeaser: any = function( $element: any, settings: any ): void {
         paginationCurrentClass: `${teaserName}__number--current`,
         paginationTotalClass: `${teaserName}__number--total`,
         paginationClickable: true,
-        spaceBetween: 20,   // Gap between slides.
-        slideMinWidth: 200,  // Minimum width of a slider.
+        spaceBetween: 20, // Gap between slides.
+        slideMinWidth: 200, // Minimum width of a slider.
         calculateSlides: true,
         maxSlidesPerView: null,
         watchSlidesVisibility: true,
-        paginationBulletRender( swiper: any, index: number, className: string ): Object {
+        paginationBulletRender(
+            swiper: any,
+            index: number,
+            className: string
+        ): Object {
             return `<li class="${className}">
-                <button class="${paginationName}-button">${( index + 1 )}</button></li>`;
+                <button class="${paginationName}-button">${index +
+                1}</button></li>`;
         },
-        paginationFractionRender( swiper: any, currentClassName: string, totalClassName: string ): Object {
+        paginationFractionRender(
+            swiper: any,
+            currentClassName: string,
+            totalClassName: string
+        ): Object {
             return `<span class="${teaserName}__number ${currentClassName}"></span> ${fractionPaginationSeparator} <span class="${teaserName}__number ${totalClassName}"></span>`;
         },
     };
 
-    currentSettings = $.extend( defaultSettings, settings );
+    currentSettings = $.extend(defaultSettings, settings);
 
     /**
      * Calculates number of slides that should be visible according to teaser's wrapper width.
      * @return {number} Number of slides.
      */
     const calculateSlidesNumber: any = function(): number {
-        const slidesNumber: number = Math.floor( $teaserWrapper.innerWidth() / ( currentSettings.slideMinWidth + currentSettings.spaceBetween ) );
+        const slidesNumber: number = Math.floor(
+            $teaserWrapper.innerWidth() /
+                (currentSettings.slideMinWidth + currentSettings.spaceBetween)
+        );
 
-        const maxSlidesAllowed: number = parseInt( currentSettings.maxSlidesPerView, 10 );
+        const maxSlidesAllowed: number = parseInt(
+            currentSettings.maxSlidesPerView,
+            10
+        );
 
-        if ( slidesNumber < maxSlidesAllowed ) {
+        if (slidesNumber < maxSlidesAllowed) {
             return slidesNumber;
         } else {
             return maxSlidesAllowed;
         }
     };
 
-    if ( dynamicNumOfSlides && currentSettings.calculateSlides ) {
-        currentSettings.slidesPerView =
-            currentSettings.slidesPerGroup = calculateSlidesNumber();
+    if (dynamicNumOfSlides && currentSettings.calculateSlides) {
+        currentSettings.slidesPerView = currentSettings.slidesPerGroup = calculateSlidesNumber();
     }
 
     /**
      * Updates slider sizing by adjusting number of visible slides and pagination.
      */
     const updateSliderSizing: any = function(): void {
-        if ( !$element.is( ':visible' ) ) {
+        if (!$element.is(':visible')) {
             return null;
         }
 
-        if ( dynamicNumOfSlides && currentSettings.calculateSlides ) {
-            currentSettings.slidesPerView =
-                currentSettings.slidesPerGroup = calculateSlidesNumber();
+        if (dynamicNumOfSlides && currentSettings.calculateSlides) {
+            currentSettings.slidesPerView = currentSettings.slidesPerGroup = calculateSlidesNumber();
         }
 
-        swiperInstance.params = $.extend( swiperInstance.params, currentSettings );
+        swiperInstance.params = $.extend(
+            swiperInstance.params,
+            currentSettings
+        );
     };
 
     const postInit: any = function(): void {
-        if ( ( swiperInstance.originalParams.slidesPerView !== 1 || swiperInstance.params.calculateSlides ) && !swiperInstance.params.onlyBulletPagination ) {
-
+        if (
+            (swiperInstance.originalParams.slidesPerView !== 1 ||
+                swiperInstance.params.calculateSlides) &&
+            !swiperInstance.params.onlyBulletPagination
+        ) {
             const totalSlidesNumber: number = swiperInstance.slides.length;
-            const totalGroupNumber: number = Math.ceil( totalSlidesNumber / swiperInstance.params.slidesPerGroup );
+            const totalGroupNumber: number = Math.ceil(
+                totalSlidesNumber / swiperInstance.params.slidesPerGroup
+            );
 
-            if ( totalGroupNumber > swiperInstance.params.paginationBreakpoint ) {
+            if (totalGroupNumber > swiperInstance.params.paginationBreakpoint) {
                 swiperInstance.params.paginationType = 'fraction';
             } else {
                 swiperInstance.params.paginationType = 'bullets';
@@ -146,18 +174,21 @@ const csTeaser: any = function( $element: any, settings: any ): void {
         }
     };
 
-    swiperInstance = new Swiper( $element.find( `${teaserClass}__wrapper` ), currentSettings );
+    swiperInstance = new Swiper(
+        $element.find(`${teaserClass}__wrapper`),
+        currentSettings
+    );
     destroyed = false;
     postInit();
     swiperInstance.update();
 
-    $( window ).on( 'resize', function(): void {
-        if ( !destroyed ) {
+    $(window).on('resize', function(): void {
+        if (!destroyed) {
             updateSliderSizing();
             postInit();
             swiperInstance.update();
         }
-    } );
+    });
 
     /**
      * Returns Swiper object.

@@ -22,9 +22,12 @@ import * as $ from 'jquery';
 // Components
 // =============================================================================
 
+import 'components/navigation';
 import 'components/collapse/collapse';
 import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
+import 'components/offcanvas-navigation';
+import 'components/offcanvas';
 
 import { Flyout } from 'components/flyout/class.flyout';
 export { Flyout };
@@ -38,9 +41,7 @@ import Select from 'customizations/select/select';
 export { Select };
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();
-import 'customizations/navigation/navigation';
-import 'customizations/offcanvas-navigation/offcanvas-navigation';
-import 'customizations/offcanvas/offcanvas';
+
 import { QtyIncrementCollection } from 'customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
 import 'customizations/aftersearch-nav/aftersearch-nav';

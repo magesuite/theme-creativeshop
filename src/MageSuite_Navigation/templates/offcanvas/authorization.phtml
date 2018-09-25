@@ -1,0 +1,19 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Account\AuthorizationLink $block */
+
+$dataPostParam = '';
+$isLoggedIn = $block->isLoggedIn();
+if ($isLoggedIn) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+<li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--level_0" data-label="<?= $block->escapeHtmlAttr(__('or')) ?>">
+    <a class="cs-offcanvas-navigation__link cs-offcanvas-navigation__link--level_0 cs-offcanvas-navigation__link--sign-in" <?= /* @noEscape */ $block->getLinkAttributes() ?><?= /* @noEscape */ $dataPostParam ?>>
+        <span class="cs-offcanvas-navigation__text">
+            <?= $block->escapeHtml($block->getLabel()) ?>
+        </span>
+        <?= $block->getChildHtml($isLoggedIn ? 'navigation.offcanvas.icon.logout' : 'navigation.offcanvas.icon.login'); ?>
+    </a>
+</li>

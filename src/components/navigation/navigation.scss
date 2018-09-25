@@ -1,211 +1,281 @@
-// Navigation
-// Navigation component that supports 3 levels of links.
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
+@import 'config/variables';
+@import 'include-media/dist/include-media';
 
-@mixin navigation() {
+$navigation_font-size: 1rem !default;
+$navigation_flyout-edge-gutter: $page_edge-gutter !default;
+$navigation_flyout-max-width: $page_max-width !default;
+// Maximum number of columns (including image teaser, product promo etc.) for tablet.
+$navigation_flyout-columns-max-tablet: 4 !default;
+// Maximum number of columns (including image teaser, product promo etc.) for desktop.
+$navigation_flyout-columns-max-desktop: 5 !default;
+$navigation_flyout-column-width-tablet: #{100vw /
+    $navigation_flyout-columns-max-tablet} - #{$navigation_flyout-edge-gutter * 2 /
+    $navigation_flyout-columns-max-tablet};
+$navigation_flyout-column-width-desktop: $navigation_flyout-max-width /
+    $navigation_flyout-columns-max-tablet;
+// Box shadow effect applied for the flyout.
+$navigation_flyout-box-shadow: 2px 2px 5px rgba($color_background-800, 0.15) !default;
+// Flyout background color.
+$navigation_flyout-background: $color_background-200 !default;
+// Color of the link.
+$navigation_link-color: $color_text-600 !default;
+// Color of the link in the flyout on hover.
+$navigation_link-color-hover: $color_primary-500 !default;
+// Bottom border configuration for flyout category links.
+$navigation_link-border: 1px solid $color_border-500 !default;
+
+.#{$ns}navigation {
     $root: &;
 
     box-sizing: border-box;
-    font-size: 1rem;
+    font-size: $navigation_font-size;
 
     &__list {
-        position: relative;
-        display: flex;
-        flex-wrap: nowrap;
         list-style: none;
         padding: 0;
+        margin: 0;
+
+        &--level {
+            &_0 {
+                position: relative;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+
+            &_1 {
+                columns: calc(#{$navigation_flyout-column-width-tablet})
+                    $navigation_flyout-columns-max-tablet;
+                column-gap: 0;
+
+                @include media('>=#{$navigation_flyout-max-width}') {
+                    columns: $navigation_flyout-column-width-desktop
+                        $navigation_flyout-columns-max-desktop;
+                }
+            }
+
+            &_2 {
+                flex-wrap: wrap;
+            }
+        }
     }
 
     &__item {
-        font-size: 1.4em;
+        font-size: 0.9em;
         margin: 0;
+        width: 100%;
+
+        &:hover,
+        .active {
+            > #{$root}__link {
+                color: $navigation_link-color-hover;
+            }
+        }
+
+        &--level {
+            &_0 {
+                width: auto;
+                font-size: 1.4em;
+
+                &:first-of-type {
+                    > #{$root}__link {
+                        padding-left: 0;
+                    }
+                }
+
+                &:last-of-type {
+                    > #{$root}__link {
+                        padding-right: 0;
+                    }
+                }
+            }
+
+            &_1 {
+                padding: 1rem;
+                width: calc(#{$navigation_flyout-column-width-tablet});
+                // Prevents element breaking because of column layout.
+                page-break-inside: avoid; /* Theoretically FF 20+ */
+                break-inside: avoid-column; /* IE 11 */
+                display: table;
+
+                @include media('>=#{$navigation_flyout-max-width}') {
+                    width: $navigation_flyout-column-width-desktop;
+                }
+
+                &--hidden {
+                    display: none;
+                }
+            }
+        }
     }
 
     &__link {
         display: block;
-        color: #484747;
-        font-weight: 700;
         text-transform: uppercase;
-        padding: 1.286em 0;
+        padding: 0.9em 1.05em;
+        width: 100%;
 
-        &:hover,
+        &,
         &:visited {
-            color: inherit;
+            color: $navigation_link-color;
         }
 
-        &--category {
-            color: inherit;
-            font-size: 0.9em;
-            padding: 5px 0;
-            margin: 0;
-            border-bottom: 1px solid #e9e9e9;
+        &:hover {
+            text-decoration: none;
+            color: $navigation_link-color-hover;
         }
 
-        &--subcategory {
-            text-transform: none;
-            font-weight: 500;
-            padding: 2px 0;
-        }
-    }
-    // Introducing custom class separate from the &__link to not interfere with
-    // offcanvas navigation builder which depends on it.
-    &__touch-link {
-        @extend #{$root}__link;
+        &--level {
+            &_0 {
+                font-weight: 700;
+            }
 
-        &--category {
-            @extend #{$root}__link--category;
+            &_1 {
+                font-weight: 700;
+                margin: 0;
+                border-bottom: $navigation_link-border;
+                padding-bottom: 1.55em;
+            }
+
+            &_2 {
+                text-transform: none;
+                font-size: 1.25em;
+            }
+        }
+
+        &--with-icon {
+            position: relative;
+            padding-left: 2.8rem;
         }
     }
 
     &__flyout {
         position: absolute;
         display: none;
-        background: #fff;
-        box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.2);
+        background: $navigation_flyout-background;
         left: 0;
-        z-index: 3;
         backface-visibility: hidden;
+        z-index: 1001; // Make sure flyouts cover gallery nav.
+        box-shadow: $navigation_flyout-box-shadow;
+        margin-top: -1px;
 
         &--visible {
             display: flex;
         }
-    }
 
-    &__categories {
-        column-width: calc(25vw - 30px / 4);
-        column-count: 3;
-        column-gap: 0;
-
-        @include media('>=1200px') {
-            column-count: 4;
-            column-width: 240px; // 1200px / 5
+        svg {
+            pointer-events: none;
         }
-    }
 
-    &__category,
-    &__banners {
-        box-sizing: border-box;
-        padding: 10px;
-        width: calc(25vw - 30px / 4);
-
-        @include media('>=1200px') {
-            width: 240px; // 1200px / 5
-        }
-    }
-
-    &__category {
-        // Prevents element breaking because of column layout.
-        page-break-inside: avoid; /* Theoretically FF 20+ */
-        break-inside: avoid-column; /* IE 11 */
-        display: table;
-
-        &--hidden {
-            display: none;
-        }
-    }
-
-    &__subcategories {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    &__subcategory {
-        margin-bottom: 0 !important;
-    }
-
-    &__banners {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    &__banner {
-        & + & {
-            padding-top: 10px;
+        li {
+            @supports (-ms-ime-align: auto) {
+                list-style: none;
+                list-style-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
+                list-style-type: none;
+            }
         }
     }
 
     &__teaser {
-        box-sizing: border-box;
         position: relative;
-        max-width: 48rem;
+        max-width: calc(#{$navigation_flyout-column-width-tablet} * 2);
         max-height: 100%;
-        padding: 1rem;
+        padding: 1em;
         overflow: hidden;
 
-        &-figure {
-            display: block;
-            max-height: 100%;
-            overflow: hidden;
+        @include media('>=#{$navigation_flyout-max-width}') {
+            max-width: $navigation_flyout-column-width-desktop * 2; // 1200px / 5
         }
+    }
 
-        &-image {
-            display: block;
-        }
-
-        &-content-wrapper {
-            box-sizing: border-box;
-            display: flex;
+    &__link {
+        &-icon-wrapper {
             position: absolute;
-            top: 0;
+            width: 2rem;
+            top: 50%;
             left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 6rem 3rem;
+            transform: translateY(-50%);
         }
 
-        &-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
-            color: $color_mineshaft;
-            text-align: center;
+        &-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            max-height: 1.8rem;
+
+            #{$root}__link--category & {
+                margin-top: -0.5rem;
+            }
         }
 
-        &-headline {
-            margin: 0 0 1rem;
-            font-size: 3rem;
-            line-height: 1.15;
+        &-products-qty {
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
+        }
+    }
+
+    &__products {
+        width: $navigation_flyout-column-width-tablet;
+        padding: 0.5em 1em;
+
+        @include media('>=#{$navigation_flyout-max-width}') {
+            width: $navigation_flyout-column-width-desktop;
+        }
+
+        &-header {
+            display: block;
+            color: $navigation_link-color;
+            text-transform: uppercase;
+            width: 100%;
             font-weight: 700;
-            color: $color_mineshaft;
-
-            @include media('>=laptop') {
-                font-size: 4.3rem;
-                line-height: 1;
-            }
+            margin: 0;
+            border-bottom: $navigation_link-border;
+            padding: 1.8em 1.5em 2em 1em;
+            font-size: 0.9em;
         }
 
-        &-subheadline {
-            margin: 0 0 1rem;
-            font-size: 1.65rem;
-            line-height: 1.15;
-            font-weight: 400;
-            color: $color_mineshaft;
-
-            @include media('>=laptop') {
-                font-size: 2.8rem;
-                line-height: 1.25;
-            }
+        &-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
+    }
 
-        &-text {
-            margin: 0 0 1rem;
-            font-size: 1rem;
-            line-height: 1.15;
-            font-weight: 300;
-            color: $color_mineshaft;
+    &__overlay {
+        position: absolute;
+        z-index: 1000;
+        background-color: #000;
+        opacity: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+        transform: translate3d(0, 3rem, 0);
+        transition: opacity 0.15s linear,
+            transform 0.2s cubic-bezier(0, 0.97, 0.05, 0.99);
 
-            @include media('>=laptop') {
-                font-size: 1.4rem;
-            }
+        &--visible {
+            opacity: 0.8;
+            transform: translate3d(0, 0, 0);
         }
+    }
 
-        &-cta {
-            margin-top: 2rem;
+    .page-print & {
+        display: none;
+    }
+}
+
+.#{$ns}container {
+    &--navigation {
+        display: none;
+
+        @include media('>=laptop') {
+            display: block;
         }
     }
 }

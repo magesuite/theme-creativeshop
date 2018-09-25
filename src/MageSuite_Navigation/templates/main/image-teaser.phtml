@@ -1,0 +1,68 @@
+<?php
+$item = $block->getItem();
+$imageTeaser = $item->getImageTeaser();
+// Text variables
+$headline = $imageTeaser->getHeadline();
+$subHeadline = $imageTeaser->getSubheadline();
+$paragraph = $imageTeaser->getParagraph();
+$buttonUrl = $imageTeaser->getButtonUrl();
+$buttonLabel = $imageTeaser->getButtonLabel();
+$buttonIcon = $block->getButtonIcon();
+// Image variables
+$imageUrl = $imageTeaser->getImageUrl();
+$imageSrcset = $imageTeaser->getSrcSet();
+$imageAlt = $headline ?? $itemLabel;
+?>
+<div class="cs-navigation-teaser <?= $block->getAdditionalCssClasses(); ?>">
+    <?php if ($buttonUrl): ?>
+        <a href="<?= $buttonUrl; ?>" class="cs-navigation-teaser__link">
+    <?php else: ?>
+        <span class="cs-navigation-teaser__link">
+    <?php endif; ?>
+        <?php if ($imageUrl): ?>
+            <figure class="cs-navigation-teaser__figure">
+                <img
+                    class="cs-navigation-teaser__image"
+                    src="<?= $imageUrl; ?>"
+                    srcset="<?= $imageSrcset; ?>"
+                    alt="<?= $imageAlt; ?>"
+                >
+            </figure>
+        <?php endif; ?>
+        <?php if ($headline || $subHeadline || $paragraph || $buttonLabel): ?>
+            <div class="cs-navigation-teaser__content-wrapper">
+                <div class="cs-navigation-teaser__content">
+                    <?php if ($headline): ?>
+                        <h2 class="cs-navigation-teaser__headline"><?= $headline; ?></h2>
+                    <?php endif; ?>
+                    <?php if ($subHeadline): ?>
+                        <p class="cs-navigation-teaser__subheadline"><?= $subHeadline; ?></p>
+                    <?php endif; ?>
+                    <?php if ($paragraph): ?>
+                        <p class="cs-navigation-teaser__text"><?= $paragraph; ?></p>
+                    <?php endif; ?>
+                    <?php if ($buttonLabel): ?>
+                        <div class="cs-navigation-teaser__cta">
+                            <span role="button" class="cs-button cs-button--type_long cs-button--look_default">
+                                <span class="cs-button__span"><?= $buttonLabel; ?></span>
+                                <?php
+                                if ($buttonIcon) {
+                                    echo $this->getLayout()
+                                        ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
+                                        ->setIconUrl($buttonIcon)
+                                        ->setCssClass('cs-button__icon')
+                                        ->toHtml();
+                                }
+                                ?>
+                            </span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php if ($buttonUrl): ?>
+        </a>
+    <?php else: ?>
+        </span>
+    <?php endif; ?>
+</div>

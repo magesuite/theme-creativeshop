@@ -1,0 +1,35 @@
+<?php
+    $item = $block->getItem();
+?>
+<div class="cs-navigation__flyout" data-category-identifier="<?= $item->getCategoryIdentifier() ?>">
+<?php
+if ($item->hasSubItems()) {
+    echo $this->getLayout()
+        ->createBlock(Magento\Framework\View\Element\Template::class)
+        ->setTemplate("MageSuite_Navigation::main/list.phtml")
+        ->setItem($item)
+        ->setShowCategoryIconSubcats($block->getShowCategoryIconSubcats())
+        ->setShowProductsAmountSubcats($block->getShowProductsAmountSubcats())
+        ->setLevel($block->getLevel())
+        ->toHtml();
+}
+
+if($item->hasFeaturedProducts()) {
+    echo $this->getLayout()
+        ->createBlock(Magento\Framework\View\Element\Template::class)
+        ->setTemplate("MageSuite_Navigation::main/featured-products.phtml")
+        ->setItem($item)
+        ->toHtml();
+}
+
+if($item->hasImageTeaser()) {
+    echo $this->getLayout()
+        ->createBlock(Magento\Framework\View\Element\Template::class)
+        ->setTemplate("MageSuite_Navigation::main/image-teaser.phtml")
+        ->setItem($item)
+        ->setButtonIcon($block->getImageTeaserButtonIcon())
+        ->setAdditionalCssClasses('cs-navigation__teaser')
+        ->toHtml();
+}
+?>
+</div>

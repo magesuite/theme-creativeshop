@@ -15,13 +15,13 @@
 
 <?php if (count($block->getStores())>1): ?>
 <?php $id = $block->getIdModifier() ? '-' . $block->getIdModifier() : ''?>
-<div class="cs-switcher-language | switcher language switcher-language" data-ui-id="language-switcher" id="switcher-language<?php /* @escapeNotVerified */ echo $id?>">
+<div class="cs-switcher-language <?= $block->getAdditionalCssClasses(); ?> | switcher language switcher-language" data-ui-id="language-switcher" id="switcher-language<?php /* @escapeNotVerified */ echo $id?>">
     <strong class="cs-visually-hidden label switcher-label"><span><?php /* @escapeNotVerified */ echo __('Language') ?></span></strong>
     <div class="actions dropdown options switcher-options">
         <div class="cs-switcher-language__trigger | action toggle switcher-trigger" id="switcher-language-trigger<?php /* @escapeNotVerified */ echo $id?>">
             <span class="cs-switcher-language__trigger-span | view-<?php echo $block->escapeHtml($block->getCurrentStoreCode()) ?>">
                 <?php echo $block->escapeHtml($block->getStoreName()) ?>
-                <svg class="cs-switcher-language__trigger-icon"><use xlink:href="#arrow_down"></use></svg>
+                <?= $block->getChildHtml('store_language.trigger-icon'); ?>
             </span>
         </div>
         <ul class="cs-switcher-language__list | dropdown switcher-dropdown"

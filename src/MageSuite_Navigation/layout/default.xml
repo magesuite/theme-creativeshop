@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="navigation.sections" display="false"/>
+        <referenceContainer name="page.top">
+            <referenceBlock name="offcanvas">
+                <block class="MageSuite\Navigation\Block\Navigation" name="navigation.offcanvas" template="MageSuite_Navigation::offcanvas/drawer.phtml">
+                    <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.icon.next" as="navigation.offcanvas.icon.next">
+                        <arguments>
+                            <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
+                            <argument name="css_class" xsi:type="string">cs-offcanvas-navigation__icon cs-offcanvas-navigation__icon--next</argument>
+                            <argument name="inlined" xsi:type="boolean">true</argument>
+                            <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                        </arguments>
+                    </block>
+                    <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.icon.prev" as="navigation.offcanvas.icon.prev">
+                        <arguments>
+                            <argument name="icon_url" xsi:type="string">images/icons/arrow_prev.svg</argument>
+                            <argument name="css_class" xsi:type="string">cs-offcanvas-navigation__icon cs-offcanvas-navigation__icon--prev</argument>
+                            <argument name="inlined" xsi:type="boolean">true</argument>
+                            <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Customer\Block\Account\AuthorizationLink" name="navigation.offcanvas.authorization" template="MageSuite_Navigation::offcanvas/authorization.phtml">
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.icon.login">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/sign-in.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-offcanvas-navigation__icon cs-offcanvas-navigation__icon--login</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.icon.logout">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/sign-out.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-offcanvas-navigation__icon cs-offcanvas-navigation__icon--logout</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                    <block class="Magento\Store\Block\Switcher" name="navigation.offcanvas.switcher-language" template="Magento_Store::switch/languages.phtml">
+                        <arguments>
+                            <argument name="id_modifier" xsi:type="string">offcanvas</argument>
+                            <argument name="additional_css_classes" xsi:type="string">cs-switcher-language--offcanvas</argument>
+                        </arguments>
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-language.trigger-icon" as="store_language.trigger-icon">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-switcher-language__trigger-icon</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                    <block class="Magento\Directory\Block\Currency" name="navigation.offcanvas.switcher-currency" template="Magento_Directory::currency.phtml" after="-">
+                        <arguments>
+                            <argument name="id_modifier" xsi:type="string">offcanvas</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </referenceBlock>
+            <container name="navigation.container" htmlTag="div" htmlClass="cs-container cs-container--navigation">
+                <container name="navigation.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <block class="MageSuite\Navigation\Block\Navigation" name="navigation.main" template="MageSuite_Navigation::main/bar.phtml" />
+                </container>
+            </container>
+        </referenceContainer>
+    </body>
+</page>
