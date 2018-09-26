@@ -29,7 +29,7 @@
                         </span>' . $itemsLimit
                 ];
             } else {
-                $dailyDealHtml = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
+                $dailyDealHtml = $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
                         'data' => [
                             'namespace' => 'cs-',
                             'mix' => 'cs-dailydeal--tile',
@@ -124,7 +124,7 @@
         if($ratingData['activeStars']):
             $data['addons']['left'][] = [
                 'mix' => 'cs-grid-product__addon--rating',
-                'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$iterator, [
+                'content' => $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-rating-'.$iterator, [
                         'data' => [
                             'namespace' => 'cs-',
                             'maxStars' => $ratingData['maxStars'],
@@ -165,7 +165,7 @@
         ];
 
         echo $this->getLayout()->createBlock(
-            'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$iterator, [
+            'MageSuite\Frontend\Block\Twig', 'grid-product-'.$iterator, [
                 'data' => $data
             ]
         )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>

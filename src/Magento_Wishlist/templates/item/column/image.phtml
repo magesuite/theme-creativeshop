@@ -4,10 +4,10 @@
 /* @var \Magento\Wishlist\Model\Item $item */
 $item = $block->getItem();
 $product = $item->getProduct();
-$indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
+$indicatorsHelper = $this->helper('MageSuite\ProductPositiveIndicators\Helper\Product');
 $isPopular = $indicatorsHelper->getPopularIconFlag($product->getId());
 $isFreeShipped = ($indicatorsHelper->isFreeShipped($product) && $indicatorsHelper->showFreeShippingInProductTiles());
-$dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
+$dailyDealHelper = $this->helper('MageSuite\DailyDeal\Helper\OfferData');
 $dailyDealData = $dailyDealHelper->prepareOfferData($product);
 ?>
 <a
@@ -44,7 +44,7 @@ $dailyDealData = $dailyDealHelper->prepareOfferData($product);
     </ul>
 
     <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter') {
-        echo $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$product->getId(), [
+        echo $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-dailydeal-'.$product->getId(), [
                 'data' => [
                     'namespace' => 'cs-',
                     'mix' => 'cs-dailydeal--tile',

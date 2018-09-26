@@ -2,18 +2,18 @@
 
 $productCollection = $block->getLoadedProductCollection();
 $helper = $this->helper('Magento\Catalog\Helper\Output');
-$csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
-$ccHelper = $this->helper('Creativestyle\FrontendExtension\Helper\CcConfig');
+$csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
+$ccHelper = $this->helper('MageSuite\Frontend\Helper\CcConfig');
 /** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
 $pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
 $imageHelper = $this->helper('Magento\Catalog\Helper\Image');
 $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
-$indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
-$badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
-$dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
+$indicatorsHelper = $this->helper('MageSuite\ProductPositiveIndicators\Helper\Product');
+$badgeHelper = $this->helper('MageSuite\Frontend\Helper\Product');
+$dailyDealHelper = $this->helper('MageSuite\DailyDeal\Helper\OfferData');
 $heroProduct = $block->getIsHeroEnabled();
 
-$salabilityHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product\Salability');
+$salabilityHelper = $this->helper('MageSuite\Frontend\Helper\Product\Salability');
 $salabilityStatus = $salabilityHelper->getSalabilityStatus($productCollection);
 $filtersLayout = $this->getFiltersLayout();
 ?>
@@ -63,7 +63,7 @@ $filtersLayout = $this->getFiltersLayout();
         </div>
 
         <?php 
-            $teasersConfig = $this->helper('Creativestyle\ContentConstructorFrontendExtension\Helper\CategoryGridTeasers')->getConfig(); 
+            $teasersConfig = $this->helper('MageSuite\ContentConstructorFrontend\Helper\CategoryGridTeasers')->getConfig();
             $isHorizontalFilterLayout = $block->getData('filters_layout') == 'horizontal-full';
             $columnsConfiguration = $ccHelper->getColumnsConfiguration($isHorizontalFilterLayout);
         ?>
@@ -87,7 +87,7 @@ $filtersLayout = $this->getFiltersLayout();
                     <?= $this
                         ->getLayout()
                         ->createBlock(
-                            '\Creativestyle\FrontendExtension\Block\Product\View\Tile', 'product-'.$iterator,
+                            '\MageSuite\Frontend\Block\Product\View\Tile', 'product-'.$iterator,
                             ['data' => get_defined_vars()]
                         )
                         ->setCacheKeyElements($viewMode, $showHeroProduct, $productImageUrl, $isLazyloaded)
