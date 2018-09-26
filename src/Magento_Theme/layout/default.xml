@@ -16,7 +16,7 @@
         <move element="top.links" destination="header.user-area" before="-"/>
 
         <referenceContainer name="header.panel" remove="true"/>
-        <move element="store_language" destination="information-stripe" after="authorization-link"/>
+        <move element="store_language" destination="information.stripe" before="currency.switcher"/>
 
 
         <!--Welcome message-->
@@ -25,7 +25,23 @@
         <referenceContainer name="page.wrapper">
             <container name="information.stripe.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--viewport-width" before="-">
                 <container name="information.stripe.container.inner" htmlTag="div" htmlClass="cs-container__inner cs-container__inner--flex">
-                    <block class="Magento\Framework\View\Element\Template" name="information-stripe" template="Magento_Theme::html/information-stripe.phtml"/>
+                    <container name="information.stripe" htmlTag="div" htmlClass="cs-information-stripe">
+                        <container name="information.stripe.wrapper" htmlTag="div" htmlClass="cs-information-stripe__wrapper">
+                            <!-- @TODO: change php class -->
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="information.stripe_usps">
+                                <arguments>
+                                    <argument name="block_id" xsi:type="string">information_stripe_usps</argument>
+                                </arguments>
+                            </block>
+                            <!-- @TODO: change php class -->
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="information.stripe_hotline">
+                                <arguments>
+                                    <argument name="block_id" xsi:type="string">information_stripe_hotline</argument>
+                                </arguments>
+                            </block>
+                        </container>
+                    </container>
+
 
                     <!-- this block is moved by js to offcanvas navigation -->
                     <container name="store_language_nav_container" htmlTag="div" htmlClass="cs-visually-hidden">
