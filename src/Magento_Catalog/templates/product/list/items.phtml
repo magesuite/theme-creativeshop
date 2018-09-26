@@ -168,7 +168,7 @@ switch ($type = $block->getType()) {
     <?php endif; ?>
 
         <?=$this->getLayout()->createBlock(
-            'Creativestyle\FrontendExtension\Block\Twig', 'carousels-headline-'.$type, [
+            'MageSuite\Frontend\Block\Twig', 'carousels-headline-'.$type, [
                 'data' => [
                     'title' => $title
                 ]
@@ -182,10 +182,10 @@ switch ($type = $block->getType()) {
 
                         <?php
                             $iterator = 1;
-                            $csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
-                            $indicatorsHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
-                            $badgeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
-                            $dailyDealHelper = $this->helper('Creativestyle\DailyDealExtension\Helper\OfferData');
+                            $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
+                            $indicatorsHelper = $this->helper('MageSuite\ProductPositiveIndicators\Helper\Product');
+                            $badgeHelper = $this->helper('MageSuite\Frontend\Helper\Product');
+                            $dailyDealHelper = $this->helper('MageSuite\DailyDeal\Helper\OfferData');
                             foreach ($items as $item): ?>
 
                             <?php
@@ -217,7 +217,7 @@ switch ($type = $block->getType()) {
                                                 </span>' . $itemsLimit
                                         ];
                                     } else {
-                                        $dailyDealHtml = $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-dailydeal-'.$type.'-'.$iterator, [
+                                        $dailyDealHtml = $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-dailydeal-'.$type.'-'.$iterator, [
                                                 'data' => [
                                                     'namespace' => 'cs-',
                                                     'mix' => 'cs-dailydeal--tile',
@@ -308,7 +308,7 @@ switch ($type = $block->getType()) {
                                 if($ratingData['activeStars']):
                                     $data['addons']['left'][] = [
                                         'mix' => 'cs-grid-product__addon--rating',
-                                        'content' => $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating-'.$type.'-'.$iterator, [
+                                        'content' => $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-rating-'.$type.'-'.$iterator, [
                                                 'data' => [
                                                     'namespace' => 'cs-',
                                                     'maxStars' => $ratingData['maxStars'],
@@ -382,7 +382,7 @@ switch ($type = $block->getType()) {
 
                             <li class="cs-products-promo__slide | cs-grid-product cs-grid-product--in-carousel">
                                 <?=$this->getLayout()->createBlock(
-                                    'Creativestyle\FrontendExtension\Block\Twig', 'grid-product-'.$type.'-'.$iterator, [
+                                    'MageSuite\Frontend\Block\Twig', 'grid-product-'.$type.'-'.$iterator, [
                                         'data' => $data
                                     ]
                                 )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>

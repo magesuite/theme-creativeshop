@@ -1,6 +1,6 @@
 <?php
 /** @var $block \Magento\Catalog\Block\Product\AbstractProduct */
-$csProductHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Product');
+$csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
 $rating = $csProductHelper->getReviewSummary($block->getProduct(), true);
 $ratingData = $rating["data"];
 $votes = $rating["data"]["votes"];
@@ -16,7 +16,7 @@ $allVotes = array_sum($votes);
                 class="cs-reviews-summary__note-right"> / <?php echo $ratingData['maxStars'] ?></span>
         </div>
 
-        <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'grid-product-rating--', [
+        <?= $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-rating--', [
                 'data' => [
                     'namespace' => 'cs-',
                     'maxStars' => $ratingData['maxStars'],

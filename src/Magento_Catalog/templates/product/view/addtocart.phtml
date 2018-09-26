@@ -6,7 +6,7 @@
 <?php
     $product = $block->getProduct();
     $buttonTitle = __('Add to Cart');
-    $indicatorsHelper = $this->helper('\Creativestyle\ProductPositiveIndicatorsExtension\Helper\Product');
+    $indicatorsHelper = $this->helper('\MageSuite\ProductPositiveIndicators\Helper\Product');
     $isFreeShipped = ($indicatorsHelper->isFreeShipped($product) && $indicatorsHelper->showFreeShippingTextNoteOnProductsDetailpage());
 ?>
 
@@ -20,7 +20,7 @@
                     <div class="cs-box-addtocart__qty-increment">
                         <?php $productDefaultQty = $block->getProductDefaultQty() * 1; ?>
                         <?=$this->getLayout()->createBlock(
-                            'Creativestyle\FrontendExtension\Block\Twig',
+                            'MageSuite\Frontend\Block\Twig',
                             'add-to-cart-pdp', [
                                 'data' => [
                                     "namespace" => 'cs-',
@@ -57,7 +57,7 @@
                             <link id="cs-box-addtocart__availability" itemprop="availability" href="http://schema.org/InStock" />
                             <?php if($indicatorsHelper->isFastShippingEnabled()):
                                 echo $this->getLayout()->createBlock(
-                                    'Creativestyle\FrontendExtension\Block\Twig',
+                                    'MageSuite\Frontend\Block\Twig',
                                     'pdp-fast-shipping', [
                                         'data' => []
                                     ]
