@@ -56,6 +56,7 @@ import './customizations/grid-layout/grid-layout';
 import './customizations/product-finder/product-finder';
 import './customizations/indicators/fast-shipping-init';
 import './customizations/dailydeal/dailydeal';
+import './customizations/daily-deal-teaser/daily-deal-teaser';
 import './customizations/plugincompany-contactforms/plugincompany-contactforms';
 import './customizations/cart/cart';
 import './customizations/video-player/video-player';
