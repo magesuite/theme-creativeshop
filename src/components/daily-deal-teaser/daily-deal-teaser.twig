@@ -1,0 +1,146 @@
+{% if product is not null %}
+    {% set ratingContent = null %}
+
+    {% if product.rating.data is not null and showRating == true %}
+        {% set ratingContent %}
+            {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
+        {% endset %}
+    {% endif %}
+
+    <section class="{{ namespace }}daily-deal-teaser {{ mix }}">
+        <a href="{{ product.url }}" class="{{ namespace }}daily-deal-teaser__image-wrapper">
+            <figure class="{{ namespace }}daily-deal-teaser__figure" role="group">
+                {% if lazyload %}
+                    <img
+                        class="{{ namespace }}daily-deal-teaser__image {{ image.mix }} | lazyload"
+                        src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+                        data-src="{{ product.image.src }}"
+                        alt="{{ product.name }}"
+                        {% if product.image.srcset %}data-srcset="{{ product.image.srcset }}"{% endif %}
+                        {% if product.image.sizes %}sizes="{{ product.image.sizes }}"{% endif %}
+                        {% if product.image.width %}width="{{ product.image.width }}"{% endif %}
+                        {% if product.image.height %}height="{{ product.image.height }}"{% endif %}
+                    >
+                    <noscript>
+                        <img
+                            class="{{ namespace }}daily-deal-teaser__image {{ image.mix }}"
+                            src="{{ product.image.src }}"
+                            alt="{{ product.name }}"
+                            {% if product.image.srcset %}data-srcset="{{ product.image.srcset }}"{% endif %}
+                            {% if product.image.sizes %}sizes="{{ product.image.sizes }}"{% endif %}
+                            {% if product.image.width %}width="{{ product.image.width }}"{% endif %}
+                            {% if product.image.height %}height="{{ product.image.height }}"{% endif %}
+                        >
+                    </noscript>
+                {% else %}
+                    <img
+                        class="{{ namespace }}daily-deal-teaser__image {{ image.mix }}"
+                        src="{{ product.image.src }}"
+                        alt="{{ product.name }}"
+                        {% if product.image.srcset %}srcset="{{ product.image.srcset }}"{% endif %}
+                        {% if product.image.sizes %}sizes="{{ product.image.sizes }}"{% endif %}
+                        {% if product.image.width %}width="{{ product.image.width }}"{% endif %}
+                        {% if product.image.height %}height="{{ product.image.height }}"{% endif %}
+                    >
+                {% endif %}
+
+                {% if slogan.show == true %}
+                    {% if slogan.text is defined and slogan.text|length %}
+                        <figcaption class="{{ namespace }}daily-deal-teaser__slogan">{{ slogan.text|raw }}</figcaption>
+                    {% endif %}
+
+                    {% if slogan.icon is defined and slogan.icon|length %}
+                        <figure class="{{ namespace }}daily-deal-teaser__slogan-icon-wrapper">
+                            <svg class="{{ namespace }}daily-deal-teaser__slogan-icon"><use xlink:href="{{ slogan.icon }}"></use></svg>
+                        </figure>
+                    {% endif %}
+                {% endif %}
+            </figure>
+        </a>
+
+        <div class="{{ namespace }}daily-deal-teaser__details">
+            {% if showBrand == true and product.brandName is defined and product.brandName|length %}
+                <p class="{{ namespace }}daily-deal-teaser__product-brand">{{ product.brandName }}</p>
+            {% endif %}
+
+            <p class="{{ namespace }}daily-deal-teaser__product-name">
+                <a href="{{ product.url }}" class="{{ namespace }}daily-deal-teaser__product-link">{{ product.name }}</a>
+            </p>
+
+            {% if ratingContent is not null %}
+                <div class="{{ namespace }}daily-deal-teaser__product-rating">{{ ratingContent|raw }}</div>
+            {% endif %}
+
+            {% if product.swatches is defined %}
+                <div class="{{ namespace }}daily-deal-teaser__product-swatches">{{ product.swatches|raw }}</div>
+            {% endif %}
+
+            <div class="{{ namespace }}daily-deal-teaser__dd-details">
+                <div class="{{ namespace }}daily-deal-teaser__dd-column">
+                    {% if dailyDealTimeLeftLabel is defined and dailyDealTimeLeftLabel|length %}
+                        <p class="{{ namespace }}daily-deal-teaser__dd-headline {{ namespace }}daily-deal-teaser__dd-headline--countdown">{{ dailyDealTimeLeftLabel }}</p>
+                    {% endif %}
+
+                    {% include locate('dailydeal/dailydeal.twig') with {
+                        'namespace': namespace,
+                        'mix': 'cs-dailydeal--teaser',
+                        'deal': {
+                            'end': product.dailyDealOffer.to
+                        }
+                    } %}
+                </div>
+
+                <div class="{{ namespace }}daily-deal-teaser__dd-column">
+                    {% if availableItemsAmount.show == true and product.dailyDealOffer.initialAmount is defined and product.dailyDealOffer.initialAmount|length %}
+                        {% if availableItemsAmount.label is defined and availableItemsAmount.label|length %}
+                            <p class="{{ namespace }}daily-deal-teaser__dd-headline {{ namespace }}daily-deal-teaser__dd-headline--limit">{{ availableItemsAmount.label }}</p>
+                        {% endif %}
+
+                        <div class="{{ namespace }}daily-deal-teaser__progress-bar">
+                            <div class="{{ namespace }}cart-bonus__progress-wrapper {{ namespace }}daily-deal-teaser__progress-bar-content">
+                                {% set percentage = product.dailyDealOffer.items|number_format / product.dailyDealOffer.initialAmount|number_format * 100 %}
+                                <div class="{{ namespace }}cart-bonus__progress-done {{ namespace }}daily-deal-teaser__progress" style="transform: scaleX(0.{{ percentage }})"></div>
+                                <div class="{{ namespace }}cart-bonus__progress-possible {{ namespace }}daily-deal-teaser__progress-bg"></div>
+                            </div>
+
+                            <span class="{{ namespace }}daily-deal-teaser__available">
+                                {{ product.dailyDealOffer.items }} / {{ product.dailyDealOffer.initialAmount }}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <aside class="{{ namespace }}daily-deal-teaser__actions">
+            <div class="{{ namespace }}daily-deal-teaser__price-details">
+                <div class="{{ namespace }}daily-deal-teaser__discount">
+                    {% if discountBadge.showBadge and product.dailyDealOffer.discountPercentage|length %}
+                        {% if discountBadge.showLabel == true and discountBadge.label|length %}
+                            <span class="cs-badge cs-badge--cut cs-badge--attention {{ namespace }}daily-deal-teaser__discount-badge {{ namespace }}daily-deal-teaser__discount-badge--label">
+                                <span class="cs-badge__span {{ namespace }}daily-deal-teaser__discount-text {{ namespace }}daily-deal-teaser__discount-text--label">{{ discountBadge.label }}</span>
+                            </span>
+                        {% endif %}
+                        <span class="cs-badge cs-badge--cut cs-badge--discount {{ namespace }}daily-deal-teaser__discount-badge">
+                            <span class="cs-badge__span {{ namespace }}daily-deal-teaser__discount-text">{{ discountBadge.badgePrefix }}{{ product.dailyDealOffer.discountPercentage }}{{ discountBadge.badgeSuffix }}</span>
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="{{ namespace }}daily-deal-teaser__price">{{ product.price|raw }}</div>
+            </div>
+
+            {% if showAddToCartButton == true and product.addToCartButtonHtml is defined and product.addToCartButtonHtml|length %}
+                <div class="{{ namespace }}daily-deal-teaser__addtocart">
+                    {{ product.addToCartButtonHtml|raw }}
+                </div>
+            {% endif %}
+        </aside>
+    </section>
+
+    {% if expiredNotice.showIfExpired == true and expiredNotice.content|length %}
+        <section class="{{ namespace }}daily-deal-teaser {{ namespace }}daily-deal-teaser--expired">
+            {{ expiredNotice.content|raw }}
+        </section>
+    {% endif %}
+{% endif %}
