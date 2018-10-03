@@ -1,22 +1,37 @@
-// Offcanvas navigation
-// Navigation component that is meant to be used inside offcanvas component.
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-@mixin offcanvas-navigation() {
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$offcanvas-navigation_background: $color_background-200 !default;
+
+$offcanvas-navigation_item-background: $offcanvas-navigation_background !default;
+$offcanvas-navigation_item-border: 1px $color_alto solid !default;
+
+$offcanvas-navigation_link-color: $color_text-800 !default;
+$offcanvas-navigation_link-sign-color: $color_primary-500 !default;
+$offcanvas-navigation_link-active-color: $color_primary-500 !default;
+
+$offcanvas-navigation_icon-fill: $color_primary-500 !default;
+
+$offcanvas-navigation_product-qty-color: $color_text-500 !default;
+
+.#{$ns}offcanvas-navigation {
+    $root: &;
+
     position: relative;
     width: 100%;
     min-height: 100%;
     overflow: hidden;
-    background-color: #fff;
+    background: $offcanvas-navigation_background;
 
     &__list {
+        position: relative;
+        z-index: 1;
         width: 100%;
         min-width: 100%;
         list-style: none;
         padding: 0;
         margin: 0;
-        background-color: #fff;
+        background-color: $offcanvas-navigation_item-background;
         overflow-y: hidden;
         overflow-x: hidden;
         height: 100%;
@@ -31,11 +46,11 @@
             left: 105%;
             height: 100%;
             top: 0;
-            transition: transform .3s;
+            transition: transform 0.3s;
 
             &--active {
-                transform: translateX( -105% );
-                transform: translate3d( -105%, 0, 0 );
+                transform: translateX(-105%);
+                transform: translate3d(-105%, 0, 0);
             }
         }
     }
@@ -44,11 +59,122 @@
         width: 100%;
         display: flex;
         overflow: hidden;
+        margin: 0;
+
+        & + & {
+            border-top: $offcanvas-navigation_item-border;
+        }
+
+        &:last-of-type {
+            border-bottom: $offcanvas-navigation_item-border;
+        }
+
+        &--with-icon {
+            #{$root}__text {
+                position: relative;
+                padding-left: 2.6rem;
+            }
+        }
     }
 
     &__link {
-        display: block;
         min-width: 100%;
         width: 100%;
+        display: flex;
+        padding: 2.4rem 2rem;
+        font-size: 1.4rem;
+        align-items: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        position: relative;
+
+        &,
+        &:hover,
+        &:visited {
+            color: $offcanvas-navigation_link-color;
+        }
+
+        &--sign-in,
+        &--sign-out {
+            padding-right: 5rem;
+
+            &,
+            &:hover,
+            &:visited {
+                color: $offcanvas-navigation_link-sign-color;
+            }
+
+            #{$root}__icon {
+                height: 2.5rem;
+                margin-top: -1.25rem;
+                width: 2.3rem;
+            }
+        }
+
+        &--parent,
+        &--return {
+            #{$root}__icon {
+                height: 1rem;
+                width: 1rem;
+                margin-top: -0.5rem;
+            }
+        }
+
+        &--return {
+            padding-left: 5rem;
+
+            #{$root}__icon {
+                right: auto;
+                left: 2rem;
+            }
+        }
+
+        &--parent {
+            padding-right: 5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+    }
+
+    .active {
+        > #{$root}__link {
+            color: $offcanvas-navigation_link-active-color;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        right: 2rem;
+        fill: $offcanvas-navigation_icon-fill;
+    }
+
+    &__category-icon-wrapper {
+        position: absolute;
+        width: 2rem;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+
+    &__category-icon {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate3d(0, -50%, 0);
+        max-height: 2rem;
+    }
+
+    &__product-qty {
+        font-weight: 400;
+        color: $offcanvas-navigation_product-qty-color;
+
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
     }
 }

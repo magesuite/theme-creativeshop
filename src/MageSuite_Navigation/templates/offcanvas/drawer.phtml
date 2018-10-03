@@ -1,0 +1,44 @@
+<?php
+$level = 0;
+$nextIcon = $block->getChildHtml('navigation.offcanvas.icon.next');
+$prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
+?>
+<nav class="cs-offcanvas-navigation">
+    <ul class="cs-offcanvas-navigation__list cs-offcanvas-navigation__list--current cs-offcanvas-navigation__list--level_<?= $level; ?>">
+    <?php foreach($block->getItems() as $item):
+        $itemUrl = $item->getUrl();
+        $itemLabel = $item->getLabel();
+        $itemHasSubitems = $item->hasSubItems();
+    ?>
+        <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--level_<?= $level; ?>">
+            <a
+                class="cs-offcanvas-navigation__link<?= $itemHasSubitems ? ' cs-offcanvas-navigation__link--parent' : ''; ?>"
+                href="<?= $itemUrl; ?>"
+            >
+            <?php if ($itemHasSubitems): ?>
+                <?= $nextIcon ?>
+            <?php endif; ?>
+                <span class="cs-offcanvas-navigation__text">
+                    <?= $itemLabel; ?>
+                </span>
+            </a>
+            <?php
+                if ($itemHasSubitems) {
+                    echo $this->getLayout()
+                        ->createBlock(Magento\Framework\View\Element\Template::class)
+                        ->setTemplate("MageSuite_Navigation::offcanvas/list.phtml")
+                        ->setItem($item)
+                        ->setLevel($level + 1)
+                        ->setNextIcon($nextIcon)
+                        ->setPrevIcon($prevIcon)
+                        ->toHtml();
+                }
+            ?>
+        </li>
+    <?php endforeach; ?>
+        <?= $block->getChildHtml('navigation.offcanvas.authorization'); ?>
+        <?= $block->getChildHtml('navigation.offcanvas.switcher-language'); ?>
+        <?= $block->getChildHtml('navigation.offcanvas.switcher-currency'); ?>
+    </ul>
+    <?= $block->getChildHtml('navigation.offcanvas.after'); ?>
+</nav>

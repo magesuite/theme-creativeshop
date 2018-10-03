@@ -1,0 +1,56 @@
+<?php
+    $level = 0;
+
+    $showCategoryIconRoot = $block->getShowCategoryIconRoot();
+    $showProductsAmountRoot = $block->getShowProductsAmountRoot();
+
+    $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
+    $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
+?>
+<nav class="cs-navigation">
+    <ul class="cs-navigation__list cs-navigation__list--level_<?= $level; ?>">
+        <?php foreach($block->getItems() as $item):
+            $itemId = $item->getId();
+            $itemUrl = $item->getUrl();
+            $itemLabel = $item->getLabel();
+            $itemHasCustomUrl = $item->hasCustomUrl();
+            $itemHasSubItems = $item->hasSubItems();
+            $itemIdentifier = $item->getIdentifier();
+            $itemCategoryIcon = $showCategoryIconRoot ? $item->getCategoryIcon() : '';
+            $itemNumberOfProducts = $showProductsAmountRoot ? $item->getNumberOfProducts() : 0;
+        ?>
+            <li
+                class="cs-navigation__item cs-navigation__item--level_<?= $level; ?><?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : ''; ?><?= $itemHasSubItems ? ' cs-navigation__item--with-flyout' : ''; ?>"
+                data-category-id="<?= $itemId; ?>"
+                data-category-identifier="<?= $itemIdentifier ?>"
+            >
+                <a
+                    href="<?= $itemUrl; ?>"
+                    class="cs-navigation__link cs-navigation__link--level_<?= $level; ?><?= $itemCategoryIcon ? ' cs-navigation__link--with-icon' : ''; ?>"
+                >
+                    <?php if ($itemCategoryIcon): ?>
+                        <span class="cs-navigation__link-icon-wrapper cs-navigation__link-icon-wrapper--root">
+                            <img src="<?= $itemCategoryIcon; ?>" alt="<?= $itemLabel; ?>" class="cs-navigation__link-icon">
+                        </span>
+                    <?php endif; ?>
+                    <?= $itemLabel; ?>
+                    <?php if ($itemNumberOfProducts): ?>
+                        <span class="cs-navigation__products-qty"><?= $itemNumberOfProducts; ?></span>
+                    <?php endif; ?>
+                </a>
+                <?php
+                    if ($itemHasSubItems) {
+                        echo $this->getLayout()
+                            ->createBlock(Magento\Framework\View\Element\Template::class)
+                            ->setTemplate("MageSuite_Navigation::main/flyout.phtml")
+                            ->setItem($item)
+                            ->setShowCategoryIconSubcats($showCategoryIconSubcats)
+                            ->setShowProductsAmountSubcats($showProductsAmountSubcats)
+                            ->setLevel($level + 1)
+                            ->toHtml();
+                    }
+                ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>

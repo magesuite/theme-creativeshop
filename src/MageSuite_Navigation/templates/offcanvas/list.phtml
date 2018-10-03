@@ -1,0 +1,55 @@
+<?php
+    $level = $block->getLevel();
+    $nextIcon = $block->getNextIcon();
+    $prevIcon = $block->getPrevIcon();
+
+    $item = $block->getItem();
+    $itemUrl = $item->getUrl();
+    $itemLabel = $item->getLabel();
+?>
+<ul class="cs-offcanvas-navigation__list cs-offcanvas-navigation__list--level_<?= $level; ?>">
+    <li class="cs-offcanvas-navigation__item">
+        <a class="cs-offcanvas-navigation__link cs-offcanvas-navigation__link--return" href="<?= $itemUrl; ?>">
+            <?= $prevIcon ?>
+            <span class="cs-offcanvas-navigation__text">
+                <?= $itemLabel; ?>
+            </span>
+        </a>
+    </li>
+    <li class="cs-offcanvas-navigation__item">
+        <a class="cs-offcanvas-navigation__link" href="<?= $itemUrl; ?>"><?= __('All products'); ?></a>
+    </li>
+<?php
+foreach($item->getSubItems() as $subItem):
+    $subItem = $subItem;
+    $subItemUrl = $subItem->getUrl();
+    $subItemLabel = $subItem->getLabel();
+    $subItemHasSubItems = $subItem->hasSubItems();
+?>
+    <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--level_<?= $level; ?>">
+        <a
+            class="cs-offcanvas-navigation__link<?= $subItemHasSubItems ? ' cs-offcanvas-navigation__link--parent' : ''; ?>"
+            href="<?= $subItemUrl; ?>"
+        >
+        <?php if ($subItemHasSubItems) {
+            echo $nextIcon;
+        } ?>
+            <span class="cs-offcanvas-navigation__text">
+                <?= $subItemLabel; ?>
+            </span>
+        </a>
+        <?php
+            if ($subItemHasSubItems) {
+                echo $this->getLayout()
+                    ->createBlock(Magento\Framework\View\Element\Template::class)
+                    ->setTemplate("MageSuite_Navigation::offcanvas/list.phtml")
+                    ->setItem($subItem)
+                    ->setLevel($level + 1)
+                    ->setNextIcon($block->getNextIcon())
+                    ->setPrevIcon($block->getPrevIcon())
+                    ->toHtml();
+            }
+        ?>
+    </li>
+<?php endforeach; ?>
+</ul>

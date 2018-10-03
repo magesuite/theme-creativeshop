@@ -3,12 +3,26 @@
  * Our changes:
  * - Adjusted to work out of the box after load.
  * - Removed AMD declaration to make it work with requireJS as async script.
+ * - Added checking "data-src" attribute before "src" to enable lazy loading.
+ * - Added waiting for DOM ready.
  */
 (function(root, factory) {
     root.inlineSVG = factory(root);
-    root.inlineSVG.init({
-        svgSelector: 'img.inline-svg[src$=".svg"]',
-    });
+    var inline = function() {
+        root.inlineSVG.init({
+            svgSelector:
+                'img.inline-svg[src$=".svg"], img.inline-svg[data-src$=".svg"]',
+        });
+    };
+    if (
+        document.attachEvent
+            ? document.readyState === 'complete'
+            : document.readyState !== 'loading'
+    ) {
+        inline();
+    } else {
+        document.addEventListener('DOMContentLoaded', inline);
+    }
 })(
     typeof global !== 'undefined' ? global : this.window || this.global,
     function(root) {
@@ -104,11 +118,12 @@
          */
         var inliner = function(cb) {
             var svgs = getAll();
+            console.log(svgs);
             var callback = after(svgs.length, cb);
 
             Array.prototype.forEach.call(svgs, function(svg, i) {
                 // Store some attributes of the image
-                var src = svg.src || svg.getAttribute('data-src'),
+                var src = svg.getAttribute('data-src') || svg.src,
                     attributes = svg.attributes;
 
                 // Get the contents of the SVG
