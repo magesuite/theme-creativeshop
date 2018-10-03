@@ -3,7 +3,7 @@
 
     {% if product.rating.data is not null and showRating == true %}
         {% set ratingContent %}
-            {% include locate( 'star-rating/star-rating.twig' ) with product.rating.data %}
+            {% include locate('star-rating/star-rating.twig') with product.rating.data %}
         {% endset %}
     {% endif %}
 
@@ -98,8 +98,8 @@
 
                         <div class="{{ namespace }}daily-deal-teaser__progress-bar">
                             <div class="{{ namespace }}cart-bonus__progress-wrapper {{ namespace }}daily-deal-teaser__progress-bar-content">
-                                {% set percentage = product.dailyDealOffer.items|number_format / product.dailyDealOffer.initialAmount|number_format * 100 %}
-                                <div class="{{ namespace }}cart-bonus__progress-done {{ namespace }}daily-deal-teaser__progress" style="transform: scaleX(0.{{ percentage|round }})"></div>
+                                {% set percentage = ((product.dailyDealOffer.items|number_format / product.dailyDealOffer.initialAmount|number_format) * 100) / 100 %}
+                                <div class="{{ namespace }}cart-bonus__progress-done {{ namespace }}daily-deal-teaser__progress" style="transform: scaleX({{ percentage }})"></div>
                                 <div class="{{ namespace }}cart-bonus__progress-possible {{ namespace }}daily-deal-teaser__progress-bg"></div>
                             </div>
 
