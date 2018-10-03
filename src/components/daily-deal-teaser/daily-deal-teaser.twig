@@ -99,7 +99,7 @@
                         <div class="{{ namespace }}daily-deal-teaser__progress-bar">
                             <div class="{{ namespace }}cart-bonus__progress-wrapper {{ namespace }}daily-deal-teaser__progress-bar-content">
                                 {% set percentage = product.dailyDealOffer.items|number_format / product.dailyDealOffer.initialAmount|number_format * 100 %}
-                                <div class="{{ namespace }}cart-bonus__progress-done {{ namespace }}daily-deal-teaser__progress" style="transform: scaleX(0.{{ percentage }})"></div>
+                                <div class="{{ namespace }}cart-bonus__progress-done {{ namespace }}daily-deal-teaser__progress" style="transform: scaleX(0.{{ percentage|round }})"></div>
                                 <div class="{{ namespace }}cart-bonus__progress-possible {{ namespace }}daily-deal-teaser__progress-bg"></div>
                             </div>
 
@@ -144,3 +144,5 @@
         </section>
     {% endif %}
 {% endif %}
+
+{{ dump(product) }}
