@@ -109,13 +109,18 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
         align-items: center;
         color: $colorApple;
 
-        #{$root}__amount {
-            color: $colorApple;
-            margin-right: 0.5ch;
-        }
-
         @include media('>=tablet') {
             display: none;
+        }
+    }
+
+    &__amount-text {
+        @include media('<tablet') {
+            display: none;
+
+            #{$root}__gift--current & {
+                display: block;
+            }
         }
     }
 
@@ -134,17 +139,15 @@ $cart-bonus-progress-duration: 0.8s !default; // How much time it takes to fill 
 
         &--awarded {
             &:after {
-                content: '\2714';
+                content: '';
                 position: absolute;
                 width: 1.5rem;
                 height: 1.5rem;
                 border-radius: 1.5rem;
                 box-shadow: 0 0 0 1px $colorWhite;
                 box-sizing: border-box;
-                background: $colorApple;
-                color: $colorWhite;
-                text-align: center;
-                font-size: 1.3rem;
+                background: url('images/check-gift.svg') no-repeat center center /
+                    1rem 1rem $colorApple;
                 line-height: 1.3rem;
                 right: -0.6rem;
                 bottom: -0.1rem;
