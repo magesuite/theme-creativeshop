@@ -11,23 +11,25 @@ const namespace: string = 'cs-';
  */
 
 // DD teaser component
-const teaserSelector: string = `.${namespace}daily-deal-teaser`;
+const teaserClass: string = `${namespace}daily-deal-teaser`;
 
-new Dailydeal($(`.${namespace}dailydeal--teaser`), {
-    namespace: namespace,
-    updateLabels: true,
-    afterRenderCallback: (dd): void => {
-        if (dd && dd._$element.length) {
-            dd._$element
-                .parents(teaserSelector)
-                .addClass(`${namespace}daily-deal-teaser--active`);
-        }
-    },
-    expiredHandler: (dd): void => {
-        if (dd && dd._$element.length) {
-            dd._$element
-                .parents(teaserSelector)
-                .removeClass(`${namespace}daily-deal-teaser--active`);
-        }
-    },
+$(`.${namespace}dailydeal--teaser`).each(function(): void {
+    new Dailydeal($(this), {
+        namespace: namespace,
+        updateLabels: true,
+        afterRenderCallback: (dailydeal): void => {
+            if (dailydeal && dailydeal._$element.length) {
+                dailydeal._$element
+                    .parents(`.${teaserClass}`)
+                    .addClass(`${teaserClass}--active`);
+            }
+        },
+        expiredHandler: (dailydeal): void => {
+            if (dailydeal && dailydeal._$element.length) {
+                dailydeal._$element
+                    .parents(`.${teaserClass}`)
+                    .removeClass(`${teaserClass}--active`);
+            }
+        },
+    });
 });
