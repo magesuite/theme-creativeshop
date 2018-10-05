@@ -29,7 +29,9 @@ const init: any = function(): void {
                 event.preventDefault();
 
                 if (isContentHidden) {
-                    $(this).text(showLessText);
+                    $(this)
+                        .find('span')
+                        .text(showLessText);
                     $content
                         .css('height', 'auto')
                         .removeClass(
@@ -37,7 +39,9 @@ const init: any = function(): void {
                         );
                     isContentHidden = false;
                 } else {
-                    $(this).text(showMoreText);
+                    $(this)
+                        .find('span')
+                        .text(showLessText);
                     $content
                         .css('height', maxHeight)
                         .addClass(
