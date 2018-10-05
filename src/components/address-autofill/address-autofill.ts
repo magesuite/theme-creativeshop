@@ -27,40 +27,31 @@ export default class AddressAutofill {
         this.options = options;
         this.optionsList = '';
 
-        $.getJSON(
-            'https://freegeoip.net/json/',
-            (location: any): void => {
-                if (location.country_code) {
-                    options.region = location.country_code;
-                }
-            }
-        ).always(() => {
-            // The most important parameter to set googleDetector region option and language option is value of country select
-            // First check if country select has any value, then check if it is different from geolocation set by IP
-            if (
-                this.countrySelect.val() &&
-                this.countrySelect.val() !== options.region
-            ) {
-                options.region = this.countrySelect.val();
-            }
+        // The most important parameter to set googleDetector region option and language option is value of country select
+        // First check if country select has any value, then check if it is different from geolocation set by IP
+        if (
+            this.countrySelect.val() &&
+            this.countrySelect.val() !== options.region
+        ) {
+            options.region = this.countrySelect.val();
+        }
 
-            // If region is not detected in any way do not start google autosuggest to prevent errors
+        // If region is not detected in any way do not start google autosuggest to prevent errors
 
-            if (!options.region) {
-                return;
-            }
+        if (!options.region) {
+            return;
+        }
 
-            options.language =
-                this.countrySelect.val() ||
-                window.navigator.userLanguage ||
-                window.navigator.language;
+        options.language =
+            this.countrySelect.val() ||
+            window.navigator.userLanguage ||
+            window.navigator.language;
 
-            this.googleAddressDetector = new GoogleAddressDetector(options);
+        this.googleAddressDetector = new GoogleAddressDetector(options);
 
-            this._initStreetField();
-            this._initZipField();
-            this._watchSelect();
-        });
+        this._initStreetField();
+        this._initZipField();
+        this._watchSelect();
     }
 
     /**

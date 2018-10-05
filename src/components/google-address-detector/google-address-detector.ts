@@ -189,8 +189,8 @@ export default class GoogleAddressDetector {
             (data: any): any => {
                 if (data.status === 'OK') {
                     return data.results || null;
-                } else if (data.status !== 'OK' && this.dev) {
-                    console.log('error with api');
+                } else if (data.status !== 'OK') {
+                    console.log(data);
                 } else if (
                     data.status === 'OK' &&
                     !data.results.length &&
