@@ -318,7 +318,36 @@ switch ($type = $block->getType()) {
                                             ]
                                         )->setTemplate("star-rating/star-rating.twig")->toHtml()
                                     ];
-                                endif; ?>
+                                endif; 
+                                $data['addons']['left'][] = [
+                                    'content' => sprintf(
+                                        '<ul class="cs-links-block-addto" data-role="add-to-links">
+                                                                <li class="cs-links-block-addto__item">
+                                                                    <a
+                                                                        href="#"
+                                                                        class="cs-links-block-addto__link towishlist"
+                                                                        title="%s"
+                                                                        aria-label="%s"
+                                                                        data-post=\'%s\'
+                                                                        data-action="add-to-wishlist"
+                                                                        role="button"
+                                                                    >
+                                                                        <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                                                            <use xlink:href="#heart"></use>
+                                                                        </svg>
+                                                                        %s
+
+                                                                    </a>
+                                                                </li>
+                                                            </ul>',
+                                        $block->escapeHtml(__('Add to Wish List')),
+                                        $block->escapeHtml(__('Add to Wish List')),
+                                        $block->getAddToWishlistParams($item),
+                                        __('Add to Wishlist')
+                                    )
+                                ];
+
+                                ?>
 
                                 <?php if ($showCart && $getIsSaleable):
                                     if ($item->getTypeInstance()->hasRequiredOptions($item)):
