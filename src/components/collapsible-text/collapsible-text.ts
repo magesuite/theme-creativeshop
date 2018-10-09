@@ -27,11 +27,11 @@ const init: any = function(): void {
 
             $trigger.on('click', function(event: Event): void {
                 event.preventDefault();
-
+                const $button = $(this).find('span').length
+                    ? $(this).find('span')
+                    : $(this);
                 if (isContentHidden) {
-                    $(this)
-                        .find('span')
-                        .text(showLessText);
+                    $button.text(showLessText);
                     $content
                         .css('height', 'auto')
                         .removeClass(
@@ -39,9 +39,7 @@ const init: any = function(): void {
                         );
                     isContentHidden = false;
                 } else {
-                    $(this)
-                        .find('span')
-                        .text(showLessText);
+                    $button.text(showMoreText);
                     $content
                         .css('height', maxHeight)
                         .addClass(
