@@ -4,7 +4,12 @@
         <referenceBlock name="navigation.sections" display="false"/>
         <referenceContainer name="page.top">
             <referenceBlock name="offcanvas">
+                <!-- Offcanvas navigation block. -->
                 <block class="MageSuite\Navigation\Block\Navigation" name="navigation.offcanvas" template="MageSuite_Navigation::offcanvas/drawer.phtml">
+                    <arguments>
+                        <argument name="type" xsi:type="string">mobile</argument>
+                    </arguments>
+                    <!-- Next icon displayed on the right side of parent items. -->
                     <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.icon.next" as="navigation.offcanvas.icon.next">
                         <arguments>
                             <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
@@ -13,6 +18,7 @@
                             <argument name="lazy_loaded" xsi:type="boolean">true</argument>
                         </arguments>
                     </block>
+                    <!-- Previous icon displayed on the left side of return items. -->
                     <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.icon.prev" as="navigation.offcanvas.icon.prev">
                         <arguments>
                             <argument name="icon_url" xsi:type="string">images/icons/arrow_prev.svg</argument>
@@ -62,6 +68,7 @@
             </referenceBlock>
             <container name="navigation.container" htmlTag="div" htmlClass="cs-container cs-container--navigation">
                 <container name="navigation.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <!-- Main navigation block. -->
                     <block class="MageSuite\Navigation\Block\Navigation" name="navigation.main" template="MageSuite_Navigation::main/bar.phtml" />
                 </container>
             </container>
