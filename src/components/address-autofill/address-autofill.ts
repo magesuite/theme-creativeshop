@@ -1,9 +1,9 @@
-import bundle from 'bundle';
 import * as $ from 'jquery';
-import 'mage/translate';
 
-// Google address(geocode) API returns address with zip-code but query has to be specific - there is street and house number needed
-import GoogleAddressDetector from '../google-address-detector/google-address-detector';
+import {
+    default as GoogleAddressDetector,
+    FormattedAddress,
+} from '../google-address-detector/google-address-detector';
 
 export interface IAddressAutofillOptions {
     streetField: JQuery;
@@ -11,209 +11,139 @@ export interface IAddressAutofillOptions {
     zipField: JQuery;
     cityField: JQuery;
     countrySelect?: JQuery;
+    stateField?: JQuery;
     language: string;
     region: string;
-    apiKey: string;
-    dev: boolean;
 }
 
 export default class AddressAutofill {
+    protected options: IAddressAutofillOptions;
+    protected googleAddressDetector: GoogleAddressDetector;
+    protected $autosuggestSelect: JQuery;
+    protected $autosuggestSelectMenu: JQuery;
+
     constructor(options: IAddressAutofillOptions) {
-        this.streetField = options.streetField;
-        this.numberField = options.numberField;
-        this.zipField = options.zipField;
-        this.cityField = options.cityField;
-        this.countrySelect = options.countrySelect;
         this.options = options;
-        this.optionsList = '';
 
-        $.getJSON(
-            'https://freegeoip.net/json/',
-            (location: any): void => {
-                if (location.country_code) {
-                    options.region = location.country_code;
+        const countrySelectValue = this.options.countrySelect
+            ? <string>this.options.countrySelect.val()
+            : '';
+        options.region = countrySelectValue || 'DE';
+        options.language =
+            countrySelectValue ||
+            window.navigator.userLanguage ||
+            window.navigator.language;
+
+        this.googleAddressDetector = new GoogleAddressDetector(options);
+
+        this._initStreetField();
+        this._initZipField();
+        this._initCountrySelector();
+        this._initAutosuggest();
+    }
+
+    /**
+     * Manages address autosuggest on street field input.
+     */
+    protected _initStreetField(): void {
+        let typeTimer: number;
+        const typeInterval: number = 500;
+        let currentValue: string = <string>this.options.streetField.val();
+
+        this.options.streetField.on(
+            'keyup',
+            (e: KeyboardEvent): void => {
+                clearTimeout(typeTimer);
+                const newValue = <string>this.options.streetField.val();
+
+                if (currentValue.length < newValue.length) {
+                    typeTimer = setTimeout(
+                        this._triggerAutosuggest.bind(this),
+                        typeInterval
+                    );
                 }
+                currentValue = newValue;
             }
-        ).always(() => {
-            // The most important parameter to set googleDetector region option and language option is value of country select
-            // First check if country select has any value, then check if it is different from geolocation set by IP
-            if (
-                this.countrySelect.val() &&
-                this.countrySelect.val() !== options.region
-            ) {
-                options.region = this.countrySelect.val();
-            }
+        );
+    }
 
-            // If region is not detected in any way do not start google autosuggest to prevent errors
+    /**
+     * Triggers google autosuggest based on street field value.
+     */
+    protected _triggerAutosuggest(): void {
+        const query: string = <string>this.options.streetField.val();
 
-            if (!options.region) {
-                return;
-            }
+        if (!query || query.length < 4) {
+            return;
+        }
 
-            options.language =
-                this.countrySelect.val() ||
-                window.navigator.userLanguage ||
-                window.navigator.language;
-
-            this.googleAddressDetector = new GoogleAddressDetector(options);
-
-            this._initStreetField();
-            this._initZipField();
-            this._watchSelect();
+        this.googleAddressDetector.getFormattedResults(query).then(results => {
+            this._buildAutosuggestSelect(results);
         });
     }
 
     /**
-     * On keyup ( but not arrows, enter, back ) trigger address autofill based on street field value
-     * @private
+     * Automatically fills all fields based on ZIP field value.
      */
-    private _initStreetField(): void {
-        let typeTimer: any;
-        const typeInterval: number = 500;
+    protected _fillFieldsBasedOnZip(): void {
+        const query: string = <string>this.options.zipField.val();
 
-        this.streetField.on(
-            'keyup',
-            (e: KeyboardEvent): void => {
-                clearTimeout(typeTimer);
-
-                if (
-                    e.which !== 8 &&
-                    e.which !== 38 &&
-                    e.which !== 40 &&
-                    e.which !== 13
-                ) {
-                    typeTimer = setTimeout(
-                        this._initGoogleStreetRequest.bind(this),
-                        typeInterval
-                    );
-                }
-            }
-        );
-    }
-
-    /**
-     * Send request to google api based on street value. Use either places or address API based on query specificity
-     * @private
-     */
-    private _initGoogleStreetRequest(): void {
-        const query: string = this.streetField.val();
-
-        if (!query || query.lenght < 4) {
+        if (!query || query.length < 3) {
             return;
         }
 
-        if (this._detectHouseNr(query)) {
-            this.googleAddressDetector.getResults(query).then((data: any) => {
-                if (data) {
-                    this._buildAutosuggestSelect(data);
-                }
-            });
-        }
+        this.googleAddressDetector.getFormattedResults(query).then(results => {
+            if (results[0]) {
+                this._fillFields(results[0]);
+            }
+        });
     }
 
     /**
-     * Trigger city autofill based on zip
-     * @private
+     * Resets autosuggest dropdown.
      */
-    private _initGoogleZipRequest(): void {
-        const query: string = this.zipField.val();
+    protected _initAutosuggest(): void {
+        this.$autosuggestSelect = $(`<div class="cs-html-select cs-html-select--open cs-html-select--autosuggest">
+                <div class="cs-html-select__menu">
+                    <ul class="cs-html-select__menu-list"></ul>
+                </div>
+            </div>`);
+        this.$autosuggestSelectMenu = this.$autosuggestSelect.find(
+            '.cs-html-select__menu-list'
+        );
+        this.options.streetField.after(this.$autosuggestSelect);
+        this._initAutosuggestEvents();
+    }
 
-        if (!query || query.lenght < 3) {
+    /**
+     * Builds autosuggest dropdown based on given results.
+     * @param results Formated results returned by Geocoding API.
+     */
+    protected _buildAutosuggestSelect(results: FormattedAddress[]): void {
+        const optionsHtml: string = this._buildOptions(results);
+
+        if (!optionsHtml) {
             return;
         }
 
-        this.googleAddressDetector
-            .getCityByPostalCode(query)
-            .then((data: any) => {
-                if (data) {
-                    this.cityField
-                        .val(data, query)
-                        .change()
-                        .focus();
-                }
-            });
-    }
+        this._initAutosuggest();
+        this.$autosuggestSelect
+            .find('.cs-html-select__menu-list')
+            .html(optionsHtml)
+            .show();
 
-    /**
-     * Send request to google api based on zip value
-     * @private
-     */
-    private _initZipField(): void {
-        let typeTimer: any;
-        const typeInterval: number = 1000;
-
-        this.zipField.on(
-            'keyup',
-            (): void => {
-                if (!this.cityField.val()) {
-                    clearTimeout(typeTimer);
-                    typeTimer = setTimeout(
-                        this._initGoogleZipRequest.bind(this),
-                        typeInterval
-                    );
-                }
-            }
-        );
-
-        this.zipField.on(
-            'blur',
-            (): void => {
-                if (!this.cityField.val()) {
-                    this._initGoogleZipRequest();
-                }
-            }
-        );
-    }
-
-    /**
-     * Build autoselect and init its events. Markup is the same as .cs-html-select but behaviour is different;
-     * @private
-     */
-    private _buildAutosuggestSelect(data: any): void {
-        const optionsHtml: string = this._buildOptions(data);
-
-        if (!optionsHtml || this.optionsList === optionsHtml) {
-            return;
-        } else {
-            this.optionsList = optionsHtml;
-        }
-
-        const selectHtml: string = `
-                        <div class="cs-html-select cs-html-select--open cs-html-select--autosuggest">
-                            <div class="cs-html-select__menu">
-                                <ul class="cs-html-select__menu-list">
-                                      ${optionsHtml}
-                                </ul>
-                            </div>
-                        </div>
-                        `;
-
-        // If there is no select add new. If there is already select visible do not add new because it causes blinking. Instead of adding new select only replace its options.
-        const $autosuggestSelect: JQuery = $('.cs-html-select--autosuggest');
-        if (!$autosuggestSelect.length) {
-            this.streetField.after(selectHtml);
-        } else {
-            $autosuggestSelect
-                .find('.cs-html-select__menu-list')
-                .empty()
-                .append(optionsHtml);
-        }
-
-        const $jsSelect: JQuery = this.streetField.next('.cs-html-select');
-
-        // Animate select initialization
+        // Animate select initialization.
         setTimeout(() => {
-            $jsSelect.addClass('cs-html-select--animate');
+            this.$autosuggestSelect.addClass('cs-html-select--animate');
         }, 50);
 
         setTimeout(() => {
-            $jsSelect
+            this.$autosuggestSelect
                 .find('.cs-html-select__menu-item')
                 .eq(0)
                 .addClass('cs-html-select__menu-item--focused');
-            this._initSelectEvents($jsSelect);
 
-            this.streetField
+            this.options.streetField
                 .parents('.cs-input')
                 .find('.cs-input__warning')
                 .remove();
@@ -221,59 +151,39 @@ export default class AddressAutofill {
     }
 
     /**
-     * Build options for autosuggest dropdown
-     * @private
+     * Builds all autocomplete options based on given addresses.
+     * @param results List of found addresses.
      */
-    private _buildOptions(data: any): string {
+    protected _buildOptions(results: FormattedAddress[]): string {
         let optionsHtml: string = '';
-        for (const result of data) {
-            let address: object;
-            let streetNumber: string = '';
-            address = this.googleAddressDetector.getFormattedAddress(result);
-
-            streetNumber = address.streetNumber;
-
-            const addressZip: string = address.postalCode
-                ? address.postalCode
-                : '';
-            const addressCity: string = address.city;
-            const addressStreet: string = address.street;
-            const addressCountryCode: string = this._getCountryCodeFromResult(
-                result
-            );
-
-            const dataValues: object = `{
-                    "street": "${addressStreet}",
-                    "streetNumber": "${streetNumber}",
-                    "city": "${addressCity}",
-                    "zip": "${addressZip}",
-                    "countryCode": "${addressCountryCode}"
-                }`;
-
-            if (addressStreet && addressCity) {
+        results.forEach(address => {
+            if (address.city) {
                 optionsHtml =
                     optionsHtml +
-                    `<li class="cs-html-select__menu-item" data-value='${dataValues}'><a class="cs-html-select__menu-link">${
-                        address.full
-                    }</a></li>`;
+                    `<li class="cs-html-select__menu-item" data-value='${JSON.stringify(
+                        address
+                    )}'>
+                        <a class="cs-html-select__menu-link">${address.full}</a>
+                    </li>`;
             }
-        }
+        });
 
         return optionsHtml;
     }
 
     /**
-     * Init events on builded select 9up, down, click, enter. there is always focus on street field
-     * @private
+     * Initialize all events for built autosuggest dropdown.
      */
-
-    private _initSelectEvents(jsSelect: JQuery): void {
-        function scrollToOption(
+    protected _initAutosuggestEvents(): void {
+        /**
+         * Makes sure focused option is always visible by scrolling the dropdown.
+         * @param selectedIndex Item index.
+         */
+        const scrollToOption = (
+            $menu: JQuery,
             $items: JQuery,
-            selectedIndex: number,
-            $menu: JQuery
-        ): void {
-            // scroll to selected option
+            selectedIndex: number
+        ) => {
             let offset: number =
                 $items.eq(selectedIndex)[0].offsetTop - $menu[0].offsetTop;
             offset =
@@ -284,154 +194,164 @@ export default class AddressAutofill {
                 },
                 '250'
             );
-        }
+        };
 
         let selectedIndex: number = 0;
-        this.streetField.on('keyup keypress', (e: KeyboardEvent) => {
+        this.options.streetField.on('keyup keypress', (e: KeyboardEvent) => {
+            const $menu: JQuery = this.$autosuggestSelectMenu;
+            const $items: JQuery = this.$autosuggestSelectMenu.find(
+                '.cs-html-select__menu-item'
+            );
+
             if (e.which === 38 || e.which === 40 || e.which === 13) {
                 e.preventDefault();
             }
 
-            const $items: JQuery = jsSelect.find('.cs-html-select__menu-item');
-            const $menu: JQuery = jsSelect.find('.cs-html-select__menu-list');
-
             if (e.which === 38) {
+                // Up arrow key.
                 if (selectedIndex > 0) {
                     selectedIndex = selectedIndex - 1;
                     $items.removeClass('cs-html-select__menu-item--focused');
                     $items
                         .eq(selectedIndex)
                         .addClass('cs-html-select__menu-item--focused');
-                    scrollToOption($items, selectedIndex, $menu);
+                    scrollToOption($menu, $items, selectedIndex);
                 } else {
-                    jsSelect.remove();
+                    this._hideAutosuggest();
                 }
             } else if (e.which === 40) {
+                // Down arrow key.
                 if (selectedIndex < $items.length - 1) {
                     selectedIndex = selectedIndex + 1;
                     $items.removeClass('cs-html-select__menu-item--focused');
                     $items
                         .eq(selectedIndex)
                         .addClass('cs-html-select__menu-item--focused');
-                    scrollToOption($items, selectedIndex, $menu);
+                    scrollToOption($menu, $items, selectedIndex);
                 }
             } else if (e.which === 13) {
-                const clickedValues: object = $items
+                // Enter key.
+                const selectedAddress: FormattedAddress = $items
                     .eq(selectedIndex)
                     .data('value');
-                this._fillFields(clickedValues);
-                this._focusOnNextEmptyField();
+                this._fillFields(selectedAddress);
+                this._focusEmptyField();
 
-                jsSelect.remove();
+                this._hideAutosuggest();
             }
         });
 
-        $('.cs-html-select__menu-item').on('click', (e: KeyboardEvent) => {
-            e.preventDefault();
-            const clickedValues: object = $(e.currentTarget).data('value');
-            this._fillFields(clickedValues);
-            this._focusOnNextEmptyField();
-
-            jsSelect.remove();
-        });
-
-        // Close on click outside
         $(document).click(
             (event: Event): void => {
-                if (!$(event.target).closest('.cs-html-select').length) {
-                    jsSelect.remove();
+                if ($(event.target).closest('.cs-html-select').length) {
+                    const $items: JQuery = this.$autosuggestSelectMenu.find(
+                        '.cs-html-select__menu-item'
+                    );
+                    event.preventDefault();
+                    const selectedAddress: FormattedAddress = $(event.target)
+                        .closest($items)
+                        .data('value');
+                    this._fillFields(selectedAddress);
+                    this._focusEmptyField();
+                }
+                this._hideAutosuggest();
+            }
+        );
+    }
+
+    protected _hideAutosuggest(): void {
+        this.$autosuggestSelectMenu.empty();
+        this.$autosuggestSelect.removeClass('cs-html-select--animate');
+    }
+
+    /**
+     * Fills appropriate fields based on given address data.
+     * @param address Address data to fill the fields with.
+     */
+    protected _fillFields(address: FormattedAddress): void {
+        if (this.options.cityField && address.city) {
+            this.options.cityField.val(address.city).change();
+        }
+
+        if (address.postalCode) {
+            this.options.zipField.val(address.postalCode).change();
+        }
+
+        if (address.street) {
+            if (this.options.numberField) {
+                this.options.streetField.val(address.street).change();
+                this.options.numberField.val(address.streetNumber).change();
+            } else {
+                const streetNumber = address.streetNumber
+                    ? ' ' + address.streetNumber
+                    : '';
+                this.options.streetField
+                    .val(address.street + streetNumber)
+                    .change();
+            }
+        }
+
+        if (
+            this.options.countrySelect &&
+            this.options.countrySelect.val() !== address.countryCode
+        ) {
+            this.options.countrySelect.val(address.countryCode).change();
+        }
+
+        if (this.options.stateField && address.state) {
+            this.options.stateField.val(address.state).change();
+        }
+    }
+
+    /**
+     * Focuses on next empty, required input after street input gets filled.
+     */
+    protected _focusEmptyField(): void {
+        const $requiredEmptyInputs = this.options.streetField
+            .closest('form')
+            .find('._required input')
+            .filter((index, element) => !jQuery(element).val());
+
+        $requiredEmptyInputs.eq(0).focus();
+    }
+
+    /**
+     * Initializes watching ZIP field for changes.
+     */
+    protected _initZipField(): void {
+        let typeTimer: number;
+        const typeInterval: number = 1000;
+
+        this.options.zipField.on(
+            'keyup',
+            (): void => {
+                if (!this.options.cityField.val()) {
+                    clearTimeout(typeTimer);
+                    typeTimer = setTimeout(
+                        this._fillFieldsBasedOnZip.bind(this),
+                        typeInterval
+                    );
+                }
+            }
+        );
+
+        this.options.zipField.on(
+            'blur',
+            (): void => {
+                if (!this.options.cityField.val()) {
+                    this._fillFieldsBasedOnZip();
                 }
             }
         );
     }
 
     /**
-     * Fill fields if value available
-     * @private
+     * Rebuild address detector each time user changes country.
      */
-    private _fillFields(clickedValues: object): void {
-        this.cityField.val(clickedValues.city).change();
-
-        if (clickedValues.zip) {
-            this.zipField.val(clickedValues.zip).change();
-        }
-
-        if (this.numberField) {
-            this.streetField.val(clickedValues.street).change();
-            this.numberField.val(clickedValues.streetNumber).change();
-        } else {
-            this.streetField
-                .val(clickedValues.street + ' ' + clickedValues.streetNumber)
-                .change();
-        }
-
-        if (
-            this.countrySelect &&
-            this.countrySelect.val() !== clickedValues.countryCode
-        ) {
-            this.countrySelect.val(clickedValues.countryCode).change();
-        }
-    }
-
-    /**
-     * Focus on first field that need fill
-     * @private
-     */
-    private _focusOnNextEmptyField(): void {
-        const $phoneField = this.zipField
-            .closest('form')
-            .find('.cs-input__input[name="telephone"]');
-
-        if (this.numberField) {
-            this.numberField.focus();
-        } else if (
-            this.zipField.val() &&
-            $phoneField.length &&
-            !$phoneField.val()
-        ) {
-            $phoneField.focus();
-        } else if (!this.zipField.val()) {
-            this.zipField.focus();
-        }
-    }
-
-    /**
-     * Check if last word is a number. If so it is probably house number - return it
-     * @private
-     */
-    private _detectHouseNr(value: string): string {
-        const regexp: RegExp = new RegExp('^\\d+[a-zA-Z-]*/*\\w*$', 'gi');
-        const words: string[] = value.split(' ');
-        const lastWord: string = words[words.length - 1];
-        return regexp.test(lastWord) ? lastWord : '';
-    }
-
-    /**
-     * Get country code from google result
-     * @private
-     */
-    private _getCountryCodeFromResult(result: any): string {
-        let country: string;
-        for (const component of result.address_components) {
-            country =
-                component.types.indexOf('country') >= 0
-                    ? component.short_name
-                    : null;
-
-            if (country) {
-                return country;
-            }
-        }
-    }
-
-    /**
-     * Watch if user changes country select. If yes build google detector with new options
-     * @private
-     */
-    private _watchSelect(): void {
-        this.countrySelect.on('change', () => {
-            this.options.region = this.countrySelect.val();
-            this.options.language = this.countrySelect.val();
+    protected _initCountrySelector(): void {
+        this.options.countrySelect.on('change', () => {
+            this.options.region = <string>this.options.countrySelect.val();
+            this.options.language = <string>this.options.countrySelect.val();
 
             this.googleAddressDetector = new GoogleAddressDetector(
                 this.options
