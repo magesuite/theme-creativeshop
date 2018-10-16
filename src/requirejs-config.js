@@ -5,11 +5,15 @@ var config = {
         vendors: 'vendors',
         Stickyfill: 'js/vendor/stickyfill',
         isMobile: 'js/vendor/ismobile',
+        bootstrapDropdown: 'js/vendor/bootstrap-dropdown',
+        bootstrapSelect: 'js/vendor/bootstrap-select',
     },
     shim: {
         isMobile: {
             exports: 'isMobile',
         },
+        bootstrapDropdown: ['jquery'],
+        bootstrapSelect: ['jquery', 'bootstrapDropdown'],
     },
     config: {
         mixins: {

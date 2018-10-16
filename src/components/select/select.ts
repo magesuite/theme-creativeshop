@@ -1,6 +1,7 @@
 import * as $ from 'jquery';
 
 import * as isMobile from 'isMobile';
+import 'bootstrapSelect';
 
 /**
  * component options interface.
