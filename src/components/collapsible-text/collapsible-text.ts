@@ -41,7 +41,6 @@ const init: any = function(): void {
                         );
                     isContentHidden = false;
                     contentHeight = $element.height();
-
                 } else {
                     $button.text(showMoreText);
                     $content
@@ -50,10 +49,13 @@ const init: any = function(): void {
                             `${namespace}collapsible-text__content--hidden`
                         );
                     isContentHidden = true;
-                    if(contentHeight > $(window).height()) {
-                        $('html, body').animate({
-                            scrollTop: $element.offset().top - 100
-                        }, 400);
+                    if (contentHeight > $(window).height()) {
+                        $('html, body').animate(
+                            {
+                                scrollTop: $element.offset().top - 100,
+                            },
+                            400
+                        );
                     }
                 }
             });
