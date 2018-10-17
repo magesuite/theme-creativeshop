@@ -170,6 +170,7 @@ define(
                 ),
                 zipField: $shippingAddressForm.find('input[name="postcode"]'),
                 cityField: $shippingAddressForm.find('input[name="city"]'),
+                stateField: $shippingAddressForm.find('input[name="region"]'),
                 countrySelect: $shippingAddressForm.find(
                   'select[name="country_id"]'
                 ),
