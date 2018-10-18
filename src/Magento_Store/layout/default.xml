@@ -2,14 +2,13 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="information.stripe">
-            <block class="Magento\Directory\Block\Currency" name="currency.switcher" template="Magento_Directory::currency.phtml" after="-">
+            <block class="Magento\Store\Block\Switcher" name="store_language" template="Magento_Store::switch/languages.phtml" before="currency.switcher">
                 <arguments>
-                    <argument name="id_modifier" xsi:type="string">topbar</argument>
-                    <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--currency</argument>
-                    <argument name="show_currency_icons" xsi:type="boolean">false</argument>
+                    <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--topbar cs-dropdown-switcher--language</argument>
+                    <argument name="show_flags" xsi:type="boolean">true</argument>
                     <argument name="show_labels" xsi:type="boolean">true</argument>
                 </arguments>
-                <block class="MageSuite\ThemeHelpers\Block\Icon" name="currency.trigger-icon">
+                <block class="MageSuite\ThemeHelpers\Block\Icon" name="store_language.trigger-icon">
                     <arguments>
                         <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
                         <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
@@ -21,14 +20,14 @@
         </referenceContainer>
         <referenceContainer name="page.top">
             <referenceBlock name="navigation.offcanvas">
-                <block class="Magento\Directory\Block\Currency" name="navigation.offcanvas.switcher-currency" as="currency.switcher" template="Magento_Directory::currency.phtml" after="navigation.offcanvas.switcher-language">
+                <block class="Magento\Store\Block\Switcher" name="navigation.offcanvas.switcher-language" template="Magento_Store::switch/languages.phtml" after="navigation.offcanvas.authorization">
                     <arguments>
                         <argument name="id_modifier" xsi:type="string">offcanvas</argument>
-                        <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--offcanvas cs-dropdown-switcher--currency</argument>
-                        <argument name="show_currency_icons" xsi:type="boolean">false</argument>
+                        <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--offcanvas cs-dropdown-switcher--language</argument>
+                        <argument name="show_flags" xsi:type="boolean">true</argument>
                         <argument name="show_labels" xsi:type="boolean">true</argument>
                     </arguments>
-                    <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-currency.trigger-icon" as="currency.trigger-icon">
+                    <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-language.trigger-icon" as="store_language.trigger-icon">
                         <arguments>
                             <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
                             <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>

@@ -48,12 +48,14 @@
                     <block class="Magento\Store\Block\Switcher" name="navigation.offcanvas.switcher-language" template="Magento_Store::switch/languages.phtml">
                         <arguments>
                             <argument name="id_modifier" xsi:type="string">offcanvas</argument>
-                            <argument name="additional_css_classes" xsi:type="string">cs-switcher-language--offcanvas</argument>
+                            <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--offcanvas cs-dropdown-switcher--language</argument>
+                            <argument name="show_flags" xsi:type="boolean">true</argument>
+                            <argument name="show_labels" xsi:type="boolean">true</argument>
                         </arguments>
                         <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-language.trigger-icon" as="store_language.trigger-icon">
                             <arguments>
                                 <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
-                                <argument name="css_class" xsi:type="string">cs-switcher-language__trigger-icon</argument>
+                                <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
                                 <argument name="inlined" xsi:type="boolean">true</argument>
                                 <argument name="lazy_loaded" xsi:type="boolean">true</argument>
                             </arguments>
@@ -62,9 +64,20 @@
                     <block class="Magento\Directory\Block\Currency" name="navigation.offcanvas.switcher-currency" template="Magento_Directory::currency.phtml" after="-">
                         <arguments>
                             <argument name="id_modifier" xsi:type="string">offcanvas</argument>
+                            <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--offcanvas cs-dropdown-switcher--currency</argument>
+                            <argument name="show_currency_icons" xsi:type="boolean">false</argument>
+                            <argument name="show_labels" xsi:type="boolean">true</argument>
                         </arguments>
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-currency.trigger-icon" as="currency.trigger-icon">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
                     </block>
-                </block>
+                    </block>
             </referenceBlock>
             <container name="navigation.container" htmlTag="div" htmlClass="cs-container cs-container--navigation">
                 <container name="navigation.container.inner" htmlTag="div" htmlClass="cs-container__inner">
