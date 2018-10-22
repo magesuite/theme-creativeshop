@@ -1,0 +1,194 @@
+/**
+ * Footer component customization.
+ * @see /Magento_Theme/templates/footer/columns.phtml for templates.
+ */
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/visually-hidden';
+@import 'components/pseudoicon/pseudoicon-plus';
+
+$footer_text-color: $color_text-200 !default;
+$footer_background: $color_background-800 !default;
+$footer_edge-gutter: $page_edge-gutter !default;
+
+$footer_section-edge-gutter: $page_edge-gutter !default;
+$footer_section-vertical-offset: 2em !default;
+
+$footer_section-separator-border: 1px solid $color_gray !default;
+
+$footer_section-title-padding: $footer_section-vertical-offset
+    $footer_section-edge-gutter !default;
+$footer_section-title-color: $color_gray !default;
+$footer_section-title-font-size: 1.2em !default;
+$footer_section-title-transform: uppercase !default;
+
+$footer_section-plus-include: true !default;
+
+$footer_promo-display-on-mobile: false !default;
+$footer_logo-display: block !default;
+$footer_logo-width: 13.5em !default;
+$footer_logo-height: 2.3em !default;
+
+.#{$ns}footer {
+    $root: &;
+    font-size: 1rem;
+    color: $footer_text-color;
+    background: $footer_background;
+    overflow: hidden;
+    padding: 0 0 2rem;
+
+    @include media('>=tablet') {
+        padding: 0 $footer_edge-gutter;
+    }
+
+    &__content {
+        padding: 0;
+
+        @include media('>=tablet') {
+            display: flex;
+            flex-wrap: wrap;
+            padding-top: 4rem;
+            padding-bottom: 2.5rem;
+        }
+
+        @include media('>=laptop') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__item {
+        @include media('>=laptop') {
+            flex: 1;
+        }
+
+        &--promo {
+            @if $footer_promo-display-on-mobile == false {
+                @include media('<tablet') {
+                    display: none;
+                }
+            }
+
+            flex-basis: 100%;
+
+            @include media('>=laptop') {
+                flex-basis: auto;
+                flex-grow: 1;
+            }
+        }
+
+        &--links {
+            @include media('>=tablet') {
+                display: flex;
+                flex-basis: 100%;
+                margin-top: $footer_section-vertical-offset;
+            }
+
+            @include media('>=tablet') {
+                margin-top: 0;
+            }
+
+            @include media('>=laptop') {
+                flex-basis: auto;
+                flex-grow: 5;
+            }
+        }
+
+        &--extras {
+            @include media('>=tablet') {
+                display: flex;
+                flex-basis: 100%;
+            }
+
+            @include media('>=laptop') {
+                display: block;
+                flex-basis: auto;
+                flex-grow: 2;
+            }
+        }
+    }
+
+    &__section {
+        @include media('>=tablet') {
+            flex: 1;
+        }
+
+        &--newsletter {
+            @include media('>=tablet') {
+                flex-grow: 2;
+            }
+        }
+
+        &--socials {
+            @include media('>=laptop') {
+                margin-top: 4rem;
+            }
+        }
+    }
+
+    &__section-title {
+        position: relative;
+        margin: 0;
+        border-top: $footer_section-separator-border;
+        padding: $footer_section-title-padding;
+        color: $footer_section-title-color;
+        font-size: $footer_section-title-font-size;
+        font-weight: 400;
+        text-transform: $footer_section-title-transform;
+        letter-spacing: 0.08rem;
+
+        @include media('<tablet') {
+            #{$root}__section[data-mage-init] &,
+            #{$root}__section[data-collapsible] & {
+                cursor: pointer;
+
+                @if $footer_section-plus-include {
+                    @include pseudoicon-plus();
+                }
+            }
+
+            #{$root}__section--socials & {
+                @include visually-hidden();
+            }
+        }
+
+        @include media('>=tablet') {
+            border-top: none;
+            padding-left: 0;
+        }
+
+        @include media('>=laptop') {
+            padding-top: 0;
+            padding-right: 0;
+        }
+    }
+
+    &__section-content {
+        padding: 0 $footer_section-edge-gutter $footer_section-edge-gutter;
+        font-size: 1.2em;
+
+        @include media('<tablet') {
+            #{$root}__section[data-mage-init] &,
+            #{$root}__section[data-collapsible] & {
+                display: none;
+            }
+        }
+
+        @include media('>=tablet') {
+            padding-left: 0;
+        }
+
+        @include media('>=laptop') {
+            padding-right: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    &__shop-logo {
+        display: $footer_logo-display;
+        width: $footer_logo-width;
+        height: $footer_logo-height;
+        min-width: $footer_logo-width;
+        max-width: 100%;
+        max-height: 100%;
+    }
+}

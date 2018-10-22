@@ -1,0 +1,38 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+
+$footer-links_list-item-margin: 0 0 0.3em !default;
+
+$footer-links_link-font-size: inherit !default;
+$footer-links_link-color: $color_background-200 !default;
+$footer-links_link-hover-color: $footer-links_link-color !default;
+$footer-links_link-hover-decoration: underline !default;
+$footer-links_link-padding: 0.5em 0 !default;
+
+.#{$ns}footer-links {
+    $root: &;
+
+    @include reset-list-style();
+
+    &__item {
+        margin: $footer-links_list-item-margin;
+    }
+
+    a {
+        display: block;
+        padding: 0.5em 0;
+        font-size: $footer-links_link-font-size;
+        color: $footer-links_link-color;
+
+        &:hover {
+            color: $footer-links_link-hover-color;
+            text-decoration: $footer-links_link-hover-decoration;
+        }
+
+        @include media('>=tablet') {
+            padding: 0.35em 0;
+            display: inline-block;
+        }
+    }
+}

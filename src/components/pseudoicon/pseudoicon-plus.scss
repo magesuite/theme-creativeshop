@@ -1,0 +1,79 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$pseudoicon-plus-animate: true !default;
+$pseudoicon-plus-color: $color_border-700 !default;
+$pseudoicon-plus-hover-color: $color_border-700 !default;
+$pseudoicon-plus-expanded-color: $color_border-700 !default;
+$pseudoicon-plus-size: 1.2em !default;
+$pseudoicon-plus-weight: 0.2em !default;
+$pseudoicon-plus-position-side-offset: $page_edge-gutter !default;
+
+@mixin pseudoicon-plus(
+    $animated: $pseudoicon-plus-animate,
+    $plus-color: $pseudoicon-plus-color,
+    $plus-color-hover: $pseudoicon-plus-hover-color,
+    $plus-color-expanded: $pseudoicon-plus-expanded-color,
+    $plus-size: $pseudoicon-plus-size,
+    $plus-weight: $pseudoicon-plus-weight,
+    $plus-position-side-offset: $pseudoicon-plus-position-side-offset
+) {
+    $transition: '';
+
+    @if $animated {
+        $transition: transform 0.3s ease-out, opacity 0.2s ease-out,
+            background-color 0.15s linear;
+    } @else {
+        @if $plus-color-hover != $plus-color {
+            $transition: background-color 0.15s linear;
+        }
+    }
+
+    position: relative;
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: $plus-position-side-offset;
+        width: $plus-size;
+        height: $plus-weight;
+        background-color: $plus-color;
+        transform: translate3d(0, -50%, 0);
+        backface-visibility: hidden;
+        transition: $transition;
+    }
+
+    &:after {
+        transform: translate3d(0, -50%, 0) rotate(90deg);
+    }
+
+    @if $plus-color-hover != $plus-color {
+        &:hover {
+            &:before,
+            &:after {
+                background-color: $plus-color-hover;
+            }
+        }
+    }
+
+    &[aria-expanded='true'] {
+        &:before {
+            transform: translate3d(0, -50%, 0) rotate(-90deg);
+            opacity: 0;
+
+            @if $plus-color-expanded != $plus-color {
+                background-color: $plus-color-expanded;
+            }
+        }
+
+        &:after {
+            transform: translate3d(0, -50%, 0) rotate(0);
+
+            @if $plus-color-expanded != $plus-color {
+                background-color: $plus-color-expanded;
+            }
+        }
+    }
+}

@@ -1,72 +1,36 @@
 <?php
 // @codingStandardsIgnoreFile
+
+/** @var \Magento\Newsletter\Block\Subscribe $block */
+$label = $block->getInputLabel();
+$placeholder = $block->getInputPlaceholder();
+$buttonLabel = $block->getButtonLabel();
 ?>
-<div class="cs-footer__column cs-footer__column--newsletter">
-    <div class="cs-footer__column-title cs-footer__column-title--clear ">Newsletter</div>
-    <div class="cs-footer__list">
-        <form
-            class="cs-form | subscribe"
-            novalidate
-            action="<?php /* @escapeNotVerified */ echo $block->getFormActionUrl() ?>"
-            method="post"
-            data-mage-init='{"validation": {"errorClass": "mage-error"}}'
-            id="newsletter-validate-detail"
-        >
-            <div class="cs-form__field | cs-input | newsletter">
-                <div class="cs-input__control">
-                    <input
-                        name="email"
-                        type="email"
-                        id="newsletter"
-                        class="cs-input__input cs-input__input--with-button"
-                        placeholder="<?php /* @escapeNotVerified */ echo __('Email address') ?>"
-                        data-validate="{required:true, 'validate-email':true}"
-                    />
-
-                    <div class="cs-input__button">
-                        <button class="cs-button cs-button--look_default cs-button--look_on-input" type="submit">
-                            <svg class="cs-button__icon cs-button__icon--center cs-button__icon--plus">
-                                <use xlink:href="#plus"></use>
-                            </svg>
-                            <span class="cs-visually-hidden"><?=__('Subscribe');?></span>
-                        </button>
-                    </div>
-                </div>
+<div class="block newsletter cs-newsletter">
+    <form class="form subscribe cs-newsletter__form"
+        novalidate
+        action="<?= $block->escapeUrl($block->getFormActionUrl()) ?>"
+        method="post"
+        data-mage-init='{"validation": {"errorClass": "mage-error"}}'
+        id="newsletter-validate-detail">
+        <div class="field newsletter cs-newsletter__field">
+            <?php if(!empty($label)): ?>
+                <label class="label cs-newsletter__label" for="newsletter"><span><?= $block->escapeHtml($label) ?></span></label>
+            <?php endif; ?>
+            <div class="cs-newsletter__control">
+                <input name="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
+                    <?php if(!empty($placeholder)): ?> placeholder="<?= $block->escapeHtmlAttr($placeholder) ?>" <?php endif; ?>
+                    data-validate="{required:true, 'validate-email':true}"
+                />
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="actions cs-newsletter__actions">
+            <button class="action subscribe primary cs-newsletter__button" title="<?= !empty($buttonLabel) ? $block->escapeHtmlAttr($buttonLabel) : __('Subscribe') ?>" type="submit">
+                <?= $block->getChildHtml('newsletter.subscribe.button.icon') ?>
+                <?php if(!empty($buttonLabel)): ?>
+                    <span class="cs-newsletter__button-label<?= $block->getHideButtonLabel() ? ' cs-visually-hidden' : '' ?>"><?= $block->escapeHtml($buttonLabel) ?></span>
+                <?php endif; ?>
+            </button>
+        </div>
+    </form>
 </div>
-<div class="cs-footer__column cs-footer__column--socials">
-    <div class="cs-footer__column-title cs-footer__column-title--clear | cs-hide-mobile">Social media</div>
-    <ul class="cs-footer__list | cs-footer-list cs-footer-list--inline">
-
-        <li class="cs-footer-list__item">
-            <a href="#" class="cs-button-social">
-                <svg class="cs-button-social__icon cs-button-social__icon--fb">
-                    <use xlink:href="#facebook"></use>
-                </svg>
-                <span class="cs-visually-hidden"><?=__('Go to Facebook');?></span>
-            </a>
-        </li>
-
-        <li class="cs-footer-list__item">
-            <a href="#" class="cs-button-social">
-                <svg class="cs-button-social__icon cs-button-social__icon--gplus">
-                    <use xlink:href="#google_plus"></use>
-                </svg>
-                <span class="cs-visually-hidden"><?=__('Go to Google Plus');?></span>
-            </a>
-        </li>
-
-        <li class="cs-footer-list__item">
-            <a href="#" class="cs-button-social">
-                <svg class="cs-button-social__icon cs-button-social__icon--yt">
-                    <use xlink:href="#you_tube"></use>
-                </svg>
-                <span class="cs-visually-hidden"><?=__('Go to You Tube');?></span>
-            </a>
-        </li>
-    </ul>
-</div>
-
-

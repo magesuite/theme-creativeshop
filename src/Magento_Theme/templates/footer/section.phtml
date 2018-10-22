@@ -1,0 +1,21 @@
+<?php
+$headline = $block->getHeadline();
+$collapseOptions = $block->getCollapsibleWidgetOptions();
+$isMediaQueryScopeSet = $collapseOptions['mediaQueryScope'];
+?>
+<div
+    class="cs-footer__section <?= $block->getAdditionalCssClasses() ?>"
+    <?php if($block->getIsCollapsible()): ?>
+         data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
+    <?php endif; ?>
+>
+    <?php if(!empty($headline)): ?>
+        <h4 class="cs-footer__section-title" data-role="title">
+            <span role="heading" aria-level="2"><?= $headline ?></span>
+        </h4>
+    <?php endif; ?>
+
+    <div class="content cs-footer__section-content"<?= $isMediaQueryScopeSet ? ' data-role="content"' : '' ?>>
+        <?= $block->getChildHtml(); ?>
+    </div>
+</div>
