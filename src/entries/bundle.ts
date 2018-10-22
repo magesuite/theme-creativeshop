@@ -28,6 +28,8 @@ import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
+import 'components/footer';
+import 'components/newsletter';
 
 import { Flyout } from 'components/flyout/class.flyout';
 export { Flyout };

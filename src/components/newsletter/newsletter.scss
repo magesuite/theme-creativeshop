@@ -1,0 +1,95 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$input_padding: 0.715em 1em !default;
+$input_border: 1px solid $color_alto !default;
+$input_border-radius: $border-radius_base !default;
+
+$button_primary-500-background: $color_primary-500;
+$button_primary-500-hover-background: $color_primary-800;
+$button_primary-500-border: none;
+$button_primary-500-hover-border: none;
+$button_primary-500-text-color: $color_white;
+$button_primary-500-hover-text-color: $color_white;
+
+$newsletter_margin: 0 !default;
+
+$newsletter_form-max-width: 34rem !default;
+
+$newsletter_input-padding: $input_padding !default;
+$newsletter_input-border: none !default;
+$newsletter_input-border-radius: $input_border-radius !default;
+
+$newsletter_button-padding: 0 1em !default;
+$newsletter_button-background: $button_primary-500-background !default;
+$newsletter_button-hover-background: $button_primary-500-hover-background !default;
+$newsletter_button-border: $button_primary-500-border !default;
+$newsletter_button-hover-border: $button_primary-500-hover-border !default;
+$newsletter_button-text-color: $button_primary-500-text-color !default;
+$newsletter_button-hover-text-color: $button_primary-500-hover-text-color !default;
+$newsletter_button-transform: $skew_transform !default;
+
+$newsletter_button-icon-width: 0.8em !default;
+$newsletter_button-icon-height: 0.8em !default;
+$newsletter_button-icon-color: $color_background-200 !default;
+$newsletter_button-icon-hover-color: $color_background-200 !default;
+$newsletter_button-icon-hover-transition: fill 0.15s linear !default;
+
+.#{$ns}newsletter {
+    margin: $newsletter_margin;
+    width: 100%;
+
+    &__form {
+        position: relative;
+        display: flex;
+        border-radius: $newsletter_input-border-radius;
+        overflow: hidden;
+
+        @include media('>=tablet') {
+            max-width: $newsletter_form-max-width;
+        }
+
+        @include media('>=laptop') {
+            max-width: 100%;
+        }
+    }
+
+    &__field {
+        flex-basis: 100%;
+    }
+
+    &__input[type='email'] {
+        padding: $newsletter_input-padding;
+        border: $newsletter_input-border;
+        height: auto;
+        width: 100%;
+        margin: 0;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: stretch;
+    }
+
+    &__button {
+        padding: $newsletter_button-padding !important;
+        background: $newsletter_button-background !important;
+        border: $newsletter_button-border !important;
+        color: $newsletter_button-text-color !important;
+    }
+
+    &__button-icon {
+        width: $newsletter_button-icon-width;
+        height: $newsletter_button-icon-height;
+        fill: $newsletter_button-icon-color;
+
+        @if $newsletter_button-icon-hover-color != $newsletter_button-icon-color
+        {
+            transition: $newsletter_button-icon-hover-transition;
+
+            &:hover {
+                fill: $newsletter_button-icon-hover-color;
+            }
+        }
+    }
+}
