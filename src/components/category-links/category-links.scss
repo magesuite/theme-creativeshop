@@ -1,18 +1,68 @@
-// cc-category-links
-// Display main category and few subcategories
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-@import 'utils/breakpoint/breakpoint.scss';
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+@import 'components/headline/mixin';
 
-@mixin category-links {
+$category-links_title-color: $headline_title-color !default;
+$category-links_title-font-size: $headline_title-font-size !default;
+$category-links_title-font-weight: $headline_title-font-weight !default;
+$category-links_title-lines-enabled: $headline_title-lines-enabled !default;
+$category-links_title-lines-color: $headline_title-lines-color !default;
+
+$category-links_subtitle-border: 1px solid $color_border-500 !default;
+
+$category-links_list-wrapper-background: $color_background-200 !default;
+$category-links_list-wrapper-border-radius: $border-radius_base !default;
+$category-links_list-wrapper-box-shadow: 0 0 15px 0 rgba($color_black, 0.3) !default;
+
+$category-links_list-all-border: 1px solid $color_border-500 !default;
+$category-links_list-all-border-radius: $border-radius_base !default;
+$category-links_list-all-box-shadow: 0 0 15px 0 rgba($color_black, 0.3) !default;
+
+$category-links_link-color: $color_text-800 !default;
+$category-links_link-fill: $color_text-400 !default;
+$category-links_link-hover-color: $color_primary-500 !default;
+$category-links_link-hover-fill: $color_primary-500 !default;
+
+$category-links_qty-color: $color_text-400 !default;
+
+.#{$ns}category-links {
     $root: &;
+    @include headline();
 
-    // it's visible only on mobile as a dropdown trigger
+    &__title {
+        @include headline-title(
+            $color: $category-links_title-color,
+            $font-size: $category-links_title-font-size,
+            $font-weight: $category-links_title-font-weight,
+            $lines-enabled: $category-links_title-lines-enabled,
+            $lines-color: $category-links_title-lines-color
+        );
+        text-align: left;
+
+        &:before,
+        &:after {
+            display: none;
+        }
+
+        @include media('>=tablet') {
+            text-align: center;
+            margin-bottom: 1rem;
+
+            &:before,
+            &:after {
+                display: flex;
+            }
+        }
+    }
+
     &__subtitle {
-        padding: 1rem;
-        font-weight: bold;
-        border-bottom: 1px solid #ccc;
+        font-size: 1.2em;
+        padding: 1.5rem 1rem 1.5rem 0;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: $category-links_subtitle-border;
+        cursor: pointer;
 
         @include media('>=tablet') {
             display: none;
@@ -20,109 +70,164 @@
     }
 
     &__list-wrapper {
+        background: $category-links_list-wrapper-background;
+        border-radius: $category-links_list-wrapper-border-radius;
+        box-shadow: $category-links_list-wrapper-box-shadow;
+
         @include media('>=tablet') {
             display: flex;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
         }
 
-        @include media('<tablet') {
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        #{$root}--no-subcats & {
+            @include media('>=tablet') {
+                justify-content: flex-end;
+            }
         }
     }
 
     &__list,
     &__list-all {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+        @include reset-list-style();
     }
 
     &__list {
         @include media('>=tablet') {
             flex: 1 1 auto;
-            margin-top: -0.5rem;
-            margin-left: -0.5rem;
+            margin: -1rem 0 0 -2.5rem;
         }
 
         &-item {
+            margin: 0;
+
             @include media('>=tablet') {
                 display: inline-block;
-                margin-top: 0.5rem;
-                margin-left: 0.5rem;
+                margin: 1rem 0 0 2.5rem;
             }
         }
     }
 
     &__list-all {
+        margin: 0 0 0.5rem;
+
         @include media('>=tablet') {
             flex: 0 1 auto;
-            margin-left: 1rem;
-            padding-left: 1rem;
-            border-left: 1px solid #ccc;
+            border-left: $category-links_list-all-border;
+            position: relative;
+            margin: 0 0 0 1.5rem;
+            padding: 0 0 0 1.5rem;
+            text-transform: uppercase;
+            border: none;
+
+            &:before {
+                position: absolute;
+                left: 0;
+                top: 0.5rem;
+                bottom: 0.5rem;
+                content: '';
+                border-left: $category-links_list-all-border;
+            }
+
+            #{$root}--no-subcats & {
+                margin: 0;
+                padding: 0;
+
+                &:before {
+                    display: none;
+                }
+            }
         }
 
         &-item {
             display: flex;
             align-items: center;
             height: 100%;
+            margin: 0;
+
+            #{$root}__link {
+                flex: 1 0 auto;
+                padding: 0 1rem 1rem;
+
+                @include media('>=tablet') {
+                    padding: 1.5rem 3rem 1.5rem 1.5rem;
+
+                    &:hover {
+                        border-radius: $category-links_list-all-border-radius;
+                        box-shadow: $category-links_list-all-box-shadow;
+                    }
+                }
+            }
+        }
+
+        &-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            margin-left: 1rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            vertical-align: middle;
+            transform: translate(0, -50%);
+            display: none;
+
+            @include media('>=tablet') {
+                display: block;
+            }
         }
     }
 
     &__link {
         font-weight: bold;
         text-decoration: none;
-
-        @include media('<tablet') {
-            display: block;
-            padding: 1rem;
-        }
+        display: block;
+        padding: 0 1rem 1rem;
+        font-weight: 700;
+        fill: $category-links_link-fill;
+        color: $category-links_link-color;
+        font-size: 1.2em;
 
         @include media('>=tablet') {
+            padding: 1.5rem 0;
             white-space: nowrap;
+        }
+
+        &:visited {
+            color: $category-links_link-color;
+        }
+
+        &:hover,
+        &:hover #{$root}__qty {
+            text-decoration: none;
+            fill: $category-links_link-hover-fill;
+            color: $category-links_link-hover-color;
+        }
+
+        #{$root}--no-subcats & {
+            @include media('<tablet') {
+                padding: 0.5rem 0;
+                flex: 0 0 auto;
+            }
         }
     }
 
     &__qty {
         font-weight: normal;
-    }
-}
+        margin-left: 0.5em;
+        font-weight: 400;
+        color: $category-links_qty-color;
 
-@mixin category-links-dropdown {
-    $root: &;
-    position: relative;
+        &:before {
+            content: '(';
+        }
 
-    &__trigger {
-        &--in {
-            @include media('<tablet') {
-                position: relative;
-                z-index: 5;
-            }
+        &:after {
+            content: ')';
         }
     }
 
-    &__content {
-        @include media('<tablet') {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding-top: 3.5rem;
-
-            overflow: hidden;
-            height: 0;
-            opacity: 0;
-            transform: translateY(3.5rem);
-            transition: opacity 0.05s linear, transform 0.11s ease-in-out;
-        }
-        &--out {
-        }
-        &--in {
-            @include media('<tablet') {
-                z-index: 4;
-                height: auto;
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    &--no-subcats {
+        margin-bottom: 1em;
     }
 }

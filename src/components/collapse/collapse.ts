@@ -1,4 +1,4 @@
-import { Flyout } from '../flyout/class.flyout';
+import { Flyout } from 'components/flyout/class.flyout';
 import * as $ from 'jquery';
 
 $('.cs-collapse').each((index: number, element: any) => {

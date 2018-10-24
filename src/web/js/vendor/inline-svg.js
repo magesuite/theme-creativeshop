@@ -118,7 +118,6 @@
          */
         var inliner = function(cb) {
             var svgs = getAll();
-            console.log(svgs);
             var callback = after(svgs.length, cb);
 
             Array.prototype.forEach.call(svgs, function(svg, i) {
