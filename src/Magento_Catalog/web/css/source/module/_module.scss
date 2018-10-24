@@ -21,7 +21,13 @@
             &--right {
                 #{$root}__thumb--icon {
                     // Fixing bug with invalid bottom arrow in thumb nav position.
-                    background-position: -25px -346px;
+                    @include media('>=tablet', '<=laptop') {
+                        top: 55% !important;
+                    }
+
+                    @include media('>=laptop') {
+                        background-position: -25px -346px;
+                    }
                 }
             }
         }
@@ -87,6 +93,10 @@
             padding-left: 0;
             padding-right: 0;
 
+            @include media('>=tablet', '<=laptop') {
+                margin-bottom: 2rem;
+            }
+
             #{$root}__nav--thumbs {
                 height: auto !important;
             }
@@ -151,8 +161,10 @@
                 overflow: hidden;
                 cursor: pointer;
 
-                & + & {
-                    margin-left: 0 !important;
+                @include media('>=laptop') {
+                    & + & {
+                        margin-left: 0 !important;
+                    }
                 }
 
                 .fotorama__fullscreen & {
