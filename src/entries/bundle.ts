@@ -30,6 +30,8 @@ import 'components/offcanvas-navigation';
 import 'components/offcanvas';
 import 'components/footer';
 import 'components/newsletter';
+import 'components/headline';
+import 'components/category-links';
 
 import { Flyout } from 'components/flyout/class.flyout';
 export { Flyout };
@@ -51,7 +53,6 @@ import 'customizations/hero/hero';
 import 'customizations/image-teaser/image-teaser';
 import 'customizations/products-promo/products-promo';
 import 'customizations/brand-carousel/brand-carousel';
-import 'customizations/category-links/category-links';
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';

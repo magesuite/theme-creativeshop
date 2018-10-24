@@ -1,0 +1,75 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$headline_title-color: $color_text-800 !default;
+$headline_title-font-size: 2.6em !default;
+$headline_title-font-weight: 700 !default;
+// Show flexible decoration lines at the sides of the title.
+$headline_title-lines-enabled: true !default;
+$headline_title-lines-color: $color_border-500 !default;
+
+$headline_subtitle-color: $color_border-700 !default;
+$headline_subtitle-font-size: 1.3em !default;
+
+@mixin headline {
+    font-size: 1rem;
+    padding: 2em 0;
+    margin: 2em 0;
+    clear: both;
+}
+
+@mixin headline-title(
+    $color: $headline_title-color,
+    $font-size: $headline_title-font-size,
+    $font-weight: $headline_title-font-weight,
+    $lines-enabled: $headline_title-lines-enabled,
+    $lines-color: $headline_title-lines-color
+) {
+    display: block;
+    text-align: center;
+    align-items: center;
+    margin: 0;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    color: $color;
+    text-transform: uppercase;
+
+    @include media('>=tablet') {
+        display: flex;
+    }
+
+    @if $lines-enabled {
+        &:before,
+        &:after {
+            content: '';
+            display: none;
+            height: 1px;
+            flex-grow: 1;
+            background-color: $lines-color;
+
+            @include media('>=tablet') {
+                display: flex;
+            }
+        }
+
+        &:before {
+            margin-right: 0.6em;
+        }
+
+        &:after {
+            margin-left: 0.6em;
+        }
+    }
+}
+
+@mixin headline-subtitle($color: $headline_subtitle-color) {
+    color: $color;
+    font-size: 1.3em;
+    margin: 0;
+    display: none;
+    text-align: center;
+
+    @include media('>=tablet') {
+        display: block;
+    }
+}
