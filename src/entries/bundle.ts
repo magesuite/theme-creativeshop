@@ -33,6 +33,7 @@ import 'components/newsletter';
 import 'components/headline';
 import 'components/category-links';
 import 'components/paragraph';
+import 'components/page-bottom';
 
 import { Flyout } from 'components/flyout/class.flyout';
 export { Flyout };

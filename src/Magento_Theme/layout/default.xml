@@ -201,16 +201,96 @@
             </container>
         </referenceContainer>
 
-
-
-
-        <container name="page.bottom.wrapper" htmlTag="div" htmlClass="cs-container cs-container--viewport-width">
-            <container name="page.bottom.inner" htmlTag="div" htmlClass="cs-container__inner">
-                <block class="Magento\Framework\View\Element\Template" name="page.bottom" template="Magento_Theme::html/page-bottom.phtml"/>
+        <referenceContainer name="page.wrapper">
+            <container name="page.bottom.container" htmlTag="div" htmlClass="cs-container cs-container--page-bottom" after="footer-container">
+                <container name="page.bottom.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <container name="page.bottom" htmlTag="div" htmlClass="cs-page-bottom">
+                        <block class="Magento\Framework\View\Element\Template" name="page.bottom.info" template="Magento_Theme::page-bottom/group.phtml">
+                            <arguments>
+                                <argument name="text" xsi:type="string" translate="true">Tax and 1,95€ shipping cost included to all prices.</argument>
+                                <argument name="additional_css_classes" xsi:type="string">cs-page-bottom__group--info</argument>
+                            </arguments>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.info.logo">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/trusted-shops.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__image cs-page-bottom__image--circle</argument>
+                                    <argument name="alt_text" xsi:type="string" translate="true">Trusted Shops certified</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="page.bottom.group.shipping" template="Magento_Theme::page-bottom/group.phtml">
+                            <arguments>
+                                <argument name="text" xsi:type="string" translate="true">Shipping methods:</argument>
+                                <argument name="additional_css_classes" xsi:type="string">cs-page-bottom__group--shipping</argument>
+                            </arguments>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.shipping.hermes">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/hermes.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--hermes</argument>
+                                    <argument name="alt_text" xsi:type="string">Hermes</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.shipping.dhl">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/dhl.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--dhl</argument>
+                                    <argument name="alt_text" xsi:type="string">DHL</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="page.bottom.group.payment" template="Magento_Theme::page-bottom/group.phtml">
+                            <arguments>
+                                <argument name="text" xsi:type="string" translate="true">Payment methods:</argument>
+                                <argument name="additional_css_classes" xsi:type="string">cs-page-bottom__group--payment</argument>
+                            </arguments>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.payment.paypal">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/paypal.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--paypal</argument>
+                                    <argument name="alt_text" xsi:type="string">PayPal</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.payment.visa">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/visa.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--visa</argument>
+                                    <argument name="alt_text" xsi:type="string">Visa</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.payment.mastercard">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/mastercard.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--mastercard</argument>
+                                    <argument name="alt_text" xsi:type="string">MasterCard</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.payment.sofort_uberweisung">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/sofort_uberweisung.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--s-u</argument>
+                                    <argument name="alt_text" xsi:type="string">Sofortüberweisung</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                            <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.bottom.group.payment.klarna">
+                                <arguments>
+                                    <argument name="icon_url" xsi:type="string">images/icons/klarna.svg</argument>
+                                    <argument name="css_class" xsi:type="string">cs-page-bottom__logo cs-page-bottom__logo--klarna</argument>
+                                    <argument name="alt_text" xsi:type="string">Klarna</argument>
+                                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                </arguments>
+                            </block>
+                        </block>
+                    </container>
+                </container>
             </container>
-        </container>
-
-        <move element="page.bottom.wrapper" destination="page.wrapper" after="-"/>
+        </referenceContainer>
 
         <referenceContainer name="before.body.end">
             <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml" after="-"/>
