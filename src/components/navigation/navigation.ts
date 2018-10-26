@@ -1,7 +1,5 @@
 import * as $ from 'jquery';
 
-import breakpoint from 'utils/breakpoint/breakpoint';
-
 /**
  * Navigation component options interface.
  */
@@ -28,26 +26,16 @@ interface NavigationOptions {
      */
     flyoutColumnsClassName?: string;
     /**
-     * Navigation flyout category class name.
-     * @type {string}
-     */
-    flyoutCategoryClassName?: string;
-    /**
      * Desired max height of the flyout. Number of columns will be decreased until
      * flyout's height will be smaller then given max height.
      * @type {number}
      */
     flyoutMaxHeight?: number;
     /**
-     * Default number of colums set for flyout by CSS.
+     * Maximum number of columns with categories that flyout can have.
      * @type {number}
      */
-    flyoutDefaultColumnCount?: number;
-    /**
-     * Flyout class name that should be aplied to make it visible.
-     * @type {[type]}
-     */
-    flyoutVisibleClassName?: string;
+    flyoutMaxColumnCount?: number;
     /**
      * Tells how flyout should be aligned in relation to navigation item.
      * Possible values are:
@@ -81,11 +69,6 @@ interface NavigationOptions {
      */
     roundTransformLeft?: boolean;
     /**
-     * Tells if overlay (menu type - only on page content) should be shown along with flyout
-     * @type {boolean}
-     */
-    showNavigationOverlay?: boolean;
-    /**
      * if showNavigationOverlay is set to TRUE, overlay will be shown on the content and all elements under it
      * @type {string}
      */
@@ -112,39 +95,38 @@ interface NavigationOptions {
  */
 export default class Navigation {
     protected _$element: JQuery;
-    protected _$window: JQuery = $(window);
-    protected _$flyouts: JQuery;
+    protected _$window: JQuery<Window> = $(window);
     protected _$container: JQuery;
     protected _containerClientRect: ClientRect;
+    protected _$flyouts: JQuery;
+    protected _$content: JQuery;
+    protected _$overlay: JQuery;
     protected _eventListeners: {
-        resizeListener?: (event: Event) => void;
-        itemFocusInListener?: (event: Event) => void;
-        flyoutFocusInListener?: (event: Event) => void;
-        focusOutListener?: (event: Event) => void;
-        itemTouchStartListener?: (event: Event) => void;
-        windowTouchStartListener?: (event: Event) => void;
-        itemMouseenterListener?: (event: Event) => void;
-        itemMouseleaveListener?: (event: Event) => void;
-        navigationMouseleaveListener?: (event: Event) => void;
+        resizeListener?: (event: JQuery.Event) => void;
+        itemFocusInListener?: (event: JQuery.Event) => void;
+        flyoutFocusInListener?: (event: JQuery.Event) => void;
+        focusOutListener?: (event: JQuery.Event) => void;
+        itemTouchStartListener?: (event: JQuery.Event) => void;
+        windowTouchStartListener?: (event: JQuery.Event) => void;
+        itemMouseenterListener?: (event: JQuery.Event) => void;
+        itemMouseleaveListener?: (event: JQuery.Event) => void;
+        navigationMouseleaveListener?: (event: JQuery.Event) => void;
     } = {};
-    protected _resizeTimeout: number;
-    protected _showTimeout: number;
+    protected _resizeTimeout: any;
+    protected _showTimeout: any;
 
     protected _options: NavigationOptions = {
         containerClassName: 'cs-navigation__list--level_0',
-        itemClassName: 'cs-navigation__item--level_0',
+        itemClassName: 'cs-navigation__item',
         flyoutClassName: 'cs-navigation__flyout',
-        flyoutVisibleClassName: 'cs-navigation__flyout--visible',
-        flyoutCategoryClassName: 'cs-navigation__item--level_1',
         flyoutColumnsClassName: 'cs-navigation__list--level_1',
         flyoutMaxHeight: 400,
-        flyoutDefaultColumnCount: 5,
+        flyoutMaxColumnCount: 5,
         resizeDebounce: 100,
         flyoutShowDelay: 200,
         flyoutAlignTo: 'center',
         flyoutAlignSwitch: 0,
         roundTransformLeft: true,
-        showNavigationOverlay: false,
         contentSelector: '#maincontent',
         highlightActiveCategory: true,
         highlightWholeTree: true,
@@ -163,6 +145,7 @@ export default class Navigation {
         }
         this._$element = $element;
         this._options = $.extend(this._options, options);
+        this._$content = $(this._options.contentSelector);
         this._$flyouts = $element.find(`.${this._options.flyoutClassName}`);
         this._$container = $element
             .find(`.${this._options.containerClassName}`)
@@ -174,7 +157,6 @@ export default class Navigation {
         if (this._options.highlightActiveCategory) {
             this._highlightActiveCategory();
         }
-        this._adjustFlyouts(this._$flyouts);
         this._attachEvents();
         this._openIfHovered();
     }
@@ -195,8 +177,10 @@ export default class Navigation {
             return;
         }
 
-        const $items: JQuery = $(`.${this._options.itemClassName}`);
-        $items.each((index: number, element: HTMLElement) => {
+        const $rootItems: JQuery = $(
+            `.${this._options.itemClassName}--level_0`
+        );
+        $rootItems.each((index: number, element: HTMLElement) => {
             if (element.matches(':hover')) {
                 $(element).trigger('mouseenter');
                 // Break after first found element.
@@ -206,18 +190,19 @@ export default class Navigation {
     }
 
     /**
-     * Highlights active category by adding ${this._options.activeCategoryClassName} class eiter to only last level category or whole category tree depending on component's settings
+     * Highlights active category by adding ${this._options.activeCategoryClassName}
+     * class either to only last level category or whole category tree depending on component's settings.
      */
     protected _highlightActiveCategory(): void {
         const $activeCategoryIndicator: JQuery = $('#active-category-id');
-        if (
-            $activeCategoryIndicator.length &&
-            $activeCategoryIndicator.attr('data-active-category-id') &&
-            $activeCategoryIndicator.data('active-category-id') !== ''
-        ) {
-            const activeCategoryId: number = $activeCategoryIndicator.data(
-                'active-category-id'
-            );
+        if (!$activeCategoryIndicator.length) {
+            return;
+        }
+
+        const activeCategoryId: number = $activeCategoryIndicator.data(
+            'active-category-id'
+        );
+        if (activeCategoryId) {
             const $activeCategoryEl: JQuery = this._$container.find(
                 `[data-category-id="${activeCategoryId}"]`
             );
@@ -245,44 +230,30 @@ export default class Navigation {
 
     /**
      * Adjusts flyout number of columns and positioning.
-     * @param {JQuery} $flyouts jQuery collection of flyouts.
+     * @param {JQuery} $flyout jQuery flyout element.
      */
-    protected _adjustFlyouts($flyouts: JQuery): void {
-        this._showFlyout($flyouts);
-        this._setTransform($flyouts, '');
-        this._triggerReflow($flyouts);
+    protected _adjustFlyout($flyout: JQuery): void {
+        this._setTransform($flyout, '');
+        this._adjustFlyoutColumns($flyout);
+        this._triggerColumnsReflow($flyout);
 
-        $flyouts.each((index: number, flyout: HTMLElement) =>
-            this._adjustFlyoutColumns($(flyout))
-        );
-        this._hideFlyout($flyouts);
-        this._hideOverlay();
-
-        this._triggerReflow($flyouts);
-        /**
-         * So Chrome has a bug which causes it to provide invalid width of the element
-         * when changing it's number of colums in JS, even when triggering reflows.
-         */
-        requestAnimationFrame(() => {
-            this._showFlyout($flyouts);
-            this._triggerReflow($flyouts);
-
-            let alignTo: string = this._options.flyoutAlignTo;
-            const alignSwitch = this._options.flyoutAlignSwitch;
-            const switchAt =
-                alignSwitch > 0 ? alignSwitch : alignSwitch + $flyouts.length;
-            $flyouts.each((index: number, flyout: HTMLElement) => {
-                if (
-                    index === switchAt &&
-                    (alignTo === 'left' || alignTo === 'right')
-                ) {
-                    alignTo = alignTo === 'left' ? 'right' : 'left';
-                }
-                this._adjustFlyoutPosition($(flyout), alignTo);
-            });
-            this._hideFlyout($flyouts);
-            this._hideOverlay();
-        });
+        let alignTo: string = this._options.flyoutAlignTo;
+        const itemsLength: number = $(
+            `.${this._options.itemClassName}--level_0`
+        ).length;
+        const alignSwitch = this._options.flyoutAlignSwitch;
+        const switchAt =
+            alignSwitch > 0 ? alignSwitch : alignSwitch + itemsLength;
+        const flyoutIndex = $flyout
+            .closest(`.${this._options.itemClassName}--level_0`)
+            .index();
+        if (
+            flyoutIndex === switchAt &&
+            (alignTo === 'left' || alignTo === 'right')
+        ) {
+            alignTo = alignTo === 'left' ? 'right' : 'left';
+        }
+        this._adjustFlyoutPosition($flyout, alignTo);
     }
 
     /**
@@ -294,61 +265,32 @@ export default class Navigation {
         const $flyoutColumns: JQuery = $flyout.find(
             `.${this._options.flyoutColumnsClassName}`
         );
+        this._setColumnCount($flyoutColumns, 1);
+        this._triggerColumnsReflow($flyout);
+
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
-        let flyoutColumnCount: number =
-            this._options.flyoutDefaultColumnCount - 1;
+        const flyoutMaxColumns = this._options.flyoutMaxColumnCount;
+
         let flyoutHeight: number = $flyout.height();
-        let prevFlyoutHeight: number;
+        let prevFlyoutHeight: number = 0;
 
-        for (; flyoutColumnCount > 0; flyoutColumnCount -= 1) {
-            this._setColumnCount($flyoutColumns, flyoutColumnCount);
-            prevFlyoutHeight = flyoutHeight;
-            flyoutHeight = $flyout.height();
-
-            if (
-                flyoutHeight !== prevFlyoutHeight &&
-                flyoutHeight >= flyoutMaxHeight
-            ) {
-                if (
-                    flyoutHeight >= flyoutMaxHeight + 100 &&
-                    flyoutColumnCount < this._options.flyoutDefaultColumnCount
-                ) {
-                    this._setColumnCount($flyoutColumns, flyoutColumnCount + 1);
-                }
+        for (
+            let flyoutColumnCount = 1;
+            flyoutColumnCount < flyoutMaxColumns;
+            flyoutColumnCount += 1
+        ) {
+            // Flyout height didn't decrease despite having more columns.
+            if (Math.abs(flyoutHeight - prevFlyoutHeight) <= 10) {
+                this._setColumnCount($flyoutColumns, flyoutColumnCount - 1);
                 break;
             }
-        }
-        this._removeEmptyColumns($flyout, flyoutColumnCount);
-    }
-
-    /**
-     * Removes empty columns from flyout.
-     * Because e.g. categories in flyout cannot break there may be a situation when
-     * flyout will be higher then the limit but adding more columns won't do any good.
-     * This method checks how many columns can be removed before flyout becomes higher.
-     *
-     * @param  {JQuery} $flyout           Flyout element.
-     * @param  {number} flyoutColumnCount Current number of colums to speed up performance.
-     */
-    protected _removeEmptyColumns(
-        $flyout: JQuery,
-        flyoutColumnCount: number
-    ): void {
-        const $flyoutColumns: JQuery = $flyout.find(
-            `.${this._options.flyoutColumnsClassName}`
-        );
-        let flyoutHeight: number = $flyout.height();
-        let prevFlyoutHeight: number;
-
-        for (; flyoutColumnCount > 0; flyoutColumnCount -= 1) {
-            this._setColumnCount($flyoutColumns, flyoutColumnCount);
-            prevFlyoutHeight = flyoutHeight;
-            flyoutHeight = $flyout.height();
-            // Allow for small margin of error of 10px.
-            if (Math.abs(flyoutHeight - prevFlyoutHeight) > 10) {
+            // Flyout is still too high.
+            if (flyoutHeight >= flyoutMaxHeight + 100) {
                 this._setColumnCount($flyoutColumns, flyoutColumnCount + 1);
-                break;
             }
+            this._triggerColumnsReflow($flyout);
+            prevFlyoutHeight = flyoutHeight;
+            flyoutHeight = $flyout.height();
         }
     }
 
@@ -447,42 +389,41 @@ export default class Navigation {
      * Calculates overlay position and shows it.
      */
     protected _showOverlay(): void {
-        if ($(this._options.contentSelector).length) {
-            const overlayPosition: number = $(
-                this._options.contentSelector
-            ).offset().top;
-            const overlayHeight: number =
-                $(document).height() - overlayPosition;
-            let $overlay: any = $('.cs-navigation__overlay');
+        const $content = this._$content;
 
-            if (!$overlay.length) {
-                $('body').append('<div class="cs-navigation__overlay"></div>');
-                $overlay = $('.cs-navigation__overlay');
-            }
+        if (!$content.length) {
+            return;
+        }
 
-            $overlay
+        const overlayOffset: number = $content.offset().top;
+        const overlayHeight: number = $(document).height() - overlayOffset;
+
+        if (!this._$overlay || !this._$overlay.length) {
+            this._$overlay = $('<div class="cs-navigation__overlay"></div>')
                 .css({
                     height: overlayHeight,
-                    top: overlayPosition,
+                    top: overlayOffset,
                 })
-                .addClass('cs-navigation__overlay--visible');
+                .appendTo('body');
         }
+
+        this._$overlay.addClass('cs-navigation__overlay--visible');
     }
 
     /**
      * Hides overlay
      */
     protected _hideOverlay(): void {
-        const $overlay: any = $('.cs-navigation__overlay');
-
-        if ($overlay.length) {
-            $overlay
-                .css({
-                    height: '',
-                    top: '',
-                })
-                .removeClass('cs-navigation__overlay--visible');
+        if (!this._$overlay || !this._$overlay.length) {
+            return;
         }
+
+        this._$overlay
+            .css({
+                height: 0,
+                top: 0,
+            })
+            .removeClass('cs-navigation__overlay--visible');
     }
 
     /**
@@ -490,17 +431,21 @@ export default class Navigation {
      * @param {JQuery} $flyout Target flyout to set class to.
      */
     protected _showFlyout($flyout: JQuery): void {
-        $flyout
-            .parent(`.${this._options.itemClassName}`)
-            .addClass(`${this._options.itemClassName}--active`);
-        $flyout.addClass(this._options.flyoutVisibleClassName);
-        if (
-            $flyout.length &&
-            this._options.showNavigationOverlay &&
-            breakpoint.current >= breakpoint.tablet
-        ) {
-            this._showOverlay();
+        if (!$flyout.length) {
+            return;
         }
+
+        const $activeFlyout = this._$flyouts
+            .filter(`.${this._options.flyoutClassName}--visible`)
+            .not($flyout);
+        this._hideFlyout($activeFlyout);
+
+        $flyout
+            .parent(`.${this._options.itemClassName}--level_0`)
+            .addClass(`${this._options.itemClassName}--active`);
+        $flyout.addClass(`${this._options.flyoutClassName}--visible`);
+        this._adjustFlyout($flyout);
+        this._showOverlay();
     }
 
     /**
@@ -527,17 +472,19 @@ export default class Navigation {
      */
     protected _hideFlyout($flyout: JQuery): void {
         $flyout
-            .parent(`.${this._options.itemClassName}`)
+            .parent(`.${this._options.itemClassName}--level_0`)
             .removeClass(`${this._options.itemClassName}--active`);
-        $flyout.removeClass(this._options.flyoutVisibleClassName);
+        $flyout.removeClass(`${this._options.flyoutClassName}--visible`);
     }
 
     /**
      * Triggers browser layout reflow so we can get updated CSS values.
-     * @param  {JQuery} $element Element to use to trigger reflow.
+     * @param  {JQuery} $flyout Element to use to trigger reflow.
      */
-    protected _triggerReflow($element: JQuery): void {
-        $element.prop('offsetWidth');
+    protected _triggerColumnsReflow($flyout: JQuery): void {
+        $flyout.css('display', 'none');
+        $flyout.prop('offsetWidth');
+        $flyout.css('display', '');
     }
 
     /**
@@ -550,99 +497,109 @@ export default class Navigation {
                 this._containerClientRect = this._$container
                     .get(0)
                     .getBoundingClientRect();
-                this._adjustFlyouts(this._$flyouts);
             }, this._options.resizeDebounce);
         };
 
-        this._eventListeners.itemFocusInListener = (event: Event): void => {
-            const $targetFlyout: JQuery = $(event.target)
+        this._eventListeners.itemFocusInListener = (
+            event: JQuery.Event
+        ): void => {
+            const $targetFlyout: JQuery = $(event.target as HTMLElement)
                 .parent()
-                .find(`.${this._options.flyoutClassName}`);
-            this._hideFlyout(this._$flyouts.not($targetFlyout));
+                .find(this._$flyouts);
             this._showFlyout($targetFlyout);
         };
         // Don't let focus events propagate from flyouts to items.
-        this._eventListeners.flyoutFocusInListener = (event: Event): void => {
+        this._eventListeners.flyoutFocusInListener = (
+            event: JQuery.Event
+        ): void => {
             event.stopPropagation();
         };
 
-        this._eventListeners.focusOutListener = (event: Event): void => {
+        this._eventListeners.focusOutListener = (event: JQuery.Event): void => {
             this._hideFlyout(
-                $(event.target)
-                    .closest(`.${this._options.itemClassName}`)
-                    .find(`.${this._options.flyoutClassName}`)
+                $(event.target as HTMLElement)
+                    .closest(`.${this._options.itemClassName}--level_0`)
+                    .find(this._$flyouts)
             );
         };
 
-        this._eventListeners.itemMouseenterListener = (event: Event): void => {
-            const $target: JQuery = $(event.target)
-                .closest(`.${this._options.itemClassName}`)
-                .find(`.${this._options.flyoutClassName}`);
+        this._eventListeners.itemMouseenterListener = (
+            event: JQuery.Event
+        ): void => {
+            const $rootItem: JQuery = $(event.target as HTMLElement)
+                .closest(`.${this._options.itemClassName}--level_0`)
+                .find(this._$flyouts);
 
-            this._showFlyoutDelay($target);
+            this._showFlyoutDelay($rootItem);
 
-            if (!$target.length) {
+            if (!$rootItem.length) {
                 this._hideOverlay();
             }
         };
 
-        this._eventListeners.itemTouchStartListener = (event: Event): void => {
-            const $target: JQuery = $(event.target);
-            const $targetItem: JQuery = $target.closest(
-                `.${this._options.itemClassName}`
+        this._eventListeners.itemTouchStartListener = (
+            event: JQuery.Event
+        ): void => {
+            const $target: JQuery = $(event.target as HTMLElement);
+            const $rootItem: JQuery = $target.closest(
+                `.${this._options.itemClassName}--level_0`
             );
-            const $targetFlyout: JQuery = $targetItem.find(
-                `.${this._options.flyoutClassName}`
-            );
+            const $targetFlyout: JQuery = $rootItem.find(this._$flyouts);
             // Checks if item has no flyout or that touch was triggered inside it.
             if (
                 !$targetFlyout.length ||
-                $target.closest(`.${this._options.flyoutClassName}`).length
+                $target.closest(this._$flyouts).length
             ) {
                 return;
             }
 
             event.preventDefault();
 
-            if ($targetFlyout.hasClass(this._options.flyoutVisibleClassName)) {
+            if (
+                $targetFlyout.hasClass(
+                    `${this._options.flyoutClassName}--visible`
+                )
+            ) {
                 this._hideFlyout($targetFlyout);
             } else {
-                $targetItem.focus();
-                this._hideFlyout(this._$flyouts.not($targetFlyout));
+                $rootItem.focus();
                 this._showFlyout($targetFlyout);
             }
 
-            const $flyoutCategories: JQuery = $targetFlyout.find(
-                `.${this._options.flyoutCategoryClassName}`
-            );
-            $flyoutCategories.removeClass(
-                `${this._options.flyoutCategoryClassName}--hidden`
-            );
+            $targetFlyout
+                .find(`.${this._options.itemClassName}--level_1`)
+                .removeClass(`${this._options.itemClassName}--hidden`);
         };
 
         this._eventListeners.windowTouchStartListener = (
-            event: Event
+            event: JQuery.Event
         ): void => {
-            const $target: JQuery = $(event.target).closest(
-                `.${this._options.itemClassName}`
+            const $target: JQuery = $(event.target as HTMLElement);
+            const $rootItem: JQuery = $target.closest(
+                `.${this._options.itemClassName}--level_0`
             );
-
-            if (!$target.length) {
-                this._hideFlyout(this._$flyouts);
+            // Checks if clicked outside of the navigation.
+            if (!$rootItem.length) {
+                const $activeFlyout = this._$element.find(
+                    `${this._options.flyoutClassName}--visible`
+                );
+                this._hideFlyout($activeFlyout);
             }
         };
 
-        this._eventListeners.itemMouseleaveListener = (event: Event): void => {
+        this._eventListeners.itemMouseleaveListener = (
+            event: JQuery.Event
+        ): void => {
             clearTimeout(this._showTimeout);
             this._hideFlyout(
-                $(event.target)
-                    .closest(`.${this._options.itemClassName}`)
-                    .find(`.${this._options.flyoutClassName}`)
+                $(event.target as HTMLElement)
+                    .closest(`.${this._options.itemClassName}--level_0`)
+                    .find(this._$flyouts)
             );
         };
 
         this._eventListeners.navigationMouseleaveListener = (
-            event: Event
+            event: JQuery.Event
         ): void => {
             this._hideOverlay();
         };
@@ -656,11 +613,22 @@ export default class Navigation {
             this._eventListeners.windowTouchStartListener
         );
 
-        const $items: JQuery = $(`.${this._options.itemClassName}`);
-        $items.on('focusin', this._eventListeners.itemFocusInListener);
-        $items.on('touchstart', this._eventListeners.itemTouchStartListener);
-        $items.on('mouseenter', this._eventListeners.itemMouseenterListener);
-        $items.on('mouseleave', this._eventListeners.itemMouseleaveListener);
+        const $rootItems: JQuery = $(
+            `.${this._options.itemClassName}--level_0`
+        );
+        $rootItems.on('focusin', this._eventListeners.itemFocusInListener);
+        $rootItems.on(
+            'touchstart',
+            this._eventListeners.itemTouchStartListener
+        );
+        $rootItems.on(
+            'mouseenter',
+            this._eventListeners.itemMouseenterListener
+        );
+        $rootItems.on(
+            'mouseleave',
+            this._eventListeners.itemMouseleaveListener
+        );
         this._$element.on(
             'mouseleave',
             this._eventListeners.navigationMouseleaveListener
@@ -670,7 +638,7 @@ export default class Navigation {
             this._eventListeners.flyoutFocusInListener
         );
         // When the last link from flyout loses focus.
-        $items
+        $rootItems
             .find('a:last')
             .on('focusout', this._eventListeners.focusOutListener);
     }
@@ -688,11 +656,22 @@ export default class Navigation {
             this._eventListeners.windowTouchStartListener
         );
 
-        const $items: JQuery = $(`.${this._options.itemClassName}`);
-        $items.off('mouseenter', this._eventListeners.itemMouseenterListener);
-        $items.off('mouseleave', this._eventListeners.itemMouseleaveListener);
-        $items.off('touchstart', this._eventListeners.itemTouchStartListener);
-        $items.off('focusin', this._eventListeners.itemFocusInListener);
+        const $rootItems: JQuery = $(
+            `.${this._options.itemClassName}--level_0`
+        );
+        $rootItems.off(
+            'mouseenter',
+            this._eventListeners.itemMouseenterListener
+        );
+        $rootItems.off(
+            'mouseleave',
+            this._eventListeners.itemMouseleaveListener
+        );
+        $rootItems.off(
+            'touchstart',
+            this._eventListeners.itemTouchStartListener
+        );
+        $rootItems.off('focusin', this._eventListeners.itemFocusInListener);
         this._$element.off(
             'mouseleave',
             this._eventListeners.navigationMouseleaveListener
@@ -702,7 +681,7 @@ export default class Navigation {
             this._eventListeners.flyoutFocusInListener
         );
         // When the last link from flyout loses focus.
-        $items
+        $rootItems
             .find('a:last')
             .off('focusout', this._eventListeners.focusOutListener);
     }

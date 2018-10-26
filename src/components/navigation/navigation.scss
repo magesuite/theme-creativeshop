@@ -2,6 +2,9 @@
 @import 'include-media/dist/include-media';
 
 $navigation_font-size: 1rem !default;
+
+$navigation_overlay-show: false !default;
+
 $navigation_flyout-edge-gutter: $page_edge-gutter !default;
 $navigation_flyout-max-width: $page_max-width !default;
 // Maximum number of columns (including image teaser, product promo etc.) for tablet.
@@ -44,13 +47,13 @@ $navigation_link-border: 1px solid $color_border-500 !default;
             }
 
             &_1 {
-                columns: calc(#{$navigation_flyout-column-width-tablet})
-                    $navigation_flyout-columns-max-tablet;
+                columns: calc(#{$navigation_flyout-column-width-tablet}) 1;
                 column-gap: 0;
 
-                @include media('>=#{$navigation_flyout-max-width}') {
-                    columns: $navigation_flyout-column-width-desktop
-                        $navigation_flyout-columns-max-desktop;
+                @include media(
+                    '>=#{$navigation_flyout-max-width / 16rem * 10em}'
+                ) {
+                    columns: $navigation_flyout-column-width-desktop 1;
                 }
             }
 
@@ -66,9 +69,10 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         width: 100%;
 
         &:hover,
-        .active {
+        &.active,
+        &--active {
             > #{$root}__link {
-                color: $navigation_link-color-hover;
+                color: $navigation_link-color-hover !important;
             }
         }
 
@@ -98,14 +102,16 @@ $navigation_link-border: 1px solid $color_border-500 !default;
                 break-inside: avoid-column; /* IE 11 */
                 display: table;
 
-                @include media('>=#{$navigation_flyout-max-width}') {
+                @include media(
+                    '>=#{$navigation_flyout-max-width / 16rem * 10em}'
+                ) {
                     width: $navigation_flyout-column-width-desktop;
                 }
-
-                &--hidden {
-                    display: none;
-                }
             }
+        }
+
+        &--hidden {
+            display: none;
         }
     }
 
@@ -183,7 +189,7 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         padding: 1em;
         overflow: hidden;
 
-        @include media('>=#{$navigation_flyout-max-width}') {
+        @include media('>=#{$navigation_flyout-max-width / 16rem * 10em}') {
             max-width: $navigation_flyout-column-width-desktop * 2; // 1200px / 5
         }
     }
@@ -224,7 +230,7 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         width: $navigation_flyout-column-width-tablet;
         padding: 0.5em 1em;
 
-        @include media('>=#{$navigation_flyout-max-width}') {
+        @include media('>=#{$navigation_flyout-max-width / 16rem * 10em}') {
             width: $navigation_flyout-column-width-desktop;
         }
 
@@ -248,6 +254,7 @@ $navigation_link-border: 1px solid $color_border-500 !default;
     }
 
     &__overlay {
+        display: none;
         position: absolute;
         z-index: 1000;
         background-color: #000;
@@ -258,6 +265,12 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         transform: translate3d(0, 3rem, 0);
         transition: opacity 0.15s linear,
             transform 0.2s cubic-bezier(0, 0.97, 0.05, 0.99);
+
+        @if $navigation_overlay-show {
+            @include media('>=tablet') {
+                display: block;
+            }
+        }
 
         &--visible {
             opacity: 0.8;

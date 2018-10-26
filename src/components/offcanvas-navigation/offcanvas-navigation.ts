@@ -1,5 +1,4 @@
 import * as $ from 'jquery';
-import Offcanvas from '../../offcanvas/src/offcanvas';
 
 /**
  * Component options interface.
@@ -18,9 +17,9 @@ export default class OffcanvasNavigation {
     protected _$returnLink: JQuery;
 
     protected _eventListeners: {
-        offcanvasHide?: (event: Event, offcanvas: Offcanvas) => void;
-        parentLinkClick?: (event: Event) => void;
-        returnLinkClick?: (event: Event) => void;
+        offcanvasHide?: (event: JQuery.Event) => void;
+        parentLinkClick?: (event: JQuery.Event) => void;
+        returnLinkClick?: (event: JQuery.Event) => void;
     } = {};
 
     public _options: OffcanvasNavigationOptions;
@@ -81,6 +80,7 @@ export default class OffcanvasNavigation {
                   .first()
                   .next();
         const $currentLevel = $(`.${this._options.className}__list--current`);
+
         if ($currentLevel.length > 0) {
             $currentLevel.animate({ scrollTop: 0 }, 'medium', () => {
                 $currentLevel.removeClass(
