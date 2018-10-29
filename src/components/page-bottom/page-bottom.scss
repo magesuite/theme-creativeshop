@@ -1,13 +1,23 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$page-bottom_text-color: $color_text-500;
+$page-bottom_divider-color: $color_border-500;
+
 .#{$ns}page-bottom {
-    padding: 1.5rem 0.5rem;
+    $root: &;
+
+    padding: 1.5rem 0;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+
     @include media('>=tablet') {
         flex-wrap: wrap;
         justify-content: flex-start;
     }
+
     @include media('>=laptop') {
         flex-wrap: nowrap;
         justify-content: space-between;
@@ -30,32 +40,12 @@
 
     &__text {
         font-size: 1.2rem;
-        color: $color_dove-gray;
+        color: $page-bottom_text-color;
         margin-bottom: 0;
         margin-right: 0.6rem;
 
         &--small {
             font-size: 1rem;
-        }
-    }
-
-    &__divider {
-        margin: 0 1rem;
-
-        &:after {
-            margin: 0 1rem;
-            content: '';
-            display: inline-block;
-            width: 0.2rem;
-            height: 2rem;
-            background: $color_alto;
-        }
-
-        @include media('>=tablet') {
-            display: none;
-        }
-        @include media('>=laptop') {
-            display: block;
         }
     }
 
@@ -68,7 +58,7 @@
 
         @include media('>=tablet') {
             width: 100%;
-            padding: 1rem 1.5rem;
+            padding: 1rem 0;
         }
 
         @include media('>=laptop') {
@@ -77,19 +67,84 @@
         }
 
         &--info {
-            flex-basis: 15%;
+            display: none;
+            flex-direction: row-reverse;
 
-            .ie11 & {
-                display: block;
+            @include media('>=tablet') {
+                display: flex;
+                flex-basis: 40%;
+                justify-content: flex-end;
+                padding-right: 1.5rem;
+
+                #{$root}__text {
+                    max-width: 20rem;
+                }
+
+                .ie11 & {
+                    display: block;
+                }
+            }
+
+            @include media('>=laptop') {
+                flex-basis: 17%;
+                padding-right: 0;
+
+                #{$root}__text {
+                    max-width: 100%;
+                }
             }
         }
 
         &--shipping {
-            flex-basis: 35%;
+            display: none;
+
+            @include media('>=tablet') {
+                display: flex;
+                flex-basis: 55%;
+                padding-left: 1.5rem;
+            }
+
+            @include media('>=laptop') {
+                flex-basis: 33%;
+                padding-left: 4rem;
+            }
         }
 
         &--payment {
             flex-basis: 50%;
+
+            @include media('<tablet') {
+                #{$root}__text {
+                    display: none;
+                }
+            }
+
+            @include media('>=tablet', '<laptop') {
+                flex-basis: 100%;
+            }
+
+            @include media('>=laptop') {
+                padding-left: 4rem;
+            }
+        }
+
+        &--shipping,
+        &--payment {
+            @include media('>=laptop') {
+                position: relative;
+
+                &:before {
+                    margin: 0 1rem;
+                    content: '';
+                    position: absolute;
+                    left: 1rem;
+                    top: 50%;
+                    width: 0.2rem;
+                    height: 2rem;
+                    background: $page-bottom_divider-color;
+                    transform: translateY(-50%);
+                }
+            }
         }
     }
 
@@ -103,11 +158,11 @@
         }
 
         &--hermes {
-            width: 15.2rem;
+            width: 12.2rem;
         }
 
         &--dhl {
-            width: 9.1rem;
+            width: 8.6rem;
         }
 
         &--paypal {
