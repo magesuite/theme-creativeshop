@@ -1,47 +1,157 @@
 <?php
+// @codingStandardsIgnoreFile
+
 /** @var \Amasty\Promo\Block\Items $block */
 use Magento\Framework\App\Action\Action;
 
 $products = $block->getItems();
 $imageHelper = $block->getImageHelper();
+$selectionMethod = $block->getSelectionMethod();
+$giftsCounter = $block->getGiftsCounter();
+$isShowPrice = $block->getShowPriceInPopup();
 ?>
 
-<div class="cs-promo-products-list | ampromo-gallery" data-count="<?php echo $products ? count($products) : 0 ?>" data-role="ampromo-gallery">
-    <?php if ($products)
-        foreach ($products as $product): ?>
-            <div class="cs-promo-products-list__item | ampromo-item" data-product-id="<?php echo $product->getId()?>" data-product-sku="<?php echo $product->getSku()?>">
-                <form method="POST" action="<?php echo $block->getFormActionUrl()?>" class="cs-promo-products-list__form | ampromo_items_form" id="ampromo_items_form-<?php echo $product->getId()?>">
-                    <input type="hidden" name="<?php echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php echo $block->getCurrentBase64Url() ?>">
-                    <div class="cs-promo-products-list__item-name | ampromo-item-title">
-                        <?php if ($product->getVisibility() != \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE):?>
-                            <a href="<?php echo $product->getProductUrl()?>"><?php echo $product->getName()?></a>
-                        <?php else: ?>
-                            <h4><?php echo $product->getName()?></h4>
-                        <?php endif?>
-                    </div>
-                    <?php $imageHelper->init($product, 'cart_page_product_thumbnail')
-                        ->keepFrame(false)
-                        ->constrainOnly(true)
-                        ->resize(160, 160)
-                    ;
-                    ?>
-                    <img src="<?php echo $imageHelper->getUrl() ?>" class="cs-promo-products-list__item-image | ampromo-item-image" alt="<?php echo $block->stripTags($product->getName(), null, true) ?>"/>
-                    <img src="<?php echo $imageHelper->getUrl() ?>" class="cs-promo-products-list__item-image | ampromo-item-image" alt="<?php echo $block->stripTags($product->getName(), null, true) ?>"/>
-                    <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id" />
+<?php if ($products) : ?>
+    <div class="ampromo-carousel-product" data-role="ampromo-carousel-product">
+        <div class="cs-promo-products-list | ampromo-gallery" data-count="<?= $products ? count($products) : 0 ?>" data-role="ampromo-gallery">
+            <?php foreach ($products as $product) : ?>
+                <?php
+                $product = $block->getProductById($product->getId());
+                $isVisible = $product->getVisibility() != Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE;
+                $optionsBlock = $block->getChildBlock($product->getTypeId() . '_prototype');
+                ?>
+                <div class="cs-promo-products-list__item | ampromo-item"
+                     data-product-id="<?= $product->getId()?>"
+                     data-product-sku="<?= $product->getSku()?>"
+                     data-role="ampromo-item">
+                    <form method="POST"
+                          action="<?= $block->getFormActionUrl()?>"
+                          data-role="ampromo-items-form"
+                          class="cs-promo-products-list__form | ampromo_items_form"
+                          id="ampromo_items_form-<?= $product->getId()?>">
+                        <input type="hidden"
+                               name="<?= Action::PARAM_NAME_URL_ENCODED; ?>"
+                               value="<?= $block->getCurrentBase64Url() ?>">
+                        <input type="hidden"
+                               name="isPromoItems"
+                               value="true">
+                        <?php if ($selectionMethod) : ?>
+                            <div class="ampromo-product-select" data-role="ampromo-product-select">
+                                <input type="checkbox"/>
+                            </div>
+                        <?php endif; ?>
+                        <div class="cs-promo-products-list__item-name | ampromo-item-title">
+                            <?php if ($isVisible) : ?>
+                                <h4><a href="<?= $product->getProductUrl()?>"><?= $product->getName()?></a></h4>
+                            <?php else : ?>
+                                <h4><?= $product->getName()?></h4>
+                            <?php endif?>
+                        </div>
+                        <?php $imageHelper->init($product, 'cart_page_product_thumbnail')
+                            ->keepFrame(false)
+                            ->constrainOnly(true)
+                            ->resize(160, 160)
+                        ;
+                        ?>
+                        <img src="<?= $imageHelper->getUrl() ?>"
+                             class="cs-promo-products-list__item-image| ampromo-item-image"
+                             alt="<?= $block->stripTags($product->getName(), null, true) ?>"/>
 
-                    <div class="cs-promo-products-list__item-options | product-options-wrapper" id="product-options-wrapper">
-                        <fieldset class="cs-promo-products-list__item-fieldset | fieldset" tabindex="0">
-                            <?php if ($optionsBlock = $block->getChildBlock($product->getTypeId() . '_prototype')): ?>
-                                <?php echo $optionsBlock->setProduct($product)->toHtml(); ?>
-                            <?php endif ?>
-                            <?php echo $block->getChildBlock('options_prototype')->setProduct($product)->toHtml(); ?>
-                        </fieldset>
-                    </div>
+                        <input type="hidden" value="<?= $product->getId() ?>" name="product_id" />
 
-                    <div class="cs-promo-products-list__button-wrapper | ampromo-item-buttons">
-                        <button class="cs-promo-products-list__button | action tocart primary" type="submit" title="<?php echo __('Add to cart')?>"><span class="cs-button__span"><?php echo __('Add to cart')?></span></button>
-                    </div>
-                </form>
+                        <div class="cs-promo-products-list__item-options | product-options-wrapper" id="product-options-wrapper">
+                            <fieldset class="cs-promo-products-list__item-fieldset | fieldset" tabindex="0">
+                                <?php if ($optionsBlock) : ?>
+                                    <?= $optionsBlock->setProduct($product)->toHtml(); ?>
+                                <?php endif ?>
+                                <?= $block->getOptionsHtml($product); ?>
+                            </fieldset>
+                        </div>
+                        <?php if ($isShowPrice) : ?>
+                            <div class="product-info-price">
+                                <div class="price-base_price price-box-<?=$product->getId()?>"
+                                     data-product-id="<?=$product->getId() ?>"
+                                     data-role="priceBox">
+                                    <span class="price-container price-base_price tax weee">
+                                        <span id="product-price-<?=$product->getId() ?>"
+                                              data-price-amount="<?=$block->getProductPrice($product)?>"
+                                              data-price-type="basePrice"
+                                              class="price-wrapper ">
+                                            <span class="price"></span>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="price-new_price price-box-<?=$product->getId()?>"
+                                     data-product-id="<?=$product->getId() ?>"
+                                     data-role="priceBox">
+                                    <span class="price-new_price tax weee">
+                                        <span id="product-price-<?=$product->getId() ?>"
+                                              data-price-amount="<?=$block->getProductPrice($product)?>"
+                                              data-price-type="newPrice"
+                                              class="price-wrapper ">
+                                            <span class="price"></span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($selectionMethod) : ?>
+                            <div class="ampromo-item-qty-input" data-role="ampromo-item-qty-input">
+                                <input class="ampromo-item-qty-select-input"
+                                       type="number"
+                                       name="ampromo_qty_select_<?=$product->getId()?>"
+                                       id="ampromo_qty_select_<?=$product->getId()?>"
+                                       min="0"
+                                       value="0"
+                                       data-rule="0"
+                                       data-rule-type="0"
+                                       disabled="disabled"
+                                       data-validate="{
+                                           required:true}"
+                                       title="QTY Select"
+                                       data-am-js="ampromo-qty-input"/>
+                                <?php if ($giftsCounter) : ?>
+                                    <span class="ampromo-item-qty-left">
+                                    <span>1</span><?= __(' left') ?>
+                                </span>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!$selectionMethod) : ?>
+                            <div class="ampromo-item-buttons" data-role="ampromo-item-buttons">
+                                <button class="action tocart primary"
+                                        type="submit"
+                                        title="<?= $block->getAddButtonName() ?>"><span><?= $block->getAddButtonName() ?></span>
+                                </button>
+                            </div>
+                        <?php endif; ?>
+                    </form>
+                    <?php if ($product->getTypeId() !== \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) : ?>
+                        <script>
+                            require([
+                                'jquery',
+                                'Amasty_Promo/js/price-updater'
+                            ], function($) {
+                                $('a[data-role="ampromo-popup-show"]').on('click', function () {
+                                    $('div.ampromo-items').ampromoPriceUpdater({
+                                        productId: <?= $block->escapeHtml($product->getId()) ?>,
+                                        priceConfig: <?= /* @escapeNotVerified */ $block->getJsonConfig($product) ?>
+                                    });
+                                })
+                            });
+                        </script>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach ?>
+        </div>
+        <?php if ($selectionMethod) : ?>
+            <div class="cs-promo-products-list__button-wrapper | ampromo-item-buttons" data-role="ampromo-item-buttons">
+                <button class="cs-promo-products-list__button | action tocart primary"
+                        type="button"
+                        data-am-js="ampromo-add-button"
+                        title="<?= $block->getAddButtonName() ?>"><span><?= $block->getAddButtonName() ?></span>
+                </button>
             </div>
-        <?php endforeach ?>
-</div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
