@@ -46,121 +46,96 @@ $namespace: 'cs-';
         max-height: 8rem;
     }
 
-    &-list {
-        max-width: 70vw;
+    .#{$namespace}promo-products {
+        &-list {
+            &__item {
+                border: 1px solid $colorAlto;
 
-        @include media('<tablet') {
-            width: 200px !important;
-            margin: 0.5rem 1rem !important;
-        }
-
-        @include media('<laptop') {
-            width: 250px !important;
-            margin: 2rem 1rem !important;
-        }
-
-        &__item {
-            border: 1px solid $colorAlto !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            min-width: 200px !important;
-
-            @include media('<tablet') {
-                width: auto !important;
-            }
-
-            @include media('>=tablet') {
-                min-width: 250px !important;
-            }
-
-            @include media('>=laptop') {
-                margin: 0 1rem !important;
-            }
-        }
-
-        &__item-name {
-            text-align: center;
-        }
-
-        &__item-image {
-            margin: 0.5rem auto !important;
-            max-height: 10rem;
-
-            &:first-of-type {
-                display: none !important;
-            }
-        }
-
-        &__item-options {
-            margin-bottom: 1rem !important;
-        }
-
-        &__item-fieldset {
-            .#{$namespace}input {
-                margin-bottom: 1rem !important;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-
-                &__label {
-                    padding: 0 0 0.5rem !important;
-                    width: auto !important;
-                    float: none !important;
-                    text-align: left !important;
+                &:hover {
+                    background: none;
                 }
+            }
 
-                &__control {
-                    width: 100% !important;
-                    float: none !important;
+            &__item-name {
+                text-align: center;
+            }
 
-                    button {
-                        border: 1px solid $colorAlto !important;
+            &__item-image {
+                margin: 0.5rem auto;
+                max-height: 10rem;
+            }
+
+            &__item-options {
+                margin-bottom: 1rem;
+            }
+
+            &__item-fieldset {
+                .#{$namespace}input {
+                    margin-bottom: 1rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    &__label {
+                        padding: 0 0 0.5rem;
+                        width: auto;
+                        float: none;
+                        text-align: left;
+                    }
+
+                    &__control {
+                        width: 100%;
+                        float: none;
+
+                        button {
+                            border: 1px solid $colorAlto;
+                        }
                     }
                 }
             }
-        }
 
-        &__button {
-            font-size: 1.4rem !important;
-            border-radius: 3px !important;
-            padding: 0.9rem 1.5rem !important;
-            color: $colorWhite;
-            fill: currentColor;
-            border-color: $colorCeruleanBlue !important;
-            background: $colorCeruleanBlue !important;
-            font-weight: 700 !important;
-            transition: background-color 0.15s linear, border-color 0.15s linear,
-                color 0.15s linear;
-            position: relative;
-            text-align: center;
-            display: inline-block;
-            min-height: 4rem;
-            box-sizing: border-box;
+            &__button {
+                font-size: 1.4rem;
+                border-radius: 3px;
+                padding: 0.9rem 1.5rem;
+                color: $colorWhite;
+                fill: currentColor;
+                border-color: $colorCeruleanBlue;
+                background: $colorCeruleanBlue;
+                font-weight: 700;
+                transition: background-color 0.15s linear,
+                    border-color 0.15s linear, color 0.15s linear;
+                position: relative;
+                text-align: center;
+                display: inline-block;
+                min-height: 4rem;
+                box-sizing: border-box;
 
-            @include media('>=phone-lg') {
-                padding: 0.9rem 3.5rem !important;
+                @include media('>=phone-lg') {
+                    padding: 0.9rem 3.5rem;
+                }
+
+                &:focus,
+                &:active,
+                &:hover {
+                    color: $colorWhite;
+                    border-color: $colorCeruleanBlueHover;
+                    background-color: $colorCeruleanBlueHover;
+                    box-shadow: none;
+                }
+
+                &:visited {
+                    color: $colorWhite;
+                }
+
+                &:focus {
+                    outline: none;
+                }
             }
 
-            &:focus,
-            &:active,
-            &:hover {
-                color: $colorWhite !important;
-                border-color: $colorCeruleanBlueHover !important;
-                background-color: $colorCeruleanBlueHover !important;
-                box-shadow: none;
+            &__form {
+                padding: 2rem;
             }
-
-            &:visited {
-                color: $colorWhite !important;
-            }
-
-            &:focus {
-                outline: none !important;
-            }
-        }
-
-        &__form {
-            padding: 2rem !important;
         }
     }
 
@@ -236,7 +211,6 @@ $namespace: 'cs-';
         margin: 0 !important;
         padding: 2rem !important;
         border: 0 !important;
-        max-height: 80vh;
     }
 
     &__nav {
@@ -248,10 +222,18 @@ $namespace: 'cs-';
 
         &--prev {
             @extend .#{$namespace}products-promo__nav--prev;
+
+            @include media('>=laptop') {
+                left: -5rem !important;
+            }
         }
 
         &--next {
             @extend .#{$namespace}products-promo__nav--next;
+
+            @include media('>=laptop') {
+                right: -5rem !important;
+            }
         }
 
         &-icon {

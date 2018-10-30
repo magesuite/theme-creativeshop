@@ -1,8 +1,9 @@
 <?php
 /** @var \Amasty\Promo\Block\Popup $block */
+$countersMode = $block->getCountersMode();
 ?>
 
-<?php echo $block->getChildHtml('html_calendar') ?>
+<?= $block->getChildHtml('html_calendar') ?>
 <div class="cs-overlay | ampromo-overlay" data-role="ampromo-overlay">
     <div class="cs-promo-products">
         <div class="cs-promo-products__container | ampromo-items">
@@ -10,10 +11,17 @@
                 <svg class="cs-promo-products__close-icon">
                     <use xlink:href="#close"></use>
                 </svg>
-            </div>
-
-            <div data-role="cs-promo-products__items | ampromo-items-container">
-                <?php echo $block->getChildHtml('items') ?>
+            </div>            <?php if ($countersMode) : ?>
+                <h2 class="cs-promo-products__headline | ampromo-popup-header">
+                    <?= $block->getPopupName() . ' ('?>
+                    <span data-role="ampromo-popup-common-qty"></span>
+                    <?= __(' left)') ?>
+                </h2>
+            <?php else : ?>
+                <h2 class="cs-promo-products__headline"><?= $block->getPopupName()?></span></h2>
+            <?php endif; ?>
+            <div class="cs-promo-products__items" data-role="ampromo-items-container">
+                <?= $block->getChildHtml('items') ?>
             </div>
         </div>
     </div>
