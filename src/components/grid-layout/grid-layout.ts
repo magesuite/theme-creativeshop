@@ -148,10 +148,10 @@ export default class GridLayout {
      * Gets current breakpoint name (key)
      * @return {string} key with breakpoint's name
      */
-    protected _getCurrentBreakpointName(): string {
+    protected _getCurrentBreakpointName(): any {
         return $.map(
             breakpoint,
-            (val: number, key: string): any => {
+            (val: number, key: string): string => {
                 if (breakpoint.current === val && key !== 'current') {
                     return key;
                 }
@@ -246,11 +246,11 @@ export default class GridLayout {
             sizeY = 1;
         }
 
-        if (teaserData.gridPosition.x === 'right') {
+        if (teaserData.gridPosition.x === 'right' && teaserData.gridPosition.y > this.currentColsInRow) {
             itemIndex = itemIndex + (this.currentColsInRow - sizeX);
         } else if (teaserData.gridPosition.x === 'center' && sizeY < 2) {
             itemIndex = Math.floor(
-                itemIndex + (this.currentColsInRow / 2 - sizeX / 2)
+                itemIndex + ((this.currentColsInRow / 2) - (sizeX / 2))
             );
         }
 
@@ -282,6 +282,7 @@ export default class GridLayout {
 
         if (
             (this.currentRowsCount > 1 && this.currentRowsCount < sizeY) ||
+            (this.currentColsInRow < 2 && sizeX > 1) || 
             this.$bricks.length < idx + sizeX * sizeY
         ) {
             return false;
@@ -385,12 +386,12 @@ export default class GridLayout {
         if (teaserData.gridPosition.x === 'right') {
             xPos = this.currentColsInRow - teaserData.size.x + 1;
         } else if (teaserData.gridPosition.x === 'center') {
-            xPos = Math.floor(this.currentColsInRow / 2);
+            xPos = (this.currentColsInRow % 2) === 1 ? Math.ceil(this.currentColsInRow / 2) : Math.floor(this.currentColsInRow / 2);
         }
 
         return {
             x: xPos,
-            y: yPos,
+            y: parseInt(yPos),
         };
     }
 
@@ -415,7 +416,7 @@ export default class GridLayout {
                 if (
                     (windowWidth < breakpoint.tablet &&
                         !this._getIsVisibleOnMobiles(
-                            this.teasersCfg[i].mobile
+                            Boolean(this.teasersCfg[i].mobile)
                         )) ||
                     !this._getDoesTeaserFitIntoGrid(this.teasersCfg[i], idx)
                 ) {
@@ -440,6 +441,20 @@ export default class GridLayout {
                         }
                     }
 
+                    // check if teasers don't cover each other, if yes, put the last covering to the next free row
+                    for (let n: number = 0; n < this.teasersCfg.length; n++) {
+                        if (i > n) {
+                            let teaserPos: any = this._getTeaserPositionInGrid(
+                                this.teasersCfg[n]
+                            );
+
+                            if (teaserPos.y === pos.y && teaserPos.x === pos.x) {
+                                pos.y = pos.y + parseInt(this.teasersCfg[n].size.y);
+                                teaser.style.gridRowStart = pos.y;
+                            }
+                        }
+                    }
+
                     $teaser
                         .removeClass(`${this.settings.brickClass}--hidden`)
                         .addClass(`${this.settings.brickClass}--teaser-ready`);
@@ -448,7 +463,7 @@ export default class GridLayout {
                 this.teasers.push(teaser);
             } else {
                 console.warn(
-                    `cs-grid-layout: Teaser was declared but not found in DOM (data-teaser-id: ${
+                    `cs-grid-layout: Teaser was declared but not found in DOM (Teaser ID: ${
                         this.teasersCfg[i].id
                     })`
                 );
@@ -533,19 +548,13 @@ export default class GridLayout {
         if (
             window.matchMedia(`(max-width: ${breakpoint.tablet - 1}px)`).matches
         ) {
-            this.isCssGrid
-                ? this.$grid.css(this._getProductsGridCSS('mobile'))
-                : this._showProductsGrid('mobile');
+            this._showProductsGrid('mobile');
         } else if (
             window.matchMedia(`(min-width: ${breakpoint.laptop}px)`).matches
         ) {
-            this.isCssGrid
-                ? this.$grid.css(this._getProductsGridCSS('desktop'))
-                : this._showProductsGrid('desktop');
+            this._showProductsGrid('desktop');
         } else {
-            this.isCssGrid
-                ? this.$grid.css(this._getProductsGridCSS('tablet'))
-                : this._showProductsGrid('tablet');
+            this._showProductsGrid('tablet');
         }
 
         this.$productsGrid.show();
@@ -560,8 +569,8 @@ export default class GridLayout {
         let itemsToShow: number =
             this.currentColsInRow * this.productsGridRowsLimits[breakpoint];
         const teasers: any = this._getTeaserItems();
-        const teaserSize: any = {
-            x: parseInt(this.teasersCfg[0].size.x, 10),
+        let teaserSize: any = {
+            x: this.currentRowsCount < 2 ? 1 : parseInt(this.teasersCfg[0].size.x, 10),
             y: parseInt(this.teasersCfg[0].size.y, 10),
         };
 
@@ -573,9 +582,11 @@ export default class GridLayout {
         ) {
             itemsToShow -=
                 teasers.x2.length + (teasers.x4.length * 4 - teasers.x4.length);
+        } else {
+            itemsToShow += teasers.x2.length + teasers.x4.length;
         }
 
-        // if teaser height is higher than rows to show - decrease by teaser size minus X-bricks-taking size
+        // if teaser height is higher than rows to show, decrease by teaser size minus X-bricks-taking size
         if (
             this.teasers.length &&
             this.productsGridRowsLimits[breakpoint] < teaserSize.y

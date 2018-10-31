@@ -95,6 +95,7 @@
             {% endif %}
 
             {% set content %}
+                <div class="cs-grid-product cs-grid-product--in-carousel">
                 {% include locate( 'grid-product/grid-product.twig' ) with {
                     namespace: 'cs-',
                     lazyload: true,
@@ -121,10 +122,10 @@
                         }
                     }
                 } %}
+                </div>
             {% endset %}
 
             {% set items = items|merge( [ {
-                mix: 'cs-grid-product cs-grid-product--in-carousel',
                 content: content
             } ] ) %}
         {% endfor %}

@@ -9,6 +9,29 @@ $ns: 'cs-';
     $sliderWidth: 77%;
     $navArrowSize: 5.5rem;
 
+    &__wrapper {
+        overflow: visible !important;
+    }
+
+    &__list {
+        display: flex;
+    }
+
+    &__slide {
+        backface-visibility: hidden;
+        transition: transform 0.15s linear, opacity 0.25s linear 0.1s;
+
+        &:not(#{$root}__slide--in-viewport) {
+            transform: scale(0) !important;
+            overflow: hidden !important;
+        }
+
+        &--in-viewport {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
     &__nav {
         background: $color_white;
         top: 50%;

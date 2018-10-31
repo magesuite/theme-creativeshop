@@ -2,28 +2,21 @@
 // @codingStandardsIgnoreFile
 
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
-
-$cHelper = $this->helper('MageSuite\Frontend\Helper\Checkout');
-$shouldAutoopen = $cHelper->getMinicartFlag();
 ?>
 
-<div
-    class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper"
-    data-block="minicart"
-    data-autoopen="<?= $shouldAutoopen; ?>"
->
+<div class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper cs-addtocart__minicart" data-block="minicart">
     <a
-        class="cs-header-user-area__link cs-hide-tablet-desktop"
+        class="cs-header-user-area__link cs-hide-tablet-desktop cs-addtocart__minicart-link"
         href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
         data-bind="scope: 'minicart_content'"
     >
         <span class="counter qty empty">
             <span class="cs-header-user-area__icon-wrapper">
                 <span
-                    class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short"
+                    class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short cs-addtocart__minicart-qty-badge"
                     data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }"
                 >
-                    <span class="cs-badge__span"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+                    <span class="cs-badge__span cs-addtocart__minicart-qty-text"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
                 </span>
                 <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
                     <use xlink:href="#cart"></use>
@@ -34,7 +27,7 @@ $shouldAutoopen = $cHelper->getMinicartFlag();
     </a>
 
     <a
-        class="cs-header-user-area__link cs-hide-mobile | showcart"
+        class="cs-header-user-area__link cs-hide-mobile | showcart cs-addtocart__minicart-link"
         href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
         data-bind="scope: 'minicart_content'"
     >
@@ -43,10 +36,10 @@ $shouldAutoopen = $cHelper->getMinicartFlag();
         <span class="cs-header-user-area__icon-wrapper">
 
             <span
-                class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short"
+                class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short cs-addtocart__minicart-qty-badge"
                 data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }"
             >
-                <span class="cs-badge__span"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+                <span class="cs-badge__span cs-addtocart__minicart-qty-text"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
             </span>
 
             <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">

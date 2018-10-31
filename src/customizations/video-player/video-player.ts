@@ -1,5 +1,4 @@
 import VideoPlayer from 'components/video-player/video-player';
-import modal from 'Magento_Ui/js/modal/modal';
 import * as $ from 'jquery';
 
 new VideoPlayer({
@@ -36,7 +35,9 @@ new VideoPlayer({
                 },
             };
 
-            videoPlayer._ytModal = modal(modalOptions, $('#yt-modal'));
+            requirejs(['Magento_Ui/js/modal/modal'], modal => {
+                videoPlayer._ytModal = modal(modalOptions, $('#yt-modal'));
+            });
         },
         /**
          * Opens Magento's modal

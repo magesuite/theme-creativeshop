@@ -84,15 +84,14 @@ $filtersLayout = $this->getFiltersLayout();
                         $productImageUrl2x = $block->getImage($product, $image2x)->getImageUrl();
                         $isLazyloaded = $iterator > 9;
                     ?>
-                    <?= $this
-                        ->getLayout()
-                        ->createBlock(
-                            '\MageSuite\Frontend\Block\Product\View\Tile', 'product-'.$iterator,
-                            ['data' => get_defined_vars()]
-                        )
-                        ->setCacheKeyElements($viewMode, $showHeroProduct, $productImageUrl, $isLazyloaded)
-                        ->toHtml()
-                    ?>
+                    <li class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__brick">
+                        <?= $this->getLayout()
+                            ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
+                            ->setIterator($iterator)
+                            ->setSection('category')
+                            ->render($product);
+                        ?>
+                    </li>
 
                 <?php endforeach; ?>
 
@@ -150,4 +149,16 @@ $filtersLayout = $this->getFiltersLayout();
     </div>
 
     <?php echo $block->getToolbarHtml() ?>
+
+    <?php if (!$block->isRedirectToCartEnabled() && $block->getVar('ajax_addtocart/tiles', 'Magento_Catalog')): ?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?= /* @NoEscape */ $product->getSku() ?>"
+                }
+            }
+        }
+        </script>
+    <?php endif; ?>
 <?php endif; ?>

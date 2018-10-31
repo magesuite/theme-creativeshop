@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-expression no-unused-new ordered-imports */
 
-import ItemCloner from 'components/item-cloner/item-cloner';
+/*import ItemCloner from 'components/item-cloner/item-cloner';
 import * as $ from 'jquery';
 
 new ItemCloner($('.cs-grid-product:not(.cs-grid-product--static)'), {
@@ -8,4 +8,4 @@ new ItemCloner($('.cs-grid-product:not(.cs-grid-product--static)'), {
     touch: {
         disableAnimations: false,
     },
-});
+});*/

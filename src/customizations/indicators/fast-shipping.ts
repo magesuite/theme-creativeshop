@@ -1,5 +1,4 @@
 import FastShipping from 'components/indicators/fast-shipping';
-import storage from 'Magento_Ui/js/lib/core/storage/local';
 import * as $ from 'jquery';
 
 /**
@@ -15,18 +14,32 @@ class FastShippingCached extends FastShipping {
      * Checks if update from server is required or cached version should be loaded
      */
     protected _isUpdateRequired(): boolean {
-        const storageData: any = storage.get('fastShipping');
         const now: number = Math.floor(Date.now() / 1000);
 
-        if (
-            typeof storageData === 'undefined' || // nothing has been saved yet. sotrage is empty
-            storageData.lastSave + cachingTime * 60 <= now || // storage time set in options expired
-            (storageData.day === 'today' && storageData.time <= now) // time was 'today' but it has ended
-        ) {
-            return true;
-        }
+        this._getStorageData().then(storageData => {
+            if (
+                typeof storageData === 'undefined' || // nothing has been saved yet. sotrage is empty
+                storageData.lastSave + cachingTime * 60 <= now || // storage time set in options expired
+                (storageData.day === 'today' && storageData.time <= now) // time was 'today' but it has ended
+            ) {
+                return true;
+            }
 
-        return false;
+            return false;
+        });
+        
+        return true;
+    }
+
+    /**
+     * Fetches local storage data about fastShipping
+     */
+    protected _getStorageData(): any {
+        const deferred: JQueryDeferred<any> = jQuery.Deferred();
+        requirejs(['Magento_Ui/js/lib/core/storage/local'], storage => {
+            deferred.resolve(storage.get('fastShipping'));
+        });
+        return deferred;
     }
 
     /**
@@ -34,15 +47,20 @@ class FastShippingCached extends FastShipping {
      * ...template update based on data it has in cache
      */
     protected _updateFromCache(): void {
-        this.updateTemplate(storage.get('fastShipping'));
+        this._getStorageData().then(storage => {
+            this.updateTemplate(storage);
+        });
     }
 
     /**
      * Saves data from server to local cache using magento's storage
+     * @param {any} data - information object about fastShipping status
      */
     protected _saveToCache(data: any): void {
-        data.lastSave = Math.floor(Date.now() / 1000);
-        storage.set('fastShipping', data);
+        requirejs(['Magento_Ui/js/lib/core/storage/local'], storage => {
+            data.lastSave = Math.floor(Date.now() / 1000);
+            storage.set('fastShipping', data);
+        });
     }
 }
 
