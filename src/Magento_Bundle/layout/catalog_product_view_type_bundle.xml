@@ -2,12 +2,67 @@
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <move element="bundle.options.container" destination="content" after="product.media.container"  />
+        <move element="bundle.options.container" destination="content" after="product.media.container" />
 
         <referenceContainer name="bundle.product.options.wrapper" htmlClass="cs-bundle-box__customization" />
         <referenceContainer name="bundle.options.container" htmlClass="cs-bundle-box" />
         <referenceBlock name="product.info.addto" display="false" />
 
-        <referenceBlock name="bundle.back.button" remove="true"  />
+        <referenceBlock name="bundle.back.button" remove="true" />
+
+        <referenceBlock name="product.info.addtocart.bundle">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="product.info.addtocart.bundle.button"
+                   template="Magento_Catalog::addtocart/button.phtml">
+                <arguments>
+                    <argument xsi:type="string" name="button_class">cs-addtocart__button</argument>
+                    <argument xsi:type="string" name="button_label_class">cs-addtocart__button-label</argument>
+                    <argument xsi:type="string" name="addtocart_label" translate="true">Add to Cart</argument>
+                    <argument xsi:type="string" name="addtocart_success_overlay_class">cs-addtocart__feedback-bg</argument>
+                    <argument xsi:type="string" name="addtocart_success_label_class">cs-addtocart__success-label</argument>
+                    <argument xsi:type="string" name="addtocart_success_label" translate="true">Thank you!</argument>
+                    <argument xsi:type="string" name="addtocart_fail_label_class">cs-addtocart__fail-label</argument>
+                    <argument xsi:type="string" name="addtocart_fail_label" translate="true">Something went wrong</argument>
+                </arguments>
+
+                <block class="Magento\Framework\View\Element\Template"
+                   name="product.info.addtocart.bundle.loading_indicator"
+                   template="Magento_Catalog::addtocart/loading-indicator.phtml"
+                   as="atc.loading.indicator" />
+
+                <block class="MageSuite\ThemeHelpers\Block\Icon" 
+                       name="product.info.addtocart.bundle.icon"
+                       as="atc.button.icon">
+                    <arguments>
+                        <argument name="icon_url" xsi:type="string">images/icons/cart.svg</argument>
+                        <argument name="css_class" xsi:type="string">cs-addtocart__button-icon</argument>
+                        <argument name="inlined" xsi:type="boolean">true</argument>
+                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                    </arguments>
+                </block>
+
+                <block class="MageSuite\ThemeHelpers\Block\Icon" 
+                       name="product.info.addtocart.bundle.success_icon"
+                       as="atc.success.icon">
+                    <arguments>
+                        <argument name="icon_url" xsi:type="string">images/icons/button-check.svg</argument>
+                        <argument name="css_class" xsi:type="string">cs-addtocart__success-icon</argument>
+                        <argument name="inlined" xsi:type="boolean">true</argument>
+                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                    </arguments>
+                </block>
+
+                <block class="MageSuite\ThemeHelpers\Block\Icon" 
+                       name="product.info.addtocart.bundle.fail_icon"
+                       as="atc.fail.icon">
+                    <arguments>
+                        <argument name="icon_url" xsi:type="string">images/icons/button-error.svg</argument>
+                        <argument name="css_class" xsi:type="string">cs-addtocart__fail-icon</argument>
+                        <argument name="inlined" xsi:type="boolean">true</argument>
+                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceBlock>
     </body>
 </page>

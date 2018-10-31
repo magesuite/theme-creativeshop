@@ -2,6 +2,8 @@ var config = {
     paths: {
         bundle: 'js/bundle',
         Swiper: 'js/vendor/swiper',
+        dropdown: 'js/vendor/bootstrap-dropdown',
+        selectpicker: 'js/vendor/bootstrap-select',
         vendors: 'vendors',
         Stickyfill: 'js/vendor/stickyfill',
         isMobile: 'js/vendor/ismobile',
@@ -20,6 +22,9 @@ var config = {
             'mage/collapsible': {
                 'js/collapsible-ext': true,
             },
+            'Magento_Catalog/js/catalog-add-to-cart': {
+                'Magento_Catalog/js/catalog-add-to-cart-ext': true,
+            },
             'Magento_Ui/js/view/messages': {
                 'Magento_Ui/js/view/messages-ext': true,
             },
@@ -28,9 +33,6 @@ var config = {
             },
             'Magento_Checkout/js/view/summary/cart-items': {
                 'Magento_Checkout/js/view/summary/cart-items-ext': true,
-            },
-            'Magento_Checkout/js/view/minicart': {
-                'Magento_Checkout/js/view/minicart-ext': true,
             },
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,

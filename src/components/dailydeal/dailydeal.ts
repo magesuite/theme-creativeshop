@@ -21,6 +21,46 @@ interface DailydealOptions {
      */
     countdownSelector?: string,
     /**
+     * Default price DOM selector
+     * @type {string}
+     */
+    defaultPriceSelector?: string,
+    /**
+     * Dailydeal price DOM selector
+     * @type {string}
+     */
+    dailyDealPriceSelector?: string,
+    /**
+     * Tile price container DOM selector
+     * @type {string}
+     */
+    tilePriceContainerSelector?: string,
+    /**
+     * PDP price container DOM selector
+     * @type {string}
+     */
+    pdpPriceContainerSelector?: string,
+    /**
+     * PDP sale block DOM selector
+     * @type {string}
+     */
+    pdpSaleBlockSelector?: string,
+    /**
+     * Discount badge container DOM selector
+     * @type {string}
+     */
+    badgeContainerSelector?: string,
+    /**
+     * Default discount badge DOM selector
+     * @type {string}
+     */
+    defaultDiscountBadgeSelector?: string,
+    /**
+     * Dailydeal discount badge DOM selector
+     * @type {string}
+     */
+    dailyDealDiscountBadgeSelector?: string,
+    /**
      * Precision of the clock to display remaining time. Should "5 minutes" be shown as 5 or 05?
      * Possible, supported values are: 1, 2
      * @type number
@@ -34,6 +74,11 @@ interface DailydealOptions {
      * @default false
      */
     updateLabels?: boolean,
+    /**
+     * Callback function that (if defined) is fired after DD clock is rendered
+     * @type Function
+     */
+    afterRenderCallback?: Function,
     /**
      * By default when DD has expired during page reading we do nothing - countdown stops on 00:00:00:00.
      * You can pass handler here and do whatever you want with expired DD
@@ -68,11 +113,20 @@ export default class Dailydeal {
     protected _template: string;
     protected _$countdown: JQuery;
     protected _countdownElements: any;
+    protected _$tilePriceContainer: JQuery;
+    protected _$pdpPriceContainer: JQuery;
+    protected _$badgeContainer: JQuery;
+    protected _$tileDefaultPrice: JQuery;
+    protected _$tileDailyDealPrice: JQuery;
+    protected _$pdpDefaultPrice: JQuery;
+    protected _$pdpDailyDealPrice: JQuery;
+    protected _$defaultDiscountBadge: JQuery;
+    protected _$dailyDealDiscountBadge: JQuery;
     protected _labels: any;
     protected _clock: any;
     protected _options: DailydealOptions = {
         namespace: 'cs-',
-        get countdownTemplate() { 
+        get countdownTemplate() {
             return `<span class="${this.namespace}dailydeal__countdown-element ${this.namespace}dailydeal__countdown-element--special">
                     <svg class="${this.namespace}dailydeal__countdown-icon"><use xlink:href="#clock"></use></svg>
                 </span>
@@ -95,6 +149,30 @@ export default class Dailydeal {
         },
         get countdownSelector() {
             return `.${this.namespace}dailydeal__countdown`;
+        },
+        get tilePriceContainerSelector() {
+            return `.${this.namespace}grid-product__main`;
+        },
+        get pdpPriceContainerSelector() {
+            return `.${this.namespace}price--pdp`;
+        },
+        get pdpSaleBlockSelector() {
+            return `.${this.namespace}product-sale-block`;
+        },
+        get defaultPriceSelector() {
+            return `.price-final_price_without_daily_deal`;
+        },
+        get dailyDealPriceSelector() {
+            return `.price-final_price`;
+        },
+        get badgeContainerSelector() {
+            return `.${this.namespace}grid-product__badges`;
+        },
+        get defaultDiscountBadgeSelector() {
+            return `.${this.namespace}badge--discount_old`;
+        },
+        get dailyDealDiscountBadgeSelector() {
+            return `.${this.namespace}badge--discount:not(.${this.namespace}badge--discount_old)`;
         },
         timeDisplayPrecision: 1,
         updateLabels: false,
@@ -119,10 +197,30 @@ export default class Dailydeal {
             return;
         }
 
+        // Containers (Prices & Badges)
+        this._$pdpPriceContainer = this._$element.closest(this._options.pdpSaleBlockSelector).find(this._options.pdpPriceContainerSelector);
+        this._$tilePriceContainer = this._$element.closest(this._options.tilePriceContainerSelector);
+        this._$badgeContainer = this._$element.prev(this._options.badgeContainerSelector);
+        // Prices (@Tiles & PDP)
+        this._$tileDefaultPrice = this._$tilePriceContainer.find(this._options.defaultPriceSelector).first();
+        this._$tileDailyDealPrice = this._$tilePriceContainer.find(this._options.dailyDealPriceSelector).first();
+        this._$pdpDefaultPrice = this._$pdpPriceContainer.find(this._options.defaultPriceSelector).first();
+        this._$pdpDailyDealPrice = this._$pdpPriceContainer.find(this._options.dailyDealPriceSelector).first();
+        // Badges (@Tiles)
+        this._$defaultDiscountBadge = this._$badgeContainer.find(this._options.defaultDiscountBadgeSelector);
+        this._$dailyDealDiscountBadge = this._$badgeContainer.find(this._options.dailyDealDiscountBadgeSelector);
+
         this._endTime = this._$countdown.data('dailydeal-end');
 
         // Don't throw errors if deal has no deadline date provided or has expired
         if ( !this._endTime || this._endTime - this._getCurrentTime() <= 0 ) {
+            // If cron hasn't refreshed it yet and page has been refreshed,
+            // dailydeal should be hidden.
+            this._hideDailydeal(true);
+            
+            if (this._options.expiredHandler && typeof(this._options.expiredHandler) === 'function') {
+                this._options.expiredHandler(this);
+            }
             return;
         }
 
@@ -132,7 +230,125 @@ export default class Dailydeal {
         this._renderClock();
         this._countdownElements = this._getCountdownElements();
         this._initializeCountdown();
+        this._showDailydeal(); // Dailydeal is hidden by CSS, we need to make it visible.
     }
+
+    /**
+     * Show dailydeal countdown and display proper price element
+     */
+     protected _showDailydeal(): void {
+         let $dailydealDiscountBadge: JQuery = null;
+         let $defaultDiscountBadge: JQuery = null;
+         let $dailydealPrice: JQuery = null;
+         let $defaultPrice: JQuery = null;
+
+         if(this._isTile()){
+             $dailydealPrice = this._$tileDailyDealPrice;
+             $defaultPrice = this._$tileDefaultPrice;
+             $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
+             $defaultDiscountBadge = this._$defaultDiscountBadge;
+         } else {
+             $dailydealPrice = this._$pdpDailyDealPrice;
+             $defaultPrice = this._$pdpDefaultPrice;
+         }
+
+         this._updateContainers();
+         this._$element.show();
+
+         // Toggle price elment's.
+         $dailydealPrice.addClass('price-box--visible');
+         $defaultPrice.hide();
+
+         // Check if discount badges exists.
+         if($dailydealDiscountBadge && $defaultDiscountBadge) {
+             // Toggle discount badges.
+             $dailydealDiscountBadge.addClass(`${this._options.namespace}-badge--visible`);
+             $defaultDiscountBadge.hide();
+         }
+     }
+
+     /**
+      * Hide dailydeal countdown and display proper price elment
+      * @param showFinalPrice Overrides hiding Dailydeal price block (final-price)
+      *                       in case when Dailydeal has expired but it's still
+      *                       rendered on PDP - product has only single price block
+      *                       (final-price).
+      */
+     protected _hideDailydeal(showFinalPrice = false): void {
+         let $dailydealDiscountBadge: JQuery = null;
+         let $defaultDiscountBadge: JQuery = null;
+         let $dailydealPrice: JQuery = null;
+         let $defaultPrice: JQuery = null;
+
+         if(this._isTile()){
+             $dailydealPrice = this._$tileDailyDealPrice;
+             $defaultPrice = this._$tileDefaultPrice;
+             $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
+             $defaultDiscountBadge = this._$defaultDiscountBadge;
+         } else {
+             $dailydealPrice = this._$pdpDailyDealPrice;
+             $defaultPrice = this._$pdpDefaultPrice;
+         }
+
+         this._updateContainers();
+         this._$element.hide();
+
+         // Toggle price elment's.
+         $dailydealPrice.removeClass('price-box--visible').hide();
+         $defaultPrice.addClass('price-box--visible');
+
+         if(!this._isTile() && showFinalPrice) {
+             // Dailydeal has expired but it's still rendered on PDP with single
+             // price - rare case.
+             $dailydealPrice.addClass('price-box--visible');
+         }
+
+         // Check if discount badges exists.
+         if($dailydealDiscountBadge && $defaultDiscountBadge) {
+             // Toggle discount badges.
+             $dailydealDiscountBadge.removeClass(`${this._options.namespace}-badge--visible`).hide();
+             $defaultDiscountBadge.addClass(`${this._options.namespace}-badge--visible`);
+         }
+     }
+
+     /**
+      * Update price & badge containers with proper classes
+      */
+     protected _updateContainers(): void {
+         this._updatePdpPriceContainer();
+         this._updateBadgeContainer();
+     }
+
+     /**
+      * Update PDP price container with class
+      */
+     protected _updatePdpPriceContainer(): void {
+         const $pdpPriceContainer: JQuery = this._$pdpPriceContainer;
+
+         if(!this._isTile() && !$pdpPriceContainer.hasClass(`${this._options.namespace}price--pdp_dailydeal-countdown`)){
+             $pdpPriceContainer.addClass(`${this._options.namespace}price--pdp_dailydeal-countdown`);
+         }
+     }
+
+     /**
+      * Update PDP badge container with class
+      */
+     protected _updateBadgeContainer(): void {
+         const $badgeContainer: JQuery = this._$badgeContainer;
+
+         if(this._isTile() && $badgeContainer.find(`.${this._options.namespace}badge--discount`).length){
+             if(!$badgeContainer.hasClass(`${this._options.namespace}grid-product__badges--dailydeal-countdown`)){
+                 $badgeContainer.addClass(`${this._options.namespace}grid-product__badges--dailydeal-countdown`);
+             }
+         }
+     }
+
+    /**
+     * Check if dailydeal has been initialized for tile
+     */
+     protected _isTile(): boolean {
+         return this._$element.hasClass(`${this._options.namespace}dailydeal--tile`);
+     }
 
     /**
      * Update template if dailydeal expired
@@ -165,7 +381,7 @@ export default class Dailydeal {
     }
 
     /**
-     * Returns formatted time element. 
+     * Returns formatted time element.
      * If time remaining for days is 8 and options.timeDisplayPrecision is 2 it will return "08",
      * otherwise it will simply return "8"
      * @param n {number} number to format
@@ -180,7 +396,7 @@ export default class Dailydeal {
     }
 
     /**
-     * Returns label for corresponding position in countdown 
+     * Returns label for corresponding position in countdown
      * based on this._labels object
      * @param n {number} number (must know if n > 1 to get correct label)
      * @return label {string} label from this._labels object
@@ -254,9 +470,11 @@ export default class Dailydeal {
 
         if(timeRemaining.total < 0) {
             clearInterval(this._clock);
-            
+
+            this._hideDailydeal(); // Hide dailydeal when countdown ends
+
             if ( this._options.expiredHandler && typeof( this._options.expiredHandler ) === 'function' ) {
-                this._options.expiredHandler();
+                this._options.expiredHandler(this);
             }
 
             return;
@@ -285,8 +503,12 @@ export default class Dailydeal {
      */
     protected _initializeCountdown(): void {
         const component: any = this;
-        this._clock = setInterval((): void => { 
-            component._updateClock(); 
+        this._clock = setInterval((): void => {
+            component._updateClock();
         }, 1000);
+
+        if (this._options.afterRenderCallback && typeof(this._options.afterRenderCallback) === 'function') {
+            this._options.afterRenderCallback(this);
+        }
     }
 }

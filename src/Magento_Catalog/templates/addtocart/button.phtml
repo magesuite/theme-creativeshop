@@ -1,0 +1,42 @@
+<?php 
+    $buttonLabel = $block->getAddtocartLabel();
+?>
+
+<button type="submit" title="<?= $buttonLabel ?>" 
+        class="tocart primary <?= $block->getButtonClass() ?>"
+        <?= $block->getButtonParams() ?>
+>
+    <?= $block->getChildHtml('atc.button.icon'); ?>
+    <?php if(!empty($buttonLabel)): ?>
+        <strong class="<?= $block->getButtonLabelClass() ?>"><?= $buttonLabel ?></strong>
+    <?php endif; ?>
+
+    <?php if($block->getVar('ajax_addtocart/tiles', 'Magento_Catalog')): ?>
+        <?php // If you use ajax method for adding products to cart, don't use <span> inside button because Magento will replase its contents with "Adding..." and "Added" ?>
+        <?php
+            $processingLabel = $block->getAddtocartProcessingLabel();
+            $successLabel = $block->getAddtocartSuccessLabel();
+            $failLabel = $block->getAddtocartFailLabel();
+        ?>
+
+        <?php // Processing ?>
+        <?= $block->getChildHtml('atc.loading.indicator'); ?>
+        <?php if(!empty($processingLabel)): ?>
+            <strong class="<?= $block->getAddtocartProcessingLabelClass() ?>"><?= $processingLabel ?></strong>
+        <?php endif; ?>
+
+        <?php // Done ?>
+        <strong class="<?= $block->getAddtocartSuccessOverlayClass() ?>"></strong>
+        <?= $block->getChildHtml('atc.success.icon'); ?>
+        <?php if(!empty($successLabel)): ?>
+            <strong class="<?= $block->getAddtocartSuccessLabelClass() ?>"><?= $successLabel ?></strong>
+        <?php endif; ?>
+
+        <?= $block->getChildHtml('atc.fail.icon'); ?>
+        <?php if(!empty($failLabel)): ?>
+            <strong class="<?= $block->getAddtocartFailLabelClass() ?>"><?= $failLabel ?></strong>
+        <?php endif; ?>
+
+        <span class="cs-addtocart__magento-feedback"></span>
+    <?php endif; ?>
+</button>

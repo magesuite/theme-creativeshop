@@ -7,9 +7,6 @@ if ($('.cs-products-promo').length) {
     new ProductsPromo($('.cs-products-promo'), {
         slideMinWidth: 240,
         simulateTouch: false,
-        onSlideChangeStart(swiper: any): void {
-            $(document).trigger('destroyItemClones');
-        },
         onPaginationRendered(swiper: any): void {
             swiper.bullets.length <= 1
                 ? $(swiper.paginationContainer).hide()

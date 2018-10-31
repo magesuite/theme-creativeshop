@@ -50,6 +50,7 @@ collapsibleText();
 
 import { QtyIncrementCollection } from 'customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
+import 'customizations/addtocart/addtocart';
 import 'customizations/aftersearch-nav/aftersearch-nav';
 import 'customizations/hero/hero';
 import 'customizations/image-teaser/image-teaser';

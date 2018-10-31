@@ -20,18 +20,20 @@
             content: '';
             height: 100%;
             top: 0;
-            transition: box-shadow 0.15s ease-in-out;
+            opacity: 0;
+            transition: opacity 0.15s ease-in-out;
+            box-shadow: 1px 3px 3rem 0 rgba(30, 48, 67, 0.34);
 
             #{$root}.no-transition & {
                 transition: none;
             }
         }
 
-        &--show-details {
-            z-index: 3;
+        &:hover {
+            z-index: 7;
 
             &:before {
-                box-shadow: 1px 3px 3rem 0 rgba(30, 48, 67, 0.34);
+                opacity: 1;
             }
         }
     }
@@ -60,7 +62,7 @@
                 background-color: #fff;
                 content: '';
 
-                #{$root}--show-details & {
+                #{$root}:hover & {
                     height: 3rem;
                 }
             }
@@ -83,41 +85,47 @@
         z-index: -2;
         opacity: 0;
         transform: translateY(-100%);
-        transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out,
-            opacity 0.15s ease-in-out;
+        transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;
+        box-shadow: 1px 3px 3rem 0 rgba(30, 48, 67, 0.34);
 
         #{$root}.no-transition & {
             transition: none;
         }
 
-        #{$root}--show-details & {
-            opacity: 1;
-            box-shadow: 1px 3px 3rem 0 rgba(30, 48, 67, 0.34);
-            transform: translateY(0);
-            z-index: -1;
+        @include media('>=laptop') {
+            #{$root}:hover & {
+                opacity: 1;
+                transform: translateY(0);
+                z-index: -1;
 
-            &:after {
-                height: 3rem;
+                &:after {
+                    height: 3rem;
+                }
             }
         }
 
-        &__left,
-        &__right {
+        &-left,
+        &-right {
             width: 50%;
             box-sizing: border-box;
             min-height: 1px;
         }
 
-        &__left {
+        &-left {
             padding-left: 0;
             padding-right: 0.5rem;
             text-align: left;
         }
 
-        &__right {
+        &-right {
             padding-right: 0;
             padding-left: 0.5rem;
             text-align: right;
+        }
+
+        &-top,
+        &-bottom {
+            width: 100%;
         }
     }
 
@@ -187,6 +195,10 @@
     &__badge {
         display: flex;
         align-items: center;
+
+        &:empty {
+            display: none;
+        }
     }
 
     $swatchesHeight: 1.375rem;
@@ -217,10 +229,12 @@
     &__name-link {
         text-overflow: -o-ellipsis-lastline;
 
-        @supports (-webkit-line-clamp: 1) {
+        @supports (line-clamp: 2) or (-webkit-line-clamp: 2) {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            -webkit-box-pack: center;
+            line-clamp: 2;
             max-width: 100%;
         }
     }
