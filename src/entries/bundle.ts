@@ -28,6 +28,7 @@ import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
+import 'components/addtocart';
 import 'components/footer';
 import 'components/newsletter';
 import 'components/headline';
@@ -50,7 +51,6 @@ collapsibleText();
 
 import { QtyIncrementCollection } from 'customizations/qty-increment/qty-increment';
 new QtyIncrementCollection();
-import 'customizations/addtocart/addtocart';
 import 'customizations/aftersearch-nav/aftersearch-nav';
 import 'customizations/hero/hero';
 import 'customizations/image-teaser/image-teaser';

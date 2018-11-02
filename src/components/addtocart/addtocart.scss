@@ -1,3 +1,394 @@
-@mixin addtocart {
+@import 'config/variables';
+@import 'components/container/mixin';
+@import 'include-media/dist/include-media';
+
+$addtocart_button-skew-deg: 18;
+$addtocart_button-skewed-background-width: 4.1em;
+$addtocart_button-bg: $color_primary-500;
+$addtocart_button-bg-hover: $color_primary-800;
+
+$addtocart_button-padding-y: 0.858em;
+$addtocart_button-padding-left: 1em;
+$addtocart_button-padding-right: 4.5em;
+
+$addtocart_loading-indicator-ball-color: $color_white;
+$addtocart_loading-indicator-ball-size: 10px;
+
+$addtocart_ajax-success-bg-primary: $color_apple;
+$addtocart_ajax-success-bg-secondary: darken($addtocart_ajax-success-bg-primary, 5%);
+$addtocart_ajax-fail-bg-primary: $color_crimson;
+$addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
+
+.#{$ns}addtocart {
     $root: &;
+
+    &__button {
+        &,
+        &:focus {
+            position: relative;
+            overflow: hidden;
+            display: block;
+            width: 100%;
+            z-index: 2;
+
+            /* probably common button styles */
+            transition: all 0.15s linear;
+            border: none;
+            border-radius: 3px;
+            background: $addtocart_button-bg;
+            color: $color_white;
+            padding: $addtocart_button-padding-y $addtocart_button-padding-right $addtocart_button-padding-y $addtocart_button-padding-left;
+        }
+
+        &:hover {
+            background: $addtocart_button-bg-hover;
+            border: inherit;
+            color: $color_white;
+        }
+
+        &[disabled],
+        &.disabled,
+        &--disabled {
+            opacity: 1;
+        }
+
+        @if $addtocart_button_skew-deg > 0 {
+            &:after {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: $addtocart_button-skewed-background-width;
+                height: 100%;
+                z-index: -1;
+                content: '';
+                background: linear-gradient(#{90 + $addtocart_button-skew-deg}deg, rgba($addtocart_button-bg-hover, 0) 0%, rgba($addtocart_button-bg-hover, 0) #{$addtocart_button-skew-deg * 1%}, $addtocart_button-bg-hover #{$addtocart_button-skew-deg * 1%}, $addtocart_button-bg-hover 100%);
+            }
+        }
+    }
+
+    &__button-icon,
+    &__success-icon,
+    &__fail-icon {
+        width: 1.8em;
+        height: 1.8em;
+        position: absolute;
+        right: 0.9em;
+        top: 50%;
+        z-index: 3;
+        fill: currentColor;
+        transform: translate3d(0, -50%, 0);
+        transition: fill 0.15s linear, opacity 0.25s linear;
+    }
+
+    &__fail-icon {
+        transition: none;
+    }
+
+    &__button-label,
+    &__success-label {
+        transition: opacity 0.15s linear, transform 1s cubic-bezier(0, 0.77, 0.18, 1);
+    }
+
+    &__button-label {
+        display: inline-block;
+        transform: translate3d(0, 0, 0);
+    }
+
+    &__loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: scale(0) translate3d(-50%, -50%, 0);
+        width: $addtocart_loading-indicator-ball-size * 4;
+        height: $addtocart_loading-indicator-ball-size;
+        opacity: 0;
+        transition: opacity 0.15s linear, transform 1s cubic-bezier(0, 0.77, 0.18, 1);
+        transition-delay: 0.2s;
+
+        &-ball {
+            position: absolute;
+            display: block;
+            width: $addtocart_loading-indicator-ball-size;
+            height: $addtocart_loading-indicator-ball-size;
+            bottom: 0;
+            background: $addtocart_loading-indicator-ball-color;
+            border-radius: 50%;
+
+            &--1 {
+                left: 0;
+            }
+
+            &--2 {
+                left: 15px;
+                animation-delay: 0.15s !important;
+            }
+
+            &--3 {
+                left: 30px;
+                animation-delay: 0.3s !important;
+            }
+        }
+    }
+
+    &__feedback-bg {
+        &,
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -1em;
+            width: calc(100% + 2em);
+            height: 100%;
+            transform: skew(-18deg) translate3d(-100%, 0, 0);
+            transform-origin: 0 0;
+            transition: transform 0.45s cubic-bezier(0.01, 0.65, 0.38, 1);
+            background: $addtocart_ajax-success-bg-secondary;
+
+            #{$root}--no-transitions & {
+                transition: none;
+            }
+
+            #{$root}--fail & {
+                background: $addtocart_ajax-fail-bg-secondary;
+            }
+        }
+
+        &:after {
+            background: $addtocart_ajax-success-bg-primary;
+            z-index: 2;
+            left: 0;
+            width: 100%;
+            transform: translate3d(-100%, 0, 0);
+            transition-delay: 0.3s;
+
+            #{$root}--fail & {
+                background: $addtocart_ajax-fail-bg-primary;
+            }
+        }
+    }
+
+    &__success-label,
+    &__success-icon,
+    &__fail-label,
+    &__fail-icon {
+        opacity: 0;
+    }
+
+    &__success-icon,
+    &__fail-icon {
+        height: 1.725em;
+        transition-delay: 0.2s;
+    }
+
+    &__success-label,
+    &__fail-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0) translateX(-2em); // calc() doesn't work in IE so i had to duplicate translateX() transform to adjust X position
+        transition-delay: 0.2s;
+        white-space: nowrap;
+        padding-right: #{$addtocart_button-padding-right - $addtocart_button-padding-left};
+    }
+
+    &__minicart {
+        &--sticky,
+        &--unstick {
+            @include container-wrapper();
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+            z-index: 400;
+            padding: 0;
+            text-align: right;
+        }
+    }
+
+    &__minicart-link {
+        #{$root}__minicart--sticky &,
+        #{$root}__minicart--unstick & {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: $color_white;
+            box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, 0.34);
+            animation: minicart-in 1s cubic-bezier(0, 0.77, 0.18, 1);
+        }
+
+        #{$root}__minicart--unstick & {
+            animation: minicart-out 0.5s cubic-bezier(0.55, 0.2, 0.89, 0.45);
+        }
+    }
+
+    &__minicart-qty-badge-wrapper {
+        $badge-wrapper: &;
+
+        position: absolute;
+        opacity: 0;
+        z-index: 600;
+        transition: top 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93), left 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93);
+
+        &--animating {
+            animation: move-qty-badge 1.2s cubic-bezier(0.42, 0.31, 0.34, 0.93);
+            position: fixed;
+            top: 0.6rem;
+
+            @include media('>=tablet') {
+                top: 1.7rem;
+            }
+
+            @include media('>=laptop') {
+                position: absolute;
+                top: 4.1rem;
+            }
+
+            &#{$badge-wrapper}--minicart-sticky {
+                position: fixed;
+                top: 2rem;
+            }
+        }
+
+        #{$root}__minicart-qty-badge {
+            position: static;
+            visibility: visible;
+        }
+    }
+
+    &--loading,
+    &--done {
+        #{$root}__button-label {
+            opacity: 0;
+            transform: translate3d(2em, 0, 0);
+        }
+    }
+
+    &--loading {
+        #{$root}__loading {
+            opacity: 1;
+            transform: scale(1) translate3d(-50%, -50%, 0) translateX(-1.25em); // calc() doesn't work in IE so i had to duplicate translateX() transform to adjust X position
+
+            &-ball {
+                animation: ball-in 1s infinite;
+            }
+        }
+    }
+
+    &--done {
+        #{$root}__button-icon {
+            opacity: 0;
+        }
+
+        #{$root}__feedback-bg {
+            transform: skew(-18deg) translate3d(0, 0, 0);
+
+            &:after {
+                transform: translate3d(-#{$addtocart_button-skewed-background-width + 0.2}, 0, 0);
+            }
+        }
+    }
+
+    &--success {
+        #{$root}__success-icon {
+            opacity: 1;
+        }
+
+        #{$root}__success-label {
+            opacity: 1;
+            transform: translate3d(-50%, -50%, 0);
+        }
+    }
+
+    &--fail {
+        #{$root}__fail-icon {
+            opacity: 1;
+        }
+
+        #{$root}__fail-label {
+            opacity: 1;
+            transform: translate3d(-50%, -50%, 0);
+        }
+    }
+
+    &--animation-done {
+        #{$root}__button-label,
+        #{$root}__button-icon {
+            transition-delay: 0.5s;
+        }
+        
+        #{$root}__feedback-bg {
+            &, 
+            &:after {
+                transition: transform 0.4s cubic-bezier(0.86, 0.01, 0.83, 0.51);
+            }
+
+            & {
+                transition-delay: 0.2s;
+            }
+
+            &:after {
+                transition-delay: 0;
+            }
+        }
+        
+        #{$root}__success-label, 
+        #{$root}__fail-icon {
+            transition: opacity 0.6s linear, transform 0.6s cubic-bezier(0.86, 0.01, 0.83, 0.51);
+            transition-delay: 0;
+        }
+        
+        #{$root}__success-icon, 
+        #{$root}__fail-icon {
+            transition-delay: 0;
+        }
+    }
+
+    /* stylelint-disable */
+    @keyframes ball-in {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes minicart-in {
+        0% {
+            transform: translate3d(0, -100%, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @keyframes minicart-out {
+        0% {
+            transform: translate3d(0, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, -100%, 0);
+        }
+    }
+
+    @keyframes move-qty-badge {
+        0% {
+            opacity: 1;
+        }
+        15% {
+            transform: scale(1);
+        }
+        80% {
+            opacity: 1;
+            transform: scale(1.5);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1);
+        }
+    }
+    /* stylelint-enable */
 }
