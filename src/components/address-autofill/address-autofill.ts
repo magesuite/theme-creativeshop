@@ -46,13 +46,13 @@ export default class AddressAutofill {
      * Manages address autosuggest on street field input.
      */
     protected _initStreetField(): void {
-        let typeTimer: number;
+        let typeTimer: any;
         const typeInterval: number = 500;
         let currentValue: string = <string>this.options.streetField.val();
 
         this.options.streetField.on(
             'keyup',
-            (e: KeyboardEvent): void => {
+            (e: JQuery.Event): void => {
                 clearTimeout(typeTimer);
                 const newValue = <string>this.options.streetField.val();
 
@@ -197,7 +197,7 @@ export default class AddressAutofill {
         };
 
         let selectedIndex: number = 0;
-        this.options.streetField.on('keyup keypress', (e: KeyboardEvent) => {
+        this.options.streetField.on('keyup keypress', (e: JQuery.Event) => {
             const $menu: JQuery = this.$autosuggestSelectMenu;
             const $items: JQuery = this.$autosuggestSelectMenu.find(
                 '.cs-html-select__menu-item'
@@ -242,7 +242,7 @@ export default class AddressAutofill {
         });
 
         $(document).click(
-            (event: Event): void => {
+            (event: JQuery.Event): void => {
                 if ($(event.target).closest('.cs-html-select').length) {
                     const $items: JQuery = this.$autosuggestSelectMenu.find(
                         '.cs-html-select__menu-item'
@@ -319,7 +319,7 @@ export default class AddressAutofill {
      * Initializes watching ZIP field for changes.
      */
     protected _initZipField(): void {
-        let typeTimer: number;
+        let typeTimer: any;
         const typeInterval: number = 1000;
 
         this.options.zipField.on(

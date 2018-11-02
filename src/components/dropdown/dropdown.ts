@@ -1,5 +1,4 @@
-/* tslint:disable:no-unused-new object-literal-key-quotes ordered-imports */
-import { Flyout } from 'components/flyout/class.flyout';
+import { Flyout } from 'components/flyout/flyout';
 import * as $ from 'jquery';
 
 $('.cs-dropdown').each((index: number, element: any) => {

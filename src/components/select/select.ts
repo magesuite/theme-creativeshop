@@ -74,6 +74,7 @@ interface SelectpickerOptions {
 export default class HtmlSelect {
     protected _$element: JQuery;
     protected _$select: JQuery;
+    protected _selectpickerOptions: SelectpickerOptions;
 
     /**
      * Creates new htmlSelect component with optional settings.
@@ -81,32 +82,22 @@ export default class HtmlSelect {
      */
     public constructor(
         $element?: JQuery,
-        options?: HtmlSelectOptions,
         selectpickerOptions?: SelectpickerOptions
     ) {
-        this._options = $.extend(this._options, options);
-        this._options.namespace = this._options.namespace || 'cs-';
-
-        this._$select = $element || $(`.${this._options.namespace}select`);
+        this._$select = $element || $('cs-select');
 
         const _this: any = this;
 
         this._selectpickerOptions = $.extend(
             {
                 mobile: isMobile.any,
-                realSelectClass: `${_this._options.namespace}select`,
-                selectClass: `${_this._options.namespace}html-select`,
-                menuClass: `${_this._options.namespace}html-select__menu`,
-                menuListClass: `${
-                    _this._options.namespace
-                }html-select__menu-list`,
-                menuListitemClass: `${
-                    _this._options.namespace
-                }html-select__menu-item`,
-                linkClass: `${_this._options.namespace}html-select__menu-link`,
-                searchInputClass: `${_this._options.namespace}input__input ${
-                    _this._options.namespace
-                }html-select__search-input`,
+                realSelectClass: 'cs-select',
+                selectClass: 'cs-html-select',
+                menuClass: 'cs-html-select__menu',
+                menuListClass: `cs-html-select__menu-list`,
+                menuListitemClass: `cs-html-select__menu-item`,
+                linkClass: `cs-html-select__menu-link`,
+                searchInputClass: `cs-input__input cs-html-select__search-input`,
                 styleBase: '',
                 iconBase: '',
                 tickIcon: '',
@@ -115,11 +106,7 @@ export default class HtmlSelect {
                 template: {
                     caret:
                         _this._options.caretMarkup ||
-                        `<span class="${
-                            _this._options.namespace
-                        }html-select__trigger-caret"><span class="${
-                            _this._options.namespace
-                        }html-select__trigger-caret-arrow"></span></span>`,
+                        `<span class="cs-html-select__trigger-caret"><span class="cs-html-select__trigger-caret-arrow"></span></span>`,
                 },
             },
             selectpickerOptions
@@ -137,14 +124,14 @@ export default class HtmlSelect {
     public _setPadding($select: JQuery): void {
         const $contentAfter: any = $select
             .siblings()
-            .find(`.${this._options.namespace}html-select__trigger-subtext`);
+            .find(`.cs-html-select__trigger-subtext`);
         const $caret: any = $select
             .siblings()
-            .find(`.${this._options.namespace}html-select__trigger-caret`);
+            .find(`.cs-html-select__trigger-caret`);
         const buttonsLeftPadding: number = parseInt(
             $select
                 .siblings()
-                .find(`.${this._options.namespace}html-select__trigger`)
+                .find(`.cs-html-select__trigger`)
                 .css('padding-left'),
             10
         );
@@ -157,11 +144,11 @@ export default class HtmlSelect {
 
             $select
                 .siblings()
-                .find(`.${this._options.namespace}html-select__menu-item-text`)
+                .find(`.cs-html-select__menu-item-text`)
                 .css('padding-right', padding);
             $select
                 .siblings()
-                .find(`.${this._options.namespace}html-select__trigger`)
+                .find(`.cs-html-select__trigger`)
                 .css('padding-right', padding);
         }
     }
@@ -178,7 +165,7 @@ export default class HtmlSelect {
     }
 
     /**
-     * Initialize selectpicker plugin for all ${this._options.namespace}select elements
+     * Initialize selectpicker plugin for all cs-select elements
      */
     protected _render(): void {
         const _this: any = this;
@@ -187,38 +174,14 @@ export default class HtmlSelect {
             const limit: number = $(this).attr('data-options-limit')
                 ? parseInt($(this).data('options-limit'), 10)
                 : 8;
-            let triggerStyle: string = `${
-                _this._options.namespace
-            }html-select__trigger`;
+            let triggerStyle: string = `cs-html-select__trigger`;
 
-            if (
-                $(this).hasClass(`${_this._options.namespace}html-select--big`)
-            ) {
-                triggerStyle = `${
-                    _this._options.namespace
-                }html-select__trigger ${
-                    _this._options.namespace
-                }html-select__trigger--big`;
-            } else if (
-                $(this).hasClass(
-                    `${_this._options.namespace}html-select--light`
-                )
-            ) {
-                triggerStyle = `${
-                    _this._options.namespace
-                }html-select__trigger ${
-                    _this._options.namespace
-                }html-select__trigger--light`;
-            } else if (
-                $(this).hasClass(
-                    `${_this._options.namespace}html-select--light-reverse`
-                )
-            ) {
-                triggerStyle = `${
-                    _this._options.namespace
-                }html-select__trigger ${
-                    _this._options.namespace
-                }html-select__trigger--light-reverse`;
+            if ($(this).hasClass(`cs-html-select--big`)) {
+                triggerStyle = `cs-html-select__trigger cs-html-select__trigger--big`;
+            } else if ($(this).hasClass(`cs-html-select--light`)) {
+                triggerStyle = `cs-html-select__trigger cs-html-select__trigger--light`;
+            } else if ($(this).hasClass(`cs-html-select--light-reverse`)) {
+                triggerStyle = `cs-html-select__trigger cs-html-select__trigger--light-reverse`;
             }
 
             _this._selectpickerOptions.size = limit;
@@ -229,37 +192,23 @@ export default class HtmlSelect {
     }
 
     /**
-     * Set callbacks for ${this._options.namespace}select elements
+     * Set callbacks for cs-select elements
      */
     protected _setCallbacks(): void {
         const _this: any = this;
 
-        $(`.${_this._options.namespace}html-select`).on(
-            'show.bs.select',
-            function(event: Event): void {
-                setTimeout(
-                    (): void =>
-                        $(event.target)
-                            .parent()
-                            .addClass(
-                                `${
-                                    _this._options.namespace
-                                }html-select--animate`
-                            ),
-                    30
-                );
-            }
-        );
-
-        $(`.${_this._options.namespace}html-select`).on(
-            'hide.bs.select',
-            function(event: Event): void {
+        $(`.cs-html-select`).on('show.bs.select', function(event: Event): void {
+            setTimeout((): void => {
                 $(event.target)
                     .parent()
-                    .removeClass(
-                        `.${_this._options.namespace}html-select--animate`
-                    );
-            }
-        );
+                    .addClass(`cs-html-select--animate`);
+            }, 30);
+        });
+
+        $(`.cs-html-select`).on('hide.bs.select', function(event: Event): void {
+            $(event.target)
+                .parent()
+                .removeClass(`.cs-html-select--animate`);
+        });
     }
 }

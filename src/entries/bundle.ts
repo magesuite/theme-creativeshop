@@ -35,16 +35,16 @@ import 'components/category-links';
 import 'components/paragraph';
 import 'components/page-bottom';
 
-import { Flyout } from 'components/flyout/class.flyout';
-export { Flyout };
+export { Flyout } from 'components/flyout/flyout';
+export { Select } from 'components/select';
+export { default as AddressAutofill } from 'components/address-autofill';
 
 // =============================================================================
 // Customizations
 // =============================================================================
 
 import 'customizations/header-search/header-search';
-import Select from 'customizations/select/select';
-export { Select };
+
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();
 
@@ -68,8 +68,6 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/cart/cart';
 import 'customizations/video-player/video-player';
 import 'customizations/searchresults-switcher/searchresults-switcher';
-import AddressAutofill from 'customizations/address-autofill/address-autofill';
-export { AddressAutofill };
 
 // Sometimes there is a need to apply different styling for mobile/tablet devices and body class is necessary
 if (isMobile.any) {
