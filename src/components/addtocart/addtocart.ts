@@ -222,6 +222,10 @@ export default class AddToCart {
         const actionFailed: boolean =
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
+        if (actionFailed) {
+            this._$component.addClass(`${this._options.componentClass}--no-transitions`);
+        }
+
         if (
             this._options.onDoneHandler &&
             typeof this._options.onDoneHandler === 'function'
