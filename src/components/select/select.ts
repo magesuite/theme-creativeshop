@@ -103,10 +103,9 @@ export default class HtmlSelect {
                 tickIcon: '',
                 noneSelectedText: 'Nothing selected',
                 noneResultsText: 'No results for: {0}',
+                pageGutter: '15', // 15px from left / right (wrapper's padding)
                 template: {
-                    caret:
-                        _this._options.caretMarkup ||
-                        `<span class="cs-html-select__trigger-caret"><span class="cs-html-select__trigger-caret-arrow"></span></span>`,
+                    caret: `<span class="cs-html-select__trigger-caret"><span class="cs-html-select__trigger-caret-arrow"></span></span>`,
                 },
             },
             selectpickerOptions
