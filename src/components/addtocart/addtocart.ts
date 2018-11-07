@@ -279,28 +279,6 @@ export default class AddToCart {
                 }
             }
         }
-
-        if (!actionFailed) {
-            this._clearGlobalMessages();
-        }
-    }
-
-    /**
-      * Reads all mage-messages that are currently added to the $.cookieStorage, removes all success messages
-        and saves modified array back to $.cookieStorage.
-      * Reason: since we have already success feedback provided by this component we don't want to
-        display duplicated "you have successfully added {{ product name }} to the cart" message.
-     **/
-    protected _clearGlobalMessages(): void {
-        const messages: Array<any> = $.cookieStorage.get('mage-messages');
-
-        for (let i: number = 0; i < messages.length; i++) {
-            if (messages[i].type && messages[i].type === 'success') {
-                messages.splice(i, 1);
-            }
-        }
-
-        $.cookieStorage.set('mage-messages', messages);
     }
 
     /**

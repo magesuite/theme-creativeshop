@@ -4,7 +4,7 @@
 // See http://warpspire.com/kss/ for documentation guidelines.
 // Version 0.0.1
 
-.cs-select {
+.#{$ns}select {
     $root: &;
 
     position: absolute !important;
@@ -41,7 +41,13 @@
     font-weight: 400;
     font-size: 1rem;
     line-height: 0;
+    min-width: 15rem;
     box-sizing: border-box;
+    z-index: 2;
+
+    &.open {
+        z-index: 99;
+    }
 
     &__trigger {
         display: flex;
@@ -172,16 +178,17 @@
         left: 0;
         z-index: 5;
         display: none;
-        width: 100%;
         background-color: #fafafa;
         border: 1px solid #e7e7e7;
-        border-top: 0;
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
         box-shadow: 0 1px 5px 0 rgba(100, 100, 100, 0.1);
         font-size: 1rem;
         line-height: 1.125rem;
         box-sizing: border-box;
+        min-width: 100%;
+        z-index: -1;
+        margin-top: -1px;
 
         #{$root}--open &,
         #{$root}.open & {
