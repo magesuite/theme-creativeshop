@@ -35,6 +35,7 @@ import 'components/headline';
 import 'components/category-links';
 import 'components/paragraph';
 import 'components/page-bottom';
+import 'components/separator';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
