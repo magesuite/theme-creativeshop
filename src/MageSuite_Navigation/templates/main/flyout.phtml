@@ -3,8 +3,15 @@
 /** @var \Magento\Framework\View\Element\Template $block */
 
 $item = $block->getItem();
+$parentId = $block->getParentItemId();
+$isAllCategories = $item->getIdentifier() === 'all-categories';
+$level = $block->getLevel();
 ?>
-<div class="cs-navigation__flyout" data-category-identifier="<?= $item->getCategoryIdentifier() ?>">
+<div
+    class="cs-navigation__flyout"
+    data-category-identifier="<?= $item->getCategoryIdentifier() ?>"
+    data-parent-item-id="<?= $parentId; ?>"
+>
 <?php
 if ($item->hasSubItems()) {
     echo $this->getLayout()
@@ -13,8 +20,27 @@ if ($item->hasSubItems()) {
         ->setItem($item)
         ->setShowCategoryIconSubcats($block->getShowCategoryIconSubcats())
         ->setShowProductsAmountSubcats($block->getShowProductsAmountSubcats())
-        ->setLevel($block->getLevel())
+        ->setLevel($level)
+        ->setIsAllCategories($isAllCategories)
+        ->setParentItemId($item->getId())
         ->toHtml();
+
+    if ($isAllCategories) {
+        foreach($item->getSubItems() as $subItem) {
+            if ($subItem->hasSubItems()) {
+                echo $this->getLayout()
+                    ->createBlock(Magento\Framework\View\Element\Template::class)
+                    ->setTemplate("MageSuite_Navigation::main/list.phtml")
+                    ->setItem($subItem)
+                    ->setShowCategoryIconSubcats($subItem)
+                    ->setShowProductsAmountSubcats($subItem)
+                    ->setLevel($level)
+                    ->setIsMegaDropdownSublist(true)
+                    ->setParentItemId($subItem->getId())
+                    ->toHtml();
+            }
+        }
+    }
 }
 
 /*if($item->hasFeaturedProducts()) {

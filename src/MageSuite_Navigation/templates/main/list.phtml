@@ -11,11 +11,24 @@ $itemLabel = $item->getLabel();
 $itemHasCustomUrl = $item->hasCustomUrl();
 $itemCategoryIdentifier = $item->getCategoryIdentifier() ?? '';
 
+$parentItemId = $block->getParentItemId();
+$isMegaDropdownSublist = $block->getIsMegaDropdownSublist();
+$isAllCategories = $block->getIsAllCategories();
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
+
+$listClasses = ' cs-navigation__list--level_' . $level;
+if ($isMegaDropdownSublist) {
+    $listClasses .= '  cs-navigation__list--hidden';
+} elseif ($isAllCategories) {
+    $listClasses .= '  cs-navigation__list--all-categories';
+}
 ?>
-<ul class="cs-navigation__list cs-navigation__list--level_<?= $level ; ?>">
-<?php if ($level === 1): ?>
+<ul
+    class="cs-navigation__list<?= $listClasses; ?>"
+    data-parent-item-id="<?= $parentItemId; ?>"
+>
+<?php if ($level === 1 && !$isAllCategories): ?>
     <li
         class="cs-navigation__item cs-navigation__item--level_<?= $level ; ?> cs-navigation__item--hidden <?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : '' ?>"
     >
@@ -55,7 +68,7 @@ foreach($item->getSubItems() as $subItem):
             <?php endif; ?>
         </a>
         <?php
-            if ($subItem->hasSubItems()) {
+            if (!$block->getIsAllCategories() && $subItem->hasSubItems()) {
                 echo $this->getLayout()
                     ->createBlock(Magento\Framework\View\Element\Template::class)
                     ->setTemplate("MageSuite_Navigation::main/list.phtml")
@@ -63,6 +76,7 @@ foreach($item->getSubItems() as $subItem):
                     ->setShowProductsAmountSubcats($showProductsAmountSubcats)
                     ->setShowCategoryIconSubcats($showCategoryIconSubcats)
                     ->setLevel($level + 1)
+                    ->setParentItemId($itemId)
                     ->toHtml();
             }
         ?>
