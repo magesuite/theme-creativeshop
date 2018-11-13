@@ -245,6 +245,7 @@
     this.$button = null;
     this.$menu = null;
     this.$lis = null;
+    this.resizeTimer = null;
     this.options = options;
 
     // If we have no title yet, try to pull it from the html title attribute (jQuery doesnt' pick it up as it's not a
@@ -319,7 +320,8 @@
     maxOptions: false,
     mobile: false,
     selectOnTab: false,
-    dropdownAlignRight: false
+    dropdownAlignRight: false,
+    pageGutter: 15
   };
 
   Selectpicker.prototype = {
@@ -1039,6 +1041,23 @@
       }
     },
 
+    setMaxWidth: function() {
+      if (!this.originalMenuWidth) {
+        this.originalMenuWidth = this.$menu.outerWidth();
+      }
+
+      var selectOffset = this.$newElement.offset().left;
+      var winWidth = $(window).width();
+      var fitsScreen = winWidth - (2 * this.options.pageGutter) >= selectOffset + this.originalMenuWidth;
+
+      if (!fitsScreen) {
+        var mw = winWidth - selectOffset - this.options.pageGutter + 'px';
+        this.$menu.addClass(this.options.menuClass + '--fit-max').css('max-width', mw);
+      } else if (this.$menu.outerWidth() >= this.originalMenuWidth) {
+        this.$menu.removeClass(this.options.menuClass + '--fit-max').css('max-width', '');
+      }
+    },
+
     selectPosition: function () {
       this.$bsContainer = $('<div class="bs-container" />');
 
@@ -1156,6 +1175,21 @@
 
       this.$button.on('click', function () {
         that.setSize();
+      });
+
+      this.$element.on('show.bs.select', function() {
+        that.setMaxWidth();
+
+        $(window).on('resize.adjustMenuWidth', function() {
+          clearTimeout(that.resizeTimer);
+          that.resizeTimer = setTimeout($.proxy(function() {
+            that.setMaxWidth();
+          }, that), 250);
+        });
+      });
+
+      this.$element.on('hidden.bs.select', function() {
+        $(window).off('resize.adjustMenuWidth');
       });
 
       this.$element.on('shown.bs.select', function () {
@@ -1693,6 +1727,7 @@
       this.liHeight(true);
       this.setStyle();
       this.setWidth();
+      this.setMaxWidth();
       if (this.$lis) this.$searchbox.trigger('propertychange');
 
       this.$element.trigger('refreshed.bs.select');
