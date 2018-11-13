@@ -479,12 +479,12 @@ export default class Navigation {
 
     /**
      * Triggers browser layout reflow so we can get updated CSS values.
-     * @param  {JQuery} $flyout Element to use to trigger reflow.
+     * @param  {JQuery} $element Element to use to trigger reflow.
      */
-    protected _triggerColumnsReflow($flyout: JQuery): void {
-        $flyout.css('display', 'none');
-        $flyout.prop('offsetWidth');
-        $flyout.css('display', '');
+    protected _triggerColumnsReflow($element: JQuery): void {
+        $element.css('display', 'none');
+        $element.prop('offsetWidth');
+        $element.css('display', '');
     }
 
     /**
@@ -581,7 +581,7 @@ export default class Navigation {
             // Checks if clicked outside of the navigation.
             if (!$rootItem.length) {
                 const $activeFlyout = this._$element.find(
-                    `${this._options.flyoutClassName}--visible`
+                    `.${this._options.flyoutClassName}--visible`
                 );
                 this._hideFlyout($activeFlyout);
             }
