@@ -1,11 +1,13 @@
 //Switcher background color for tablet & desktop.
-$dropdown_switcher-background: $color_background-210 !default;
+$dropdown-switcher_background: $color_background-210 !default;
 //Color of the trigger in offcanvas navigation.
-$dropdown_switcher-trigger-color: $color_primary-500 !default;
+$dropdown-switcher_trigger-color: $color_primary-500 !default;
 //Color of the active list border.
-$dropdown_switcher-list-border-color: $color_border-200 !default;
+$dropdown-switcher_list-border-color: $color_border-200 !default;
 //Bottom border configuration for the switcher in offcanvas navigation.
-$dropdown_switcher-border: 1px $color_border-500 solid !default;
+$dropdown-switcher_border: 1px $color_border-500 solid !default;
+//Switcher hover
+$dropdown-switcher_hover-background: $color_background-500 !default;
 
 .cs-dropdown-switcher {
     $root: &;
@@ -16,7 +18,12 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
         position: relative;
         display: inline-flex;
         align-items: stretch;
-        flex-basis: 12%;
+        flex-basis: 14%;
+        flex-shrink: 0;
+
+        .page-layout-checkout & {
+            flex-basis: 18%;
+        }
 
         &:before {
             position: absolute;
@@ -26,15 +33,17 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
             content: '';
             border-left: 0.2rem solid $color_white;
             transform: skew(-18deg);
+            display: block;
         }
     }
+
     &__option {
         &-icon {
             width: 1.5rem;
             height: 1.5rem;
             margin-right: 0.6rem;
+            margin-bottom: 0.2rem;
             display: inline-block;
-            vertical-align: top;
         }
     }
 
@@ -44,7 +53,7 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
             padding: 2.4rem 2rem;
             font-size: 1.4rem;
             font-weight: 700;
-            border-bottom: $dropdown_switcher-border;
+            border-bottom: $dropdown-switcher_border;
         }
 
         @include media('>=laptop') {
@@ -68,17 +77,15 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
                 right: 2rem;
                 height: 1rem;
                 width: 1rem;
-                fill: $dropdown_switcher-trigger-color;
+                fill: $dropdown-switcher_trigger-color;
             }
         }
 
         &.active {
-            background: $dropdown_switcher-background;
+            background: $dropdown-switcher_background;
             border-top-left-radius: 3px;
             border-top-right-radius: 3px;
-            border-color: $dropdown_switcher-list-border-color;
-            border-style: solid;
-            border-width: 1px 1px 0;
+            border: none;
             position: relative;
             width: 100%;
 
@@ -87,27 +94,23 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
                 border-style: none;
             }
 
-            @include media('>=laptop') {
-                padding: 0 2rem 0 0.8rem;
-            }
-
             &:before {
                 position: absolute;
                 bottom: 0;
                 left: 0;
                 right: 0;
                 content: '';
-                border-bottom: 1px solid $color_alto;
                 z-index: 1;
-            }
-
-            #{$root}__trigger-span {
-                margin-top: -0.2rem;
             }
 
             #{$root}__trigger-icon {
                 transform: rotate(180deg);
             }
+        }
+
+        &-span {
+            display: flex;
+            align-items: center;
         }
     }
 
@@ -118,10 +121,11 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
         font-size: 1.1rem;
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
-        border-color: $dropdown_switcher-list-border-color;
+        border-color: $dropdown-switcher_list-border-color;
         border-style: solid;
         border-width: 0 1px 1px;
         width: 100%;
+
         @include media('<laptop') {
             border-style: none;
         }
@@ -136,14 +140,17 @@ $dropdown_switcher-border: 1px $color_border-500 solid !default;
 
         &-item {
             margin: 0;
+            white-space: normal;
         }
 
         &-item-link {
             display: block;
             color: $color_mineshaft !important;
+            display: flex;
+            align-items: center;
 
             &:hover {
-                color: $color_cerulean-blue;
+                background-color: $dropdown-switcher_hover-background;
                 text-decoration: none;
             }
 
