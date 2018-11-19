@@ -1,4 +1,6 @@
 <?php
+/** Template overridden until checkbox markup will get BEM classes in creativeshop ś*/
+
 // @codingStandardsIgnoreFile
 
 /** @var \Amasty\Promo\Block\Items $block */
@@ -36,8 +38,10 @@ $isShowPrice = $block->getShowPriceInPopup();
                                name="isPromoItems"
                                value="true">
                         <?php if ($selectionMethod) : ?>
-                            <div class="ampromo-product-select" data-role="ampromo-product-select">
-                                <input type="checkbox"/>
+                            <div class="cs-input cs-input--type-checkbox | ampromo-product-select" data-role="ampromo-product-select">
+                                <input type="checkbox" class="cs-input__checkbox" id="free-gift-<?= $product->getId()?>" />
+                                <label class="cs-input__label" for="free-gift-<?= $product->getId()?>"
+                                </label>
                             </div>
                         <?php endif; ?>
                         <div class="cs-promo-products-list__item-name | ampromo-item-title">
@@ -96,8 +100,8 @@ $isShowPrice = $block->getShowPriceInPopup();
                             </div>
                         <?php endif; ?>
                         <?php if ($selectionMethod) : ?>
-                            <div class="ampromo-item-qty-input" data-role="ampromo-item-qty-input">
-                                <input class="ampromo-item-qty-select-input"
+                            <div class="ampromo-item-qty-input | cs-input" data-role="ampromo-item-qty-input">
+                                <input class="ampromo-item-qty-select-input | cs-input__input"
                                        type="number"
                                        name="ampromo_qty_select_<?=$product->getId()?>"
                                        id="ampromo_qty_select_<?=$product->getId()?>"
