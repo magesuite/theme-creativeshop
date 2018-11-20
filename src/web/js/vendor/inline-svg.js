@@ -4,24 +4,39 @@
  * - Adjusted to work out of the box after load.
  * - Removed AMD declaration to make it work with requireJS as async script.
  * - Added checking "data-src" attribute before "src" to enable lazy loading.
- * - Added waiting for DOM ready.
+ * - Added waiting for DOM ready and observing HTML changes.
  */
 (function(root, factory) {
     root.inlineSVG = factory(root);
+    var inlineTimeout = null;
     var inline = function() {
-        root.inlineSVG.init({
-            svgSelector:
-                'img.inline-svg[src$=".svg"], img.inline-svg[data-src$=".svg"]',
-        });
+        if (inlineTimeout === null) {
+            inlineTimeout = setTimeout(function() {
+                inlineTimeout = null;
+                root.inlineSVG.init({
+                    svgSelector:
+                        'img.inline-svg[src$=".svg"], img.inline-svg[data-src$=".svg"]',
+                });
+            }, 16);
+        }
     };
-    if (
-        document.attachEvent
-            ? document.readyState === 'complete'
-            : document.readyState !== 'loading'
-    ) {
+    var observe = function() {
+        if (MutationObserver) {
+            new MutationObserver(inline).observe(document, {
+                subtree: true,
+                childList: true,
+            });
+        }
+    };
+
+    if (document.readyState !== 'loading') {
         inline();
+        observe();
     } else {
-        document.addEventListener('DOMContentLoaded', inline);
+        document.addEventListener('DOMContentLoaded', function() {
+            inline();
+            observe();
+        });
     }
 })(
     typeof global !== 'undefined' ? global : this.window || this.global,
