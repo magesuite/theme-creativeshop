@@ -235,7 +235,6 @@ export default class Navigation {
     protected _adjustFlyout($flyout: JQuery): void {
         this._setTransform($flyout, '');
         this._adjustFlyoutColumns($flyout);
-        this._triggerColumnsReflow($flyout);
 
         let alignTo: string = this._options.flyoutAlignTo;
         const itemsLength: number = $(
@@ -266,7 +265,6 @@ export default class Navigation {
             `.${this._options.flyoutColumnsClassName}`
         );
         this._setColumnCount($flyoutColumns, 1);
-        this._triggerColumnsReflow($flyout);
 
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
         const flyoutMaxColumns = this._options.flyoutMaxColumnCount;
@@ -288,7 +286,6 @@ export default class Navigation {
             if (flyoutHeight >= flyoutMaxHeight + 100) {
                 this._setColumnCount($flyoutColumns, flyoutColumnCount + 1);
             }
-            this._triggerColumnsReflow($flyout);
             prevFlyoutHeight = flyoutHeight;
             flyoutHeight = $flyout.height();
         }
@@ -372,6 +369,7 @@ export default class Navigation {
         $element.css({
             'column-count': columnCount,
         });
+        this._triggerColumnsReflow($element);
     }
 
     /**

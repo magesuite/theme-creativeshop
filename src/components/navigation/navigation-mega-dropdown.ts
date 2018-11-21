@@ -4,7 +4,7 @@ import Navigation from 'components/navigation/navigation';
 export default class NavigationMegaDropdown extends Navigation {
     protected _allCategoriesItemSelector: string =
         '[data-category-identifier="all-categories"]';
-    protected _$activeMegaSubmenu: JQuery;
+    protected _$activeMegaSubmenu: JQuery = $();
 
     protected _adjustFlyout($flyout: JQuery): void {
         const $parentItem: JQuery = $flyout.closest(
@@ -33,17 +33,15 @@ export default class NavigationMegaDropdown extends Navigation {
      */
     protected _adjustMegaSubmenuColumns($megaSubmenu: JQuery): void {
         const $flyout: JQuery = $megaSubmenu.closest(
-            this._options.flyoutClassName
+            `.${this._options.flyoutClassName}`
         );
         this._setColumnCount($megaSubmenu, 1);
-        this._triggerColumnsReflow($megaSubmenu);
 
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
         const submenuMaxColumns = this._options.flyoutMaxColumnCount - 1;
 
         let flyoutHeight: number = $flyout.height();
         let prevFlyoutHeight: number = 0;
-
         for (
             let submenuColumnCount = 1;
             submenuColumnCount < submenuMaxColumns;
@@ -58,13 +56,16 @@ export default class NavigationMegaDropdown extends Navigation {
             if (flyoutHeight >= flyoutMaxHeight + 100) {
                 this._setColumnCount($megaSubmenu, submenuColumnCount + 1);
             }
-            this._triggerColumnsReflow($megaSubmenu);
             prevFlyoutHeight = flyoutHeight;
             flyoutHeight = $flyout.height();
         }
     }
 
     protected _showMegaSubmenu($megaSubmenu: JQuery): void {
+        if (!$megaSubmenu.length) {
+            return;
+        }
+
         const parentItemId = $megaSubmenu.data('parent-item-id');
         $megaSubmenu.removeClass('cs-navigation__list--hidden');
         $megaSubmenu
@@ -76,6 +77,10 @@ export default class NavigationMegaDropdown extends Navigation {
     }
 
     protected _hideMegaSubmenu($megaSubmenu: JQuery): void {
+        if (!$megaSubmenu.length) {
+            return;
+        }
+
         const parentItemId = $megaSubmenu.data('parent-item-id');
         $megaSubmenu.removeClass('cs-navigation__list--hidden');
         $megaSubmenu
@@ -83,7 +88,7 @@ export default class NavigationMegaDropdown extends Navigation {
             .find(`[data-category-id="${parentItemId}"]`)
             .removeClass(`${this._options.itemClassName}--active`);
         $megaSubmenu.addClass('cs-navigation__list--hidden');
-        this._$activeMegaSubmenu = null;
+        this._$activeMegaSubmenu = $();
     }
 
     protected _attachEvents(): void {
@@ -120,11 +125,12 @@ export default class NavigationMegaDropdown extends Navigation {
                 `[data-parent-item-id="${targetCategoryId}"]`
             );
 
-            if (
-                !$targetSubmenu.length ||
-                $targetSubmenu.is(this._$activeMegaSubmenu)
-            ) {
+            if ($targetSubmenu.is(this._$activeMegaSubmenu)) {
                 return;
+            }
+
+            if (!$targetSubmenu.length) {
+                this._hideMegaSubmenu(this._$activeMegaSubmenu);
             }
 
             if ($targetSubmenu.length && !this._$activeMegaSubmenu) {

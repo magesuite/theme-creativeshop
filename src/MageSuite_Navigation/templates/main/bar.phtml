@@ -14,11 +14,12 @@ $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
     <ul class="cs-navigation__list cs-navigation__list--level_<?= $level; ?>">
         <?php foreach($block->getItems() as $item):
             $itemId = $item->getId();
-            $itemUrl = $item->getUrl();
+            $itemIdentifier = $item->getIdentifier();
+            $itemIsAllCategories = $itemIdentifier === 'all-categories';
+            $itemUrl = $itemIsAllCategories ? 'javascript:void(0);' : $item->getUrl();
             $itemLabel = $item->getLabel();
             $itemHasCustomUrl = $item->hasCustomUrl();
             $itemHasSubItems = $item->hasSubItems();
-            $itemIdentifier = $item->getIdentifier();
             $itemCategoryIcon = $showCategoryIconRoot ? $item->getCategoryIcon() : '';
             $itemNumberOfProducts = $showProductsAmountRoot ? $item->getNumberOfProducts() : 0;
         ?>
