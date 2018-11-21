@@ -78,6 +78,7 @@ export default class AddressAutofill {
         }
 
         this.googleAddressDetector.getFormattedResults(query).then(results => {
+            this._hideAutosuggest();
             this._buildAutosuggestSelect(results);
         });
     }
@@ -103,6 +104,8 @@ export default class AddressAutofill {
      * Resets autosuggest dropdown.
      */
     protected _initAutosuggest(): void {
+        // First remove old autosuggest
+        $('.cs-html-select--autosuggest').remove();
         this.$autosuggestSelect = $(`<div class="cs-html-select cs-html-select--open cs-html-select--autosuggest">
                 <div class="cs-html-select__menu">
                     <ul class="cs-html-select__menu-list"></ul>
@@ -234,10 +237,11 @@ export default class AddressAutofill {
                 const selectedAddress: FormattedAddress = $items
                     .eq(selectedIndex)
                     .data('value');
-                this._fillFields(selectedAddress);
-                this._focusEmptyField();
-
-                this._hideAutosuggest();
+                if(selectedAddress) {
+                    this._fillFields(selectedAddress);
+                    this._focusEmptyField();
+                    this._hideAutosuggest();
+                }
             }
         });
 
