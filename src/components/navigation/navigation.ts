@@ -3,7 +3,7 @@ import * as $ from 'jquery';
 /**
  * Navigation component options interface.
  */
-interface NavigationOptions {
+export interface NavigationOptions {
     /**
      * Class name of navigation container. Flyout positions will be calculated
      * relative to this element.

@@ -16,6 +16,7 @@ $isMegaDropdownSublist = $block->getIsMegaDropdownSublist();
 $isAllCategories = $block->getIsAllCategories();
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
+$thirdLevelLimit = $block->getThirdLevelLimit();
 
 $listClasses = ' cs-navigation__list--level_' . $level;
 if ($isMegaDropdownSublist) {
@@ -38,7 +39,7 @@ if ($isMegaDropdownSublist) {
     </li>
 <?php endif; ?>
 <?php
-foreach($item->getSubItems() as $subItem):
+foreach($item->getSubItems() as $subItemIndex => $subItem):
     $subItem = $subItem;
     $subItemId = $subItem->getId();
     $subItemUrl = $subItem->getUrl();
@@ -68,7 +69,7 @@ foreach($item->getSubItems() as $subItem):
             <?php endif; ?>
         </a>
         <?php
-            if (!$block->getIsAllCategories() && $subItem->hasSubItems()) {
+            if (!$isAllCategories && $subItem->hasSubItems()) {
                 echo $this->getLayout()
                     ->createBlock(Magento\Framework\View\Element\Template::class)
                     ->setTemplate("MageSuite_Navigation::main/list.phtml")
@@ -77,9 +78,19 @@ foreach($item->getSubItems() as $subItem):
                     ->setShowCategoryIconSubcats($showCategoryIconSubcats)
                     ->setLevel($level + 1)
                     ->setParentItemId($itemId)
+                    ->setThirdLevelLimit($thirdLevelLimit)
                     ->toHtml();
             }
         ?>
     </li>
+    <?php if ($level === 3 && $subItemIndex === $thirdLevelLimit - 1): ?>
+    <li
+        class="cs-navigation__item cs-navigation__item--level_<?= $level ; ?><?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : '' ?>"
+    >
+        <a href="<?= $itemUrl; ?>" class="cs-navigation__link cs-navigation__link--more cs-navigation__link--level_<?= $level ; ?>">
+            <?= __("More..."); ?>
+        </a>
+    </li>
+    <?php break; endif; ?>
 <?php endforeach; ?>
 </ul>
