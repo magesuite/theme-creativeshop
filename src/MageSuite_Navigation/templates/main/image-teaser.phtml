@@ -15,8 +15,10 @@ $buttonIcon = $block->getButtonIcon();
 $imageUrl = $imageTeaser->getImageUrl();
 $imageSrcset = $imageTeaser->getSrcSet();
 $imageAlt = $headline ?? $itemLabel;
+
+$parentItemId = $block->getParentItemId();
 ?>
-<div class="cs-navigation-teaser <?= $block->getAdditionalCssClasses(); ?>">
+<div class="cs-navigation-teaser <?= $block->getAdditionalCssClasses(); ?>" data-parent-item-id="<?= $parentItemId; ?>">
     <?php if ($buttonUrl): ?>
         <a href="<?= $buttonUrl; ?>" class="cs-navigation-teaser__link">
     <?php else: ?>

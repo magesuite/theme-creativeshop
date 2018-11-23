@@ -1,17 +1,33 @@
 import * as $ from 'jquery';
-import Navigation from 'components/navigation/navigation';
+import {
+    default as Navigation,
+    NavigationOptions,
+} from 'components/navigation/navigation';
 
 export default class NavigationMegaDropdown extends Navigation {
     protected _allCategoriesItemSelector: string =
         '[data-category-identifier="all-categories"]';
-    protected _$activeMegaSubmenu: JQuery = $();
+    protected _activeParentId: number = 0;
+    protected _$allCategoriesItem: JQuery;
+    protected _$allCategoriesFlyout: JQuery;
+
+    public constructor($element: JQuery, options?: NavigationOptions) {
+        super($element, options);
+
+        this._$allCategoriesItem = this._$element.find(
+            this._allCategoriesItemSelector
+        );
+        this._$allCategoriesFlyout = this._$allCategoriesItem.find(
+            this._$flyouts
+        );
+    }
 
     protected _adjustFlyout($flyout: JQuery): void {
         const $parentItem: JQuery = $flyout.closest(
             `.${this._options.itemClassName}--level_0`
         );
 
-        if ($parentItem.is(this._allCategoriesItemSelector)) {
+        if ($parentItem.is(this._$allCategoriesItem)) {
             return;
         }
 
@@ -21,9 +37,7 @@ export default class NavigationMegaDropdown extends Navigation {
     protected _hideFlyout($flyout: JQuery): void {
         super._hideFlyout($flyout);
 
-        this._hideMegaSubmenu(
-            $flyout.find('.cs-navigation__list--all-categories').nextAll()
-        );
+        this._hideCategoryChildren(this._activeParentId);
     }
 
     /**
@@ -61,34 +75,48 @@ export default class NavigationMegaDropdown extends Navigation {
         }
     }
 
-    protected _showMegaSubmenu($megaSubmenu: JQuery): void {
-        if (!$megaSubmenu.length) {
-            return;
+    protected _showCategoryChildren(parentCategoryId: number): void {
+        const $childSubmenu: JQuery = this._$allCategoriesFlyout.find(
+            `.cs-navigation__list[data-parent-item-id="${parentCategoryId}"]`
+        );
+        const $childTeaser: JQuery = this._$allCategoriesFlyout.find(
+            `.cs-navigation__teaser[data-parent-item-id="${parentCategoryId}"]`
+        );
+
+        this._$allCategoriesFlyout
+            .find(`[data-category-id="${parentCategoryId}"]`)
+            .addClass(`${this._options.itemClassName}--active`);
+
+        if ($childSubmenu.length) {
+            $childSubmenu.removeClass('cs-navigation__list--hidden');
+            this._adjustMegaSubmenuColumns($childSubmenu);
         }
 
-        const parentItemId = $megaSubmenu.data('parent-item-id');
-        $megaSubmenu.removeClass('cs-navigation__list--hidden');
-        $megaSubmenu
-            .parent()
-            .find(`[data-category-id="${parentItemId}"]`)
-            .addClass(`${this._options.itemClassName}--active`);
-        this._adjustMegaSubmenuColumns($megaSubmenu);
-        this._$activeMegaSubmenu = $megaSubmenu;
+        $childTeaser.removeClass('cs-navigation__teaser--hidden');
+
+        this._activeParentId = parentCategoryId;
     }
 
-    protected _hideMegaSubmenu($megaSubmenu: JQuery): void {
-        if (!$megaSubmenu.length) {
+    protected _hideCategoryChildren(parentCategoryId: number): void {
+        const $childSubmenu: JQuery = this._$allCategoriesFlyout.find(
+            `.cs-navigation__list[data-parent-item-id="${parentCategoryId}"]`
+        );
+        const $childTeaser: JQuery = this._$allCategoriesFlyout.find(
+            `.cs-navigation__teaser[data-parent-item-id="${parentCategoryId}"]`
+        );
+
+        if (!$childSubmenu.length && $childTeaser.length) {
             return;
         }
 
-        const parentItemId = $megaSubmenu.data('parent-item-id');
-        $megaSubmenu.removeClass('cs-navigation__list--hidden');
-        $megaSubmenu
-            .parent()
-            .find(`[data-category-id="${parentItemId}"]`)
+        this._$allCategoriesFlyout
+            .find(`[data-category-id="${parentCategoryId}"]`)
             .removeClass(`${this._options.itemClassName}--active`);
-        $megaSubmenu.addClass('cs-navigation__list--hidden');
-        this._$activeMegaSubmenu = $();
+
+        $childSubmenu.addClass('cs-navigation__list--hidden');
+        $childTeaser.addClass('cs-navigation__teaser--hidden');
+
+        this._activeParentId = 0;
     }
 
     protected _attachEvents(): void {
@@ -100,8 +128,6 @@ export default class NavigationMegaDropdown extends Navigation {
         const $allCategoriesItems: JQuery = $allCategoriesList.find(
             `.${this._options.itemClassName}--level_1`
         );
-        const $megaSubmenus = $allCategoriesList.nextAll();
-        let $activeMegaSubmenu: JQuery;
 
         let previousXPositions: number[] = [];
         let submenuShowTimeout;
@@ -118,50 +144,45 @@ export default class NavigationMegaDropdown extends Navigation {
                     previousXPositions[previousXPositions.length - 1]
             );
 
-            const targetCategoryId = $(event.target)
+            const targetParentId = $(event.target)
                 .closest($allCategoriesItems)
                 .data('category-id');
-            const $targetSubmenu: JQuery = $megaSubmenus.filter(
-                `[data-parent-item-id="${targetCategoryId}"]`
-            );
-
-            if ($targetSubmenu.is(this._$activeMegaSubmenu)) {
+            if (targetParentId === this._activeParentId) {
                 return;
             }
 
-            if (!$targetSubmenu.length) {
-                this._hideMegaSubmenu(this._$activeMegaSubmenu);
+            const $categoryChildren: JQuery = this._$allCategoriesFlyout.find(
+                `[data-parent-item-id="${targetParentId}"]`
+            );
+            if (!$categoryChildren.length) {
+                this._hideCategoryChildren(this._activeParentId);
             }
 
-            if ($targetSubmenu.length && !this._$activeMegaSubmenu) {
-                this._showMegaSubmenu($targetSubmenu);
+            if ($categoryChildren.length && !this._activeParentId) {
+                this._showCategoryChildren(targetParentId);
             } else if (horizontalChange < 3) {
                 clearInterval(submenuShowTimeout);
 
                 submenuShowTimeout = setTimeout(() => {
-                    this._hideMegaSubmenu(this._$activeMegaSubmenu);
-                    this._showMegaSubmenu($targetSubmenu);
+                    this._hideCategoryChildren(this._activeParentId);
+                    this._showCategoryChildren(targetParentId);
                 }, 20);
             }
         });
 
         $allCategoriesItems.on('touchstart', (event: JQuery.Event) => {
-            const targetCategoryId = $(event.target)
+            const targetParentId = $(event.target)
                 .closest($allCategoriesItems)
                 .data('category-id');
-            const $targetSubmenu = $megaSubmenus.filter(
-                `[data-parent-item-id="${targetCategoryId}"]`
+            const $categoryChildren = this._$allCategoriesFlyout.find(
+                `[data-parent-item-id="${targetParentId}"]`
             );
 
-            if ($targetSubmenu.length) {
+            if ($categoryChildren.length) {
                 event.preventDefault();
-                this._hideMegaSubmenu(this._$activeMegaSubmenu);
-                this._showMegaSubmenu($targetSubmenu);
+                this._hideCategoryChildren(this._activeParentId);
+                this._showCategoryChildren(targetParentId);
             }
-        });
-
-        $megaSubmenus.on('mouseleave', () => {
-            this._hideMegaSubmenu(this._$activeMegaSubmenu);
         });
     }
 }

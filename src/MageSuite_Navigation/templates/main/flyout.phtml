@@ -6,6 +6,11 @@ $item = $block->getItem();
 $parentId = $block->getParentItemId();
 $isAllCategories = $item->getIdentifier() === 'all-categories';
 $level = $block->getLevel();
+
+$showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
+$showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
+
+$thirdLevelLimit = $block->getThirdLevelLimit();
 ?>
 <div
     class="cs-navigation__flyout"
@@ -18,11 +23,11 @@ if ($item->hasSubItems()) {
         ->createBlock(Magento\Framework\View\Element\Template::class)
         ->setTemplate("MageSuite_Navigation::main/list.phtml")
         ->setItem($item)
-        ->setShowCategoryIconSubcats($block->getShowCategoryIconSubcats())
-        ->setShowProductsAmountSubcats($block->getShowProductsAmountSubcats())
+        ->setShowCategoryIconSubcats($showCategoryIconSubcats)
+        ->setShowProductsAmountSubcats($showProductsAmountSubcats)
+        ->setThirdLevelLimit(99)
         ->setLevel($level)
         ->setIsAllCategories($isAllCategories)
-        ->setParentItemId($item->getId())
         ->toHtml();
 
     if ($isAllCategories) {
@@ -32,10 +37,22 @@ if ($item->hasSubItems()) {
                     ->createBlock(Magento\Framework\View\Element\Template::class)
                     ->setTemplate("MageSuite_Navigation::main/list.phtml")
                     ->setItem($subItem)
-                    ->setShowCategoryIconSubcats($subItem)
-                    ->setShowProductsAmountSubcats($subItem)
+                    ->setShowCategoryIconSubcats($showCategoryIconSubcats)
+                    ->setShowProductsAmountSubcats($showProductsAmountSubcats)
+                    ->setThirdLevelLimit($thirdLevelLimit)
                     ->setLevel($level)
                     ->setIsMegaDropdownSublist(true)
+                    ->setParentItemId($subItem->getId())
+                    ->toHtml();
+            }
+
+            if ($subItem->hasImageTeaser()) {
+                echo $this->getLayout()
+                    ->createBlock(Magento\Framework\View\Element\Template::class)
+                    ->setTemplate("MageSuite_Navigation::main/image-teaser.phtml")
+                    ->setItem($subItem)
+                    ->setButtonIcon($block->getImageTeaserButtonIcon())
+                    ->setAdditionalCssClasses('cs-navigation__teaser cs-navigation__teaser--hidden')
                     ->setParentItemId($subItem->getId())
                     ->toHtml();
             }
@@ -51,7 +68,7 @@ if ($item->hasSubItems()) {
         ->toHtml();
 }*/
 
-if($item->hasImageTeaser()) {
+if ($item->hasImageTeaser()) {
     echo $this->getLayout()
         ->createBlock(Magento\Framework\View\Element\Template::class)
         ->setTemplate("MageSuite_Navigation::main/image-teaser.phtml")
