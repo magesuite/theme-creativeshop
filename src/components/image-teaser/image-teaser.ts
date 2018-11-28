@@ -175,6 +175,7 @@ export default class ImageTeaser {
     public _ytPlayer: any;
     protected _$container: JQuery;
     protected _swiperDefaults: object;
+    protected _optionsOverrides: any;
     protected _instance: any;
     protected _$videosTriggers: JQuery;
 
@@ -241,6 +242,10 @@ export default class ImageTeaser {
         };
 
         this._options = $.extend(this._swiperDefaults, this._options);
+        this._optionsOverrides = this._getDataAttrOverrideOptions();
+        if (this._optionsOverrides) {
+            this._options = $.extend(this._options, this._optionsOverrides);
+        }
 
         if (this._options.isSlider) {
             this._initTeaser(this._$container);
@@ -322,6 +327,21 @@ export default class ImageTeaser {
             this._options.openVideoInFullscreenMobile &&
             ('ontouchstart' in window || navigator.msMaxTouchPoints > 0)
         );
+    }
+
+    protected _getDataAttrOverrideOptions(): any {
+        let result: any;
+        const dataAttrCfg: any = this._$container.data('js-configuration');
+
+        if (dataAttrCfg) {
+            try {
+                result = JSON.parse(JSON.stringify(dataAttrCfg));
+            } catch (err) {
+                console.warn(`Could not parse settings from data-attribute: ${err}`);
+            };
+        }
+
+        return result;
     }
 
     /**

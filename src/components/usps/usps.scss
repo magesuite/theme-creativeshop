@@ -1,0 +1,63 @@
+/**
+ * USPs component customization.
+ * @see /MageSuite_ContentConstructorFrontend for layout, templates and images.
+ * USPs component is based on Image Teaser.
+ */
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$usps_slides-per-view: (
+    phone: 1,
+    phone-lg: 2,
+    tablet: 3,
+    laptop: 6,
+) !default;
+$usps_slide-margin: 0 !default;
+$usps_max-image-width: 80% !default;
+$usps_max-image-height: 6.5rem !default;
+$usps_image-margin: 0 auto 1rem !default;
+$usps_show-carousel-arrows: false !default;
+
+.#{$ns}image-teaser--usps {
+    $root: '.#{$ns}image-teaser';
+
+    #{$root}__slides {
+        align-items: flex-start;
+    }
+
+    #{$root}__slide {
+        margin: $usps_slide-margin;
+    }
+
+    &:not(#{$root}--slider) {
+        #{$root}__slides {
+            flex-wrap: nowrap;
+        }
+
+        @each $bp, $val in $usps_slides-per-view {
+            @if $val > 1 {
+                #{$root}__slide {
+                    @include media('>=#{$bp}') {
+                        width: calc(100% / #{$val});
+                    }
+                }
+            }
+        }
+    }
+    
+    #{$root}__image {
+        max-width: $usps_max-image-width;
+        max-height: $usps_max-image-height;
+        margin: $usps_image-margin;
+    }
+
+    #{$root}__text {
+        display: block;
+    }
+
+    @if $usps_show-carousel-arrows == false {
+        #{$root}__nav {
+            display: none;
+        }
+    }
+}
