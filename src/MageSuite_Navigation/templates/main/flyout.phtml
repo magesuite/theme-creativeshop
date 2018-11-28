@@ -3,7 +3,7 @@
 /** @var \Magento\Framework\View\Element\Template $block */
 
 $item = $block->getItem();
-$parentId = $block->getParentItemId();
+$itemId = $item->getId();
 $isAllCategories = $item->getIdentifier() === 'all-categories';
 $level = $block->getLevel();
 
@@ -15,7 +15,7 @@ $thirdLevelLimit = $block->getThirdLevelLimit();
 <div
     class="cs-navigation__flyout"
     data-category-identifier="<?= $item->getCategoryIdentifier() ?>"
-    data-parent-item-id="<?= $parentId; ?>"
+    data-parent-item-id="<?= $itemId; ?>"
 >
 <?php
 if ($item->hasSubItems()) {
@@ -42,7 +42,6 @@ if ($item->hasSubItems()) {
                     ->setThirdLevelLimit($thirdLevelLimit)
                     ->setLevel($level)
                     ->setIsMegaDropdownSublist(true)
-                    ->setParentItemId($subItem->getId())
                     ->toHtml();
             }
 
@@ -53,7 +52,6 @@ if ($item->hasSubItems()) {
                     ->setItem($subItem)
                     ->setButtonIcon($block->getImageTeaserButtonIcon())
                     ->setAdditionalCssClasses('cs-navigation__teaser cs-navigation__teaser--hidden')
-                    ->setParentItemId($subItem->getId())
                     ->toHtml();
             }
         }

@@ -3,6 +3,7 @@
 /** @var \Magento\Framework\View\Element\Template $block */
 
 $item = $block->getItem();
+$itemId = $item->getId();
 $imageTeaser = $item->getImageTeaser();
 // Text variables
 $headline = $imageTeaser->getHeadline();
@@ -16,9 +17,8 @@ $imageUrl = $imageTeaser->getImageUrl();
 $imageSrcset = $imageTeaser->getSrcSet();
 $imageAlt = $headline ?? $itemLabel;
 
-$parentItemId = $block->getParentItemId();
 ?>
-<div class="cs-navigation-teaser <?= $block->getAdditionalCssClasses(); ?>" data-parent-item-id="<?= $parentItemId; ?>">
+<div class="cs-navigation-teaser <?= $block->getAdditionalCssClasses(); ?>" data-parent-item-id="<?= $itemId; ?>">
     <?php if ($buttonUrl): ?>
         <a href="<?= $buttonUrl; ?>" class="cs-navigation-teaser__link">
     <?php else: ?>

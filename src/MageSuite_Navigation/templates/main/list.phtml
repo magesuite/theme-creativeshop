@@ -11,7 +11,6 @@ $itemLabel = $item->getLabel();
 $itemHasCustomUrl = $item->hasCustomUrl();
 $itemCategoryIdentifier = $item->getCategoryIdentifier() ?? '';
 
-$parentItemId = $block->getParentItemId();
 $isMegaDropdownSublist = $block->getIsMegaDropdownSublist();
 $isAllCategories = $block->getIsAllCategories();
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
@@ -19,7 +18,7 @@ $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
 $thirdLevelLimit = $block->getThirdLevelLimit();
 
 $listClasses = ' cs-navigation__list--level_' . $level;
-if ($isMegaDropdownSublist) {
+if ($level === 1 && $isMegaDropdownSublist) {
     $listClasses .= '  cs-navigation__list--hidden';
 } elseif ($isAllCategories) {
     $listClasses .= '  cs-navigation__list--all-categories';
@@ -27,7 +26,7 @@ if ($isMegaDropdownSublist) {
 ?>
 <ul
     class="cs-navigation__list<?= $listClasses; ?>"
-    data-parent-item-id="<?= $parentItemId; ?>"
+    data-parent-item-id="<?= $itemId; ?>"
 >
 <?php if ($level === 1 && !$isAllCategories): ?>
     <li
@@ -77,7 +76,6 @@ foreach($item->getSubItems() as $subItemIndex => $subItem):
                     ->setShowProductsAmountSubcats($showProductsAmountSubcats)
                     ->setShowCategoryIconSubcats($showCategoryIconSubcats)
                     ->setLevel($level + 1)
-                    ->setParentItemId($itemId)
                     ->setThirdLevelLimit($thirdLevelLimit)
                     ->toHtml();
             }
