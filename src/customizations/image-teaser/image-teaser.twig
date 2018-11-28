@@ -48,10 +48,12 @@
 
 {% set sizes = sizesMobile ~ ', ' ~ sizesDesktop %}
 
+{% if customRender == false %}
 <div class="cs-container cs-container--edge-to-edge">
     {% if currentScenario.teaserWidth.id == 'c' or currentScenario.teaserWidth.id == 'c-s' %}
         <div class="cs-container__inner">
     {% endif %}
+{% endif %}
 
         {% include locate('components/image-teaser/image-teaser.twig') with {
             lazyload: true,
@@ -78,7 +80,9 @@
             }
         } %}
 
+        {% if customRender == false %}
     {% if currentScenario.teaserWidth.id == 'c' or currentScenario.teaserWidth.id == 'c-s' %}
         </div>
     {% endif %}
 </div>
+{% endif %}

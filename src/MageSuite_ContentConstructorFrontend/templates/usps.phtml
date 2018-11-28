@@ -1,0 +1,18 @@
+<?php
+    $data = $block->getData();
+    foreach($data['data']['items'] as $key => &$slide):
+        if(isset($slide['display']) && $slide['display'] != true):
+            unset($data['data']['items'][$key]);
+            continue;
+        endif;
+        
+        if(isset($slide['decodedImage']) && !empty($slide['decodedImage'])):
+            $slide['decodedImage'] = $this->getViewFileUrl($slide['decodedImage']);
+        endif;
+    endforeach;
+?>
+
+<?= $this->getLayout()->createBlock('MageSuite\ContentConstructorFrontend\Block\Component', 'image-teaser-usps-footer-sqmu20', [
+        'data' => $data
+    ]
+)->toHtml(); ?>
