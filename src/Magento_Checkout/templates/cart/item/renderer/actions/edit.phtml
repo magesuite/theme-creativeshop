@@ -4,13 +4,11 @@
 ?>
 <?php if ($block->isProductVisibleInSiteVisibility()): ?>
     <div class="cs-cart-item__link cs-cart-item__link--left">
-        <a class="cs-link cs-link--look_icon-big"
+        <a class="cs-cart-item__link-wrapper"
            href="<?php /* @escapeNotVerified */ echo $block->getConfigureUrl() ?>"
            title="<?php echo $block->escapeHtml(__('Edit item parameters')); ?>"
         >
-            <svg class="cs-link__icon cs-link__icon--big">
-                <use xlink:href="#edit"></use>
-            </svg>
+            <?= $block->getChildHtml(); ?>
         </a>
     </div>
 <?php endif ?>

@@ -1,0 +1,189 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$cart-table_background: transparent !default;
+$cart-table_border-color: $color_border-500 !default;
+$cart-table_headline-border-bottom: 2px solid $color_border-500 !default;
+$cart-table_headline-color: $color_text-800 !default;
+$cart-table_item-color: $color_text-800 !default;
+
+.#{$ns}cart-table {
+    $root: &;
+    $rootNoChangeMobile: #{$root}--no-change-mobile;
+
+    @include media('<laptop') {
+        border: none;
+        font-size: 1.4rem;
+        padding: 0;
+
+        &:last-child {
+            padding-bottom: 1.2rem;
+        }
+    }
+
+    @include media('>=tablet') {
+        border-top: 1px solid $cart-table_border-color;
+        margin-top: 2rem;
+    }
+
+    &-wrapper {
+        background-color: $cart-table_background;
+        margin-bottom: 0;
+    }
+
+    #{$root}__head {
+        @include media('<laptop') {
+            display: none;
+        }
+    }
+
+    &__head {
+        border-bottom: $cart-table_headline-border-bottom;
+
+        @include media('<tablet') {
+            display: none;
+        }
+    }
+
+    &__head-col {
+        color: $cart-table_headline-color;
+        padding: 1.3rem 1.5rem 1.3rem .1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+
+        &--right {
+            text-align: right;
+        }
+    }
+
+    #{$root}__col {
+        @include media('<laptop') {
+            border: none;
+            display: block;
+            font-size: 1.4rem;
+            padding: 0.2rem;
+
+            &:first-child {
+                padding-top: 2rem;
+            }
+
+            &:last-child {
+                padding-bottom: 1rem;
+            }
+        }
+
+        &:before {
+            @include media('<laptop') {
+                content: attr(data-th) ': ';
+                padding-right: 10px;
+                display: inline-block;
+                color: $cart-table_headline-color;
+                font-weight: 700;
+            }
+        }
+
+        &--actions {
+            @include media('<laptop') {
+                border-bottom: 1px solid $cart-table_border-color;
+            }
+
+            &:before {
+                @include media('<laptop') {
+                    /* stylelint-disable-line */
+                    @include visually-hidden; /* stylelint-disable-line */
+                }
+            }
+        }
+    }
+
+    &__col {
+        font-size: 1.4rem;
+        color: $cart-table_item-color;
+        font-weight: 300;
+        border-bottom: 1px solid $cart-table_border-color;
+        padding: 0.8rem 1rem;
+
+        #{$root}:not(#{$rootNoChangeMobile}) & {
+            @include media('<tablet') {
+                border: none;
+                display: block;
+                padding: 0.4rem 2rem;
+
+                &:first-child {
+                    padding-top: 2rem;
+                }
+
+                &:last-child {
+                    padding-bottom: 1.2rem;
+                }
+            }
+
+            &:before {
+                @include media('<tablet') {
+                    padding-right: 10px;
+                    content: attr(data-th) ': ';
+                    display: inline-block;
+                    color: $cart-table_headline-color;
+                    font-weight: 700;
+                }
+            }
+        }
+
+        @include media('>=laptop') {
+            font-size: 1.4rem;
+        }
+
+        &--attention {
+            font-weight: 700;
+            color: $cart-table_item-color;
+        }
+
+        &--actions {
+            @include media('<tablet') {
+                border-bottom: 1px solid $cart-table_border-color;
+            }
+
+            &:before {
+                @include media('<tablet') {
+                    @include visually-hidden;
+                }
+            }
+        }
+
+        &--label {
+            @include media('<tablet') {
+                display: none !important;
+            }
+        }
+
+        &.price {
+            .price {
+                font-weight: 400;
+                font-size: 1.4rem;
+            }
+        }
+
+        &.subtotal,
+        &.total {
+            .price {
+                color: $cart-table_item-color;
+                font-size: 1.4rem;
+                font-weight: 400;
+            }
+        }
+
+        &.qty {
+            ul {
+                list-style: none inside none;
+                padding-left: 0;
+                margin-bottom: 0;
+            }
+
+            li {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+

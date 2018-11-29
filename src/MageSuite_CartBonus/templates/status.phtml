@@ -1,11 +1,11 @@
-<?php /** @var $block \MageSuite\CartBonus\Block\Status */
+<?php /** @var $block \Creativestyle\CartBonusExtension\Block\Status */
 $status = $block->getBonusesStatus();
 
 $progressToNextBonusPercentage = $status->getProgressPercentage();
 $amountToNextLevel = $status->getRemainingAmountForNextBonusWithCurrency();
 $awardedBonusesCount = $status->getAwardedBonusesCount();
 $allBonusesCount = $status->getBonusesCount();
-$firstNotAwarded = true;
+$isFirstNotAwarded = true;
 $tooltipLeftLimit = $this->getTooltipLeftLimit();
 $tooltipRightLimit = $this->getTooltipRightLimit();
 
@@ -13,60 +13,74 @@ if ($allBonusesCount):
 ?>
     <div class="cs-cart-bonus<?= $this->getIsEmptyBasket() ? ' cs-cart-bonus--empty-basket' : ''; ?>">
         <h2 class="cs-cart-bonus__headline">
-            <svg class="cs-cart-bonus__icon cs-cart-bonus__icon--headline">
-                <use xlink:href="#gift"></use>
-            </svg>
+            <?= $block->getChildHtml('bonus.gift.icon.headline'); ?>
             <span class="cs-cart-bonus__headline-text"><?= __('Acquire your gift now!'); ?></span>
         </h2>
         <div class="cs-cart-bonus__gifts-wrapper">
-            <?php foreach ($status->getBonuses() as $bonusIndex => $bonus):
+            <?php
+                foreach ($status->getBonuses() as $bonusIndex => $bonus):
                 $wasAwarded = $bonus->wasAwarded();
+                $isCurrent = false;
+                if (!$wasAwarded && $isFirstNotAwarded) {
+                    $isCurrent = true;
+                    $isFirstNotAwarded = false;
+                }
+
+                $bonusLabel = $bonus->getLabel() === null ? '???' : $bonus->getLabel();
+                $bonusStatus = '';
+                $bonusStatus .= $wasAwarded ? ' cs-cart-bonus__gift--awarded' : '';
+                $bonusStatus .= $isCurrent ? ' cs-cart-bonus__gift--current' : '';
             ?>
-                <div class="cs-cart-bonus__gift<?= $wasAwarded ? ' cs-cart-bonus__gift--awarded' : ''; ?>">
+
+                <div class="cs-cart-bonus__gift<?= $bonusStatus; ?>">
                     <div class="cs-cart-bonus__top-wrapper">
                         <p class="cs-cart-bonus__label-wrapper cs-cart-bonus__label-wrapper--top<?= $wasAwarded ? ' cs-cart-bonus__label-wrapper--awarded' : ''; ?>">
                             <span class="cs-cart-bonus__label">
-                                <?= $bonus->getLabel() === null ? '???' : $bonus->getLabel() ?>
+                                <?= $bonusLabel ?>
                             </span>
                         </p>
                         <div class="cs-cart-bonus__inline-amount">
-                            <strong class="cs-cart-bonus__amount"><?= $amountToNextLevel ?></strong><?= __(' more'); ?>
+                            <div class="cs-cart-bonus__amount-text">
+                                <strong class="cs-cart-bonus__amount"><?= $amountToNextLevel ?></strong><?= __(' more'); ?>
+                            </div>
                         </div>
                         <div class="cs-cart-bonus__icon-wrapper cs-cart-bonus__icon-wrapper--gift_top<?= $wasAwarded ? ' cs-cart-bonus__icon-wrapper--awarded' : ''; ?>">
-                            <svg class="cs-cart-bonus__icon cs-cart-bonus__icon--gift<?= $wasAwarded ? ' cs-cart-bonus__icon--awarded' : ''; ?>">
-                                <use xlink:href="#gift"></use>
-                            </svg>
+                            <div class="cs-cart-bonus__icon-box cs-cart-bonus__icon-box--gift">
+                                <?= $block->getChildHtml('bonus.gift.icon.gift'); ?>
+                            </div>
+                            <div class="cs-cart-bonus__icon-box cs-cart-bonus__icon-box--status">
+                                <?= $block->getChildHtml('bonus.gift.icon.status'); ?>
+                            </div>
                         </div>
                     </div>
                     <div class="cs-cart-bonus__progress-wrapper">
-                        <?php if ($wasAwarded || (!$wasAwarded && $firstNotAwarded)): ?>
+                        <?php if ($wasAwarded || $isCurrent): ?>
                             <div
                                 class="cs-cart-bonus__progress-done<?= $wasAwarded ? ' cs-cart-bonus__progress-done--awarded' : ''; ?>"
                                 style="transform: scaleX(<?= $wasAwarded ? 1 : $progressToNextBonusPercentage / 100; ?>)"
                             ></div>
-                        <?php endif; ?>
-                        <div class="cs-cart-bonus__progress-possible">
-                            <?php if (!$wasAwarded && $firstNotAwarded):
-                                $firstNotAwarded = false;
-                                $tooltipExtraClasses = '';
+                            <div class="cs-cart-bonus__progress-possible">
+                                <?php if ($isCurrent):
+                                    $tooltipExtraClasses = '';
 
-                                if ($progressToNextBonusPercentage <= $tooltipLeftLimit) {
-                                    $tooltipExtraClasses .=  ' cs-cart-bonus__tooltip--edge_left';
-                                } elseif ($progressToNextBonusPercentage >= $tooltipRightLimit) {
-                                    $tooltipExtraClasses .=  ' cs-cart-bonus__tooltip--edge_right';
-                                }
-                            ?>
-                                <div class="cs-cart-bonus__tooltip<?= $tooltipExtraClasses; ?>" style="left: <?= $progressToNextBonusPercentage; ?>%">
-                                    <div class="cs-cart-bonus__tooltip-content">
-                                        <strong class="cs-cart-bonus__amount"><?= $amountToNextLevel ?></strong><?= __(' more'); ?>
+                                    if ($progressToNextBonusPercentage <= $tooltipLeftLimit) {
+                                        $tooltipExtraClasses .=  ' cs-cart-bonus__tooltip--edge_left';
+                                    } elseif ($progressToNextBonusPercentage >= $tooltipRightLimit) {
+                                        $tooltipExtraClasses .=  ' cs-cart-bonus__tooltip--edge_right';
+                                    }
+                                ?>
+                                    <div class="cs-cart-bonus__tooltip<?= $tooltipExtraClasses; ?>" style="left: <?= $progressToNextBonusPercentage; ?>%">
+                                        <div class="cs-cart-bonus__tooltip-content">
+                                            <strong class="cs-cart-bonus__amount"><?= $amountToNextLevel ?></strong><?= __(' more'); ?>
+                                        </div>
                                     </div>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <p class="cs-cart-bonus__label-wrapper cs-cart-bonus__label-wrapper--bottom<?= $wasAwarded ? ' cs-cart-bonus__label-wrapper--awarded' : ''; ?>">
                         <span class="cs-cart-bonus__label">
-                            <?= $bonus->getLabel() === null ? '???' : $bonus->getLabel() ?>
+                            <?= $bonusLabel ?>
                         </span>
                     </p>
                 </div>

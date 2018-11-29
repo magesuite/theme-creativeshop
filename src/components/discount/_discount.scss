@@ -1,6 +1,17 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$discount_title-text: $color_dove-gray !default;
+$discount_content-text: $color_dove-gray !default;
+$discount_border-top: 1px solid $color_alto !default;
+$discount_title-icon-after: 'images/button-arrow-dark.png' !default;
+$discount_title-icon-color: $color_gray !default;
+
 .#{$ns}discount {
+    $root: &;
+    
     padding: 1.5rem 1.5rem 0;
-    border-top: 1px solid $color_alto;
+    border-top: $discount_border-top;
 
     @include media('>=laptop') {
         padding: 1.5rem 2rem 0 0;
@@ -34,12 +45,12 @@
 
     &__content {
         padding: 0.5rem 0 1rem;
+        display: none;
     }
 
     &__title {
         border-top: none;
         padding: 0;
-        cursor: pointer;
 
         @include media('>=laptop') {
             margin-bottom: 2rem;
@@ -48,7 +59,7 @@
         &:after {
             content: '';
             display: inline-block;
-            background-image: url('../images/button-arrow-dark.png');
+            background-image: url(#{$discount_title-icon-after});
             background-size: contain;
             background-repeat: no-repeat;
             width: 0.6rem;
@@ -58,6 +69,10 @@
             margin-left: 1rem;
         }
 
+        #{$root}[data-collapsible="true"] & {
+            cursor: pointer;
+        }
+
         &[aria-expanded='true'] {
             &:after {
                 transform: rotate(-90deg);
@@ -65,14 +80,14 @@
         }
 
         &-text {
-            @extend .#{$ns}t-text;
-            @extend .#{$ns}t-text--size_300;
+            font-size: 1.2rem;
+            color: $discount_title-text;
         }
     }
 
     &__text {
-        @extend .#{$ns}t-text;
-        @extend .#{$ns}t-text--size_300;
+        font-size: 1.2rem;
+        color: $discount_content-text;
     }
 
     &__form {
@@ -81,6 +96,26 @@
 
         @include media('>=tablet') {
             padding-top: 0.5rem;
+        }
+    }
+
+    &__trigger-icon {
+        margin-left: 1.5rem;
+        width: 6px;
+        height: 10px;
+        fill: $discount_title-icon-color;
+        transform: rotate(90deg);
+        transition: transform .3s;
+        display: none;
+
+        &--animation {
+            #{$root}.active & {
+                transform: rotate(-90deg);
+            }
+        }
+
+        #{$root}[data-collapsible="true"] & {
+            display: inline;
         }
     }
 }

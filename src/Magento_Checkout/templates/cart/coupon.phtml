@@ -1,69 +1,75 @@
 <?php
 // @codingStandardsIgnoreFile
+// @TODO: refactor .cs-form & .cs-button classes
 
+$placeholder = $block->getInputPlaceholder();
+$inputLabel = $block->getInputLabel();
+$buttonApplyLabel = $block->getButtonApplyLabel();
+$buttonCancelLabel = $block->getButtonCancelLabel();
+$collapseOptions = $block->getCollapsibleWidgetOptions();
 ?>
-<div class="cs-discount | discount | cs-collapse" id="block-discount">
-    <div class="cs-discount__title | cs-collapse__trigger cs-collapse__trigger--arrowed" data-role="title">
+
+<div class="block discount cs-discount <?= $block->getAdditionalCssClasses() ?>" id="block-discount" 
+    <?php if($block->getIsCollapsible()): ?>
+        data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
+    <?php endif; ?>
+    >
+    <div class="title cs-discount__title" data-role="title">
         <span class="cs-discount__title-text" id="block-discount-heading" role="heading" aria-level="2">
-            <?php /* @escapeNotVerified */ echo __('Apply Discount Code') ?>
+            <?= $block->getHeadline(); ?>
         </span>
-        <svg class="cs-discount__trigger-icon | cs-collapse__trigger-icon">
-            <use xlink:href="#arrow_next"></use>
-        </svg>
+        <?= $block->getChildHtml('checkout.cart.coupon.icon'); ?>
     </div>
-    <div class="cs-discount__content | cs-collapse__content" data-role="content" aria-labelledby="block-discount-heading">
+    <div class="content cs-discount__content" data-role="content" aria-labelledby="block-discount-heading">
         <form
             id="discount-coupon-form"
             action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/couponPost') ?>"
             method="post"
-            class="cs-discount__form | cs-form"
+            class="cs-discount__form cs-form"
             data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code",
                                                "removeCouponSelector": "#coupon_remove",
                                                "applyButton": "#coupon_apply",
                                                "cancelButton": "#coupon_cancel"}}'
         >
-            <div class="cs-form__fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : '' ?>">
+            <div class="fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : ' ' ?>cs-form__fieldset">
                 <input type="hidden" name="remove" id="coupon_remove" value="0"/>
-
-                <div class="cs-form__field | cs-input">
-                    <label for="coupon_code" class="cs-input__label"><span><?php /* @escapeNotVerified */
-                            echo __('Enter discount code') ?></span></label>
-
-                    <div class="cs-input__control">
+                <div class="field cs-form__field cs-input">
+                    <?php if(!empty($inputLabel)): ?>
+                    <label for="coupon_code" class="label cs-input__label">
+                        <span><?= /* @escapeNotVerified */ $block->escapeHtml($inputLabel) ?></span>
+                    </label>
+                    <?php endif; ?>
+                    <div class="control cs-input__control">
                         <input
                             type="text"
-                            class="cs-input__input"
+                            class="input-text cs-input__input"
                             id="coupon_code"
                             name="coupon_code"
                             value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>"
-                            placeholder="<?php echo $block->escapeHtml(__('Enter discount code')); ?>"
+                            <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtml($placeholder); ?>"<?php endif; ?>
                         />
                     </div>
                 </div>
-                <div class="cs-form__buttons">
+                <div class="actions-toolbar cs-form__buttons">
                     <?php if (!strlen($block->getCouponCode())): ?>
                         <button
-                            class="cs-button cs-button--look_default cs-button--size_300"
+                            class="action apply primary cs-button cs-button--look_default cs-button--size_300"
                             type="submit"
                             id="coupon_apply"
-                            value="<?php /* @escapeNotVerified */echo __('Apply Discount') ?>"
+                            value="<?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?>"
                         >
-                            <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Apply Discount') ?></span>
-                            <svg class="cs-button__icon">
-                                <use xlink:href="#arrow_next"></use>
-                            </svg>
+                            <span class="cs-button__span"><?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?></span>
+                            <?= $block->getChildHtml('checkout.cart.coupon.apply.icon'); ?>
                         </button>
                     <?php else: ?>
                         <button
                             type="button"
-                            class="cs-button cs-button--size_300 cs-button--look_light"
+                            class="action cancel primary cs-button cs-button--size_300 cs-button--look_light"
                             id="coupon_cancel"
-                            value="<?php /* @escapeNotVerified */echo __('Cancel Coupon') ?>"
+                            value="<?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?>"
                         >
-                            <?php /* @escapeNotVerified */ echo __('Cancel Coupon') ?>
-                            <svg class="cs-button__icon">
-                                <use xlink:href="#arrow_next"></use>
-                            </svg>
+                            <?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?>
+                            <?= $block->getChildHtml('checkout.cart.coupon.cancel.icon'); ?>
                         </button>
                     <?php endif; ?>
                 </div>

@@ -1,156 +1,113 @@
 <?php
 // @codingStandardsIgnoreFile
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
-
-$item = $block->getItem();
-$product = $item->getProduct();
+$_item = $block->getItem();
+$product = $_item->getProduct();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
-$hasProductUrl = $block->hasProductUrl();
 /** @var \Magento\Msrp\Helper\Data $helper */
 $helper = $this->helper('Magento\Msrp\Helper\Data');
 $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
 ?>
-<tbody>
-
-<tr class="cs-cart-item">
-    <td data-th="<?php echo $block->escapeHtml(__('Item')); ?>" class="cs-table__col cs-cart-item__item | item">
-        <div class="cs-cart-item__product">
-            <?php if ($hasProductUrl):?>
-                <a
-                    href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"
-                    title="<?php echo $block->escapeHtml($block->getProductName()) ?>"
+<tbody class="cs-cart-table__body cart item">
+    <tr class="cs-cart-item item-info">
+        <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="cs-cart-table__col cs-cart-item__item col item">
+            <div class="cs-cart-item__product">
+                <?php if ($block->hasProductUrl()):?>
+                    <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"
+                    title="<?= $block->escapeHtml($block->getProductName()) ?>"
                     tabindex="-1"
-                    class="cs-cart-item__image"
-                >
-            <?php else:?>
-                <span class="cs-cart-item__image">
-            <?php endif;?>
-
-            <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
-
-            <?php if ($hasProductUrl):?>
-                 </a>
-            <?php else: ?>
-                 </span>
-            <?php endif; ?>
-
-            <div class="cs-cart-item__details">
-                <?php if($item->getIsGift()): ?>
-                    <span class="cs-cart-item__badge | cs-badge cs-badge--cut cs-badge--positive">
-                        <span class="cs-badge__span"><?php echo __('FREE') ?></span>
+                    class="cs-cart-item__image product-item-photo">
+                <?php else:?>
+                    <span class="cs-cart-item__image product-item-photo">
+                <?php endif;?>
+                <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
+                <?php if ($block->hasProductUrl()):?>
+                    </a>
+                <?php else: ?>
                     </span>
                 <?php endif; ?>
-                <span class="cs-cart-item__name">
-                    <?php if ($hasProductUrl):?>
-                        <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>">
-                            <?php echo $block->escapeHtml($block->getProductName()) ?>
-                        </a>
-                    <?php else: ?>
-                        <?php echo $block->escapeHtml($block->getProductName()) ?>
+                <div class="cs-cart-item__details product-item-details">
+                    <?php if($_item->getIsGift()): ?>
+                        <span class="cs-cart-item__badge">
+                            <span class="cs-cart-item__badge-span"><?php echo __('FREE') ?></span>
+                        </span>
                     <?php endif; ?>
-                </span>
-                <?php if ($options = $block->getOptionList()):?>
-                    <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
-                        <?php foreach ($options as $option) : ?>
-                            <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
-                            <dl class="cs-cart-item__options-group">
-                                <dt class="cs-cart-item__options-label">
-                                    <?php echo $block->escapeHtml($option['label']) ?>
-                                </dt>
-                                <dd class="cs-cart-item__options-value">
-                                    <?php if (isset($formatedOptionValue['full_view'])): ?>
-                                        <?php /* @escapeNotVerified */ echo $formatedOptionValue['full_view'] ?>
-                                    <?php else: ?>
-                                        <?php /* @escapeNotVerified */ echo $formatedOptionValue['value'] ?>
-                                    <?php endif; ?>
-                                </dd>
-                            </dl>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif;?>
-
-                <?php if ($messages = $block->getMessages()): ?>
-                    <?php foreach ($messages as $message): ?>
-                        <div class="cs-cart-item__message | message <?php /* @escapeNotVerified */ echo $message['type'] ?>">
-                            <div><?php echo $block->escapeHtml($message['text']) ?></div>
+                    <strong class="cs-cart-item__name product-item-name">
+                        <?php if ($block->hasProductUrl()):?>
+                            <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
+                        <?php else: ?>
+                            <?= $block->escapeHtml($block->getProductName()) ?>
+                        <?php endif; ?>
+                    </strong>
+                    <?php if ($_options = $block->getOptionList()):?>
+                        <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
+                            <?php foreach ($_options as $_option) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                                <dl class="cs-cart-item__options-group item-options">
+                                    <dt class="cs-cart-item__options-label">
+                                        <?= $block->escapeHtml($_option['label']) ?>
+                                    </dt>
+                                    <dd class="cs-cart-item__options-value">
+                                        <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                            <?= /* @escapeNotVerified */ $_formatedOptionValue['full_view'] ?>
+                                        <?php else: ?>
+                                            <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
+                                        <?php endif; ?>
+                                    </dd>
+                                </dl>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-
-                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
-
-                <?php if ($addInfoBlock): ?>
-                    <?php echo $addInfoBlock->setItem($item)->toHtml() ?>
-                <?php endif;?>
-
+                    <?php endif;?>
+                    <?php if ($messages = $block->getMessages()): ?>
+                        <?php foreach ($messages as $message): ?>
+                            <div class="cs-cart-item__message cart item message <?= /* @escapeNotVerified */ $message['type'] ?>"><div><?= $block->escapeHtml($message['text']) ?></div></div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                    <?php if ($addInfoBlock): ?>
+                        <?= $addInfoBlock->setItem($_item)->toHtml() ?>
+                    <?php endif;?>
+                </div>
             </div>
-        </div>
-
-    </td>
-
-    <?php if ($canApplyMsrp): ?>
-        <td class="cs-table__col | msrp" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
-            <span class="pricing msrp">
-                <span class="msrp notice"><?php /* @escapeNotVerified */ echo __('See price before order confirmation.'); ?></span>
-                <?php $helpLinkId = 'cart-msrp-help-' . $item->getId(); ?>
-                <a
-                    href="#"
-                    class="action help map"
-                    id="<?php /* @escapeNotVerified */ echo($helpLinkId); ?>"
-                    data-mage-init='{"addToCart":{"helpLinkId": "#<?php /* @escapeNotVerified */ echo $helpLinkId;?>","productName": "<?php /* @escapeNotVerified */ echo $product->getName(); ?>","showAddToCart": false}}'>
-                    <span><?php /* @escapeNotVerified */ echo __("What's this?"); ?></span>
-                </a>
-            </span>
         </td>
-    <?php else: ?>
-        <td class="cs-table__col | cs-cart-item__price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>">
-            <?php echo $block->getUnitPriceHtml($item); ?>
+        <?php if ($canApplyMsrp): ?>
+            <td class="cs-cart-table__col cs-cart-item__price col msrp" data-th="<?= $block->escapeHtml(__('Price')) ?>">
+                <span class="pricing msrp">
+                    <span class="msrp notice"><?= /* @escapeNotVerified */ __('See price before order confirmation.') ?></span>
+                    <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
+                    <a href="#" class="action help map" id="<?= /* @escapeNotVerified */ ($helpLinkId) ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?= /* @escapeNotVerified */ $helpLinkId ?>","productName": "<?= /* @escapeNotVerified */ $product->getName() ?>","showAddToCart": false}}'>
+                        <span><?= /* @escapeNotVerified */ __("What's this?") ?></span>
+                    </a>
+                </span>
+            </td>
+        <?php else: ?>
+            <td class="cs-cart-table__col cs-cart-item__price col price" data-th="<?= $block->escapeHtml(__('Price')) ?>">
+                <?= $block->getUnitPriceHtml($_item) ?>
+            </td>
+        <?php endif; ?>
+        <td class="cs-cart-table__col cs-cart-item__qty col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
+            <div class="cs-cart-item__qty-input">
+                <?php 
+                    $qtyBlock = $block->getChildBlock('checkout.cart.item.'.$_item->getProduct()->getTypeId().'.qty');
+                    $qtyBlock->setData('item', $_item);
+                    $qtyBlock->setData('qty', $block->getQty());
+                    echo $qtyBlock->toHtml();
+                ?>
+            </div>
         </td>
-    <?php endif; ?>
-    <td class="cs-table__col | cs-cart-item__qty" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>">
-
-        <div class="cs-cart-item__qty-input">
-            <?=$this->getLayout()->createBlock(
-                'MageSuite\Frontend\Block\Twig',
-                'cart-item'.$item->getId(), [
-                    'data' => [
-                        "namespace" => 'cs-',
-                        "minValue" => 1,
-                        "initialValue" =>  /* @escapeNotVerified */ $block->getQty(),
-                        "maxLength" => 12,
-                        "size" => 2,
-                        "name" => 'cart['. /* @escapeNotVerified */ $item->getId().'][qty]',
-                        'inputClass' => 'qty',
-                        "inputParams" => 'id="cart-'./* @escapeNotVerified */ $item->getId().'-qty"
-                                          name="cart'./* @escapeNotVerified */ $item->getId().'][qty]"
-                                          data-cart-item-id="'./* @escapeNotVerified */ $item->getSku().'"
-                                          data-role="cart-item-qty"
-                                          data-validate="{required:true,\'validate-greater-than-zero\':true}"',
-                        "icons" => [
-                            "increment" => '#plus',
-                            "decrement" => '#minus'
-                        ]
-                    ]
-                ]
-            )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
-        </div>
-
-    </td>
-
-    <td class="cs-table__col | cs-cart-item__subtotal | subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal'));?>">
-        <div class="cs-cart-item__subtotal-inner">
-            <?php if ($canApplyMsrp): ?>
-                <span class="cart msrp subtotal">--</span>
-            <?php else: ?>
-                <?php echo $block->getRowTotalHtml($item); ?>
-            <?php endif; ?>
-        </div>
-    </td>
-    <td class="cs-table__col | cs-cart-item__bottom">
-        <div class="cs-cart-item__buttons">
-            <?php /* @escapeNotVerified */ echo $block->getActions($item) ?>
-        </div>
-    </td>
-</tr>
-
+        <td class="cs-cart-table__col cs-cart-item__subtotal col subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
+            <div class="cs-cart-item__subtotal-inner">
+                <?php if ($canApplyMsrp): ?>
+                    <span class="cart msrp subtotal">--</span>
+                <?php else: ?>
+                    <?= $block->getRowTotalHtml($_item) ?>
+                <?php endif; ?>
+            </div>
+        </td>
+        <td class="cs-cart-table__col cs-cart-item__bottom">
+            <div class="cs-cart-item__buttons actions-toolbar">
+                <?= /* @escapeNotVerified */ $block->getActions($_item) ?>
+            </div>
+        </td>
+    </tr>
 </tbody>
