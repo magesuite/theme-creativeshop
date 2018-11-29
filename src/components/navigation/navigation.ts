@@ -7,33 +7,27 @@ export interface NavigationOptions {
     /**
      * Class name of navigation container. Flyout positions will be calculated
      * relative to this element.
-     * @type {string}
      */
     containerClassName?: string;
     /**
      * Navigation list item element. It is used to enhance keyboard accessability.
-     * @type {string}
      */
     itemClassName?: string;
     /**
      * Navigation flyout class name.
-     * @type {string}
      */
     flyoutClassName?: string;
     /**
      * Navigation flyout columns container class name.
-     * @type {string}
      */
     flyoutColumnsClassName?: string;
     /**
      * Desired max height of the flyout. Number of columns will be decreased until
      * flyout's height will be smaller then given max height.
-     * @type {number}
      */
     flyoutMaxHeight?: number;
     /**
      * Maximum number of columns with categories that flyout can have.
-     * @type {number}
      */
     flyoutMaxColumnCount?: number;
     /**
@@ -42,50 +36,40 @@ export interface NavigationOptions {
      * - "center" - center of the flyout will be align to the center of an item.
      * - "left" - left edge of the flyout will be aligned to the left edge of an item.
      * - "right" - right edge of the flyout will be aligned to the left edge of an item.
-     * @type {string}
      */
     flyoutAlignTo?: string;
     /**
      * Tells when navigation should switch between "left" and "right" align modes.
      * E.g. value "3" will align first 3 flyout normally and then switch, you
      * can also write "-3" to align normally for all but last 3 flyouts.
-     *
-     * @type {number}
      */
     flyoutAlignSwitch?: number;
     /**
      * Number of miliseconds to wait for next resize event before recalculating flyout positions.
-     * @type {number}
      */
     resizeDebounce?: number;
     /**
      * Number of miliseconds to wait after hovering the mouse over a link before showing the flyout.
-     * @type {number}
      */
     flyoutShowDelay?: number;
     /**
      * Round transform left on flyout to avoid blur in text..
-     * @type {boolean}
      */
     roundTransformLeft?: boolean;
     /**
      * if showNavigationOverlay is set to TRUE, overlay will be shown on the content and all elements under it
-     * @type {string}
      */
     contentSelector?: string;
     /**
      * Tells if active category should be highlighted
-     * @type {boolean}
      */
     highlightActiveCategory?: boolean;
     /**
      * If highlightActiveCategory is set to true, it let you decide if whole category tree should be highlighted
-     * @type {boolean}
      */
     highlightWholeTree?: boolean;
     /**
-     * Classname of active category (as addition to original)
-     * @type {string}
+     * Class name of active category (as addition to original)
      */
     activeCategoryClassName?: string;
 }
@@ -234,6 +218,7 @@ export default class Navigation {
      */
     protected _adjustFlyout($flyout: JQuery): void {
         this._setTransform($flyout, '');
+        this._adjustFlyoutExtras($flyout);
         this._adjustFlyoutColumns($flyout);
 
         let alignTo: string = this._options.flyoutAlignTo;
@@ -253,6 +238,21 @@ export default class Navigation {
             alignTo = alignTo === 'left' ? 'right' : 'left';
         }
         this._adjustFlyoutPosition($flyout, alignTo);
+    }
+
+    /**
+     * Makes sure that all extra elements (image teaser, product promo) have proper width.
+     * @param $flyout jQuery flyout element.
+     */
+    protected _adjustFlyoutExtras($flyout: JQuery) {
+        const $flyoutExtras: JQuery = $flyout.children(
+            `:not(.${this._options.flyoutColumnsClassName})`
+        );
+        $flyoutExtras.css({
+            'max-width': `${(this._containerClientRect.width /
+                this._options.flyoutMaxColumnCount) *
+                2}px`,
+        });
     }
 
     /**
@@ -368,6 +368,9 @@ export default class Navigation {
     protected _setColumnCount($element: JQuery, columnCount: number): void {
         $element.css({
             'column-count': columnCount,
+            width: `${(this._containerClientRect.width /
+                this._options.flyoutMaxColumnCount) *
+                columnCount}px`,
         });
         this._triggerColumnsReflow($element);
     }

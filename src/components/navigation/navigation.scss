@@ -4,18 +4,6 @@
 $navigation_font-size: 1rem !default;
 
 $navigation_overlay-show: false !default;
-
-$navigation_flyout-edge-gutter: $page_edge-gutter !default;
-$navigation_flyout-max-width: $page_max-width !default;
-// Maximum number of columns (including image teaser, product promo etc.) for tablet.
-$navigation_flyout-columns-max-tablet: 4 !default;
-// Maximum number of columns (including image teaser, product promo etc.) for desktop.
-$navigation_flyout-columns-max-desktop: 5 !default;
-$navigation_flyout-column-width-tablet: #{100vw /
-    $navigation_flyout-columns-max-tablet} - #{$navigation_flyout-edge-gutter * 2 /
-    $navigation_flyout-columns-max-tablet};
-$navigation_flyout-column-width-desktop: $navigation_flyout-max-width /
-    $navigation_flyout-columns-max-tablet;
 // Box shadow effect applied for the flyout.
 $navigation_flyout-box-shadow: 2px 2px 5px rgba($color_background-800, 0.15) !default;
 // Flyout background color.
@@ -47,14 +35,10 @@ $navigation_link-border: 1px solid $color_border-500 !default;
             }
 
             &_1 {
-                columns: calc(#{$navigation_flyout-column-width-tablet}) 1;
+                width: 100%;
+                columns: auto 1;
                 column-gap: 0;
-
-                @include media(
-                    '>=#{$navigation_flyout-max-width / 16rem * 10em}'
-                ) {
-                    columns: $navigation_flyout-column-width-desktop 1;
-                }
+                flex: 1 0 auto;
             }
 
             &_2 {
@@ -100,17 +84,10 @@ $navigation_link-border: 1px solid $color_border-500 !default;
 
             &_1 {
                 padding: 1rem;
-                width: calc(#{$navigation_flyout-column-width-tablet});
                 // Prevents element breaking because of column layout.
                 page-break-inside: avoid; /* Theoretically FF 20+ */
                 break-inside: avoid-column; /* IE 11 */
                 display: table;
-
-                @include media(
-                    '>=#{$navigation_flyout-max-width / 16rem * 10em}'
-                ) {
-                    width: $navigation_flyout-column-width-desktop;
-                }
             }
         }
 
@@ -188,14 +165,9 @@ $navigation_link-border: 1px solid $color_border-500 !default;
 
     &__teaser {
         position: relative;
-        max-width: calc(#{$navigation_flyout-column-width-tablet} * 2);
         max-height: 100%;
         padding: 1em;
         overflow: hidden;
-
-        @include media('>=#{$navigation_flyout-max-width / 16rem * 10em}') {
-            max-width: $navigation_flyout-column-width-desktop * 2; // 1200px / 5
-        }
 
         &--hidden {
             display: none;
@@ -235,12 +207,7 @@ $navigation_link-border: 1px solid $color_border-500 !default;
     }
 
     &__products {
-        width: $navigation_flyout-column-width-tablet;
         padding: 0.5em 1em;
-
-        @include media('>=#{$navigation_flyout-max-width / 16rem * 10em}') {
-            width: $navigation_flyout-column-width-desktop;
-        }
 
         &-header {
             display: block;

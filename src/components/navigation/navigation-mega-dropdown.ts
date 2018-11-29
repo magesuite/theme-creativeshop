@@ -22,18 +22,32 @@ export default class NavigationMegaDropdown extends Navigation {
         );
     }
 
+    /**
+     * Overwritten method which skips adjusting column count for "All categories" root list.
+     * @param $flyout jQuery flyout element.
+     */
     protected _adjustFlyout($flyout: JQuery): void {
         const $parentItem: JQuery = $flyout.closest(
             `.${this._options.itemClassName}--level_0`
         );
 
         if ($parentItem.is(this._$allCategoriesItem)) {
+            this._adjustFlyoutExtras($flyout);
+            const $flyoutColumns: JQuery = $flyout.find(
+                `.${this._options.flyoutColumnsClassName}`
+            );
+            this._setColumnCount($flyoutColumns, 1);
+
             return;
         }
 
         super._adjustFlyout($flyout);
     }
 
+    /**
+     * Makes sure that active category children are hidden when hiding the flyout.
+     * @param $flyout jQuery flyout element.
+     */
     protected _hideFlyout($flyout: JQuery): void {
         super._hideFlyout($flyout);
 
@@ -75,6 +89,10 @@ export default class NavigationMegaDropdown extends Navigation {
         }
     }
 
+    /**
+     * Shows all children which have given parent category ID set.
+     * @param parentCategoryId Parent category ID which children should be shown.
+     */
     protected _showCategoryChildren(parentCategoryId: number): void {
         const $childSubmenu: JQuery = this._$allCategoriesFlyout.find(
             `.cs-navigation__list[data-parent-item-id="${parentCategoryId}"]`
@@ -97,6 +115,10 @@ export default class NavigationMegaDropdown extends Navigation {
         this._activeParentId = parentCategoryId;
     }
 
+    /**
+     * Hides all children which have given parent category ID set.
+     * @param parentCategoryId Parent category ID which children should be hidden.
+     */
     protected _hideCategoryChildren(parentCategoryId: number): void {
         const $childSubmenu: JQuery = this._$allCategoriesFlyout.find(
             `.cs-navigation__list[data-parent-item-id="${parentCategoryId}"]`
