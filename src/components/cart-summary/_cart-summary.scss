@@ -1,19 +1,33 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$cart-summary_background: $color_background-200 !default;
+$cart-summary_border-color: $color_border-500 !default;
+$cart-summary_border-radius: 3px !default;
+$cart-summary_box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27) !default;
+$cart-summary_label-color: $color_text-500 !default;
+$cart-summary_value-color: $color_text-800 !default;
+$cart-summary_border: $color_border-500 !default;
+
 .#{$ns}cart-summary {
-    background: $color_white;
-    border-radius: 3px;
+    $root: &;
+
+    background: $cart-summary_background;
+    border-radius: $cart-summary_border-radius;
     padding: 1rem 1.5rem 2rem;
-    border-top: 1px solid $color_alto;
+    border-top: 1px solid $cart-summary_border-color;
 
     @include media('>=tablet') {
         padding: 2rem;
         border-bottom: none;
         border-top: none;
-        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
+        box-shadow: $cart-summary_box-shadow;
     }
 
     &--empty {
         border-top: none;
         padding: 0 2rem;
+
         @include media('>=tablet') {
             box-shadow: none;
             padding: 2rem 0;
@@ -22,6 +36,7 @@
 
     &__title {
         display: none;
+
         @include media('>=tablet') {
             display: block;
         }
@@ -31,18 +46,21 @@
         padding: 1.1rem 0.8rem 1.1rem 0;
 
         @include media('>=tablet') {
-            border-top: 1px solid $color_alto;
+            border-top: 1px solid $cart-summary_border;
             margin-top: 1.1rem;
         }
     }
 
     &__label {
-        @extend .#{$ns}t-text;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: $cart-summary_label-color;
     }
 
     &__value {
-        @extend .#{$ns}t-text;
-        @extend .#{$ns}t-text--look_attention;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: $cart-summary_value-color;
     }
 
     &__remove {
@@ -54,12 +72,12 @@
     &__totals {
         font-size: 1.4rem;
         font-weight: 400;
-        color: $color_dove-gray;
+        color: $cart-summary_label-color;
 
         th {
             padding-left: 0;
             font-weight: 400;
-            color: $color_dove-gray;
+            color: $cart-summary_label-color;
         }
 
         td {
@@ -70,12 +88,12 @@
         .grand {
             font-weight: 700 !important; /* stylelint-disable-line declaration-no-important */
             font-size: 1.5rem !important; /* stylelint-disable-line declaration-no-important */
-            border-top: 1px solid $color_alto;
+            border-top: 1px solid $cart-summary_border;
 
             th,
             td {
                 padding-top: 1.4rem;
-                color: $color_mineshaft;
+                color: $cart-summary_value-color;
             }
         }
     }

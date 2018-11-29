@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="checkout_cart_item_renderers"/>
     <body>
@@ -27,7 +21,7 @@
             </action>
         </referenceBlock>
 
-        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container  cs-container--checkout-type cs-container--spacious"/>
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container cs-container--checkout-type cs-container--spacious"/>
 
         <referenceContainer name="main" htmlClass="cs-cart-page"/>
         <move element="page.main.title" destination="main" before="-"/>
@@ -46,6 +40,31 @@
             </container>
         </referenceContainer>
 
+        <referenceBlock name="checkout.cart.item.renderers.simple">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.simple.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.default">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.default.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.virtual">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.virtual.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.bundle">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.bundle.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.configurable">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.configurable.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.bundle">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.bundle.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.downloadable">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.downloadable.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.grouped">
+            <block class="Magento\Framework\View\Element\Template" name="checkout.cart.item.grouped.qty" template="Magento_Checkout::cart/item/qty/qty.phtml" />
+        </referenceBlock>
+
         <move element="checkout.cart.form"  destination="checkout.cart.column" before="-" />
         <move element="checkout.cart.widget"  destination="checkout.cart.column" after="checkout.cart.form"/>
 
@@ -62,5 +81,44 @@
 
         <move element="checkout.cart.coupon" destination="checkout.cart.coupons" before="-"/>
 
+        <referenceBlock name="checkout.cart.coupon">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string">cs-discount--coupon</argument>
+                <argument name="headline" xsi:type="string" translate="true">Apply Discount Code</argument>                  
+                <argument name="input_label" xsi:type="string" translate="true">Enter discount code</argument>
+                <argument name="input_placeholder" xsi:type="string" translate="true">Enter discount code</argument>
+                <argument name="button_apply_label" xsi:type="string" translate="true">Apply Discount</argument>
+                <argument name="button_cancel_label" xsi:type="string" translate="true">Cancel Coupon</argument>
+                <argument name="is_collapsible" xsi:type="boolean">true</argument>
+                <argument name="collapsible_widget_options" xsi:type="array">
+                    <item name="openedState" xsi:type="string">active</item>
+                    <item name="animate" xsi:type="number">1000</item>
+                </argument>
+            </arguments>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="checkout.cart.coupon.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-discount__trigger-icon cs-discount__trigger-icon--animation</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="checkout.cart.coupon.apply.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-button__icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="checkout.cart.coupon.cancel.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-button__icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock> 
     </body>
 </page>

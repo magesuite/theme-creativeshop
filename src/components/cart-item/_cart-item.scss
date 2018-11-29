@@ -1,16 +1,28 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$cart-item_border-top: 1px solid $color_border-500 !default;
+$cart-item_icon-color: $color_primary-500 !default;
+$cart-item_icon-color--hover: $color_primary-800 !default;
+$cart-item_name-color: $color_text-800 !default;
+$cart-item_price-color: $color_text-800 !default;
+$cart-item_options-in-row: false !default;
+$cart-item_options-label-color: $color_text-800 !default;
+$cart-item_options-value-color: $color_text-500 !default;
+
 .#{$ns}cart-item {
     $root: &;
-    border-top: 1px solid $color_alto;
+    border-top: $cart-item_border-top;
     position: relative;
     padding-bottom: 5rem;
-
-    tbody:nth-child(3) & {
-        border-top: none;
-    }
 
     @include media('>=laptop') {
         padding-right: 11rem;
         padding-bottom: 0;
+        border-top: none;
+    }
+
+    tbody:nth-child(3) & {
         border-top: none;
     }
 
@@ -47,14 +59,14 @@
         padding: 1.5rem 0;
         font-size: 1.5rem;
         font-weight: 700;
-        color: $color_mineshaft;
+        color: $cart-item_name-color;
     }
 
     &__name a {
         font-size: 1.5rem;
         font-weight: 700;
         text-decoration: none;
-        color: $color_mineshaft;
+        color: $cart-item_name-color;
 
         &__name {
             width: 100%;
@@ -89,14 +101,17 @@
         align-content: center;
     }
 
-    &__options:not(&__options--rows) {
-        @include media('>=laptop') {
-            display: flex;
+    &__options {
+        @if($cart-item_options-in-row) {
+            @include media('>=laptop') {
+                display: flex;
+            }
         }
     }
 
     &__options-group {
         margin: 0 2rem 0 0;
+
         @include media('>=laptop') {
             margin: 0 2rem 1rem 0;
         }
@@ -105,8 +120,10 @@
     &__options-label {
         width: 7rem;
         display: inline-block;
-        @extend .#{$ns}t-headline;
-        @extend .#{$ns}t-headline--size_4;
+        color: $cart-item_options-label-color;
+        font-size: 1.4rem;
+        font-weight: 700;
+
         @include media('>=laptop') {
             width: auto;
             display: block;
@@ -116,28 +133,22 @@
     &__options-value {
         margin-bottom: 0;
         display: inline-block;
-        @extend .#{$ns}t-text;
-        @extend .#{$ns}t-text--look_light;
+        color: $cart-item_options-value-color;
+        font-size: 1.4rem;
+
         @include media('>=laptop') {
             width: auto;
             display: block;
         }
     }
 
-    &__price,
-    &__subtotal {
-        .price {
-            font-weight: 300;
-            font-size: 1.4rem;
-            color: $color_dove-gray;
-        }
-    }
-
     &__price {
         padding: 0.4rem 0 0.4rem 2rem !important;
+
         @include media('<laptop') {
             text-align: left;
         }
+
         @include media('>=laptop') {
             padding: 0.4rem 2rem 0.4rem 0 !important;
         }
@@ -145,9 +156,11 @@
 
     &__subtotal {
         padding: 0.4rem 2rem 0.4rem 0 !important;
+
         @include media('>=laptop') {
             padding-right: 0;
         }
+
         @include media('<laptop') {
             text-align: right;
         }
@@ -175,12 +188,14 @@
                 text-transform: uppercase;
                 padding: 0 0 2.1rem !important;
             }
+
             @include media('>=phone-lg') {
                 &:before {
                     font-size: 1.1rem;
                 }
             }
         }
+
         @include media('>=laptop') {
             padding-left: 0;
         }
@@ -188,6 +203,7 @@
 
     &__qty {
         padding: 0.4rem 0 !important;
+
         @include media('>=laptop') {
             padding: 0.4rem 2rem 0.4rem 0 !important;
         }
@@ -260,12 +276,30 @@
         &--right {
             margin-left: 0.3rem;
             margin-right: 0.3rem;
+
             @include media('<laptop') {
                 margin-left: 0;
                 position: absolute;
                 right: -0.2rem;
             }
         }
+    }
+
+    &__link-wrapper {
+        display: flex;
+        margin: 0 0.5rem;
+
+        &:hover {
+            #{$root}__link-icon {
+                fill: $cart-item_icon-color--hover;
+            }
+        }
+    }
+
+    &__link-icon {
+        width: 2rem;
+        height: 2rem;
+        fill: $cart-item_icon-color;
     }
 
     &__bottom {
