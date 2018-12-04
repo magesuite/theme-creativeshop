@@ -60,6 +60,12 @@ interface DailydealOptions {
      * @type {string}
      */
     dailyDealDiscountBadgeSelector?: string,
+
+    /**
+     * Dailydeal amount info badge DOM selector
+     * @type {string}
+     */
+    dailyDealAmountBadgeSelector?: string,
     /**
      * Precision of the clock to display remaining time. Should "5 minutes" be shown as 5 or 05?
      * Possible, supported values are: 1, 2
@@ -122,6 +128,7 @@ export default class Dailydeal {
     protected _$pdpDailyDealPrice: JQuery;
     protected _$defaultDiscountBadge: JQuery;
     protected _$dailyDealDiscountBadge: JQuery;
+    protected _$dailyDealAmountBadge: JQuery;
     protected _labels: any;
     protected _clock: any;
     protected _options: DailydealOptions = {
@@ -151,7 +158,7 @@ export default class Dailydeal {
             return `.${this.namespace}dailydeal__countdown`;
         },
         get tilePriceContainerSelector() {
-            return `.${this.namespace}grid-product__main`;
+            return `.${this.namespace}product-tile__main`;
         },
         get pdpPriceContainerSelector() {
             return `.${this.namespace}price--pdp`;
@@ -166,13 +173,16 @@ export default class Dailydeal {
             return `.price-final_price`;
         },
         get badgeContainerSelector() {
-            return `.${this.namespace}grid-product__badges`;
+            return `.${this.namespace}product-tile__badges`;
         },
         get defaultDiscountBadgeSelector() {
-            return `.${this.namespace}badge--discount_old`;
+            return `.${this.namespace}dailydeal__badge--discount`;
         },
         get dailyDealDiscountBadgeSelector() {
-            return `.${this.namespace}badge--discount:not(.${this.namespace}badge--discount_old)`;
+            return `.${this.namespace}dailydeal__badge--dd-discount`;
+        },
+        get dailyDealAmountBadgeSelector() {
+            return `.${this.namespace}dailydeal__badge--amount`;
         },
         timeDisplayPrecision: 1,
         updateLabels: false,
@@ -209,6 +219,7 @@ export default class Dailydeal {
         // Badges (@Tiles)
         this._$defaultDiscountBadge = this._$badgeContainer.find(this._options.defaultDiscountBadgeSelector);
         this._$dailyDealDiscountBadge = this._$badgeContainer.find(this._options.dailyDealDiscountBadgeSelector);
+        this._$dailyDealAmountBadge = this._$badgeContainer.find(this._options.dailyDealAmountBadgeSelector);
 
         this._endTime = this._$countdown.data('dailydeal-end');
 
@@ -238,6 +249,7 @@ export default class Dailydeal {
      */
      protected _showDailydeal(): void {
          let $dailydealDiscountBadge: JQuery = null;
+         let $dailydealAmountBadge: JQuery = null;
          let $defaultDiscountBadge: JQuery = null;
          let $dailydealPrice: JQuery = null;
          let $defaultPrice: JQuery = null;
@@ -246,6 +258,7 @@ export default class Dailydeal {
              $dailydealPrice = this._$tileDailyDealPrice;
              $defaultPrice = this._$tileDefaultPrice;
              $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
+             $dailydealAmountBadge = this._$dailyDealAmountBadge;
              $defaultDiscountBadge = this._$defaultDiscountBadge;
          } else {
              $dailydealPrice = this._$pdpDailyDealPrice;
@@ -262,8 +275,11 @@ export default class Dailydeal {
          // Check if discount badges exists.
          if($dailydealDiscountBadge && $defaultDiscountBadge) {
              // Toggle discount badges.
-             $dailydealDiscountBadge.addClass(`${this._options.namespace}-badge--visible`);
+             $dailydealDiscountBadge.css('display', '');
              $defaultDiscountBadge.hide();
+         }
+         if ($dailydealAmountBadge && $dailydealAmountBadge.length) {
+             $dailydealAmountBadge.css('display', '');
          }
      }
 
@@ -276,6 +292,7 @@ export default class Dailydeal {
       */
      protected _hideDailydeal(showFinalPrice = false): void {
          let $dailydealDiscountBadge: JQuery = null;
+         let $dailydealAmountBadge: JQuery = null;
          let $defaultDiscountBadge: JQuery = null;
          let $dailydealPrice: JQuery = null;
          let $defaultPrice: JQuery = null;
@@ -284,6 +301,7 @@ export default class Dailydeal {
              $dailydealPrice = this._$tileDailyDealPrice;
              $defaultPrice = this._$tileDefaultPrice;
              $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
+             $dailydealAmountBadge = this._$dailyDealAmountBadge;
              $defaultDiscountBadge = this._$defaultDiscountBadge;
          } else {
              $dailydealPrice = this._$pdpDailyDealPrice;
@@ -306,8 +324,11 @@ export default class Dailydeal {
          // Check if discount badges exists.
          if($dailydealDiscountBadge && $defaultDiscountBadge) {
              // Toggle discount badges.
-             $dailydealDiscountBadge.removeClass(`${this._options.namespace}-badge--visible`).hide();
-             $defaultDiscountBadge.addClass(`${this._options.namespace}-badge--visible`);
+             $dailydealDiscountBadge.hide();
+             $defaultDiscountBadge.css('display', '');
+         }
+         if ($dailydealAmountBadge && $dailydealAmountBadge.length) {
+             $dailydealAmountBadge.hide();
          }
      }
 
@@ -337,8 +358,8 @@ export default class Dailydeal {
          const $badgeContainer: JQuery = this._$badgeContainer;
 
          if(this._isTile() && $badgeContainer.find(`.${this._options.namespace}badge--discount`).length){
-             if(!$badgeContainer.hasClass(`${this._options.namespace}grid-product__badges--dailydeal-countdown`)){
-                 $badgeContainer.addClass(`${this._options.namespace}grid-product__badges--dailydeal-countdown`);
+             if(!$badgeContainer.hasClass(`${this._options.namespace}product-tile__badges--dailydeal-countdown`)){
+                 $badgeContainer.addClass(`${this._options.namespace}product-tile__badges--dailydeal-countdown`);
              }
          }
      }

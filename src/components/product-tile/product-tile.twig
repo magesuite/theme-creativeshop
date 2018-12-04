@@ -3,19 +3,19 @@
 {% endif %}
 
 {% if showWrapper %}
-    <{{ tag }} class="{{ namespace }}grid-product{% if mode is defined and mode == 'static' %} {{ namespace }}grid-product--static{% endif %} {{ mix }}">
+    <{{ tag }} class="{{ namespace }}product-tile{% if mode is defined and mode == 'static' %} {{ namespace }}product-tile--static{% endif %} {{ mix }}">
 {% endif %}
-    <div class="{{ namespace }}grid-product__main">
+    <div class="{{ namespace }}product-tile__main">
 
         {% if hotspots.before.photo %}
             {{ hotspots.before.photo|raw }}
         {% endif %}
 
-        <a href="{{ url }}" class="{{ namespace }}grid-product__figure-wrapper">
+        <a href="{{ url }}" class="{{ namespace }}product-tile__figure-wrapper">
             {% if badges is defined %}
-                <ul class="{{ namespace }}grid-product__badges">
+                <ul class="{{ namespace }}product-tile__badges">
                     {% for badge in badges %}
-                        <li class="{{ namespace }}grid-product__badge {{ badge.mix }}">
+                        <li class="{{ namespace }}product-tile__badge {{ badge.mix }}">
                             {{ badge.content|raw }}
                         </li>
                     {% endfor %}
@@ -26,10 +26,10 @@
                 {{ hotspots.after.badges|raw }}
             {% endif %}
 
-            <figure class="{{ namespace }}grid-product__figure">
+            <figure class="{{ namespace }}product-tile__figure">
                 {% if lazyload %}
                     <img
-                        class="{{ namespace }}grid-product__image {{ image.mix }} | lazyload"
+                        class="{{ namespace }}product-tile__image {{ image.mix }} | lazyload"
                         src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                         data-src="{{ image.src }}"
                         alt="{{ image.alt }}"
@@ -40,7 +40,7 @@
                     >
                     <noscript>
                         <img
-                            class="{{ namespace }}grid-product__image {{ image.mix }}"
+                            class="{{ namespace }}product-tile__image {{ image.mix }}"
                             src="{{ image.src }}"
                             alt="{{ image.alt }}"
                             {% if image.srcset %}data-srcset="{{ image.srcset }}"{% endif %}
@@ -51,7 +51,7 @@
                     </noscript>
                 {% else %}
                     <img
-                        class="{{ namespace }}grid-product__image {{ image.mix }}"
+                        class="{{ namespace }}product-tile__image {{ image.mix }}"
                         src="{{ image.src }}"
                         alt="{{ image.alt }}"
                         {% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}
@@ -68,7 +68,7 @@
         {% endif %}
 
         {% if swatches is defined and swatches.content is defined and swatches.asAddon == false %}
-            <div class="{{ namespace }}grid-product__swatches {{ swatches.mix }}">
+            <div class="{{ namespace }}product-tile__swatches {{ swatches.mix }}">
                 {{ swatches.content|raw }}
             </div>
         {% endif %}
@@ -78,8 +78,8 @@
         {% endif %}
 
         {% if nameMoved != true %}
-            <div class="{{ namespace }}grid-product__name">
-                <a href="{{ url }}" class="{{ namespace }}grid-product__name-link">{{ name|raw }}</a>
+            <div class="{{ namespace }}product-tile__name">
+                <a href="{{ url }}" class="{{ namespace }}product-tile__name-link">{{ name|raw }}</a>
             </div>
         {% endif %}
 
@@ -88,7 +88,7 @@
         {% endif %}
 
         {% if priceMoved != true %}
-            <div class="{{ namespace }}grid-product__price {{ price.mix }}">
+            <div class="{{ namespace }}product-tile__price {{ price.mix }}">
                 {{ price.content|raw }}
             </div>
         {% endif %}
@@ -100,37 +100,37 @@
     </div>
 
     {% if addons is defined %}
-        <div class="{{ namespace }}grid-product__addons {{ addons.mix }}">
+        <div class="{{ namespace }}product-tile__addons {{ addons.mix }}">
             {% if addons.top is defined %}
-                <div class="{{ namespace }}grid-product__addons__top">
+                <div class="{{ namespace }}product-tile__addons__top">
                     {% for addon in addons.top %}
-                        <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                        <div class="{{ namespace }}product-tile__addon {{ addon.mix }}">
                             {{ addon.content|raw }}
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
 
-            <div class="{{ namespace }}grid-product__addons__left">
+            <div class="{{ namespace }}product-tile__addons__left">
                 {% for addon in addons.left %}
-                    <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                    <div class="{{ namespace }}product-tile__addon {{ addon.mix }}">
                         {{ addon.content|raw }}
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="{{ namespace }}grid-product__addons__right">
+            <div class="{{ namespace }}product-tile__addons__right">
                 {% for addon in addons.right %}
-                    <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                    <div class="{{ namespace }}product-tile__addon {{ addon.mix }}">
                         {{ addon.content|raw }}
                     </div>
                 {% endfor %}
             </div>
 
             {% if addons.bottom is defined %}
-                <div class="{{ namespace }}grid-product__addons__bottom">
+                <div class="{{ namespace }}product-tile__addons__bottom">
                     {% for addon in addons.bottom %}
-                        <div class="{{ namespace }}grid-product__addon {{ addon.mix }}">
+                        <div class="{{ namespace }}product-tile__addon {{ addon.mix }}">
                             {{ addon.content|raw }}
                         </div>
                     {% endfor %}
@@ -140,7 +140,7 @@
     {% endif %}
 
     {% if removeButton %}
-        <div class="{{ namespace }}grid-product__remove">
+        <div class="{{ namespace }}product-tile__remove">
             {{ removeButton }}
         </div>
     {% endif %}

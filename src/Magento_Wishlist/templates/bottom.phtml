@@ -41,26 +41,26 @@ $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
             <!-- ko if: wishlist().counter -->
             <ul class="cs-items-grid | cs-no-display" id="wishlist-sidebar" data-bind="foreach: wishlist().items, css: {'cs-no-display': null}">
                 <li class="cs-items-grid__item">
-                    <div class="cs-grid-product">
-                        <div class="cs-grid-product__main">
-                            <a class="cs-grid-product__figure-wrapper" data-bind="attr: { href: product_url, title: product_name }">
-                                <figure class="cs-grid-product__figure cs-grid-product__figure--small">
+                    <div class="cs-product-tile">
+                        <div class="cs-product-tile__main">
+                            <a class="cs-product-tile__figure-wrapper" data-bind="attr: { href: product_url, title: product_name }">
+                                <figure class="cs-product-tile__figure cs-product-tile__figure--small">
                                     <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
                                 </figure>
                             </a>
 
-                            <div class="cs-grid-product__name cs-grid-product__name--no-space">
-                                <a data-bind="attr: { href: product_url }" class="cs-grid-product__name-link">
+                            <div class="cs-product-tile__name cs-product-tile__name--no-space">
+                                <a data-bind="attr: { href: product_url }" class="cs-product-tile__name-link">
                                     <span data-bind="text: product_name"></span>
                                 </a>
                             </div>
 
-                            <div class="cs-grid-product__price">
+                            <div class="cs-product-tile__price">
                                 <div data-bind="html: product_price"></div>
                             </div>
 
                             <!-- ko if: product_is_saleable_and_visible -->
-                            <div class="cs-grid-product__buttons">
+                            <div class="cs-product-tile__buttons">
                                 <!-- ko if: product_has_required_options -->
                                 <a href="#" data-bind="attr: {'data-post': add_to_cart_params}" class="cs-button cs-button--look_default cs-button--size_300">
                                     <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
@@ -83,7 +83,7 @@ $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
                         </div>
 
 
-                        <div class="cs-grid-product__remove">
+                        <div class="cs-product-tile__remove">
                             <a href="#"  data-bind="attr: {'data-post': delete_item_params}"
                                title="<?php /* @escapeNotVerified */ echo __('Remove This Item') ?>"
                                class="cs-button--look_remove">

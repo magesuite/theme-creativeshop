@@ -7,10 +7,10 @@ $product = $item->getProduct();
 $dailyDealHelper = $this->helper('MageSuite\DailyDeal\Helper\OfferData');
 $dailyDealData = $dailyDealHelper->prepareOfferData($product);
 $priceHtmlDeal = $dailyDealData && $dailyDealData['deal'] ? $dailyDealData['oldPriceHtmlOnTile'] : '';
-$dailyDealPriceClass = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? ' cs-grid-product__price--dailydeal-countdown' : '';
+$dailyDealPriceClass = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? ' cs-product-tile__price--dailydeal-countdown' : '';
 ?>
 
-<div class="cs-grid-product__price<?php echo $dailyDealPriceClass ?>">
+<div class="cs-product-tile__price<?php echo $dailyDealPriceClass ?>">
 <?php foreach ($block->getChildNames() as $childName): ?>
     <?php /* @escapeNotVerified */ echo $block->getLayout()->renderElement($childName, false); ?>
 <?php endforeach;?>

@@ -217,7 +217,7 @@ switch ($type = $block->getType()) {
                                                 </span>' . $itemsLimit
                                         ];
                                     } else {
-                                        $dailyDealHtml = $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-dailydeal-'.$type.'-'.$iterator, [
+                                        $dailyDealHtml = $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-dailydeal-'.$type.'-'.$iterator, [
                                                 'data' => [
                                                     'namespace' => 'cs-',
                                                     'mix' => 'cs-dailydeal--tile',
@@ -284,14 +284,14 @@ switch ($type = $block->getType()) {
                                     ],
                                     'name' => $productName,
                                     'price' => [
-                                        'mix' => $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? 'cs-grid-product__price--dailydeal-countdown' : '',
+                                        'mix' => $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? 'cs-product-tile__price--dailydeal-countdown' : '',
                                         'content' => $priceHtml
                                     ],
                                     'badges' => $badges,
                                     'addons' => [
                                         'right' => [
                                             [
-                                                'mix' => $getIsSaleable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                                                'mix' => $getIsSaleable ? 'cs-product-tile__addon--in-stock' : 'cs-product-tile__addon--out-of-stock',
                                                 'content' => $getIsSaleable ? __('In stock') : __('Out of stock')
                                             ]
                                         ]
@@ -307,8 +307,8 @@ switch ($type = $block->getType()) {
 
                                 if($ratingData['activeStars']):
                                     $data['addons']['left'][] = [
-                                        'mix' => 'cs-grid-product__addon--rating',
-                                        'content' => $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-rating-'.$type.'-'.$iterator, [
+                                        'mix' => 'cs-product-tile__addon--rating',
+                                        'content' => $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-rating-'.$type.'-'.$iterator, [
                                                 'data' => [
                                                     'namespace' => 'cs-',
                                                     'maxStars' => $ratingData['maxStars'],
@@ -380,12 +380,14 @@ switch ($type = $block->getType()) {
                                 <?php endif;
                             endif; ?>
 
-                            <li class="cs-products-promo__slide | cs-grid-product cs-grid-product--in-carousel">
-                                <?=$this->getLayout()->createBlock(
-                                    'MageSuite\Frontend\Block\Twig', 'grid-product-'.$type.'-'.$iterator, [
-                                        'data' => $data
-                                    ]
-                                )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+                            <li class="cs-products-promo__slide">
+                                <div class="cs-product-tile cs-product-tile--in-carousel">
+                                    <?=$this->getLayout()->createBlock(
+                                        'MageSuite\Frontend\Block\Twig', 'product-tile-'.$type.'-'.$iterator, [
+                                            'data' => $data
+                                        ]
+                                    )->setTemplate("product-tile/product-tile.twig")->toHtml(); ?>
+                                </div>
                             </li>
 
                             <?php $iterator++; ?>

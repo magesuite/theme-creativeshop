@@ -57,10 +57,9 @@ export default class ProductsPromo {
             {
                 teaserName: 'cs-products-promo',
                 slidesPerView: 'auto',
-                spaceBetween: 16,
+                spaceBetween: 0,
                 maxSlidesPerView: 4,
                 slideMinWidth: 210,
-                roundLengths: true,
             },
             options
         );

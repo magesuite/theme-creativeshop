@@ -1,0 +1,313 @@
+@import 'utils/breakpoint/breakpoint.scss';
+@import 'config/variables';
+@import 'utils/aspect-ratio';
+@import 'utils/reset-list-style';
+
+$inherit-hover-effects: true !default;
+
+$product-tile_content-elements-gutter-factor: 1.5rem !default;
+
+$product-tile_content-background: $color_white !default;
+$product-tile_content-gutter: 1.5rem !default;
+$product-tile_border-radius: $border-radius_base !default;
+
+$product-tile_badges-distribution-direction: vertical !default; // vertical or horizontal
+$product-tile_badges-y-asis-position-prop: top !default;
+$product-tile_badges-x-asis-position-prop: left !default;
+$product-tile_badges-y-asis-position-value: 0 !default;
+$product-tile_badges-x-asis-position-value: 0 !default;
+$product-tile_badges-z-index: 2 !default;
+$product-tile_badge-margin: 0 0 0.5rem;
+
+$product-tile_details-margin: $product-tile_content-elements-gutter-factor 0 0 !default;
+$product-tile_details-text-alignment: center !default;
+$product-tile_details-font-size: inherit !default;
+
+$product-tile_swatches-container-height: 1.8rem !default;
+$product-tile_swatches-margin: 0 0 $product-tile_content-elements-gutter-factor !default;
+
+$product-tile_product-name-margin: 0 0 #{$product-tile_content-elements-gutter-factor / 3} !default;
+$product-tile_product-name-font-size: 1.5rem !default;
+$product-tile_product-name-max-lines-display: 2 !default;
+$product-tile_product-name-line-height: 1.8rem !default; // MUST BE a number value with unit, cannot be 'inherit'
+$product-tile_product-name-font-weight: 400 !default;
+$product-tile_product-name-link-color: $color_mineshaft !default;
+$product-tile_product-name-link-color-visited: $product-tile_product-name-link-color !default;
+$product-tile_product-name-link-color-hover: $link-color_base-hover !default;
+$product-tile_product-name-link-text-decoration-hover: none !default;
+
+$product-tile_addons-background: $product-tile_content-background !default;
+$product-tile_addons-border-radius: $product-tile_border-radius !default;
+$product-tile_addons-box-shadow-hover: $box-shadow_base !default;
+$product-tile_left-and-right-side-padding: $product-tile_content-elements-gutter-factor / 3 !default;
+$product-tile_addon-padding-factor: #{$product-tile_content-elements-gutter-factor / 2} !default;
+$product-tile_addon-padding: $product-tile_addon-padding-factor 0 !default;
+
+$product-tile_in-stock-color: $color_apple !default;
+$product-tile_out-of-stock-color: $color_crimson !default;
+
+$product-tile_comment-max-height: 6rem !default;
+
+$product-tile_removal-y-asis-position-prop: top !default;
+$product-tile_removal-x-asis-position-prop: right !default;
+$product-tile_removal-y-asis-position-value: $product-tile_content-gutter !default;
+$product-tile_removal-x-asis-position-value: $product-tile_content-gutter !default;
+$product-tile_removal-z-index: $product-tile_badges-z-index !default;
+
+$product-tile_show-addons-for-static-tile: false !default;
+
+.#{$ns}product-tile {
+    $root: &;
+
+    width: 100%;
+    position: relative;
+    border-radius: $product-tile_border-radius;
+    background-color: $product-tile_content-background;
+
+    @include media('>=laptop') {
+        &:hover {
+            z-index: 3;
+        }
+    }
+
+    &__main {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: $product-tile_content-gutter;
+    }
+
+    &__figure-wrapper {
+        display: block;
+        position: relative;
+        flex-grow: 10;
+
+        &:hover,
+        &:visited {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    }
+
+    &__figure {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__image {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+    }
+
+    &__badges {
+        @include reset-list-style();
+        position: absolute;
+        #{$product-tile_badges-y-asis-position-prop}: $product-tile_badges-y-asis-position-value;
+        #{$product-tile_badges-x-asis-position-prop}: $product-tile_badges-x-asis-position-value;
+        z-index: $product-tile_badges-z-index;
+
+        @if $product-tile_badges-distribution-direction == horizontal {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+    &__badge {
+        display: flex;
+        margin: $product-tile_badge-margin;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    &__details {
+        flex-shrink: 0;
+        margin: $product-tile_details-margin;
+        text-align: $product-tile_details-text-alignment;
+        font-size: $product-tile_details-font-size;
+    }
+
+    &__swatches {
+        display: inline-block;
+        height: $product-tile_swatches-container-height;
+        margin: $product-tile_swatches-margin;
+        overflow: hidden;
+
+        &:empty {
+            margin: 0;
+        }
+    }
+
+    &__name {
+        height: $product-tile_product-name-max-lines-display * $product-tile_product-name-line-height + 0.2;
+        margin: $product-tile_product-name-margin;
+        line-height: $product-tile_product-name-line-height;
+        font-weight: $product-tile_product-name-font-weight;
+        overflow: hidden;
+
+        @if $product-tile_product-name-font-size != $product-tile_details-font-size {
+            font-size: $product-tile_product-name-font-size;
+        }
+
+        @if $product-tile_product-name-max-lines-display == 1 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &__name-link {
+        color: $product-tile_product-name-link-color;
+
+        @if $product-tile_product-name-link-color != $product-tile_product-name-link-color-hover {
+            transition: color 0.15s linear;
+        }
+
+        /* disabled because autoprefixer can't build this */
+        /* stylelint-disable value-no-vendor-prefix */
+        /* stylelint-disable property-no-vendor-prefix */
+        @if $product-tile_product-name-max-lines-display > 1 {
+            /* autoprefixer: ignore next */
+            display: -webkit-box;
+            /* autoprefixer: ignore next */
+            -webkit-box-orient: vertical;
+            /* autoprefixer: ignore next */
+            -webkit-line-clamp: $product-tile_product-name-max-lines-display;
+            /* autoprefixer: ignore next */
+            line-clamp: $product-tile_product-name-max-lines-display;
+            max-width: 100%;
+        }
+        /* stylelint-enable value-no-vendor-prefix */
+        /* stylelint-enable property-no-vendor-prefix */
+
+        &:visited {
+            color: $product-tile_product-name-link-color-visited;
+        }
+
+        &:hover {
+            color: $product-tile_product-name-link-color-hover;
+            text-decoration: $product-tile_product-name-link-text-decoration-hover;
+        }
+    }
+
+    &__addons {
+        position: absolute;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        overflow: hidden;
+        background: $product-tile_addons-background;
+        border-radius: $product-tile_addons-border-radius;
+
+        @if $inherit-hover-effects {
+            top: 0;
+            padding: #{get-aspect-ratio-padding-value($tile_aspect-ratio-width, $tile_aspect-ratio-height)} $product-tile_content-gutter $product-tile_content-gutter;
+            opacity: 0;
+            transform: translate3d(0, -3rem, 0);
+            box-shadow: $product-tile_addons-box-shadow-hover;
+        } @else {
+            top: 100%;
+            padding: 0 $product-tile_content-gutter $product-tile_content-gutter;
+        }
+
+        #{$root}.no-transition,
+        #{$root}--static & {
+            transition: none;
+        }
+
+        @if $inherit-hover-effects {
+            @include media('>=laptop') {
+                #{$root}:hover & {
+                    opacity: 1;
+                    transform: translate3d(0, 0, 0);
+                    transition: opacity 0.1s linear, transform 0.33s $transition-easing_slowdown-900;
+                }
+            }
+        }
+
+        &-left,
+        &-right {
+            width: 50%;
+            flex-basis: 50%;
+        }
+
+        &-left {
+            padding-right: $product-tile_left-and-right-side-padding;
+            text-align: left;
+        }
+
+        &-right {
+            padding-left: $product-tile_left-and-right-side-padding;
+            text-align: right;
+        }
+
+        &-top,
+        &-bottom {
+            width: 100%;
+        }
+    }
+
+    &__addon {
+        padding: $product-tile_addon-padding;
+        width: 100%;
+    }
+
+    &__comment-input {
+        max-height: $product-tile_comment-max-height;
+    }
+
+    &__stock {
+        &--in {
+            color: $product-tile_in-stock-color;
+        }
+
+        &--out {
+            color: $product-tile_out-of-stock-color;
+        }
+    }
+
+    &__links {
+        @include reset-list-style();
+    }
+
+    &__link-item {
+        display: inline-block;
+    }
+
+    &__remove {
+        position: absolute;
+        #{$product-tile_removal-y-asis-position-prop}: $product-tile_removal-y-asis-position-value;
+        #{$product-tile_removal-x-asis-position-prop}: $product-tile_removal-x-asis-position-value;
+        z-index: $product-tile_removal-z-index;
+    }
+
+    &--hidden {
+        #{$root}__main,
+        #{$root}__addons {
+            visibility: hidden !important;
+        }
+    }
+
+    @if $product-tile_show-addons-for-static-tile == false {
+        &--static {
+            #{$root}__addons {
+                display: none;
+            }
+        }
+    }
+}

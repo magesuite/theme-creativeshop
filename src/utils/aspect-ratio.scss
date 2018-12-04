@@ -1,0 +1,51 @@
+/***
+ * Using psuedo elements to maintain an elements aspect ratio, even as it scales
+ * https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
+ * @param {number} $width: width of the element;
+ * @param {number} $height: height of the element;
+ * @param {string} $contentClass: class of the direct child element to be positioned absolutely;
+ * @param {boolean} $autoposition: tells if item shall take 100% of parent size or if it can be wider/higher if needed;
+ */
+
+ @function get-aspect-ratio-padding-value($width, $height) {
+    @return ($height / $width) * 100%;
+}
+
+@mixin aspect-ratio($width, $height, $childClass, $autoposition: true) {
+    position: relative;
+
+    &:before {
+        display: block;
+        content: '';
+        width: 100%;
+        padding-top: get-aspect-ratio-padding-value($width, $height);
+    }
+
+    .#{$childClass} {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        @if $autoposition {
+            right: 0;
+            bottom: 0;
+        }
+    }
+}
+
+@mixin aspect-ratio-child-position($autoposition: true) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    @if $autoposition {
+        right: 0;
+        bottom: 0;
+    }
+}
+
+@mixin aspect-ratio-override($width, $height) {
+    &:before {
+        padding-top: get-aspect-ratio-padding-value($width, $height);
+    }
+}

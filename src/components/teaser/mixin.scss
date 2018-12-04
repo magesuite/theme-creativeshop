@@ -1,0 +1,183 @@
+// cs-swiper
+// Base configuration for all carousels used in our projects
+//
+// See http://warpspire.com/kss/ for documentation guidelines.
+// Version 0.0.1
+@import 'vendors/swiper.scss';
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+
+$teaser_nav-button-position: absolute !default;
+$teaser_nav-button-position-top: calc(50% - 2rem) !default; // 2rem recompenses height of the bullet-pagination
+$teaser_nav-button-z-index: 201 !default;
+$teaser_nav-button-transform: translate3d(0, -50%, 0) !default;
+$teaser_nav-button-transform-hover: translate3d(0, -50%, 0) scale(1.15) !default;
+$teaser_nav-button-transition: transform 0.15s linear !default;
+$teaser_nav-button-width: 5.5rem !default;
+$teaser_nav-button-height: $teaser_nav-button-width !default;
+$teaser_nav-button-border: 0 !default;
+$teaser_nav-button-border-hover: $teaser_nav-button-border !default;
+$teaser_nav-button-background: $color_white !default;
+$teaser_nav-button-background-hover: $teaser_nav-button-background !default;
+$teaser_nav-button-padding: 0 !default;
+$teaser_nav-button-disabled-opacity: 0 !default;
+$teaser_nav-button-horizontal-position: 0 !default;
+$teaser_nav-button-horizontal-offset-breakpoint: '>=laptop-lg' !default;
+$teaser_nav-button-horizontal-offset-desktop: -#{$teaser_nav-button-width / 2} !default;
+
+$teaser_nav-button-icon-width: 1.4rem !default;
+$teaser_nav-button-icon-height: 2.7rem !default;
+$teaser_nav-button-icon-color: $color_cerulean-blue !default;
+$teaser_nav-button-icon-color-hover: $teaser_nav-button-icon-color !default;
+
+@mixin teaser() {
+    $root: &;
+    position: relative;
+
+    &__wrapper {
+        @extend .swiper-container;
+    }
+
+    &__slides {
+        @extend .swiper-wrapper;
+        align-items: stretch;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__slide {
+        @extend .swiper-slide;
+        height: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__figure {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+    }
+
+    &__nav {
+        position: $teaser_nav-button-position;
+        top: $teaser_nav-button-position-top;
+        transform: $teaser_nav-button-transform;
+        transition: $teaser_nav-button-transition;
+        z-index: $teaser_nav-button-z-index;
+        width: $teaser_nav-button-width;
+        height: $teaser_nav-button-height;
+        border: $teaser_nav-button-border;
+        background: $teaser_nav-button-background;
+        padding: $teaser_nav-button-padding;
+        cursor: pointer;
+        outline: none;
+
+        &--hidden {
+            display: none;
+        }
+
+        &--disabled {
+            cursor: default;
+            opacity: $teaser_nav-button-disabled-opacity;
+        }
+
+        &--prev {
+            left: $teaser_nav-button-horizontal-position;
+
+            @if $teaser_nav-button-horizontal-offset-breakpoint != '' {
+                @include media(#{$teaser_nav-button-horizontal-offset-breakpoint}) {
+                    left: $teaser_nav-button-horizontal-offset-desktop;
+                }
+            }
+        }
+
+        &--next {
+            right: $teaser_nav-button-horizontal-position;
+
+            @if $teaser_nav-button-horizontal-offset-breakpoint != '' {
+                @include media(#{$teaser_nav-button-horizontal-offset-breakpoint}) {
+                    right: $teaser_nav-button-horizontal-offset-desktop;
+                }
+            }
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+            background: $teaser_nav-button-background-hover;
+            border: $teaser_nav-button-border-hover;
+        }
+
+        &:hover {
+            @if $teaser_nav-button-transform != $teaser_nav-button-transform-hover {
+                transform: $teaser_nav-button-transform-hover;
+            }
+        }
+
+        @include media('<tablet') {
+            display: none;
+        }
+    }
+
+    &__nav-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        width: $teaser_nav-button-icon-width;
+        height: $teaser_nav-button-icon-height;
+        fill: $teaser_nav-button-icon-color;
+
+        #{$root}__nav:hover & {
+            @if $teaser_nav-button-icon-color != $teaser_nav-button-icon-color-hover {
+                fill: $teaser_nav-button-icon-color-hover;
+            }
+        }
+    }
+
+    &__numbers {
+        display: none;
+        text-align: center;
+        padding: 1rem 0 0;
+
+        &--visible {
+            display: block;
+        }
+    }
+
+    &__number {
+        &--current,
+        &--total {
+            font-weight: 700;
+        }
+
+        &--current {
+            color: #e40a18;
+        }
+    }
+
+    &__pagination {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        z-index: 2;
+        bottom: -2rem;
+        left: 50%;
+        transform: translateX(-50%);
+
+        &--hidden {
+            display: none;
+        }
+    }
+
+    &__pagination-item {
+        display: inline-block;
+        margin: 2px;
+    }
+}

@@ -38,7 +38,8 @@ $filtersLayout = $this->getFiltersLayout();
     <?php
     if ($block->getMode() == 'grid') {
         $viewMode = 'grid';
-        $viewModeClass = $block->getData('filters_layout') ? 'cs-grid-layout' : 'cs-grid-layout_in-column'; //cs-grid-layout_in-column'; $heroProduct ? 'cs-items-grid-layout' : 'cs-items-grid';
+        $viewModeClass = 'cs-grid-layout';
+        $viewModeModifier = $block->getData('filters_layout') != 'horizontal-full' ? 'cs-grid-layout--with-sidebar' : '';
         $image = 'category_page_grid';
         $image2x = 'category_page_grid@2x';
         $showDescription = false;
@@ -46,6 +47,7 @@ $filtersLayout = $this->getFiltersLayout();
     } else {
         $viewMode = 'list';
         $viewModeClass = 'cs-items-list';
+        $viewModeModifier = '';
         $image = 'category_page_list';
         $showDescription = true;
         $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
@@ -69,7 +71,7 @@ $filtersLayout = $this->getFiltersLayout();
         ?>
 
         <?php $iterator = 0; ?>
-        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>"
+        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?> <?= $viewModeModifier ?>"
             <?php if($teasersConfig && $columnsConfiguration) { ?> 
                 data-columns-configuration='<?php echo $columnsConfiguration; ?>' 
                 data-teasers-configuration='<?php echo json_encode($teasersConfig['json']); ?>'
