@@ -54,23 +54,23 @@
                             <th scope="row" class="cell label product"><span><?php /* @escapeNotVerified */ echo __('Product') ?></span></th>
                         <?php endif; ?>
                         <td data-th="<?php echo $block->escapeHtml(__('Product')); ?>" class="cell product info">
-                        <div class="cs-grid-product cs-grid-product--static cs-grid-product--compare">
-                            <a class="cs-grid-product__figure-wrapper" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>" title="<?php /* @escapeNotVerified */ echo $block->stripTags($item->getName(), null, true) ?>">
+                        <div class="cs-product-tile cs-product-tile--static cs-product-tile--compare">
+                            <a class="cs-product-tile__figure-wrapper" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>" title="<?php /* @escapeNotVerified */ echo $block->stripTags($item->getName(), null, true) ?>">
                                 <?php echo $block->getImage($item, 'product_comparison_list')->toHtml(); ?>
                             </a>
-                            <div class="cs-grid-product__name cs-grid-product__name--no-space">
-                                <a class ="cs-grid-product__name-link" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>" title="<?php /* @escapeNotVerified */ echo $block->stripTags($item->getName(), null, true) ?>">
+                            <div class="cs-product-tile__name cs-product-tile__name--no-space">
+                                <a class ="cs-product-tile__name-link" href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>" title="<?php /* @escapeNotVerified */ echo $block->stripTags($item->getName(), null, true) ?>">
                                     <?php /* @escapeNotVerified */ echo $helper->productAttribute($item, $item->getName(), 'name') ?>
                                 </a>
                             </div>
-                            <div class="cs-grid-product__price">
+                            <div class="cs-product-tile__price">
                                 <?php /* @escapeNotVerified */ echo $block->getProductPrice($item, '-compare-list-top') ?>
                             </div>
                             <div class="comparison-product-reviews">
                             <?php
                                 $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                                 $ratingData = $csProductHelper->getReviewSummary($item)['data'];
-                                echo $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-rating-'.$i, [
+                                echo $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-rating-'.$i, [
                             'data' => [
                                 'namespace' => 'cs-',
                                 'maxStars' => $ratingData['maxStars'],
@@ -85,7 +85,7 @@
                                     <?php if ($item->isSaleable()): ?>
                                         <form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Product\Compare')->getAddToCartUrl($item); ?>" method="post">
                                             <?php echo $block->getBlockHtml('formkey')?>
-                                            <div class "cs-grid-product__buttons">
+                                            <div class "cs-product-tile__buttons">
                                                 <button type="submit" class="cs-button cs-button--look_default cs-button--type_wide cs-button--size_300">
                                                     <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Add to Cart'); ?></span>
                                                 </button>

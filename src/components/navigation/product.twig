@@ -1,7 +1,7 @@
 {% set leftAddons = [] %}
 {% set rightAddons = [] %}
 {% set badges = [] %}
-{% set productMix = 'cs-grid-product--static cs-grid-product--navigation' %}
+{% set productMix = 'cs-product-tile--static cs-product-tile--navigation' %}
 {% set dailyDealHtml = '' %}
 
 {% if product.rating.data is not null %}
@@ -14,24 +14,24 @@
 
 {% if ratingContent is not null %}
     {% set leftAddons = leftAddons|merge( [ {
-        mix: 'cs-grid-product__addon--rating',
+        mix: 'cs-product-tile__addon--rating',
         content: ratingContent
     } ] ) %}
 {% endif %}
 
 {% set leftAddons = leftAddons|merge( [ {
-    mix: 'cs-grid-product__addon--rating',
+    mix: 'cs-product-tile__addon--rating',
     content: '<ul class="cs-links-block-addto" data-role="add-to-links"><li class="cs-links-block-addto__item"><a href="#" class="cs-links-block-addto__link towishlist" title="' ~ translate('Add to Wish List') ~ '" aria-label="' ~ translate('Add to Wish List') ~ '" data-action="add-to-wishlist" data-post=\'' ~ product.wishlist ~ '\' role="button"><svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist"><use xlink:href=#heart></use></svg>' ~ translate('Add to Wish List') ~ '</a></li></ul>'
 } ] ) %}
 
 {% if product.stock %}
     {% set rightAddons = rightAddons|merge( [ {
-        mix: 'cs-grid-product__addon--in-stock',
+        mix: 'cs-product-tile__addon--in-stock',
         content: translate('In stock')
     } ] ) %}
 {% else %}
     {% set rightAddons = rightAddons|merge( [ {
-        mix: 'cs-grid-product__addon--out-of-stock',
+        mix: 'cs-product-tile__addon--out-of-stock',
         content: translate('Out of stock')
     } ] ) %}
 {% endif %}
@@ -75,7 +75,7 @@
     } ] ) %}
 {% endif %}
 
-{% include locate( 'grid-product/grid-product.twig' ) with {
+{% include locate( 'product-tile/product-tile.twig' ) with {
     namespace: 'cs-',
     mix: productMix,
     lazyload: true,
@@ -92,7 +92,7 @@
     },
     badges: badges,
     swatches: {
-        mix: 'cs-grid-product__swatches--color-only',
+        mix: 'cs-product-tile__swatches--color-only',
         content: product.swatches
     },
     addons: {

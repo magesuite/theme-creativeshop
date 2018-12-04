@@ -1,42 +1,67 @@
-@mixin productsPromo() {
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'utils/aspect-ratio';
+@import 'components/teaser/mixin';
+
+$products-promo_slide-ratio-width: 150 !default;
+$products-promo_slide-ratio-height: 203 !default;
+
+$products-promo_nav-arrow-width: 1rem;
+$products-promo_nav-arrow-height: 1rem;
+
+.#{$ns}products-promo {
     $root: &;
 
-    &:hover {
+    @include teaser();
+
+    /*&:hover {
         @include media('>=laptop') {
             z-index: 5;
         }
-    }
+    }*/
 
     &__wrapper {
         overflow: visible;
 
         @include media( '>=laptop' ) {
-            margin-left: 3rem;
-            margin-right: 3rem;
+            //margin-left: 3rem;
+            //margin-right: 3rem;
 
             &:hover {
                 z-index: 5;
             }
         }
 
-        @media ( min-width: ( 1200px + 2 * 48px ) ) {
+        /*@media ( min-width: ( 1200px + 2 * 48px ) ) {
             margin-left: 0;
             margin-right: 0;
-        }
+        }*/
+    }
+
+    &__list {
+        display: flex;
     }
 
     &__slide {
-        position: relative;
+        @include aspect-ratio(
+            $width: $products-promo_slide-ratio-width, 
+            $height: $products-promo_slide-ratio-height, 
+            $childClass: #{$ns}product-tile, 
+            $autoposition: false
+        );
         opacity: 0;
-        flex-wrap: wrap;
-        transition: opacity .15s linear;
+        backface-visibility: hidden;
+        transition: transform 0.15s linear, opacity 0.25s linear 0.1s;
 
-        &--visible {
+        &:not(#{$root}__slide--in-viewport) {
+            transform: scale(0) !important;
+            overflow: hidden !important;
+        }
+
+        &--in-viewport {
             opacity: 1;
-
-            &:after {
-                display: none;
-            }
+            transform: scale(1);
         }
 
         &:hover {
@@ -47,34 +72,78 @@
     }
 
     &__nav {
-        display: none;
-
-        @include media( '>=laptop' ) {
-            top: calc( 50% - 2rem );
-            display: block;
-        }
+        //transition: transform 0.15s ease-in-out;
+        border-radius: 6px;
+        box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.25);
+        text-align: center;
 
         &--prev {
-            left: 0;
-
-            @media ( min-width: ( 1200px + 2 * 48px ) ) {
+            /*@media ( min-width: ( 1200px + 2 * 48px ) ) {
                 left: -3rem;
-            }
+            }*/
+
+            /*@media (min-width: 1285px) {
+                left: calc(-#{$products-promo_nav-arrow-width} / 2);
+            }*/
         }
 
         &--next {
-            right: 0;
-
-            @media ( min-width: ( 1200px + 2 * 48px ) ) {
+            /*@media ( min-width: ( 1200px + 2 * 48px ) ) {
                 right: -3rem;
-            }
+            }*/
+
+            /*@media (min-width: 1285px) {
+                right: calc(-#{$products-promo_nav-arrow-width} / 2);
+            }*/
         }
     }
 
     &__pagination {
         position: static;
-        margin: 1rem 0;
+        padding: 1rem 0;
         text-align: center;
         transform: none;
+        color: $color_dove-gray;
+    }
+
+    &__pagination-item {
+        border-radius: 2px;
+        background-color: $color_gallery;
+        width: 2.1rem;
+        height: 0.8rem;
+        transform: skew(-18deg);
+        margin: 0 0.9rem 0 0;
+        border: none;
+        display: inline-block;
+        transition: background-color 0.15s, border-color 0.15s;
+
+        &:hover {
+            background-color: darken($color_gallery, 8%);
+            border: none;
+            box-shadow: none;
+        }
+
+        &--active {
+            background: $color_gold;
+
+            &:hover {
+                background: $color_gold;
+            }
+        }
+    }
+
+    &__pagination-button {
+        display: block;
+        font-size: 0;
+        opacity: 0;
+        width: 2.1rem;
+        height: 0.8rem;
+        padding: 0;
+        border: 0;
+        margin: 0;
+    }
+
+    &__number--current {
+        color: $color_gold;
     }
 }

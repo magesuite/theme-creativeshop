@@ -1,6 +1,6 @@
 <?php extract($block->getData()); ?>
 <li class="<?php echo /* @escapeNotVerified */ $viewModeClass; ?>__brick <?php if($showHeroProduct): ?><?php echo $viewModeClass; ?>__brick--teaser <?php echo $viewModeClass; ?>__brick--x2 <?php echo $viewModeClass; ?>__brick--y2<?php endif; ?>">
-    <div class="cs-grid-product <?php if($showHeroProduct): ?>cs-grid-product--hero<?php endif; ?>">
+    <div class="cs-product-tile<?php if ($showHeroProduct): ?> cs-product-tile--hero<?php endif; ?>">
         <?php
         $productImageSrcset = $productImageUrl . ' 1x, ' . $productImageUrl2x . ' 2x';
         $productNameStripped = $block->stripTags($product->getName(), null, true);
@@ -29,7 +29,7 @@
                         </span>' . $itemsLimit
                 ];
             } else {
-                $dailyDealHtml = $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-dailydeal-'.$iterator, [
+                $dailyDealHtml = $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-dailydeal-'.$iterator, [
                         'data' => [
                             'namespace' => 'cs-',
                             'mix' => 'cs-dailydeal--tile',
@@ -98,7 +98,7 @@
             ],
             'name' => $helper->productAttribute($product, $product->getName(), 'name'),
             'price' => [
-                'mix' => $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? 'cs-grid-product__price--dailydeal-countdown' : '',
+                'mix' => $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? 'cs-product-tile__price--dailydeal-countdown' : '',
                 'content' => $priceHtml
             ],
             'swatches' => [
@@ -107,7 +107,7 @@
             'addons' => [
                 'right' => [
                     [
-                        'mix' => $getIsSalable ? 'cs-grid-product__addon--in-stock' : 'cs-grid-product__addon--out-of-stock',
+                        'mix' => $getIsSalable ? 'cs-product-tile__addon--in-stock' : 'cs-product-tile__addon--out-of-stock',
                         'content' => $getIsSalable ? __('In stock') : __('Out of stock')
                     ]
                 ]
@@ -123,8 +123,8 @@
         $ratingData = $csProductHelper->getReviewSummary($product)['data'];
         if($ratingData['activeStars']):
             $data['addons']['left'][] = [
-                'mix' => 'cs-grid-product__addon--rating',
-                'content' => $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-rating-'.$iterator, [
+                'mix' => 'cs-product-tile__addon--rating',
+                'content' => $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-rating-'.$iterator, [
                         'data' => [
                             'namespace' => 'cs-',
                             'maxStars' => $ratingData['maxStars'],
@@ -165,9 +165,9 @@
         ];
 
         echo $this->getLayout()->createBlock(
-            'MageSuite\Frontend\Block\Twig', 'grid-product-'.$iterator, [
+            'MageSuite\Frontend\Block\Twig', 'product-tile-'.$iterator, [
                 'data' => $data
             ]
-        )->setTemplate("grid-product/grid-product.twig")->toHtml(); ?>
+        )->setTemplate("product-tile/product-tile.twig")->toHtml(); ?>
     </div>
 </li>

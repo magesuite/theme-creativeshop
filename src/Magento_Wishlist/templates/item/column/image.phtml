@@ -11,14 +11,14 @@ $dailyDealHelper = $this->helper('MageSuite\DailyDeal\Helper\OfferData');
 $dailyDealData = $dailyDealHelper->prepareOfferData($product);
 ?>
 <a
-    class="cs-grid-product__figure-wrapper"
+    class="cs-product-tile__figure-wrapper"
     href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>"
     title="<?php echo $block->escapeHtml($product->getName()) ?>"
 >
 
-    <ul class="cs-grid-product__badges">
+    <ul class="cs-product-tile__badges">
         <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] == 'badge') { ?>
-            <li class="cs-grid-product__badge cs-multiple-badges">
+            <li class="cs-product-tile__badge cs-multiple-badges">
                 <span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
                     <span class="cs-badge__span"><?php echo __('Limited offer!'); ?></span>
                 </span>
@@ -31,20 +31,20 @@ $dailyDealData = $dailyDealHelper->prepareOfferData($product);
         <?php } ?>
 
         <?php if($isPopular) { ?>
-            <li class="cs-grid-product__badge">
+            <li class="cs-product-tile__badge">
                 <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Popular'); ?></span></span>
             </li>
         <?php } ?>
 
         <?php if ( $isFreeShipped ) { ?>
-            <li class="cs-grid-product__badge">
+            <li class="cs-product-tile__badge">
                 <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Free Shipping'); ?></span></span>
             </li>
         <?php } ?>
     </ul>
 
     <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter') {
-        echo $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'grid-product-dailydeal-'.$product->getId(), [
+        echo $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-dailydeal-'.$product->getId(), [
                 'data' => [
                     'namespace' => 'cs-',
                     'mix' => 'cs-dailydeal--tile',

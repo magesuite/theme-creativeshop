@@ -23,6 +23,8 @@ import * as $ from 'jquery';
 // =============================================================================
 
 import 'components/navigation';
+import 'components/grid-layout';
+import 'components/product-tile';
 import 'components/collapse/collapse';
 import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
@@ -37,6 +39,7 @@ import 'components/paragraph';
 import 'components/page-bottom';
 import 'components/separator';
 import 'components/usps';
+import 'components/products-promo';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
@@ -56,13 +59,11 @@ new QtyIncrementCollection();
 import 'customizations/aftersearch-nav/aftersearch-nav';
 import 'customizations/hero/hero';
 import 'customizations/image-teaser/image-teaser';
-import 'customizations/products-promo/products-promo';
 import 'customizations/brand-carousel/brand-carousel';
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
 import 'customizations/item-cloner/item-cloner';
-import 'customizations/grid-layout/grid-layout';
 import 'customizations/product-finder/product-finder';
 import 'customizations/indicators/fast-shipping-init';
 import 'customizations/dailydeal/dailydeal';

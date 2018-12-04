@@ -19,7 +19,7 @@ interface IItemClonerTouchSettings {
     /**
      * Define class of the $origin that is shown from the beginning
      * Works only if {displayAsStatic} is set to true
-     * @default cs-grid-product--static
+     * @default cs-product-tile--static
      * @type {String}
      */
     staticClass?: string;
@@ -144,7 +144,7 @@ export default class ItemCloner {
                 touch: {
                     enabled: true,
                     displayAsStatic: false,
-                    staticClass: 'cs-grid-product--static',
+                    staticClass: 'cs-product-tile--static',
                     disableAnimations: false,
                 },
             },

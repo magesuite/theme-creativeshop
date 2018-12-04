@@ -17,6 +17,14 @@ interface IGridLayoutSettings {
      * @type {String}
      */
     brickClass?: string;
+    /**
+     * Tells if teasers shall be processed in browsers that do not support CSS Grid.
+     * WARNING: it will be buggy, there's no way of using some scenarios in teasers and have them fully working on older browsers.
+     * WARNING: support for browsers that don't support CSS Grid is DEPRECATED
+     * @default {false}
+     * @type {Boolean}
+     */
+    forceFloatingTeasersSupport?: Boolean;
 }
 
 /**
@@ -53,6 +61,7 @@ export default class GridLayout {
             {
                 gridClass: 'cs-grid-layout__grid',
                 brickClass: 'cs-grid-layout__brick',
+                forceFloatingTeasersSupport: false,
             },
             settings
         );
@@ -111,7 +120,7 @@ export default class GridLayout {
 
         if (this.isCssGrid) {
             this._setTeasersCSS();
-        } else {
+        } else if (this.settings.forceFloatingTeasersSupport) {
             this.$grid.append(this.teasers);
             this.teasers = [];
             this._setTeasersPositions();
@@ -477,7 +486,7 @@ export default class GridLayout {
     protected _initialize(): void {
         if (this.isCssGrid) {
             this._setTeasersCSS();
-        } else {
+        } else if (this.settings.forceFloatingTeasersSupport) {
             this._setTeasersPositions();
         }
 

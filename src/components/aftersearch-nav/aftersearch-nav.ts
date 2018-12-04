@@ -220,7 +220,7 @@ export default class Aftersearch {
         };
 
         this._$listOfFilters.on('click', this._eventListeners.onFilterClick);
-        $('.cs-grid-product').on(
+        $('.cs-product-tile').on(
             'mouseenter mouseleave',
             this._eventListeners.onProductsGridHover
         );

@@ -9,10 +9,8 @@
     text-align: center;
     color: $color_white;
     background: $color_gray;
-    padding: 0.15rem 0.5rem 0.2rem;
-    box-shadow: 0 0 0 1px $color_white;
+    padding: 0.3rem;
     transform: skew(-15deg);
-    box-sizing: border-box;
     min-width: 1.9rem;
     overflow: hidden;
     display: inline-block;
@@ -30,6 +28,8 @@
 
     &--attention {
         background-color: $color_crimson;
+        text-transform: uppercase;
+        box-shadow: none;
 
         &:before {
             background-color: $color_crimson;
@@ -37,12 +37,14 @@
 
         #{$root}__span {
             color: $color_white;
-            font-weight: 400;
         }
     }
 
-    &--info {
+    &--info,
+    &--new {
         background-color: $color_gold;
+        text-transform: uppercase;
+        box-shadow: none;
 
         &:before {
             background-color: $color_gold;
@@ -62,18 +64,6 @@
 
         #{$root}__span {
             color: $color_white;
-        }
-    }
-
-    &--new {
-        background-color: $color_gold;
-
-        &:before {
-            background-color: $color_gold;
-        }
-
-        #{$root}__span {
-            color: $color_mineshaft;
         }
     }
 
@@ -119,9 +109,7 @@
         overflow: visible;
         display: inline-block;
         position: relative;
-        padding-left: 0.5rem;
-        padding-right: 0.4rem;
-        margin-right: 0.5rem;
+        padding-right: 0.2rem;
 
         #{$root}__span {
             transform: skew(15deg);
@@ -191,20 +179,40 @@
         }
     }
 
-    &--discount {
-        .#{$ns}grid-product__badges--dailydeal-countdown & {
-            &:not(#{$root}--discount_old) {
-                display: none;
-            }
+    &__label {
+        position: relative;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 2px;
+        text-align: center;
+        color: $color_white;
+        padding: 0.15rem 0.4rem 0.2rem 0.5rem;
+        transform: skew(-15deg);
+        min-width: 1.9rem;
+        background: $color_crimson;
+
+        &:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            width: 1.5rem;
+            position: absolute;
+            top: 0;
+            left: -0.3rem;
+            transform: skew(15deg);
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            background: $color_crimson;
+            z-index: -1;
         }
 
-        &_old {
-            margin-top: 0 !important;
+        span {
+            display: inline-block;
+            transform: skew(15deg) translateX(-0.5rem);
+            padding-left: 0.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
-    }
-
-    &--visible {
-        display: block !important;
     }
 
     &__span {
