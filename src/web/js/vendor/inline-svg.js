@@ -270,7 +270,11 @@
             inliner(callback || function() {});
 
             // Once inlined and a class to the HTML
-            document.documentElement.className += ' ' + settings.initClass;
+            if (document.documentElement.classList) {
+                document.documentElement.classList.add(settings.initClass);
+            } else {
+                document.documentElement.className += ' ' + settings.initClass;
+            }
         };
 
         return inlineSVG;
