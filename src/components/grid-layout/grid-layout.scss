@@ -326,10 +326,18 @@ $grid-layout_bricks-per-row--with-sidebar: (
                     grid-template-columns: repeat(#{$itemsPerRow}, 1fr);
                 }
             }
+
+            #{$root}--with-sidebar & {
+                @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar {
+                    @include media('>=#{$breakpoint}') {
+                        grid-template-columns: repeat(#{$itemsPerRow}, 1fr);
+                    }
+                }
+            }
         }
 
         &__brick {
-            width: auto;
+            width: 100% !important;
             display: grid;
             align-items: stretch;
 
@@ -338,7 +346,6 @@ $grid-layout_bricks-per-row--with-sidebar: (
             }
 
             &--x2 {
-                width: auto;
                 grid-column-end: span 2;
             }
 
