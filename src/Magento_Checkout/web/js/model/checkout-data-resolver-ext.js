@@ -9,10 +9,10 @@ define([
         return _.extend({}, CheckoutDataResolver, {
             resolveShippingRates: function(ratesData) {
                 CheckoutDataResolver.resolveShippingRates.call(this, ratesData);
-
                 if (
                     ratesData.length &&
-                    !checkoutData.getSelectedShippingRate()
+                    !checkoutData.getSelectedShippingRate() &&
+                    window.location.pathname.indexOf('cart') === -1
                 ) {
                     selectShippingMethodAction(ratesData[0]);
                 }
