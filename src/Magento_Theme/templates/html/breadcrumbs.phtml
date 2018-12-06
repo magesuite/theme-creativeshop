@@ -1,42 +1,25 @@
 <?php if ($crumbs && is_array($crumbs)) : ?>
     <div class="cs-breadcrumbs">
-        <ul class="cs-breadcrumbs__list" itemscope itemtype="http://schema.org/BreadcrumbList">
+        <ul class="cs-breadcrumbs__list">
             <?php $i = 1; foreach ($crumbs as $crumbName => $crumbInfo) : ?>
-                <li
-                    class="cs-breadcrumbs__item <?php /* @escapeNotVerified */ echo $crumbName ?>"
-                    itemprop="itemListElement"
-                    itemscope
-                    itemtype="http://schema.org/ListItem"
-                >
+                <li class="cs-breadcrumbs__item <?php /* @escapeNotVerified */ echo $crumbName ?>">
                     <?php if ($crumbInfo['link']) : ?>
                         <a
                             class="cs-breadcrumbs__link"
                             href="<?php /* @escapeNotVerified */ echo $crumbInfo['link'] ?>"
                             title="<?php echo $block->escapeHtml($crumbInfo['title']) ?>"
-                            itemscope
-                            itemtype="http://schema.org/Thing"
-                            itemprop="item"
-                            itemid="<?php /* @escapeNotVerified */ echo $crumbInfo['link'] ?>"
                         >
-                            <span itemprop="name">
+                            <span>
                                 <?php echo $block->escapeHtml($crumbInfo['label']) ?>
                             </span>
                         </a>
                     <?php /* elseif ($crumbInfo['last']) : ?>
                         <strong><?php echo $block->escapeHtml($crumbInfo['label']) ?></strong>
                     <?php */ else: ?>
-                        <span
-                            itemscope
-                            itemtype="http://schema.org/Thing"
-                            itemprop="item"
-                            itemid="<?php echo $this->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]); ?>"
-                        >
-                            <span itemprop="name">
-                                <?php echo $block->escapeHtml($crumbInfo['label']) ?>
-                            </span>
+                        <span>
+                            <?php echo $block->escapeHtml($crumbInfo['label']) ?>
                         </span>
                     <?php endif; ?>
-                    <meta itemprop="position" content="<?php echo $i ?>" />
                 </li>
             <?php $i++; endforeach; ?>
         </ul>
