@@ -40,6 +40,7 @@ import 'components/page-bottom';
 import 'components/separator';
 import 'components/usps';
 import 'components/products-promo';
+import 'components/product-finder';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
@@ -64,7 +65,6 @@ import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
 import 'customizations/item-cloner/item-cloner';
-import 'customizations/product-finder/product-finder';
 import 'customizations/indicators/fast-shipping-init';
 import 'customizations/dailydeal/dailydeal';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';

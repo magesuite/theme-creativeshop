@@ -9,6 +9,7 @@ interface ProductFinderOptions {
     optionClassName?: string;
     backButtonClassName?: string;
     formClassName?: string;
+    scrollOffset?: number;
     /**
      * How long should the component wait until resizing its height.
      * Usually you will want to keep it in synch with CSS animations timings.
@@ -49,6 +50,7 @@ export default class ProductFinder {
         backButtonClassName: 'cs-product-finder__back-button',
         formClassName: 'cs-product-finder__form',
         stepResizeDelay: 800,
+        scrollOffset: 70
     };
 
     protected _$backButtons: JQuery;
@@ -104,9 +106,26 @@ export default class ProductFinder {
         this._$element.css('padding-bottom', this._$backButtons.outerHeight());
 
         setTimeout(() => {
-            this._$element.css('height', $currentStep.height());
+            this._$element.css('height', $currentStep.height() + this._$backButtons.outerHeight());
         }, previousHeight > currentStepHeight ? this._options.stepResizeDelay : 0);
     }
+
+    /**
+     * Scroll to the top of finder if after changing steps user is too low
+     */
+    protected _scrollToTop() {
+        const $currentStep: JQuery = this._visitedSteps.slice(-1).pop();
+        const previousHeight = parseInt(this._$element.css('height'), 10);
+
+        if (previousHeight > $(window).height()) {
+            setTimeout(() => {
+                $('html, body').animate({
+                    scrollTop: this._$element.offset().top - this._options.scrollOffset
+                }, 500);
+            }, this._options.stepResizeDelay);
+        }
+    }
+
 
     /**
      * Switches to the step with given step ID.
@@ -130,6 +149,7 @@ export default class ProductFinder {
         );
 
         this._updateSizes();
+        this._scrollToTop();
     }
 
     protected _goToPreviousStep() {
