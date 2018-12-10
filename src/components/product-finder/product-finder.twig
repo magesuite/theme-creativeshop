@@ -1,54 +1,54 @@
 {% set visibilityClass = '' %}
 {% if componentVisibility and componentVisibility.mobile == false %}
-    {% set visibilityClass = namespace ~ 'display-controller--hidden-mobile ' %}
+    {% set visibilityClass = ' cs-display-controller--hidden-mobile ' %}
 {% endif %}
 {% if componentVisibility and componentVisibility.desktop == false %}
-    {% set visibilityClass = visibilityClass ~ namespace ~ 'display-controller--hidden-desktop ' %}
+    {% set visibilityClass = visibilityClass ~ ' cs-display-controller--hidden-desktop ' %}
 {% endif %}
 
 <div class="{{ visibilityClass }}">
-    <div class="{{ namespace }}product-finder {{ mix }}">
+    <div class="cs-product-finder {{ mix }}">
         {% for step in steps %}
             {% set stepOptionsPerRow = optionsPerRow | merge(step.optionsPerRow ?: {}) %}
-            {% set stepClasses = namespace ~ "product-finder__step--options-mobile_" ~ stepOptionsPerRow.mobile %}
-            {% set stepClasses = stepClasses ~ " " ~ namespace ~ "product-finder__step--options-tablet_" ~ stepOptionsPerRow.tablet %}
-            {% set stepClasses = stepClasses ~ " " ~ namespace ~ "product-finder__step--options-desktop_" ~ stepOptionsPerRow.desktop %}
+            {% set stepClasses = " cs-product-finder__step--options-mobile_" ~ stepOptionsPerRow.mobile %}
+            {% set stepClasses = stepClasses ~ " cs-product-finder__step--options-tablet_" ~ stepOptionsPerRow.tablet %}
+            {% set stepClasses = stepClasses ~ " cs-product-finder__step--options-desktop_" ~ stepOptionsPerRow.desktop %}
             {% if loop.index0  == 0 %}
-                {% set stepClasses = stepClasses ~ " " ~ namespace ~ "product-finder__step--current" %}
+                {% set stepClasses = stepClasses ~ " cs-product-finder__step--current" %}
             {% endif %}
             <article
-                class="{{ namespace }}product-finder__step {{ stepClasses }}"
+                class="cs-product-finder__step {{ stepClasses }}"
                 data-step-id="{{ step.id }}"
             >
-                <header class="{{ namespace }}product-finder__step-header">
-                    <div class="{{ namespace }}product-finder__step-title">{{ step.title }}</div>
-                    <p class="{{ namespace }}product-finder__step-description">{{ step.description }}</p>
+                <header class="cs-product-finder__step-header">
+                    <div class="cs-product-finder__step-title">{{ step.title }}</div>
+                    <p class="cs-product-finder__step-description">{{ step.description }}</p>
                 </header>
-                <div class="{{ namespace }}product-finder__step-options">
+                <div class="cs-product-finder__step-options">
                     {% for option in step.options %}
                         <div
-                            class="{{ namespace }}product-finder__step-option"
+                            class="cs-product-finder__step-option"
                             data-next-step-id="{{ option.next_step }}"
                             data-attributes='{{ option.attributes | json_encode() }}'
                             data-category-id='{{ option.category_id }}'
                             data-category-only='{{ option.category_only }}'
                         >
-                            <div class="{{ namespace }}product-finder__option-sizer"></div>
-                            <div class="{{ namespace }}product-finder__option-content">
+                            <div class="cs-product-finder__option-sizer"></div>
+                            <div class="cs-product-finder__option-content">
                                 {% if option.image %}
-                                    <img class="{{ namespace }}product-finder__option-image" src="{{ option.image }}">
+                                    <img class="cs-product-finder__option-image" src="{{ option.image }}">
                                 {% endif %}
                                 {% if option.label %}
-                                    <p class="{{ namespace }}product-finder__option-label">{{ option.label }}</p>
+                                    <p class="cs-product-finder__option-label">{{ option.label }}</p>
                                 {% endif %}
                             </div>
                         </div>
                     {% endfor %}
                 </div>
-                <button class="{{ namespace }}product-finder__back-button">{{ translate("Go to previous step") }}</button>
+                <button class="cs-product-finder__back-button">{{ translate("Go to previous step") }}</button>
             </article>
         {% endfor %}
-        <button class="{{ namespace }}product-finder__back-button">{{ translate("Go to previous step") }}</button>
-        <form class="{{ namespace }}product-finder__form" method="post" action="{{ endpointUrl }}"></form>
+        <button class="cs-product-finder__back-button">{{ translate("Go to previous step") }}</button>
+        <form class="cs-product-finder__form" method="post" action="{{ endpointUrl }}"></form>
     </div>
 </div>

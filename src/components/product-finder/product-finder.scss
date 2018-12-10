@@ -1,13 +1,36 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'customizations/button/button';
+@import 'customizations/t-headline/t-headline';
+@import 'utils/font-family';
+
+$product-finder_font-size: 1rem !default;
+
 // If switched to yes then there will be a separate back button displayed
 // inside each step instead of the shared one.
-$product-finder-back-button-per-step: false !default;
+$product-finder_back-button-per-step: false !default;
 // Tells how many options should per each row should be supported at maximum.
-$product-finder-step-option-max-per-row: 6 !default;
+$product-finder_step-option-max-per-row: 6 !default;
 // Vertical gap size between step options.
-$product-finder-step-option-gap: 1rem !default;
+$product-finder_step-option-gap: 1rem !default;
+// Value for justify-content of options boxes.
+$product-finder_justify-options: center !default;
+// Value option-sizes padding hack. 100% means that option will be square.
+$product-finder_vertical-ratio: 100% !default;
+// Value of back button transition
+$product-finder_back-button-transition: opacity 0.3s 0.4s, 0.15s linear, border-color 0.15s linear,
+color 0.15s linear !default;
 
-@mixin product-finder() {
+$product-finder_description-color: $color_text-400 !default;
+$product-finder_option-border-width: 1px !default;
+$product-finder_option-border-color: $color_background-500 !default;
+$product-finder_option-border-hover: $color_primary-500 !default;
+$product-finder_option-border-radius: 0.5rem !default;
+
+.cs-product-finder {
     $root: &;
+
+    font-size: $product-finder_font-size;
     position: relative;
     padding-bottom: 2rem;
     transition: height 0.3s, padding-bottom 0.3s;
@@ -19,13 +42,17 @@ $product-finder-step-option-gap: 1rem !default;
         left: 50%;
         transform: translateX(-50%) scale(0);
         opacity: 0;
-        transition: opacity 0.3s 0.4s;
+        transition: $product-finder_back-button-transition;
+
+        // TODO replace with specialized buttons when ready
+        @extend .cs-button;
+        @extend .cs-button--look_light;
 
         &--visible {
             opacity: 1;
             transform: translateX(-50%) scale(1);
 
-            @if $product-finder-back-button-per-step {
+            @if $product-finder_back-button-per-step {
                 display: none;
 
                 #{$root}__step & {
@@ -63,14 +90,55 @@ $product-finder-step-option-gap: 1rem !default;
 
     &__step-header {
         width: 100%;
-        padding-bottom: 1rem;
+        text-align: center;
+        padding: 2rem 0;
+        margin: 2rem 0;
+    }
+
+    &__step-title {
+        display: flex;
+        align-items: center;
+        margin: 0;
+
+        // TODO replace with specialized headlines when ready
+        @extend .cs-t-headline;
+        @extend .cs-t-headline--size_1;
+
+        @include media('<tablet') {
+            display: block;
+        }
+
+        &:before,
+        &:after {
+            display: flex;
+            height: 1px;
+            flex-grow: 1;
+            background-color: $color_border-500;
+            @include media('>=tablet') {
+                content: '';
+            }
+        }
+
+        &:before {
+            margin-right: 0.6rem;
+        }
+
+        &:after {
+            margin-left: 0.6rem;
+        }
+    }
+
+    &__step-description {
+        color: $product-finder_description-color;
+        font-size: 1.3rem;
+        margin: 0;
     }
 
     &__step-options {
         width: 100%;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-around;
+        justify-content: $product-finder_justify-options;
     }
 
     &__step-option {
@@ -83,44 +151,71 @@ $product-finder-step-option-gap: 1rem !default;
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
+        margin-bottom: $product-finder_step-option-gap;
+        border: $product-finder_option-border-width solid $product-finder_option-border-color;
+        border-radius: $product-finder_option-border-radius;
+        transition: 0.3s border-color;
+
+        &--checked,
+        &:hover {
+            border-color: $product-finder_option-border-hover;
+        }
         // Below declarations have to be split into 3 different loops because
         // of the cascade - we need all mobile declarations, then tablet, then desktop.
-        @for $i from 1 to $product-finder-step-option-max-per-row + 1 {
+        @for $i from 1 to $product-finder_step-option-max-per-row + 1 {
             $step-option-num-of-gaps: $i - 1;
 
-            #{$root}__step--options-mobile_#{$i} & {
-                flex-basis: calc(
-                    #{100% /
-                        $i} -
-                        #{$step-option-num-of-gaps *
-                        $product-finder-step-option-gap /
-                        $i}
-                );
-            }
-        }
+            @include media('<tablet') {
 
-        @for $i from 1 to $product-finder-step-option-max-per-row + 1 {
-            $step-option-num-of-gaps: $i - 1;
-
-            #{$root}__step--options-tablet_#{$i} & {
-                @include media('>=tablet') {
+                #{$root}__step--options-mobile_#{$i} & {
                     flex-basis: calc(
-                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder-step-option-gap /
+                            #{100% /
+                                $i} -
+                            #{$step-option-num-of-gaps *
+                            $product-finder_step-option-gap /
                             $i}
                     );
+                    margin-right: $product-finder_step-option-gap;
+
+                    &:nth-child(#{$i}n+#{$i}) {
+                        margin-right: 0;
+                    }
                 }
             }
         }
 
-        @for $i from 1 to $product-finder-step-option-max-per-row + 1 {
+        @for $i from 1 to $product-finder_step-option-max-per-row + 1 {
+            $step-option-num-of-gaps: $i - 1;
+
+            #{$root}__step--options-tablet_#{$i} & {
+                @include media('>=tablet', '<laptop') {
+                    flex-basis: calc(
+                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
+                            $i}
+                    );
+                    margin-right: $product-finder_step-option-gap;
+
+                    &:nth-child(#{$i}n+#{$i}) {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+
+        @for $i from 1 to $product-finder_step-option-max-per-row + 1 {
             $step-option-num-of-gaps: $i - 1;
 
             #{$root}__step--options-desktop_#{$i} & {
                 @include media('>=laptop') {
                     flex-basis: calc(
-                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder-step-option-gap /
+                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
                             $i}
                     );
+                    margin-right: $product-finder_step-option-gap;
+
+                    &:nth-child(#{$i}n+#{$i}) {
+                        margin-right: 0;
+                    }
 
                     /**
                      * flex-basis does not respect box-sizing: border-box
@@ -130,8 +225,8 @@ $product-finder-step-option-gap: 1rem !default;
                      */
                      .ie11 & {
                         flex-basis: calc(
-                                #{100% / $i} - #{$step-option-num-of-gaps * $product-finder-step-option-gap /
-                            $i + $product-finder-step-option-gap}
+                                #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
+                            $i + $product-finder_step-option-gap}
                         );
                     }
                 }
@@ -140,7 +235,7 @@ $product-finder-step-option-gap: 1rem !default;
     }
 
     &__option-sizer {
-        padding-bottom: 100%;
+        padding-bottom: $product-finder_vertical-ratio;
     }
 
     &__option-content {
@@ -176,10 +271,11 @@ $product-finder-step-option-gap: 1rem !default;
 
     &__option-label {
         width: 100%;
+        font-size: 1.4rem;
         justify-self: flex-end;
         margin-top: auto;
         font-weight: bold;
-        padding-top: 0.5rem;
+        padding-top: 1rem;
         text-align: center;
         -ms-grid-row: 2;
         grid-row: 2;
