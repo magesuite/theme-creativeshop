@@ -157,7 +157,6 @@ export default class OffcanvasNavigation {
         const $mainSwitcherLinks = $mainSwitcher.find('a');
         const $offcanvasSwitcherLinks = $offcanvasSwitcher.find('a');
         $mainSwitcherLinks.each((index: number, element: HTMLElement) => {
-            debugger;
             $offcanvasSwitcherLinks
                 .eq(index)
                 .data('post', $(element).data('post'));
