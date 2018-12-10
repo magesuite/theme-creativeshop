@@ -8,17 +8,25 @@ import { default as idleDeferred, IdleDeferred } from 'utils/idle-deffered';
  */
 export interface OffcanvasNavigationOptions {
     className?: string;
+    navigationClassName?: string;
     drawerClassName?: string;
+    languageSwitcherSelector?: string;
+    currencySwitcherSelector?: string;
     showCategoryIcon?: boolean;
     showProductsCount?: boolean;
     localStorageKey?: string;
-    cacheTTL?: number;
     endpointPath?: string;
 }
 
 interface OffcanvasNavigationCache {
-    html: string;
-    updateTime?: number;
+    key?: string;
+    generationTime?: number;
+    html?: string;
+}
+
+interface MainNavigationCacheInfo {
+    key: string;
+    generationTime: number;
 }
 
 /**
@@ -47,12 +55,15 @@ export default class OffcanvasNavigation {
         this._options = $.extend(
             {
                 className: 'cs-offcanvas-navigation',
+                navigationClassName: 'cs-navigation',
                 drawerClassName: 'cs-offcanvas__drawer',
                 showCategoryIcon: false,
                 showProductsCount: false,
                 localStorageKey: 'mgs-offcanvas-navigation',
                 cacheTTL: 60 * 60,
                 endpointPath: '/navigation/mobile/index',
+                currencySwitcherSelector: '.switcher-currency',
+                languageSwitcherSelector: '.switcher-language',
             },
             options
         );
@@ -69,23 +80,12 @@ export default class OffcanvasNavigation {
      * Initializes offcanvas navigation either from cache or when browser enters idle state.
      */
     protected _initWhenIdle(): void {
-        const cache = this._loadCache();
-        const currentTime: number = Math.round(Date.now() / 1000);
-
-        if (cache.updateTime + this._options.cacheTTL < currentTime) {
-            this._setCache({ html: '', updateTime: 0 });
-        }
-
-        if (cache.html) {
-            this._initHtml(cache.html);
-        } else {
-            this._idleDeferred = idleDeferred();
-            this._idleDeferred
-                .then(() => requireAsync(['mage/url']))
-                .then(([mageUrl]) => mageUrl.build(this._options.endpointPath))
-                .then(url => this._getHtml(url))
-                .then(html => this._initHtml(html));
-        }
+        this._idleDeferred = idleDeferred();
+        this._idleDeferred
+            .then(() => requireAsync(['mage/url']))
+            .then(([mageUrl]) => mageUrl.build(this._options.endpointPath))
+            .then(url => this._getHtml(url))
+            .then(html => this._initHtml(html));
     }
 
     /**
@@ -103,10 +103,8 @@ export default class OffcanvasNavigation {
      */
     protected _initHtml(html: string): void {
         this._$element = $(html);
-        this._$drawer
-            .empty()
-            .append(this._$element)
-            .trigger('contentUpdated');
+        this._$drawer.empty().append(this._$element);
+
         this._$parentLink = this._$element.find(
             `.${this._options.className}__link--parent`
         );
@@ -115,6 +113,55 @@ export default class OffcanvasNavigation {
         );
 
         this._addEventListeners();
+        this._initSwitchers();
+    }
+
+    /**
+     * Initializes language and currency switchers.
+     */
+    protected _initSwitchers(): void {
+        const $offcanvasLanguageSwitcher: JQuery = this._$drawer.find(
+            this._options.languageSwitcherSelector
+        );
+        const $mainLanguageSwitcher: JQuery = $('body')
+            .find(this._options.languageSwitcherSelector)
+            .not($offcanvasLanguageSwitcher);
+        this._fixSwitcherLinks(
+            $mainLanguageSwitcher,
+            $offcanvasLanguageSwitcher
+        );
+
+        const $offcanvasCurrencySwitcher: JQuery = this._$drawer.find(
+            this._options.currencySwitcherSelector
+        );
+        const $mainCurrencySwitcher: JQuery = $('body')
+            .find(this._options.currencySwitcherSelector)
+            .not($offcanvasCurrencySwitcher);
+        this._fixSwitcherLinks(
+            $mainCurrencySwitcher,
+            $offcanvasCurrencySwitcher
+        );
+
+        requireAsync(['mage/apply/main']).then(([mage]) => mage.apply());
+    }
+
+    /**
+     * Fixes links in given switchers caused by they being generated under async URL.
+     * @param $mainSwitcher Reference to switcher outside of offcanvas.
+     * @param $offcanvasSwitcher Reference to switcher inside offcanvas.
+     */
+    protected _fixSwitcherLinks(
+        $mainSwitcher: JQuery,
+        $offcanvasSwitcher: JQuery
+    ) {
+        const $mainSwitcherLinks = $mainSwitcher.find('a');
+        const $offcanvasSwitcherLinks = $offcanvasSwitcher.find('a');
+        $mainSwitcherLinks.each((index: number, element: HTMLElement) => {
+            debugger;
+            $offcanvasSwitcherLinks
+                .eq(index)
+                .data('post', $(element).data('post'));
+        });
     }
 
     /**
@@ -123,14 +170,18 @@ export default class OffcanvasNavigation {
      */
     protected _getHtml(url: string): JQuery.Deferred<string> {
         const deferred = jQuery.Deferred();
+        const cacheInfo = this._getCacheInfo();
         const cache = this._loadCache();
 
-        if (cache.html) {
+        if (
+            cache.key === cacheInfo.key &&
+            cache.generationTime >= cacheInfo.generationTime
+        ) {
             return deferred.resolve(cache.html);
         }
 
         $.get(url).then((html: string) => {
-            this._setCache({ html: html });
+            this._setCache(cacheInfo.key, html);
             deferred.resolve(html);
         });
 
@@ -138,7 +189,7 @@ export default class OffcanvasNavigation {
     }
 
     protected _loadCache(): OffcanvasNavigationCache {
-        let cache = { html: '', updateTime: 0 };
+        let cache = {};
         try {
             $.extend(
                 cache,
@@ -146,13 +197,20 @@ export default class OffcanvasNavigation {
             );
         } catch (error) {
             console.error(error);
+            // Cache may be corrupted from previous implementation.
+            localStorage.removeItem(this._options.localStorageKey);
         }
 
         return cache;
     }
 
-    protected _setCache(cache: OffcanvasNavigationCache) {
-        cache.updateTime = cache.updateTime || Math.floor(Date.now() / 1000);
+    protected _setCache(key: string, html: string) {
+        const cache: OffcanvasNavigationCache = {
+            key: key,
+            html: html,
+            generationTime: Math.floor(Date.now() / 1000),
+        };
+
         try {
             localStorage.setItem(
                 this._options.localStorageKey,
@@ -161,6 +219,15 @@ export default class OffcanvasNavigation {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    protected _getCacheInfo(): MainNavigationCacheInfo {
+        const $navigation = $(`.${this._options.navigationClassName}`);
+
+        return {
+            key: $navigation.data('cache-key'),
+            generationTime: $navigation.data('cache-generation-time'),
+        };
     }
 
     /**

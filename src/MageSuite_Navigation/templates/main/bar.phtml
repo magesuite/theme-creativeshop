@@ -11,8 +11,12 @@ $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
 
 $thirdLevelLimit = intval($block->getThirdLevelLimit());
+
+$cacheKey = md5(implode('|', $block->getCacheKeyInfo()));
+$cacheGenerationTime = time();
+
 ?>
-<nav class="cs-navigation">
+<nav class="cs-navigation" data-cache-key="<?= $cacheKey; ?>" data-cache-generation-time="<?= $cacheGenerationTime; ?>">
     <ul class="cs-navigation__list cs-navigation__list--level_<?= $level; ?>">
         <?php foreach($block->getItems() as $item):
             $itemId = $item->getId();
