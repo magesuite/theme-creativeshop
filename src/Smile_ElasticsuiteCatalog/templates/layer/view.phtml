@@ -3,9 +3,17 @@
  * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation
  */
 ?>
-
-<?php if ($block->canShowBlock()) : ?>
-    <?php $filters = count($block->getFilters());?>
+<?php
+    $filtersArray = $block->getFilters();
+    if(!function_exists('filterHasItems')) {
+        function filterHasItems($filter) {
+                return ($filter->getItemsCount());
+        }
+    }
+    $showFilters = array_filter($filtersArray, "filterHasItems");
+?>
+<?php if ($block->canShowBlock() && $showFilters) : ?>
+    <?php $filters = count($filtersArray);?>
     <?php $horizontalFiltersLayout = $this->getFiltersLayout(); ?>
     <?php $activeFilters = $horizontalFiltersLayout ? 0 : $block->getActiveFilters(); ?>
     <?php
@@ -32,7 +40,7 @@
 
             <?php $wrapOptions = false; ?>
             <?php $index = 0; ?>
-            <?php foreach ($block->getFilters() as $filter) : ?>
+            <?php foreach ($filtersArray as $filter) : ?>
                 <?php if ($filter->getItemsCount()) : ?>
                     <?php if ($horizontalFiltersLayout): ?>
 
