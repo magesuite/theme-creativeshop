@@ -5,8 +5,10 @@
 ?>
 <?php
     $filtersArray = $block->getFilters();
-    function filterHasItems($filter) {
-            return ($filter->getItemsCount());
+    if(!function_exists('filterHasItems')) {
+        function filterHasItems($filter) {
+                return ($filter->getItemsCount());
+        }
     }
     $showFilters = array_filter($filtersArray, "filterHasItems");
 ?>
