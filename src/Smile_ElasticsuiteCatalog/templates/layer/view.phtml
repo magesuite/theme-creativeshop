@@ -5,11 +5,10 @@
 ?>
 <?php
     $filtersArray = $block->getFilters();
-    function showFilter($item)
-        {
-            return ($item->getItemsCount());
-        }
-    $showFilters = array_filter($filtersArray, "showFilter");
+    function filterHasItems($filter) {
+            return ($filter->getItemsCount());
+    }
+    $showFilters = array_filter($filtersArray, "filterHasItems");
 ?>
 <?php if ($block->canShowBlock() && $showFilters) : ?>
     <?php $filters = count($filtersArray);?>
