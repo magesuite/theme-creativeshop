@@ -1,40 +1,46 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $helper \Magento\Search\Helper\Data 
  */
-?>
-<?php
-/** @var $block \Magento\Framework\View\Element\Template */
-/** @var $helper \Magento\Search\Helper\Data */
 $helper = $this->helper('Magento\Search\Helper\Data');
 ?>
-<form class="cs-header__search | cs-header-search | cs-input" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get" id="cs-header-search">
-    <input
-        class="cs-header-search__input | cs-input__input"
-        data-mage-init='{
-            "quickSearch":{
-                "formSelector":"#cs-header-search",
-                "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest', ['_secure' => $block->getRequest()->isSecure()]); ?>",
-                "destinationSelector":"#cs-header-search__autocomplete"
-            }
-        }'
-        type="search"
-        name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
-        value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
-        placeholder="<?php /* @escapeNotVerified */ echo __('Search entire store here...'); ?>"
-        maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
-        aria-haspopup="false"
-        aria-autocomplete="both"
-        autocomplete="off">
-    <div class="cs-header-search__autocomplete" id="cs-header-search__autocomplete"></div>
-    <div class="cs-input__button">
-        <button class="cs-button cs-button--look_default cs-button--look_on-input" type="submit">
-            <svg class="cs-button__icon cs-button__icon--center cs-button__icon--search">
-                <use xlink:href="#search"></use>
-            </svg>
-            <span class="cs-visually-hidden"><?=__('Search');?></span>
-        </button>
-    </div>
 
-</form>
+<!-- TODO: Update class names after input & button component refactor -->
+<div class="cs-header__search">
+    <form class="cs-header-search" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get" id="cs-header-search">
+        <input
+            class="cs-header-search__input"
+            data-mage-init='{
+                "quickSearch":{
+                    "formSelector":"#cs-header-search",
+                    "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest', ['_secure' => $block->getRequest()->isSecure()]); ?>",
+                    "destinationSelector":"#cs-header-search__autocomplete"
+                }
+            }'
+            type="search"
+            name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
+            value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
+            placeholder="<?php /* @escapeNotVerified */ echo $block->getSearchPlaceholder(); ?>"
+            maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
+            aria-haspopup="false"
+            aria-autocomplete="both"
+            autocomplete="off">
+        <div class="cs-header-search__autocomplete" id="cs-header-search__autocomplete"></div>
+        <div class="cs-header-search__action">
+            <span class="cs-header-search__close">
+                <?= $block->getChildHtml('top.search.icon.close'); ?>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Close search'); ?></span>
+            </span>
+            <button class="cs-header-search__button" type="submit">
+                <div class="cs-header-search__button-container cs-header-search__button-container--search">
+                    <?= $block->getChildHtml('top.search.icon.submit'); ?>
+                </div>
+                <div class="cs-header-search__button-container cs-header-search__button-container--loader">
+                    <?= $block->getChildHtml('top.search.icon.loader'); ?>
+                </div>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+            </button>
+        </div>
+    </form>
+</div>

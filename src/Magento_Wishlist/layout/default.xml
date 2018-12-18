@@ -1,15 +1,20 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-
-        <move element="wish-list-link" destination="header.user-area" before="-" after="my-account-link"/>
-
-        <referenceBlock name="wish-list-link" template="user-area/link.phtml"/>
+        <referenceBlock name="wish-list-link">
+            <arguments>
+                <argument name="xml_label" xsi:type="string" translate="true">Wishlist</argument>
+                <argument name="additional_css_classes" xsi:type="string">cs-header-user-nav__item--wishlist</argument>
+                <argument name="badge_additional_css_classes" xsi:type="string">cs-badge--short cs-badge--attention</argument>
+            </arguments>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="wish-list-link.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/heart.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-header-user-nav__icon cs-header-user-nav__icon--wishlist</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">false</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
     </body>
 </page>

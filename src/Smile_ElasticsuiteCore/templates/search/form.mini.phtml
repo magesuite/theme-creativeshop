@@ -1,46 +1,50 @@
 <?php
 /**
  * @var $block \Smile\ElasticsuiteCore\Block\Search\Form\Mini
+ * @var $helper \Magento\Search\Helper\Data 
  */
-?>
-
-<?php
-/** @var $helper \Magento\Search\Helper\Data */
 $helper = $this->helper('Magento\Search\Helper\Data');
-$searchFull = $block->getSearchFull();
 ?>
 
-<form class="cs-header__search <?php if ($searchFull): ?> cs-header__search--full<?php endif; ?>  | cs-header-search | cs-input" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
-    <input id="search"
-           data-mage-init='{"quickSearch":{
-                "formSelector":"#search_mini_form",
-                "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
-                "destinationSelector":"#search_autocomplete",
-                "templates": <?php /* @noEscape */ echo $block->getJsonSuggestRenderers();?>,
-                "priceFormat" : <?php /* @noEscape */ echo $block->getJsonPriceFormat();?>}
-            }'
-           type="search"
-           name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
-           value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
-           placeholder="<?php /* @escapeNotVerified */ echo __('Search entire store here...'); ?>"
-           class="cs-header-search__input | cs-input__input"
-           maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
-           role="combobox"
-           aria-haspopup="false"
-           aria-autocomplete="both"
-           autocomplete="off"
-           data-block="autocomplete-form"/>
-
-    <div class="cs-input__button cs-header-search__button">
-        <button class="cs-button cs-button--look_default cs-button--look_on-input" type="submit">
-            <svg class="cs-button__icon cs-button__icon--center cs-button__icon--search | cs-header-search__button-icon">
-                <use xlink:href="#magnifier"></use>
-            </svg>
-            <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
-            <img class="cs-header-search__autocomplete-loader" src="<?php echo $this->getViewFileUrl('images/rolling.gif'); ?>" alt="Loading animation">
-        </button>
-    </div>
-
-    <div id="search_autocomplete" class="search-autocomplete | cs-header-search__autocomplete"></div>
-    <?php echo $block->getChildHtml() ?>
-</form>
+<!-- TODO: Update class names after input & button component refactor -->
+<div class="cs-header__search">
+    <form class="cs-header-search" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
+        <input id="search"
+            data-mage-init='{
+                "quickSearch":{
+                    "formSelector":"#search_mini_form",
+                    "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
+                    "destinationSelector":"#search_autocomplete",
+                    "templates": <?php /* @noEscape */ echo $block->getJsonSuggestRenderers();?>,
+                    "priceFormat" : <?php /* @noEscape */ echo $block->getJsonPriceFormat();?>}
+                }'
+            type="search"
+            name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName(); ?>"
+            value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText(); ?>"
+            placeholder="<?php /* @escapeNotVerified */ echo $block->getSearchPlaceholder(); ?>"
+            class="cs-header-search__input"
+            maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength(); ?>"
+            role="combobox"
+            aria-haspopup="false"
+            aria-autocomplete="both"
+            autocomplete="off"
+            data-block="autocomplete-form" 
+        />
+        <div class="cs-header-search__action">
+            <span class="cs-header-search__close">
+                <?= $block->getChildHtml('top.search.icon.close'); ?>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Close search'); ?></span>
+            </span>
+            <button class="cs-header-search__button" type="submit">
+                <div class="cs-header-search__button-container cs-header-search__button-container--search">
+                    <?= $block->getChildHtml('top.search.icon.submit'); ?>
+                </div>
+                <div class="cs-header-search__button-container cs-header-search__button-container--loader">
+                    <?= $block->getChildHtml('top.search.icon.loader'); ?>
+                </div>
+                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+            </button>
+        </div>
+        <div id="search_autocomplete" class="search-autocomplete cs-autocomplete"></div>
+    </form>
+</div>

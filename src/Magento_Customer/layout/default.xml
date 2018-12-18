@@ -1,22 +1,43 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-
-        <move element="my-account-link" destination="header.user-area" before="-"/>
-        <move element="authorization-link" destination="information.stripe" before="store_language"/>
-
-        <referenceBlock name="top.links" remove="true" />
-
-        <referenceBlock name="my-account-link" template="user-area/link.phtml">
+        <referenceBlock name="register-link" display="false" />
+        <referenceBlock name="my-account-link" template="Magento_Customer::link.phtml">
             <arguments>
-                <argument name="label" xsi:type="string" translate="true">My Account</argument>
+                <argument name="xml_label" xsi:type="string" translate="true">Account</argument>
+                <argument name="additional_css_classes" xsi:type="string">cs-header-user-nav__item--account</argument>
             </arguments>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="my-account-link.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/user.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-header-user-nav__icon cs-header-user-nav__icon--my-account</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">false</argument>
+                </arguments>
+            </block>
         </referenceBlock>
+        <referenceBlock name="authorization-link">
+            <arguments>
+                <argument name="html_tag" xsi:type="string">div</argument>
+                <argument name="additional_css_classes" xsi:type="string"></argument>
+            </arguments>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="authorization-link.icon.login">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/user.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-authorization-link__icon cs-authorization-link__icon--login</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">false</argument>
+                </arguments>
+            </block>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="authorization-link.icon.logout">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/user.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-authorization-link__icon cs-authorization-link__icon--logout</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">false</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <move element="authorization-link" destination="top.bar.container.inner" before="store_language" />
     </body>
 </page>

@@ -1,0 +1,48 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/link';
+
+$authorization-link_item-border: 0.2rem solid $color_border-100 !default;
+$authorization-link_item-border-transform: $skew_transform !default;
+$authorization-link_color: $color_primary-500 !default;
+$authorization-link_color-hover: $color_primary-800 !default;
+$authorization-link_icon-color: $color_text-400 !default;
+
+.#{$ns}authorization-link {
+    $root: &; 
+
+    display: flex;
+    align-items: center;   
+    position: relative;
+    margin-left: 0.9rem;
+    padding: 0 0 0 0.3rem;
+
+    @include media('>=laptop') {
+        padding: 0 0 0 1.3rem;
+        margin-left: 1.7rem;
+    }
+
+    &:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        border-left: $authorization-link_item-border;
+        transform: $authorization-link_item-border-transform;
+    }
+
+    &__link {
+        @include link($authorization-link_color, $authorization-link_color-hover);
+
+        display: flex;
+        align-items: center;   
+    }
+
+    &__icon {
+        width: 1.8rem;
+        height: 1rem;
+        padding-right: 0.5rem;
+        fill: $authorization-link_icon-color;
+    }
+}

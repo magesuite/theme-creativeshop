@@ -30,6 +30,12 @@ import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
+import 'components/topbar';
+import 'components/logo';
+import 'components/authorization-link';
+import 'components/header';
+import 'components/badge';
+import 'components/autocomplete';
 import 'components/addtocart';
 import 'components/footer';
 import 'components/newsletter';
@@ -39,6 +45,8 @@ import 'components/paragraph';
 import 'components/page-bottom';
 import 'components/separator';
 import 'components/usps';
+import 'components/minicart';
+import 'components/minicart-product';
 import 'components/products-promo';
 import 'components/product-finder';
 
@@ -49,8 +57,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 // =============================================================================
 // Customizations
 // =============================================================================
-
-import 'customizations/header-search/header-search';
 
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();

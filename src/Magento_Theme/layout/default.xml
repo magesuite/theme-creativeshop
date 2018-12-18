@@ -12,11 +12,84 @@
             </block>
         </referenceBlock>
 
-        <move element="skip_to_content" destination="header.container" before="-"/>
-        <move element="top.links" destination="header.user-area" before="-"/>
+        <referenceContainer name="page.wrapper">
+            <!-- Top Bar above header -->
+            <container name="top.bar.container" htmlTag="div" htmlClass="cs-container cs-container--top-bar" before="-">
+                <container name="top.bar.container.inner" htmlTag="div" htmlClass="cs-container__inner cs-topbar">
+                    <container name="top.bar.container.wrapper" htmlTag="div" htmlClass="cs-topbar__wrapper">
+                        <container name="top.bar.child1" htmlTag="div" htmlClass="cs-topbar__item">
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="top.bar_usps">
+                                <arguments>
+                                    <argument name="block_id" xsi:type="string">header_topbar_usps</argument>
+                                </arguments>
+                            </block>
+                        </container>
+                        <container name="top.bar.child2" htmlTag="div" htmlClass="cs-topbar__item" after="top.bar.child1">
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="top.bar_hotline">
+                                <arguments>
+                                    <argument name="block_id" xsi:type="string">header_topbar_hotline</argument>
+                                </arguments>
+                            </block>
+                        </container>
+                    </container>
+                </container>
+            </container>
+        </referenceContainer>
 
-        <referenceContainer name="header.panel" remove="true"/>
-        <move element="store_language" destination="information.stripe" before="currency.switcher"/>
+        <!-- getting rid of Welcome Message -->
+        <referenceBlock name="header">
+            <arguments>
+                <argument name="show_part" xsi:type="string">other</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!-- Header -->
+        <referenceContainer name="page.wrapper">
+            <container name="header.page.container" htmlTag="div" htmlClass="cs-container cs-container--header" after="top.bar.container">
+                <container name="header.page.container.inner" htmlTag="div" htmlClass="cs-container__inner" />
+            </container>
+        </referenceContainer>
+        <referenceContainer name="header.container" htmlClass="cs-header" />
+        <referenceContainer name="header-wrapper" htmlClass="cs-header__content">
+            <block class="Magento\Framework\View\Element\Template" name="header.burger" template="Magento_Theme::html/burger.phtml" before="-"/>
+        </referenceContainer>
+        <move element="header.container" destination="header.page.container.inner"/>
+
+        <!-- Magesuite's logo definition -->
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/logo.svg</argument>
+                <argument name="logo_img_width" xsi:type="number">170</argument>
+                <argument name="logo_img_height" xsi:type="number">50</argument>
+            </arguments>
+        </referenceBlock>
+
+        <!-- Wrapper for content -->
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container cs-container--spacious">
+            <container name="page.main.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+            </container>
+        </referenceContainer>
+        <move element="columns.top" destination="page.main.container.inner" after="-"/>
+        <move element="columns" destination="page.main.container.inner" after="-"/>
+
+        <referenceContainer name="page.top">
+            <block class="Magento\Framework\View\Element\Template" name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-"/>
+            <!-- Adding global container for Breadcrumbs -->
+            <container name="breadcrumbs.container" htmlTag="div" htmlClass="cs-container cs-container--breadcrumbs" after="-">
+                <container name="breadcrumbs.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
+            </container>
+        </referenceContainer>
+        <move element="breadcrumbs" destination="breadcrumbs.container.inner"/>
+        
+        <!-- Set template for Header User Nav and add some parameters -->
+        <referenceBlock name="top.links" template="Magento_Theme::header/top-links.phtml">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string"></argument>
+            </arguments>
+        </referenceBlock>
+        <move element="top.links" destination="header-wrapper" after="-" />
+
+        <!-- Store language -->
         <referenceBlock name="store_language">
             <arguments>
                 <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--topbar cs-dropdown-switcher--language</argument>
@@ -32,81 +105,15 @@
                 </arguments>
             </block>
         </referenceBlock>
+        <move element="store_language" destination="top.bar.container.inner"/>
 
-        <!--Welcome message-->
-        <referenceBlock name="header" remove="true"/>
-
-        <referenceContainer name="page.wrapper">
-            <container name="information.stripe.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--viewport-width" before="-">
-                <container name="information.stripe.container.inner" htmlTag="div" htmlClass="cs-container__inner cs-container__inner--flex">
-                    <container name="information.stripe" htmlTag="div" htmlClass="cs-information-stripe">
-                        <container name="information.stripe.wrapper" htmlTag="div" htmlClass="cs-information-stripe__wrapper">
-                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="information.stripe_usps">
-                                <arguments>
-                                    <argument name="block_id" xsi:type="string">information_stripe_usps</argument>
-                                </arguments>
-                            </block>
-                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="information.stripe_hotline">
-                                <arguments>
-                                    <argument name="block_id" xsi:type="string">information_stripe_hotline</argument>
-                                </arguments>
-                            </block>
-                        </container>
-                    </container>
-                </container>
-            </container>
-
-            <container name="header.page.container" htmlTag="div" htmlClass="cs-container cs-container--ontop cs-container--viewport-width" after="information.stripe.container">
-                <container name="header.page.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
-            </container>
-        </referenceContainer>
-
-        <referenceContainer name="header.container" htmlClass="cs-header" />
-        <move element="header.container" destination="header.page.container.inner"/>
-
-        <referenceContainer name="page.top">
-            <block class="Magento\Framework\View\Element\Template" name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-"/>
-            <container name="breadcrumbs.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--breadcrumbs" after="-">
-                <container name="breadcrumbs.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
-            </container>
-        </referenceContainer>
-
-        <move element="breadcrumbs" destination="breadcrumbs.container.inner"/>
-
-        <referenceContainer name="header-wrapper" htmlClass="cs-header__content">
-            <container name="header.user-area" htmlTag="div" htmlClass="cs-header__user-area cs-header-user-area"/>
-            <container name="header.search.placeholder" htmlTag="div" htmlClass="cs-header__search-placeholder">
-                <block class="Magento\Framework\View\Element\Text" name="header.search.placeholder.text">
-                    <arguments>
-                        <argument name="text" xsi:type="string"><![CDATA[<!-- -->]]></argument>
-                    </arguments>
-                </block>
-            </container>
-            <block class="Magento\Framework\View\Element\Template" name="header.burger" template="Magento_Theme::html/burger.phtml"/>
-        </referenceContainer>
-        <move element="minicart" destination="header.user-area" after="-"/>
-
-        <referenceBlock name="logo">
-            <arguments>
-                <argument name="logo_file" xsi:type="string">images/creativeshop-logo.png</argument>
-                <argument name="logo_img_width" xsi:type="number">213</argument>
-                <argument name="logo_img_height" xsi:type="number">67</argument>
-            </arguments>
-        </referenceBlock>
-
-        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container cs-container--spacious">
-            <container name="page.main.container.inner" htmlTag="div" htmlClass="cs-container__inner">
-            </container>
-        </referenceContainer>
-        <move element="columns.top" destination="page.main.container.inner" after="-"/>
-        <move element="columns" destination="page.main.container.inner" after="-"/>
-
+        <!-- Footer -->
         <referenceContainer name="footer-container" htmlClass="page-footer cs-container cs-container--footer cs-footer" />
         <referenceContainer name="footer" htmlClass="footer content cs-container cs-container__inner cs-footer__content">
             <container name="footer.element.promo" htmlTag="div" htmlClass="cs-footer__item cs-footer__item--promo">
                 <block class="MageSuite\ThemeHelpers\Block\Icon" name="footer.logo.inverted">
                     <arguments>
-                        <argument name="icon_url" xsi:type="string">images/logo_inverted.svg</argument>
+                        <argument name="icon_url" xsi:type="string">images/logo-inverted.svg</argument>
                         <argument name="css_class" xsi:type="string">cs-footer__shop-logo</argument>
                         <argument name="alt_text" xsi:type="string" translate="true">Webshop logo</argument>
                         <argument name="lazy_loaded" xsi:type="boolean">true</argument>
@@ -128,7 +135,6 @@
                         </arguments>
                     </block>
                 </block>
-
                 <block class="Magento\Framework\View\Element\Template" name="footer.links.2" template="Magento_Theme::footer/section.phtml">
                     <arguments>
                         <argument name="headline" xsi:type="string" translate="true">Information</argument>
@@ -143,7 +149,6 @@
                         </arguments>
                     </block>
                 </block>
-
                 <block class="Magento\Framework\View\Element\Template" name="footer.links.3" template="Magento_Theme::footer/section.phtml">
                     <arguments>
                         <argument name="headline" xsi:type="string" translate="true">About</argument>
@@ -159,14 +164,12 @@
                     </block>
                 </block>
             </container>
-
             <container name="footer.element.extras" htmlTag="div" htmlClass="cs-footer__item cs-footer__item--extras">
                 <block class="Magento\Framework\View\Element\Template" name="footer.socials" template="Magento_Theme::footer/section.phtml">
                     <arguments>
                         <argument name="additional_css_classes" xsi:type="string">cs-footer__section--socials</argument>
                         <argument name="headline" xsi:type="string" translate="true">Social media</argument>
                     </arguments>
-
                     <block class="Magento\Framework\View\Element\Template" name="footer.social.links" template="Magento_Theme::footer/social-media.phtml">
                         <arguments>
                             <argument name="items" xsi:type="array">
@@ -200,7 +203,9 @@
                 </block>
             </container>
         </referenceContainer>
+        <!-- /Footer -->
 
+	    <!-- Page bottom wrapper -->
         <referenceContainer name="page.wrapper">
             <container name="page.bottom.container" htmlTag="div" htmlClass="cs-container cs-container--page-bottom" after="footer-container">
                 <container name="page.bottom.container.inner" htmlTag="div" htmlClass="cs-container__inner">
@@ -298,6 +303,8 @@
             <block class="MageSuite\Frontend\Block\Twig" name="video.player" template="video-player/video-player.twig" />
         </referenceContainer>
 
+        <!-- Hidding additional header elements -->
+        <referenceContainer name="header.panel.wrapper" display="false" />
         <referenceBlock name="footer_links" display="false" />
         <referenceBlock name="copyright" display="false" />
         <referenceBlock name="report.bugs" display="false" />

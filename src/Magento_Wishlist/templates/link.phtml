@@ -1,0 +1,37 @@
+<?php
+// @codingStandardsIgnoreFile
+/* @var \Magento\Wishlist\Block\Link $block */
+    $label = $block->getXmlLabel();
+?>
+<li class="link wishlist cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>" data-bind="scope: 'wishlist'">
+    <a class="cs-header-user-nav__link" <?= /* @noEscape */ $block->getLinkAttributes() ?>>
+        <?= $block->getChildHtml('wish-list-link.icon'); ?>
+        <!-- TODO: Update class names after badge component refactor -->
+        <span class="cs-header-user-nav__badge cs-header-user-nav__badge--wishlist cs-badge <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__badge--have-items': wishlist().counter, 'cs-header-user-nav__badge--empty': !wishlist().counter }">
+            <span class="counter qty cs-badge__span">
+                <!-- ko if: wishlist().counter -->
+                    <!-- ko text: wishlist().counter --><!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: !wishlist().counter -->
+                0
+                <!-- /ko -->
+            </span>
+        </span>
+        <?php if(!empty($label)): ?>
+            <span class="cs-header-user-nav__label"><?= $block->escapeHtml($label) ?></span>
+        <?php endif; ?>
+    </a>
+</li>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "wishlist": {
+                        "component": "Magento_Wishlist/js/view/wishlist"
+                    }
+                }
+            }
+        }
+    }
+</script>

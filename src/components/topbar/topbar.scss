@@ -1,0 +1,139 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/link';
+
+$topbar_background: transparent !default;
+$topbar_height: 2.7rem !default;
+
+$topbar_item-font-size: 1.1rem !default;
+$topbar_item-text-color: $color_mineshaft !default;
+$topbar_item-hours-color: $color_black !default;
+$topbar_item-border: 0.2rem solid $color_white !default;
+$topbar_item-border-transform: $skew_transform !default;
+$topbar_item-phone_number-color: $color_black !default;
+
+$topbar_link-color-action: $color_primary-800 !default;
+$topbar_link-color: $color_primary-500 !default;
+
+.#{$ns}topbar {
+    $root: &;
+
+    background: $topbar_background;
+    display: none;
+    width: 100%;
+    font-size: $topbar_item-font-size;
+    transform: translateY(0);
+    transition: transform 0.3s;
+
+    @include media('>=laptop') {
+        display: flex;
+        z-index: 302;
+    }
+
+    &--hidden {
+        transform: translateY(-105%);
+    }
+
+    .page-print & {
+        display: none;
+    }
+
+    &__wrapper {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        flex-grow: 1;
+        align-items: center;
+        height: $topbar_height;
+
+        @include media('>=laptop') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__item {
+        color: $topbar_item-text-color;
+    }
+
+    &__list,
+    &__item > ul {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__list {
+        &--featured {
+            opacity: 1;
+            transition: opacity 0.3s;
+            
+            @include media('<laptop-lg') {
+                opacity: 0; // Hide featured for smaller screens but let it take space to keep flex-justify.
+            }
+
+            .page-wrapper--checkout & {
+                opacity: 0; // Hide completely on checkout.
+            }
+        }
+    }
+
+    &__list-item {
+        margin-bottom: 0;
+        height: $topbar_height;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-right: 0.9rem;
+        padding: 0 0.3rem 0 0;
+
+        @include media('>=laptop') {
+            padding: 0 1.3rem 0 0;
+            margin-right: 1.7rem;
+        }
+
+        &:before {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            content: '';
+            border-right: $topbar_item-border;
+            transform: $topbar_item-border-transform;
+        }
+
+        &:last-child {
+            margin-right: 0;
+            padding-right: 0;
+
+            &:before {
+                content: none;
+            }
+        }
+    }
+
+    &__text {
+        color: $topbar_item-text-color;
+    }
+
+    &__link {
+        
+        &__phone-number {
+            color: $topbar_item-hours-color;
+            font-weight: 700;
+        }
+        @include link($topbar_link-color, $topbar_link-color-action);
+        
+        margin-right: 0.9rem;
+
+        &:hover {
+            color: $topbar_item-hours-color;
+        }
+
+        @include media('<laptop') {
+            display: none;
+        }
+    }
+}
