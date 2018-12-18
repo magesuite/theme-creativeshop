@@ -1,0 +1,274 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'components/container/mixin';
+
+$header_border-bottom: 1px solid $color_border-200 !default;
+
+$header_burger-icon-background: transparent !default;
+$header_burger-icon-color: $color_primary-500 !default;
+$header_burger-icon-background-active: $color_primary-500 !default;
+$header_burger-icon-color-active: $color_background-200 !default;
+
+$header_is-sticky-on-mobile: true !default;
+$header_background: $color_background-200 !default;
+
+// if you want to cover 'search' item in header by searchbox, provide proper negative margin based on your design
+// it works only if `$global_header-hide-search-item-trigger-breakpoint` is false, and `$global_header-searchbox-as-layer-breakpoint` has a valid breakpoint
+$header_searchbox-margin-to-cover-search-item: -6.8rem;
+
+.#{$ns}header {
+    $root: &;
+    font-size: 1rem;
+
+    @if ($header_is-sticky-on-mobile) {
+        height: $global_header-height-mobile;
+    
+        @include media('>=tablet') {
+            height: $global_header-height-tablet;
+        }
+    }
+
+    @include media('>=laptop-lg') {
+        height: $global_header-height-desktop;
+    }
+
+    &__content {
+        @include container-wrapper();
+        height: $global_header-height-mobile;
+        z-index: 300;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        will-change: z-index, height, position;
+        background-color: $header_background;
+        position: relative;
+
+        @if ($header_is-sticky-on-mobile) {
+            @include media('<laptop') {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+        }
+
+        @include media('>=tablet') {
+            height: $global_header-height-tablet;
+            z-index: 201;
+        }
+
+        @include media('>=laptop-lg') {
+            height: $global_header-height-desktop;
+        }
+
+        @include media('>=laptop') {
+            border-bottom: $header_border-bottom;
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__burger {
+        display: flex;
+        padding: 1.5rem;
+        flex: 0 1 4rem;
+        border: 0;
+        align-items: center;
+        margin-right: 0.5rem;
+        align-self: stretch;
+
+        &,
+        &:active,
+        &:focus,
+        &:hover {
+            border: 0;
+            background: $header_burger-icon-background;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            transform: scale(0);
+            transform-origin: left;
+            background: $header_burger-icon-background-active;
+            transition: transform 0.3s;
+            bottom: 0;
+            left: 0;
+        }
+
+        @include media('>=laptop') {
+            display: none;
+        }
+
+        &--active {
+            &,
+            &:active,
+            &:focus,
+            &:hover {
+                background: $header_burger-icon-background-active;
+            }
+
+            &:after {
+                transform: scale(1);
+            }
+
+            #{$root}__burger-icon {
+                transform: rotate(-45deg);
+
+                &,
+                &:before,
+                &:after {
+                    background: $header_burger-icon-color-active;
+                }
+
+                &:before,
+                &:after {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+
+    &__burger-icon {
+        padding: 0;
+        margin: 0;
+        position: relative;
+
+        &,
+        &:before,
+        &:after {
+            width: 1.8rem;
+            height: 0.2rem;
+            background: $header_burger-icon-color;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+        }
+
+        &:before {
+            transform: translateY(-250%);
+            transform: translate3d(0, -250%, 0);
+        }
+
+        &:after {
+            transform: translateY(250%);
+            transform: translate3d(0, 250%, 0);
+        }
+    }
+
+    &__logo {
+        display: flex;
+        flex: 1 1 0%;
+        margin-bottom: 0;
+
+        @include media('>=phone-lg') {
+            flex: 0 1 auto;
+        }
+
+        .page-print & {
+            @include container-wrapper();
+            position: relative;
+    
+            &:after {
+                content: '';
+                display: table;
+                clear: both;
+            }
+        }
+    }
+
+    &__search {
+        display: none;
+        width: 100%;
+        background-color: $header_background;
+        padding: 1rem;
+
+        @if ($global_header-searchbox-as-layer-breakpoint) {
+            @include media($global_header-searchbox-as-layer-breakpoint) {
+                padding: 0;
+            }
+        } @else {
+            @include media('>=laptop') {
+                padding: 1rem 0;
+            }
+
+            @include media('>=laptop-lg') {
+                padding: 1.5rem 0;
+            }
+        }
+        
+        &--active {
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        @if ($global_header-hide-search-item-trigger-breakpoint) {
+            @include media($global_header-hide-search-item-trigger-breakpoint) {
+                display: block;
+                position: relative;
+                width: calc(32% - 3rem);
+                padding: 0;
+                top: initial;
+                left: initial;
+                right: initial;
+                z-index: 300;
+            }
+        } @else {
+            @if ($global_header-searchbox-as-layer-breakpoint) {
+                @include media($global_header-searchbox-as-layer-breakpoint) {
+                    width: auto;
+                    position: initial;
+                    flex-grow: 1;
+                    // space between logo & search box if it's layer
+                    margin-left: 2rem;
+
+                    .ie11 & {
+                        position: inherit;
+                        top: inherit;
+                    }
+
+                    @if ($header_searchbox-margin-to-cover-search-item) {
+                        margin-right: $header_searchbox-margin-to-cover-search-item;
+                    }
+                }
+            }
+        }
+    }
+
+    &__user-nav {
+        display: flex;
+        justify-content: flex-end;
+        flex: 0 1 30%;
+
+        @if ($global_header-hide-search-item-trigger-breakpoint) {
+            @include media($global_header-hide-search-item-trigger-breakpoint) {
+                flex: 0 1 25%;
+            }
+        }
+
+        @include media('>=tablet') {
+            justify-content: flex-start;
+        }
+    }
+}
+
+@if not($header_is-sticky-on-mobile) {
+    @include media('<laptop') {
+        .cs-container--header {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}

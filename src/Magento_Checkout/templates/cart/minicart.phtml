@@ -1,54 +1,24 @@
 <?php
 // @codingStandardsIgnoreFile
-
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+$label = $block->getXmlLabel();
 ?>
 
-<div class="cs-header-user-area__section cs-header-user-area__section--minicart | minicart-wrapper cs-addtocart__minicart" data-block="minicart">
-    <a
-        class="cs-header-user-area__link cs-hide-tablet-desktop cs-addtocart__minicart-link"
-        href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
-        data-bind="scope: 'minicart_content'"
-    >
-        <span class="counter qty empty">
-            <span class="cs-header-user-area__icon-wrapper">
-                <span
-                    class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short cs-addtocart__minicart-qty-badge"
-                    data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }"
-                >
-                    <span class="cs-badge__span cs-addtocart__minicart-qty-text"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
+<li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>"> 
+    <div class="cs-addtocart__minicart minicart-wrapper" data-block="minicart">
+        <a class="cs-header-user-nav__link cs-addtocart__minicart-link action showcart" href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>" data-bind="scope: 'minicart_content'">
+            <?= $block->getChildHtml('minicart.icon'); ?>
+            <!-- TODO: Update class names after badge component refactor -->
+            <span class="counter qty empty cs-header-user-nav__badge cs-header-user-nav__badge--minicart <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__badge--have-items': getCartParam('summary_count') > 0, 'cs-header-user-nav__badge--empty': !getCartParam('summary_count') }">
+                <span class="cs-badge__span cs-addtocart__minicart-qty-text">
+                    <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
                 </span>
-                <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
-                    <use xlink:href="#cart"></use>
-                </svg>
             </span>
-            <span class="cs-header-user-area__label"><?= __('Cart'); ?></span>
-        </span>
-    </a>
-
-    <a
-        class="cs-header-user-area__link cs-hide-mobile | showcart cs-addtocart__minicart-link"
-        href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
-        data-bind="scope: 'minicart_content'"
-    >
-        <span class="counter qty empty"
-              data-bind="css: { empty: !!getCartParam('summary_count') == false }, blockLoader: isLoading">
-        <span class="cs-header-user-area__icon-wrapper">
-
-            <span
-                class="cs-header-user-area__badge | cs-badge cs-badge--info cs-badge--short cs-addtocart__minicart-qty-badge"
-                data-bind="css: { 'cs-header-user-area__badge--visible': getCartParam('summary_count') > 0 }"
-            >
-                <span class="cs-badge__span cs-addtocart__minicart-qty-text"><!-- ko text: getCartParam('summary_count') --><!-- /ko --></span>
-            </span>
-
-            <svg class="cs-header-user-area__icon cs-header-user-area__icon--minicart">
-                <use xlink:href="#cart"></use>
-            </svg>
-        </span>
-        <span class="cs-header-user-area__label"><?= __('Cart'); ?></span>
-        </span>
-    </a>
+            <?php if (!empty($label)): ?>
+                <span class="cs-header-user-nav__label"><?= /* @escapeNotVerified */ $block->escapeHtml($label) ?></span>
+            <?php endif; ?>
+        </a>
+    </div>
     <?php if ($block->getIsNeedToDisplaySideBar()): ?>
         <div class="block block-minicart empty"
              data-role="dropdownDialog"
@@ -62,23 +32,23 @@
                 "triggerClass":"active",
                 "parentClass":"active",
                 "buttons":[]}}'>
-            <div id="minicart-content-wrapper" data-bind="scope: 'minicart_content'">
+            <div id="minicart-content-wrapper" class="cs-minicart" data-bind="scope: 'minicart_content'">
                 <!-- ko template: getTemplate() --><!-- /ko -->
             </div>
-            <?php echo $block->getChildHtml('minicart.addons'); ?>
+            <?= $block->getChildHtml('minicart.addons') ?>
         </div>
     <?php endif ?>
     <script>
-        window.checkout = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getConfig()); ?>;
+        window.checkout = <?= /* @escapeNotVerified */ $block->getSerializedConfig() ?>;
     </script>
     <script type="text/x-magento-init">
-    {
-        "[data-block='minicart']": {
-            "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
-        },
-        "*": {
-            "Magento_Ui/js/block-loader": "<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>"
+        {
+            "[data-block='minicart']": {
+                "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout() ?>
+            },
+            "*": {
+                "Magento_Ui/js/block-loader": "<?= /* @escapeNotVerified */ $block->getViewFileUrl('images/loader-1.gif') ?>"
+            }
         }
-    }
     </script>
-</div>
+</li>

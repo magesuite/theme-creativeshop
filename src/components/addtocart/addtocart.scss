@@ -2,22 +2,22 @@
 @import 'components/container/mixin';
 @import 'include-media/dist/include-media';
 
-$addtocart_button-skew-deg: 18;
-$addtocart_button-skewed-background-width: 4.1em;
-$addtocart_button-bg: $color_primary-500;
-$addtocart_button-bg-hover: $color_primary-800;
+$addtocart_button-skew-deg: 18 !default;
+$addtocart_button-skewed-background-width: 4.1rem !default;
+$addtocart_button-bg: $color_primary-500 !default;
+$addtocart_button-bg-hover: $color_primary-800 !default;
 
-$addtocart_button-padding-y: 0.858em;
-$addtocart_button-padding-left: 1em;
-$addtocart_button-padding-right: 4.5em;
+$addtocart_button-padding-y: 0.858rem !default;
+$addtocart_button-padding-left: 1rem !default;
+$addtocart_button-padding-right: 4.5rem !default; 
 
-$addtocart_loading-indicator-ball-color: $color_white;
-$addtocart_loading-indicator-ball-size: 10px;
+$addtocart_loading-indicator-ball-color: $color_text-200 !default;
+$addtocart_loading-indicator-ball-size: 10px !default;
 
-$addtocart_ajax-success-bg-primary: $color_apple;
-$addtocart_ajax-success-bg-secondary: darken($addtocart_ajax-success-bg-primary, 5%);
-$addtocart_ajax-fail-bg-primary: $color_crimson;
-$addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
+$addtocart_ajax-success-bg-primary: $color_success-500 !default;
+$addtocart_ajax-success-bg-secondary: $color_success-600 !default;
+$addtocart_ajax-fail-bg-primary: $color_error-500 !default;
+$addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
 
 .#{$ns}addtocart {
     $root: &;
@@ -36,14 +36,14 @@ $addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
             border: none;
             border-radius: 3px;
             background: $addtocart_button-bg;
-            color: $color_white;
+            color: $color_text-200;
             padding: $addtocart_button-padding-y $addtocart_button-padding-right $addtocart_button-padding-y $addtocart_button-padding-left;
         }
 
         &:hover {
             background: $addtocart_button-bg-hover;
             border: inherit;
-            color: $color_white;
+            color: $color_text-200;
         }
 
         &[disabled],
@@ -52,7 +52,7 @@ $addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
             opacity: 1;
         }
 
-        @if $addtocart_button_skew-deg > 0 {
+        @if ($addtocart_button_skew-deg > 0) {
             &:after {
                 position: absolute;
                 top: 0;
@@ -192,6 +192,9 @@ $addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
     }
 
     &__minicart {
+        width: 100%;
+        text-align: center;
+        
         &--sticky,
         &--unstick {
             @include container-wrapper();
@@ -203,6 +206,8 @@ $addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
             z-index: 400;
             padding: 0;
             text-align: right;
+            display: flex;
+            justify-content: flex-end;
         }
     }
 
@@ -211,13 +216,22 @@ $addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
         #{$root}__minicart--unstick & {
             text-align: center;
             padding: 2.5rem 1rem;
-            background: $color_white;
+            background: $color_background-200;
             box-shadow: 1px 3px 4.5rem 0 rgba(30, 48, 67, 0.34);
             animation: minicart-in 1s cubic-bezier(0, 0.77, 0.18, 1);
+            position: relative;
+
+            #{$root}__minicart-qty-badge {
+                top: 2rem;
+            }
         }
 
         #{$root}__minicart--unstick & {
             animation: minicart-out 0.5s cubic-bezier(0.55, 0.2, 0.89, 0.45);
+        }
+
+        &:before {
+            content: none !important;
         }
     }
 
@@ -391,4 +405,8 @@ $addtocart_ajax-fail-bg-secondary: darken($addtocart_ajax-fail-bg-primary, 5%);
         }
     }
     /* stylelint-enable */
+
+    .block-minicart {
+        margin-bottom: 0;
+    }
 }

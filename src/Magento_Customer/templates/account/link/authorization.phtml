@@ -1,26 +1,18 @@
 <?php
 // @codingStandardsIgnoreFile
-
-/** @var $block \Magento\Customer\Block\Account\AuthorizationLink */
+/** @var \Magento\Customer\Block\Account\AuthorizationLink $block */
 $dataPostParam = '';
-if ($block->isLoggedIn()) {
-    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+$isLoggedIn = $block->isLoggedIn();
+$htmlTag = $block->getHtmlTag() ?? 'div';
+if ($isLoggedIn) {
+    $dataPostParam = sprintf("data-post='%s'", $block->getPostParams());
 }
 ?>
-
-<ul class="cs-information-stripe__list | cs-list cs-list--inline cs-list--unstyled" data-label="<?php echo $block->escapeHtml(__('or')); ?>">
-    <li class="cs-information-stripe__item cs-information-stripe__item--last cs-information-stripe__item--login | cs-list__item | cs-text cs-t-text--size_300">
-        <a
-            class="cs-information-stripe__account-link | cs-link cs-link--size_300"
-            <?php /* @escapeNotVerified */ echo $block->getLinkAttributes(); ?>
-            <?php /* @escapeNotVerified */ echo $dataPostParam; ?>
-        >
-            <svg class="cs-information-stripe__account-icon">
-                <use xlink:href="#user"></use>
-            </svg>
-            <span class="cs-information-stripe__account-label">
-                <?php echo $block->escapeHtml($block->getLabel()); ?>
-            </span>
-        </a>
-    </li>
-</ul>
+<<?= $htmlTag ?> class="authorization-link cs-authorization-link <?= $block->getAdditionalCssClasses() ?>" data-label="<?= $block->escapeHtmlAttr(__('or')) ?>">
+    <a <?= /* @noEscape */ $block->getLinkAttributes() ?><?= /* @noEscape */ $dataPostParam ?> class="cs-authorization-link__link">
+        <?= $block->getChildHtml($isLoggedIn ? 'authorization-link.icon.logout' : 'authorization-link.icon.login'); ?>
+        <span class="cs-authorization-link__label">
+            <?= $block->escapeHtml($block->getLabel()); ?>
+        </span>
+    </a>
+</<?= $htmlTag ?>>

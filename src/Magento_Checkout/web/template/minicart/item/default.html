@@ -1,67 +1,59 @@
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
-<li class="cs-minicart__list-item | product-item" data-role="product-item">
-    <div class="cs-minicart-product">
+<li class="item product product-item cs-minicart__list-item" data-role="product-item">
+    <div class="product cs-minicart-product">
         <!-- ko if: product_has_url -->
-        <a data-bind="attr: {href: product_url, title: product_name}" tabindex="-1" class="cs-minicart-product__image-container">
+        <a data-bind="attr: {href: product_url, title: product_name}" tabindex="-1" class="product-item-photo cs-minicart-product__image-container">
             <!-- ko foreach: $parent.getRegion('itemImage') -->
-            <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
+                <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
             <!-- /ko -->
         </a>
         <!-- /ko -->
         <!-- ko ifnot: product_has_url -->
-        <span class="cs-minicart-product__image-container">
+        <span class="product-item-photo cs-minicart-product__image-container">
             <!-- ko foreach: $parent.getRegion('itemImage') -->
                 <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
             <!-- /ko -->
         </span>
         <!-- /ko -->
-
-        <div class="cs-minicart-product__details">
-
+        <div class="product-item-details cs-minicart-product__details">
             <div class="cs-minicart-product__name-wrapper">
                 <!-- ko if: product_has_url -->
-                <a class="cs-minicart-product__name" data-bind="attr: {href: product_url}, text: product_name"></a>
+                <a class="product-item-name cs-minicart-product__name" data-bind="attr: {href: product_url}, html: product_name"></a>
                 <!-- /ko -->
                 <!-- ko ifnot: product_has_url -->
-                <!-- ko text: product_name --><!-- /ko -->
+                    <!-- ko text: product_name --><!-- /ko -->
                 <!-- /ko -->
             </div>
-
-            <div class="cs-minicart-product__options-wrapper cs-minicart-product__options-wrapper--column">
-                <!-- ko if: options.length -->
+            <!-- ko if: options.length -->
+            <div class="product options cs-minicart-product__options-wrapper">
+                <span data-role="title" class="toggle cs-minicart-product__options-title"><!-- ko i18n: 'See Details' --><!-- /ko --></span>
+                <div data-role="content" class="content cs-minicart-product__options-content">
+                    <strong class="subtitle cs-minicart-product__options-subtitle"><!-- ko i18n: 'Options Details' --><!-- /ko --></strong>
                     <!-- ko foreach: { data: options, as: 'option' } -->
-                    <dl class="cs-minicart-product__options-group">
+                    <dl class="product options list cs-minicart-product__options-group">
                         <!-- ko if: (option.item && option.item['product_type'] && option.item['product_type'] !== 'bundle') -->
-                            <dt class="cs-minicart-product__options-label"><!-- ko text: option.label --><!-- /ko --></dt>
+                        <dt class="label cs-minicart-product__options-label"><!-- ko text: option.label --><!-- /ko --></dt>
                         <!-- /ko -->
-                        <dd class="cs-minicart-product__options-value">
+                        <dd class="values cs-minicart-product__options-value">
                             <!-- ko if: Array.isArray(option.value) -->
-                            <span data-bind="html: option.value.join('<br>')"></span>
+                                <span data-bind="html: option.value.join('<br>')"></span>
                             <!-- /ko -->
                             <!-- ko ifnot: Array.isArray(option.value) -->
-                            <span data-bind="html: option.value"></span>
+                                <span data-bind="html: option.value"></span>
                             <!-- /ko -->
                         </dd>
                     </dl>
                     <!-- /ko -->
-                <!-- /ko -->
-
-                <div class="cs-minicart-product__options-group cs-minicart-product__options-group--qty">
-
-                    <span class="cs-minicart-product__options-label" data-bind="i18n: 'Qty'">
-                    </span>
-                    <span class="cs-minicart-product__options-value" data-bind="i18n: qty">
-                    </span>
                 </div>
-
-
+            </div>
+            <!-- /ko -->
+            <div class="cs-minicart-product__options-group cs-minicart-product__options-group--qty">
+                <span class="cs-minicart-product__options-label" data-bind="i18n: 'Qty'">
+                </span>
+                <span class="cs-minicart-product__options-value" data-bind="i18n: qty">
+                </span>
+            </div>
+            <div class="product-item-pricing">
                 <!-- ko if: canApplyMsrp -->
-
                 <div class="details-map">
                     <span class="label" data-bind="i18n: 'Price'"></span>
                     <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
@@ -69,11 +61,23 @@
                 <!-- /ko -->
                 <!-- ko ifnot: canApplyMsrp -->
                 <!-- ko foreach: $parent.getRegion('priceSidebar') -->
-                <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
+                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
                 <!-- /ko -->
                 <!-- /ko -->
-
-
+            </div>
+            <div class="product actions cs-minicart-product__actions">
+                <!-- ko if: is_visible_in_site_visibility -->
+                <div class="primary cs-minicart-product__action-wrapper cs-minicart-product__action-wrapper--primary">
+                    <a data-bind="attr: {href: configure_url, title: $t('Edit item')}" class="action edit cs-minicart-product__action cs-minicart-product__action--edit">
+                        <img class="inline-svg cs-minicart-product__action-icon cs-minicart-product__action-icon--edit" data-bind="attr: { src: require.toUrl('images/icons/edit.svg') }" alt="">
+                    </a>
+                </div>
+                <!-- /ko -->
+                <div class="secondary cs-minicart-product__action-wrapper cs-minicart-product__action-wrapper--secondary">
+                    <a href="#" data-bind="attr: {'data-cart-item': item_id, title: $t('Remove item')}" class="action delete cs-minicart-product__action cs-minicart-product__action--remove">
+                        <img class="inline-svg cs-minicart-product__action-icon cs-minicart-product__action-icon--remove" data-bind="attr: { src: require.toUrl('images/icons/remove.svg') }" alt="">
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,135 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$header-user-nav_items: 3 !default; // number of items in header user nav (without search item)
+
+$header-user-nav_icon-color: $color_primary-500 !default; 
+$header-user-nav_icon-color-hover: $color_primary-500 !default; 
+
+$header-user-nav_label-show: true !default;
+$header-user-nav_label-color: $color_text-500 !default; 
+$header-user-nav_label-color-hover: $color_text-500 !default; 
+
+$header-user-nav_badge-wishlist-background: $color_error-500 !default;
+$header-user-nav_badge-wishlist-show-empty: false !default;
+
+$header-user-nav_badge-cart-background: $color_secondary-500 !default;
+$header-user-nav_badge-minicart-show-empty: false !default;
+
+$header-user-nav_badge-show-animation: true !default;
+
+.#{$ns}header-user-nav {
+    $root: &;
+    
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    &__item {
+        margin-bottom: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 0.75rem;
+        min-width: 100% / ($header-user-nav_items + 1);
+        width: 100% / $header-user-nav_items;
+
+        @include media('>=laptop') {
+            padding: 1rem 0;
+        }
+
+        &--search {
+            @if ($global_header-hide-search-item-trigger-breakpoint) {
+                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+
+        &:hover {
+            text-decoration: none;
+
+            #{$root}__icon {
+                fill: $header-user-nav_icon-color-hover;
+            }
+
+            #{$root}__label {
+                color: $header-user-nav_label-color-hover;
+            }
+        }
+
+        &--search {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__icon {
+        width: 2.6rem;
+        height: 2.6rem;
+        display: block;
+        margin: 0 auto;
+        fill: $header-user-nav_icon-color;
+
+        @include media('<phone') {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    &__label {
+        display: none;
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-weight: 300;
+        margin-top: 0.3rem;
+        color: $header-user-nav_label-color;
+        text-decoration: none;
+
+        @if ($header-user-nav_label-show) {
+            @include media('>=tablet') {
+                display: block;
+            }
+        }
+    }
+
+    &__badge {
+        position: absolute;
+        left: 55%;
+        top: -1rem;
+        opacity: 0;
+
+        @if ($header-user-nav_badge-show-animation) {
+            transition: opacity 0.3s;
+        }
+
+        &--have-items {
+            opacity: 1;
+        }
+
+        &--empty {
+            &#{$root}__badge--wishlist {
+                @if ($header-user-nav_badge-wishlist-show-empty) {
+                    opacity: 1;
+                }
+            }
+
+            &#{$root}__badge--minicart {
+                @if ($header-user-nav_badge-minicart-show-empty) {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
