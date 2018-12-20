@@ -49,6 +49,7 @@ import 'components/minicart';
 import 'components/minicart-product';
 import 'components/products-promo';
 import 'components/product-finder';
+import 'components/breadcrumbs';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';

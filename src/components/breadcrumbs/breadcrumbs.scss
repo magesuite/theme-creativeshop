@@ -1,0 +1,63 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+
+$breadcrumbs_item-font-size: 1.2rem !default;
+$breadcrumbs_item-color: $color_text-400 !default;
+$breadcrumbs_item-hover-color: $color_text-800 !default;
+$breadcrumbs_item-visited-color: $color_text-400 !default;
+$breadcrumbs_last-item-color: $color_text-800 !default;
+
+$breadcrumbs_separator-color: $color_text-400 !default;
+$breadcrumbs_separator-content: '\2044' !default;
+
+$breadcrumbs_vertical-space: 1.3rem !default;
+
+.#{$ns}breadcrumbs {
+    padding-top: $breadcrumbs_vertical-space;
+    padding-bottom: $breadcrumbs_vertical-space;
+    font-weight: 400;
+
+    &__list {
+        @include reset-list-style();
+    }
+
+    &__item {
+        position: relative;
+        display: inline-block;
+        margin: 0;
+        padding: 0 2.3rem 0 0;
+        cursor: pointer;
+        font-size: $breadcrumbs_item-font-size;
+
+        &:last-child {
+            padding: 0;
+            color: $breadcrumbs_last-item-color;
+            cursor: default;
+        }
+
+        &:not(:last-child):after {
+            position: absolute;
+            top: 50%;
+            right: 0.8rem;
+            content: $breadcrumbs_separator-content;
+            transform: translateY(-50%);
+            line-height: 1;
+            color: $breadcrumbs_separator-color;
+        }
+    }
+
+    &__link {
+        display: inline-block;
+        color: $breadcrumbs_item-color;
+
+        &:visited {
+            color: $breadcrumbs-item-visited-color;
+        }
+
+        &:hover {
+            text-decoration: none;
+            color: $breadcrumbs-item-hover-color;
+        }
+    }
+}
