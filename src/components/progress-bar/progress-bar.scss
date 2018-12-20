@@ -1,0 +1,154 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+
+$progress-bar_item-width: 18rem !default;
+
+$progress-bar_uncompleted-step-background-color: $color_background-500 !default;
+$progress-bar_completed-step-background-color: $color_secondary-500 !default;
+$progress-bar_step-background-hover-color: $color_secondary-200 !default;
+
+// Checkmark or other symbol indicating completed step
+// For creativeshop it is Heavy Check Mark using variation selector content: "\2714 \fe0e";.
+// There are unicode symbol in CSS: '\2714' and the Variation Selector '\fe0e' directly after to be able change color.
+// Other symbols or background can be use here
+$progress-bar_completed-step-indicator-content: '\2714 \fe0e' !default;
+
+$progress-bar_indicator-width: 3.3rem !default;
+$progress-bar_indicator-height: 2.7rem !default;
+$progress-bar_indicator-font-size: 1.4rem !default;
+$progress-bar_indicator-font-weight: 700 !default;
+
+$progress-bar_indicator-color: $color_text-800 !default;
+$progress-bar_indicator-active-or-completed-color: $color_text-800 !default;
+$progress-bar_indicator-border-radius: $border-radius_base !default;
+
+$progress-bar_bar-height: 0.8rem !default;
+$progress-bar_bar-border-radius: 0 !default;
+
+$progress-bar_text-color: $color_text-400 !default;
+$progress-bar_active-or-completed-text-color: $color_text-800 !default;
+$progress-bar_text-font-size: 1.4rem !default;
+
+
+.#{$ns}progress-bar {
+    $root: &;
+    @include reset-list-style();
+    counter-reset: progress-bar;
+    display: flex;
+
+    &__item {
+        width: $progress-bar_item-width;
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &:after {
+            display: block;
+            content: '';
+            width: 100%;
+            height: $progress-bar_bar-height;
+            background: $progress-bar_uncompleted-step-background-color;
+            position: absolute;
+            top: 0.9rem;
+            left: 0;
+            z-index: -1;
+        }
+
+        &:first-child {
+            &:after {
+                border-top-left-radius: $progress-bar_bar-border-radius;
+                border-bottom-left-radius: $progress-bar_bar-border-radius;
+            }
+        }
+
+        &:last-child {
+            &:after {
+                border-top-right-radius: $progress-bar_bar-border-radius;
+                border-bottom-right-radius: $progress-bar_bar-border-radius;
+            }
+        }
+
+        &._active,
+        &._complete {
+            &:after {
+                background: $progress-bar_completed-step-background-color;
+            }
+
+            #{$root}__indicator-wrapper {
+                background: $progress-bar_completed-step-background-color;
+            }
+        }
+
+        &._complete {
+            #{$root}__indicator {
+                &:before {
+                    content: $progress-bar_completed-step-indicator-content;
+                    color: $progress-bar_indicator-color;
+                }
+            }
+        }
+        @include media('>=laptop') {
+            &:hover {
+                #{$root}__indicator-wrapper {
+                    background: $progress-bar_step-background-hover-color;
+
+                    &:after {
+                        background: $progress-bar_step-background-hover-color;
+                    }
+                }
+
+                &:after {
+                    background: $progress-bar_step-background-hover-color;
+                }
+            }
+        }
+    }
+
+    &__indicator-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: $progress-bar_indicator-width;
+        height: $progress-bar_indicator-height;
+        transform: $skew_transform;
+        background: $progress-bar_uncompleted-step-background-color;
+        font-weight: $progress-bar_indicator-font-weight;
+        font-size: $progress-bar_indicator-font-size;
+        text-align: center;
+        border-radius: $progress-bar_indicator-border-radius;
+        cursor: pointer;
+    }
+
+    &__indicator {
+        display: inline-block;
+        transform: $skew_transform-revert;
+        color: $progress-bar_indicator-color;
+
+        #{$root}__item._active &,
+        #{$root}__item._complete & {
+            color: $progress-bar_indicator-active-or-completed-color;
+        }
+
+        &:before {
+            display: inline-block;
+            counter-increment: progress-bar;
+            content: counter(progress-bar);
+        }
+    }
+
+    &__item-text {
+        width: 100%;
+        text-align: center;
+        color: $progress-bar_text-color;
+        font-size: $progress-bar_text-font-size;
+        margin-top: 0.3rem;
+
+        #{$root}__item._active &,
+        #{$root}__item._complete & {
+            color: $progress-bar_active-or-completed-text-color;
+        }
+    }
+}
