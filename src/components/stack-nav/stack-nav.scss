@@ -1,0 +1,170 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+
+$stack-nav_box-shadow: $box-shadow_base !default;
+$stack-nav_box-border-radius: $border-radius_base !default;
+
+$stack-nav_mobile-trigger-background-color: $color_background-500 !default;
+$stack-nav_mobile-trigger-font-size: 1.6rem !default;
+$stack-nav_mobile-content-background-color: $color_background-500 !default;
+
+$stack-nav_item-font-size: 1.4rem !default;
+$stack-nav_item-color: $color_text-500 !default;
+$stack-nav_item-hover-color: $color_text-800 !default;
+$stack-nav_item-current-color: $color_text-800 !default;
+$stack-nav_item-font-weight: 300 !default;
+$stack-nav_item-current-font-weight: 700 !default;
+$stack-nav_item-hover-background: $color_background-500 !default;
+$stack-nav_item-mobile-hover-background: $color_border-500 !default;
+
+$stack-nav_current-indicator-background: $color_secondary-500 !default;
+$stack-nav_current-indicator-width: 0.5rem !default;
+$stack-nav_skewed-indicator-enabled: true !default;
+$stack-nav_indicator-enabled: true !default;
+
+$stack-nav_delimiter-border: 1px solid $color_border-500 !default;
+$stack-nav_delimiter-disabled: false !default;
+
+
+.#{$ns}stack-nav {
+    $root: &;
+
+    &__trigger {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background-color: $stack-nav_mobile-trigger-background-color;
+        cursor: pointer;
+        font-size: $stack-nav_mobile-trigger-font-size;
+        font-weight: 700;
+
+        @include media('>=tablet') {
+            display: none;
+        }
+    }
+
+    &__content {
+        @include media('<tablet') {
+            background-color: $stack-nav_mobile-content-background-color;
+        }
+
+        @include media('>=tablet') {
+            border-radius: $stack-nav_box-border-radius;
+            background-color: $color_white;
+            box-shadow: $stack-nav_box-shadow;
+            padding: 20px 0;
+        }
+    }
+
+    &__list {
+        @include reset-list-style();
+    }
+
+    &__nav {
+        #{$root}__list li {
+            margin: 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        #{$root}__list li a,
+        #{$root}__list li strong {
+            font-size: $stack-nav_item-font-size;
+            font-weight: $stack-nav_item-font-weight;
+            color: $stack-nav_item-color;
+            border-left: none;
+            padding: 0.75rem 1.5rem;
+            display: block;
+            margin-bottom: 0.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            @include media('>=tablet') {
+                padding: 0.5rem 1.8rem 0.5rem 2.5rem;
+            }
+
+            svg {
+                width: 2rem;
+                height: 1.4rem;
+                margin-left: 0.3rem;
+                transform: translateY(0.1rem);
+            }
+        }
+
+        #{$root}__list li a:hover {
+            background-color: $stack-nav_item-mobile-hover-background;
+            color: $stack-nav_item-hover-color;
+
+            @include media('>=tablet') {
+                background-color: $stack-nav_item-hover-background;
+            }
+        }
+
+        #{$root}__list li.current strong {
+            position: relative;
+            border-left: none;
+            border-color: transparent;
+            font-weight: $stack-nav_item-current-font-weight;
+            color: $stack-nav_item-current-color;
+
+            &:hover {
+                color: $stack-nav_item-current-color;
+            }
+
+            @if $stack-nav_indicator-enabled {
+
+                &:before {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    content: '';
+                    display: block;
+                    width: $stack-nav_current-indicator-width;
+                    height: 100%;
+                    background: $stack-nav_current-indicator-background;
+                }
+
+                @if $stack-nav_skewed-indicator-enabled {
+                    &:after {
+                        position: absolute;
+                        left: -0.5rem;
+                        top: 0;
+                        content: '';
+                        display: block;
+                        width: 0;
+                        height: 0;
+                        border-left: 10px solid transparent;
+                        border-right: 10px solid transparent;
+                        border-top: 35px solid $stack-nav_current-indicator-background;
+
+                        @include media('>=tablet') {
+                            border-top-width: 28px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .item .delimiter {
+            border-top: $stack-nav_delimiter-border;
+
+            @if $stack-nav_delimiter-disabled {
+                display: none;
+            }
+        }
+
+        // Reset style for link if it is a child of current item
+        #{$root}__list li.current a {
+            padding: 0;
+            margin-bottom: 0;
+        }
+
+        @include media('>=tablet') {
+            display: block;
+            position: relative;
+        }
+    }
+}

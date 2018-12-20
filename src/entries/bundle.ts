@@ -53,6 +53,7 @@ import 'components/products-promo';
 import 'components/product-finder';
 import 'components/breadcrumbs';
 import 'components/calendar';
+import 'components/stack-nav';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
