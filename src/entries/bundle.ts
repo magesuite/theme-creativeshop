@@ -45,6 +45,8 @@ import 'components/paragraph';
 import 'components/page-bottom';
 import 'components/separator';
 import 'components/usps';
+import 'components/cart';
+import 'components/discount';
 import 'components/minicart';
 import 'components/minicart-product';
 import 'components/products-promo';
@@ -75,7 +77,6 @@ import 'customizations/item-cloner/item-cloner';
 import 'customizations/indicators/fast-shipping-init';
 import 'customizations/dailydeal/dailydeal';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'customizations/cart/cart';
 import 'customizations/video-player/video-player';
 import 'customizations/searchresults-switcher/searchresults-switcher';
 
