@@ -197,11 +197,13 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
             <?php endif; ?>
 
             <?php if ($block->isDefaultBilling()): ?>
-                <div class="cs-messages cs-messages--short">
-                    <div class="cs-messages__message  cs-messages__message--info">
+                <div class="cs-form__message cs-form__message--short">
+                    <div class="cs-messages cs-messages--short">
+                        <div class="cs-messages__message  cs-messages__message--info">
                     <span class="cs-messages__text">
                         <?= /* @escapeNotVerified */ __("It's a default billing address.") ?>
                     </span>
+                        </div>
                     </div>
                 </div>
             <?php elseif ($block->canSetAsDefaultBilling()): ?>
@@ -216,6 +218,7 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
             <?php endif; ?>
 
             <?php if ($block->isDefaultShipping()): ?>
+            <div class="cs-form__message cs-form__message--short">
                 <div class="cs-messages cs-messages--short">
                     <div class="cs-messages__message  cs-messages__message--info">
                 <span class="cs-messages__text">
@@ -223,6 +226,7 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
                 </span>
                     </div>
                 </div>
+            </div>
             <?php elseif ($block->canSetAsDefaultShipping()): ?>
                 <div class="cs-input cs-input--type-checkbox | choice set shipping">
                     <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="cs-input__checkbox">

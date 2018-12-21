@@ -70,6 +70,7 @@ import 'components/field';
 import 'components/form';
 import 'components/toolbar';
 import 'components/password-strength-meter';
+import 'components/messages';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
