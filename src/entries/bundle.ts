@@ -61,6 +61,7 @@ import 'components/stack-nav';
 import 'components/button';
 import 'components/field';
 import 'components/form';
+import 'components/password-strength-meter';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';

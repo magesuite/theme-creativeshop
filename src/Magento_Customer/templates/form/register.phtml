@@ -292,24 +292,9 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
                                 <?= /* @escapeNotVerified */ __('No Password'); ?>
                             </span>
                             <div class="password-strength-meter__icons-wrapper">
-                                <svg class="password-strength-meter__icon">
-                                    <use xlink:href="#rhomb"></use>
-                                </svg>
-                                <svg class="password-strength-meter__icon">
-                                    <use xlink:href="#rhomb"></use>
-                                </svg>
-                                <svg class="password-strength-meter__icon">
-                                    <use xlink:href="#rhomb"></use>
-                                </svg>
-                                <svg class="password-strength-meter__icon">
-                                    <use xlink:href="#rhomb"></use>
-                                </svg>
-                                <svg class="password-strength-meter__icon">
-                                    <use xlink:href="#rhomb"></use>
-                                </svg>
-                                <svg class="password-strength-meter__icon">
-                                    <use xlink:href="#rhomb"></use>
-                                </svg>
+                                <?php for ($i = 0; $i < 6; $i++): ?>
+                                    <?= $block->getChildHtml('account_create.password-strength-meter-icon'); ?>
+                                <?php endfor; ?>
                             </div>
                         </div>
                     </div>
