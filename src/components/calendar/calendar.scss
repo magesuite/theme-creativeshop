@@ -1,18 +1,30 @@
-/**
- * Override Magento calendar classes
- */
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$calendar_box-shadow: $box-shadow_base !default;
+$calendar_border-radius: $border-radius_base !default;
+$calendar_border: none !default;
+$calendar_header-background-color: $color_secondary-500 !default;
+$calendar_header-arrow-color: $color_primary-500 !default;
+$calendar_background-color: $color_background-500 !default;
+$calendar_weekday-color: $color_text-800 !default;
+$calendar_date-color: $color_text-500 !default;
+$calendar_date-disabled-color: $color_border-500 !default;
+$calendar_date-selected-color: $color_text-200 !default;
+$calendar_date-selected-background: $color_primary-500 !default;
 
 .ui-datepicker {
-    border-width: 0;
-    border-radius: 3px;
+    border: $calendar_border;
+    border-radius: $calendar_border-radius;
     padding: 0;
     min-width: 25rem;
+    box-shadow: $calendar_box-shadow;
 
     .ui-datepicker-header {
-        background: $color_gold;
+        background: $calendar_header-background-color;
         padding: 1rem 2rem;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
+        border-top-left-radius: $calendar_border-radius;
+        border-top-right-radius: $calendar_border-radius;
     }
 
     .ui-datepicker-prev {
@@ -43,7 +55,7 @@
             left: -1.2rem;
             border-top: 8px solid transparent;
             border-bottom: 0.8rem solid transparent;
-            border-right: 0.8rem solid $color_cerulean-blue;
+            border-right: 0.8rem solid $calendar_header-arrow-color;
             margin-top: -0.8rem;
         }
 
@@ -51,7 +63,7 @@
             left: -1rem;
             border-top: 0.6rem solid transparent;
             border-bottom: 0.6rem solid transparent;
-            border-right: 0.6rem solid $color_gold;
+            border-right: 0.6rem solid $calendar_header-background-color;
             margin-top: -0.6rem;
         }
     }
@@ -74,7 +86,7 @@
             right: -1.2rem;
             border-top: 0.8rem solid transparent;
             border-bottom: 0.8rem solid transparent;
-            border-left: 0.8rem solid $color_cerulean-blue;
+            border-left: 0.8rem solid $calendar_header-arrow-color;
             margin-top: -0.8rem;
         }
 
@@ -82,7 +94,7 @@
             right: -1rem;
             border-top: 0.6rem solid transparent;
             border-bottom: 0.6rem solid transparent;
-            border-left: 0.6rem solid $color_gold;
+            border-left: 0.6rem solid $calendar_header-background-color;
             margin-top: -0.6rem;
         }
     }
@@ -109,16 +121,15 @@
         line-height: 3rem;
         padding: 0;
         font-size: 1.4rem;
-        color: $color_dove-gray;
+        color: $calendar_date-color;
     }
 
     .ui-datepicker-calendar th span {
-        color: $color_mineshaft;
+        color: $calendar_weekday-color;
     }
 
     .ui-datepicker-calendar td,
     .ui-datepicker-calendar th {
-        @include font-family($font_family-primary);
         background: none;
         border-width: 0;
         width: 3rem;
@@ -128,7 +139,7 @@
     }
 
     .ui-datepicker-calendar {
-        background: $color_gallery;
+        background: $calendar_background-color;
         margin: 1rem 1.5rem 1.5rem;
         border-width: 0;
         width: 23rem;
@@ -144,16 +155,16 @@
     }
 
     .ui-datepicker-calendar .ui-state-disabled span {
-        color: $color_alto;
+        color: $calendar_date-disabled-color;
     }
 
     .ui-datepicker-calendar td .ui-state-active {
-        background: $color_white;
-        color: $color_cerulean-blue;
+        background: $calendar_date-selected-background;
+        color: $calendar_date-selected-color;
     }
 
     .ui-datepicker-calendar td .ui-state-hover {
-        background: $color_torea-bay;
-        color: $color_white;
+        background: $calendar_date-selected-background;
+        color: $calendar_date-selected-color;
     }
 }
