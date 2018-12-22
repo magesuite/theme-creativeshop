@@ -1,37 +1,82 @@
-@mixin brandCarousel() {
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'components/teaser/mixin';
+
+$brand-carousel_carousel-padding: 0 !default;
+$brand-carousel_carousel-padding--slider: 0 3.8rem !default;
+
+$brand-carousel_min-slide-width: 3rem !default;
+$brand-carousel_min-slide-margin: 0 2rem 0 0 !default;
+
+$brand-carousel_max-image-height: 8.5rem !default;
+
+$brand-carousel_nav-button-position-top: calc(50% - 1.5rem) !default; // 1.5rem recompenses half of height of the bullet-pagination
+$brand-carousel_nav-button-width: 3rem !default;
+$brand-carousel_nav-button-height: 5rem !default;
+$brand-carousel_nav-button-box-shadow: none !default;
+$brand-carousel_nav-button--hover-box-shadow: $brand-carousel_nav-button-box-shadow !default;
+
+$teaser_nav-button-position-top: $brand-carousel_nav-button-position-top;
+$teaser_nav-button-width: $brand-carousel_nav-button-width;
+$teaser_nav-button-height: $brand-carousel_nav-button-height;
+$teaser_nav-button-box-shadow: $brand-carousel_nav-button-box-shadow;
+$teaser_nav-button--hover-box-shadow: $brand-carousel_nav-button--hover-box-shadow;
+
+.#{$ns}brand-carousel {
     $root: &;
+
+    @include teaser();
+
     position: relative;
 
     &__carousel {
-        padding: 0 3rem;
+        padding: $brand-carousel_carousel-padding;
+
+        @include media('>=tablet') {
+            #{$root}--slider & {
+                padding: $brand-carousel_carousel-padding--slider;
+            }
+        }
     }
 
     &__slides {
-        justify-content: space-between;
         align-items: center;
+        justify-content: center;
+
+        #{$root}--slider & {
+            justify-content: space-between;
+        }
     }
 
     &__slide {
-        min-width: 30px;
+        min-width: $brand-carousel_min-slide-width;
         max-width: none;
         width: auto;
+        margin: $brand-carousel_min-slide-margin;
+
+        &:last-child,
+        #{$root}--slider & {
+            margin-right: 0;
+        }
     }
 
     &__image {
         width: auto;
         max-width: 100%;
-        max-height: 60px;
+        max-height: $brand-carousel_max-image-height;
     }
 
     &__nav {
-        #{$root}--static & {
-            display: none;
-        }
+        z-index: 3;
+    }
+
+    &__pagination:not(:empty) {
+        margin-top: 1.5rem;
     }
 
     &--static {
         width: 100%;
-        padding-left: 0;
-        padding-right: 0;
+        padding: $brand-carousel_carousel-padding;
     }
 }

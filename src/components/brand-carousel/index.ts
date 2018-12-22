@@ -1,10 +1,12 @@
-/* tslint:disable:no-unused-expression no-unused-new ordered-imports */
-
-import BrandCarousel from 'components/brand-carousel/brand-carousel';
 import * as $ from 'jquery';
 
-$('.cs-brand-carousel').each((index: number, element: HTMLElement) => {
-    new BrandCarousel($(element), {
+import BrandCarousel from 'components/brand-carousel/brand-carousel';
+import 'components/brand-carousel/brand-carousel.scss';
+
+const componentClass: string = 'cs-brand-carousel';
+
+$(`.${componentClass}`).each(function(): void {
+    new BrandCarousel($(this), {
         spaceBetween: 50,
         slidesPerView: 6,
         centeredSlides: false,

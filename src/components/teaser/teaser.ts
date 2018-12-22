@@ -156,6 +156,8 @@ const csTeaser: any = function($element: any, settings: any): void {
     };
 
     const postInit: any = function(): void {
+        $element.addClass(`${currentSettings.teaserName}--ready`);
+        
         if (
             (swiperInstance.originalParams.slidesPerView !== 1 ||
                 swiperInstance.params.calculateSlides) &&
