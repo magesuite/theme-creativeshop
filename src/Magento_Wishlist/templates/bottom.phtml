@@ -1,29 +1,22 @@
 <?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-// @codingStandardsIgnoreFile
-
 /* @var $block \Magento\Wishlist\Block\Customer\Sidebar */
-?>
-<?php
+/* @var \Magento\Wishlist\Helper\Data $wishlistHelper */
 $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
+$items = $wishlistHelper->getWishlistItemCollection()->getItems();
 ?>
 <?php if ($wishlistHelper->isAllow()) : ?>
-    <div class="cs-info-block block-wishlist" data-bind="scope: 'wishlist'" xmlns="http://www.w3.org/1999/html">
+    <div class="cs-info-block block-wishlist" xmlns="http://www.w3.org/1999/html">
 
         <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
             <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
                 <?php /* @escapeNotVerified */
                 echo $block->getTitle(); ?>
-                <!-- ko if: wishlist().counter -->
-                <span class="cs-t-headline__span" data-bind="text: '('+wishlist().counter+')'"></span>
-                <!-- /ko -->
+                <?php if(count($items)): ?>
+                    <span class="cs-t-headline__span"><?=__('(%1 items)', count($items))?></span>
+                <?php endif; ?>
             </h2>
 
-            <div class="cs-title-block__span cs-no-display" data-bind="css: {'cs-no-display': null}">
+            <div class="cs-title-block__span">
                 <a class="cs-link"
                    href="<?php /* @escapeNotVerified */
                    echo $this->helper('Magento\Wishlist\Helper\Data')->getListUrl() ?>"
@@ -34,87 +27,26 @@ $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
         </div>
 
         <div class="cs-info-block__content">
-            <!-- ko ifnot: wishlist().counter -->
-            <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */
-                echo __('You have no items in your wish list.') ?></div>
-            <!-- /ko -->
-            <!-- ko if: wishlist().counter -->
-            <ul class="cs-items-grid | cs-no-display" id="wishlist-sidebar" data-bind="foreach: wishlist().items, css: {'cs-no-display': null}">
-                <li class="cs-items-grid__item">
-                    <div class="cs-product-tile">
-                        <div class="cs-product-tile__main">
-                            <a class="cs-product-tile__figure-wrapper" data-bind="attr: { href: product_url, title: product_name }">
-                                <figure class="cs-product-tile__figure cs-product-tile__figure--small">
-                                    <!-- ko template: {name: $data.image.template, data: $data.image} --><!-- /ko -->
-                                </figure>
-                            </a>
-
-                            <div class="cs-product-tile__name cs-product-tile__name--no-space">
-                                <a data-bind="attr: { href: product_url }" class="cs-product-tile__name-link">
-                                    <span data-bind="text: product_name"></span>
-                                </a>
-                            </div>
-
-                            <div class="cs-product-tile__price">
-                                <div data-bind="html: product_price"></div>
-                            </div>
-
-                            <!-- ko if: product_is_saleable_and_visible -->
-                            <div class="cs-product-tile__buttons">
-                                <!-- ko if: product_has_required_options -->
-                                <a href="#" data-bind="attr: {'data-post': add_to_cart_params}" class="cs-button cs-button--look_default cs-button--size_300">
-                                    <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
-                                    <svg class="cs-button__icon">
-                                        <use xlink:href="#arrow_next"></use>
-                                    </svg>
-                                </a>
-                                <!-- /ko -->
-                                <!-- ko ifnot: product_has_required_options -->
-                                <button type="button" class="cs-button cs-button--look_default cs-button--size_300" data-bind="attr: {'data-post': add_to_cart_params}">
-                                    <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
-
-                                    <svg class="cs-button__icon">
-                                        <use xlink:href="#arrow_next"></use>
-                                    </svg>
-                                </button>
-                                <!-- /ko -->
-                            </div>
-                            <!-- /ko -->
-                        </div>
-
-
-                        <div class="cs-product-tile__remove">
-                            <a href="#"  data-bind="attr: {'data-post': delete_item_params}"
-                               title="<?php /* @escapeNotVerified */ echo __('Remove This Item') ?>"
-                               class="cs-button--look_remove">
-                                <svg class="cs-button__remove-icon">
-                                    <use xlink:href="#close"></use>
-                                </svg>
-                                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Remove This Item') ?></span>
-                            </a>
-                        </div>
-
-                    </div>
-
-                </li>
-            </ul>
-
-            <!-- /ko -->
-
+            <?php if(empty($items)): ?>
+                <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */
+                    echo __('You have no items in your wish list.') ?></div>
+            <?php else: ?>
+                <ul class="cs-items-grid" id="wishlist-sidebar">
+                    <?php $iterator = 0; ?>
+                    <?php foreach($items as $item): ?>
+                        <li class="cs-items-grid__item">
+                            <?= $this->getLayout()
+                                ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
+                                ->setIterator($iterator)
+                                ->setAreas(['wishlist'])
+                                ->setWishlistItem($item)
+                                ->render($item->getProduct());
+                            ?>
+                        </li>
+                        <?php $iterator++; ?>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
         </div>
     </div>
-    <script type="text/x-magento-init">
-    {
-        "*": {
-            "Magento_Ui/js/core/app": {
-                "components": {
-                    "wishlist": {
-                        "component": "Magento_Wishlist/js/view/wishlist"
-                    }
-                }
-            }
-        }
-    }
-
-    </script>
 <?php endif ?>
