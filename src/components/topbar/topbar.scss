@@ -53,6 +53,8 @@ $topbar_link-color: $color_primary-500 !default;
 
     &__item {
         color: $topbar_item-text-color;
+        display: flex;
+        flex: 0 0 auto;
     }
 
     &__list,
@@ -67,15 +69,12 @@ $topbar_link-color: $color_primary-500 !default;
 
     &__list {
         &--featured {
-            opacity: 1;
-            transition: opacity 0.3s;
-            
             @include media('<laptop-lg') {
-                opacity: 0; // Hide featured for smaller screens but let it take space to keep flex-justify.
+                display: none !important;
             }
 
             .page-wrapper--checkout & {
-                opacity: 0; // Hide completely on checkout.
+                display: none !important;
             }
         }
     }
@@ -119,21 +118,21 @@ $topbar_link-color: $color_primary-500 !default;
     }
 
     &__link {
-        
-        &__phone-number {
-            color: $topbar_item-hours-color;
-            font-weight: 700;
-        }
+        margin-right: 0.9rem;
         @include link($topbar_link-color, $topbar_link-color-action);
         
-        margin-right: 0.9rem;
-
         &:hover {
             color: $topbar_item-hours-color;
         }
-
+        
         @include media('<laptop') {
             display: none;
         }
+    }
+
+    &__phone-number {
+        color: $topbar_item-hours-color;
+        font-weight: 700;
+        margin-right: 0.9rem;
     }
 }

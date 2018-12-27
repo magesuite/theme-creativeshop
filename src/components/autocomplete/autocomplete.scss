@@ -7,6 +7,7 @@ $autocomplete_list-border: 1px solid $color_border-500 !default;
 $autocomplete_list-box-shadow: 0 0 10px 0 rgba($color_text-900, 0.17) !default;
 
 $autocomplete_title-color: $color_text-400 !default;
+$autocomplete_title-font-size: 1.29rem !default;
 
 $autocomplete_item-background-hover: $color_background-500 !default;
 $autocomplete_item-thumbnail-width: 4.5rem !default;
@@ -14,6 +15,7 @@ $autocomplete_item-thumbnail-height: 4.5rem !default;
 $autocomplete_item-font-size: 1.29rem !default;
 $autocomplete_item-name-color: $color_text-900 !default;
 $autocomplete_item-price-color: $color_primary-500 !default;
+$autocomplete_item-quantity-color: $color_text-400 !default;
 $autocomplete_item-old-price-color: $color_text-500 !default;
 $autocomplete_item-special-price-color: $color_primary-500 !default;
 
@@ -39,6 +41,7 @@ $autocomplete_item-special-price-color: $color_primary-500 !default;
         display: flex;
         align-items: center;
         transition: background-color 0.15s linear;
+        font-size: $autocomplete_item-font-size;
 
         @include media('>=tablet', '<laptop') {
             flex-wrap: wrap;
@@ -123,6 +126,22 @@ $autocomplete_item-special-price-color: $color_primary-500 !default;
     &:last-child {
         margin-bottom: 0;
     }
+
+    .amount {
+        color: $autocomplete_item-quantity-color;
+        font-size: $autocomplete_item-font-size;
+        margin-left: 0.5rem;
+
+        &:not(:empty) {
+            &:after {
+                content: ')';
+            }
+    
+            &:before {
+                content: '(';
+            }
+        }
+    }
 }
 
 .autocomplete-list-title {
@@ -131,7 +150,7 @@ $autocomplete_item-special-price-color: $color_primary-500 !default;
     color: $autocomplete_title-color;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 1.2rem;
+    font-size: $autocomplete_title-font-size;
     letter-spacing: 1px;
     margin: 0;
 
