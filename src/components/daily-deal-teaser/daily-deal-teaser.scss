@@ -1,0 +1,392 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'components/teaser/mixin';
+
+$daily-deal-teaser_global-bold-font: 600 !default;
+$daily-deal-teaser_global-small-font: 1.2rem !default;
+
+$daily-deal-teaser_sections-border-separator: 1px solid $color_border-200 !default;
+$daily-deal-teaser_sections-gutter-mobile: 1.5rem !default;
+$daily-deal-teaser_sections-gutter-tablet-up: 3rem !default;
+
+$daily-deal-teaser_image-wrapper-max-width-tablet: 32% !default;
+$daily-deal-teaser_image-wrapper-max-width-desktop: 25% !default;
+
+$daily-deal-teaser_slogan-ribbon-horizontal-position-direction: left !default;
+$daily-deal-teaser_slogan-ribbon-width: 28rem !default;
+$daily-deal-teaser_slogan-ribbon-vertical-padding: 1rem !default;
+$daily-deal-teaser_slogan-ribbon-position-y-axis: $daily-deal-teaser_slogan-ribbon-width / 7 !default;
+$daily-deal-teaser_slogan-ribbon-position-x-axis: calc((-#{$daily-deal-teaser_slogan-ribbon-position-y-axis} * 2) - (#{$daily-deal-teaser_slogan-ribbon-vertical-padding} / 2)) !default;
+$daily-deal-teaser_slogan-ribbon-text-transform: uppercase !default;
+$daily-deal-teaser_slogan-ribbon-color: inherit !default;
+$daily-deal-teaser_slogan-ribbon-background: $color_gold !default;
+$daily-deal-teaser_slogan-ribbon-font-size: $daily-deal-teaser_global-small-font !default;
+$daily-deal-teaser_slogan-ribbon-font-weight: $daily-deal-teaser_global-bold-font !default;
+
+$daily-deal-teaser_slogan-icon-wrapper-position-top: 0 !default;
+$daily-deal-teaser_slogan-icon-wrapper-position-left: $daily-deal-teaser_slogan-icon-wrapper-position-top !default;
+$daily-deal-teaser_slogan-icon-wrapper-width: 4rem !default;
+$daily-deal-teaser_slogan-icon-wrapper-height: $daily-deal-teaser_slogan-icon-wrapper-width !default;
+$daily-deal-teaser_slogan-icon-wrapper-padding: 0.7rem !default;
+$daily-deal-teaser_slogan-icon-wrapper-border-radius: 50% !default;
+
+$daily-deal-teaser_slogan-icon-width: 2.1rem !default;
+$daily-deal-teaser_slogan-icon-height: 2.6rem !default;
+$daily-deal-teaser_slogan-icon-margin: -1px 0 0 !default;
+
+$daily-deal-teaser_details-max-width-tablet: 68% !default;
+$daily-deal-teaser_details-max-width-desktop: 50% !default;
+
+$daily-deal-teaser_product-brand-color: $color_gray !default;
+
+$daily-deal-teaser_product-name-margin: 0 0 0.5rem !default;
+$daily-deal-teaser_product-name-font-size: 2.25rem !default;
+
+$daily-deal-teaser_product-link-color: inherit !default;
+$daily-deal-teaser_product-link--hover-color: $daily-deal-teaser_product-link-color !default;
+
+$daily-deal-teaser_product-rating-margin: 0.2rem 0 1.5rem !default;
+
+$daily-deal-teaser_product-dd-columns-gutter: $daily-deal-teaser_sections-gutter-mobile !default;
+
+$daily-deal-teaser_product-dd-headline-font-size: $daily-deal-teaser_global-small-font !default;
+$daily-deal-teaser_product-dd-headline-margin: 0 0 0.5rem !default;
+$daily-deal-teaser_product-dd-headline-font-weight: $daily-deal-teaser_global-bold-font !default;
+$daily-deal-teaser_product-dd-headline-text-transform: uppercase !default;
+
+$daily-deal-teaser_product-dd-progress-bar-margin-tablet: 0.5rem 0 0 !default;
+$daily-deal-teaser_product-dd-progress-bar-padding-tablet: 1.1rem 1rem !default;
+$daily-deal-teaser_product-dd-progress-bar-background-tablet: $color_background-500 !default;
+$daily-deal-teaser_product-dd-progress-bar-border-radius-tablet: $border-radius_base !default;
+$daily-deal-teaser_product-dd-progress-bar-content-background: $color_white !default;
+
+$daily-deal-teaser_product-dd-available-font-size: $daily-deal-teaser_global-small-font !default;
+$daily-deal-teaser_product-dd-available-font-weight: $daily-deal-teaser_global-bold-font !default;
+
+$daily-deal-teaser_actions-max-width: 25% !default;
+
+$daily-deal-teaser_price-details-height-laptop: 55% !default;
+
+$daily-deal-teaser_discount-badge-font-size: 1.5rem !default;
+
+$daily-deal-teaser_price-old-font-size: 1.4rem !default;
+$daily-deal-teaser_price-final-font-size: 2.2rem !default;
+
+$daily-deal-teaser_addtocart-margin-top: 1.5rem !default;
+$daily-deal-teaser_addtocart-min-width: 25rem !default;
+$daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
+
+.#{$ns}daily-deal-teaser {
+    $root: &;
+
+    display: none; // Initially hidden because we want to make sure this offer is still available
+
+    &__image-wrapper {
+        display: block;
+        border-bottom: $daily-deal-teaser_sections-border-separator;
+        padding: $daily-deal-teaser_sections-gutter-mobile 0;
+
+        &,
+        &:visited,
+        &:hover {
+            color: inherit;
+            text-decoration: inherit;
+        }
+
+        @include media('>=tablet') {
+            max-width: $daily-deal-teaser_image-wrapper-max-width-tablet;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up 0;
+        }
+
+        @include media('>=laptop') {
+            flex: 1;
+            border: none;
+            max-width: $daily-deal-teaser_image-wrapper-max-width-desktop;
+        }
+    }
+
+    &__figure {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    &__slogan {
+        width: $daily-deal-teaser_slogan-ribbon-width;
+        position: absolute;
+        top: $daily-deal-teaser_slogan-ribbon-position-y-axis;
+        #{$daily-deal-teaser_slogan-ribbon-horizontal-position-direction}: $daily-deal-teaser_slogan-ribbon-position-x-axis;
+        padding: $daily-deal-teaser_slogan-ribbon-vertical-padding 0;
+        text-align: center;
+        text-transform: $daily-deal-teaser_slogan-ribbon-text-transform;
+        background: $daily-deal-teaser_slogan-ribbon-background;
+        color: $daily-deal-teaser_slogan-ribbon-color;
+        font-size: $daily-deal-teaser_slogan-ribbon-font-size;
+        font-weight: $daily-deal-teaser_slogan-ribbon-font-weight;
+
+        @if $daily-deal-teaser_slogan-ribbon-horizontal-position-direction == left {
+            transform: rotate(-45deg);
+        } @else {
+            transform: rotate(45deg);
+        }
+    }
+
+    &__slogan-icon-wrapper {
+        position: absolute;
+        top: $daily-deal-teaser_slogan-icon-wrapper-position-top;
+        left: $daily-deal-teaser_slogan-icon-wrapper-position-left;
+        width: $daily-deal-teaser_slogan-icon-wrapper-width;
+        height: $daily-deal-teaser_slogan-icon-wrapper-height;
+        padding: $daily-deal-teaser_slogan-icon-wrapper-padding;
+        background: $color_gold;
+        border-radius: $daily-deal-teaser_slogan-icon-wrapper-border-radius;
+    }
+
+    &__slogan-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $daily-deal-teaser_slogan-icon-width;
+        height: $daily-deal-teaser_slogan-icon-height;
+        transform: translate3d(-50%, -50%, 0);
+        margin: $daily-deal-teaser_slogan-icon-margin;
+    }
+
+    &__details {
+        border-bottom: $daily-deal-teaser_sections-border-separator;
+        padding: $daily-deal-teaser_sections-gutter-mobile 0;
+
+        @include media('>=tablet') {
+            flex-grow: 5;
+            display: flex;
+            flex-direction: column;
+            max-width: $daily-deal-teaser_details-max-width-tablet;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up 0 $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up;
+            border-left: $daily-deal-teaser_sections-border-separator;
+        }
+
+        @include media('>=laptop') {
+            flex: 1;
+            flex-grow: 2;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up;
+            max-width: $daily-deal-teaser_details-max-width-desktop;
+            border-bottom: none;
+            border-right: $daily-deal-teaser_sections-border-separator;
+        }
+
+        // Swatches commented out until refactoring
+        /*.#{$ns}swatches {
+            &--mini {
+                .#{$ns}swatches__attribute {
+                    justify-content: flex-start;
+                }
+
+                .#{$ns}swatches__swatch {
+                    min-width: 1.6rem;
+                    height: 1.6rem;
+
+                    &.text {
+                        height: 1.8rem;
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+
+            &--color-only .#{$ns}swatches__attribute:not(.color) {
+                display: block !important;
+            }
+
+            .#{$ns}swatches__attribute {
+                margin-bottom: 0.8rem;
+
+                &:last-child {
+                    @include media('<tablet') {
+                        margin-bottom: 1.5rem;
+                    }
+                }
+            }
+        }*/
+    }
+
+    &__product-brand {
+        margin: 0;
+        color: $daily-deal-teaser_product-brand-color;
+    }
+
+    &__product-name {
+        margin: $daily-deal-teaser_product-name-margin;
+        font-size: $daily-deal-teaser_product-name-font-size;
+    }
+
+    &__product-link {
+        color: $daily-deal-teaser_product-link-color;
+
+        &,
+        &:visited,
+        &:hover {
+            color: $daily-deal-teaser_product-link--hover-color;
+            text-decoration: inherit;
+        }
+    }
+
+    &__product-rating {
+        margin: $daily-deal-teaser_product-rating-margin;
+    }
+
+    &__dd-details {
+        @include media('>=tablet') {
+            display: flex;
+            margin-top: auto;
+        }
+    }
+
+    &__dd-column {
+        @include media('>=tablet') {
+            flex: 1;
+            margin-top: 0;
+            padding: 0 $daily-deal-teaser_product-dd-columns-gutter;
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+
+    &__dd-column + &__dd-column {
+        @include media('<tablet') {
+            margin-top: $daily-deal-teaser_product-dd-columns-gutter;
+        }
+    }
+
+    &__dd-headline {
+        margin: $daily-deal-teaser_product-dd-headline-margin;
+        font-size: $daily-deal-teaser_product-dd-headline-font-size;
+        font-weight: $daily-deal-teaser_product-dd-headline-font-weight;
+        text-transform: $daily-deal-teaser_product-dd-headline-text-transform;
+    }
+
+    &__progress-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        line-height: 1;
+
+        @include media('>=tablet') {
+            margin: $daily-deal-teaser_product-dd-progress-bar-margin-tablet;
+            padding: $daily-deal-teaser_product-dd-progress-bar-padding-tablet;
+            background: $daily-deal-teaser_product-dd-progress-bar-background-tablet;
+            border-radius: $daily-deal-teaser_product-dd-progress-bar-border-radius-tablet;
+        }
+
+        &-content {
+            width: 100%;
+            background: $daily-deal-teaser_product-dd-progress-bar-content-background;
+        }
+    }
+
+    &__available {
+        white-space: nowrap;
+        padding-left: 1rem;
+        font-size: $daily-deal-teaser_product-dd-available-font-size;
+        font-weight: $daily-deal-teaser_product-dd-available-font-weight;
+    }
+
+    &__actions {
+        padding: $daily-deal-teaser_sections-gutter-mobile 0;
+
+        @include media('>=tablet') {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up 0;
+        }
+
+        @include media('>=laptop') {
+            flex: 1;
+            flex-direction: column;
+            width: auto;
+            max-width: $daily-deal-teaser_actions-max-width;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up 0 $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up;
+        }
+    }
+
+    &__price-details {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        @include media('>=tablet') {
+            justify-content: flex-start;
+        }
+
+        @include media('>=laptop') {
+            flex-direction: column;
+            height: $daily-deal-teaser_price-details-height-laptop;
+            justify-content: space-between;
+        }
+    }
+
+    &__price {
+        .price-box {
+            .old-price .price {
+                font-size: $daily-deal-teaser_price-old-font-size;
+            }
+
+            .special-price .price,
+            .normal-price .price {
+                font-size: $daily-deal-teaser_price-final-font-size;
+            }
+        }
+    }
+
+    &__discount {
+        margin-right: $daily-deal-teaser_sections-gutter-mobile;
+    }
+
+    &__badge-wrapper {
+        &:before {
+            left: -#{$daily-deal-teaser_discount-badge-font-size / 3};
+        }
+    }
+
+    &__badge-text {
+        font-size: $daily-deal-teaser_discount-badge-font-size;
+    }
+
+    &__addtocart {
+        margin-top: $daily-deal-teaser_addtocart-margin-top;
+        min-width: $daily-deal-teaser_addtocart-min-width;
+
+        @include media('>=tablet') {
+            margin-top: 0;
+        }
+
+        @include media('>=laptop') {
+            width: 100%;
+            min-width: $daily-deal-teaser_addtocart-min-width-laptop;
+        }
+    }
+
+    &--active {
+        display: block;
+
+        @include media('>=tablet') {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        @include media('>=laptop') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &--expired {
+        display: none;
+    }
+}
