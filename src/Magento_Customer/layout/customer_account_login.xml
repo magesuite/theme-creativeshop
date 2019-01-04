@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
 
@@ -26,7 +20,11 @@
             </action>
         </referenceBlock>
 
-        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="cs-container  cs-container--spacious" />
+        <referenceContainer name="main.content" htmlClass="cs-container cs-container-login-page">
+            <container name="page.main.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
+        </referenceContainer>
+        <move element="columns.top" destination="page.main.container.inner" after="-"/>
+        <move element="columns" destination="page.main.container.inner" after="-"/>
 
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
