@@ -51,6 +51,7 @@ import 'components/minicart';
 import 'components/minicart-product';
 import 'components/products-promo';
 import 'components/product-finder';
+import 'components/daily-deal-teaser';
 import 'components/breadcrumbs';
 import 'components/calendar';
 import 'components/stack-nav';
