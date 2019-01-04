@@ -1,34 +1,42 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="columns.top">
+        <referenceContainer name="main.content" htmlClass="cs-category-page">
+            <!--For category page there are content constructor areas above and below main content. There are also additional cs-category-page{__element/modifier} classes-->
             <container name="cc-top" htmlTag="div" htmlClass="cs-category-page__cc-top" before="-"/>
-        </referenceContainer>
 
-        <referenceContainer name="columns" htmlClass="columns cs-category-page"/>
-
-        <referenceContainer name="main" htmlClass="cs-category-page__main"/>
-        <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main cs-category-page__sidebar-main"/>
-
-        <move element="page.messages" destination="main" before="-" />
-
-        <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
-
-        <move element="category.description" destination="content" after="-" />
-        <move element="category.cms" destination="content" after="-" />
-
-        <referenceContainer name="content" >
-            <block class="MageSuite\Frontend\Block\Category\View\Headline" name="category.page.headline" template="Magento_Catalog::category/headline.phtml" before="-"/>
+            <referenceContainer name="columns" htmlClass="columns cs-container cs-container--category-page-columns">
+                <container name="columns.container.inner" htmlTag="div" htmlClass="cs-category-page__columns cs-container__inner" />
+            </referenceContainer>
 
             <container name="cc-bottom" htmlTag="div" htmlClass="cs-category-page__cc-bottom" after="-"/>
         </referenceContainer>
 
+        <!--Move grid into main column-->
+        <referenceContainer name="main" htmlClass="cs-category-page__main"/>
+        <move element="main" destination="columns.container.inner"/>
+
+        <!--Move filters/sidebar into sidebar column-->
+        <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main cs-category-page__sidebar-main"/>
+        <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
+        <move element="div.sidebar.main" destination="columns.container.inner"/>
+
+        <!--Inside main container there are some additional default Magento containers (see: magento/module-theme/view/frontend/layout/default.xml): content, content.top, content.bottom. -->
+
+        <!--Move messages to content.top container inside main column, above all other content in this container-->
+        <move element="page.messages" destination="content.top" before="-" />
+
+        <!--Remove old page title and create custom category page title in content.top container inside main column-->
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceContainer name="content.top" >
+            <block class="MageSuite\Frontend\Block\Category\View\Headline" name="category.page.headline" template="Magento_Catalog::category/headline.phtml" after="page.messages"/>
+        </referenceContainer>
+
+        <!--Move category page description and cms to content.bottom container inside main column-->
+        <move element="category.description" destination="content" after="-" />
+        <move element="category.cms" destination="content" after="-" />
+
+        <!--Pass toolbar template variables-->
         <referenceBlock name="product_list_toolbar">
             <arguments>
                 <argument translate="true" name="descending_direction_label" xsi:type="string">Set Descending Direction</argument>
@@ -38,6 +46,5 @@
             </arguments>
         </referenceBlock>
 
-        <referenceBlock name="page.main.title" remove="true"/>
     </body>
 </page>

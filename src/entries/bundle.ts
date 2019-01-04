@@ -51,8 +51,11 @@ import 'components/minicart';
 import 'components/minicart-product';
 import 'components/products-promo';
 import 'components/product-finder';
+import 'components/daily-deal-teaser';
 import 'components/breadcrumbs';
 import 'components/progress-bar';
+import 'components/calendar';
+import 'components/stack-nav';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
