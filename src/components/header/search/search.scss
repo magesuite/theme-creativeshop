@@ -3,6 +3,9 @@
 
 $header-search_height: 4.5rem !default;
 
+// Width of the search field. Works only for `$global_header-searchbox-as-layer-breakpoint` breakpoint, in other case it's always 100%
+$header-search-width-as-layer: 50% !default;
+
 $header-search_close-color: $color_text-400 !default;
 
 $header-search_input-box-shadow: inset 0 1px 2px rgba($color_black, 0.15) !default;
@@ -26,11 +29,12 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
 .#{$ns}header-search {
     $root: &;
 
+    width: 100%;
     position: relative;
 
-    @if ($global_header-hide-search-item-trigger-breakpoint) {
-        @include media($global_header-hide-search-item-trigger-breakpoint) {
-            position: initial;
+    @if ($global_header-searchbox-as-layer-breakpoint) {
+        @include media($global_header-searchbox-as-layer-breakpoint) {
+            width: $header-search-width-as-layer;
         }
     }
 
@@ -42,7 +46,6 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
         transition: border-color 0.3s;
         z-index: 210;
         position: relative;
-        padding-left: 9rem;
 
         &:focus {
             outline: none;
@@ -82,14 +85,21 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
         height: 1.5rem;
         margin-right: 1rem;
         display: block;
+        opacity: .6;
+        transition: opacity 0.3s linear;
 
         &:hover {
             cursor: pointer;
+            opacity: 1;
         }
 
         @if ($global_header-hide-search-item-trigger-breakpoint) {
-            @include media($global_header-hide-search-item-trigger-breakpoint) {
+            @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 display: none;
+            } @else {
+                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                    display: none;
+                }
             }
         }
     }

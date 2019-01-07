@@ -12,12 +12,16 @@ $header_burger-icon-color-active: $color_background-200 !default;
 $header_is-sticky-on-mobile: true !default;
 $header_background: $color_background-200 !default;
 
-// if you want to cover 'search' item in header by searchbox, provide proper negative margin based on your design
-// it works only if `$global_header-hide-search-item-trigger-breakpoint` is false, and `$global_header-searchbox-as-layer-breakpoint` has a valid breakpoint
-$header_searchbox-margin-to-cover-search-item: -6.8rem;
+// Horizontal align of the searchbox if it's displayed as a layer - `$global_header-searchbox-as-layer-breakpoint`
+$header_searchbox-justify-content: center !default;
+
+// If you want to cover 'search' item in header by searchbox, provide proper negative margin based on your design
+// It works only if '$global_header-searchbox-as-layer-breakpoint' has valid breakpoint and `$header_searchbox-justify-content` = flex-end
+$header_searchbox-margin-to-cover-search-item: -6.8rem !default;
 
 .#{$ns}header {
     $root: &;
+
     font-size: 1rem;
 
     @if ($header_is-sticky-on-mobile) {
@@ -190,10 +194,25 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem;
         width: 100%;
         background-color: $header_background;
         padding: 1rem;
-
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 300;
+        
         @if ($global_header-searchbox-as-layer-breakpoint) {
             @include media($global_header-searchbox-as-layer-breakpoint) {
+                flex-grow: 1;
+                width: auto;
                 padding: 0;
+                position: initial;
+                margin-left: 2rem !important;
+                justify-content: $header_searchbox-justify-content;
+
+                .ie11 & {
+                    position: inherit;
+                    top: inherit;
+                }
             }
         } @else {
             @include media('>=laptop') {
@@ -206,42 +225,40 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem;
         }
         
         &--active {
-            display: block;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
+            display: flex;
         }
 
         @if ($global_header-hide-search-item-trigger-breakpoint) {
-            @include media($global_header-hide-search-item-trigger-breakpoint) {
-                display: block;
-                position: relative;
-                width: calc(32% - 3rem);
-                padding: 0;
-                top: initial;
-                left: initial;
-                right: initial;
-                z-index: 300;
-            }
-        } @else {
-            @if ($global_header-searchbox-as-layer-breakpoint) {
-                @include media($global_header-searchbox-as-layer-breakpoint) {
-                    width: auto;
-                    position: initial;
-                    flex-grow: 1;
-                    // space between logo & search box if it's layer
-                    margin-left: 2rem;
+            @if ($global_header-hide-search-item-trigger-breakpoint == true) {
+                display: flex;
+            } @else {
+                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                    display: flex;
+                }
 
-                    .ie11 & {
-                        position: inherit;
-                        top: inherit;
-                    }
-
-                    @if ($header_searchbox-margin-to-cover-search-item) {
-                        margin-right: $header_searchbox-margin-to-cover-search-item;
+                @if ($global_header-searchbox-as-layer-breakpoint) {
+                    @include media($global_header-searchbox-as-layer-breakpoint) {
+                        position: relative;
+                        padding: 0;
+                        top: initial;
                     }
                 }
+            }
+        } 
+
+        @if ($global_header-hide-search-item-trigger-breakpoint and $header_searchbox-justify-content == 'flex-end') {
+            @if ($global_header-hide-search-item-trigger-breakpoint == true) {
+                margin: 0;
+            } @else {
+                margin-right: $header_searchbox-margin-to-cover-search-item;
+                
+                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                    margin: 0;
+                }
+            }
+        } @else {
+            @if ($header_searchbox-justify-content == 'flex-end') {
+                margin-right: $header_searchbox-margin-to-cover-search-item;
             }
         }
     }
@@ -252,8 +269,12 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem;
         flex: 0 1 30%;
 
         @if ($global_header-hide-search-item-trigger-breakpoint) {
-            @include media($global_header-hide-search-item-trigger-breakpoint) {
+            @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 flex: 0 1 25%;
+            } @else {
+                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                    flex: 0 1 25%;
+                }
             }
         }
     }
