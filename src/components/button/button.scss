@@ -12,3 +12,33 @@
         @include button_icon();
     }
 }
+
+$button-component_meaning: default !default
+$button-component_scheme: outline !default
+.cs-button-component {
+    @include button($meaning: $button-component_meaning, $scheme: $button-component_scheme);
+
+    position: relative;
+    left: 50%;
+    margin: 2rem 0;
+    transform: translate3d(-50%,0,0);
+
+    &__span {
+        @include button_span($meaning: $button-component_meaning, $scheme: $button-component_scheme);
+    }
+
+    &__icon {
+        @include button_icon($meaning: $button-component_meaning, $scheme: $button-component_scheme);
+    }
+
+    &__amount {
+
+        &:before {
+            content: "(";
+        }
+        &:after {
+            content: ")";
+        }
+    }
+
+}
