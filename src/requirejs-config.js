@@ -33,6 +33,9 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
+            'Magento_Checkout/js/model/new-customer-address': {
+                'Magento_Checkout/js/model/new-customer-address-ext': true,
+            },
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
