@@ -1,0 +1,65 @@
+<?php
+$brandCollection = $this->getBrandCollection();
+$data = $this->helper('Ves\Brand\Helper\Data');
+$brand_layout_listing = $data->getConfig("product_view_page/brand_layout_listing");
+$brand_label = $data->getConfig("product_view_page/brand_text");
+$show_brand_image = $data->getConfig("product_view_page/show_brand_image");
+$show_brand_name = $data->getConfig("product_view_page/show_brand_name");
+?>
+
+<?php if($brandCollection && $brandCollection->count()){ ?>
+	<?php
+		$i = 0;
+		$total = $brandCollection->count();
+
+		if($data->getConfig("product_view_page/show_brand_text") && $brand_label){
+			echo '<span class="brand-label">'.$brand_label.'</span>';
+		}
+
+    if($brand_layout_listing) { ?>
+
+		<ul class="product-brands">
+			<?php foreach ($brandCollection as $brand) { ?>
+				<li class="brand-item">
+					<?php if($show_brand_image): ?>
+						<a href="<?php echo $brand->getUrl(); ?>" title="<?php echo $brand->getName(); ?>">
+							<img src="<?php echo $brand->getThumbnailUrl(); ?>" alt="<?php echo $brand->getName(); ?>"/>
+						</a>
+					<?php endif; ?>
+
+					<?php if($show_brand_name): ?>
+						<a href="<?php echo $brand->getUrl(); ?>" title="<?php echo $brand->getName(); ?>">
+							<span itemprop="brand"><?php echo $brand->getName(); ?></span>
+						</a>
+					<?php endif; ?>
+				</li>
+			<?php } ?>
+		</ul>
+
+	<?php } else {
+
+		foreach ($brandCollection as $brand) { ?>
+			<div class="cs-product-info-brand">
+				<?php if($show_brand_image && $brand->getThumbnailUrl()): ?>
+					<div class="cs-product-info-brand__row">
+						<span class="cs-product-info-brand__name" title="<?php echo $brand->getName(); ?>">
+							<img class="cs-product-info-brand__logo"src="<?php echo $brand->getThumbnailUrl(); ?>" alt="<?php echo $brand->getName(); ?>"/>
+						</span>
+					</div>
+				<?php endif; ?>
+
+				<?php if($show_brand_name): ?>
+					<div class="cs-product-info-brand__row">
+						<span class="cs-product-info-brand__name" title="<?php echo $brand->getName(); ?>">
+							<span itemprop="brand"><?php echo $brand->getName(); ?></span>
+						</span>
+					</div>
+				<?php endif; ?>
+			</div>
+			<?php if($i<=($total-2)){ echo ', '; }  ?>
+			<?php $i++; ?>
+	 <?php
+		}
+	}
+}
+?>

@@ -1,0 +1,23 @@
+<?php
+	$brandCollection = $block->getBrandCollection();
+	$brands = [];
+?>
+
+<?php foreach ($brandCollection as $brand) {
+	$brands[] = [
+		'href' => $brand->getUrl(),
+		'image' => [
+			'src' => $brand->getThumbnailUrl(),
+			'alt' => $brand->getName()
+		]
+	];
+} ?>
+
+
+ <?=$this->getLayout()->createBlock( 
+    'MageSuite\Frontend\Block\Twig', 'brand-carousel', [
+        'data' => [
+	        'brands' => $brands
+        ]
+    ]
+)->setTemplate("brand-carousel/brand-carousel.twig")->toHtml(); ?>

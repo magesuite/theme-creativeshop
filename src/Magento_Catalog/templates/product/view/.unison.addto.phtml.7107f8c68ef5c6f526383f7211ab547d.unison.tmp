@@ -1,0 +1,48 @@
+<?php
+// @codingStandardsIgnoreFile
+/** @var $block \Magento\Catalog\Block\Product\View*/
+?>
+<?php
+    $product = $block->getProduct();
+    $wishlistSubmitParams = $this->helper('Magento\Wishlist\Helper\Data')->getAddParams($product);
+    $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
+?>
+
+<ul class="cs-links-block-addto" data-role="add-to-links">
+    <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
+        <li class="cs-links-block-addto__item">
+            <a
+                href="#"
+                class="cs-links-block-addto__link"
+                data-post='<?php /* @escapeNotVerified */ echo $wishlistSubmitParams; ?>'
+                data-action="add-to-wishlist"
+            >
+                <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                    <use xlink:href="#heart"></use>
+                </svg>
+                <?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>
+            </a>
+        </li>
+    <?php endif; ?>
+
+    <li class="cs-links-block-addto__item cs-hide-mobile">
+        <a
+            href="#"
+            data-post='<?php /* @escapeNotVerified */ echo $compareHelper->getPostDataParams($product);?>'
+            data-role="add-to-links"
+            class="cs-links-block-addto__link"
+        >
+            <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--compare">
+                <use xlink:href="#compare"></use>
+            </svg>
+            <?php /* @escapeNotVerified */ echo __('Add to Compare') ?>
+        </a>
+    </li>
+</ul>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "addToWishlist": <?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($block->getWishlistOptions())?>
+        }
+    }
+</script>

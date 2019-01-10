@@ -1,0 +1,114 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php
+    $product = $block->getProduct();
+    $buttonTitle = __('Add to Cart');
+    $indicatorsHelper = $this->helper('\MageSuite\ProductPositiveIndicators\Helper\Product');
+    $isFreeShipped = ($indicatorsHelper->isFreeShipped($product) && $indicatorsHelper->showFreeShippingTextNoteOnProductsDetailpage());
+?>
+
+<?php if ($product->isSaleable()): ?>
+    <div class="cs-box-addtocart<?php echo $indicatorsHelper->isFastShippingEnabled() ? ' cs-box-addtocart--fast-shipping' : '' ?>">
+        <div class="cs-box-addtocart__fieldset">
+            <div class="cs-box-addtocart__qty-wrapper">
+                <?php if ($block->shouldRenderQuantity()): ?>
+                    <label class="cs-label | cs-box-addtocart__label" for="qty"><?php /* @escapeNotVerified */ echo __('Qty') ?></label>
+
+                    <div class="cs-box-addtocart__qty-increment">
+                        <?php $productDefaultQty = $block->getProductDefaultQty() * 1; ?>
+                        <?=$this->getLayout()->createBlock(
+                            'MageSuite\Frontend\Block\Twig',
+                            'add-to-cart-pdp', [
+                                'data' => [
+                                    "namespace" => 'cs-',
+                                    "minValue" => 1,
+                                    "initialValue" => /* @escapeNotVerified */ $productDefaultQty,
+                                    "maxLength" => 12,
+                                    "size" => 2,
+                                    "name" => 'qty',
+                                    "inputParams" => 'data-validate="'.$block->escapeHtml(json_encode($block->getQuantityValidators())).'"',
+                                    "icons" => [
+                                        "increment" => '#plus',
+                                        "decrement" => '#minus'
+                                    ]
+                                ]
+                            ]
+                        )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ( $isFreeShipped ) { ?>
+                    <div class="cs-indicators__free-shipping">
+                        <span class="cs-box-addtocart__label | cs-indicators__free-shipping-label">
+                            <svg class="cs-indicators__free-shipping-icon"><use xlink:href="#piggybank"></use></svg>
+                        </span>
+                        <span class="cs-indicators__free-shipping-text">
+                            <span class="cs-indicators__free-shipping-important"><?php /* @escapeNotVerified */ echo __('Free Shipping') ?></span> <span class="cs-indicators__free-shipping-note"><?php /* @escapeNotVerified */ echo __('for this item') ?>
+                        </span>
+                    </div>
+                <?php } ?>
+
+                <?php if ($block->displayProductStockStatus()): ?>
+                    <div class="cs-box-addtocart__stock">
+                        <?php if ($product->isAvailable()): ?>
+                            <link id="cs-box-addtocart__availability" itemprop="availability" href="http://schema.org/InStock" />
+                            <?php if($indicatorsHelper->isFastShippingEnabled()):
+                                echo $this->getLayout()->createBlock(
+                                    'MageSuite\Frontend\Block\Twig',
+                                    'pdp-fast-shipping', [
+                                        'data' => []
+                                    ]
+                                )->setTemplate( "indicators/fast-shipping.twig" )->toHtml();
+                            else: ?>
+                                <div
+                                    class="cs-box-addtocart__label | cs-box-addtocart__stock-text cs-box-addtocart__stock-text--available"
+                                    title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
+                                    >
+                                    <svg class="cs-box-addtocart__stock-icon cs-box-addtocart__stock-icon--available">
+                                        <use xlink:href="#truck_in-stock"></use>
+                                    </svg>
+                                    <span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
+                                </div>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <link id="cs-box-addtocart__availability" itemprop="availability" href="http://schema.org/OutOfStock" />
+                            <?php if($indicatorsHelper->isFastShippingEnabled()): ?>
+                                <div class="cs-indicators__fast-shipping-element cs-indicators__fast-shipping-element--visible">
+                                    <span class="cs-box-addtocart__label | cs-indicators__fast-shipping-label">
+                                        <svg class="cs-indicators__fast-shipping-icon cs-indicators__fast-shipping-icon--disabled"><use xlink:href="#truck_not-available"></use></svg>
+                                    </span>
+                                    <span class="cs-indicators__fast-shipping-text">
+                                        <span class="cs-indicators__fast-shipping-important cs-indicators__fast-shipping-important--negative"><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+                                    </span>
+                                </div>
+                            <?php else: ?>
+                                <div
+                                    class="cs-box-addtocart__label | cs-box-addtocart__stock-text cs-box-addtocart__stock-text--unavailable"
+                                    title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
+                                    >
+                                    <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+                                </div>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+            </div>
+
+            <div class="cs-box-addtocart__actions cs-addtocart">
+                <?= $block->getChildHtml('', true) ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>

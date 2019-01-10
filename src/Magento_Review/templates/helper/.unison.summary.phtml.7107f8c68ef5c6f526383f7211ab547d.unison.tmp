@@ -1,0 +1,36 @@
+<?php
+// @codingStandardsIgnoreFile
+    $url = $block->getReviewsUrl() . '#reviews';
+    $urlForm = $block->getReviewsUrl() . '#review-form';
+?>
+
+<?php if ($block->getReviewsCount()): ?>
+
+    <?php
+        $rating = $block->getRatingSummary();
+        $dividedRating = round($rating*2/20)/2;
+    ?>
+
+    <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        <?=$this->getLayout()->createBlock(
+            'MageSuite\Frontend\Block\Twig',
+            'rating-summary-product-sale-block', [
+                'data' => [
+                    'namespace' => 'cs-',
+                    'maxStars' => 5,
+                    'activeStars' => $dividedRating,
+                    'text' => '<span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span> (<span itemprop="reviewCount">'.$block->getReviewsCount().'</span> '.(($block->getReviewsCount() == 1) ? __('Review') : __('Reviews')).')'
+                ]
+            ]
+        )->setTemplate( 'star-rating/star-rating.twig' )->toHtml(); ?>
+    </div>
+
+<?php elseif ($block->getDisplayIfEmpty()): ?>
+
+    <div class="cs-product-sale-block__no-review">
+        <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $urlForm; ?>">
+            <?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?>
+        </a>
+    </div>
+
+<?php endif; ?>
