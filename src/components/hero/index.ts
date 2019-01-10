@@ -1,13 +1,17 @@
-import Hero from 'components/hero/hero';
 import * as $ from 'jquery';
 
-$('.cs-hero').each(function(): void {
-    const hero: JQuery = $(this);
-    new Hero(hero, {
+import Hero from 'components/hero/hero';
+import 'components/hero/hero.scss';
+
+const componentClass: string = 'cs-hero';
+
+$(`.${componentClass}`).each(function(): void {
+    const $hero: JQuery<HTMLElement> = $(this);
+    new Hero($hero, {
         spaceBetween: 2,
         callbacks: {
             onInit() {
-                hero.find(`.cs-hero__slide--clone`).each(function(
+                $hero.find(`.${componentClass}__slide--clone`).each(function(
                     i: number,
                     el: JQuery
                 ): void {

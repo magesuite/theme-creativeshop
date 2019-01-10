@@ -6,11 +6,11 @@ import csTeaser from 'components/teaser/teaser';
  * component options interface.
  * Please refer to swiper documentation and our teaser component for more options and callbacks
  */
-interface ProductsPromoOptions {
+interface ProductsCarouselOptions {
     /**
      * HTML Class of the component
      * @type {string}
-     * @default 'cs-products-promo'
+     * @default 'cs-products-carousel'
      */
     teaserName?: string;
 
@@ -43,7 +43,7 @@ interface ProductsPromoOptions {
     slideMinWidth?: number;
 }
 
-export default class ProductsPromo {
+export default class ProductsCarousel {
     protected _$element: JQuery<HTMLElement>;
     protected _options: any;
 
@@ -52,14 +52,20 @@ export default class ProductsPromo {
      * @param {$element} Optional, element to be initialized as ProductsPromo component
      * @param {options}  Optional settings object.
      */
-    public constructor($element?: JQuery, options?: ProductsPromoOptions) {
+    public constructor($element?: JQuery, options?: ProductsCarouselOptions) {
         this._options = $.extend(
             {
-                teaserName: 'cs-products-promo',
+                teaserName: 'cs-products-carousel',
                 slidesPerView: 'auto',
                 spaceBetween: 0,
                 maxSlidesPerView: 4,
-                slideMinWidth: 210,
+                slideMinWidth: 225,
+                simulateTouch: false,
+                onPaginationRendered(swiper: any): void {
+                    swiper.bullets.length <= 1
+                        ? $(swiper.paginationContainer).hide()
+                        : $(swiper.paginationContainer).show();
+                },
             },
             options
         );
@@ -103,6 +109,7 @@ export default class ProductsPromo {
      */
     protected _onInit(swiper: any, callback: any): void {
         this._handleOverflow(swiper);
+        //this._$element.addClass(`${this._options.teaserName}--ready`);
         this._initCallback(callback, swiper);
     }
 

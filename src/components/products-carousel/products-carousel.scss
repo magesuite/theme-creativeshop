@@ -1,0 +1,67 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'utils/aspect-ratio';
+@import 'components/teaser/mixin';
+
+$products-carousel_margin: 1.5rem 0 !default;
+
+$products-carousel_tile-ratio-width: 150 !default;
+$products-carousel_tile-ratio-height: 203 !default;
+
+$products-carousel_hide-nav-buttons-on-mobile: false !default;
+$products-carousel_nav-button-position-top: calc(50% - 1.5rem) !default; // 1.5rem recompenses half of height of the bullet-pagination
+
+$teaser_hide-nav-buttons-on-mobile: $products-carousel_hide-nav-buttons-on-mobile;
+$teaser_nav-button-position-top: $products-carousel_nav-button-position-top;
+
+.#{$ns}products-carousel {
+    $root: &;
+
+    @include teaser();
+
+    margin: $products-carousel_margin;
+
+    &__wrapper {
+        overflow: visible;
+
+        @include media('>=laptop') {
+            &:hover {
+                z-index: 5;
+            }
+        }
+    }
+
+    &__slide {
+        opacity: 0;
+        backface-visibility: hidden;
+        overflow: hidden;
+        transition: transform 0.15s linear, opacity 0.25s linear 0.1s;
+
+        &:not(#{$root}__slide--in-viewport) {
+            transform: scale(0);
+        }
+
+        &--in-viewport {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        &:hover {
+            @include media('>=laptop') {
+                z-index: 5;
+                overflow: visible;
+            }
+        }
+    }
+
+    &__product-tile {
+        width: 100%;
+        @include aspect-ratio(
+            $width: $products-carousel_tile-ratio-width, 
+            $height: $products-carousel_tile-ratio-height, 
+            $childClass: #{$ns}product-tile, 
+            $autoposition: true
+        );
+    }
+}

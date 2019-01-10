@@ -1,6 +1,43 @@
-@mixin hero() {
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'components/teaser/mixin';
+
+$hero_margin: 0 0 1.5rem !default;
+
+$hero_slider-width--centered: 77%;
+
+$hero_nav-button-horizontal-position: 1.5rem !default;
+
+$teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
+
+.#{$ns}hero {
     $root: &;
-    position: relative;
+
+    @include teaser();
+
+    margin: $hero_margin;
+
+    &__wrapper {
+        position: static;
+    }
+
+    &__slide {
+        background-color: $color_white;
+
+        &--prev,
+        &--next {
+            cursor: pointer;
+        }
+
+        &--scheme-dark {
+            background-color: $color_white;
+        }
+
+        &--scheme-light:not(#{$root}__slide--image-uploaded) {
+            background-color: $color_mineshaft;
+        }
+    }
 
     &__slide-link {
         display: block;
@@ -24,8 +61,29 @@
         left: 0;
         width: 50%;
         height: 100%;
-        padding: 25px 100px 55px;
+        padding: 1rem 1.5rem;
         box-sizing: border-box;
+
+        @include media('>=phone-lg') {
+            padding: 4rem 2.5rem;
+        }
+
+        @include media('>=tablet') {
+            padding: 3rem 3.5rem;
+            width: 60%;
+        }
+
+        @include media('>=laptop') {
+            padding: 2.5rem 3.5rem 5.5rem;
+        }
+
+        @include media('>=desktop') {
+            padding: 7rem 3.5rem;
+        }
+
+        #{$root}--centered & {
+            width: 50%;
+        }
 
         &--variant-1 {
             #{$root}__content {
@@ -41,7 +99,7 @@
 
         &--variant-3 {
             left: 50%;
-            transform: translateX( -50% );
+            transform: translateX(-50%);
 
             #{$root}__content {
                 justify-content: center;
@@ -52,7 +110,7 @@
 
         &--variant-4 {
             left: 50%;
-            transform: translateX( -50% );
+            transform: translateX(-50%);
             text-align: center;
 
             #{$root}__content {
@@ -67,35 +125,134 @@
         flex-direction: column;
         height: 100%;
         justify-content: center;
-        color: #222;
+        color: $color_alto;
+        font-weight: 300;
 
         &--light {
-            color: #fff;
+            color: $color_white;
         }
     }
 
-    &__headline,
-    .#{$ns}grid-layout__teaser-headline {
-        margin: 0 0 1rem;
-        font-size: 3rem;
-        line-height: 1.15;
-        font-weight: 700;
+    &__headline {
+        margin: 0.5rem 0 0;
+        line-height: 110%;
+        font-weight: 900;
+        color: $color_mineshaft;
+        font-size: 5vw;
+
+        .ie11 & {
+            width: 100%;
+        }
+
+        #{$root}__slide--scheme-light & {
+            color: $color_white;
+        }
+
+        @include media('>=tablet') {
+            font-size: 3.1vw;
+        }
+
+        @include media('>=laptop') {
+            font-size: 4.1rem;
+            line-height: 5rem;
+        }
+
+        @include media('>=desktop') {
+            font-size: 4.7rem;
+        }
+
+        @include media('>=tv') {
+            font-size: 5.1rem;
+            margin-bottom: 1rem;
+        }
     }
 
-    &__subheadline,
-    .#{$ns}grid-layout__teaser-subheadline {
-        margin: 0 0 1rem;
-        font-size: 1.65rem;
-        line-height: 1.15;
+    &__subheadline {
+        margin: 1vw 0 0;
+        line-height: 110%;
         font-weight: 400;
+        color: $color_mineshaft;
+        font-size: 3.3vw;
+
+        .ie11 & {
+            width: 100%;
+        }
+
+        #{$root}__slide--scheme-light & {
+            color: $color_white;
+        }
+
+        @include media('>=tablet') {
+            font-size: 2.6vw;
+        }
+
+        @include media('>=laptop') {
+            font-size: 2.8rem;
+            line-height: 1.25;
+        }
+
+        @include media('>=desktop') {
+            font-size: 3.2rem;
+        }
+
+        @include media('>=tv') {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+        }
     }
 
-    &__text,
-    .#{$ns}grid-layout__teaser-text {
-        margin: 0 0 1rem;
-        font-size: 1rem;
-        line-height: 1.15;
-        font-weight: 300;
+    &__text {
+        margin: 1rem 1rem 0.2rem;
+        font-size: 4vw;
+        font-weight: 400;
+        color: $color_mineshaft;
+        line-height: 110%;
+        display: none;
+
+        .ie11 & {
+            width: 100%;
+        }
+
+        #{$root}__slide--scheme-light & {
+            color: $color_white;
+        }
+
+        @include media('>=tablet') {
+            font-size: 2vw;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        @include media('>=laptop') {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @include media('>=desktop') {
+            margin: 1rem 0 4rem !important;
+            line-height: 1.1;
+        }
+
+        + #{$root}__cta {
+            margin-top: 0;
+        }
+    }
+
+    &__cta {
+        margin-top: 2rem;
+
+        @include media('<tablet') {
+            display: none;
+        }
+
+        @include media('<laptop') {
+            transform: scale(0.9);
+            transform-origin: left bottom;
+        }
+
+        @include media('<phone-lg') {
+            transform: scale(0.7);
+        }
     }
 
     &__nav {
@@ -105,8 +262,12 @@
     }
 
     &__pagination {
-        position: absolute;
-        bottom: 1rem;
+        @include media('>=tablet') {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
         #{$root}--static & {
             display: none;
@@ -114,8 +275,11 @@
     }
 
     &--centered {
-        width: 80%;
-        padding: 0 10%;
+        @include media('>=tablet') {
+            width: $hero_slider-width--centered;
+            padding: 0 (100% - $hero_slider-width--centered) / 2;
+            box-sizing: initial;
+        }
 
         #{$root}__content-wrapper {
             width: 75%;
@@ -129,8 +293,20 @@
             padding: 0 2px;
             box-sizing: border-box;
 
-            &:not( #{$root}__slide--active ) {
+            &:not(#{$root}__slide--active) {
                 opacity: .5;
+            }
+        }
+
+        #{$root}__nav {
+            @include media('>=laptop-lg') {
+                &--prev {
+                    left: 0;
+                }
+
+                &--next {
+                    right: 0;
+                }
             }
         }
     }
@@ -151,4 +327,32 @@
             display: none;
         }
     }
+
+    &--as-list-mobile {
+        @include media('<tablet') {
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+
+            #{$root}__slides {
+                flex-wrap: wrap;
+            }
+
+            #{$root}__slide {
+                width: 100% !important;
+                opacity: 1 !important;
+                margin-bottom: 0.5rem;
+            }
+
+            #{$root}__pagination {
+                display: none;
+            }
+        }
+    }
+}
+
+.#{$ns}container--hero {
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
 }

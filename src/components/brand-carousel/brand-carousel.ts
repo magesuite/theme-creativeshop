@@ -38,13 +38,17 @@ interface BrandCarouselOptions {
 
 export default class BrandCarousel {
     protected _$element: JQuery;
+    protected _$items: JQuery;
+    protected _options: BrandCarouselOptions;
+    protected _breakpointsArray: Array<any>;
+    protected _instance: any;
 
     /**
      * Creates new ProductsPromo component with optional settings.
      * @param {$element} Optional, element to be initialized as ProductsPromo component
      * @param {options}  Optional settings object.
      */
-    public constructor($element?: JQuery, options?: BrandsCarouselOptions) {
+    public constructor($element?: JQuery, options?: BrandCarouselOptions) {
         this._options = $.extend(
             {
                 teaserName: 'cs-brand-carousel',
@@ -64,7 +68,7 @@ export default class BrandCarousel {
         this._$element = $element || $(`.${this._options.teaserName}`);
 
         if (this._$element.length) {
-            this._items = this._$element.find(
+            this._$items = this._$element.find(
                 $(`.${this._options.teaserName}__slide`)
             );
         }
@@ -73,7 +77,7 @@ export default class BrandCarousel {
             this._breakpointsArray = Object.keys(this._options.breakpoints);
         }
 
-        if (this._$element.length && this._items.length > 1) {
+        if (this._$element.length && this._$items.length > 1) {
             let throttler: number;
             const _this: any = this;
 
@@ -119,7 +123,7 @@ export default class BrandCarousel {
      */
     protected _init(): void {
         if (this._breakpointsArray) {
-            if (this._items.length > this._getSlidesPerView()) {
+            if (this._$items.length > this._getSlidesPerView()) {
                 if (!this._instance) {
                     this._$element.addClass(
                         `${this._options.teaserName}--slider`
