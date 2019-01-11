@@ -1,30 +1,30 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
-$header-search_height: 4.5rem !default;
+@import 'components/field/mixin';
+@import 'components/button/mixin';
+
+$header-search_height: 2.875em !default;
 
 // Width of the search field. Works only for `$global_header-searchbox-as-layer-breakpoint` breakpoint, in other case it's always 100%
 $header-search-width-as-layer: 50% !default;
 
 $header-search_close-color: $color_text-400 !default;
 
-$header-search_input-box-shadow: inset 0 1px 2px rgba($color_black, 0.15) !default;
-$header-search_input-border: 1px solid $color_border-500 !default;
-$header-search_input-border-focus: 1px solid $color_primary-500 !default;
-$header-search_input-border-radius: 3px !default;
-
+$header-search_button-meaning: default !default;
+$header-search_button-scheme: default !default;
 $header-search_button-width: 5rem !default;
-$header-search_button-border: none !default;
-$header-search_button-border-hover: none !default;
-$header-search_button-border-radius: 3px !default;
-$header-search_button-background: $color_primary-500 !default;
-$header-search_button-background-hover: $color_primary-800 !default;
+$header-search_button-border-radius: 0 !important !default;
 $header-search_button-transform: $skew_transform translateX(0.7rem) !default;
 
 $header-search_icon-search-color: $color_text-200 !default;
 $header-search_icon-search-color-hover: $color_text-200 !default;
 $header-search_icon-loader-color: $color_text-200 !default;
 $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !default;
+
+$header-search_button-container-transition: transform 0.5s
+        $transition-easing_slowdown-900,
+    opacity 0.15s linear !default;
 
 .#{$ns}header-search {
     $root: &;
@@ -39,19 +39,12 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
     }
 
     &__input {
-        height: $header-search_height !important;
-        box-shadow: $header-search_input-box-shadow;
-        border: $header-search_input-border !important;
-        border-radius: $header-search_input-border-radius !important;
-        transition: border-color 0.3s;
-        z-index: 210;
+        @include field-input();
         position: relative;
+        margin-top: 0;
+        z-index: 210;
 
         &:focus {
-            outline: none;
-            box-shadow: $header-search_input-box-shadow !important;
-            border: $header-search_input-border-focus !important;
-
             + #{$root}__action {
                 .ajax-loading & {
                     #{$root}__button-container--search {
@@ -77,6 +70,8 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
         display: flex;
         justify-content: space-between;
         align-items: center;
+        border-top-right-radius: $border-radius_base;
+        border-bottom-right-radius: $border-radius_base;
     }
 
     &__close-icon {
@@ -85,7 +80,7 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
         height: 1.5rem;
         margin-right: 1rem;
         display: block;
-        opacity: .6;
+        opacity: 0.6;
         transition: opacity 0.3s linear;
 
         &:hover {
@@ -97,7 +92,9 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
             @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 display: none;
             } @else {
-                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                @include media(
+                    $global_header-hide-search-item-trigger-breakpoint
+                ) {
                     display: none;
                 }
             }
@@ -105,38 +102,20 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
     }
 
     &__button {
+        @include button(
+            $meaning: $header-search_button-meaning,
+            $scheme: $header-search_button-scheme
+        );
+
         width: $header-search_button-width;
-        height: $header-search_height;
         overflow: hidden;
         position: relative;
-        border: $header-search_button-border;
         border-radius: $header-search_button-border-radius;
-        background-color: $header-search_button-background;
         backface-visibility: hidden;
-        transition: background-color 0.15s linear, border-color 0.15s linear, color 0.15s linear;
-        padding: 0;
         transform: $header-search_button-transform;
 
         &[disabled] {
             opacity: 1;
-        }
-
-        &:hover {
-            background-color: $header-search_button-background-hover;
-            border: $header-search_button-border-hover;
-            
-            #{$root}__button-icon {
-                fill: $header-search_icon-search-color-hover;
-            }
-
-            .ajax-loading & {
-                background-color: $header-search_button-background;
-                border: $header-search_button-border;
-            
-                #{$root}__button-icon {
-                    fill: $header-search_icon-search-color;
-                }
-            }
         }
     }
 
@@ -149,7 +128,7 @@ $header-search_icon-transform: $skew_transform-revert translateX(-0.3rem) !defau
         align-items: center;
         width: 100%;
         height: 100%;
-        transition: transform 0.5s cubic-bezier(0, 0.78, 0.23, 1), opacity 0.15s linear;
+        transition: $header-search_button-container-transition;
 
         &--search {
             transform: translateX(0);

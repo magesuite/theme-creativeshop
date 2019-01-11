@@ -1,0 +1,198 @@
+@import 'components/button/hook';
+
+$button_font-size: 1.4rem !default;
+$button_height: 2.875em !default;
+$button_padding: 0 1.5em !default;
+$button_border-radius: $border-radius_base !default;
+
+$button_border: 0;
+$button_border-hover: $button_border !default;
+$button_color: $color_text-200 !default;
+$button_color-hover: $button_color !default;
+$button_fill: $button_color !default;
+$button_fill-hover: $button_color-hover !default;
+$button_background: $color_primary-500;
+$button_background-hover: $color_primary-800 !default;
+
+// Defines how much button icon should be pulled vertically to center it.
+// Should be defined in em to make it relative to button's font size.
+$button_span-font-offset: -0.0625em !default;
+// You can disable gradient hover effects by switching this value to false.
+$button_span-gradient-enabled: true !default;
+$button_span-gradient: linear-gradient(
+    108deg,
+    $button_background 0%,
+    $button_background calc(45% - 4em),
+    $button_background-hover calc(45% - 4em),
+    $button_background-hover 100%
+) !default;
+$button_span-gradient-inverse: linear-gradient(
+    108deg,
+    $button_background 0%,
+    $button_background calc(45% - 4em),
+    $button_background-hover calc(45% - 4em),
+    $button_background-hover 100%
+) !default;
+$button_span-gradient-no-icon: linear-gradient(
+    108deg,
+    $button_background 0%,
+    $button_background calc(50%),
+    $button_background-hover calc(50%),
+    $button_background-hover 100%
+);
+// Defines how much button icon should be pulled vertically to center it.
+// Should be defined in em to make it relative to button's font size.
+$button_icon-offset: 0.0625em !default;
+
+@mixin button($meaning: default, $scheme: default) {
+    @if $meaning == success {
+        $button_background: $color_success-500 !global;
+        $button_background-hover: $color_success-700 !global;
+    }
+
+    @if $meaning == warning {
+        $button_background: $color_warning-500 !global;
+        $button_background-hover: $color_warning-700 !global;
+    }
+
+    @if $scheme == outline {
+        $button_border: 1px solid $button_background !global;
+        $button_border-hover: 1px solid $button_background-hover !global;
+        $button_color: $button_background !global;
+        $button_color-hover: $button_background-hover !global;
+        $button_fill: $button_background !global;
+        $button_fill-hover: $button_background-hover !global;
+        $button_background: transparent !global;
+        $button_background-hover: transparent !global;
+    }
+
+    display: inline-flex;
+    font-size: $button_font-size;
+    height: $button_height;
+    align-items: center;
+    padding: $button_padding;
+    text-align: center;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.5s, border-color 0.5s, fill 0.5s, color 0.5s;
+    vertical-align: middle;
+
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    &,
+    &:visited {
+        cursor: pointer;
+        border-radius: $button_border-radius;
+        outline-offset: 1px;
+        text-decoration: none;
+        box-shadow: none;
+        border: $button_border;
+        color: $button_color;
+        fill: $button_fill;
+        background-color: $button_background;
+        background-clip: padding-box !important;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        border: $button_border-hover;
+        color: $button_color-hover;
+        fill: $button_fill-hover;
+        background-color: $button_background-hover;
+        box-shadow: none;
+        outline: none;
+        text-decoration: none;
+    }
+
+    &[disabled] {
+        opacity: 0.65;
+        cursor: auto;
+    }
+
+    @include button_hook($meaning, $scheme);
+}
+
+@mixin button_span($meaning: default, $scheme: default) {
+    @if $meaning == success {
+        $button_span-gradient-enabled: false !global;
+    }
+
+    @if $meaning == warning {
+        $button_span-gradient-enabled: false !global;
+    }
+
+    @if $scheme == outline {
+        $button_span-gradient-enabled: false !global;
+    }
+
+    margin-top: $button_span-font-offset;
+    flex: 1 1 auto;
+    z-index: 1;
+    font-weight: 700;
+    vertical-align: middle;
+
+    @if $button_span-gradient-enabled {
+        &:before {
+            content: '';
+            position: absolute;
+            width: 220%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: -1;
+
+            background-clip: padding-box;
+            background-image: $button_span-gradient;
+            background-repeat: no-repeat;
+            transition: background-color 0.5s, transform 0.5s;
+
+            *:hover > &,
+            *:focus > &,
+            *:active > & {
+                transform: translateX(-55%);
+            }
+
+            * + & {
+                left: auto;
+                right: 0;
+                background-image: $button_span-gradient-inverse;
+
+                *:hover > &,
+                *:focus > &,
+                *:active > & {
+                    transform: translateX(55%);
+                }
+            }
+        }
+
+        &:first-child:last-child {
+            &:before {
+                background-image: $button_span-gradient-no-icon;
+            }
+        }
+    }
+
+    @include button_span-hook($meaning, $scheme);
+}
+
+@mixin button_icon($meaning: default, $scheme: default) {
+    flex: 0 0 auto;
+    max-width: 1em;
+    max-height: 1em;
+    margin-top: $button_icon-offset;
+    margin-right: 4em;
+    z-index: 2;
+
+    * + & {
+        margin-right: 0;
+        margin-left: 4em;
+    }
+
+    @include button_icon-hook($meaning, $scheme);
+}

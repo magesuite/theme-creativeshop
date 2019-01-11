@@ -58,6 +58,9 @@ import 'components/breadcrumbs';
 import 'components/progress-bar';
 import 'components/calendar';
 import 'components/stack-nav';
+import 'components/button';
+import 'components/field';
+import 'components/form';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
