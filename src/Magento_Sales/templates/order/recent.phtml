@@ -70,7 +70,14 @@
                                     <?php /* @escapeNotVerified */ echo __('View Order') ?>
                                 </a>
                                 <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($order->getEntityId())) : ?>
-                                    <a href="<?php /* @escapeNotVerified */ echo $block->getReorderUrl($order) ?>" class="cs-link">
+                                    <a
+                                        href="#"
+                                        data-post='<?php /* @escapeNotVerified */ echo
+                                    $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+                                        ->getPostData($block->getReorderUrl($order))
+                                    ?>'
+                                        class="cs-link"
+                                    >
                                         <?php /* @escapeNotVerified */ echo __('Reorder') ?>
                                     </a>
                                 <?php endif ?>
