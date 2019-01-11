@@ -1,6 +1,8 @@
 import * as $ from 'jquery';
 import * as Swiper from 'Swiper';
 
+import 'components/teaser/mixin.scss';
+
 /*
 * Product teaser
 */
