@@ -26,7 +26,7 @@ export default class AddressAutofill {
         this.options = options;
 
         const countrySelectValue = this.options.countrySelect
-            ? options.countrySelect.val() as string
+            ? (options.countrySelect.val() as string)
             : '';
         options.region = countrySelectValue || 'DE';
         options.language =
@@ -237,7 +237,7 @@ export default class AddressAutofill {
                 const selectedAddress: FormattedAddress = $items
                     .eq(selectedIndex)
                     .data('value');
-                if(selectedAddress) {
+                if (selectedAddress) {
                     this._fillFields(selectedAddress);
                     this._focusEmptyField();
                     this._hideAutosuggest();
