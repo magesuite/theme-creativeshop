@@ -8,32 +8,32 @@
           method="post"
           id="form-validate"
           data-mage-init='{"validation":{}}'
-          class="cs-form cs-container__cart-items form form-cart">
+          class="form form-cart cs-form cs-container__cart-items">
     <?= $block->getBlockHtml('formkey') ?>
-    <div class="cs-cart-table-wrapper cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?>">
+    <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?> cs-cart-table-wrapper">
         <?php if ($block->getPagerHtml()): ?>
-            <div class="cart-products-toolbar cart-products-toolbar-top toolbar" data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?></div>
+            <div class="cart-products-toolbar cart-products-toolbar-top toolbar cs-cart-table__toolbar cs-cart-table__toolbar--top" data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?></div>
         <?php endif ?>
         <table id="shopping-cart-table"
-               class="cs-cart-table cart items data table"
+               class="cart items data table cs-cart-table"
                data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
                "updateCartActionContainer": "#update_cart_action_container"}}'>
-            <caption role="heading" aria-level="2" class="cs-cart-table__caption table-caption"><?= /* @escapeNotVerified */ __('Shopping Cart Items') ?></caption>
+            <caption role="heading" aria-level="2" class="table-caption cs-cart-table__caption"><?= /* @escapeNotVerified */ __('Shopping Cart Items') ?></caption>
             <thead class="cs-cart-table__head">
                 <tr>
-                    <th class="cs-cart-table__head-col col item" scope="col">
+                    <th class="col item cs-cart-table__head-col" scope="col">
                         <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Item') ?></span>
                     </th>
-                    <th class="cs-cart-table__head-col col price" scope="col">
+                    <th class="col price cs-cart-table__head-col" scope="col">
                         <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Price') ?></span>
                     </th>
-                    <th class="cs-cart-table__head-col col qty" scope="col">
+                    <th class="col qty cs-cart-table__head-col" scope="col">
                         <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Qty') ?></span>
                     </th>
-                    <th class="cs-cart-table__head-col col subtotal" scope="col">
+                    <th class="col subtotal cs-cart-table__head-col" scope="col">
                         <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Subtotal') ?></span>
                     </th>
-                    <th class="cs-cart-table__head-col col" scope="col">
+                    <th class="col cs-cart-table__head-col" scope="col">
                     </th>
                 </tr>
             </thead>
@@ -41,12 +41,12 @@
                 <?= $block->getItemHtml($_item) ?>
             <?php endforeach ?>
         </table>
-        <div class="load indicator | cs-no-display"></div>
+        <div class="load indicator cs-no-display"></div>
         <?php if ($block->getPagerHtml()): ?>
-            <div class="cart-products-toolbar cart-products-toolbar-bottom toolbar" data-attribute="cart-products-toolbar-bottom"><?= $block->getPagerHtml() ?></div>
+            <div class="cart-products-toolbar cart-products-toolbar-bottom toolbar cs-cart-table__toolbar cs-cart-table__toolbar--bottom" data-attribute="cart-products-toolbar-bottom"><?= $block->getPagerHtml() ?></div>
         <?php endif ?>
     </div>
-    <div class="cs-visually-hidden cart main actions">
+    <div class="cart main actions cs-visually-hidden">
         <?php if ($block->getContinueShoppingUrl()): ?>
             <a class="action continue"
                href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>"
