@@ -98,7 +98,7 @@ $cart-bonus_amount-color: $color_success-500 !default;
             // for the previous one to finish.
             @for $element-index from 0 to 6 {
                 &:nth-of-type(#{$element-index + 1}) {
-                    #{$root}__icon,
+                    #{$root}__icon path,
                     #{$root}__label,
                     #{$root}__icon-box--status,
                     #{$root}__tooltip {
@@ -150,7 +150,9 @@ $cart-bonus_amount-color: $color_success-500 !default;
         &--awarded {
             #{$root}__icon {
                 &--gift {
-                    fill: $cart-bonus_icon-gift-awarded-color;
+                    path {
+                        fill: $cart-bonus_icon-gift-awarded-color;
+                    }
                 }
             }
 
@@ -169,11 +171,13 @@ $cart-bonus_amount-color: $color_success-500 !default;
             }
             
             #{$root}__icon--gift {
-                fill: $cart-bonus_icon-gift-awarded-color;
-                
-                @if $cart-bonus_progress-animation {
-                    [data-mage-init] & {
-                        fill: $cart-bonus_icon-gift-color;
+                path {
+                    fill: $cart-bonus_icon-gift-awarded-color;
+
+                    @if $cart-bonus_progress-animation {
+                        [data-mage-init] & {
+                            fill: $cart-bonus_icon-gift-color;
+                        }
                     }
                 }
             }
@@ -206,17 +210,25 @@ $cart-bonus_amount-color: $color_success-500 !default;
 
         &--headline {
             margin-right: 1rem;
-            fill: $cart-bonus_headline-icon-color;
+
+            path {
+                fill: $cart-bonus_headline-icon-color;
+            }
         }
 
         &--gift {
-            fill: $cart-bonus_icon-gift-color;
+            path {
+                fill: $cart-bonus_icon-gift-color;
+            }
         }
 
         &--status {
             width: 0.7rem;
             height: 0.7rem;
-            fill: $cart-bonus_icon-checkmark-color;
+            
+            path {
+                fill: $cart-bonus_icon-checkmark-color;
+            }
         }
     }
 

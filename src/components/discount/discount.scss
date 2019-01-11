@@ -4,7 +4,6 @@
 $discount_title-text: $color_dove-gray !default;
 $discount_content-text: $color_dove-gray !default;
 $discount_border-top: 1px solid $color_alto !default;
-$discount_title-icon-after: 'images/button-arrow-dark.png' !default;
 $discount_title-icon-color: $color_gray !default;
 
 .#{$ns}discount {
@@ -56,27 +55,8 @@ $discount_title-icon-color: $color_gray !default;
             margin-bottom: 2rem;
         }
 
-        &:after {
-            content: '';
-            display: inline-block;
-            background-image: url(#{$discount_title-icon-after});
-            background-size: contain;
-            background-repeat: no-repeat;
-            width: 0.6rem;
-            height: 1rem;
-            transform: rotate(90deg);
-            transition: transform 0.3s;
-            margin-left: 1rem;
-        }
-
         #{$root}[data-collapsible="true"] & {
             cursor: pointer;
-        }
-
-        &[aria-expanded='true'] {
-            &:after {
-                transform: rotate(-90deg);
-            }
         }
 
         &-text {
@@ -100,17 +80,19 @@ $discount_title-icon-color: $color_gray !default;
     }
 
     &__trigger-icon {
-        margin-left: 1.5rem;
-        width: 6px;
-        height: 10px;
-        fill: $discount_title-icon-color;
-        transform: rotate(90deg);
+        margin-left: 0.8rem;
+        width: auto;
+        height: 6px;
         transition: transform .3s;
         display: none;
+        
+        path {
+            fill: $discount_title-icon-color;
+        }
 
         &--animation {
             #{$root}.active & {
-                transform: rotate(-90deg);
+                transform: rotate(-180deg);
             }
         }
 

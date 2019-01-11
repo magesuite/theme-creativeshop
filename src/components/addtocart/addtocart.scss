@@ -6,6 +6,8 @@ $addtocart_button-skew-deg: 18 !default;
 $addtocart_button-skewed-background-width: 4.1rem !default;
 $addtocart_button-bg: $color_primary-500 !default;
 $addtocart_button-bg-hover: $color_primary-800 !default;
+$addtocart_button-text-color: $color_text-200 !default;
+$addtocart_button-icon-color: $color_text-200 !default;
 
 $addtocart_button-padding-y: 0.858rem !default;
 $addtocart_button-padding-left: 1rem !default;
@@ -36,14 +38,14 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
             border: none;
             border-radius: 3px;
             background: $addtocart_button-bg;
-            color: $color_text-200;
+            color: $addtocart_button-text-color;
             padding: $addtocart_button-padding-y $addtocart_button-padding-right $addtocart_button-padding-y $addtocart_button-padding-left;
         }
 
         &:hover {
             background: $addtocart_button-bg-hover;
             border: inherit;
-            color: $color_text-200;
+            color: $addtocart_button-text-color;
         }
 
         &[disabled],
@@ -75,9 +77,12 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
         right: 0.9em;
         top: 50%;
         z-index: 3;
-        fill: currentColor;
         transform: translate3d(0, -50%, 0);
         transition: fill 0.15s linear, opacity 0.25s linear;
+        
+        path {
+            fill: $addtocart_button-icon-color;
+        }
     }
 
     &__fail-icon {
