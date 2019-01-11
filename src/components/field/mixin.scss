@@ -1,0 +1,214 @@
+@import 'config/variables';
+
+@import 'components/field/hook';
+
+$field_font-size: 1rem !default;
+
+$field_label-font-weight: 700 !default;
+$field_label-font-size: 1.2em !default;
+
+$field_input-font-size: 1.4em !default;
+$field_input-height: 2.875em !default;
+$field_input-padding: 0 1.5em !default;
+$field_input-color: $color_text-800 !default;
+$field_input-border: 1px solid $color_border-500 !default;
+$field_input-border-active: 1px solid $color-primary-500 !default;
+$field_input-border-radius: $border-radius_base !default;
+$field_input-box-shadow: none !default;
+$field_input-box-shadow-active: none !default;
+$field_input-disabled-opacity: 0.65 !default;
+
+$field_error-input-border: 1px solid $color_error-500 !default;
+
+$field_note-color: $color_text-500 !default;
+
+$field_error-color: $color_error-500 !default;
+
+$field_warning-color: $color_warning-500 !default;
+// Based on https://www.filamentgroup.com/lab/select-css.html
+$field_select-font-size: 1.4em !default;
+$field_select-height: 2.875em !default;
+$field_select-padding: 0.0625em 2.3em 0 1.5em !default;
+$field_select-color: $color_text-800 !default;
+
+$field_select-background-position: right 0.8em top 52%, 0 0 !default;
+$field_select-background-size: 0.7em auto, 100%;
+// Note that select background needs to be defined as background-image to prevent
+// option elements from inheriting it on some browsers.
+$field_select-background-image: url('../images/icons/dropdown_arrow.svg'),
+    linear-gradient(0, transparent 0%, transparent 100%) !default;
+$field_select-background-active: url('../images/icons/dropdown_arrow-active.svg'),
+    linear-gradient(0, transparent 0%, transparent 100%) !default;
+
+$field_select-border: 1px solid $color_border-500 !default;
+$field_select-border-active: 1px solid $color-primary-500 !default;
+$field_select-border-radius: $border-radius_base !default;
+$field_select-box-shadow: none !default;
+$field_select-box-shadow-active: none !default;
+$field_select-disabled-opacity: $field_input-disabled-opacity !default;
+
+@mixin field() {
+    font-size: $field_font-size;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+
+    @include field-hook();
+}
+
+@mixin field-error() {
+    font-size: 1.2em;
+    color: $color_error-500;
+    margin-top: 0.2em;
+
+    @include field-error-hook();
+}
+
+@mixin field-label() {
+    font-weight: $field_label-font-weight;
+    font-size: $field_label-font-size;
+    width: 100%;
+
+    @include field-label-hook();
+}
+
+@mixin field-label-required() {
+    &:after {
+        content: ' *';
+        color: $color_error-500;
+    }
+
+    @include field-label-required-hook();
+}
+
+@mixin field-control() {
+    width: 100%;
+
+    @include field-control-hook();
+}
+
+@mixin field-input() {
+    font-size: $field_input-font-size;
+    height: $field_input-height;
+    padding: $field_input-padding;
+    color: $field_input-color;
+    border-radius: $field_input-border-radius;
+    border: $field_input-border;
+    box-shadow: $field_input-box-shadow;
+    transition: border-color 0.5s;
+    margin: 0 0 0.2em; // Add spacing under label. This can't be added to label itself because they are sometimes rendered empty.
+    width: 100%;
+    background-clip: padding-box; // Removes drop shadow from inputs on iOS.
+
+    &:hover,
+    &:focus {
+        &:not([disabled]) {
+            border: $field_input-border-active;
+            box-shadow: $field_input-box-shadow-active;
+        }
+    }
+
+    &[disabled] {
+        opacity: $field_input-disabled-opacity;
+    }
+
+    @include field-input-hook();
+}
+
+@mixin field-input-error() {
+    border: $field_error-input-border;
+
+    @include field-input-error-hook();
+}
+
+@mixin field-icon() {
+    position: absolute;
+    width: 1.7em;
+    height: 1.7em;
+    right: 0.8em;
+    top: 1.2em;
+    display: none;
+
+    @include field-icon-hook();
+}
+
+@mixin field-note() {
+    display: block;
+    font-size: 1.2em;
+    padding: 0.3em 0 0;
+    color: $field_note-color;
+
+    @include field-note-hook();
+}
+
+@mixin field-error() {
+    @include field-note();
+
+    color: $field_error-color;
+
+    @include field-error-hook();
+}
+
+@mixin field-warning() {
+    @include field-note();
+
+    color: $field_warning-color;
+
+    @include field-warning-hook();
+}
+
+@mixin field-select() {
+    display: block;
+    font-size: $field_select-font-size;
+    height: $field_select-height;
+    padding: $field_select-padding;
+    color: $field_select-color;
+    border-radius: $field_select-border-radius;
+    border: $field_select-border;
+    box-shadow: $field_select-box-shadow;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 0.2em; // Add spacing under label. This can't be added to label itself because they are sometimes rendered empty.
+    outline: 0;
+    appearance: none;
+    background-color: transparent;
+    background-image: $field_select-background-image;
+    background-repeat: no-repeat, repeat;
+    background-position: $field_select-background-position;
+    background-size: $field_select-background-size;
+    transition: border-color 0.5s;
+
+    &:-moz-focusring,
+    &::-moz-focus-inner {
+        color: transparent !important;
+        text-shadow: 0 0 0 #000 !important;
+    }
+
+    &::-ms-expand {
+        display: none; // Hide native dropdown arrow on IE 10/11.
+    }
+
+    &:hover,
+    &:focus {
+        &:not([disabled]) {
+            border: $field_select-border-active;
+            box-shadow: $field_select-box-shadow-active;
+            background-image: $field_select-background-active;
+        }
+    }
+
+    &[disabled] {
+        opacity: $field_select-disabled-opacity;
+    }
+
+    option {
+        font-weight: 500;
+        padding: 0;
+    }
+
+    @include field-select-hook();
+}

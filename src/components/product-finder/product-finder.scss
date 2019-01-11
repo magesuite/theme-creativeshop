@@ -1,6 +1,5 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
-@import 'customizations/button/button';
 @import 'customizations/t-headline/t-headline';
 @import 'utils/font-family';
 
@@ -18,8 +17,8 @@ $product-finder_justify-options: center !default;
 // Value option-sizes padding hack. 100% means that option will be square.
 $product-finder_vertical-ratio: 100% !default;
 // Value of back button transition
-$product-finder_back-button-transition: opacity 0.3s 0.4s, 0.15s linear, border-color 0.15s linear,
-color 0.15s linear !default;
+$product-finder_back-button-transition: opacity 0.3s 0.4s, 0.15s linear,
+    border-color 0.15s linear, color 0.15s linear !default;
 
 $product-finder_description-color: $color_text-400 !default;
 $product-finder_option-border-width: 1px !default;
@@ -45,8 +44,8 @@ $product-finder_option-border-radius: 0.5rem !default;
         transition: $product-finder_back-button-transition;
 
         // TODO replace with specialized buttons when ready
-        @extend .cs-button;
-        @extend .cs-button--look_light;
+        // @extend .cs-button;
+        // @extend .cs-button--look_light;
 
         &--visible {
             opacity: 1;
@@ -152,7 +151,8 @@ $product-finder_option-border-radius: 0.5rem !default;
         position: relative;
         box-sizing: border-box;
         margin-bottom: $product-finder_step-option-gap;
-        border: $product-finder_option-border-width solid $product-finder_option-border-color;
+        border: $product-finder_option-border-width solid
+            $product-finder_option-border-color;
         border-radius: $product-finder_option-border-radius;
         transition: 0.3s border-color;
 
@@ -166,18 +166,14 @@ $product-finder_option-border-radius: 0.5rem !default;
             $step-option-num-of-gaps: $i - 1;
 
             @include media('<tablet') {
-
                 #{$root}__step--options-mobile_#{$i} & {
                     flex-basis: calc(
-                            #{100% /
-                                $i} -
-                            #{$step-option-num-of-gaps *
-                            $product-finder_step-option-gap /
+                        #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
                             $i}
                     );
                     margin-right: $product-finder_step-option-gap;
 
-                    &:nth-child(#{$i}n+#{$i}) {
+                    &:nth-child(#{$i}n + #{$i}) {
                         margin-right: 0;
                     }
                 }
@@ -195,7 +191,7 @@ $product-finder_option-border-radius: 0.5rem !default;
                     );
                     margin-right: $product-finder_step-option-gap;
 
-                    &:nth-child(#{$i}n+#{$i}) {
+                    &:nth-child(#{$i}n + #{$i}) {
                         margin-right: 0;
                     }
                 }
@@ -213,7 +209,7 @@ $product-finder_option-border-radius: 0.5rem !default;
                     );
                     margin-right: $product-finder_step-option-gap;
 
-                    &:nth-child(#{$i}n+#{$i}) {
+                    &:nth-child(#{$i}n + #{$i}) {
                         margin-right: 0;
                     }
 
@@ -223,10 +219,10 @@ $product-finder_option-border-radius: 0.5rem !default;
                      * https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/106816/
                      * To properly calculate flex-basis we have to add gap (margin)
                      */
-                     .ie11 & {
+                    .ie11 & {
                         flex-basis: calc(
-                                #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
-                            $i + $product-finder_step-option-gap}
+                            #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
+                                $i + $product-finder_step-option-gap}
                         );
                     }
                 }

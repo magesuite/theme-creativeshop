@@ -1,40 +1,25 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/field/mixin';
+@import 'components/button/mixin';
+
 $input_padding: 0.715em 1em !default;
 $input_border: 1px solid $color_alto !default;
 $input_border-radius: $border-radius_base !default;
-
-$button_primary-500-background: $color_primary-500;
-$button_primary-500-hover-background: $color_primary-800;
-$button_primary-500-border: none;
-$button_primary-500-hover-border: none;
-$button_primary-500-text-color: $color_white;
-$button_primary-500-hover-text-color: $color_white;
 
 $newsletter_margin: 0 !default;
 
 $newsletter_form-max-width: 34rem !default;
 $newsletter_form-height: 4rem !default;
 
-$newsletter_input-padding: $input_padding !default;
-$newsletter_input-border: none !default;
-$newsletter_input-border-radius: $input_border-radius !default;
-
-$newsletter_button-padding: 0 1em !default;
-$newsletter_button-background: $button_primary-500-background !default;
-$newsletter_button-hover-background: $button_primary-500-hover-background !default;
-$newsletter_button-border: $button_primary-500-border !default;
-$newsletter_button-hover-border: $button_primary-500-hover-border !default;
-$newsletter_button-text-color: $button_primary-500-text-color !default;
-$newsletter_button-hover-text-color: $button_primary-500-hover-text-color !default;
-$newsletter_button-transform: $skew_transform !default;
+$newsletter_button-meaning: default !default;
+$newsletter_button-scheme: default !default;
 
 $newsletter_button-icon-width: 0.8em !default;
 $newsletter_button-icon-height: 0.8em !default;
-$newsletter_button-icon-color: $color_background-200 !default;
-$newsletter_button-icon-hover-color: $color_background-200 !default;
-$newsletter_button-icon-hover-transition: fill 0.15s linear !default;
+$newsletter_button-icon-meaning: default !default;
+$newsletter_button-icon-scheme: default !default;
 
 .#{$ns}newsletter {
     margin: $newsletter_margin;
@@ -43,7 +28,6 @@ $newsletter_button-icon-hover-transition: fill 0.15s linear !default;
     &__form {
         position: relative;
         display: flex;
-        border-radius: $newsletter_input-border-radius;
         overflow: hidden;
 
         @include media('>=tablet') {
@@ -59,12 +43,10 @@ $newsletter_button-icon-hover-transition: fill 0.15s linear !default;
         flex-basis: 100%;
     }
 
-    &__input[type='email'] {
-        padding: $newsletter_input-padding;
-        border: $newsletter_input-border;
-        height: $newsletter_form-height;
-        width: 100%;
-        margin: 0;
+    &__input {
+        margin-top: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
     }
 
     &__actions {
@@ -74,26 +56,23 @@ $newsletter_button-icon-hover-transition: fill 0.15s linear !default;
     }
 
     &__button {
-        padding: $newsletter_button-padding !important;
-        background: $newsletter_button-background !important;
-        border: $newsletter_button-border !important;
-        color: $newsletter_button-text-color !important;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        @include button(
+            $meaning: $newsletter_button-meaning,
+            $scheme: $newsletter_button-scheme
+        );
+
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
     }
 
     &__button-icon {
+        @include button-icon(
+            $meaning: $newsletter_button-icon-meaning,
+            $scheme: $newsletter_button-icon-scheme
+        );
+
         width: $newsletter_button-icon-width;
         height: $newsletter_button-icon-height;
-        fill: $newsletter_button-icon-color;
-
-        @if $newsletter_button-icon-hover-color != $newsletter_button-icon-color
-        {
-            transition: $newsletter_button-icon-hover-transition;
-
-            &:hover {
-                fill: $newsletter_button-icon-hover-color;
-            }
-        }
+        margin-right: 0;
     }
 }

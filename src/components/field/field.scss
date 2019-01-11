@@ -1,0 +1,125 @@
+@import 'components/field/mixin';
+
+// Our BEM component.
+.cs-field,
+// Left for now for compatibility sake.
+.cs-input {
+    @include field();
+
+    &__control {
+        @include field-control();
+
+        div.mage-error {
+            @include field-error();
+        }
+    }
+
+    &__label {
+        @include field-label();
+
+        .required & {
+            @include field-label-required();
+        }
+    }
+
+    &__input {
+        @include field-input();
+
+        &.mage-error {
+            @include field-input-error();
+        }
+    }
+
+    &__select {
+        @include field-select();
+    }
+
+    &__icon {
+        @include field-icon();
+    }
+
+    &__note {
+        @include field-note();
+    }
+
+    &__error {
+        @include field-error();
+    }
+}
+// Magento classes used in checkout, login/register forms etc.
+.field {
+    @include field();
+
+    .control {
+        @include field-control();
+
+        div.mage-error {
+            @include field-error();
+        }
+    }
+
+    .label {
+        @include field-label();
+    }
+
+    &.required,
+    &._required {
+        > .label {
+            @include field-label-required();
+        }
+    }
+
+    &.required {
+        ._required {
+            > .label {
+                &:after {
+                    // Hide asterisks for labels inside fieldsets as they are usually rendered empty.
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .input-text {
+        @include field-input();
+
+        &.mage-error {
+            @include field-input-error();
+        }
+    }
+
+    .select {
+        @include field-select();
+    }
+
+    // Reverting styles for input with tooltip.
+    .control._with-tooltip input {
+        width: 100%;
+        margin-right: 0;
+    }
+    // Reverting info tooltip styles to make it appear as note below the input.
+    .field-tooltip {
+        position: static;
+
+        .field-tooltip-action {
+            display: none;
+        }
+
+        .field-tooltip-content {
+            position: static;
+            background: none;
+            border: none;
+
+            @include field-note();
+
+            &:before,
+            &:after {
+                display: none;
+            }
+        }
+    }
+
+    .note {
+        @include field-note();
+    }
+}
