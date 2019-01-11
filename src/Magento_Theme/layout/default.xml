@@ -39,6 +39,18 @@
                                 </arguments>
                             </block>
                         </container>
+                        <container name="top.bar.authorization_link.container" htmlTag="div" htmlClass="cs-topbar__item cs-topbar__item--authorization" after="top.bar.child2">
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="top.bar_authorisation">
+                            </block>
+                        </container>
+                        <container name="top.bar.currency_switcher.container" htmlTag="div" htmlClass="cs-topbar__item cs-topbar__item--currency" after="top.bar.authorization_link.container">
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="top.bar_currency">
+                            </block>
+                        </container>
+                        <container name="top.bar.language_switcher.container" htmlTag="div" htmlClass="cs-topbar__item cs-topbar__item--language" after="top.bar.currency_switcher.container">
+                            <block class="MageSuite\ThemeHelpers\Block\Cms\CacheableBlock" name="top.bar_language">
+                            </block>
+                        </container>
                     </container>
                 </container>
             </container>
@@ -73,12 +85,7 @@
         </referenceBlock>
 
         <referenceContainer name="page.top">
-            <block class="Magento\Framework\View\Element\Template" name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-">
-                <arguments>
-                    <!-- Side for offcanvas -->
-                    <argument name="additional_css_classes" xsi:type="string">cs-offcanvas--side_left</argument>
-                </arguments>
-            </block>
+            <block class="Magento\Framework\View\Element\Template" name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-"/>
             <!-- Adding global container for Breadcrumbs -->
             <container name="breadcrumbs.container" htmlTag="div" htmlClass="cs-container cs-container--breadcrumbs" after="-">
                 <container name="breadcrumbs.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
@@ -103,14 +110,14 @@
             </arguments>
             <block class="MageSuite\ThemeHelpers\Block\Icon" name="store_language.trigger-icon">
                 <arguments>
-                    <argument name="icon_url" xsi:type="string">images/icons/dropdown-switcher/icon-trigger.svg</argument>
+                    <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
                     <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
                     <argument name="inlined" xsi:type="boolean">true</argument>
                     <argument name="lazy_loaded" xsi:type="boolean">true</argument>
                 </arguments>
             </block>
         </referenceBlock>
-        <move element="store_language" destination="top.bar.container.inner"/>
+        <move element="store_language" destination="top.bar.language_switcher.container"/>
 
         <!-- Footer -->
         <referenceContainer name="footer-container" htmlClass="page-footer cs-container cs-container--footer cs-footer" />
