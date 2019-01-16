@@ -16,6 +16,7 @@ export interface OffcanvasNavigationOptions {
     showProductsCount?: boolean;
     localStorageKey?: string;
     endpointPath?: string;
+    authorizationLinkSelector?: string;
 }
 
 interface OffcanvasNavigationCache {
@@ -64,6 +65,7 @@ export default class OffcanvasNavigation {
                 endpointPath: '/navigation/mobile/index',
                 currencySwitcherSelector: '.switcher-currency',
                 languageSwitcherSelector: '.switcher-language',
+                authorizationLinkSelector: '.authorization-link',
             },
             options
         );
@@ -114,6 +116,7 @@ export default class OffcanvasNavigation {
 
         this._addEventListeners();
         this._initSwitchers();
+        this._fixLoginLinks();
     }
 
     /**
@@ -161,6 +164,19 @@ export default class OffcanvasNavigation {
                 .eq(index)
                 .data('post', $(element).data('post'));
         });
+    }
+
+    /**
+     * Fixes login link URL caused by using AJAX endpoint and invalid referer.
+     */
+    protected _fixLoginLinks() {
+        const $mainLoginLink = $(this._options.authorizationLinkSelector).find(
+            'a'
+        );
+        const $offcanvasLoginLink = this._$drawer.find(
+            '.cs-offcanvas-navigation__link--sign-in'
+        );
+        $offcanvasLoginLink.attr('href', $mainLoginLink.attr('href'));
     }
 
     /**
