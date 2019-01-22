@@ -1,0 +1,79 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/aspect-ratio';
+@import 'utils/reset-list-style';
+
+$tile-gallery_postion-left: 1rem !default;
+$tile-gallery_postion-right: auto !default;
+$tile-gallery_postion-top: auto !default;
+$tile-gallery_postion-bottom: 1rem !default;
+$tile-gallery_zindex: 4 !default;
+
+$tile-gallery_item-border-color: $color_border-700 !default;
+$tile-gallery_item--active-border-color: $color_primary-800 !default;
+$tile-gallery_item-border: 1px solid $tile-gallery_item-border-color !default;
+$tile-gallery_item-transition: border-color 0.15s linear !default;
+
+$tile-gallery_thumbnail-width: 4rem !default;
+$tile-gallery_thumbnail-height: 4rem !default;
+
+$tile-gallery_main-image-animatable-opacity: 0 !default;
+$tile-gallery_main-image-animate-opacity: 1 !default;
+$tile-gallery_main-image-animatable-transform: scale(2.5) !default;
+$tile-gallery_main-image-animate-transform: scale(1) !default;
+$tile-gallery_main-image-transition: transform 0.5s $transition-easing_slowdown-900, opacity 0.45s linear !default;
+
+.#{$ns}tile-gallery {
+    $root: &;
+
+    @include reset-list-style();
+    display: none;
+    position: absolute;
+    z-index: $tile-gallery_zindex;
+    left: $tile-gallery_postion-left;
+    right: $tile-gallery_postion-right;
+    top: $tile-gallery_postion-top;
+    bottom: $tile-gallery_postion-bottom;
+
+    .#{$ns}product-tile:hover & {
+        display: flex;
+    }
+    
+    &__item {
+        margin: 0 0.3rem 0 0;
+        padding: 0;
+        border: $tile-gallery_item-border;
+        transition: $tile-gallery_item-transition;
+        cursor: pointer;
+
+        &--active {
+            border-color: $tile-gallery_item--active-border-color;
+        }
+    }
+
+    &__thumbnail {
+        display: block;
+        width: $tile-gallery_thumbnail-width;
+        height: $tile-gallery_thumbnail-height;
+    }
+}
+
+.#{$ns}product-tile {
+    &__figure {
+        @include aspect-ratio(1px, 1px, #{$ns}product-tile__image);
+        overflow: hidden; // IE11 - prevents from excessive transition effect
+    }
+
+    &__image {
+        &--animatable {
+            opacity: $tile-gallery_main-image-animatable-opacity;
+            transform: $tile-gallery_main-image-animatable-transform;
+            transition: $tile-gallery_main-image-transition;
+        }
+
+        &--animate {
+            opacity: $tile-gallery_main-image-animate-opacity;
+            transform: $tile-gallery_main-image-animate-transform;
+        }
+    }
+}
