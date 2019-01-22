@@ -2,6 +2,15 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <!--<update handle="filters_horizontal_full_search" />-->
     <body>
+        <referenceBlock name="catalog.leftnav">
+            <arguments>
+                <!-- If you want to have 1column-layout but still keep default filters styling (the one from sidebar) you can set this argument's value to 'true' -->
+                <argument name="force_sidebar_filters_style" xsi:type="boolean">false</argument>
+                <!-- If you want to have any other layout than '1column-layout' but still keep horizontal filters styling you can set this argument's value to 'true' -->
+                <argument name="force_horizontal_filters_style" xsi:type="boolean">false</argument>
+            </arguments>
+        </referenceBlock>
+        
         <referenceBlock name="catalogsearch.navigation.renderer.price.slider" template="Smile_ElasticsuiteCatalog::layer/filter/range.phtml" />
 
         <move element="catalogsearch.navigation.state" destination="search_result_list" as="state" />

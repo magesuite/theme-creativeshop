@@ -1,0 +1,76 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import './mixins.scss';
+
+$viewmode-switcher_display: flex !default;
+$viewmode-switcher_flex-align-items: center !default;
+$viewmode-switcher_color: $color_text-400 !default;
+
+$viewmode-switcher_label-padding: 0 1rem 0 0 !default;
+
+$viewmode-switcher_action-x-axis-padding: 0.7em !default;
+
+$viewmode-switcher_action-icon-fill: currentColor !default;
+$viewmode-switcher_action-icon--current-fill: $color_primary-500 !default;
+
+$viewmode-switcher_action-icon-grid-width: 1.5rem !default;
+$viewmode-switcher_action-icon-grid-height: 1.1rem !default;
+$viewmode-switcher_action-icon-list-width: $viewmode-switcher_action-icon-grid-width !default;
+$viewmode-switcher_action-icon-list-height: $viewmode-switcher_action-icon-grid-height !default;
+
+.#{$ns}viewmode-switcher {
+    $root: &;
+
+    display: $viewmode-switcher_display;
+
+    @if $sorter_display == flex {
+        align-items: $viewmode-switcher_flex-align-items;
+    }
+
+    &__label {
+        margin: 0;
+        padding: $viewmode-switcher_label-padding;
+    }
+
+    &__modes {
+        @include pagination-list();
+    }
+
+    &__mode {
+        @include pagination-item();
+    }
+
+    &__mode-action {
+        @include pagination-number();
+
+        padding-left: $viewmode-switcher_action-x-axis-padding;
+        padding-right: $viewmode-switcher_action-x-axis-padding;
+
+        #{$root}__mode--current & {
+            @include pagination-number--current();
+        }
+    }
+
+    &__mode-icon {
+        fill: $viewmode-switcher_action-icon-fill;
+
+        &--grid {
+            width: $viewmode-switcher_action-icon-grid-width;
+            height: $viewmode-switcher_action-icon-grid-height;
+        }
+
+        &--list {
+            width: $viewmode-switcher_action-icon-list-width;
+            height: $viewmode-switcher_action-icon-list-height;
+        }
+
+        #{$root}__mode--current & {
+            fill: $viewmode-switcher_action-icon--current-fill;
+        }
+
+        + #{$root}__mode-label {
+            padding-left: 0.7rem;
+        }
+    }
+}

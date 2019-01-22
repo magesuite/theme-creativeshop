@@ -1,36 +1,27 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="main.content" htmlClass="cs-category-page">
-            <!--For category page there are content constructor areas above and below main content. There are also additional cs-category-page{__element/modifier} classes-->
-            <container name="cc-top" htmlTag="div" htmlClass="cs-category-page__cc-top" before="-"/>
-
-            <referenceContainer name="columns" htmlClass="columns cs-container cs-container--category-page-columns">
-                <container name="columns.container.inner" htmlTag="div" htmlClass="cs-category-page__columns cs-container__inner" />
+        <referenceContainer name="main.content" htmlClass="cs-page-category">
+            <referenceContainer name="columns" htmlClass="columns cs-container cs-container--page-category">
+                <container name="columns.container.inner" htmlTag="div" htmlClass="cs-page-category__columns cs-container__inner" />
             </referenceContainer>
-
-            <container name="cc-bottom" htmlTag="div" htmlClass="cs-category-page__cc-bottom" after="-"/>
         </referenceContainer>
 
         <!--Move grid into main column-->
-        <referenceContainer name="main" htmlClass="cs-category-page__main"/>
-        <move element="main" destination="columns.container.inner"/>
+        <referenceContainer name="main" htmlClass="cs-page-category__main" />
+        <move element="main" destination="columns.container.inner" />
 
         <!--Move filters/sidebar into sidebar column-->
-        <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main cs-category-page__sidebar-main"/>
-        <move element="div.sidebar.additional" destination="sidebar.main" after="-"/>
-        <move element="div.sidebar.main" destination="columns.container.inner"/>
+        <referenceContainer name="div.sidebar.main" htmlClass="cs-page-category__sidebar" />
+        <referenceContainer name="div.sidebar.additional" htmlClass="cs-page-category__sidebar-extras" display="false" />
+        <move element="div.sidebar.additional" destination="div.sidebar.main" after="-" />
+        <move element="div.sidebar.main" destination="columns.container.inner" before="-" />
 
         <!--Inside main container there are some additional default Magento containers (see: magento/module-theme/view/frontend/layout/default.xml): content, content.top, content.bottom. -->
 
-        <!--Move messages to content.top container inside main column, above all other content in this container-->
-        <move element="page.messages" destination="content.top" before="-" />
-
-        <!--Remove old page title and create custom category page title in content.top container inside main column-->
-        <referenceBlock name="page.main.title" remove="true"/>
-        <referenceContainer name="content.top">
-            <block class="MageSuite\Frontend\Block\Category\View\Headline" name="category.page.headline" template="Magento_Catalog::category/headline.phtml" after="page.messages"/>
-        </referenceContainer>
+        <!--Move messages to inner container-->
+        <referenceContainer name="page.messages" htmlClass="page messages cs-page-category__messages" />
+        <move element="page.messages" destination="columns.container.inner" before="-" />
 
         <!--Move category page description and cms to content.bottom container inside main column-->
         <move element="category.description" destination="content" after="-" />
@@ -39,12 +30,34 @@
         <!--Pass toolbar template variables-->
         <referenceBlock name="product_list_toolbar">
             <arguments>
-                <argument translate="true" name="descending_direction_label" xsi:type="string">Set Descending Direction</argument>
-                <argument name="descending_direction_icon" xsi:type="string">#arrow_down</argument>
-                <argument translate="true" name="ascending_direction_label" xsi:type="string">Set Ascending Direction</argument>
-                <argument name="ascending_direction_icon" xsi:type="string">#arrow_up</argument>
+                <argument name="additional_css_classes" xsi:type="string">cs-page-category__toolbar</argument>
             </arguments>
         </referenceBlock>
 
+        <referenceBlock name="category.products.list">
+            <arguments>
+                <argument name="grid_component_class" xsi:type="string">cs-grid-layout</argument>
+                <argument name="additional_grid_component_class" xsi:type="string">cs-grid-layout--category</argument>
+                <argument name="grid_component_list_class" xsi:type="string">cs-grid-layout__grid</argument>
+                <argument name="grid_component_list_item_class" xsi:type="string">cs-grid-layout__brick</argument>
+                <argument name="list_component_class" xsi:type="string">cs-products-list</argument>
+                <argument name="list_component_list_class" xsi:type="string">cs-products-list__items</argument>
+                <argument name="list_component_list_item_class" xsi:type="string">cs-products-list__item</argument>
+            </arguments>
+
+            <container name="hotspot.before.active.filters" as="hotspot.before.active.filters" />
+
+            <container name="hotspot.before.list" as="hotspot.before.list" />
+
+            <container name="empty.category.message" htmlTag="div" htmlClass="message info empty cs-messages__message cs-messages__message--info"  as="empty.category.message">
+                <block class="Magento\Framework\View\Element\Text" name="empty.category.message.text">
+                    <arguments>
+                        <argument translate="true" name="text" xsi:type="string">We can't find products matching the selection.</argument>
+                    </arguments>
+                </block>
+            </container>
+
+            <container name="hotspot.after.list" as="hotspot.after.list" />
+        </referenceBlock>
     </body>
 </page>

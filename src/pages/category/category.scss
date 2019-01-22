@@ -1,0 +1,83 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'pages/layout/2columns-left/mixin';
+
+$page-category_border-base: 1px solid $color_border-200 !default;
+
+$page-category_top-padding-mobile: 1.5rem !default;
+$page-category_top-padding-tablet-up: 2 * $page-category_top-padding-mobile !default;
+
+$page-category_toolbar-wrapper-padding: 1.5rem 0 !default;
+$page-category_toolbar-wrapper--top-border-bottom: $page-category_border-base !default;
+$page-category_toolbar-wrapper--bottom-border-top: $page-category_border-base !default;
+
+$page-category_products-wrapper-margin: 0 !default;
+
+.#{$ns}page-category {
+    padding-top: $page-category_top-padding-mobile;
+
+    @include media('>=tablet') {
+        padding-top: $page-category_top-padding-tablet-up;
+    }
+
+    .page-layout-2columns-left & {
+        @include two-columns-left();
+    }
+
+    &__toolbar-wrapper {
+        padding: $page-category_toolbar-wrapper-padding;
+        
+        &--top {
+            border-bottom: $page-category_toolbar-wrapper--top-border-bottom;
+
+            .#{$ns}toolbar__item {
+                &--limiter,
+                &--pagination {
+                    display: none;
+                }
+            }
+
+            @include media('>=tablet') {
+                .#{$ns}toolbar__item {
+                    &--pagination {
+                        display: block;
+                    }
+                }
+            }
+
+            @include media('>=laptop') {
+                .#{$ns}toolbar__item {
+                    &--limiter {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &--bottom {
+            margin-top: 1px;
+            border-top: $page-category_toolbar-wrapper--bottom-border-top;
+
+            .#{$ns}toolbar {
+                justify-content: center;
+
+                &__item {
+                    &--sorter,
+                    &--limiter,
+                    &--viewmode-switcher
+                    &--amount {
+                        display: none;
+                    }
+
+                    &--pagination {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    &__products-wrapper {
+        margin: $page-category_products-wrapper-margin;
+    }
+}

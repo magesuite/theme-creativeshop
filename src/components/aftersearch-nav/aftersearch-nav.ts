@@ -20,7 +20,7 @@ export default class Aftersearch {
         this._$element = $element;
 
         // Don't add horizontal features if there is no horizontal filters
-        if (!this._$element.hasClass('cs-aftersearch-nav--horizontal-full')) {
+        if (!this._$element.hasClass('cs-aftersearch-nav--horizontal')) {
             return;
         }
         this._allFiltersVisible = false;

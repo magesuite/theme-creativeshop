@@ -19,6 +19,12 @@ import * as $ from 'jquery';
 // =============================================================================
 
 // =============================================================================
+// Pages
+// =============================================================================
+
+import 'pages/category';
+
+// =============================================================================
 // Components
 // =============================================================================
 
@@ -51,6 +57,7 @@ import 'components/discount';
 import 'components/minicart';
 import 'components/minicart-product';
 import 'components/products-carousel';
+import 'components/products-grid';
 import 'components/brand-carousel';
 import 'components/product-finder';
 import 'components/daily-deal-teaser';
@@ -61,6 +68,7 @@ import 'components/stack-nav';
 import 'components/button';
 import 'components/field';
 import 'components/form';
+import 'components/toolbar';
 import 'components/password-strength-meter';
 
 export { Flyout } from 'components/flyout/flyout';

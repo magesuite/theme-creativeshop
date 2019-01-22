@@ -1,0 +1,99 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+
+$pagination-list_display: flex !default;
+$pagination-list_flex-align-items: stretch !default;
+@mixin pagination-list {
+    @include reset-list-style();
+    display: $pagination-list_display;
+
+    @if $limiter_display == flex {
+        align-items: $pagination-list_flex-align-items;
+    }
+}
+
+$pagination-item_margin: 0 !default;
+$pagination-item_padding: 0 !default;
+$pagination-item_border-width: 1px !default;
+$pagination-item_border-color: $color_border-500 !default;
+$pagination-item_border: $pagination-item-border-width solid $pagination-item-border-color !default;
+$pagination-item_round-edges: true !default;
+$pagination-item_round-edges-radius: $border-radius_base !default;
+@mixin pagination-item {
+    margin: $pagination-item_margin;
+    padding: $pagination-item_padding;
+    border: $pagination-item_border;
+    text-align: center;
+
+    @if $pagination-item_margin == 0 and $pagination-item_border-width != 0 and $pagination-item_border != none {
+        margin-left: -#{$pagination-item_border-width};
+    }
+
+    @if $pagination-item_round-edges {
+        overflow: hidden;
+
+        &:first-child {
+            border-top-left-radius: $pagination-item_round-edges-radius;
+            border-bottom-left-radius: $pagination-item_round-edges-radius;
+        }
+
+        &:last-child {
+            border-top-right-radius: $pagination-item_round-edges-radius;
+            border-bottom-right-radius: $pagination-item_round-edges-radius;
+        }
+    }
+}
+
+$pagination-number_min-width: 3.5rem !default;
+$pagination-number_min-height: $pagination-number_min-width !default;
+$pagination-number_padding: 0.3em !default;
+$pagination-number_background: $color_background-200 !default;
+$pagination-number_font-size: 1.2rem !default;
+$pagination-number_font-weight: 400 !default;
+$pagination-number_color: $color_text-500 !default;
+$pagination-number_text-decoration: none !default;
+$pagination-number_transition: color 0.15s linear !default;
+$pagination-number--hover_color: $color_text-800 !default;
+$pagination-number--hover_background: inherit !default;
+$pagination-number--hover_text-decoration: inherit !default;
+@mixin pagination-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: $pagination-number_min-width;
+    min-height: $pagination-number_min-height;
+    border: 0;
+    margin: 0;
+    padding: $pagination-number_padding;
+    background: $pagination-number_background;
+    line-height: 1;
+    font-size: $pagination-number_font-size;
+    font-weight: $pagination-number_font-weight;
+    color: $pagination-number_color;
+    text-decoration: $pagination-number_text-decoration;
+    transition: $pagination-number_transition;
+
+    &:hover,
+    &:focus,
+    &:active {
+        border: 0;
+        color: $pagination-number--hover_color;
+        background: $pagination-number--hover_background;
+        text-decoration: $pagination-number--hover_text-decoration;
+    }
+}
+
+$pagination-number--current-color: $color_primary-500 !default;
+$pagination-number--current_background: inherit !default;
+@mixin pagination-number--current {
+    &,
+    &:hover,
+    &:focus
+    &:active {
+        color: $pagination-number--current-color;
+        background: $pagination-number--current-background;
+        cursor: default;
+    }
+}

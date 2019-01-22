@@ -1,39 +1,42 @@
 <?php
-// @codingStandardsIgnoreFile
-
-/**
- * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
- */
-use Magento\Catalog\Model\Product\ProductList\Toolbar;
-
+    // @codingStandardsIgnoreFile
+    /**
+     * Product list toolbar
+     *
+     * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+     */
+    use Magento\Catalog\Model\Product\ProductList\Toolbar;
 ?>
 <?php if ($block->getCollection()->getSize()): ?>
-    <div
-        class="cs-category-page__toolbar"
-        data-mage-init='<?php /* @escapeNotVerified */echo $block->getWidgetOptionsJson(); ?>'
-    >
+    <div class="toolbar toolbar-products cs-toolbar <?= $block->getAdditionalCssClasses() ?>" data-mage-init='<?= /* @escapeNotVerified */ $block->getWidgetOptionsJson() ?>'>
+        <?php if ($block->getVar('toolbar/amount/display', 'Magento_Catalog')): ?>
+            <div class="cs-toolbar__item cs-toolbar__item--amount">
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')); ?>
+            </div>
+        <?php endif; ?>
 
-        <div class="cs-category-page__toolbar-left">
-            <?php $blockIsExpanded = $block->isExpanded(); ?>
+        <?php if ($block->isExpanded() && $block->getVar('toolbar/sorter/display', 'Magento_Catalog')): ?>
+            <div class="cs-toolbar__item cs-toolbar__item--sorter">
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')); ?>
+            </div>
+        <?php endif; ?>
 
-            <?php if ($blockIsExpanded): ?>
-                <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
-            <?php endif; ?>
+        <?php if ($block->getVar('toolbar/limiter/display', 'Magento_Catalog')): ?>
+            <div class="cs-toolbar__item cs-toolbar__item--limiter">
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')); ?>
+            </div>
+        <?php endif; ?>
 
-            <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+        <?php if ($block->isExpanded() && $block->getVar('toolbar/viewmode_switcher/display', 'Magento_Catalog')): ?>
+            <div class="cs-toolbar__item cs-toolbar__item--viewmode-switcher">
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')); ?>
+            </div>
+        <?php endif; ?>
 
-            <?php if ($blockIsExpanded): ?>
-                <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
-            <?php endif; ?>
-
-            <?php include($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
-
-        </div>
-        <div class="cs-category-page__toolbar-right">
-            <?php echo $block->getPagerHtml() ?>
-        </div>
-
+        <?php if ($block->getVar('toolbar/pagination/display', 'Magento_Theme')): ?>
+            <div class="cs-toolbar__item cs-toolbar__item--pagination">
+                <?= $block->getPagerHtml(); ?>
+            </div>
+        <?php endif; ?>
     </div>
 <?php endif ?>
-
-
