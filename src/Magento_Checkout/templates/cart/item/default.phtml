@@ -35,7 +35,8 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
             <?php endif; ?>
 
             <div class="cs-cart-item__details">
-                <?php if($item->getIsGift()): ?>
+                <?php $isFreeBadge = (float)$item->getPrice() ? false : true;
+                if($item->getIsGift() and $isFreeBadge): ?>
                     <span class="cs-cart-item__badge | cs-badge cs-badge--cut cs-badge--positive">
                         <span class="cs-badge__span"><?php echo __('FREE') ?></span>
                     </span>
