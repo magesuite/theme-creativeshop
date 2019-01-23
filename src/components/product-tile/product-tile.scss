@@ -46,7 +46,11 @@ $product-tile_addon-padding: $product-tile_addon-padding-factor 0 !default;
 $product-tile_in-stock-color: $color_apple !default;
 $product-tile_out-of-stock-color: $color_crimson !default;
 
-$product-tile_comment-max-height: 6rem !default;
+$product-tile_wishlist-comment-margin: 0 0 $product-tile_content-elements-gutter-factor !default;
+$product-tile_wishlist-comment-textarea-height: 5rem !default;
+$product-tile_wishlist-actions-margin: #{$product-tile_content-elements-gutter-factor / 2} 0 0 !default;
+$product-tile_wishlist-actions-display: flex !default;
+$product-tile_wishlist-actions-justify-content: space-between !default;
 
 $product-tile_removal-y-asis-position-prop: top !default;
 $product-tile_removal-x-asis-position-prop: right !default;
@@ -267,10 +271,6 @@ $product-tile_show-addons-for-static-tile: false !default;
         line-height: 1;
     }
 
-    &__comment-input {
-        max-height: $product-tile_comment-max-height;
-    }
-
     &__stock {
         &--in {
             color: $product-tile_in-stock-color;
@@ -287,6 +287,25 @@ $product-tile_show-addons-for-static-tile: false !default;
 
     &__link-item {
         display: inline-block;
+    }
+
+    &__wishlist-comment {
+        margin: $product-tile_wishlist-comment-margin;
+    }
+
+    &__wishlist-comment-textarea {
+        display: block;
+        width: 100%;
+        height: $product-tile_wishlist-comment-textarea-height;
+    }
+
+    &__wishlist-actions {
+        margin: $product-tile_wishlist-actions-margin;
+        display: $product-tile_wishlist-actions-display;
+
+        @if $product-tile_wishlist-actions-display == flex {
+            justify-content: $product-tile_wishlist-actions-justify-content;
+        }
     }
 
     &__remove {
