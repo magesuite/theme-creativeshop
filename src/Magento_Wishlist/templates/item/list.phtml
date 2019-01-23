@@ -2,28 +2,30 @@
 // @codingStandardsIgnoreFile
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
 $columns = $block->getColumns();
+$gridLayoutComponentClass = $block->getGridLayoutComponentClass();
+$pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
+if ($pageLayout != '1column') {
+    $gridLayoutComponentClass .= ' ' . $gridLayoutComponentClass . '--with-sidebar';
+}
+$gridLayoutComponentClass .= ' ' . $gridLayoutComponentClass . '--wishlist';
 ?>
 
-<div class="cs-wishlist__products-grid">
+<div class="<?= $gridLayoutComponentClass ?> cs-wishlist__products-grid">
     <?php $iterator = 1; ?>
     <?php if (count($block->getItems())): ?>
-        <ol class="cs-items-grid cs-items-grid--in-column">
+        <?php $brickClass = $block->getGridLayoutComponentBrickClass() ?>
+        <ol class="<?= $block->getGridLayoutComponentGridClass() ?> cs-wishlist__grid">
             <?php foreach ($block->getItems() as $item): ?>
-                <?php /* @escapeNotVerified */
-                echo ($iterator++ == 1) ? '<li
-                                                data-row="product-item"
-                                                class="cs-items-grid__item cs-items-grid__item--padding"
-                                                id="item_' . $item->getId() . '">'
-                    : '</li>
-<li class="cs-items-grid__item cs-items-grid__item--padding " id="item_' . $item->getId() . '">' ?>
-                <?= $this->getLayout()
-                    ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
-                    ->setIterator($iterator)
-                    ->setAreas(['wishlist'])
-                    ->setWishlistItem($item)
-                    ->render($item->getProduct());
-                ?>
-                <?php echo ($iterator == count($block->getItems()) + 1) ? '</li>' : '' ?>
+                <li class="<?= $brickClass ?> cs-wishlist__brick" id="item_<?= $item->getId() ?>">
+                    <?= $this->getLayout()
+                        ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
+                        ->setIterator($iterator)
+                        ->setAreas(['wishlist'])
+                        ->setWishlistItem($item)
+                        ->render($item->getProduct());
+                    ?>
+                </li>
+                <?php $iterator++ ?>
             <?php endforeach; ?>
         </ol>
     <?php else: ?>
