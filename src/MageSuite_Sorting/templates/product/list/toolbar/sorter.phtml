@@ -1,0 +1,21 @@
+<?php /** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */ ?>
+<?php
+    $sorterLabel = $block->getVar('toolbar/sorter/label', 'Magento_Catalog');
+?>
+<div class="toolbar-sorter sorter cs-sorter">
+    <?php if(!empty($sorterLabel)): ?>
+        <label class="sorter-label cs-toolbar__label cs-sorter__label" for="sorter"><?= /* @escapeNotVerified */ __($sorterLabel) ?></label>
+    <?php endif; ?>
+    <select id="sorter" data-role="sorter" class="sorter-options cs-select cs-sorter__select">
+        <?php foreach ($block->getAvailableOrders() as $identifier => $label): ?>
+            <?php
+                $identifier = ($identifier == 'relevance') ? 'relevance_direction_asc' : $identifier;
+
+                list($field, $direction) = explode('_direction_', $identifier);
+                $selected = ($block->getCurrentOrder() == $field and $block->getCurrentDirection() == $direction) ? 'selected="selected"' : '';
+            ?>
+
+            <option value="<?=$field?>" data-direction="<?=$direction?>" <?=$selected?>><?= $label?></option>
+        <?php endforeach; ?>
+    </select>
+</div>

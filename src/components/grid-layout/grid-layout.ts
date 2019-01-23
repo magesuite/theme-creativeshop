@@ -2,21 +2,40 @@
 import * as $ from 'jquery';
 
 import breakpoint from 'utils/breakpoint/breakpoint';
+import * as viewXml from 'etc/view.json'
+import deepGet from 'utils/deep-get/deep-get';
 
 interface IGridLayoutSettings {
+    /**
+     * Defines selector of element containing source of data about image teasers.
+     * This element should be placed inside the component instance.
+     * This shall be hidden input with stringified JSON as value
+     * @default {input.image-teasers-data}
+     * @type {String}
+     */
+    dataSourceInputSelector: string;
+
+     /**
+     * Defines class component (wrapper)
+     * @default {cs-grid-layout}
+     * @type {String}
+     */
+    componentClass?: string;
+
     /**
      * Defines class of grid element (not wrapper)
      * @default {cs-grid-layout__grid}
      * @type {String}
      */
-
     gridClass?: string;
+
     /**
      * Defines class of single brick
      * @default {cs-grid-layout__brick}
      * @type {String}
      */
     brickClass?: string;
+
     /**
      * Tells if teasers shall be processed in browsers that do not support CSS Grid.
      * WARNING: it will be buggy, there's no way of using some scenarios in teasers and have them fully working on older browsers.
@@ -53,12 +72,12 @@ export default class GridLayout {
      * @param  {IGridLayoutSettings} settings Optional component settings.
      */
     public constructor($wrapper: JQuery, settings?: IGridLayoutSettings) {
-        this.$wrapper = $wrapper;
-
         this.settings = $.extend(
             true,
             {},
             {
+                dataSourceInputSelector: 'input.image-teasers-data',
+                componentClass: 'cs-grid-layout',
                 gridClass: 'cs-grid-layout__grid',
                 brickClass: 'cs-grid-layout__brick',
                 forceFloatingTeasersSupport: false,
@@ -66,13 +85,14 @@ export default class GridLayout {
             settings
         );
 
+        this.$wrapper = $wrapper || $(`.${this.settings.componentClass}`);
         this.$grid = this.$wrapper.find(`.${this.settings.gridClass}`);
         this.$bricks = this.$grid.children();
         this.teasers = [];
         this.isCssGrid = this._getIsCssGridSupported();
-        this.isProductsGrid =
-            this.$wrapper.parent('.cs-products-grid').length > 0;
         this.$productsGrid = this.$wrapper.parent('.cs-products-grid');
+        this.isProductsGrid = this.$productsGrid.length > 0;
+        
         this.productsGridRowsLimits = this.isProductsGrid
             ? {
                   mobile: this.$productsGrid.data('rows-mobile'),
@@ -81,16 +101,8 @@ export default class GridLayout {
               }
             : {};
 
-        this.columnsCfg = this.$wrapper.data('columns-configuration')
-            ? JSON.parse(
-                  JSON.stringify(this.$wrapper.data('columns-configuration'))
-              )
-            : '';
-        this.teasersCfg = this.$wrapper.data('teasers-configuration')
-            ? JSON.parse(
-                  JSON.stringify(this.$wrapper.data('teasers-configuration'))
-              )
-            : '';
+        this.columnsCfg = this._getColumnsConfiguration();
+        this.teasersCfg = this._getTeasersData();
 
         if (this.columnsCfg && this.teasersCfg) {
             this.currentColsInRow = this.columnsCfg[
@@ -151,6 +163,37 @@ export default class GridLayout {
         }
 
         return false;
+    }
+
+    /**
+     * Gets project's columns configuration.
+     * Includes sidebar adjustment in case sidebar is displayed on given breakpoint and if available at all
+     * @return {any}
+     */
+    protected _getColumnsConfiguration(): any {
+        const columnsCfg: any = deepGet(viewXml, 'vars.MageSuite_ContentConstructor.columns');
+        const currentColumnsCfg: any = !this.$wrapper.hasClass(`${this.settings.componentClass}--with-sidebar`) ? columnsCfg['one-column'] : columnsCfg['multiple-columns'];
+
+        return (typeof currentColumnsCfg !== 'undefined') ? currentColumnsCfg : columnsCfg.default_layout;
+    }
+
+    /**
+     * Gets teasers data for given component.
+     * @return {any}
+     */
+    protected _getTeasersData(): any {
+        let result: any = '';
+        const $dataEl: JQuery<HTMLElement> = this.$wrapper.find(this.settings.dataSourceInputSelector);
+
+        if ($dataEl.length) {
+            try {
+                result = JSON.parse($dataEl.val() as string);
+            } catch (err) {
+                console.warn(`Could not parse teasers data from given element: ${err}`);
+            };
+        }
+
+        return result;
     }
 
     /**

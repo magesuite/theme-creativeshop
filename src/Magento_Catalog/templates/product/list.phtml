@@ -1,156 +1,85 @@
 <?php
+    /**
+     * Product list/grid template
+     *
+     * @var $block \Magento\Catalog\Block\Product\ListProduct
+     */
 
-$productCollection = $block->getLoadedProductCollection();
-$helper = $this->helper('Magento\Catalog\Helper\Output');
-$csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
-$ccHelper = $this->helper('MageSuite\Frontend\Helper\CcConfig');
-/** @var $pricingHelper \Magento\Framework\Pricing\Helper\Data */
-$pricingHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
-$imageHelper = $this->helper('Magento\Catalog\Helper\Image');
-$compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');
-$indicatorsHelper = $this->helper('MageSuite\ProductPositiveIndicators\Helper\Product');
-$badgeHelper = $this->helper('MageSuite\Frontend\Helper\Product');
-$dailyDealHelper = $this->helper('MageSuite\DailyDeal\Helper\OfferData');
-$heroProduct = $block->getIsHeroEnabled();
+    // @codingStandardsIgnoreFile
 
-$salabilityHelper = $this->helper('MageSuite\Frontend\Helper\Product\Salability');
-$salabilityStatus = $salabilityHelper->getSalabilityStatus($productCollection);
-$filtersLayout = $this->getFiltersLayout();
+    $productCollection = $block->getLoadedProductCollection();
 ?>
 
 <?php if (!$productCollection->count()): ?>
-    <div class="cs-messages">
-        <div class="messages | cs-messages__inner">
-            <div class="cs-messages__message cs-messages__message--info">
-                <div class=""><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div>
-            </div>
-        </div>
-    </div>
+    <?= $block->getChildHtml('empty.category.message') ?>
 <?php else: ?>
-    <?php echo $block->getAdditionalHtml() ?>
+    <?= $block->getAdditionalHtml() ?>
 
-    <div class="cs-category-page__toolbar-top">
-        <?php echo $block->getToolbarHtml() ?>
+    <div class="cs-page-category__toolbar-wrapper cs-page-category__toolbar-wrapper--top">
+        <?= $block->getToolbarHtml() ?>
     </div>
 
-    <?php echo $block->getChildHtml('state'); ?>
+    <?= $block->getChildHtml('hotspot.before.active.filters') ?>
+
+    <?= $block->getChildHtml('state'); ?>
 
     <?php
-    if ($block->getMode() == 'grid') {
-        $viewMode = 'grid';
-        $viewModeClass = 'cs-grid-layout';
-        $viewModeModifier = $block->getData('filters_layout') != 'horizontal-full' ? 'cs-grid-layout--with-sidebar' : '';
-        $image = 'category_page_grid';
-        $image2x = 'category_page_grid@2x';
-        $showDescription = false;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
-    } else {
-        $viewMode = 'list';
-        $viewModeClass = 'cs-items-list';
-        $viewModeModifier = '';
-        $image = 'category_page_list';
-        $showDescription = true;
-        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
-    }
-    /**
-     * Position for actions regarding image size changing in vde if needed
-     */
-    $pos = $block->getPositioned();
+        if ($block->getMode() == 'grid') {
+            $viewMode = 'grid';
+            $viewModeClass = $block->getGridComponentClass();
+            $viewModeListClass = $block->getGridComponentListClass();
+            $viewModeListItemClass = $block->getGridComponentListItemClass();
+            $image = 'category_page_grid';
+            $image2x = 'category_page_grid_x2';
+        } else {
+            $viewMode = 'list';
+            $viewModeClass = $block->getListComponentClass();
+            $viewModeListClass = $block->getListComponentListClass();
+            $viewModeListItemClass = $block->getListComponentListItemClass();
+            $image = 'category_page_list';
+        }
+
+        $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
+        $iterator = 0;
+
+        if ($pageLayout != '1column') {
+            $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
+        }
     ?>
-    <div class="cs-category-page__products-wrapper">
-        <div class="cs-category-page__inner-sidebar">
-            <?php
-                echo $block->getChildHtml('inner-sidebar');
-            ?>
-        </div>
 
-        <?php 
-            $teasersConfig = $this->helper('MageSuite\ContentConstructorFrontend\Helper\CategoryGridTeasers')->getConfig();
-            $isHorizontalFilterLayout = $block->getData('filters_layout') == 'horizontal-full';
-            $columnsConfiguration = $ccHelper->getColumnsConfiguration($isHorizontalFilterLayout);
-        ?>
+    <div class="products wrapper <?= $viewMode ?> products-<?= $viewMode ?> cs-page-category__products-wrapper">
 
-        <?php $iterator = 0; ?>
-        <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?> <?= $viewModeModifier ?>"
-            <?php if($teasersConfig && $columnsConfiguration) { ?> 
-                data-columns-configuration='<?php echo $columnsConfiguration; ?>' 
-                data-teasers-configuration='<?php echo json_encode($teasersConfig['json']); ?>'
-            <?php } ?>>
-            <ol class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__grid">
+        <div class="<?= $viewModeClass ?> <?= $block->getAdditionalGridComponentClass() ?>">
+
+            <?= $block->getChildHtml('hotspot.before.list') ?>
+
+            <ol class="products list items product-items <?= $viewModeListClass ?>">
                 <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
                 <?php foreach ($productCollection as $product): ?>
-                    <?php
-                        $iterator++;
-                        $showHeroProduct = $iterator == 1 && $heroProduct;
-                        $productImageUrl = $block->getImage($product, $image)->getImageUrl();
-                        $productImageUrl2x = $block->getImage($product, $image2x)->getImageUrl();
-                        $isLazyloaded = $iterator > 9;
-                    ?>
-                    <li class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__brick">
+                    <?php $iterator++; ?>
+                    <li class="<?= $viewModeListItemClass ?>">
                         <?= $this->getLayout()
                             ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
+                            ->setType($viewMode)
                             ->setIterator($iterator)
                             ->setSection('category')
                             ->render($product);
                         ?>
                     </li>
-
                 <?php endforeach; ?>
-
-                <?php if($teasersConfig): ?>
-                    <?php $i = 1; foreach ($teasersConfig['teasers'] as $teaser):
-                        $teaserClass = $viewModeClass . '__brick ' . $viewModeClass . '__brick--teaser';
-                        if($teaser['size']['x'] == 2) {
-                            $teaserClass .= ' ' .$viewModeClass . '__brick--x2';
-                        }
-                        if($teaser['size']['y'] == 2) {
-                            $teaserClass .= ' ' . $viewModeClass. '__brick--y2';
-                        } ?>
-
-                        <li class="<?php echo $teaserClass ?>" data-teaser-id="<?php echo $i ?>">
-                            <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser <?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser--scheme-<?php echo $teaser['colorScheme'] ?>">
-                                <?php if($teaser['href'] != ''): ?>
-                                    <a href="<?php echo $teaser['href'] ?>" class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content-wrapper">
-                                <?php else: ?>
-                                    <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content-wrapper">
-                                <?php endif; ?>
-
-                                    <figure class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-figure">
-                                        <img src="<?php echo $teaser['image']['src'] ?>" srcset="<?php echo $teaser['image']['srcSet'] ?>" alt="teaser" class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-image">
-                                    </figure>
-                                    <div class="<?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content <?php /* @escapeNotVerified */ echo $viewModeClass; ?>__teaser-content--<?php echo $teaser['displayVariant'] ?>">
-                                        <?php if($teaser['headline'] != '') {
-                                            echo '<h4 class="' . $viewModeClass . '__teaser-headline">'.$teaser['headline'].'</h4>';
-                                        }
-                                        if($teaser['subheadline'] != '') {
-                                            echo '<span class="' . $viewModeClass . '__teaser-subheadline">'.$teaser['subheadline'].'</span>';
-                                        }
-                                        if($teaser['paragraph'] != '') {
-                                            echo '<p class="' . $viewModeClass . '__teaser-text">'.$teaser['paragraph'].'</p>';
-                                        }
-                                        if($teaser['ctaLabel'] != '' && $teaser['href'] != '') {
-                                            echo '<span role="button" class="cs-button cs-button--type_long cs-button--look_default">
-                                                <span class="cs-button__span">'.$teaser['ctaLabel'].'</span>
-                                                <svg class="cs-button__icon"><use xlink:href="#arrow_next"></use></svg>
-                                            </span>';
-                                        } ?>
-                                    </div>
-
-                                <?php if($teaser['href'] != ''): ?>
-                                    </a>
-                                <?php else: ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </li>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
+                
+                <?php if($viewMode == 'grid'): ?>
+                    <?= $block->getChildHtml('hotspot.inside.list') ?>
                 <?php endif; ?>
             </ol>
+
+            <?= $block->getChildHtml('hotspot.after.list') ?>
         </div>
     </div>
 
-    <?php echo $block->getToolbarHtml() ?>
+    <div class="cs-page-category__toolbar-wrapper cs-page-category__toolbar-wrapper--bottom">
+        <?= $block->getToolbarHtml() ?>
+    </div>
 
     <?php if (!$block->isRedirectToCartEnabled() && $block->getVar('ajax_addtocart/tiles', 'Magento_Catalog')): ?>
         <script type="text/x-magento-init">

@@ -55,7 +55,7 @@ const breakpoints: object = getAvaliableBreakpoints();
 // Extend breakpoint module with available breakpoint keys converted to camelCase.
 Object.keys(breakpoints).forEach(
     (breakpointName: string): void => {
-        breakpoint[camelCase(breakpointName)] = breakpoints[breakpointName];
+        breakpoint[breakpointName] = breakpoints[breakpointName];
     }
 );
 

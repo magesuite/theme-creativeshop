@@ -1,0 +1,102 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+
+$toolbar_display: flex !default;
+$toolbar_flex-align-items: center !default;
+$toolbar_flex-justify-content: flex-start !default;
+$toolbar_font-size: 1.2rem !default;
+$toolbar_font-weight: inherit !default;
+$toolbar_text-transform: uppercase !default;
+
+$toolbar_elements-padding-mobile: 0 0 1rem !default;
+$toolbar_elements-padding-tablet-up: 0 0 0 3rem !default;
+
+$toolbar_select-min-height: 3.5rem !default;
+$toolbar_input-max-height: $toolbar_select-min-height !default;
+
+$toolbar_selects-max-width-tablet: 20rem; // set 'none' to disable
+
+$toolbar_components-alignment: (
+    amount: left,
+    sorter: left,
+    limiter: left,
+    viewmode-switcher: left,
+    pagination: right,
+);
+
+$toolbar_amount-align: left;
+$toolbar_sorter-align: left;
+$toolbar_limiter-align: left;
+$toolbar_viewmode-switcher-align: left;
+$toolbar_pagination-align: right;
+
+.#{$ns}toolbar {
+    $root: &;
+
+    font-size: $toolbar_font-size;
+    font-weight: $toolbar_font-weight;
+    text-transform: $toolbar_text-transform;
+
+    @include media('>=tablet') {
+        display: $toolbar_display;
+
+        @if $toolbar_display == flex {
+            align-items: $toolbar_flex-align-items;
+            justify-content: $toolbar_flex-justify-content;
+        }
+    }
+
+    &__item {
+        padding: $toolbar_elements-padding-mobile;
+
+        @include media('>=tablet') {
+            padding: $toolbar_elements-padding-tablet-up;
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+
+        @each $modifier, $value in $toolbar_components-alignment {
+            @if $value == right {
+                &--#{$modifier} {
+                    @include media('>=tablet') {
+                        @if $toolbar_display == flex {
+                            margin-left: auto;
+                        } @else {
+                            float: right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .field .label {
+        font-weight: $toolbar_font-weight;
+        width: auto;
+    }
+
+    .#{$ns}html-select {
+        @if $toolbar_selects-max-width-tablet != none {
+            @include media('>=tablet', '<laptop') {
+                max-width: $toolbar_selects-max-width-tablet;
+            }
+        } 
+
+        &__trigger {
+            min-height: $toolbar_select-min-height;
+        }
+    }
+}
+
+@import 'components/toolbar/amount.scss';
+@import 'components/toolbar/sorter.scss';
+@import 'components/toolbar/limiter.scss';
+@import 'components/toolbar/pagination.scss';
+@import 'components/toolbar/viewmode-switcher.scss';

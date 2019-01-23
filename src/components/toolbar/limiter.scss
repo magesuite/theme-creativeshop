@@ -1,0 +1,60 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import './mixins.scss';
+
+$limiter_display: flex !default;
+$limiter_flex-align-items: center !default;
+
+$limiter_labels-white-space: nowrap !default;
+$limiter_prefix-label-padding: 0 1rem 0 0 !default;
+$limiter_suffix-label-padding: 0 0 0 1rem !default;
+
+$sorter_select-min-height: $toolbar_select-min-height !default;
+
+.#{$ns}limiter {
+    $root: &;
+
+    display: $limiter_display;
+    position: relative;
+
+    @if $limiter_display == flex {
+        align-items: $limiter_flex-align-items;
+        flex-wrap: nowrap;
+    }
+
+    &__label {
+        white-space: $limiter_labels-white-space;
+
+        &--prefix {
+            padding: $limiter_prefix-label-padding;
+        }
+
+        &--suffix {
+            padding: $limiter_suffix-label-padding;
+        }
+    }
+
+    &__pagination {
+        @include pagination-list();
+    }
+
+    &__pagination-item {
+        @include pagination-item();
+    }
+
+    &__pagination-number {
+        @include pagination-number();
+
+        #{$root}__pagination-item--current & {
+            @include pagination-number--current();
+        }
+    }
+
+    .#{$ns}html-select,
+    .#{$ns}html-select__trigger,
+    select {
+        min-width: 3rem;
+        min-height: $sorter_select-min-height;
+    }
+}

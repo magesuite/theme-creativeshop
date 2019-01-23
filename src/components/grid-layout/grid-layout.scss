@@ -8,9 +8,10 @@
 @import 'utils/aspect-ratio';
 @import 'utils/poly-fluid-sizing';
 @import 'utils/clearfix';
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
 
 $grid-layout_rows-separator-show: true !default;
-$grid-layout_rows-separator-position: 'bottom' !default;
 $grid-layout_rows-separator-height: 1px !default;
 $grid-layout_rows-separator-color: $color_gallery !default;
 
@@ -78,24 +79,8 @@ $grid-layout_teaser-x2-paragraph-font-map: (
 // Use false if you don't want to hide button at all
 $grid-layout_teaser-button-visible-from: '>=tablet'; 
 
-$grid-layout_bricks-per-row: (
-    phone: 1,
-    phone-lg: 2,
-    tablet: 3,
-    laptop: 4,
-    laptop-lg: 4,
-    desktop: 4,
-    tv: 4,
-) !default;
-$grid-layout_bricks-per-row--with-sidebar: (
-    phone: 1,
-    phone-lg: 2,
-    tablet: 2,
-    laptop: 3,
-    laptop-lg: 3,
-    desktop: 3,
-    tv: 3,
-) !default;
+$grid-layout_bricks-per-row: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, one-column) !default;
+$grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, multiple-columns) !default;
 
 .#{$ns}grid-layout {
     $root: &;
@@ -249,18 +234,6 @@ $grid-layout_bricks-per-row--with-sidebar: (
             }
         }
 
-        @if $grid-layout_rows-separator-show {
-            &:after {
-                position: absolute;
-                #{$grid-layout_rows-separator-position}: 0;
-                left: 0;
-                width: 100%;
-                height: $grid-layout_rows-separator-height;
-                content: '';
-                background: $grid-layout_rows-separator-color;
-            }
-        }
-
         &--x2:not(#{$root}__brick--y2) {
             @include aspect-ratio-override(
                 $width: $grid-layout_brick-ratio-width * 2, 
@@ -311,6 +284,29 @@ $grid-layout_bricks-per-row--with-sidebar: (
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @if $grid-layout_rows-separator-show {
+        &,
+        &__brick {
+            &:after {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: $grid-layout_rows-separator-height;
+                content: '';
+                background: $grid-layout_rows-separator-color;
+            }
+        }
+
+        & {
+            margin-bottom: -#{$grid-layout_rows-separator-height};
+            
+            &:after {
+                background: $page_background;
             }
         }
     }

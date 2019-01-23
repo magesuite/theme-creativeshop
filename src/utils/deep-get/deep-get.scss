@@ -1,0 +1,10 @@
+/**
+ * Extracts nested keys from given map.
+ * Example: deep-get($some-map, some, nested, keys);
+ */
+@function deep-get($map, $keys...) {
+    @each $key in $keys {
+        $map: map-get($map, $key);
+    }
+    @return $map;
+}

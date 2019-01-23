@@ -5,21 +5,23 @@
 ?>
 
 <?php if ($block->canShowBlock()) : ?>
-    <?php $filters = count($block->getFilters());?>
-    <?php $horizontalFiltersLayout = $this->getFiltersLayout(); ?>
-    <?php $activeFilters = $horizontalFiltersLayout ? 0 : $block->getActiveFilters(); ?>
-    <?php
-    /**
-     * For horizontal filters it is important to set "Expanded facets" in "Catalog Search Configuration" to 0.
-     * Then $block->getActiveFilters() will return '[0,-1, <filters with checked values here]>' It allows us to add class to filters that have checked input
-     */
+    <?php 
+        $filters = count($block->getFilters());
+        $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
+        $isFiltersLayoutHorizontal = $pageLayout == '1column' && !$block->getForceSidebarFiltersStyle() || $block->getForceHorizontalFiltersStyle();
+        $activeFilters = $isFiltersLayoutHorizontal ? 0 : $block->getActiveFilters();
+
+        /**
+         * For horizontal filters it is important to set "Expanded facets" in "Catalog Search Configuration" to 0.
+         * Then $block->getActiveFilters() will return '[0,-1, <filters with checked values here]>' It allows us to add class to filters that have checked input
+         */
         $activeFiltersString = $block->getActiveFilters();
         $activeFiltersArray = array_slice(array_map('intval', explode(',', $activeFiltersString)), 2);
     ?>
 
     <?php /*$activeFilters = "[0, 1, 2]" ;*/?>
 
-    <div class="cs-aftersearch-nav<?php echo $horizontalFiltersLayout ? ' cs-aftersearch-nav--' . $horizontalFiltersLayout : ''; ?> | block filter | cs-collapse cs-collapse--only-mobile" id="layered-filter-block" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
+    <div class="cs-aftersearch-nav<?php if($isFiltersLayoutHorizontal): ?> cs-aftersearch-nav--horizontal<?php endif ?> | block filter | cs-collapse cs-collapse--only-mobile" id="layered-filter-block" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
         <h2 class="cs-aftersearch-nav__filters-trigger | cs-collapse__trigger cs-collapse__trigger--arrowed cs-collapse__trigger--only-mobile">
             <?php /* @escapeNotVerified */ echo __('Filters');?>
             <svg class="cs-aftersearch-nav__filters-trigger-icon | cs-collapse__trigger-icon">
@@ -34,11 +36,11 @@
             <?php $index = 0; ?>
             <?php foreach ($block->getFilters() as $filter) : ?>
                 <?php if ($filter->getItemsCount()) : ?>
-                    <?php if ($horizontalFiltersLayout): ?>
+                    <?php if ($isFiltersLayoutHorizontal): ?>
 
                         <?php if (!$wrapOptions) : ?>
-                            <ul class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
-                            cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": <?php echo $horizontalFiltersLayout ? 'false' : 'true' ?>}}'>
+                            <ul class="cs-aftersearch-nav__filter-options 
+                            cs-filter-horizontal filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": false}}'>
                                 <?php $wrapOptions = true; ?>
                         <?php endif; ?>
                         <li class="cs-aftersearch-nav__filter <?php if (array_search($index, $activeFiltersArray) !== false) {
@@ -52,8 +54,7 @@
                     <?php else: ?>
 
                         <?php if (!$wrapOptions) : ?>
-                            <dl class="cs-aftersearch-nav__filter-options <?php echo $horizontalFiltersLayout ? '
-                            cs-filter-horizontal ' : ''; ?> | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
+                            <dl class="cs-aftersearch-nav__filter-options | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
                                 <?php $wrapOptions = true; ?>
                         <?php endif; ?>
                         <dt data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></dt>
@@ -65,7 +66,7 @@
                     <?php $index++; ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <?php if ($horizontalFiltersLayout): ?>
+            <?php if ($isFiltersLayoutHorizontal): ?>
                 <li class="cs-aftersearch-nav__filter-row cs-aftersearch-nav__show-more-button">
                     <button
                         class="cs-aftersearch-nav__show-more-trigger"
@@ -83,7 +84,7 @@
             <?php endif; ?>
 
             <?php if ($wrapOptions) : ?>
-                <?php echo $horizontalFiltersLayout ? '</ul>' : '</dl>' ?>
+                <?php echo $isFiltersLayoutHorizontal ? '</ul>' : '</dl>' ?>
             <?php else : ?>
                 <script>
                     require([

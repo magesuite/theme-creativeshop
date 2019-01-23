@@ -5,11 +5,6 @@
     $root: &;
     overflow: visible;
 
-    @include media('<tablet') {
-        width: calc(100% + 3rem);
-        margin: 0 -1.5rem;
-    }
-
     &__loader-icon {
         position: fixed;
         top: 50%;
@@ -27,10 +22,6 @@
                 display: block;
                 padding: 0;
             }
-        }
-
-        @include media('>=tablet') {
-            margin-top: -1rem;
         }
     }
 
@@ -73,7 +64,6 @@
         padding: 0 0 2rem;
 
         @include media('>=tablet') {
-            margin-top: -1.5rem !important;
             margin-bottom: 0;
             border-bottom: none;
             padding: 0;
@@ -94,6 +84,10 @@
         text-transform: uppercase;
         word-break: break-all;
         z-index: 1;
+
+        &:first-child {
+            border-top: 0;
+        }
 
         @include media('<tablet') {
             width: 100%;
@@ -454,8 +448,7 @@
 
     /* STATE block */
     &__state {
-        padding: 1.5rem 0;
-        border-top: 1px solid $color_gallery;
+        padding: 1rem 0;
         border-bottom: 1px solid $color_gallery;
 
         &-items {
@@ -573,12 +566,11 @@
     }
 
     /* Horizontal */
-    &--horizontal-full {
+    &--horizontal {
         @include media('>=tablet') {
             z-index: 20;
             padding-bottom: 0;
-            margin-bottom: 2rem;
-            margin-top: 1rem;
+            margin: 0;
         }
 
         #{$root}__filters {
@@ -588,7 +580,7 @@
                 flex-direction: column;
                 overflow: visible !important;
                 margin-bottom: 0;
-                padding: 0.5rem 0;
+                padding: 1rem 0;
                 border-top: 1px solid $color_gallery;
                 border-bottom: 1px solid $color_gallery;
             }
