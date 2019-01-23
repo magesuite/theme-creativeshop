@@ -28,8 +28,8 @@ export default class Pagination {
     protected _options: any;
 
     /**
-     * Creates new ProductsPromo component with optional settings.
-     * @param {$element} Optional, element to be initialized as ProductsPromo component
+     * Creates new Pagination component with optional settings.
+     * @param {$element} Optional, element to be initialized as Pagination component
      * @param {options}  Optional settings object.
      */
     public constructor($element?: JQuery<HTMLInputElement>, options?: PaginationOptions) {
