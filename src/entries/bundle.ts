@@ -71,6 +71,8 @@ import 'components/form';
 import 'components/toolbar';
 import 'components/password-strength-meter';
 import 'components/messages';
+import 'components/checkout';
+import 'components/tabs';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
