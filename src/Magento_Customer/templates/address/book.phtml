@@ -7,7 +7,7 @@
 <div class="cs-info-block | cs-dashboard__block | block-addresses-default">
 
     <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
-        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+        <h2 class="cs-title-block__span">
             <?php /* @escapeNotVerified */ echo __('Default Addresses') ?>
         </h2>
     </div>
@@ -16,16 +16,16 @@
         <?php if ($pAddsses = $block->getDefaultBilling()): ?>
 
             <div class="cs-info-block__box | box-address-billing">
-                <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                <h3 class="cs-info-block__box-title">
                     <?php /* @escapeNotVerified */ echo __('Default Billing Address') ?>
                 </h3>
                 <div class="cs-info-block__box-content">
-                    <address class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                    <address class="cs-info-block__line">
                         <?php echo $block->getAddressHtml($block->getAddressById($pAddsses)) ?>
                     </address>
                 </div>
                 <div class="cs-info-block__box-actions">
-                    <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $block->getAddressEditUrl($pAddsses) ?>">
+                    <a href="<?php /* @escapeNotVerified */ echo $block->getAddressEditUrl($pAddsses) ?>">
                         <span><?php /* @escapeNotVerified */ echo __('Change Billing Address') ?></span>
                     </a>
                 </div>
@@ -33,11 +33,11 @@
 
         <?php else: ?>
             <div class="cs-info-block__box | box-address-billing">
-                <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                <h3 class="cs-info-block__box-title">
                     <?php /* @escapeNotVerified */ echo __('Default Billing Address') ?>
                 </h3>
                 <div class="cs-info-block__box-content">
-                    <p class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                    <p class="cs-info-block__line">
                         <?php /* @escapeNotVerified */ echo __('You have no default billing address in your address book.') ?>
                     </p>
                 </div>
@@ -47,16 +47,16 @@
         <?php if ($pAddsses = $block->getDefaultShipping()): ?>
 
                 <div class="cs-info-block__box | box-address-shipping">
-                    <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                    <h3 class="cs-info-block__box-title">
                         <?php /* @escapeNotVerified */ echo __('Default Shipping Address') ?>
                     </h3>
                     <div class="cs-info-block__box-content">
-                        <address class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                        <address class="cs-info-block__line">
                             <?php echo $block->getAddressHtml($block->getAddressById($pAddsses)) ?>
                         </address>
                     </div>
                     <div class="cs-info-block__box-actions">
-                        <a class="cs-link" href="<?php /* @escapeNotVerified */ echo $block->getAddressEditUrl($pAddsses) ?>">
+                        <a href="<?php /* @escapeNotVerified */ echo $block->getAddressEditUrl($pAddsses) ?>">
                             <span><?php /* @escapeNotVerified */ echo __('Change Shipping Address') ?></span>
                         </a>
                     </div>
@@ -64,11 +64,11 @@
 
         <?php else: ?>
             <div class="cs-info-block__box |  box-shipping-address">
-                <h3 class="cs-info-block__box-title | cs-t-headline cs-t-headline--size_4">
+                <h3 class="cs-info-block__box-title">
                     <?php /* @escapeNotVerified */ echo __('Default Shipping Address') ?>
                 </h3>
                 <div class="cs-info-block__box-content">
-                    <p class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                    <p class="cs-info-block__line">
                         <?php /* @escapeNotVerified */ echo __('You have no default shipping address in your address book.') ?>
                     </p>
                 </div>
@@ -79,7 +79,7 @@
 
 <div class="cs-info-block | cs-dashboard__block | block-addresses-list">
     <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
-        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+        <h2 class="cs-title-block__span">
             <?php /* @escapeNotVerified */ echo __('Additional Address Entries') ?>
         </h2>
     </div>
@@ -88,18 +88,16 @@
                 <?php foreach ($pAddsses as $address): ?>
                 <?php $getId =  $address->getId(); ?>
                     <div class="cs-info-block__box">
-                        <address class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+                        <address class="cs-info-block__line">
                             <?php echo $block->getAddressHtml($address) ?><br />
                         </address>
                         <div class="cs-info-block__box-actions">
                             <a
-                                class="cs-link cs-link--separator"
                                 href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/address/edit', ['id' => $getId]) ?>"
                             >
                                 <span><?php /* @escapeNotVerified */ echo __('Edit Address') ?></span>
                             </a>
                             <a
-                                class="cs-link"
                                 href="#"
                                 role="delete-address"
                                 data-address="<?php /* @escapeNotVerified */ echo $getId ?>"
@@ -109,7 +107,7 @@
                     </div>
                 <?php endforeach; ?>
         <?php else: ?>
-            <p class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+            <p class="cs-info-block__line">
                 <?php /* @escapeNotVerified */ echo __('You have no other address entries in your address book.') ?>
             </p>
         <?php endif ?>

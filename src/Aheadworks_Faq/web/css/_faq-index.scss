@@ -1,4 +1,8 @@
 $ns: 'cs-';
+@import 'config/variables';
+@import 'components/typography/mixin';
+
+$faq_main-title-font-size: $font-size_headline-1 !default;
 
 .#{$ns}faq-index {
     $root: &;
@@ -103,12 +107,13 @@ $ns: 'cs-';
 
     &__text {
         color: $color_dove-gray;
+        font-size: 1.4rem;
+        font-weight: 700;
     }
 
     &__main-title {
-        @extend .#{$ns}t-headline;
-        @extend .#{$ns}t-headline--size_1;
-        @extend .#{$ns}t-headline--look_light;
+        @include headline($level: $faq_main-title-font-size);
+        text-transform: none;
     }
 
     &__title {
@@ -200,13 +205,6 @@ $ns: 'cs-';
         }
     }
 
-    &__container {
-        p,
-        span {
-            @extend .#{$ns}t-text;
-        }
-    }
-
     &__voting {
         display: flex;
 
@@ -239,15 +237,6 @@ $ns: 'cs-';
             margin: 4rem 0;
             @include media('<tablet') {
                 flex-wrap: wrap;
-            }
-
-            .#{$ns}t-text--look_attention {
-                font-weight: 700;
-
-                &:hover {
-                    color: inherit;
-                    font-weight: 700;
-                }
             }
         }
     }

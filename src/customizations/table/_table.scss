@@ -1,3 +1,8 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+
+$table_head-font-size: $font-size_headline-5 !default;
+
 .#{$ns}table {
     $root: &;
     $rootNoChangeMobile: #{$root}--no-change-mobile;
@@ -125,8 +130,7 @@
     }
 
     &__col-head {
-        @extend .#{$ns}t-headline;
-        @extend .#{$ns}t-headline--size_4;
+        @include headline($level: $table_head-font-size);
 
         &--right {
             text-align: right;

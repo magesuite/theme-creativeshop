@@ -268,9 +268,9 @@ export default class SearchresultsSwitcher {
 
         if ($cmsResults.length) {
             const rawCmsCount: string = $cmsResults.find(
-                '.cs-t-headline__count'
+                'h2 span'
             ).length
-                ? $cmsResults.find('.cs-t-headline__count').text()
+                ? $cmsResults.find('h2 span').text()
                 : '';
             if (rawCmsCount.length) {
                 cmsCount = parseInt(rawCmsCount, 10);
@@ -279,9 +279,9 @@ export default class SearchresultsSwitcher {
 
         if ($productsResults.length) {
             const rawProductsCount: string = $productsResults.find(
-                '.cs-t-headline__count'
+                'h2 span'
             ).length
-                ? $productsResults.find('.cs-t-headline__count').text()
+                ? $productsResults.find('h2 span').text()
                 : '';
             if (rawProductsCount.length) {
                 productsCount = parseInt(rawProductsCount, 10);

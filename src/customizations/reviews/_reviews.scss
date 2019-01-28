@@ -1,3 +1,10 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+
+$reviews_legend-font-size: $font-size_headline-3 !default;
+$reviews_subtitle-font-size: $font-size_headline-4 !default;
+$reviews_single-name-font-size: $font-size_headline-4 !default;
+
 .cs-reviews {
     &__title {
         @extend .#{$ns}product-description__headline;
@@ -48,7 +55,7 @@
     &__legend {
         margin-bottom: 1em;
         text-align: left;
-        @extend .#{$ns}t-headline--size_2;
+        font-size: $reviews_legend-font-size;
     }
 
     &__legend-product-name {
@@ -117,19 +124,18 @@
         display: block;
         width: 100%;
         margin-bottom: 0.8rem;
-        @extend .#{$ns}t-headline;
-        @extend .#{$ns}t-headline--size_3;
+        @include headline($level: $reviews_subtitle-font-size);
     }
 
     &__content {
         width: 100%;
-        @extend .#{$ns}t-text;
+        color: $color_dove-gray;
+        font-size: 1.4rem;
         margin-bottom: 2rem;
     }
 
     &__single-name {
-        @extend .#{$ns}t-headline;
-        @extend .#{$ns}t-headline--size_2;
+        @include headline($level: $reviews_single-name-font-size);
     }
 
     &__product-details {
@@ -161,7 +167,8 @@
     }
 
     &__rating-average-label {
-        @extend .#{$ns}t-text;
+        color: $color_dove-gray;
+        font-size: 1.4rem;
         margin-top: 1rem;
         display: block;
     }

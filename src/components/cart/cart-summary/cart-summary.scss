@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
+@import 'components/typography/mixin';
 
 $cart-summary_background: $color_background-200 !default;
 $cart-summary_border-color: $color_border-500 !default;
@@ -8,6 +9,7 @@ $cart-summary_box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27) !default;
 $cart-summary_label-color: $color_text-500 !default;
 $cart-summary_value-color: $color_text-800 !default;
 $cart-summary_border: $color_border-500 !default;
+$cart-summary_title-font-size: $font-size_headline-3 !default;
 
 .#{$ns}cart-summary {
     $root: &;
@@ -36,6 +38,7 @@ $cart-summary_border: $color_border-500 !default;
 
     &__title {
         display: none;
+        @include headline($level: $cart-summary_title-font-size);
 
         @include media('>=tablet') {
             display: block;

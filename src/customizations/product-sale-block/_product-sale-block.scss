@@ -1,3 +1,9 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+
+$product-sale-block_name-font-size: $font-size_headline-1 !default;
+$product-sale-block_giftcard-name-font-size: $font-size_headline-4 !default;
+
 .#{$ns}product-sale-block {
     background: $color_white;
     padding: 15px 0 2rem;
@@ -16,11 +22,9 @@
         padding: 1.5em 1.5rem;
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
 
-        /* stylelint-disable */
         @supports (position: sticky) {
             margin-top: 3rem;
         }
-        /* stylelint-enable */
     }
 
     @include media('>=laptopLg') {
@@ -79,8 +83,7 @@
 
         h1,
         .page-title {
-            @extend .cs-t-headline;
-            @extend .cs-t-headline--size_2;
+            @include headline($level: $product-sale-block_name-font-size);
             padding-bottom: 0.6rem;
         }
     }
@@ -235,6 +238,7 @@
 
         &-headline {
             padding: 2rem 0 1rem;
+            @include headline($level: $product-sale-block_giftcard-name-font-size);
         }
 
         textarea {

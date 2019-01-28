@@ -18,7 +18,7 @@
     <input type="hidden" id="articleId" value="<?php echo (int)$block->getArticle()->getId() ?>">
     <?php if ( ($block->isAllowedHelpfulness()) > 0 ) : ?>
         <div id="aw-faq__helpfulness" class="cs-faq-index__voting-container">
-            <span class="cs-faq-index__text cs-t-text cs-t-text--look_attention | <?php /* @noEscape */ echo $block->isVoted() ? '' : 'aw_bold'?>"><?php /* @noEscape */ echo __('Was this helpful?'); ?></span>
+            <span class="cs-faq-index__text | <?php /* @noEscape */ echo $block->isVoted() ? '' : 'aw_bold'?>"><?php /* @noEscape */ echo __('Was this helpful?'); ?></span>
             <span id="aw__helpfulness-vote-yes" class="cs-faq-index__voting-icon | aw_bold <?php echo ($block->getDislikeStatus() || !$block->isVoted()) ? 'aw-no-display' : ''; ?>">
                 <svg class="cs-faq-index__icon cs-faq-index__icon--checked">
                     <use xlink:href="#thumb_up"></use>
@@ -32,8 +32,8 @@
             </span>
             <?php if ($block->isVoted() && $block->isHelpfulnessRateAfterVotingEnabled()): ?>
                 <span class="cs-faq-index__rating-text">
-                    <span class="cs-faq-index__text cs-t-text cs-t-text--look_attention" id="ratingMessage"><?php echo $block->escapeHtml($ratingMessageNumber); ?></span>
-                    <span class="cs-faq-index__text cs-t-text"><?php echo $block->escapeHtml($ratingMessage); ?></span>
+                    <span class="cs-faq-index__text" id="ratingMessage"><?php echo $block->escapeHtml($ratingMessageNumber); ?></span>
+                    <span class="cs-faq-index__text"><?php echo $block->escapeHtml($ratingMessage); ?></span>
                 </span>
             <?php endif;?>
 
@@ -54,8 +54,8 @@
                 </span>
 
                 <span class="cs-faq-index__rating-text <?php echo $block->isHelpfulnessRateBeforeVotingEnabled() ? '' : 'aw-no-display'; ?>">
-                    <span class="cs-faq-index__text cs-t-text cs-t-text--look_attention" id="ratingMessage"><?php echo $block->escapeHtml($ratingMessageNumber); ?></span>
-                    <span class="cs-faq-index__text cs-t-text"><?php echo $block->escapeHtml($ratingMessage); ?></span>
+                    <span class="cs-faq-index__text" id="ratingMessage"><?php echo $block->escapeHtml($ratingMessageNumber); ?></span>
+                    <span class="cs-faq-index__text"><?php echo $block->escapeHtml($ratingMessage); ?></span>
                 </span>
             <?php endif; ?>
         </div>
