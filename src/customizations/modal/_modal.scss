@@ -1,3 +1,8 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+
+$modal_title-font-size: $font-size_headline-3 !default;
+
 .#{$ns}modal {
     $root: &;
 
@@ -8,6 +13,7 @@
     }
 
     &__title {
+        @include headline($level: $modal_title-font-size);
         padding: 2rem 0 1rem;
         margin-bottom: 2.5rem;
         border-bottom: 1px solid $color_alto;
@@ -117,10 +123,11 @@
             max-width: 50rem;
         }
 
+        // TODO Modal will be refactored later
         #{$root}__content {
-            @extend .#{$ns}t-headline;
-            @extend .#{$ns}t-headline--size_2;
-            @extend .#{$ns}t-headline--look_light;
+            //@extend .#{$ns}t-headline;
+            //@extend .#{$ns}t-headline--size_2;
+            //@extend .#{$ns}t-headline--look_light;
             text-align: center;
             margin-top: 1.5rem;
         }

@@ -8,17 +8,16 @@ $items = $wishlistHelper->getWishlistItemCollection()->getItems();
     <div class="cs-info-block block-wishlist" xmlns="http://www.w3.org/1999/html">
 
         <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
-            <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+            <h2 class="cs-title-block__span">
                 <?php /* @escapeNotVerified */
                 echo $block->getTitle(); ?>
                 <?php if(count($items)): ?>
-                    <span class="cs-t-headline__span"><?=__('(%1 items)', count($items))?></span>
+                    <span><?=__('(%1 items)', count($items))?></span>
                 <?php endif; ?>
             </h2>
 
             <div class="cs-title-block__span">
-                <a class="cs-link"
-                   href="<?php /* @escapeNotVerified */
+                <a href="<?php /* @escapeNotVerified */
                    echo $this->helper('Magento\Wishlist\Helper\Data')->getListUrl() ?>"
                    title="<?php /* @escapeNotVerified */
                    echo __('Go to Wish List') ?>"><span><?php /* @escapeNotVerified */
@@ -28,7 +27,7 @@ $items = $wishlistHelper->getWishlistItemCollection()->getItems();
 
         <div class="cs-info-block__content">
             <?php if(empty($items)): ?>
-                <div class="cs-info-block__line | cs-t-text cs-t-text--look_light"><?php /* @escapeNotVerified */
+                <div class="cs-info-block__line"><?php /* @escapeNotVerified */
                     echo __('You have no items in your wish list.') ?></div>
             <?php else: ?>
                 <ul class="cs-items-grid" id="wishlist-sidebar">

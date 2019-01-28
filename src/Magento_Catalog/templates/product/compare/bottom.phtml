@@ -8,20 +8,20 @@
     data-role="compare-products-sidebar"
 >
     <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
-        <h2 class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+        <h2 class="cs-title-block__span">
             <span id="block-compare-heading" role="heading" aria-level="2">
                 <?php /* @escapeNotVerified */ echo __('Compare Products') ?>
             </span>
             <span
-                class="cs-t-headline__span"
                 data-bind="text: '('+compareProducts().countCaption+')', css: {'no-display': !compareProducts().count}"
-            ></span>
+            ></span
+>
         </h2>
         <!-- ko if: compareProducts().count -->
         <a
             id="compare-clear-all"
             href="#"
-            class="cs-title-block__span | cs-link"
+            class="cs-title-block__span"
             data-post="<?=$block->escapeHtml($this->helper('Magento\Catalog\Helper\Product\Compare')->getPostDataClearList()) ?>"
         >
             <span><?php /* @escapeNotVerified */ echo __('Clear All') ?></span>
@@ -63,9 +63,9 @@
     </div>
     <!-- /ko -->
     <!-- ko ifnot: compareProducts().count -->
-    <div class="cs-info-block__line | cs-t-text cs-t-text--look_light">
+    <p class="cs-info-block__line">
         <?php /* @escapeNotVerified */ echo __('You have no items to compare.') ?>
-    </div>
+    </p>
     <!-- /ko -->
 </div>
 <script type="text/x-magento-init">

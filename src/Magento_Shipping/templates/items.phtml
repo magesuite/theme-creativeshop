@@ -29,24 +29,22 @@ $order = $block->getOrder();
     </div>
     <?php foreach ($order->getShipmentsCollection() as $shipment): ?>
         <div class="cs-info-block__title cs-info-block__title--space-top | cs-title-block cs-title-block--bordered">
-            <div class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+            <div class="cs-title-block__span">
                 <?php /* @escapeNotVerified */ echo __('Shipment #') ?><?php /* @escapeNotVerified */ echo $shipment->getIncrementId(); ?>
             </div>
-            <span class="cs-t-headline__span">
+            <span>
                 <a
                     href="<?php /* @escapeNotVerified */ echo $block->getPrintShipmentUrl($shipment) ?>"
                     onclick="this.target='_blank'"
-                    class="cs-link"
                 >
                     <?php /* @escapeNotVerified */ echo __('Print Shipment') ?>
                 </a>
             </span>
-            <span class="cs-t-headline__span">
+            <span>
                <a
                    href="#"
                    data-mage-init='{"popupWindow": {"windowURL":"<?php /* @escapeNotVerified */ echo $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($shipment) ?>","windowName":"trackshipment","width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1}}'
                    title="<?php /* @escapeNotVerified */ echo __('Track this shipment') ?>"
-                   class="cs-link"
                >
                    <?php /* @escapeNotVerified */ echo __('Track this shipment') ?>
                </a>
