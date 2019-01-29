@@ -1,3 +1,13 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'components/button/mixin';
+
+$dashboard-button-component_meaning: default !default;
+$dashboard-button-component_scheme: default !default;
+
+$dashboard-back-button-component_meaning: outline !default;
+$dashboard-back-button-component_scheme: outline !default;
+
 .#{$ns}dashboard {
     $menuTabletWidth: 27;
     $menuWidth: 26.5;
@@ -164,6 +174,62 @@
 
         @include media('>=phoneLg') {
             flex-basis: auto;
+        }
+    }
+
+    .actions-toolbar {
+        margin-top: -1px;
+        padding-top: 2rem;
+        border-top: 1px solid $color_gallery;
+    }
+
+    &__wishlist {
+        &-line {
+            margin: 0;
+        }
+    }
+
+    .primary > button {
+        @include button(
+            $meaning: $dashboard-button-component_meaning,
+            $scheme: $dashboard-button-component_scheme
+        );
+
+        &-span {
+            @include button_span(
+                $meaning: $dashboard-button-component_meaning,
+                $scheme: $dashboard-button-component_scheme
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $meaning: $dashboard-button-component_meaning,
+                $scheme: $dashboard-button-component_scheme
+            );
+        }
+    }
+
+    .secondary > a {
+        margin-top: 2rem;
+
+        @include button(
+            $meaning: $dashboard-back-button-component_meaning,
+            $scheme: $dashboard-back-button-component_scheme
+        );
+
+        &-span {
+            @include button_span(
+                $meaning: $dashboard-back-button-component_meaning,
+                $scheme: $dashboard-back-button-component_scheme
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $meaning: $dashboard-back-button-component_meaning,
+                $scheme: $dashboard-back-button-component_scheme
+            );
         }
     }
 }
