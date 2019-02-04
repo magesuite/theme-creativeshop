@@ -1,82 +1,136 @@
+@import 'utils/get-value-from-list';
+@import 'components/button/animation';
 @import 'components/button/hook';
 
+// Define default type for buttons. You can override it individually per button in each component
+// Variants: primary | secondary | success | error
+$button_default-type: 'primary' !default;
+
+// Define default position for icons in button. You can override it individually per button in each component
+// Variants: left | right | no-icon | only-icon
+$button_default-icon-pos: 'right' !default;
+
+// General styles for buttons
 $button_font-size: 1.4rem !default;
-$button_height: 2.875em !default;
-$button_padding: 0 1.5em !default;
+$button_font-weight: 700 !default;
+$button_padding: 0.8em 1em !default;
+$button_padding-when-icon: 2.5em !default;
+$button_line-height: 1.8rem !default;
+$button_border-size: 0.1rem !default;
 $button_border-radius: $border-radius_base !default;
+$button_animation-time: 0.5s !default;
 
-$button_border: 0;
-$button_border-hover: $button_border !default;
-$button_color: $color_text-200 !default;
-$button_color-hover: $button_color !default;
-$button_fill: $button_color !default;
-$button_fill-hover: $button_color-hover !default;
-$button_background: $color_primary-500;
-$button_background-hover: $color_primary-800 !default;
+// Styles for `primary` button
+$button_primary-border: $button_border-size solid $color_primary-500 !default;
+$button_primary--hover-border: $button_border-size solid $color_primary-800 !default;
+$button_primary-background: $color_primary-500 !default;
+$button_primary--hover-background: $color_primary-800 !default;
+$button_primary-color: $color_text-200 !default;
+$button_primary--hover-color: $color_text-200 !default;
+$button_primary-fill: $color_text-200 !default;
+$button_primary--hover-fill: $color_text-200 !default;
+$button_primary-enable-animation: true !default;
+
+// Styles for `secondary` button
+$button_secondary-border: $button_border-size solid $color_primary-500 !default;
+$button_secondary--hover-border: $button_border-size solid $color_primary-800 !default;
+$button_secondary-background: $color_white !default;
+$button_secondary--hover-background: $color_primary-800 !default;
+$button_secondary-color: $color_primary-500 !default;
+$button_secondary--hover-color: $color_text-200 !default;
+$button_secondary-fill: $color_primary-500 !default;
+$button_secondary--hover-fill: $color_text-200 !default;
+$button_secondary-enable-animation: false !default;
+
+// Styles for `success` button
+$button_success-border: $button_border-size solid $color_success-500 !default;
+$button_success--hover-border: $button_border-size solid $color_success-600 !default;
+$button_success-background: $color_success-500 !default;
+$button_success--hover-background: $color_success-600 !default;
+$button_success-color: $color_text-200 !default;
+$button_success--hover-color: $color_text-200 !default;
+$button_success-fill: $color_text-200 !default;
+$button_success--hover-fill: $color_text-200 !default;
+$button_success-enable-animation: false !default;
+
+// Styles for `error` button
+$button_error-border: $button_border-size solid $color_error-500 !default;
+$button_error--hover-border: $button_border-size solid $color_error-600 !default;
+$button_error-background: $color_error-500 !default;
+$button_error--hover-background: $color_error-600 !default;
+$button_error-color: $color_text-200 !default;
+$button_error--hover-color: $color_text-200 !default;
+$button_error-fill: $color_text-200 !default;
+$button_error--hover-fill: $color_text-200 !default;
+$button_error-enable-animation: false !default;
 
 // Defines how much button icon should be pulled vertically to center it.
 // Should be defined in em to make it relative to button's font size.
-$button_span-font-offset: -0.0625em !default;
-// You can disable gradient hover effects by switching this value to false.
-$button_span-gradient-enabled: true !default;
-$button_span-gradient: linear-gradient(
-    108deg,
-    $button_background 0%,
-    $button_background calc(45% - 4em),
-    $button_background-hover calc(45% - 4em),
-    $button_background-hover 100%
-) !default;
-$button_span-gradient-inverse: linear-gradient(
-    108deg,
-    $button_background 0%,
-    $button_background calc(45% - 4em),
-    $button_background-hover calc(45% - 4em),
-    $button_background-hover 100%
-) !default;
-$button_span-gradient-no-icon: linear-gradient(
-    108deg,
-    $button_background 0%,
-    $button_background calc(50%),
-    $button_background-hover calc(50%),
-    $button_background-hover 100%
-);
-// Defines how much button icon should be pulled vertically to center it.
+$button_span-font-offset: 0 !default;
+
+// Defines how much button icon should be pulled vertically to center it on icon button.
 // Should be defined in em to make it relative to button's font size.
-$button_icon-offset: 0.0625em !default;
+$button_icon-offset: 0.1em !default;
 
-@mixin button($meaning: default, $scheme: default) {
-    @if $meaning == success {
-        $button_background: $color_success-500 !global;
-        $button_background-hover: $color_success-700 !global;
-    }
-
-    @if $meaning == warning {
-        $button_background: $color_warning-500 !global;
-        $button_background-hover: $color_warning-700 !global;
-    }
-
-    @if $scheme == outline {
-        $button_border: 1px solid $button_background !global;
-        $button_border-hover: 1px solid $button_background-hover !global;
-        $button_color: $button_background !global;
-        $button_color-hover: $button_background-hover !global;
-        $button_fill: $button_background !global;
-        $button_fill-hover: $button_background-hover !global;
-        $button_background: transparent !global;
-        $button_background-hover: transparent !global;
-    }
-
-    display: inline-flex;
+@mixin button($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
+    display: inline-block;
     font-size: $button_font-size;
-    height: $button_height;
-    align-items: center;
+    font-weight: $button_font-weight;
     padding: $button_padding;
     text-align: center;
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
-    transition: background-color 0.5s, border-color 0.5s, fill 0.5s, color 0.5s;
+    transition: background-color $button_animation-time, border-color $button_animation-time, fill $button_animation-time, color $button_animation-time;
     vertical-align: middle;
+    line-height: $button_line-height;
+    z-index: 5;
+    will-change: transform, background-color, border-color, fill, color;
+    margin: 0;
+
+    @if ($type == 'primary') {
+        @if ($button_primary-enable-animation) {
+            @include button_animation(
+                $type: 'primary',
+                $color_start: $button_primary-background, 
+                $color_end: $button_primary--hover-background, 
+                $icon_pos: $icon_pos,
+            );
+        }
+    }
+
+    @if ($type == 'secondary') {
+        @if ($button_secondary-enable-animation) {
+            @include button_animation(
+                $type: 'secondary',
+                $color_start: $button_secondary-background,
+                $color_end: $button_secondary--hover-background,
+                $icon_pos: $icon_pos,
+            );
+        }
+    }
+
+    @if ($type == 'success') {
+        @if ($button_success-enable-animation) {
+            @include button_animation(
+                $type: 'success',
+                $color_start: $button_success-background,
+                $color_end: $button_success--hover-background,
+                $icon_pos: $icon_pos,
+            );
+        }
+    }
+
+    @if ($type == 'error') {
+        @if ($button_error-enable-animation) {
+            @include button_animation(
+                $type: 'error',
+                $color_start: $button_error-background,
+                $color_end: $button_error--hover-background,
+                $icon_pos: $icon_pos,
+            );
+        }
+    }
 
     &::-moz-focus-inner {
         border: 0;
@@ -91,23 +145,70 @@ $button_icon-offset: 0.0625em !default;
         outline-offset: 1px;
         text-decoration: none;
         box-shadow: none;
-        border: $button_border;
-        color: $button_color;
-        fill: $button_fill;
-        background-color: $button_background;
-        background-clip: padding-box !important;
+
+        @if ($type == 'primary') {
+            border: $button_primary-border;
+            color: $button_primary-color;
+            fill: $button_primary-fill;
+            background-color: $button_primary-background;
+        }
+
+        @if ($type == 'secondary') {
+            border: $button_secondary-border;
+            color: $button_secondary-color;
+            fill: $button_secondary-fill;
+            background-color: $button_secondary-background;
+        }
+
+        @if ($type == 'success') {
+            border: $button_success-border;
+            color: $button_success-color;
+            fill: $button_success-fill;
+            background-color: $button_success-background;
+        }
+
+        @if ($type == 'error') {
+            border: $button_error-border;
+            color: $button_error-color;
+            fill: $button_error-fill;
+            background-color: $button_error-background;
+        }
     }
 
     &:hover,
     &:focus,
     &:active {
-        border: $button_border-hover;
-        color: $button_color-hover;
-        fill: $button_fill-hover;
-        background-color: $button_background-hover;
         box-shadow: none;
         outline: none;
         text-decoration: none;
+
+        @if ($type == 'primary') {
+            border: $button_primary--hover-border;
+            color: $button_primary--hover-color;
+            fill: $button_primary--hover-fill;
+            background-color: $button_primary--hover-background;
+        }
+
+        @if ($type == 'secondary') {
+            border: $button_secondary--hover-border;
+            color: $button_secondary--hover-color;
+            fill: $button_secondary--hover-fill;
+            background-color: $button_secondary--hover-background;
+        }
+
+        @if ($type == 'success') {
+            border: $button_success--hover-border;
+            color: $button_success--hover-color;
+            fill: $button_success--hover-fill;
+            background-color: $button_success--hover-background;
+        }
+
+        @if ($type == 'error') {
+            border: $button_error--hover-border;
+            color: $button_error--hover-color;
+            fill: $button_error--hover-fill;
+            background-color: $button_error--hover-background;
+        }
     }
 
     &[disabled] {
@@ -115,84 +216,65 @@ $button_icon-offset: 0.0625em !default;
         cursor: auto;
     }
 
-    @include button_hook($meaning, $scheme);
+    @include button-hook($type, $icon_pos);
 }
 
-@mixin button_span($meaning: default, $scheme: default) {
-    @if $meaning == success {
-        $button_span-gradient-enabled: false !global;
-    }
-
-    @if $meaning == warning {
-        $button_span-gradient-enabled: false !global;
-    }
-
-    @if $scheme == outline {
-        $button_span-gradient-enabled: false !global;
-    }
-
+@mixin button_span($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     margin-top: $button_span-font-offset;
-    flex: 1 1 auto;
     z-index: 1;
-    font-weight: 700;
-    vertical-align: middle;
+    font-weight: $button_font-weight;
+    vertical-align: baseline;
+    display: inline-block;
+    line-height: $button_line-height;
 
-    @if $button_span-gradient-enabled {
-        &:before {
-            content: '';
-            position: absolute;
-            width: 220%;
-            height: 100%;
-            left: 0;
-            top: 0;
-            z-index: -1;
-
-            background-clip: padding-box;
-            background-image: $button_span-gradient;
-            background-repeat: no-repeat;
-            transition: background-color 0.5s, transform 0.5s;
-
-            *:hover > &,
-            *:focus > &,
-            *:active > & {
-                transform: translateX(-55%);
-            }
-
-            * + & {
-                left: auto;
-                right: 0;
-                background-image: $button_span-gradient-inverse;
-
-                *:hover > &,
-                *:focus > &,
-                *:active > & {
-                    transform: translateX(55%);
-                }
-            }
-        }
-
-        &:first-child:last-child {
-            &:before {
-                background-image: $button_span-gradient-no-icon;
-            }
-        }
+    @if ($icon_pos == 'right') {
+        padding-right: $button_padding-when-icon + get-value-from-list(
+            $variable: $button_padding,
+            $side: $icon_pos
+        );
+    } @else if ($icon_pos == 'left') {
+        padding-left: $button_padding-when-icon + get-value-from-list(
+            $variable: $button_padding,
+            $side: $icon_pos
+        );
+    } @else if ($icon_pos == 'only-icon') {
+        display: none;
     }
 
-    @include button_span-hook($meaning, $scheme);
+    @include button_span-hook($type, $icon_pos);
 }
 
-@mixin button_icon($meaning: default, $scheme: default) {
-    flex: 0 0 auto;
+@mixin button_icon($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     max-width: 1em;
-    max-height: 1em;
-    margin-top: $button_icon-offset;
-    margin-right: 4em;
+    max-height: $button_font-size;
     z-index: 2;
+    width: 100%;
+    height: auto;
 
-    * + & {
+    @if ($icon_pos == 'right') or ($icon_pos == 'left') {
+        position: absolute;
+        top: 50%;
+        transform: translate3d(0, -50%, 0);
+    } 
+
+    @if ($icon_pos == 'only-icon') {
+        position: relative;
+        top: $button_icon-offset;
+    } @else if ($icon_pos == 'right') {
         margin-right: 0;
-        margin-left: 4em;
+        right: get-value-from-list(
+            $variable: $button_padding, 
+            $side: $icon_pos
+        );
+    } @else if ($icon_pos == 'left' ) {
+        margin-left: 0;
+        left: get-value-from-list(
+            $variable: $button_padding, 
+            $side: $icon_pos
+        );
+    } @else {
+        display: none;
     }
 
-    @include button_icon-hook($meaning, $scheme);
+    @include button_icon-hook($type, $icon_pos);
 }

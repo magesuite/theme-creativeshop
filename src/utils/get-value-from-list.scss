@@ -1,0 +1,42 @@
+
+/* 
+ * Function to get value from a list of values, based on side
+ * @param {string} $variable: variable with a list of values (like paddings, margins etc.);
+ * @param {string} $side: side (up / right / down / left) for which we want to get value
+ * Example:
+ * $component_padding: 1rem 2rem 3rem;
+ * get-value-from-list($component_padding, 'right') // 2rem
+ * get-value-from-list($component_padding, 'bottom') // 3rem
+ */
+
+@function get-value-from-list($variable, $side) {
+    $length: length($variable);
+
+    @if ($length == 1) {
+        @return nth($variable, 1);
+    } @else if ($length == 2) {
+        @if ($side == 'up') OR ($side == 'down') {
+            @return nth($variable, 1);
+        } @else if ($side == 'left') OR ($side == 'right') {
+            @return nth($variable, 2);
+        }
+    } @else if ($length == 3) {
+        @if ($side == 'left') OR ($side == 'right') {
+            @return nth($variable, 2);
+        } @else if ($side == 'up') {
+            @return nth($variable, 1);
+        } @else if ($side == 'down') {
+            @return nth($variable, 3);
+        }
+    } @else if ($length == 4) {
+        @if ($side == 'up') {
+            @return nth($variable, 1);
+        } @else if ($side == 'right') {
+            @return nth($variable, 2);
+        } @else if ($side == 'down') {
+            @return nth($variable, 3);
+        } @else if ($side == 'left') {
+            @return nth($variable, 4);
+        }
+    }
+}
