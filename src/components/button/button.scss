@@ -1,34 +1,56 @@
 @import 'config/variables';
 @import 'components/button/mixin';
 
+$button-fallback_type: $button_default-type !default;
+$button-fallback_icon-pos: $button_default-icon-pos !default;
+
+$button-component_type: $button_default-type !default;
+$button-component_icon-pos: $button_default-icon-pos !default;
+
 .cs-button {
-    @include button();
+    @include button(
+        $type: $button-fallback_type,
+        $icon_pos: $button-fallback_icon-pos
+    );
 
     &__span {
-        @include button_span();
+        @include button_span(
+            $type: $button-fallback_type,
+            $icon_pos: $button-fallback_icon-pos
+        );
     }
 
     &__icon {
-        @include button_icon();
+        @include button_icon(
+            $type: $button-fallback_type,
+            $icon_pos: $button-fallback_icon-pos
+        );
     }
 }
 
-$button-component_meaning: default !default
-$button-component_scheme: outline !default
 .cs-button-component {
-    @include button($meaning: $button-component_meaning, $scheme: $button-component_scheme);
+    @include button(
+        $type: $button-component_type,
+        $icon_pos: $button-component_icon-pos
+    );
 
     position: relative;
     left: 50%;
     margin: 2rem 0;
-    transform: translate3d(-50%,0,0);
+    transform: translate3d(-50%, 0, 0);
 
     &__span {
-        @include button_span($meaning: $button-component_meaning, $scheme: $button-component_scheme);
+        @include button_span(
+            $type: $button-component_type,
+            $icon_pos: $button-component_icon-pos
+        );
     }
 
     &__icon {
-        @include button_icon($meaning: $button-component_meaning, $scheme: $button-component_scheme);
+        @include button_icon(
+            $type: $button-component_type,
+            $icon_pos: $button-component_icon-pos
+        );
     }
 
     &__amount {
@@ -40,5 +62,4 @@ $button-component_scheme: outline !default
             content: ")";
         }
     }
-
 }

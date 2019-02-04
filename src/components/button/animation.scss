@@ -1,0 +1,62 @@
+// In this mixin you can define your custom animation for buttons
+// You can check examples of animations in http://ianlunn.github.io/Hover/ library
+
+@mixin button_animation($type: $button_default-type, $color_start: $button_primary-background, $color_end: $button_primary--hover-background, $icon_pos: $button_default-icon-pos) {    
+    // TODO: calc() in gradient doesn't work on IE & Edge
+    border: $button_border-size solid transparent !important;
+
+    @if ($icon_pos == 'right') {
+        background: linear-gradient(108deg, $color_start 0%, $color_start calc(100% - 3.9em), $color_end calc(100% - 3.9em), $color_end 100%) border-box;
+    }
+    @if ($icon_pos == 'left') {
+        background: linear-gradient(-108deg, $color_start 0%, $color_start calc(100% - 3.9em), $color_end calc(100% - 3.9em), $color_end 100%) border-box;
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        width: 200%;
+        height: 100%;
+        z-index: -1;
+        top: 0;
+        background-clip: padding-box;
+
+        @if ($icon_pos == 'right') {
+            left: 0;
+            right: auto;
+            background-image: linear-gradient(108deg, $color_start 0%, $color_start calc(50% - 3em), $color_end calc(50% - 3em), $color_end 100%);
+        } @else if ($icon_pos == 'left') {
+            left: auto;
+            right: 0;
+            background-image: linear-gradient(-108deg, $color_start 0%, $color_start calc(50% - 3em), $color_end calc(50% - 3em), $color_end 100%);
+        } @else {
+            left: 0;
+            right: auto;
+            background-image: linear-gradient(90deg, $color_start 0%, $color_start calc(50%), $color_end calc(50%), $color_end 100%);
+        }
+
+        background-repeat: no-repeat;
+        transition: background-color $button_animation-time, transform $button_animation-time;
+        transform: translateZ(0);
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        &:before {
+            @if($button_default-icon-pos == 'right') {
+                @if ($icon_pos == 'left') {
+                    transform: translate3d(50%, 0, 0);
+                } @else {
+                    transform: translate3d(-50%, 0, 0);
+                }
+            } @else {
+                @if ($icon_pos == 'right') {
+                    transform: translate3d(-50%, 0, 0);
+                } @else {
+                    transform: translate3d(50%, 0, 0);
+                }
+            }
+        }
+    }
+}
