@@ -11,34 +11,44 @@ $checkout_page-max-width: 93rem !default;
 $checkout_sidebar-width: 44% !default;
 // Space between main column and sidebar for tablets and desktops
 $checkout_main-column-and-sidebar-gap: 3.5rem !default;
+// Space below steps (authentication, shipping address etc.)
+$checkout_steps-space: 3.5rem !default;
 // Base space for checkout elements (paddings between boxes border and its content, headline spacing etc.)
 $checkout_base-space: 2rem !default;
 
-$checkout_elements-background: $color_background-200 !default;
+$checkout_boxes-background: $color_background-200 !default;
 $checkout_boxes-box-shadow: $box-shadow_base !default;
-$checkout_elements-border: 1px solid $color_border-500 !default;
-$checkout_place-order-border-bottom: 2px solid $color_border-500 !default;
-$checkout_edit-link-color: $color_primary-500 !default;
+$checkout_boxes-border-radius: 0 !default;
 
+// This border is used as separator between some sections
+$checkout_elements-border: 1px solid $color_border-500 !default;
+
+$checkout_place-order-border-bottom: 2px solid $color_border-500 !default;
+$checkout_active-elements-color: $color_primary-500 !default;
+
+$checkout__texts-font-size: $font-size_paragraph !default;
 $checkout_step-title-font-size: $font-size_headline-3 !default;
 $checkout_summary-title-font-size: $font-size_headline-4 !default;
 $checkout_legend-font-size: $font-size_headline-3 !default;
 $checkout_form-notes-font-size: $font-size_paragraph-300 !default;
 
-$checkout_next-button-meaning: default !default;
-$checkout_next-button-scheme: default !default;
-$checkout_repertus-button-meaning: default !default;
-$checkout_repertus-button-scheme: outline !default;
-$checkout_login-button-meaning: default !default;
-$checkout_login-button-scheme: default !default;
-$checkout_estimation-button-meaning: default !default;
-$checkout_estimation-button-scheme: outline !default;
-$checkout_place-order-button-meaning: default !default;
-$checkout_place-order-button-scheme: default !default;
-$checkout_billing-address-button-meaning: default !default;
-$checkout_billing-address-button-scheme: default !default;
-$checkout_show-popup-button-meaning: default !default;
-$checkout_show-popup-button-scheme: default !default;
+$checkout_next-button-type: 'primary' !default;
+$checkout_next-button-icon-pos: 'right' !default;
+$checkout_place-order-button-type: 'primary' !default;
+$checkout_place-order-button-icon-pos: 'right' !default;
+
+$checkout_repertus-button-type: 'secondary' !default;
+$checkout_repertus-button-icon-pos: 'no-icon' !default;
+$checkout_login-button-type: 'primary' !default;
+$checkout_login-button-icon-pos: 'no-icon' !default;
+$checkout_estimation-button-type: 'secondary' !default;
+$checkout_estimation-button-icon-pos: 'no-icon' !default;
+$checkout_billing-address-button-type: 'secondary'!default;
+$checkout_billing-address-button-icon-pos: 'no-icon' !default;
+$checkout_show-popup-button-type: 'primary' !default;
+$checkout_show-popup-button-icon-pos: 'no-icon' !default;
+$checkout_addresses-button-type: 'secondary' !default;
+$checkout_addresses-button-icon-pos: 'no-icon' !default;
 
 .checkout-index-index {
 
@@ -88,7 +98,7 @@ $checkout_show-popup-button-scheme: default !default;
     flex-wrap: wrap;
     position: relative;
     justify-content: space-between;
-    margin-bottom: 3.5rem;
+    margin-bottom: $checkout_steps-space;
 
     @include media('>=tablet') {
         max-width: $checkout_page-max-width;
@@ -109,7 +119,7 @@ $checkout_show-popup-button-scheme: default !default;
         @include media('>=tablet') {
             position: absolute;
             padding: 0;
-            right: 0.5rem;
+            right: 0;
             top: -7rem;
             z-index: 2;
 
@@ -120,16 +130,6 @@ $checkout_show-popup-button-scheme: default !default;
     }
 
     &__sidebar {
-        width: 100%;
-
-        @include media('>=tablet') {
-            height: 100%;
-            z-index: 2;
-            width: $checkout_sidebar-width;
-            padding-left: $checkout_main-column-and-sidebar-gap;
-            order: 2;
-        }
-
         .action-close {
             @include media('>=tablet') {
                 display: none;
@@ -142,48 +142,32 @@ $checkout_show-popup-button-scheme: default !default;
         }
     }
 
-    &__sidebar-inner {
-        margin-bottom: $checkout_base-space;
-
-        @include media('>=tablet') {
-            box-shadow: $checkout_boxes-box-shadow;
-            margin-bottom: 3.5rem;
-        }
-    }
-
     // Container for next step button
     &__sidebar-bottom {
         display: flex;
         justify-content: flex-end;
-
-        @include media('<tablet') {
-            margin: 0 $checkout_base-space;
-        }
+        padding: $checkout_base-space;
     }
 
     // Button next step
     &__sidebar-button {
-        @include button($meaning: $checkout_next-button-meaning, $scheme: $checkout_next-button-scheme);
+        @include button($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
 
         @include media('>=tablet') {
             min-width: 20rem;
         }
 
         &-span {
-            @include button_span($meaning: $checkout_next-button-meaning, $scheme: $checkout_next-button-scheme);
+            @include button_span($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
         }
 
         &-icon {
-            @include button_icon($meaning: $checkout_next-button-meaning, $scheme: $checkout_next-button-scheme);
+            @include button_icon($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
         }
 
         @include media('<tablet') {
             width: 100%;
         }
-    }
-
-    &__step-tabs {
-        margin-bottom: 3rem;
     }
 
     &__place-order {
@@ -192,15 +176,15 @@ $checkout_show-popup-button-scheme: default !default;
         width: 100%;
 
         &-button {
-            @include button($meaning: $checkout_next-button-meaning, $scheme: $checkout_next-button-scheme);
+            @include button($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
             width: 100%;
 
             &-span {
-                @include button_span($meaning: $checkout_next-button-meaning, $scheme: $checkout_next-button-scheme);
+                @include button_span($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
             }
     
             &-icon {
-                @include button_icon($meaning: $checkout_next-button-meaning, $scheme: $checkout_next-button-scheme);
+                @include button_icon($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
             } 
         }
     }
@@ -218,6 +202,11 @@ $checkout_show-popup-button-scheme: default !default;
 
     .block {
         margin: 0;
+        .title {
+            strong {
+                margin: 0;
+            }
+        }
     }
 
     // Container for main column of the checkout
@@ -235,9 +224,9 @@ $checkout_show-popup-button-scheme: default !default;
         .step-title, 
         .block-title {
             @include headline($level: $checkout_step-title-font-size);
-            margin: $checkout_base-space 0;
+            margin: 0;
             border-bottom: none;
-            padding: 0;
+            padding: 0 0 $checkout_base-space;
         }
 
         .action.continue {
@@ -253,17 +242,47 @@ $checkout_show-popup-button-scheme: default !default;
         margin-bottom: 0;
     }
 
+    // Checkout boxes
+    &__sidebar, 
+    &__step-tabs .#{$ns}tabs ,
+    &__shipping-method-wrapper, 
+    &__shipping-method, 
+    .checkout-payment-method .step-content {
+        margin: 0 0 $checkout_steps-space;
+        background: $checkout_boxes-background;
+        box-shadow: $checkout_boxes-box-shadow;
+        border-radius: $checkout_boxes-border-radius;  
+    }
+
+    &__shipping-method-wrapper, 
+    &__shipping-method, 
+    .checkout-payment-method .step-content {
+        padding: $checkout_base-space;
+    }
+
+    &__sidebar {
+        width: 100%;
+
+        @include media('>=tablet') {
+            height: 100%;
+            z-index: 2;
+            width: calc(#{$checkout_sidebar-width} - #{$checkout_main-column-and-sidebar-gap});
+            margin-left: $checkout_main-column-and-sidebar-gap;
+            order: 2;
+        }
+    }
+
  
     // Authentication   
 
     .form-login, 
     .block-authentication {
         .primary .action {
-            @include button($meaning: $checkout_login-button-meaning, $scheme: $checkout_login-button-scheme);
+            @include button($type: $checkout_login-button-type, $icon_pos: $checkout_login-button-icon-pos);
             min-width: 17rem;
 
             span {
-                @include button_span($meaning: $checkout_login-button-meaning, $scheme: $checkout_login-button-scheme);
+                @include button_span($type: $checkout_login-button-type, $icon_pos: $checkout_login-button-icon-pos);
             }
         }
 
@@ -323,13 +342,6 @@ $checkout_show-popup-button-scheme: default !default;
             }
         }
     }
-    .shipping-address-items {
-        display: flex;
-        flex-wrap: wrap;
-        @include media('>=tablet', '<laptop') {
-            flex-direction: column;
-        }
-    }
 
     .ship-to, 
     .ship-via {
@@ -341,7 +353,7 @@ $checkout_show-popup-button-scheme: default !default;
     }
 
     .shipping-information {
-        padding: $checkout_base-space 0;
+        padding: 0 0 $checkout_base-space;
     }
 
     .shipping-information-content {
@@ -373,18 +385,55 @@ $checkout_show-popup-button-scheme: default !default;
         }
     }
 
-    .form-shipping-address, 
-    #checkout-step-shipping_method {
-        margin: 0 0 3rem;
-
-        @include media('>=tablet') {
-            padding: $checkout_base-space;
-            box-shadow: $checkout_boxes-box-shadow;
-        }
+    .action-show-popup {
+        @include button($type: $checkout_show-popup-button-type, $icon_pos: $checkout_show-popup-button-icon-pos);
     }
 
-    .action-show-popup {
-        @include button($meaning: $checkout_show-popup-button-meaning, $scheme: $checkout_show-popup-button-scheme);
+
+    // Shipping section for logged in user
+
+    .shipping-address-items {
+        display: flex;
+        flex-wrap: wrap;
+        
+        @include media('>=tablet', '<laptop') {
+            flex-direction: column;
+        }
+
+        .action-select-shipping-item, 
+        .edit-address-link, 
+        .action-select-shipping-item {
+            @include button($type: $checkout_addresses-button-type, $icon_pos: $checkout_addresses-button-icon-pos);
+            margin-top: $checkout_base-space;
+            width: 100%;
+
+            span {
+                @include button_span($type: $checkout_addresses-button-type, $icon_pos: $checkout_addresses-button-icon-pos);
+            }
+        }
+    }
+    .shipping-address-item {
+        font-size: $checkout__texts-font-size;
+        border: $checkout_elements-border;
+        padding: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0 0 1.5rem;
+        padding: 1rem;
+
+        @include media('>=phoneLg') {
+            width: calc(50% - $checkout_base-space);
+            margin: 0 $checkout_base-space $checkout_base-space 0;
+        }
+
+        &.selected-item {
+            border-color: $checkout_active-elements-color;
+        }
+
+        a {
+            font-size: $checkout__texts-font-size;
+        }
+
     }
 
 
@@ -404,10 +453,10 @@ $checkout_show-popup-button-scheme: default !default;
         }
 
         .action.showcart {
-            @include button($meaning: $checkout_repertus-button-meaning, $scheme: $checkout_repertus-button-scheme);
+            @include button($type: $checkout_repertus-button-type, $icon_pos: $checkout_repertus-button-icon-pos);
 
             span:first-child {
-                @include button-span($meaning: $checkout_repertus-button-meaning, $scheme: $checkout_repertus-button-scheme);
+                @include button-span($type: $checkout_repertus-button-type, $icon_pos: $checkout_repertus-button-icon-pos);
             }
         }
 
@@ -434,7 +483,7 @@ $checkout_show-popup-button-scheme: default !default;
 
     .billing-address-details {
         .action-edit-address {
-            @include button($meaning: default, $scheme: outline);
+            @include button($type: default, $icon_pos: outline);
             font-size: 0.8rem;
         }
     }
@@ -450,14 +499,13 @@ $checkout_show-popup-button-scheme: default !default;
 
     .action-update, 
     .action-cancel {
-        @include button($meaning: $checkout_billing-address-button-meaning, $scheme: $checkout_billing-address-button-scheme);
+        @include button($type: $checkout_billing-address-button-type, $icon_pos: $checkout_billing-address-button-icon-pos);
     }
 
 
     // Agreements
 
     .checkout-agreements-block {
-        padding: $checkout_base-space $checkout_base-space 0;
         font-size: 1.2rem;
         border-top: $checkout_place-order-border-bottom;
 
@@ -478,11 +526,15 @@ $checkout_show-popup-button-scheme: default !default;
     // Summary (sidebar on desktop and tablets)
 
     .opc-block-summary {
-        background: $checkout_elements-background;
         padding: 0;
 
         & > title {
             margin-bottom: 0;
+        }
+
+        // Remove Magento collapse functionality on minicart items in checkout sidebar
+        .minicart-items {
+            display: block !important;
         }
 
         .table-totals,
@@ -523,19 +575,11 @@ $checkout_show-popup-button-scheme: default !default;
         border: 0;
     }
 
-    .checkout-shipping-address {
-        margin-bottom: 3rem;
-    }
-
-    .opc-block-shipping-information {
-        margin-bottom: $checkout_base-space;
-    }
-
     .table-totals {
         td,
         th {
             font-weight: 400;
-            font-size: 1.4rem;
+            font-size: $checkout__texts-font-size;
             padding: 0.8rem $checkout_base-space;
         }
 
@@ -562,7 +606,7 @@ $checkout_show-popup-button-scheme: default !default;
     .action-edit {
         background: transparent;
         border: none;
-        color: $checkout_edit-link-color;
+        color: $checkout_active-elements-color;
         font-weight: 600;
         text-transform: capitalize;
         background-image: url('../images/icons/edit_color.svg');
@@ -570,6 +614,7 @@ $checkout_show-popup-button-scheme: default !default;
         background-position: right center;
         background-size: 1.8rem;
         padding-right: 2.5rem;
+        font-size: $checkout__texts-font-size;
     }
 
     .minicart-items {
@@ -814,12 +859,12 @@ $checkout_show-popup-button-scheme: default !default;
         }
 
         p {
-            margin-top: 2rem;
+            margin-top: $checkout_base-space;
         }
 
         .number {
             width: 23rem;
-            margin: 2rem 0 $checkout_base-space;
+            margin: $checkout_base-space 0 $checkout_base-space;
         }
     }
 
@@ -838,46 +883,7 @@ $checkout_show-popup-button-scheme: default !default;
     .control:not(.select-field) {
         float: none !important;
         width: 100% !important;
-    }
-
-
-    // TO DO
-
-    &__address {
-        width: 100%;
-        box-sizing: border-box;
-        margin: 0 0 $checkout_base-space;
-        padding: 1rem;
-        border-radius: 3px;
-        border: $checkout_elements-border;
-        display: flex;
-        align-items: center;
-        max-height: 100vh;
-        overflow-y: auto;
-    
-        @include media('>=phoneLg') {
-            width: calc(50% - $checkout_base-space);
-            margin: 0 $checkout_base-space $checkout_base-space 0;
-        }
-    
-        @include media('>=tablet', '<laptop') {
-            width: 100%;
-        }
-    
-        &.selected-item {
-            border: 1px solid $color_cerulean-blue;
-        }
-    }
-    
-    &__address-text {
-        font-size: 1.2rem;
-        font-weight: 300;
-        line-height: 2rem;
-        padding-left: 0.8rem;
-        @include media('>=tablet', '<laptop') {
-            padding-left: 0;
-        }
-    }    
+    }   
 }
 
 
@@ -908,7 +914,7 @@ $checkout_show-popup-button-scheme: default !default;
     widows: 100%;
 
     button {
-        @include button($meaning: $checkout_repertus-button-meaning, $scheme: $checkout_repertus-button-scheme);
+        @include button($type: $checkout_repertus-button-type, $icon_pos: $checkout_repertus-button-icon-pos);
         width: 100%;
         margin-top: 0.5rem;
     }

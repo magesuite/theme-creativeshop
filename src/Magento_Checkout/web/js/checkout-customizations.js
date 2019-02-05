@@ -70,10 +70,10 @@ define([
      */
     function setZipCityFields() {
         $('input[name="postcode"]')
-            .closest('.cs-form__field')
+            .closest('.field')
             .addClass('cs-form__field--type_zip');
         $('input[name="city"]')
-            .closest('.cs-form__field')
+            .closest('.field')
             .addClass('cs-form__field--type_city');
     }
 
@@ -82,13 +82,13 @@ define([
      */
     function setPersonFields() {
         $('select[name="prefix"]')
-            .closest('.cs-form__field')
+            .closest('.cfield')
             .addClass('cs-form__field--type_prefix');
         $('input[name="firstname"]')
-            .closest('.cs-form__field')
+            .closest('.cfield')
             .addClass('cs-form__field--type_firstname');
         $('input[name="lastname"]')
-            .closest('.cs-form__field')
+            .closest('.field')
             .addClass('cs-form__field--type_lastname');
     }
 
