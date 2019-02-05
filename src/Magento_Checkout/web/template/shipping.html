@@ -2,13 +2,10 @@
 /**
  * There is custom design for log in functionality in the checkout
  * There are tabs instead of login modal (special area authentication-tab)
- * Code inside block opc-shipping_method should be the same as in Magento shipping.html file
- * Maybe there is a way to move
  */
 -->
 <li id="shipping" class="checkout-shipping-address" data-bind="fadeVisible: visible()">
     <div id="checkout-step-shipping"
-         class="step-content"
          data-role="content">
 
         <!-- ko ifnot: isCustomerLoggedIn -->
@@ -59,28 +56,35 @@
 
             </div>
         </div>
-
         <!-- /ko -->
 
-        <h2 class="step-title" translate="'Shipping Address'" data-role="title" />
+        <div class="cs-checkout__shipping-method-wrapper">
 
-        <!-- Address form pop up -->
-        <if args="!isFormInline">
-            <button type="button"
-                    class="action action-show-popup"
-                    click="showFormPopUp"
-                    visible="!isNewAddressAdded()">
-                <span translate="'New Address'" />
-            </button>
-            <div id="opc-new-shipping-address"
-                 visible="isFormPopUpVisible()"
-                 render="shippingFormTemplate" />
-        </if>
+            <h2 class="step-title" translate="'Shipping Address'" data-role="title" />
 
-        <each args="getRegion('before-form')" render="" />
+            <each args="getRegion('address-list')" render="" />
+            <each args="getRegion('address-list-additional-addresses')" render="" />
+    
+            <!-- Address form pop up -->
+            <if args="!isFormInline">
+                <button type="button"
+                        class="action action-show-popup"
+                        click="showFormPopUp"
+                        visible="!isNewAddressAdded()">
+                    <span translate="'New Address'" />
+                </button>
+                <div id="opc-new-shipping-address"
+                     visible="isFormPopUpVisible()"
+                     render="shippingFormTemplate" />
+            </if>
+    
+            <each args="getRegion('before-form')" render="" />
+    
+            <!-- Inline address form -->
+            <render if="isFormInline" args="shippingFormTemplate" />
+        </div>
 
-        <!-- Inline address form -->
-        <render if="isFormInline" args="shippingFormTemplate" />
+
     </div>
 </li>
 
@@ -89,7 +93,7 @@
     class="checkout-shipping-method"
     data-bind="fadeVisible: visible(), blockLoader: isLoading"
     role="presentation">
-    <div class="checkout-shipping-method">
+    <div class="checkout-shipping-method cs-checkout__shipping-method">
         <h2 class="step-title"
              translate="'Shipping Methods'"
              data-role="title" />
@@ -101,6 +105,7 @@
              data-role="content"
              role="tabpanel"
              aria-hidden="false">
+
             <form id="co-shipping-method-form"
                   class="form methods-shipping"
                   if="rates().length"
