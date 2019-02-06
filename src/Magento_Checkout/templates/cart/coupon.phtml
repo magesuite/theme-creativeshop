@@ -1,6 +1,5 @@
 <?php
 // @codingStandardsIgnoreFile
-// @TODO: refactor .cs-form & .cs-button classes
 
 $placeholder = $block->getInputPlaceholder();
 $inputLabel = $block->getInputLabel();
@@ -25,24 +24,23 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
             id="discount-coupon-form"
             action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/couponPost') ?>"
             method="post"
-            class="cs-discount__form cs-form"
             data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code",
                                                "removeCouponSelector": "#coupon_remove",
                                                "applyButton": "#coupon_apply",
                                                "cancelButton": "#coupon_cancel"}}'
         >
-            <div class="fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : ' ' ?>cs-form__fieldset">
+            <div class="fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : ' ' ?>">
                 <input type="hidden" name="remove" id="coupon_remove" value="0"/>
-                <div class="field cs-form__field cs-input">
+                <div class="field">
                     <?php if(!empty($inputLabel)): ?>
-                    <label for="coupon_code" class="label cs-input__label">
+                    <label for="coupon_code" class="label">
                         <span><?= /* @escapeNotVerified */ $block->escapeHtml($inputLabel) ?></span>
                     </label>
                     <?php endif; ?>
-                    <div class="control cs-input__control">
+                    <div class="control">
                         <input
                             type="text"
-                            class="input-text cs-input__input"
+                            class="input-text"
                             id="coupon_code"
                             name="coupon_code"
                             value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>"
@@ -50,25 +48,25 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                         />
                     </div>
                 </div>
-                <div class="actions-toolbar cs-form__buttons">
+                <div class="actions-toolbar cs-discount__buttons">
                     <?php if (!strlen($block->getCouponCode())): ?>
                         <button
-                            class="action apply primary cs-button cs-button--look_default cs-button--size_300"
+                            class="action apply primary"
                             type="submit"
                             id="coupon_apply"
                             value="<?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?>"
                         >
-                            <span class="cs-button__span"><?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?></span>
+                            <span><?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?></span>
                             <?= $block->getChildHtml('checkout.cart.coupon.apply.icon'); ?>
                         </button>
                     <?php else: ?>
                         <button
                             type="button"
-                            class="action cancel primary cs-button cs-button--size_300 cs-button--look_light"
+                            class="action cancel primary"
                             id="coupon_cancel"
                             value="<?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?>"
                         >
-                            <?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?>
+                            <span><?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?></span>
                             <?= $block->getChildHtml('checkout.cart.coupon.cancel.icon'); ?>
                         </button>
                     <?php endif; ?>

@@ -1,10 +1,14 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
+@import 'components/button/mixin';
 
 $discount_title-text: $color_dove-gray !default;
 $discount_content-text: $color_dove-gray !default;
 $discount_border-top: 1px solid $color_alto !default;
 $discount_title-icon-color: $color_gray !default;
+
+$discount_button-type: 'secondary' !default;
+$discount_button-icon-pos: 'no-icon' !default;
 
 .#{$ns}discount {
     $root: &;
@@ -16,10 +20,6 @@ $discount_title-icon-color: $color_gray !default;
         padding: 1.5rem 2rem 0 0;
         border-top: none;
         width: 30rem;
-    }
-
-    .#{$ns}checkout {
-        padding: 1.5rem;
     }
 
     .#{$ns}cart-page &:not(:only-child) {
@@ -47,7 +47,8 @@ $discount_title-icon-color: $color_gray !default;
         display: none;
     }
 
-    &__title {
+    &__title, 
+    .title {
         border-top: none;
         padding: 0;
 
@@ -70,15 +71,6 @@ $discount_title-icon-color: $color_gray !default;
         color: $discount_content-text;
     }
 
-    &__form {
-        padding-top: 1.5rem;
-        margin-bottom: 1rem;
-
-        @include media('>=tablet') {
-            padding-top: 0.5rem;
-        }
-    }
-
     &__trigger-icon {
         margin-left: 0.8rem;
         width: auto;
@@ -98,6 +90,22 @@ $discount_title-icon-color: $color_gray !default;
 
         #{$root}[data-collapsible="true"] & {
             display: inline;
+        }
+    }
+}
+
+.#{$ns}discount, 
+.opc-payment-additional {
+    button.action {
+        @include button($type: $discount_button-type, $icon_pos: $discount_button-icon-pos);
+        margin-top: 1rem;
+
+        span {
+            @include button-span($type: $discount_button-type, $icon_pos: $discount_button-icon-pos);
+        }
+
+        svg {
+            @include button-icon($type: $discount_button-type, $icon_pos: $discount_button-icon-pos);
         }
     }
 }

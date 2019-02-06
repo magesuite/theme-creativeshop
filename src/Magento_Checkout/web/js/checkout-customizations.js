@@ -42,7 +42,7 @@ define([
          */
         var togglePlaceOrderButton = function() {
             var $origPlaceOrderButton = $(
-                '.payment-method._active .cs-button-payment-method[type="submit"]'
+                '.payment-method._active .action.checkout[type="submit"]'
             );
             if ($origPlaceOrderButton.is(':not(disabled):not(".disabled")')) {
                 $customPlaceOrderButtons.prop('disabled', false);
@@ -57,39 +57,12 @@ define([
 
         $customPlaceOrderButtons.on('click', function() {
             var $origPlaceOrderButton = $(
-                '.payment-method._active .cs-button-payment-method[type="submit"]'
+                '.payment-method._active .action.checkout[type="submit"]'
             );
             if ($origPlaceOrderButton.is(':not(disabled):not(".disabled")')) {
                 $origPlaceOrderButton.trigger('click');
             }
         });
-    }
-
-    /**
-     * Sets custom classes for address fields for styling purposes.
-     */
-    function setZipCityFields() {
-        $('input[name="postcode"]')
-            .closest('.field')
-            .addClass('cs-form__field--type_zip');
-        $('input[name="city"]')
-            .closest('.field')
-            .addClass('cs-form__field--type_city');
-    }
-
-    /**
-     * Sets custom classes for personal information fields for styling purposes.
-     */
-    function setPersonFields() {
-        $('select[name="prefix"]')
-            .closest('.cfield')
-            .addClass('cs-form__field--type_prefix');
-        $('input[name="firstname"]')
-            .closest('.cfield')
-            .addClass('cs-form__field--type_firstname');
-        $('input[name="lastname"]')
-            .closest('.field')
-            .addClass('cs-form__field--type_lastname');
     }
 
     /**
@@ -156,8 +129,6 @@ define([
     function onCheckoutLoaded() {
         var $shippingAddressForm = $('#co-shipping-form');
 
-        setZipCityFields();
-        setPersonFields();
         initInlineValidation($shippingAddressForm);
         handleCustomNextButtons();
         handleCustomOrderButtons();

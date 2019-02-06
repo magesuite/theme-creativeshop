@@ -1,7 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
 /** @var $block Aheadworks\Giftcard\Block\Checkout\Cart\Giftcard */
-// @TODO: refactor .cs-form & .cs-button classes
 
 $placeholder = $block->getInputPlaceholder();
 $inputLabel = $block->getInputLabel();
@@ -26,47 +25,46 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
         <div id="aw_giftcard__code_info"></div>
         <form
             id="discount-aw-giftcard-form"
-            class="cs-discount__form cs-form"
             action=""
             method="post"
             data-mage-init='{"awGiftCardManagement":{}}'
         >
-            <div class="fieldset aw-giftcard cs-discount__form-fieldset cs-form__fieldset">
-                <div class="field cs-discount__form-field cs-form__field cs-input">
+            <div class="fieldset aw-giftcard">
+                <div class="field">
                     <?php if(!empty($inputLabel)): ?>
-                    <label for="code" class="cs-discount__form-label cs-input__label label">
+                    <label for="code" class="label">
                         <span><?= $block->escapeHtml($inputLabel); ?></span>
                     </label>
                     <?php endif; ?>
-                    <div class="cs-discount__form-control cs-input__control control">
+                    <div class="control">
                         <input
                             type="text"
-                            class="cs-discount__form-input cs-input__input input-text"
+                            class="input-text"
                             name="code"
                             <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtml($placeholder); ?>"<?php endif; ?>
                             data-validate="{required:true}"
                         />
                     </div>
                 </div>
-                <div class="actions-toolbar cs-discount__toolbar cs-form__buttons">
+                <div class="actions-toolbar cs-discount__buttons">
                     <button
-                        class="action apply-aw-giftcard primary cs-discount__button cs-button cs-giftcard__button-apply"
+                        class="action apply-aw-giftcard primary"
                         type="submit"
                         value="<?= $block->escapeHtml($buttonApplyLabel); ?>"
                         data-role="aw-giftcard-apply-action"
                         data-url="<?php /* @noEscape */ echo $block->escapeUrl($block->getActionUrl()) ?>"
                     >
-                        <span class="cs-discount__button-span cs-button__span"><?= $block->escapeHtml($buttonApplyLabel); ?></span>
+                        <span><?= $block->escapeHtml($buttonApplyLabel); ?></span>
                         <?= $block->getChildHtml('checkout.cart.aw.giftcard.apply.icon'); ?>
                     </button>
                     <button
-                        class="action check-aw-giftcard cs-discount__button cs-button cs-giftcard__button-status"
+                        class="action check-aw-giftcard"
                         type="button"
                         value="<?= $block->escapeHtml($buttonCheckLabel); ?>"
                         data-role="aw-giftcard-check-code-action"
                         data-url="<?php /* @noEscape */ echo $block->escapeUrl($block->getCheckCodeUrl()) ?>"
                     >
-                        <span class="cs-discount__button-span cs-button__span"><?= $block->escapeHtml($buttonCheckLabel); ?></span>
+                        <span><?= $block->escapeHtml($buttonCheckLabel); ?></span>
                         <?= $block->getChildHtml('checkout.cart.aw.giftcard.check.icon'); ?>
                     </button>
                 </div>
