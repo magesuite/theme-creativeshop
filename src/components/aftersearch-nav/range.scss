@@ -1,0 +1,108 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/field/mixin';
+@import 'components/button/mixin';
+@import 'utils/visually-hidden';
+
+// Defines spacing between inputs, slider and message with button elements.
+$cs-aftersearch-nav-range_elements-bottom-spacing: 1.5em !default;
+// Make sure that inputs have enough space for content without overflow.
+$cs-aftersearch-nav-range_input-min-width: 7em !default;
+
+$cs-aftersearch-nav-range_label-color: $color_text-500 !default;
+
+$cs-aftersearch-nav-range_apply-button-type: 'secondary' !default;
+$cs-aftersearch-nav-range_apply-button-icon-pos: 'no-icon' !default;
+
+.cs-aftersearch-nav-range {
+    $root: &;
+
+    font-size: 1.3rem;
+
+    &--inputs-only {
+        #{$root}__slider {
+            display: none;
+        }
+    }
+
+    &--slider-only {
+        #{$root}__fields {
+            display: none;
+        }
+
+        #{$root}__slider-label {
+            display: inline-block;
+        }
+    }
+
+    &__fields {
+        display: flex;
+        align-items: center;
+        margin-bottom: $cs-aftersearch-nav-range_elements-bottom-spacing;
+    }
+
+    &__label {
+        color: $cs-aftersearch-nav-range_label-color;
+
+        &--from {
+            @include visually-hidden();
+        }
+
+        &--to {
+            margin: 0 0.5em;
+        }
+    }
+
+    &__field {
+        @include field();
+        position: relative;
+        font-size: 1em;
+    }
+
+    &__currency {
+        position: absolute;
+        right: 0.6em;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &__input {
+        @include field-input();
+        margin-bottom: 0;
+        min-width: $cs-aftersearch-nav-range_input-min-width;
+    }
+
+    &__slider {
+        margin-bottom: $cs-aftersearch-nav-range_elements-bottom-spacing;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    &__slider-label {
+        display: none;
+        margin-bottom: 0.5em;
+    }
+
+    &__slider-bar {
+        width: 100%;
+    }
+
+    &__actions-box {
+        display: flex;
+        align-items: center;
+    }
+
+    &__message {
+        flex: 1;
+        margin-right: 1em;
+    }
+
+    &__apply {
+        @include button(
+            $type: $cs-aftersearch-nav-range_apply-button-type,
+            $icon_pos: $cs-aftersearch-nav-range_apply-button-icon-pos
+        );
+        font-size: 1em;
+    }
+}

@@ -80,6 +80,8 @@ import 'components/qty-increment';
 import 'components/indicators';
 import 'components/bundle-box';
 import 'components/product-gallery';
+import 'components/slider';
+import 'components/aftersearch-nav';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
@@ -92,7 +94,9 @@ export { default as AddressAutofill } from 'components/address-autofill';
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();
 
-import 'customizations/aftersearch-nav/aftersearch-nav';
+import { QtyIncrementCollection } from 'customizations/qty-increment/qty-increment';
+new QtyIncrementCollection();
+
 import 'customizations/image-teaser/image-teaser';
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';

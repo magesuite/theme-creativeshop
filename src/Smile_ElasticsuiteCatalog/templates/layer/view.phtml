@@ -4,113 +4,73 @@
  */
 ?>
 
-<?php if ($block->canShowBlock()) : ?>
-    <?php 
-        $filters = count($block->getFilters());
-        $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
-        $isFiltersLayoutHorizontal = $pageLayout == '1column' && !$block->getForceSidebarFiltersStyle() || $block->getForceHorizontalFiltersStyle();
-        $activeFilters = $isFiltersLayoutHorizontal ? 0 : $block->getActiveFilters();
+<?php if ($block->canShowBlock()):
+    $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
+    $isFiltersLayoutHorizontal = $pageLayout == '1column' && !$block->getForceSidebarFiltersStyle() || $block->getForceHorizontalFiltersStyle();
 
-        /**
-         * For horizontal filters it is important to set "Expanded facets" in "Catalog Search Configuration" to 0.
-         * Then $block->getActiveFilters() will return '[0,-1, <filters with checked values here]>' It allows us to add class to filters that have checked input
-         */
-        $activeFiltersString = $block->getActiveFilters();
-        $activeFiltersArray = array_slice(array_map('intval', explode(',', $activeFiltersString)), 2);
-    ?>
+    $filtersRenderer = $block->getChildBlock('renderer');
 
-    <?php /*$activeFilters = "[0, 1, 2]" ;*/?>
-
-    <div class="cs-aftersearch-nav<?php if($isFiltersLayoutHorizontal): ?> cs-aftersearch-nav--horizontal<?php endif ?> | block filter | cs-collapse cs-collapse--only-mobile" id="layered-filter-block" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false, "collateral": { "openedState": "filter-active", "element": "body" } }}'>
-        <h2 class="cs-aftersearch-nav__filters-trigger | cs-collapse__trigger cs-collapse__trigger--arrowed cs-collapse__trigger--only-mobile">
-            <?php /* @escapeNotVerified */ echo __('Filters');?>
-            <svg class="cs-aftersearch-nav__filters-trigger-icon | cs-collapse__trigger-icon">
-                <use xlink:href="#arrow_next"></use>
-            </svg>
-        </h2>
-
-        <div class="cs-aftersearch-nav__filters | block-content filter-content | cs-collapse__content">
-            <?php /* State was here originally */ ?>
-
-            <?php $wrapOptions = false; ?>
-            <?php $index = 0; ?>
-            <?php foreach ($block->getFilters() as $filter) : ?>
-                <?php if ($filter->getItemsCount()) : ?>
-                    <?php if ($isFiltersLayoutHorizontal): ?>
-
-                        <?php if (!$wrapOptions) : ?>
-                            <ul class="cs-aftersearch-nav__filter-options 
-                            cs-filter-horizontal filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": false}}'>
-                                <?php $wrapOptions = true; ?>
-                        <?php endif; ?>
-                        <li class="cs-aftersearch-nav__filter <?php if (array_search($index, $activeFiltersArray) !== false) {
-                            echo 'cs-aftersearch-nav__filter--checked'; } ?> cs-aftersearch-nav__filter-row">
-                            <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></div>
-                            <div data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
-                                <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
-                            </div>
-                        </li>
-
-                    <?php else: ?>
-
-                        <?php if (!$wrapOptions) : ?>
-                            <dl class="cs-aftersearch-nav__filter-options | filter-options" id="narrow-by-list" data-role="content" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": <?php  /* @noEscape */ echo $activeFilters; ?>, "multipleCollapsible": true}}'>
-                                <?php $wrapOptions = true; ?>
-                        <?php endif; ?>
-                        <dt data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title"><?php /* @escapeNotVerified */ echo __($filter->getName()) ?> <span class="cs-aftersearch-nav__filter-arrow"></span></dt>
-                        <dd data-role="collapsible" class="cs-aftersearch-nav__filter-content | filter-options-item">
-                            <div data-role="content" class="filter-options-content"><?php /* @escapeNotVerified */ echo $block->getChildBlock('renderer')->render($filter); ?></div>
-                        </dd>
-
-                    <?php endif; ?>
-                    <?php $index++; ?>
+    $filters = $block->getDisplayedFilters();
+    $openedFilters = $isFiltersLayoutHorizontal ? 0 : $block->getActiveFilters();
+    $selectedFilters = $block->getLayer()->getState()->getFilters() ?? [];
+    $selectedRequestVars = array_map(function($selectedFilter) {
+        return $selectedFilter->getFilter()->getRequestVar();
+    }, $selectedFilters);
+?>
+    <?php if (!empty($filters)): ?>
+        <div
+            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter<?= empty($filters) ? ' filter-no-options' : ''; ?>"
+            id="layered-filter-block"
+            data-mage-init='{ "collapsible": { "active": false, "collateral": { "openedState": "filter-active", "element": "body" }, "mediaQueryScope": "(max-width: 767px)" } }'
+        >
+            <h2 class="cs-aftersearch-nav__filters-trigger" data-role="title">
+                <?= /* @escapeNotVerified */ __('Filters'); ?>
+            </h2>
+            <div class="cs-aftersearch-nav__filters | block-content filter-content" data-role="content">
+                <ul
+                    class="cs-aftersearch-nav__filter-options<?= $isFiltersLayoutHorizontal ? ' cs-filter-horizontal ' : ''; ?> | filter-options"
+                    id="narrow-by-list"
+                    data-role="content"
+                    data-mage-init='{ "accordion": { "openedState": "active", "collapsible": true, "active": <?= $openedFilters; ?>, "multipleCollapsible": <?= $isFiltersLayoutHorizontal ? 'false' : 'true' ?> } }'
+                >
+                <?php foreach ($filters as $filter):
+                    $filterIsChecked = in_array($filter->getRequestVar(), $selectedRequestVars);
+                    $filterDisplaySearchbox = true;
+                    if ($filter->hasAttributeModel()) {
+                        $filterDisplaySearchbox = $filter->getAttributeModel()->getDisplaySearchbox() ?? true;
+                    }
+                ?>
+                    <li
+                        data-role="collapsible"
+                        class="cs-aftersearch-nav__filter<?= $filterIsChecked ? ' cs-aftersearch-nav__filter--checked' : '' ?><?= !$filterDisplaySearchbox ? ' cs-aftersearch-nav__filter--hide-searchbox' : ''; ?> filter-options-item"
+                    >
+                        <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title">
+                            <span class="cs-aftersearch-nav__filter-title-text">
+                                <?= /* @escapeNotVerified */ __($filter->getName()) ?>
+                            </span>
+                        </div>
+                        <div data-role="content" class="cs-aftersearch-nav__filter-content | filter-options-content">
+                            <?= $filtersRenderer->render($filter); ?>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+                <?php if ($isFiltersLayoutHorizontal): ?>
+                    <li class="cs-aftersearch-nav__toggle-wrapper">
+                        <button class="cs-aftersearch-nav__toggle-button" aria-expanded="false" aria-selected="false">
+                            <span class="cs-aftersearch-nav__toggle-text cs-aftersearch-nav__toggle-text--more">
+                                <?= /* @escapeNotVerified */ __('More filters'); ?>
+                            </span>
+                            <span class="cs-aftersearch-nav__toggle-text cs-aftersearch-nav__toggle-text--less">
+                                <?= /* @escapeNotVerified */ __('Less filters'); ?>
+                            </span>
+                        </button>
+                    </li>
                 <?php endif; ?>
-            <?php endforeach; ?>
-            <?php if ($isFiltersLayoutHorizontal): ?>
-                <li class="cs-aftersearch-nav__filter-row cs-aftersearch-nav__show-more-button">
-                    <button
-                        class="cs-aftersearch-nav__show-more-trigger"
-                        data-show-text="<?php /* @escapeNotVerified */
-                        echo __('More filters'); ?>"
-                        data-hide-text="<?php /* @escapeNotVerified */
-                        echo __('Less filters'); ?>"
-                        >
-                        <span class="cs-aftersearch-nav__show-more-trigger-text">
-                            <?php /* @escapeNotVerified */ echo __('More filters'); ?>
-                        </span>
-                        <span class="cs-aftersearch-nav__filter-plus"></span>
-                    </button>
-                </li>
-            <?php endif; ?>
-
-            <?php if ($wrapOptions) : ?>
-                <?php echo $isFiltersLayoutHorizontal ? '</ul>' : '</dl>' ?>
-            <?php else : ?>
-                <script>
-                    require([
-                        'jquery'
-                    ], function ($) {
-                        $('#layered-filter-block').addClass('filter-no-options');
-                    });
-                </script>
-            <?php endif; ?>
-
-            <script>
-                require([
-                    'jquery'
-                ], function ($) {
-                    /* For some reason Safari (also mobile) has problem with background-image rendering for initially hidden parent node. This piece of script forces safari to redraw element when filter options are shown */
-                    $('.cs-aftersearch-nav__filter-content').on( 'dimensionsChanged', function() {
-                        $(this).find('.cs-aftersearch-nav__filter-input--type_checkbox .cs-input__label').css('background-image', 'none').css( 'background-image', '' );
-                    } );
-                });
-            </script>
+                </ul>
+            </div>
+            <div class="loading-mask | cs-aftersearch-nav__loader" data-role="panel">
+                <img class="cs-aftersearch-nav__loader-icon" src="<?= $this->getViewFileUrl('images/spinner.svg'); ?>" alt="Loading...">
+            </div>
         </div>
-    </div>
-
-    <div class="loading-mask | cs-aftersearch-nav__loader" data-role="pannel" style="display:none">
-        <img class="cs-aftersearch-nav__loader-icon" src="<?php echo $this->getViewFileUrl('images/loader-2.gif'); ?>" alt="Loading...">
-    </div>
-<!--    On Safari check svg for checkbox is not shown because initially it is hidden. If we show it initially it works also later-->
-    <span class="cs-visually-hidden cs-aftersearch-nav__tick-placeholder"></span>
+    <?php endif; ?>
 <?php endif; ?>

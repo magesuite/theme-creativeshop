@@ -1,15 +1,16 @@
 @import 'config/variables';
-
+@import 'utils/uri-friendly-hex';
+@import 'components/button/mixin';
 @import 'components/field/hook';
 
-$field_font-size: 1rem !default;
+$field_font-size: 1.4rem !default;
 
 $field_label-font-weight: 700 !default;
-$field_label-font-size: 1.2em !default;
+$field_label-font-size: 0.85em !default;
 
-$field_input-font-size: 1.4em !default;
-$field_input-height: 2.875em !default;
-$field_input-padding: 0 1.5em !default;
+$field_input-font-size: 1em !default;
+$field_input-line-height: $button_line-height !default;
+$field_input-padding: $button_padding !default;
 $field_input-color: $color_text-800 !default;
 $field_input-border: 1px solid $color_border-500 !default;
 $field_input-border-active: 1px solid $color-primary-500 !default;
@@ -17,35 +18,70 @@ $field_input-border-radius: $border-radius_base !default;
 $field_input-box-shadow: none !default;
 $field_input-box-shadow-active: none !default;
 $field_input-disabled-opacity: 0.65 !default;
+$field_input-placeholder-color: $color_text-400 !default;
 
+$field_error-font-size: $field_label-font-size !default;
 $field_error-input-border: 1px solid $color_error-500 !default;
 
+$field_note-font-size: $field_label-font-size !default;
 $field_note-color: $color_text-500 !default;
 
 $field_error-color: $color_error-500 !default;
 
 $field_warning-color: $color_warning-500 !default;
 // Based on https://www.filamentgroup.com/lab/select-css.html
-$field_select-font-size: 1.4em !default;
-$field_select-height: 2.875em !default;
-$field_select-padding: 0.0625em 2.3em 0 1.5em !default;
+$field_select-font-size: $field_input-font-size !default;
+$field_select-line-height: $field_input-line-height !default;
+$field_select-padding: $field_input-padding !default;
+$field_select-padding-right: 2.3em !default;
 $field_select-color: $color_text-800 !default;
 
 $field_select-background-position: right 0.8em top 52%, 0 0 !default;
 $field_select-background-size: 0.7em auto, 100%;
 // Note that select background needs to be defined as background-image to prevent
 // option elements from inheriting it on some browsers.
-$field_select-background-image: url('../images/icons/dropdown_arrow.svg'),
+$field_select-icon-fill: $color_border-500 !default;
+$field_select-background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e"),
     linear-gradient(0, transparent 0%, transparent 100%) !default;
-$field_select-background-active: url('../images/icons/dropdown_arrow-active.svg'),
+$field_select-icon-fill-active: $color_primary-500 !default;
+$field_select-background-active: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill-active)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e"),
     linear-gradient(0, transparent 0%, transparent 100%) !default;
 
 $field_select-border: 1px solid $color_border-500 !default;
-$field_select-border-active: 1px solid $color-primary-500 !default;
+$field_select-border-active: 1px solid $color_primary-500 !default;
 $field_select-border-radius: $border-radius_base !default;
 $field_select-box-shadow: none !default;
 $field_select-box-shadow-active: none !default;
 $field_select-disabled-opacity: $field_input-disabled-opacity !default;
+
+/* Radio and checkbox styling */
+$field_radio-font-size: 1em !default;
+$field_radio-size: 1em !default;
+// Lets you adjust both radio and checkbox alignment based on font you've chosen.
+$field_radio-offset: -0.0625em !default;
+// Aligning anything that comes after with input paddings, this 1px stands for input's border width.
+$field_radio-margin: $field_radio-offset
+    calc(#{1.5em - $field-radio-size} + 1px) 0 0 !default;
+
+$field_radio-background-size: 1em 1em !default;
+$field_radio-background-color: transparent !default;
+$field_radio-background-color-active: transparent !default;
+$field_radio-background-color-checked: transparent !default;
+$field_radio-icon-fill: $color_primary-500 !default;
+$field_radio-background-image-checked: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle fill='#{uri-friendly-hex($field_radio-icon-fill)}' r='4' cy='7' cx='7'/%3e%3c/svg%3e") !default;
+
+$field_radio-border: 1px solid $color_border-500 !default;
+$field_radio-border-active: 1px solid $color-primary-800 !default;
+$field_radio-border-checked: 1px solid $color_primary-500 !default;
+$field_radio-box-shadow: none !default;
+$field_radio-box-shadow-active: none !default;
+$field_radio-box-shadow-checked: none !default;
+$field_radio-disabled-opacity: $field_input-disabled-opacity !default;
+
+$field_checkbox-border-radius: $border-radius_base !default;
+$field_checkbox-background-size: 1em 1em !default;
+$field_checkbox-icon-fill: $color_primary-500 !default;
+$field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='#{uri-friendly-hex($field_checkbox-icon-fill)}' d='M5.313 10.108H5.24a1.064 1.005 0 0 1-.75-.41l-1.947-2.55a1.064 1.005 0 0 1 1.723-1.175L5.463 7.56 9.06 4.19a1.064 1.005 0 0 1 .75-.297h.846a1.064 1.005 0 0 1 0 2.004h-.45L6.064 9.81a1.064 1.005 0 0 1-.75.298z'/%3e%3c/svg%3e") !default;
 
 @mixin field() {
     font-size: $field_font-size;
@@ -61,7 +97,7 @@ $field_select-disabled-opacity: $field_input-disabled-opacity !default;
 }
 
 @mixin field-error() {
-    font-size: 1.2em;
+    font-size: $field_error-font-size;
     color: $color_error-500;
     margin-top: 0.2em;
 
@@ -93,7 +129,7 @@ $field_select-disabled-opacity: $field_input-disabled-opacity !default;
 
 @mixin field-input() {
     font-size: $field_input-font-size;
-    height: $field_input-height;
+    line-height: $field_input-line-height;
     padding: $field_input-padding;
     color: $field_input-color;
     border-radius: $field_input-border-radius;
@@ -110,6 +146,11 @@ $field_select-disabled-opacity: $field_input-disabled-opacity !default;
             border: $field_input-border-active;
             box-shadow: $field_input-box-shadow-active;
         }
+    }
+
+    &::placeholder {
+        opacity: 1;
+        color: $field_input-placeholder-color;
     }
 
     &[disabled] {
@@ -138,7 +179,7 @@ $field_select-disabled-opacity: $field_input-disabled-opacity !default;
 
 @mixin field-note() {
     display: block;
-    font-size: 1.2em;
+    font-size: $field_note-font-size;
     padding: 0.3em 0 0;
     color: $field_note-color;
 
@@ -164,8 +205,9 @@ $field_select-disabled-opacity: $field_input-disabled-opacity !default;
 @mixin field-select() {
     display: block;
     font-size: $field_select-font-size;
-    height: $field_select-height;
+    line-height: $field_select-line-height;
     padding: $field_select-padding;
+    padding-right: $field_select-padding-right;
     color: $field_select-color;
     border-radius: $field_select-border-radius;
     border: $field_select-border;
@@ -211,4 +253,98 @@ $field_select-disabled-opacity: $field_input-disabled-opacity !default;
     }
 
     @include field-select-hook();
+}
+
+@mixin field-radio() {
+    display: inline-block;
+    height: $field_radio-size;
+    width: $field_radio-size;
+    margin: $field_radio-margin;
+    font-size: $field_radio-font-size;
+    overflow: hidden;
+    vertical-align: middle;
+    appearance: none;
+    flex: 0 0 auto; // Prevent flex parent from breaking dimensions.
+    cursor: pointer;
+
+    border: $field_radio-border;
+    box-shadow: $field_radio-box-shadow;
+    background-color: $field_radio-background-color;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: $field_radio-background-size;
+    outline: 0;
+    border-radius: 50%;
+    transition: background-color 0.5s, border-color 0.5s;
+
+    // Styling for IE11, needs to be duplicated.
+    &::-ms-check {
+        color: transparent;
+        border: $field_radio-border;
+        box-shadow: $field_radio-box-shadow;
+        background-color: $field_radio-background-color;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: $field_radio-background-size;
+        outline: 0;
+        border-radius: 50%;
+        transition: background-color 0.5s, border-color 0.5s;
+        background-color: $field_radio-background-color-checked;
+
+        &:checked {
+            background-image: $field_radio-background-image-checked;
+        }
+    }
+
+    &:-moz-focusring,
+    &::-moz-focus-inner {
+        color: transparent !important;
+        text-shadow: 0 0 0 #000 !important;
+    }
+
+    &:hover,
+    &:focus {
+        &:not([disabled]) {
+            border: $field_radio-border-active;
+            box-shadow: $field_radio-box-shadow-active;
+            background-color: $field_radio-background-color-active;
+        }
+    }
+
+    &:checked {
+        border: $field_radio-border-checked;
+        box-shadow: $field_radio-box-shadow-checked;
+        background-color: $field_radio-background-color-checked;
+        background-image: $field_radio-background-image-checked;
+    }
+
+    &[disabled] {
+        opacity: $field_radio-disabled-opacity;
+    }
+
+    @include field-radio-hook();
+}
+
+@mixin field-checkbox() {
+    @include field-radio();
+
+    border-radius: $field_checkbox-border-radius;
+    background-size: $field_checkbox-background-size;
+
+    // Styling for IE11, needs to be duplicated.
+    &::-ms-check {
+        color: transparent;
+        border-radius: $field_checkbox-border-radius;
+        background-size: $field_checkbox-background-size;
+
+        &:checked {
+            background-image: $field_checkbox-background-image-checked;
+        }
+    }
+
+    &:checked {
+        background-image: $field_checkbox-background-image-checked;
+    }
+
+    @include field-checkbox-hook();
 }

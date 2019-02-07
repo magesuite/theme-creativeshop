@@ -1,248 +1,558 @@
-@mixin aftersearch-nav($conf: ()) {
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/reset-list-style';
+@import 'components/pseudoicon/pseudoicon-plus';
+@import 'components/button/mixin';
+@import 'components/field/mixin';
+
+$aftersearch-nav_gutter: $page_edge-gutter !default;
+$aftersearch-nav--mobile_bleed: $page_edge-gutter !default;
+
+$aftersearch-nav_loader-stroke: $color_border-500 !default;
+
+$aftersearch-nav_filters-trigger-background: $color_background-500 !default;
+$aftersearch-nav_filters-trigger-background--opened: $color_primary-500 !default;
+$aftersearch-nav_filters-trigger-color--opened: $color_text-200 !default;
+$aftersearch-nav_filters-trigger-box-shadow: 0 4px 3px -2px rgba(0, 0, 0, 0.15) !default;
+
+$aftersearch-nav_filters-trigger-plus-size: 1rem !default;
+$aftersearch-nav_filters-trigger-plus-weight: 0.2rem !default;
+$aftersearch-nav_filters-trigger-plus-color: currentColor !default;
+$aftersearch-nav_filters--expanded-trigger-plus-color: $color_border-100 !default;
+
+$aftersearch-nav_filter-border: 1px solid $color_border-500 !default;
+
+$aftersearch-nav_filter-font-size: 1.3rem !default;
+
+$aftersearch-nav_filter-title-background: $color_background-500 !default;
+$aftersearch-nav_filter-title-plus-size: 1rem;
+$aftersearch-nav_filter-title-plus-weight: 0.2rem;
+$aftersearch-nav_filter-title-plus-color: currentColor;
+$aftersearch-nav_filter--hover-title-plus-color: currentColor;
+$aftersearch-nav_filter--expanded-title-plus-color: currentColor;
+
+$aftersearch-nav_filter-count-color: $color_text-400 !default;
+$aftersearch-nav_filter-count-label-show: false !default;
+
+$aftersearch-nav_show-more-button-type: 'secondary' !default;
+$aftersearch-nav_show-more-button-icon-pos: 'no-icon' !default;
+
+$aftersearch-nav--horizontal_item-gutter: 0.8em !default;
+$aftersearch-nav--horizontal_item-font-size: 1.1rem !default;
+$aftersearch-nav--horizontal_filter-line-height: $button_line-height !default;
+$aftersearch-nav--horizontal_filter-padding: $button_padding !default;
+
+$aftersearch-nav--horizontal_filter-title-box-shadow: none !default;
+$aftersearch-nav--horizontal_filter-title-box-shadow-opened: 0 0px 10px 0
+    rgba(0, 0, 0, 0.15);
+$aftersearch-nav--horizontal_filter-title-background-color: $color_background-500 !default;
+$aftersearch-nav--horizontal_filter-title-border: 1px solid
+    $aftersearch-nav--horizontal_filter-title-background-color !default;
+$aftersearch-nav--horizontal_filter-title-background-color-active: $color_background-600 !default;
+$aftersearch-nav--horizontal_filter-title-border-active: 1px solid
+    $aftersearch-nav--horizontal_filter-title-background-color-active !default;
+$aftersearch-nav--horizontal_filter-title-background-color-opened: $color_background-200 !default;
+$aftersearch-nav--horizontal_filter-title-border-opened: 1px solid
+    $aftersearch-nav--horizontal_filter-title-background-color-opened !default;
+
+$aftersearch-nav--horizontal_filter-content-background: $color_background-200 !default;
+$aftersearch-nav--horizontal_filter-content-box-shadow: 0 4px 6px 0
+    rgba(0, 0, 0, 0.15) !default;
+
+$aftersearch-nav--horizontal_toggle-button-bottom: false !default;
+$aftersearch-nav--horizontal_toggle-button-type: 'primary' !default;
+$aftersearch-nav--horizontal_toggle-button-icon-pos: 'no-icon' !default;
+
+$aftersearch-nav--horizontal_toggle-button-plus-size: 1rem;
+$aftersearch-nav--horizontal_toggle-button-plus-weight: 0.2rem;
+$aftersearch-nav--horizontal_toggle-button-plus-color: currentColor;
+$aftersearch-nav--horizontal_toggle-button--hover-plus-color: currentColor;
+$aftersearch-nav--horizontal_toggle-button--expanded-plus-color: currentColor;
+
+$aftersearch-nav--horizontal_cols: (
+    tablet: 4,
+    laptop: 5,
+    desktop: 6,
+) !default;
+$aftersearch-nav--horizontal_rows: (
+    tablet: 1,
+    laptop: 1,
+    desktop: 1,
+) !default;
+
+.cs-aftersearch-nav {
     $root: &;
+    overflow: visible;
+    width: calc(100% + #{$aftersearch-nav--mobile_bleed * 2});
+    margin: 0 -#{$aftersearch-nav--mobile_bleed} 3rem;
 
-    $conf: map-merge(
-        (
-            tabletFilters: 4,
-            laptopFilters: 6,
-            desktopFilters: 6,
-            tabletRows: 1,
-            laptopRows: 1,
-            desktopRows: 1,
-            buttonMoreBottom: false,
-            buttonLessBottom: false,
-        ),
-        $conf
-    );
+    @include media('>=tablet') {
+        width: auto;
+        margin: 0;
+    }
 
-    &__show-more-button {
+    &__loader {
         display: none;
     }
 
-    @include media('>=tablet', '<laptop') {
-        $row-numbers: map-get($conf, tabletFilters);
-        $button-more-bottom: map-get($conf, buttonMoreBottom);
-        $button-less-bottom: map-get($conf, buttonLessBottom);
+    &__loader-icon {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        stroke: $aftersearch-nav_loader-stroke;
+    }
 
-        $filters-rows-tablet: map-get($conf, tabletFilters) *
-            map-get($conf, tabletRows);
+    &__filter-options {
+        @include reset-list-style();
+    }
 
-        &__filter,
-        &__filter-row {
-            flex-basis: calc(100% / #{$row-numbers});
+    &__filter {
+        position: relative;
+        margin: 0;
+
+        & + & {
+            border-top: $aftersearch-nav_filter-border;
+
+            @include media('>=tablet') {
+                border-top: 0;
+            }
         }
 
-        &__filter-row {
+        &--hide-searchbox {
+            .search {
+                display: none;
+            }
+        }
+
+        @include media('>=tablet') {
+            padding-bottom: 0;
+            border-bottom: $aftersearch-nav_filter-border;
+        }
+    }
+
+    &__filters-trigger {
+        @include pseudoicon-plus(
+            $size: $aftersearch-nav_filters-trigger-plus-size,
+            $weight: $aftersearch-nav_filters-trigger-plus-weight,
+            $color: $aftersearch-nav_filters-trigger-plus-color,
+            $color-expanded:
+                $aftersearch-nav_filters--expanded-trigger-plus-color
+        );
+
+        margin: 0;
+        display: flex;
+        align-items: center;
+        padding: 1em;
+        background: $aftersearch-nav_filters-trigger-background;
+        box-shadow: $aftersearch-nav_filters-trigger-box-shadow;
+        transition-property: background-color, color, box-shadow;
+        transition-duration: 0.3s;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+
+        @include media('>=tablet') {
+            display: none;
+        }
+
+        &[aria-expanded='true'] {
+            background: $aftersearch-nav_filters-trigger-background--opened;
+            color: $aftersearch-nav_filters-trigger-color--opened;
+        }
+    }
+
+    &__filters {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        height: 0;
+
+        &[aria-hidden] {
+            height: auto;
+        }
+
+        @include media('>=tablet') {
+            height: auto;
+            border-bottom: none;
+            overflow: visible;
+        }
+    }
+
+    &__filter-title {
+        @include pseudoicon-plus(
+            $size: $aftersearch-nav_filter-title-plus-size,
+            $weight: $aftersearch-nav_filter-title-plus-weight,
+            $color: $aftersearch-nav_filter-title-plus-color,
+            $color-hover: $aftersearch-nav_filter--hover-title-plus-color,
+            $color-expanded: $aftersearch-nav_filter--expanded-title-plus-color
+        );
+
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+        margin: 0;
+        overflow: hidden;
+        text-decoration: none;
+        text-transform: uppercase;
+        word-break: break-all;
+        z-index: 1;
+        width: 100%;
+        background: $aftersearch-nav_filter-title-background;
+        padding: 1.3rem 3rem 1.3rem $aftersearch-nav_gutter;
+
+        @include media('>=tablet') {
+            padding: 2rem 2rem 2rem 0;
+            background: transparent;
+        }
+    }
+
+    &__filter-content {
+        width: 100%;
+        margin: 0;
+        padding: 2rem $aftersearch-nav_gutter;
+        display: none;
+
+        @include media('>=tablet') {
+            padding: 0 0 2rem;
+            width: auto;
+        }
+
+        &[aria-hidden] {
             display: block;
         }
+    }
+    // Filter searchbox container.
+    .search {
+        font-size: $aftersearch-nav_filter-font-size;
+    }
+    // Filter searchbox input.
+    .filter-search {
+        @include field-input();
+        margin-bottom: 1rem;
+    }
 
-        &__filter-row:last-child:not(&__filter):nth-child(-n
-                + #{$filters-rows-tablet}) {
-            display: none;
+    .items {
+        @include reset-list-style();
+        columns: 2;
+
+        @include media('>=tablet') {
+            padding-top: 0;
+            columns: 1;
+        }
+    }
+
+    .item {
+        margin: 1rem 0 0;
+        font-size: $aftersearch-nav_filter-font-size;
+        page-break-inside: avoid; /* Firefox */
+        break-inside: avoid; /* IE 10+ */
+
+        &:first-child {
+            margin-top: 0;
         }
 
-        @if $button-more-bottom == true {
-            $row-numbers: map-get($conf, tabletFilters) + 1;
+        a {
+            @include field();
+            align-items: center;
+            font-size: 1em;
+            flex-wrap: nowrap;
+            align-content: center;
 
-            .#{$ns}filter-horizontal {
-                padding-bottom: 4.9rem !important;
-            }
-
-            .#{$ns}aftersearch-nav__show-more-button {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: -0.2rem !important;
-                margin: 0 auto !important;
-                min-width: 12rem !important;
-                max-width: 40rem !important;
-
-                #{$root}__show-more-trigger {
-                    text-align: center !important;
-                }
-            }
-        }
-
-        @if $button-less-bottom == true {
-            .#{$ns}filter-horizontal {
-                padding-bottom: 4.9rem !important;
-            }
-
-            .#{$ns}aftersearch-nav__show-more-button {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: -0.2rem !important;
-                margin: 0 auto !important;
-                min-width: 12rem !important;
-                max-width: 40rem !important;
-
-                #{$root}__show-more-trigger {
-                    text-align: center !important;
-                }
+            &:hover {
+                text-decoration: none;
             }
         }
 
-        &__filter:nth-child(n + #{$row-numbers}) {
-            display: none;
+        input[type='checkbox'] {
+            @include field-checkbox();
+            font-size: 1em;
+        }
+        // Container for filter name and counter.
+        label {
+            display: flex;
+            align-items: center;
 
-            #{$root}--expanded & {
-                display: block;
+            &:hover {
+                cursor: pointer;
             }
         }
     }
 
-    @include media('>=laptop', '<desktop') {
-        $row-numbers: map-get($conf, laptopFilters);
-        $button-more-bottom: map-get($conf, buttonMoreBottom);
-        $button-less-bottom: map-get($conf, buttonLessBottom);
+    .count {
+        display: inline-flex;
+        color: $aftersearch-nav_filter-count-color;
+        margin-left: 0.2em;
 
-        $filters-rows-laptop: map-get($conf, laptopFilters) *
-            map-get($conf, laptopRows);
-
-        &__filter,
-        &__filter-row {
-            flex-basis: calc(100% / #{$row-numbers});
-        }
-
-        &__filter-row {
-            display: block;
-        }
-
-        &__filter-row:last-child:not(&__filter):nth-child(-n
-                + #{$filters-rows-laptop}) {
-            display: none;
-        }
-
-        @if $button-more-bottom == true {
-            $row-numbers: map-get($conf, laptopFilters) + 1;
-
-            .#{$ns}filter-horizontal {
-                padding-bottom: 4.9rem !important;
+        @if not $aftersearch-nav_filter-count-label-show {
+            &:before {
+                content: '(';
             }
 
-            .#{$ns}aftersearch-nav__show-more-button {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: -0.2rem !important;
-                margin: 0 auto !important;
-                min-width: 12rem !important;
-                max-width: 40rem !important;
-
-                #{$root}__show-more-trigger {
-                    text-align: center !important;
-                }
-            }
-        }
-
-        @if $button-less-bottom == true {
-            .#{$ns}filter-horizontal {
-                padding-bottom: 4.9rem !important;
-            }
-
-            .#{$ns}aftersearch-nav__show-more-button {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: -0.2rem !important;
-                margin: 0 auto !important;
-                min-width: 12rem !important;
-                max-width: 40rem !important;
-
-                #{$root}__show-more-trigger {
-                    text-align: center !important;
-                }
-            }
-        }
-
-        &__filter:nth-child(n + #{$row-numbers}) {
-            display: none;
-
-            #{$root}--expanded & {
-                display: block;
+            &:after {
+                content: ')';
             }
         }
     }
 
-    @include media('>=desktop') {
-        $row-numbers: map-get($conf, desktopFilters);
-        $button-more-bottom: map-get($conf, buttonMoreBottom);
-        $button-less-bottom: map-get($conf, buttonLessBottom);
+    .filter-count-label {
+        display: none;
 
-        $filters-rows-desktop: map-get($conf, desktopFilters) *
-            map-get($conf, desktopRows);
-
-        &__filter,
-        &__filter-row {
-            flex-basis: calc(100% / #{$row-numbers});
-        }
-
-        &__filter-row {
-            display: block;
-        }
-
-        &__filter-row:last-child:not(&__filter):nth-child(-n
-                + #{$filters-rows-desktop}) {
-            display: none;
-        }
-
-        @if $button-more-bottom == true {
-            $row-numbers: map-get($conf, desktopFilters) + 1;
-
-            .#{$ns}filter-horizontal {
-                padding-bottom: 4.9rem !important;
-            }
-
-            .#{$ns}aftersearch-nav__show-more-button {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: -0.2rem !important;
-                margin: 0 auto !important;
-                min-width: 12rem !important;
-                max-width: 40rem !important;
-
-                #{$root}__show-more-trigger {
-                    text-align: center !important;
-                }
-            }
-        }
-
-        @if $button-less-bottom == true {
-            .#{$ns}filter-horizontal {
-                padding-bottom: 4.9rem !important;
-            }
-
-            .#{$ns}aftersearch-nav__show-more-button {
-                position: absolute !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: -0.2rem !important;
-                margin: 0 auto !important;
-                min-width: 12rem !important;
-                max-width: 40rem !important;
-
-                #{$root}__show-more-trigger {
-                    text-align: center !important;
-                }
-            }
-        }
-
-        &__filter:nth-child(n + #{$row-numbers}) {
-            display: none;
-
-            #{$root}--expanded & {
-                display: block;
-            }
+        @if $aftersearch-nav_filter-count-label-show {
+            display: inline;
         }
     }
 
-    @include media('>=desktop') {
-        &__filter-content {
-            &--extremely-right {
-                left: auto !important;
-                right: 0.5rem;
+    .no-results-message {
+        font-size: $aftersearch-nav_filter-font-size;
+    }
+
+    .actions {
+        margin-top: 1rem;
+    }
+
+    .show-more,
+    .show-less {
+        @include button(
+            $type: $aftersearch-nav_show-more-button-type,
+            $icon_pos: $aftersearch-nav_show-more-button-icon-pos
+        );
+        font-size: $aftersearch-nav_filter-font-size;
+    }
+
+    &__toggle-wrapper {
+        display: none;
+    }
+
+    &--horizontal {
+        margin-top: 1rem;
+
+        @include media('>=tablet') {
+            z-index: 20;
+            padding-bottom: 0;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+
+            &#{$root}--expanded {
+                #{$root}__filter {
+                    display: block !important;
+                }
+            }
+
+            #{$root}__filters {
+                width: 100%;
+                border-top: $aftersearch-nav_filter-border;
+                border-bottom: $aftersearch-nav_filter-border;
+            }
+
+            #{$root}__state {
+                width: 100%;
+                order: 2;
+            }
+
+            #{$root}__filter-options {
+                margin-top: $aftersearch-nav--horizontal_item-gutter;
+                margin-right: -$aftersearch-nav--horizontal_item-gutter;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            #{$root}__toggle-wrapper {
+                margin-right: auto;
+                margin-bottom: $aftersearch-nav--horizontal_item-gutter;
+            }
+
+            @if $aftersearch-nav--horizontal_toggle-button-bottom {
+                #{$root}__filter-options {
+                    &:after {
+                        content: '';
+                        display: block;
+                        flex: 1 1 100%;
+                        order: 1;
+                    }
+                }
+
+                #{$root}__filter {
+                    order: 1;
+
+                    &:nth-last-child(2) {
+                        margin-right: auto;
+                    }
+                }
+
+                #{$root}__toggle-wrapper {
+                    order: 2;
+                    margin-left: auto;
+                    margin-right: auto;
+
+                    #{$root}__toggle-button {
+                        text-align: center;
+                    }
+                }
+            }
+
+            #{$root}__filter {
+                border-bottom: none;
+                margin: 0 $aftersearch-nav--horizontal_item-gutter
+                    $aftersearch-nav--horizontal_item-gutter 0;
+            }
+
+            #{$root}__filter-title {
+                font-size: 1.4rem;
+                overflow: visible;
+                background-color: $aftersearch-nav--horizontal_filter-title-background-color;
+                line-height: $aftersearch-nav--horizontal_filter-line-height;
+                padding: $aftersearch-nav--horizontal_filter-padding;
+                border: $aftersearch-nav--horizontal_filter-title-border;
+                box-shadow: $aftersearch-nav--horizontal_filter-title-box-shadow;
+                transition: box-shadow 0.3s, background 0.3s, border 0.3s;
+                word-break: unset;
+
+                &:hover {
+                    background-color: $aftersearch-nav--horizontal_filter-title-background-color-active;
+                    border: $aftersearch-nav--horizontal_filter-title-border-active;
+                }
+
+                &[aria-expanded='true'] {
+                    background-color: $aftersearch-nav--horizontal_filter-title-background-color-opened;
+                    border: $aftersearch-nav--horizontal_filter-title-border-opened;
+                    box-shadow: $aftersearch-nav--horizontal_filter-title-box-shadow-opened;
+                }
+            }
+
+            #{$root}__filter-title-text {
+                font-size: $aftersearch-nav--horizontal_item-font-size;
+            }
+
+            #{$root}__toggle-button {
+                @include button(
+                    $type: $aftersearch-nav--horizontal_toggle-button-type,
+                    $icon_pos:
+                        $aftersearch-nav--horizontal_toggle-button-icon-pos
+                );
+
+                @include pseudoicon-plus(
+                    $size: $aftersearch-nav--horizontal_toggle-button-plus-size,
+                    $weight:
+                        $aftersearch-nav--horizontal_toggle-button-plus-weight,
+                    $color:
+                        $aftersearch-nav--horizontal_toggle-button-plus-color,
+                    $color-hover:
+                        $aftersearch-nav--horizontal_toggle-button--hover-plus-color,
+                    $color-expanded:
+                        $aftersearch-nav--horizontal_toggle-button--expanded-plus-color
+                );
+
+                width: 100%;
+                border-radius: 0 !important;
+                position: relative;
+                display: flex;
+
+                &[aria-expanded='true'] {
+                    #{$root}__toggle-text {
+                        &--less {
+                            display: block;
+                        }
+
+                        &--more {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            #{$root}__toggle-text {
+                font-size: $aftersearch-nav--horizontal_item-font-size;
+                text-transform: uppercase;
+
+                &--less {
+                    display: none;
+                }
+
+                &--more {
+                    display: block;
+                }
+            }
+
+            #{$root}__filter-content {
+                position: absolute;
+                min-width: 100%;
+                background-color: $aftersearch-nav--horizontal_filter-content-background;
+                transition: opacity 0.3s ease-in-out;
+                overflow-y: auto;
+                opacity: 0;
+                box-shadow: $aftersearch-nav--horizontal_filter-content-box-shadow;
+
+                @include media('>=tablet') {
+                    padding-bottom: 0;
+                }
+
+                .ie11 & {
+                    width: 100%;
+                    white-space: normal;
+                }
+
+                &[aria-hidden='false'] {
+                    z-index: 6;
+                    opacity: 1;
+                }
+
+                > div {
+                    // Class depends on filter type but it seems to always be a div.
+                    padding: 1rem 1.5rem;
+                }
+                // Align dropdown to the right if it is on the right side of the screen.
+                &--align-right {
+                    left: auto;
+                    right: 0;
+                }
+            }
+
+            .item:last-child,
+            #{$root}__swatch {
+                margin-bottom: 0;
+            }
+        }
+        // Calculates layout for elements in horizontal navigation for each breakpoint.
+        @each $breakpoint, $cols in $aftersearch-nav--horizontal_cols {
+            $rows: map-get($aftersearch-nav--horizontal_rows, $breakpoint);
+
+            $elements: $cols * $rows;
+            @if $aftersearch-nav--horizontal_toggle-button-bottom {
+                $elements: $elements + 1;
+            }
+
+            @include media('>=#{$breakpoint}') {
+                #{$root}__filter,
+                #{$root}__toggle-wrapper {
+                    flex-basis: calc(
+                        #{100% / $cols} - #{$aftersearch-nav--horizontal_item-gutter}
+                    );
+                }
+
+                #{$root}__filter {
+                    // Shows first n filters leaving space for "show more" button.
+                    &:nth-child(-n + #{$elements - 1}) {
+                        display: block;
+                    }
+
+                    &:nth-child(n + #{$elements}) {
+                        display: none;
+                    }
+
+                    &:nth-child(#{$elements}):nth-last-child(2) {
+                        display: block;
+                    }
+                }
+
+                #{$root}__toggle-wrapper {
+                    &:nth-child(n + #{$elements + 2}) {
+                        display: block;
+                    }
+                }
             }
         }
     }

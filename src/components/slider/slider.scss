@@ -1,0 +1,29 @@
+@import 'config/variables';
+
+$slider--horizontal_height: 1rem !default;
+$slider--horizontal_background: $color_border-500 !default;
+$slider--horizontal_handle-size: 1rem !default;
+$slider--horizontal_handle-background: $color_primary-500 !default;
+$slider--horizontal_handle-background-active: $color_primary-800 !default;
+
+.ui-slider-horizontal {
+    background: $slider--horizontal_background;
+    height: $slider--horizontal_height;
+    margin-left: ($slider--horizontal_handle-size / 2);
+    margin-right: ($slider--horizontal_handle-size / 2);
+
+    .ui-slider-handle {
+        width: $slider--horizontal_handle-size;
+        height: $slider--horizontal_handle-size;
+        background: $slider--horizontal_handle-background;
+        transition: transform 0.3s, background 0.3s;
+        cursor: pointer;
+
+        &.ui-state-hover,
+        &.ui-state-active,
+        &.ui-state-focus {
+            transform: scale(1.5);
+            background: $slider--horizontal_handle-background-active;
+        }
+    }
+}
