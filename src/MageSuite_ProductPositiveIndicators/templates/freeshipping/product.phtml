@@ -1,0 +1,19 @@
+<?php
+/** @var $block \MageSuite\ProductPositiveIndicators\Block\FreeShipping\Product */
+if ($block->isFreeShippingAvailable() && $block->showTextNoteOnProductsDetailpage()): ?>
+    <?php
+        $headline = $block->getHeadline(); 
+        $text = $block->getText(); 
+    ?>
+    <div class="cs-indicator-free-shipping">
+        <?= $block->getChildHtml(''); ?>
+        <span class="cs-indicator-free-shipping__label">
+            <?php if(!empty($headline)): ?>
+                <span class="cs-indicator-free-shipping__headline"><?= $headline ?></span>
+            <?php endif; ?>
+            <?php if(!empty($text)): ?>
+                <span class="cs-indicator-free-shipping__text"><?= $text ?></span>
+            <?php endif; ?>
+        </span>
+    </div>
+<?php endif; ?>

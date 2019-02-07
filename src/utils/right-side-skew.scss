@@ -1,0 +1,90 @@
+@import 'config/variables';
+
+$right-side-skew-transform: $transform_skew-200 !default;
+$right-side-skew-transform-revert: $transform_skew-200-revert !default;
+
+@mixin right-side-skew(
+    $right-side-skew-background: $color_gallery, 
+    $right-side-skew-gutter: 0,
+    $right-side-skew-gutter-multiplier: 2
+) {
+    @if $right-side-skew-gutter != 0 {
+        margin-left: $right-side-skew-gutter;
+        margin-right: $right-side-skew-gutter;
+    }
+
+    &:before {
+        content: ' ';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        background: $right-side-skew-background;
+        border-radius: inherit;
+        transform: $right-side-skew-transform;
+    }
+
+    &:first-child {
+        margin-left: 0;
+        background: $right-side-skew-background;
+
+        @if $right-side-skew-gutter != 0 {
+            margin-right: $right-side-skew-gutter-multiplier * $right-side-skew-gutter;
+        }
+
+        &:before {
+            transform-origin: bottom left;
+        }
+    }
+
+    &:last-child:not(:only-child) {
+        margin-right: 0;
+        background: $right-side-skew-background;
+
+        @if $right-side-skew-gutter != 0 {
+            margin-left: $right-side-skew-gutter-multiplier * $right-side-skew-gutter;
+        }
+
+        &:before {
+            left: auto;
+            right: 0;
+            transform-origin: top right;
+        }
+    }
+}
+
+@mixin right-side-skew-override(
+    $right-side-skew-background: same, 
+    $right-side-skew-gutter: same,
+    $right-side-skew-gutter-multiplier: 2
+) {
+    @if $right-side-skew-gutter != same {
+        margin-left: $right-side-skew-gutter;
+        margin-right: $right-side-skew-gutter;
+    }
+
+    @if $right-side-skew-background != same {
+        &:before {
+            background: $right-side-skew-background;
+        }
+    }
+
+    &:first-child {
+        @if $right-side-skew-background != same {
+            background: $right-side-skew-background;
+        }
+
+        margin-right: $right-side-skew-gutter-multiplier * $right-side-skew-gutter;
+    }
+
+    &:last-child:not(:only-child) {
+        @if $right-side-skew-background != same {
+            background: $right-side-skew-background;
+        }
+
+        margin-left: $right-side-skew-gutter-multiplier * $right-side-skew-gutter;
+    }
+}

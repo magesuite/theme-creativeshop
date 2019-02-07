@@ -1,0 +1,35 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import './mixins.scss';
+
+$indicator-fast-shipping_gutter: 1rem !default;
+
+.#{$ns}indicator-fast-shipping {
+    $root: &;
+
+    @if $indicator-fast-shipping_gutter != 0 {
+        &:not(:last-child) {
+            margin: 0 0 $indicator-fast-shipping_gutter;
+        }
+    }
+
+    &__element {
+        display: none;
+
+        &--visible {
+            @include indicator();
+        }
+    }
+
+    &__element-icon {
+        @include indicator-icon();
+    }
+
+    &__headline {
+        @include indicator-headline();
+    }
+
+    &__text {
+        @include indicator-text();
+    }
+}

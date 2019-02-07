@@ -1,0 +1,42 @@
+<?php
+    /** @var $block \MageSuite\ProductPositiveIndicators\Block\FastShipping\Product */
+    $deliveryData = json_decode($block->getDeliveryData(), true);
+?>
+<?php if($deliveryData && isset($deliveryData['day'])): ?>
+    <div class="cs-indicator-fast-shipping">
+        <div class="cs-indicator-fast-shipping__content">
+            <?= $block->getChildHtml('') ?>
+            <?php foreach($block->getVariants() as $variantKey => $variantData): ?>
+                <div class="cs-indicator-fast-shipping__element cs-indicator-fast-shipping__element--<?= $variantKey ?>" data-fs-scenario="<?= $variantKey ?>">
+                    <?php if(isset($variantData['icon_url']) && !empty($variantData['icon_url'])): ?>
+                        <?= $this->getLayout()
+                               ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                               ->setIconUrl($variantData['icon_url'])
+                               ->setCssClass('cs-indicator-fast-shipping__element-icon cs-indicator-fast-shipping__element-icon--'.$variantKey)
+                               ->setInlined(true)
+                               ->setLazyLoaded(true)
+                               ->toHtml();
+                        ?>
+                    <?php endif; ?>
+
+                    <span class="cs-indicator-fast-shipping__label">
+                        <?php if(isset($variantData['headline'])): ?>
+                            <span class="cs-indicator-fast-shipping__headline"><?= $variantData['headline'] ?></span>
+                        <?php endif; ?>
+                        <?php if(isset($variantData['text'])): ?>
+                            <span class="cs-indicator-fast-shipping__text">
+                                <?php if(strpos($variantData['text'], '%1')):
+                                    echo __($variantData['text'], '<span class="cs-indicator-fast-shipping__text-placeholder-'.$variantKey.'"></span>');
+                                else: 
+                                    echo __($variantData['text']);
+                                endif; ?>
+                            </span>
+                        <?php endif; ?>
+                    </span>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <input type="hidden" name="cs-indicator-fast-shipping__labels" class="cs-indicator-fast-shipping__labels" value='<?= json_encode($block->getTimeLabels()) ?>'>
+    </div>
+<?php endif; ?>

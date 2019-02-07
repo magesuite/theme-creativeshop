@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="indicator.low-stock">
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="indicator.low-stock.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">MageSuite_ProductPositiveIndicators::images/low-stock.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-indicator-low-stock__icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceBlock name="indicator.recently-bought">
+            <arguments>
+                <argument name="headline" xsi:type="string" translate="true">Popular product</argument>
+            </arguments>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="indicator.recently-bought.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">MageSuite_ProductPositiveIndicators::images/popular.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-indicator-recently-bought__icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceBlock name="indicator.free-shipping">
+            <arguments>
+                <argument name="headline" xsi:type="string" translate="true">Free Shipping</argument>
+                <argument name="text" xsi:type="string" translate="true">for this item</argument>
+            </arguments>
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="indicator.free-shipping.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">MageSuite_ProductPositiveIndicators::images/free-delivery.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-indicator-free-shipping__icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceBlock name="indicator.fast-shipping">
+            <arguments>
+                <argument name="variants" xsi:type="array">
+                    <item name="today" xsi:type="array">
+                        <item name="icon_url" xsi:type="string">MageSuite_ProductPositiveIndicators::images/fast-delivery.svg</item>
+                        <item name="headline" xsi:type="string" translate="true">Express delivery</item>
+                        <item name="text" xsi:type="string">Only if you order until %1</item>
+                    </item>
+                    <item name="tomorrow" xsi:type="array">
+                        <item name="icon_url" xsi:type="string">MageSuite_ProductPositiveIndicators::images/fast-delivery.svg</item>
+                        <item name="headline" xsi:type="string" translate="true">In stock</item>
+                        <item name="text" xsi:type="string">Shipping on the next working day</item>
+                    </item>
+                    <item name="other" xsi:type="array">
+                        <item name="icon_url" xsi:type="string">MageSuite_ProductPositiveIndicators::images/fast-delivery.svg</item>
+                        <item name="headline" xsi:type="string" translate="true">In stock</item>
+                        <item name="text" xsi:type="string">Shipping on %1</item>
+                    </item>
+                </argument>
+                <argument name="time_labels" xsi:type="array">
+                    <item name="day" xsi:type="string" translate="true">day</item>
+                    <item name="days" xsi:type="string" translate="true">days</item>
+                    <item name="hour" xsi:type="string" translate="true">hour</item>
+                    <item name="hours" xsi:type="string" translate="true">hours</item>
+                    <item name="minute" xsi:type="string" translate="true">minute</item>
+                    <item name="minutes" xsi:type="string" translate="true">minutes</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <move element="indicator.low-stock" destination="product.info.form.content" after="product.info.addtocart" />
+        <move element="indicator.fast-shipping" destination="product.info.main.section.form" />
+        <move element="indicator.free-shipping" destination="product.info.main.section.form" />
+        <move element="indicator.recently-bought" destination="product.info.main.section.form" />
+    </body>
+</page>

@@ -23,6 +23,7 @@ import * as $ from 'jquery';
 // =============================================================================
 
 import 'pages/category';
+import 'pages/product';
 
 // =============================================================================
 // Components
@@ -60,6 +61,7 @@ import 'components/products-carousel';
 import 'components/products-grid';
 import 'components/brand-carousel';
 import 'components/product-finder';
+import 'components/dailydeal';
 import 'components/daily-deal-teaser';
 import 'components/breadcrumbs';
 import 'components/progress-bar';
@@ -73,6 +75,11 @@ import 'components/password-strength-meter';
 import 'components/messages';
 import 'components/checkout';
 import 'components/tabs';
+import 'components/buybox';
+import 'components/qty-increment';
+import 'components/indicators';
+import 'components/bundle-box';
+import 'components/product-gallery';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
@@ -85,16 +92,12 @@ export { default as AddressAutofill } from 'components/address-autofill';
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();
 
-import { QtyIncrementCollection } from 'customizations/qty-increment/qty-increment';
-new QtyIncrementCollection();
 import 'customizations/aftersearch-nav/aftersearch-nav';
 import 'customizations/image-teaser/image-teaser';
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
 import 'customizations/item-cloner/item-cloner';
-import 'customizations/indicators/fast-shipping-init';
-import 'customizations/dailydeal/dailydeal';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
 import 'customizations/searchresults-switcher/searchresults-switcher';

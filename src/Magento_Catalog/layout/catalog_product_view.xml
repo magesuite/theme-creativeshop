@@ -1,178 +1,236 @@
 <?xml version="1.0"?>
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="main.content" htmlClass="cs-container cs-container--spacious cs-container--pdp">
+        <referenceContainer name="content">
+            <container name="product.pdptop.container" htmlTag="div" htmlClass="cs-container cs-container--page-pdp-top" before="-">
+                <container name="product.pdptop.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <container name="product.pdptop.content" htmlTag="div" htmlClass="cs-page-product__top">
+                        <container name="product.pdptop.buybox" htmlTag="div" htmlClass="cs-page-product__buybox" />
+                    </container>
+                </container>
+            </container>
             <container name="product.carousels.container" htmlTag="section" htmlClass="cs-container" after="-">
                 <container name="product.carousels.container.content" htmlTag="div" htmlClass="cs-container__inner" />
             </container>
             <container name="cc-content.container" htmlTag="section" htmlClass="cs-container" after="product.carousels.container">
                 <container name="cc-content" htmlTag="div" htmlClass="cs-container__inner cs-container__cc-content-pdp" after="product.carousels.container.content" />
             </container>
-        </referenceContainer>
-
-        <referenceContainer name="content">
-            <container name="product.media.container" htmlTag="div" htmlClass="cs-container cs-product-gallery__container" before="-">
-                <container name="product.media.container.wrapper" htmlTag="div" htmlClass="cs-container__inner">
-                    <container name="product.media.container.column" htmlTag="div" htmlClass="cs-container__main-column cs-container__main-column--space-top" />
-                </container>
-            </container>
 
             <container name="product.details.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--edge-to-edge" after="product.info.main">
                 <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner cs-product-description"/>
             </container>
         </referenceContainer>
-        <move element="product.info.media" destination="product.media.container.column" />
 
-        <move element="page.messages" destination="product.media.container.column" before="-" />
+        <move element="product.info.media" destination="product.pdptop.content" before="-" />
+        <move element="product.info.main" destination="product.pdptop.buybox" />
 
-        <referenceContainer name="product.info.media" htmlClass="cs-product-gallery__wrapper">
-            <block class="Magento\Catalog\Block\Product\View\Description" name="product.badge" template="Magento_Catalog::product/view/badge.phtml">
-                <block class="MageSuite\ProductPositiveIndicators\Block\PopularIcon\Product" name="indicator_popular_badge" as="popular.badge" template="MageSuite_ProductPositiveIndicators::popularicon/product.phtml"/>
-                <block class="MageSuite\ProductPositiveIndicators\Block\FreeShipping\Product" name="indicator_freeshipping_badge" as="freeshipping.badge" template="MageSuite_ProductPositiveIndicators::freeshipping/product-badge.phtml"/>
-            </block>
-        </referenceContainer>
+        <referenceContainer name="product.info.media" htmlClass="cs-page-product__gallery" />
 
-        <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main cs-sticky-block cs-sticky-block--pdp cs-product-sale-block">
-            <block class="MageSuite\Frontend\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-"/>
-            <container name="product.info.stock" htmlTag="div" htmlClass="cs-product-sale-block__stock" before="product.details.specials"/>
-            <container name="product.details.specials" htmlTag="div" htmlClass="cs-product-sale-block__item">
-                <block class="Magento\Framework\View\Element\Template" name="product.info.special.attributes" template="Magento_Catalog::product/view/special-attributes.phtml" after="-"/>
+        <!-- @TODO: use common badges module after it's created and move indicators badges to positive-indicators extension dir -->
+        <!-- Badges -->
+        <referenceContainer name="product.info.media">
+            <container name="product.badges" htmlTag="ul" htmlClass="cs-page-product__badges">
+                <block class="Magento\Catalog\Block\Product\View\Description" 
+                       name="product.badge.new" 
+                       template="Magento_Catalog::product/view/badges/new.phtml"
+                >
+                    <arguments>
+                        <argument xsi:type="string" name="html_tag">li</argument>
+                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--new</argument>
+                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--new</argument>
+                        <argument translate="true" xsi:type="string" name="label">New</argument>
+                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
+                    </arguments>
+                </block>
+
+                <block class="Magento\Catalog\Block\Product\View\Description" 
+                       name="product.badge.sale" 
+                       template="Magento_Catalog::product/view/badges/sale.phtml"
+                >
+                    <arguments>
+                        <argument xsi:type="string" name="html_tag">li</argument>
+                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--sale</argument>
+                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--attention cs-badge--sale</argument>
+                        <argument translate="true" xsi:type="string" name="label">Sale</argument>
+                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
+                    </arguments>
+                </block>
+
+                <block class="MageSuite\ProductPositiveIndicators\Block\PopularIcon\Product" 
+                       name="product.badge.popular" 
+                       template="Magento_Catalog::product/view/badges/popular.phtml"
+                >
+                    <arguments>
+                        <argument xsi:type="string" name="html_tag">li</argument>
+                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--popular</argument>
+                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--positive cs-badge--popular</argument>
+                        <argument translate="true" xsi:type="string" name="label">Popular</argument>
+                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
+                    </arguments>
+                </block>
+
+                <block class="MageSuite\ProductPositiveIndicators\Block\FreeShipping\Product" 
+                       name="product.badge.free-shipping" 
+                       template="Magento_Catalog::product/view/badges/free-shipping.phtml"
+                >
+                    <arguments>
+                        <argument xsi:type="string" name="html_tag">li</argument>
+                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--free-shipping</argument>
+                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--positive cs-badge--free-shipping</argument>
+                        <argument translate="true" xsi:type="string" name="label">Free Shipping</argument>
+                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
+                    </arguments>
+                </block>
             </container>
         </referenceContainer>
 
+        <!-- BUYBOX start -->
+        <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main cs-buybox">
+            <container name="product.info.main.section.essentials" htmlTag="div" htmlClass="cs-buybox__section cs-buybox__section--essentials">
+                <block class="MageSuite\Frontend\Block\Product\View\ProductCategory" name="product.category.name" template="Magento_Catalog::product/view/category.phtml" before="-" />
+                <container name="product.info.main.reviews-summary" htmlTag="div" htmlClass="cs-buybox__reviews-summary" />
+                <container name="product.info.main.highlights" htmlTag="div" htmlClass="cs-buybox__highlights" />
+            </container>
+
+            <container name="product.info.main.section.form" htmlTag="div" htmlClass="cs-buybox__section cs-buybox__section--product-form" />
+
+            <container name="product.info.main.section.extras" htmlTag="div" htmlClass="cs-buybox__section cs-buybox__section--extras" />
+
+            <container name="product.info.main.section.usps" htmlTag="div" htmlClass="cs-buybox__section cs-buybox__section--usps">
+                <container name="product.info.usps" htmlTag="ul" htmlClass="cs-buybox__usps">
+                    <block class="Magento\Framework\View\Element\Template" 
+                           name="product.info.usp.availability" 
+                           template="Magento_Catalog::product/view/buybox-usp-item.phtml">
+                        <arguments>
+                            <argument name="additional_css_class" xsi:type="string">cs-buybox__usp--availability</argument>
+                            <argument name="label" xsi:type="string" translate="true">Immediately available</argument>
+                        </arguments>
+
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="product.info.usp.available.icon">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/available.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-buybox__usp-icon cs-buybox__usp-icon--1</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                    </block>
+
+                    <block class="Magento\Framework\View\Element\Template" 
+                           name="product.info.usp.discreet-packaging" 
+                           template="Magento_Catalog::product/view/buybox-usp-item.phtml">
+                        <arguments>
+                            <argument name="additional_css_class" xsi:type="string">cs-buybox__usp--discreet-packaging</argument>
+                            <argument name="label" xsi:type="string" translate="true">Discreet Packaging</argument>
+                        </arguments>
+
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="product.info.usp.discreet-packaging.icon">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/gift.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-buybox__usp-icon cs-buybox__usp-icon--2</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                    </block>
+
+                    <block class="Magento\Framework\View\Element\Template" 
+                           name="product.info.usp.free-shipping" 
+                           template="Magento_Catalog::product/view/buybox-usp-item.phtml">
+                        <arguments>
+                            <argument name="additional_css_class" xsi:type="string">cs-buybox__usp--free-shipping</argument>
+                            <argument name="label" xsi:type="string" translate="true">Free Shipping</argument>
+                        </arguments>
+
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="product.info.usp.free-shipping.icon">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/piggybank.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-buybox__usp-icon cs-buybox__usp-icon--3</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                </container>
+            </container>
+        </referenceContainer>
+
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">cs-buybox__product-name</argument>
+                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceBlock name="view.addto.compare">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string">cs-buybox__addto-item--compare</argument>
+                <argument name="link_label" xsi:type="string" translate="true">Add to Compare</argument>
+            </arguments>
+
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="view.addto.compare.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/compare.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-buybox__addto-icon cs-buybox__addto-icon--compare</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <!-- Product name -->
+        <move element="page.main.title" destination="product.info.main.section.essentials" after="product.category.name" />
+        <!-- Review summary -->
+        <move element="product.info.review" destination="product.info.main.reviews-summary" />
+        <!-- stock availability -->
+        <move element="product.info.type" destination="product.info.main.section.form" after="-" />
+        <!-- Prices -->
+        <move element="product.info.price" destination="product.info.main.section.essentials" before="product.info.main.highlights" />
+        <move element="product.price.tier" destination="product.info.main.section.essentials" after="product.info.price" />
+        <move element="product.info" destination="product.info.main.section.form" />
+        <move element="product.info.extrahint" destination="product.info.main.section.extras" />
+
         <referenceBlock name="product.info.addtocart">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string"></argument>
+                <argument name="qty_label" xsi:type="string" translate="true"></argument>
+            </arguments>
+
             <block class="Magento\Framework\View\Element\Template"
                    name="product.info.addtocart.button"
                    template="Magento_Catalog::addtocart/button.phtml">
                 <arguments>
-                    <argument xsi:type="string" name="button_class">cs-addtocart__button</argument>
-                    <argument xsi:type="string" name="button_label_class">cs-addtocart__button-label</argument>
-                    <argument xsi:type="string" name="addtocart_label" translate="true">Add to Cart</argument>
-                    <argument xsi:type="string" name="addtocart_success_overlay_class">cs-addtocart__feedback-bg</argument>
-                    <argument xsi:type="string" name="addtocart_success_label_class">cs-addtocart__success-label</argument>
-                    <argument xsi:type="string" name="addtocart_success_label" translate="true">Thank you!</argument>
-                    <argument xsi:type="string" name="addtocart_fail_label_class">cs-addtocart__fail-label</argument>
-                    <argument xsi:type="string" name="addtocart_fail_label" translate="true">Something went wrong</argument>
+                    <argument xsi:type="string" name="button_class">cs-addtocart__button cs-buybox__addtocart-button</argument>
+                    <argument xsi:type="string" name="button_params"><![CDATA[disabled="disabled"]]></argument>
+                    <!-- You can use 3 arguments here that will override values taken from etc/view.xml
+                        - button_class {string} - overrides 'ajax_addtocart/css_classes/default_button' var
+                        - button_label_class {string} - overrides 'ajax_addtocart/css_classes/default' var
+                        - addtocart_label {string} - overrides 'ajax_addtocart/labels/default' var -->
                 </arguments>
-
-                <block class="Magento\Framework\View\Element\Template"
-                   name="product.info.addtocart.loading_indicator"
-                   template="Magento_Catalog::addtocart/loading-indicator.phtml"
-                   as="atc.loading.indicator" />
-
-                <block class="MageSuite\ThemeHelpers\Block\Icon" 
-                       name="product.info.addtocart.icon"
-                       as="atc.button.icon">
-                    <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/addtocart/icon-addtocart.svg</argument>
-                        <argument name="css_class" xsi:type="string">cs-addtocart__button-icon</argument>
-                        <argument name="inlined" xsi:type="boolean">true</argument>
-                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                    </arguments>
-                </block>
-
-                <block class="MageSuite\ThemeHelpers\Block\Icon" 
-                       name="product.info.addtocart.success_icon"
-                       as="atc.success.icon">
-                    <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/addtocart/icon-success.svg</argument>
-                        <argument name="css_class" xsi:type="string">cs-addtocart__success-icon</argument>
-                        <argument name="inlined" xsi:type="boolean">true</argument>
-                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                    </arguments>
-                </block>
-
-                <block class="MageSuite\ThemeHelpers\Block\Icon" 
-                       name="product.info.addtocart.fail_icon"
-                       as="atc.fail.icon">
-                    <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/addtocart/icon-fail.svg</argument>
-                        <argument name="css_class" xsi:type="string">cs-addtocart__fail-icon</argument>
-                        <argument name="inlined" xsi:type="boolean">true</argument>
-                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                    </arguments>
-                </block>
             </block>
         </referenceBlock>
         <referenceBlock name="product.info.addtocart.additional">
+            <arguments>
+                <argument name="qty_label" xsi:type="string" translate="true"></argument>
+            </arguments>
+
             <block class="Magento\Framework\View\Element\Template"
                    name="product.info.addtocart.additional.button"
                    template="Magento_Catalog::addtocart/button.phtml">
                 <arguments>
-                    <argument xsi:type="string" name="button_class">cs-addtocart__button</argument>
-                    <argument xsi:type="string" name="button_label_class">cs-addtocart__button-label</argument>
-                    <argument xsi:type="string" name="addtocart_label" translate="true">Add to Cart</argument>
-                    <argument xsi:type="string" name="addtocart_success_overlay_class">cs-addtocart__feedback-bg</argument>
-                    <argument xsi:type="string" name="addtocart_success_label_class">cs-addtocart__success-label</argument>
-                    <argument xsi:type="string" name="addtocart_success_label" translate="true">Thank you!</argument>
-                    <argument xsi:type="string" name="addtocart_fail_label_class">cs-addtocart__fail-label</argument>
-                    <argument xsi:type="string" name="addtocart_fail_label" translate="true">Something went wrong</argument>
+                    <argument xsi:type="string" name="button_class">cs-addtocart__button cs-buybox__addtocart-button</argument>
+                    <argument xsi:type="string" name="button_params"><![CDATA[disabled="disabled"]]></argument>
+                    <!-- You can use 3 arguments here that will override values taken from etc/view.xml
+                        - button_class {string} - overrides 'ajax_addtocart/css_classes/default_button' var
+                        - button_label_class {string} - overrides 'ajax_addtocart/css_classes/default' var
+                        - addtocart_label {string} - overrides 'ajax_addtocart/labels/default' var -->
                 </arguments>
-
-                <block class="Magento\Framework\View\Element\Template"
-                   name="product.info.addtocart.additional.loading_indicator"
-                   template="Magento_Catalog::addtocart/loading-indicator.phtml"
-                   as="atc.loading.indicator" />
-
-                <block class="MageSuite\ThemeHelpers\Block\Icon" 
-                       name="product.info.addtocart.additional.icon"
-                       as="atc.button.icon">
-                    <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/addtocart/icon-addtocart.svg</argument>
-                        <argument name="css_class" xsi:type="string">cs-addtocart__button-icon</argument>
-                        <argument name="inlined" xsi:type="boolean">true</argument>
-                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                    </arguments>
-                </block>
-
-                <block class="MageSuite\ThemeHelpers\Block\Icon" 
-                       name="product.info.addtocart.additional.success_icon"
-                       as="atc.success.icon">
-                    <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/addtocart/icon-success.svg</argument>
-                        <argument name="css_class" xsi:type="string">cs-addtocart__success-icon</argument>
-                        <argument name="inlined" xsi:type="boolean">true</argument>
-                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                    </arguments>
-                </block>
-
-                <block class="MageSuite\ThemeHelpers\Block\Icon" 
-                       name="product.info.addtocart.additional.fail_icon"
-                       as="atc.fail.icon">
-                    <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/addtocart/icon-fail.svg</argument>
-                        <argument name="css_class" xsi:type="string">cs-addtocart__fail-icon</argument>
-                        <argument name="inlined" xsi:type="boolean">true</argument>
-                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                    </arguments>
-                </block>
             </block>
         </referenceBlock>
 
-        <container name="product.info.wrapper" htmlTag="div" htmlClass="product-info-wrapper" />
-        <move element="product.info.wrapper" destination="content" before="product.media.container" />
-        <move element="product.info.main" destination="product.info.wrapper" />
-
-        <referenceBlock name="page.main.title">
-            <arguments>
-                <argument name="css_class" xsi:type="string">cs-product-sale-block__name</argument>
-                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
-            </arguments>
-            <block class="Magento\Framework\View\Element\Template" name="product.info.share" template="Magento_Catalog::product/view/share.phtml"/>
-        </referenceBlock>
-        <move element="page.main.title" destination="product.info.main" after="product.category.name" />
-
-        <referenceContainer name="product.info.price" htmlClass="product-info-price cs-price cs-price--pdp"/>
-
-        <referenceContainer name="product.info.price">
-            <block class="MageSuite\DailyDeal\Block\Product" name="product.info.price.dailydeal" template="Magento_Catalog::product/view/price-dailydeal.phtml" after="product.price.final"/>
-        </referenceContainer>
-
-        <move element="product.info.type" destination="product.info.stock"/>
-
-        <referenceBlock name="product.info.sku" remove="true"/>
-        <referenceBlock name="product.info.mailto" remove="true"/>
-        <referenceBlock name="indicator_free_shipping" remove="true" />
+        <referenceBlock name="product.info.sku" display="false" />
+        <referenceBlock name="product.info.mailto" display="false" />
+        <!-- BUYBOX end -->
 
         <referenceBlock name="product.info.description">
             <action method="setTemplate">

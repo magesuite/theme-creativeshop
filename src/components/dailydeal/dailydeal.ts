@@ -1,5 +1,9 @@
 import * as $ from 'jquery';
 
+import * as viewXml from 'etc/view.json'
+import deepGet from 'utils/deep-get/deep-get';
+import 'mage/translate';
+
 /**
  * Daily Deal component options interface.
  */
@@ -236,7 +240,7 @@ export default class Dailydeal {
         }
 
         this._template = '';
-        this._labels = this._getLabelsJSON();
+        this._labels = deepGet(viewXml, 'vars.MageSuite_DailyDeal.countdown_labels');
         this._clock = '';
         this._renderClock();
         this._countdownElements = this._getCountdownElements();
@@ -372,14 +376,6 @@ export default class Dailydeal {
      }
 
     /**
-     * Update template if dailydeal expired
-     */
-    protected _getLabelsJSON(): any {
-        const $labelsInput: any = this._$element.find(`.${this._options.namespace}dailydeal__countdown-labels`);
-        return $labelsInput.length && $labelsInput.val() !== '' ? JSON.parse($labelsInput.val()) : {};
-    }
-
-    /**
      * Returns current Unix time (without muliseconds)
      */
     protected _getCurrentTime(): number {
@@ -424,9 +420,9 @@ export default class Dailydeal {
      */
     protected _getCountdownLabel(n: number, timeUnit: string): string {
         if(this._options.updateLabels) {
-            return n === 1 ?  `${this._labels[timeUnit]}` : `${this._labels[timeUnit + 's']}`;
+            return n === 1 ?  $.mage.__(`${this._labels[timeUnit]}`) : $.mage.__(`${this._labels[timeUnit + 's']}`);
         } else {
-            return `${this._labels[timeUnit + 's']}`;
+            return $.mage.__(`${this._labels[timeUnit + 's']}`);
         }
     }
 

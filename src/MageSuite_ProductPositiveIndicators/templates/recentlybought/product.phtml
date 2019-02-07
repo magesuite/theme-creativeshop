@@ -1,0 +1,25 @@
+<?php
+    /** @var $block \MageSuite\ProductPositiveIndicators\Block\RecentlyBought\Product */
+    $recentlyBought = $block->getRecentlyBoughtInfo();
+?>
+<?php if ($recentlyBought['active']): ?>
+    <?php
+        $headline = $block->getHeadline();
+        $customersWording = $recentlyBought['sum'] == 1 ? __('customers') : __('customer');
+        $daysWording = $recentlyBought['order_period'] == 1 ? __('days') : __('day');
+    ?>
+    <div class="cs-indicator-recently-bought">
+        <div class="cs-indicator-recently-bought__content">
+            <?= $block->getChildHtml(''); ?>
+            <span class="cs-indicator-recently-bought__label">
+                <?php if(!empty($headline)): ?>
+                    <span class="cs-indicator-recently-bought__headline"><?= $headline ?></span>
+                <?php endif; ?>
+                <span class="cs-indicator-recently-bought__text"><?= __("%1 bought this product within last %2", 
+                    '<span>'.$recentlyBought['sum'].' '.$customersWording.'</span>', 
+                    '<span>'.$recentlyBought['order_period'].' '.$daysWording.'</span>'
+                ) ?></span>
+            </span>
+        </div>
+    </div>
+<?php endif; ?>

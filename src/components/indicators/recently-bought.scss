@@ -1,0 +1,31 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import './mixins.scss';
+
+$indicator-recently-bought_gutter: 1rem !default;
+
+.#{$ns}indicator-recently-bought {
+    $root: &;
+
+    @if $indicator-recently-bought_gutter != 0 {
+        &:not(:last-child) {
+            margin: 0 0 $indicator-recently-bought_gutter;
+        }
+    }
+
+    &__content {
+        @include indicator();
+    }
+
+    &__icon {
+        @include indicator-icon();
+    }
+
+    &__headline {
+        @include indicator-headline();
+    }
+
+    &__text {
+        @include indicator-text();
+    }
+}

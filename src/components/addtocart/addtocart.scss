@@ -1,20 +1,24 @@
 @import 'config/variables';
 @import 'components/container/mixin';
+@import 'components/button/mixin';
 @import 'include-media/dist/include-media';
 
-$addtocart_button-skew-deg: 18 !default;
-$addtocart_button-skewed-background-width: 4.1rem !default;
-$addtocart_button-bg: $color_primary-500 !default;
-$addtocart_button-bg-hover: $color_primary-800 !default;
-$addtocart_button-text-color: $color_text-200 !default;
-$addtocart_button-icon-color: $color_text-200 !default;
+$addtocart_button-type: 'primary' !default;
+$addtocart_button-icon-position: 'right' !default;
 
-$addtocart_button-padding-y: 0.858rem !default;
+$addtocart_button-remove-border: true !default;
+$addtocart_button-icon-width: 2.2rem !default;
+$addtocart_button-icon-height: $addtocart_button-icon-width !default;
+$addtocart_button-icon-edge-gutter: 0.8em !default;
+
+$addtocart_button-skewed-background-width: 5.1rem !default;
 $addtocart_button-padding-left: 1rem !default;
 $addtocart_button-padding-right: 4.5rem !default; 
 
 $addtocart_loading-indicator-ball-color: $color_text-200 !default;
 $addtocart_loading-indicator-ball-size: 10px !default;
+
+$addtocart_feedback-bg-skew: $transform_skew-400 !default;
 
 $addtocart_ajax-success-bg-primary: $color_success-500 !default;
 $addtocart_ajax-success-bg-secondary: $color_success-600 !default;
@@ -25,64 +29,41 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
     $root: &;
 
     &__button {
-        &,
-        &:focus {
-            position: relative;
-            overflow: hidden;
-            display: block;
-            width: 100%;
-            z-index: 2;
+        @include button(
+            $type: $addtocart_button-type,
+            $icon_pos: $addtocart_button-icon-position
+        );
 
-            /* probably common button styles */
-            transition: all 0.15s linear;
-            border: none;
-            border-radius: 3px;
-            background: $addtocart_button-bg;
-            color: $addtocart_button-text-color;
-            padding: $addtocart_button-padding-y $addtocart_button-padding-right $addtocart_button-padding-y $addtocart_button-padding-left;
+        @if $addtocart_button-remove-border {
+            border: none !important;
         }
 
-        &:hover {
-            background: $addtocart_button-bg-hover;
-            border: inherit;
-            color: $addtocart_button-text-color;
-        }
-
-        &[disabled],
-        &.disabled,
-        &--disabled {
+        &[disabled] {
             opacity: 1;
         }
+    }
 
-        @if ($addtocart_button_skew-deg > 0) {
-            &:after {
-                position: absolute;
-                top: 0;
-                right: 0;
-                width: $addtocart_button-skewed-background-width;
-                height: 100%;
-                z-index: -1;
-                content: '';
-                background: linear-gradient(#{90 + $addtocart_button-skew-deg}deg, rgba($addtocart_button-bg-hover, 0) 0%, rgba($addtocart_button-bg-hover, 0) #{$addtocart_button-skew-deg * 1%}, $addtocart_button-bg-hover #{$addtocart_button-skew-deg * 1%}, $addtocart_button-bg-hover 100%);
-            }
-        }
+    &__button-label,
+    &__success-label,
+    &__fail-label {
+        @include button_span(
+            $type: $addtocart_button-type,
+            $icon_pos: $addtocart_button-icon-position
+        );
     }
 
     &__button-icon,
     &__success-icon,
     &__fail-icon {
-        width: 1.8em;
-        height: 1.8em;
-        position: absolute;
-        right: 0.9em;
-        top: 50%;
-        z-index: 3;
-        transform: translate3d(0, -50%, 0);
-        transition: fill 0.15s linear, opacity 0.25s linear;
-        
-        path {
-            fill: $addtocart_button-icon-color;
-        }
+        @include button_icon(
+            $type: $addtocart_button-type,
+            $icon_pos: $addtocart_button-icon-position
+        );
+        max-width: none;
+        max-height: none;
+        width: $addtocart_button-icon-width;
+        height: $addtocart_button-icon-height;
+        #{$addtocart_button-icon-position}: $addtocart_button-icon-edge-gutter;
     }
 
     &__fail-icon {
@@ -144,7 +125,7 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
             left: -1em;
             width: calc(100% + 2em);
             height: 100%;
-            transform: skew(-18deg) translate3d(-100%, 0, 0);
+            transform: $addtocart_feedback-bg-skew translate3d(-100%, 0, 0);
             transform-origin: 0 0;
             transition: transform 0.45s cubic-bezier(0.01, 0.65, 0.38, 1);
             background: $addtocart_ajax-success-bg-secondary;

@@ -1,0 +1,308 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'components/product-gallery/mixins';
+@import 'components/teaser/mixins';
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
+
+$product-gallery_base-image-data: deep-get($view-xml, media, images, image, product_page_image_medium_no_frame) !default;
+$product-gallery_scene-max-height: #{map-get($product-gallery_base-image-data, height)}px !default;
+
+$product-gallery_nav-arrows-show: true !default;
+$product-gallery_nav-arrow-wrapper-background-color: transparent !default;
+$product-gallery_nav-arrow-wrapper--active-background-color: $color_background-500 !default;
+$product-gallery_nav-arrow-width: 1.4rem !default;
+$product-gallery_nav-arrow-height: 2.7rem !default;
+$product-gallery_nav-arrow-wrapper-width: 3 * $product-gallery_nav-arrow-width !default;
+$product-gallery_nav-arrow-wrapper-height: 2 * $product-gallery_nav-arrow-height !default;
+$product-gallery_nav-arrow--prev-url: '../images/icons/fotorama/fotorama-arrow-prev.svg' !default;
+$product-gallery_nav-arrow--next-url: '../images/icons/fotorama/fotorama-arrow-next.svg' !default;
+
+$product-gallery_show-image-caption: false !default;
+
+// Thumbnails
+$product-gallery_thumb-width: 7.8rem !default;
+$product-gallery_thumb-height: $product-gallery_thumb-width !default;
+$product-gallery_thumbs-gutter: 0.8rem !default; // use rem/px as font-size is set to 0 by fotorama. Don't exceed 200% of $page-gutter value or horizontal scrollbar will appear.
+$product-gallery_thumb-border: 1px solid $color_border-500 !default;
+$product-gallery_thumb-border-radius: $border-radius_base !default;
+$product-gallery_thumb-background: $color_background-200 !default;
+$product-gallery_thumb--hover-border-color: $color_border-700 !default;
+$product-gallery_thumb--active-border-color: $color_primary-500 !default;
+
+// Thumbnails arrow (slider)
+$product-gallery_show-thumb-arrows: false !default; // Does not apply for fullscreen mode
+$product-gallery_thumb-arrow-wrapper-width: 3rem !default;
+$product-gallery_thumb-arrow-wrapper-background: $color_background-200 !default;
+$product-gallery_thumb-arrow-wrapper--active-background: $product-gallery_nav-arrow-wrapper--active-background-color !default;
+$product-gallery_thumb-arrow-wrapper-box-shadow-size: 0 0 1rem 1rem !default; // color is inherited from background
+$product-gallery_thumb-arrow-width: $product-gallery_nav-arrow-width !default;
+$product-gallery_thumb-arrow-height: $product-gallery_nav-arrow-height !default;
+$product-gallery_thumb-arrow--prev-url: $product-gallery_nav-arrow--prev-url !default;
+$product-gallery_thumb-arrow--next-url: $product-gallery_nav-arrow--next-url !default;
+
+// Spinner
+$product-gallery_spinner-image-url: '../images/icons/fotorama/fotorama-spinner.svg' !default;
+$product-gallery_spinner-background-color: $color_background-200 !default;
+$product-gallery_spinner-border-radius: $border-radius_base !default;
+
+.#{$ns}product-gallery {
+    &__loading-mask {
+        padding: 0 !important; // overrides deep cascade
+    }
+
+    &__loader {
+        position: relative;
+        width: 100%;
+
+        @include media('>=laptop') {
+            height: $product-gallery_scene-max-height;
+            padding-bottom: 0 !important; // overrides inline style
+        }
+    }
+}
+// Exiting from component to apply styling also for fullscreen mode
+
+.fotorama {
+    @if $product-gallery_show-image-caption == false {
+        .fotorama__caption {
+            display: none;
+        }
+    }
+
+    &:not(.fotorama--fullscreen) .fotorama__stage {
+        max-height: $product-gallery_scene-max-height; // Limit height of the stage via CSS because Fotorama's JS option doesn't seem to work
+    }
+
+    .fotorama__stage {
+        // Fotorama provides shadow bounds indicators while swiping gallery left/right. We customize colors a bit
+        &.fotorama__shadows--left:before {
+            @include gradient-shadow(0, 50%);
+        }
+
+        &.fotorama__shadows--right:after {
+            @include gradient-shadow(100%, 50%);
+        }
+    }
+
+    /**
+     * Stage navigation (arrows)
+     */
+    // Arrow wrapper
+    .fotorama__arr {
+        background-color: $product-gallery_nav-arrow-wrapper-background-color;
+        width: $product-gallery_nav-arrow-wrapper-width;
+        height: $product-gallery_nav-arrow-wrapper-height;
+        top: 50%;
+        bottom: auto;
+        margin-top: -#{$product-gallery_nav-arrow-wrapper-height / 2};
+
+        @if $product-gallery_nav-arrows-show == false {
+            display: none !important;
+        }
+
+        &:active {
+            backround-color: $product-gallery_nav-arrow-wrapper--active-background-color;
+        }
+
+        // Arrow. Nested to handle fotoramas' cascade
+        .fotorama__arr__arr {
+            width: $product-gallery_nav-arrow-width;
+            height: $product-gallery_nav-arrow-height;
+        }
+
+        &--prev,
+        &--next {
+            .fotorama__arr__arr {
+                background-position: 0 0;
+                background-size: 100%;
+            }
+        }
+
+        &--prev {
+            .fotorama__arr__arr {
+                background-image: url($product-gallery_nav-arrow--prev-url);
+            }
+        }
+
+        &--next {
+            .fotorama__arr__arr {
+                background-image: url($product-gallery_nav-arrow--next-url);
+            }
+        }
+    }
+
+    /**
+     * Thumbnails
+     */
+    .fotorama__nav-wrap {
+        text-align: center; // align everything to center
+    }
+
+    &--fullscreen .fotorama__nav {
+        padding-left: calc(#{$product-gallery_thumbs-gutter} / 2 + 2px);
+        padding-right: calc(#{$product-gallery_thumbs-gutter} / 2 + 2px);
+    }
+
+    // Thumbnails/Dots wrapper
+    &:not(.fotorama--fullscreen) {
+        .fotorama__nav-wrap {
+            @if $product-gallery_thumbs-gutter != 0 {
+                margin-left: -#{$product-gallery_thumbs-gutter / 2};
+                margin-right: -#{$product-gallery_thumbs-gutter / 2};
+            }
+        }
+
+        // Thumbnails/Dots list
+        .fotorama__nav {
+            width: auto !important; // overrides inline style
+            height: auto !important; // overrides inline style
+            display: inline-block; // makes sure it's not 100% width
+            white-space: normal;
+        }
+
+        .fotorama__nav__shaft {
+            transform: none !important; // disables drag-slide for thumb/dots
+
+            &.fotorama__grab {
+                cursor: default;
+            }
+        }
+
+        // Hides thumbnails arrows (by default it's a slider but we want to display all of them)
+        @if $product-gallery_show-thumb-arrows == false {
+            .fotorama__thumb__arr {
+                display: none !important; // overrides inline style
+            }
+        }
+    }
+
+    // Single thumbnail wrapper
+    .fotorama__nav__frame--thumb {
+        width: $product-gallery_thumb-width !important; // override inline style;
+        height: $product-gallery_thumb-height !important; // override deep cascade;
+        padding: 0 !important; // overrides deep cascade
+        border: $product-gallery_thumb-border;
+        border-radius: $product-gallery_thumb-border-radius;
+        overflow: hidden;
+        transition: border-color 0.15s linear;
+
+        @if $product-gallery_thumbs-gutter != 0 {
+            margin: $product-gallery_thumbs-gutter / 2;
+        }
+
+        &:not(.fotorama__active):hover {
+            border-color: $product-gallery_thumb--hover-border-color;
+        }
+
+        // Active thumbnail
+        &.fotorama__active {
+            border-color: $product-gallery_thumb--active-border-color;
+        }
+    }
+
+    .fotorama__thumb {
+        cursor: pointer;
+        background-color: $product-gallery_thumb-background; 
+        background-image: url($product-gallery_spinner-image-url); 
+        background-size: 50%;
+        background-repeat: no-repeat; 
+        background-position: 50% 50%;
+
+        &.fotorama__loaded--img {
+            background-image: none;
+        }
+    }
+
+    // Hide active thumbnail floating border
+    .fotorama__thumb-border {
+        display: none;
+    }
+
+    /**
+     * Thumbnails slider
+     */
+    // Arrow's wrapper
+    .fotorama__thumb__arr {
+        width: $product-gallery_thumb-arrow-wrapper-width;
+        transition: all 0.3s ease-in-out;
+
+        &,
+        &:hover {
+            background: $product-gallery_thumb-arrow-wrapper-background;
+            box-shadow: $product-gallery_thumb-arrow-wrapper-box-shadow-size;
+            color: $product-gallery_thumb-arrow-wrapper-background;
+        }
+
+        &:active {
+            background: $product-gallery_thumb-arrow-wrapper--active-background;
+            color: $product-gallery_thumb-arrow-wrapper--active-background;
+        }
+
+        &--disabled {
+            display: none !important; // hide arrows when not needed, overrides inline style
+        }
+    }
+
+    // Arrow
+    .fotorama__thumb__arr {
+        .fotorama__thumb--icon {
+            padding: 0;
+            width: $product-gallery_thumb-arrow-width !important; // overrides deep cascade
+            height: $product-gallery_thumb-arrow-height;
+        }
+
+        &--left,
+        &--right {
+            .fotorama__thumb--icon {
+                background-position: 0 0;
+                background-size: 100%;
+            }
+        }
+
+        &--left {
+            .fotorama__thumb--icon {
+                background-image: url($product-gallery_thumb-arrow--prev-url);
+            }
+        }
+
+        &--right {
+            .fotorama__thumb--icon {
+                background-image: url($product-gallery_thumb-arrow--next-url);
+            }
+        }
+    }
+
+    /*
+     * Bullet pagination (dots)
+     */
+    // Bullets wrapper
+    .fotorama__nav--dots 
+    .fotorama__nav__shaft {
+        @include bullet-pagination-list();
+    }
+
+    // Single dot wrapper
+    .fotorama__nav--dots
+    .fotorama__nav__frame--dot {
+        @include bullet-pagination-item();
+
+        &.fotorama__active {
+            @include bullet-pagination-item--active();
+        }
+    }
+
+    .fotorama__dot {
+        @include bullet-pagination-button();
+    }
+
+    /**
+     * Our custom spinner
+     */
+    .fotorama__spinner {
+        animation: none !important; // overrides deep cascade
+        background-image: url($product-gallery_spinner-image-url);
+        background-color: $product-gallery_spinner-background-color;
+        border-radius: $product-gallery_spinner-border-radius;
+    }
+}

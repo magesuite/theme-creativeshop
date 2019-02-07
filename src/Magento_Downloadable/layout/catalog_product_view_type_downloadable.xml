@@ -1,18 +1,16 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <referenceBlock name="product.info.downloadable.samples" display="false" />
 
-        <move element="product.info" destination="product.info.main" after="product.info.stock" />
-        <move element="product.info.stock" destination="product.info.options.wrapper.bottom" after="-"/>
+        <referenceBlock name="product.info.options.wrapper">
+            <container name="product.info.downloadable.options.container" htmlTag="div" htmlClass="cs-buybox__downloadable-options" />
+        </referenceBlock>
 
-        <move element="product.info.downloadable.samples" destination="product.info.main" after="product.info.price" />
+        <referenceBlock name="product.info.downloadable" template="Magento_Catalog::product/view/type/default.phtml" />
 
-        <move element="product.info" destination="product.info.main" after="product.info.downloadable.samples" />
+        <move element="product.info" destination="product.info.main.section.form" />
+        <move element="product.info.downloadable.options" destination="product.info.downloadable.options.container" />
+        <move element="product.info.social" destination="product.info.main.section.extras" />
     </body>
 </page>

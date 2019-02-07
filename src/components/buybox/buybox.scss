@@ -1,0 +1,433 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style.scss';
+@import 'components/indicators/mixins.scss';
+@import 'components/button/mixin.scss';
+
+// Some globals
+$buybox_font-size: 1.2rem !default;
+$buybox_line-height: 1.25 !default;
+$buybox_section-elements-gutter: 1.5rem !default; // margin between components inside sections, not sections itself
+
+$buybox_separator-border: 1px solid $color_border-500 !default;
+
+$buybox_section-border: $buybox_separator-border !default;
+$buybox_section-padding-mobile: 1.5rem 0 !default;
+$buybox_section-padding-tablet: 1.5rem !default;
+$buybox_section-padding-laptop-up: 3rem !default;
+
+$buybox_category-margin: 0 !default;
+$buybox_category-name-color: $color_text-500 !default;
+
+$buybox_product-name-font-size: 2.4rem !default;
+$buybox_product-name-font-weight: 700 !default;
+$buybox_product-name-line-height: 1.15 !default;
+
+$buybox_price-flex-flow: column-reverse nowrap !default; // when 2 prices are displayed, they're using flex for arrangement
+$buybox_price-final-price-font-size: 150% !default;
+$buybox_price-old-price-font-size: 75% !default; // relative to $buybox_price-final-price-font-size
+
+$buybox_product-variants-select-height: 4em !default;
+
+$buybox_addtocart-fieldset-display: flex !default;
+$buybox_addtocart-fieldset-justify-content: stretch !default;
+$buybox_addtocart-fieldset-align-items: stretch !default;
+$buybox_addtocart-actions-flex-grow: 10 !default; // button will fill max possible free space
+$buybox_addtocart-button-font-size: 1.2rem !default;
+
+$buybox_qty-wrapper-width: 10rem !default;
+$buybox_qty-wrapper-width-laptop-up: 11rem !default;
+$buybox_qty-wrapper-margin: 0 1.5rem 0 0 !default;
+$buybox_qty-wrapper-font-size: 1.1595em !default;
+
+$buybox_stock-margin: 0 0 $buybox_section-elements-gutter !default;
+$buybox_stock-color: $color_success-500 !default;
+$buybox_stock--unavailable-color: $color_error-500 !default;
+$buybox_stock-icon-width: $indicator_icon-width !default; // taken from component/indicators/mixins.scss
+$buybox_stock-icon-height: $indicator_icon-height !default; // taken from component/indicators/mixins.scss
+
+$buybox_addto-list-display: flex !default;
+$buybox_addto-list-justify-content: space-between !default;
+$buybox_addto-item-items-gutter: 2rem !default;
+$buybox_addto-link-display: inline-flex !default;
+$buybox_addto-link-color: inherit !default;
+$buybox_addto-link-text-decoration: inherit !default;
+$buybox_addto-link--hover-color: $color_primary-500 !default;
+$buybox_addto-icon-height: 1.5rem !default;
+$buybox_addto-icon--wishlist-width: $buybox_addto-icon-height !default;
+$buybox_addto-icon--compare-width: 2rem !default;
+// if you want to keep the same fill-color that link has, please use 'currentColor' for icons 'fill' prop. It will also be animated by default.
+$buybox_addto-icon--wishlist-fill: $color_crimson !default;
+$buybox_addto-icon--compare-fill: $color_primary-500 !default;
+
+$buybox_usps-display: flex !default;
+$buybox_usps-justify-content: space-between !default;
+$buybox_usps-align-items: flex-start !default;
+$buybox_usps-font-size: 1rem !default;
+$buybox_usps-color: $color_text-400 !default;
+$buybox_usp-display: flex !default;
+$buybox_usp-icon-height: 2.2rem !default;
+$buybox_usp-icon-margin: 1px 0.8rem 0 0 !default;
+$buybox_usp-icon-fill: currentColor !default;
+$buybox_usp-icon--1-width: $buybox_usp-icon-height !default;
+$buybox_usp-icon--2-width: 2rem !default;
+$buybox_usp-icon--3-width: 2.3rem !default;
+$buybox_usp-label-width: min-content !default; // this value will make sure it will breach after each word.
+
+// Downloadable products
+$buybox_downloadable-option-margin: 0 0 0.7em !default;
+$buybox_downloadable-hide-duplicated-price-box: true !default;
+
+.#{$ns}buybox {
+    height: 100%;
+    font-size: $buybox_font-size;
+    line-height: $buybox_line-height;
+
+    @include media('>=tablet') {
+        border-left: $buybox_separator-border;
+    }
+
+    &__section {
+        padding: $buybox_section-padding-mobile;
+        border-top: $buybox_section-border;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        @include media('>=tablet') {
+            padding: $buybox_section-padding-tablet;
+        }
+
+        @include media('>=laptop') {
+            padding: $buybox_section-padding-laptop-up;
+        }
+
+        &:empty,
+        &:blank {
+            display: none;
+        }
+    }
+
+    &__category {
+        margin: $buybox_category-margin;
+        color: $buybox_category-name-color;
+        font-size: inherit;
+    }
+
+    &__product-name {
+        margin: 0;
+        font-size: $buybox_product-name-font-size;
+        font-weight: $buybox_product-name-font-weight;
+        line-height: inherit;
+
+        h1 {
+            margin: 0;
+            padding: 0;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            text-transform: inherit;
+        }
+    }
+
+    &__reviews-summary,
+    &__highlights,
+    &__daily-deal {
+        margin: $buybox_section-elements-gutter 0 0;
+
+        &:empty,
+        &:blank {
+            margin: 0;
+        }
+    }
+
+    &__price {
+        margin: $buybox_section-elements-gutter 0 0;
+
+        .price-box {
+            display: flex;
+            flex-flow: $buybox_price-flex-flow;
+            font-size: $buybox_price-final-price-font-size;
+            vertical-align: initial;
+
+            .old-price {
+                font-size: $buybox_price-old-price-font-size;
+            }
+
+            .price {
+                font-size: inherit;
+            }
+        }
+    }
+
+    .price-tier_price {
+        display: block;
+    }
+
+    &__product-variants,
+    &__addtocart,
+    .product-options-wrapper {
+        margin-bottom: 2rem;
+
+        // Reset margin for bundle products
+        .page-product-bundle {
+            margin-bottom: 0;
+        }
+    }
+
+    &__product-variants {
+        .#{$ns}html-select__trigger {
+            height: $buybox_product-variants-select-height;
+        }
+    }
+
+    &__product-variants-label {
+        display: inline-block;
+        margin-bottom: 0.4em;
+    }
+
+    &__addtocart-fieldset {
+        display: $buybox_addtocart-fieldset-display;
+
+        @if $buybox_addtocart-fieldset-display == flex or $buybox_addtocart-fieldset-display == inline-flex {
+            justify-content: $buybox_addtocart-fieldset-justify-content;
+            align-items: $buybox_addtocart-fieldset-align-items;
+        }
+    }
+
+    &__addtocart-actions {
+        flex-grow: $buybox_addtocart-actions-flex-grow;
+    }
+
+    &__addtocart-button {
+        width: 100%;
+        height: 100%;
+
+        strong {
+            font-size: $buybox_addtocart-button-font-size;
+        }
+    }
+
+    &__qty-wrapper {
+        width: $buybox_qty-wrapper-width;
+        margin: $buybox_qty-wrapper-margin;
+        font-size: $buybox_qty-wrapper-font-size;
+
+        @include media('>=laptop') {
+            width: $buybox_qty-wrapper-width-laptop-up;
+        }
+
+        /* Downloadable product modification - align with Magento Blank */
+        .page-product-downloadable & {
+            display: none;
+        }
+    }
+
+    /* Default styling is for IN STOCK variant */
+    &__stock {
+        display: flex;
+        align-items: center;
+        margin: $buybox_stock-margin;
+        color: $buybox_stock-color;
+
+        &--unavailable {
+            color: $buybox_stock--unavailable-color;
+        }
+    }
+    
+    /* Default styling is for IN STOCK variant */
+    &__stock-icon {
+        width: $buybox_stock-icon-width;
+        height: $buybox_stock-icon-height;
+        margin-right: 1rem;
+        fill: currentColor;
+    }
+
+    &__addto-list {
+        @include reset-list-style();
+        display: $buybox_addto-list-display;
+
+        @if $buybox_addto-list-display == flex or $buybox_addto-list-display == inline-flex {
+            flex-wrap: wrap;
+            justify-content: $buybox_addto-list-justify-content;
+            align-items: center;
+        }
+    }
+
+    &__addto-item {
+        margin: 0.5rem $buybox_addto-item-items-gutter 0.5rem 0;
+
+        @if $buybox_addto-item-items-gutter != 0 {
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__addto-link {
+        display: $buybox_addto-link-display;
+        color: $buybox_addto-link-color;
+        text-decoration: $buybox_addto-link-text-decoration;
+        transition: color 0.15s linear;
+
+        @if $buybox_addto-link-display == flex or $buybox_addto-link-display == inline-flex {
+            align-items: center;
+        }
+
+        &:hover {
+            color: $buybox_addto-link--hover-color;
+        }
+    }
+
+    &__addto-icon {
+        height: $buybox_addto-icon-height;
+        margin-right: 0.8rem;
+        transition: fill 0.15s linear;
+
+        &--wishlist {
+            width: $buybox_addto-icon--wishlist-width;
+            fill: $buybox_addto-icon--wishlist-fill;
+        }
+
+        &--compare {
+            width: $buybox_addto-icon--compare-width;
+            fill: $buybox_addto-icon--compare-fill;
+        }
+    }
+
+    &__usps {
+        @include reset-list-style();
+        display: $buybox_usps-display;
+        justify-content: space-between;
+        font-size: $buybox_usps-font-size;
+        color: $buybox_usps-color;
+
+        @if $buybox_usps-display == flex or $buybox_usps-display == inline-flex {
+            justify-content: $buybox_usps-justify-content;
+            align-items: $buybox_usps-align-items;
+        }
+    }
+
+    &__usp {
+        display: $buybox_usp-display;
+    }
+
+    &__usp-icon {
+        height: $buybox_usp-icon-height;
+        margin: $buybox_usp-icon-margin;
+        fill: $buybox_usp-icon-fill;
+
+        &--1 {
+            width: $buybox_usp-icon--1-width;
+        }
+
+        &--2 {
+            width: $buybox_usp-icon--2-width;
+        }
+
+        &--3 {
+            width: $buybox_usp-icon--3-width;
+        }
+    }
+
+    &__usp-label {
+        width: $buybox_usp-label-width;
+    }
+
+    /**
+     * Downloadable products
+     */
+    &__downloadable-options {
+        // Global "Downloads" label
+        .downloads > .label {
+            margin: $buybox_downloadable-option-margin;
+        }
+
+        // Form legend (actually it's duplicated .downloads > label).
+        // After legend there's a line-break which is also hidden here
+        .legend {
+            &,
+            & + br {
+                display: none;
+            }
+        }
+
+        // Single option wrapper
+        .choice {
+            align-items: center;
+            margin: $buybox_downloadable-option-margin;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        // Option checkbox
+        input {
+            margin: 0 0.7em 0 0;
+        }
+
+        // Option label
+        .field .label {
+            width: auto;
+        }
+    }
+
+    // Downloadable products have duplicated price box inside the options
+    // It behaves exaclty the same way original does. Choosing an option updates both of them
+    @if $buybox_downloadable-hide-duplicated-price-box {
+        .page-product-downloadable & { 
+            .product-options-bottom .price-final_price {
+                display: none;
+            }
+        }
+    }
+
+    /**
+     * Grouped products
+     */
+    .grouped {
+        // Reset margin between product options (qty choosers) and add-to-cart button
+        margin-bottom: 0;
+
+        // Align columns to the center and reset padding for first and last columns of the tables
+        .col {
+            vertical-align: middle;
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+
+        // Apply qty-switcher width (for whole table column)
+        .qty {
+            width: $buybox_qty-wrapper-width;
+        }
+
+        // Display price below product option and make some spacing between option's name and price
+        .price-final_price {
+            display: block;
+            margin-top: 0.3em;
+        }
+    }
+    
+    // Grouped products validate if at least one of them has qty > 0.
+    // Add spacing beetween validation error and add-to-cart button.
+    #validation-message-box {
+        margin: 0 0 1em;
+    }
+
+    .customize {
+        @include button();
+        margin-bottom: 2 * $buybox_section-elements-gutter;
+
+        span {
+            @include button_span();
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<?php
+    $qty = $block->getProductQty();
+    $displayFlag = $block->displayInfoOnProductPage($qty);
+?>
+<?php if($displayFlag): ?>
+    <div class="cs-indicator-low-stock">
+        <div class="cs-indicator-low-stock__content">
+            <?= $block->getChildHtml(''); ?>
+            <span class="cs-indicator-low-stock__label">
+                <?php if($qty == 1) {
+                    echo __('<span>Hurry up!</span> Only <span>1 product</span> available!');
+                } else {
+                    echo __('<span>Hurry up!</span> Only <span>%1 products</span> available!', $qty); 
+                } ?>
+            </span>
+        </div>
+    </div>
+<?php endif; ?>

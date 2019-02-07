@@ -1,8 +1,190 @@
-// dailydeal
-// Daily Deal displays countdown for limited offers
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-.dailydeal {
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+@import 'utils/right-side-skew.scss';
 
+$dailydeal--tile-position: absolute !default;
+$dailydeal--tile-bottom: 1.5rem !default;
+$dailydeal--tile-left: 0 !default;
+
+$dailydeal_header-display: flex !default;
+$dailydeal_header-justify-content: space-between !default;
+$dailydeal_header-align-items: flex-start !default;
+$dailydeal_header-font-size: 1.2rem !default;
+$dailydeal_header-margin: 0 0 0.5rem !default;
+
+$dailydeal_title-text-transform: uppercase !default;
+$dailydeal_title-font-weight: 600 !default;
+
+$dailydeal--tile-availability-apply-skews-mixin: true !default; // set false to remove all freaky creativeshop's styling
+$dailydeal--tile-availability-font-size: 1rem !default;
+$dailydeal--tile-availability-color: $color_white !default;
+$dailydeal--tile-availability-background: $color_gray !default;
+$dailydeal--tile-availability-padding: 2px 4px !default;
+$dailydeal--tile-availability-font-weight: 300 !default;
+$dailydeal--tile-availability-border-radius: $border-radius_base !default;
+
+$dailydeal_items-amount-font-weight: 600 !default;
+
+$dailydeal_countdown-display: flex !default;
+$dailydeal_countdown-justify-content: stretch !default;
+$dailydeal_countdown-align-items: stretch !default;
+$dailydeal_countdown-margin: 0 !default;
+
+$dailydeal_countdown-element-apply-skews-mixin: true !default; // set false to remove all freaky creativeshop's styling
+$dailydeal_countdown-element-margin-factor: 3px !default;
+$dailydeal_countdown-element--tile-margin-factor: 1px !default;
+$dailydeal_countdown-element-display: flex !default;
+$dailydeal_countdown-element-flex-direction: column !default;
+$dailydeal_countdown-element-width: 100% !default;
+$dailydeal_countdown-element-padding: 0.3rem 0.5rem !default;
+$dailydeal_countdown-element-line-height: 1 !default;
+$dailydeal_countdown-element-background: none !default;
+$dailydeal_countdown-element-background--skew-mixin: $color_gallery !default; // apply only for skew mixin
+$dailydeal_countdown-element-border-radius: $border-radius_base !default;
+$dailydeal_countdown-element--special-width: 50% !default;
+$dailydeal_countdown-element--special-background: $color_crimson !default;
+
+$dailydeal_countdown-icon-width: 1.9rem !default;
+$dailydeal_countdown-icon-height: 2.4rem !default;
+$dailydeal_countdown-icon-fill: $color_white !default;
+
+$dailydeal_countdown-value-display: block !default;
+$dailydeal_countdown-value-font-size: 1.5rem !default;
+$dailydeal_countdown-value-font-weight: 600 !default;
+$dailydeal_countdown-value-color: $color_crimson !default;
+$dailydeal_countdown-value-padding: 2px 0 0 !default;
+
+$dailydeal_countdown-label-display: block !default;
+$dailydeal_countdown-label-font-size: 1.1rem !default;
+$dailydeal_countdown-label-font-weight: inherit !default;
+$dailydeal_countdown-label-color: $color_gray !default;
+$dailydeal_countdown-label-padding: $dailydeal_countdown-value-padding !default;
+
+$dailydeal_countdown-label-display: block !default;
+
+.#{$ns}dailydeal {
+    $root: &;
+    display: none;
+
+    &__header {
+        display: $dailydeal_header-display;
+        width: 100%;
+        margin: $dailydeal_header-margin;
+        font-size: $dailydeal_header-font-size;
+
+        @if $dailydeal_header-display == flex or $dailydeal_header-display == inline-flex {
+            justify-content: $dailydeal_header-justify-content;
+            align-items: $dailydeal_header-align-items;
+        }
+    }
+
+    &__title {
+        margin: 0;
+        text-transform: $dailydeal_title-text-transform;
+        font-weight: $dailydeal_title-font-weight;
+    }
+
+    &__items-amount {
+        font-weight: $dailydeal_items-amount-font-weight;
+    }
+
+    &__countdown {
+        display: $dailydeal_countdown-display;
+        margin: $dailydeal_countdown-margin;
+
+        @if $dailydeal_countdown-display == flex or $dailydeal_countdown-display == inline-flex {
+            justify-content: $dailydeal_countdown-justify-content;
+            align-items: $dailydeal_countdown-align-items;
+        }
+    }
+
+    &__countdown-element {
+        position: relative;
+        z-index: 3;
+        width: $dailydeal_countdown-element-width;
+        padding: $dailydeal_countdown-element-padding;
+        display: $dailydeal_countdown-element-display;
+        flex-direction: $dailydeal_countdown-element-flex-direction;
+        align-items: center;
+        justify-content: center;
+        line-height: $dailydeal_countdown-element-line-height;
+        background: $dailydeal_countdown-element-background;
+        border-radius: $dailydeal_countdown-element-border-radius;
+
+        @if $dailydeal_countdown-element-apply-skews-mixin {
+            @include right-side-skew(
+                $right-side-skew-background: $dailydeal_countdown-element-background--skew-mixin,
+                $right-side-skew-gutter: $dailydeal_countdown-element-margin-factor
+            );
+        }
+
+        &--special {
+            width: $dailydeal_countdown-element--special-width;
+            background: $dailydeal_countdown-element--special-background;
+
+            @if $dailydeal_countdown-element-apply-skews-mixin {
+                &:first-child {
+                    &,
+                    &:before {
+                        background: $dailydeal_countdown-element--special-background;
+                    }
+                }
+            }
+        }
+
+        #{$root}--tile & {
+            @include right-side-skew-override(
+                $right-side-skew-gutter: $dailydeal_countdown-element--tile-margin-factor,
+                $right-side-skew-gutter-multiplier: 5
+            );
+        }
+    }
+
+    &__countdown-icon {
+        width: $dailydeal_countdown-icon-width;
+        height: $dailydeal_countdown-icon-height;
+        fill: $dailydeal_countdown-icon-fill;
+    }
+
+    &__countdown-value {
+        display: $dailydeal_countdown-value-display;
+        font-size: $dailydeal_countdown-value-font-size;
+        font-weight: $dailydeal_countdown-value-font-weight;
+        color: $dailydeal_countdown-value-color;
+        padding: $dailydeal_countdown-value-padding;
+    }
+
+    &__countdown-label {
+        display: $dailydeal_countdown-label-display;
+        font-size: $dailydeal_countdown-label-font-size;
+        font-weight: $dailydeal_countdown-label-font-weight;
+        color: $dailydeal_countdown-label-color;
+        padding: $dailydeal_countdown-label-padding;
+    }
+
+    &--tile {
+        position: $dailydeal--tile-position;
+        left: $dailydeal--tile-left;
+        bottom: $dailydeal--tile-bottom;
+        width: 100%;
+        z-index: 3;
+
+        #{$root}__availability {
+            position: relative;
+            background: $dailydeal--tile-availability-background;
+            font-size: $dailydeal--tile-availability-font-size;
+            color: $dailydeal--tile-availability-color;
+            padding: $dailydeal--tile-availability-padding;
+            z-index: 4;
+            font-weight: $dailydeal--tile-availability-font-weight;
+            border-radius: $dailydeal--tile-availability-border-radius;
+
+            @if $dailydeal--tile-availability-apply-skews-mixin {
+                @include right-side-skew(
+                    $right-side-skew-background: $dailydeal--tile-availability-background
+                );
+            }
+        }
+    }
 }

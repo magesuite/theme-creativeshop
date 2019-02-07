@@ -1,0 +1,27 @@
+<?php
+    /** @var \MageSuite\ProductPositiveIndicators\Block\PopularIcon\Product $block */
+?>
+
+<?php if($block->getPopularIconFlag()): ?>
+    <?php 
+        $label = $block->getLabel();
+
+        $wrapperTag = $block->getWrapperTag() ?? 'li';
+
+        $wrapperClass = $block->getWrapperCssClass();
+        $wrapperClass = $wrapperClass ? sprintf('class="%s"', $wrapperClass) : '';
+
+        $cssClass = $block->getCssClass();
+        $cssClass = $cssClass ? sprintf('class="%s"', $cssClass) : '';
+
+        $badgeTextClass = $block->getTextCssClass();
+        $badgeTextClass = $badgeTextClass ? sprintf('class="%s"', $badgeTextClass) : '';
+    ?>
+    <<?= $wrapperTag ?> <?= $wrapperClass ?>>
+        <span <?= $cssClass ?>>
+            <span <?= $badgeTextClass ?>><?= $label ?></span>
+        </span>
+    </<?= $wrapperTag ?>>
+<?php endif; ?>
+
+

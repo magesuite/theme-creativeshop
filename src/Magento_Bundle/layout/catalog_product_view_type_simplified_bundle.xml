@@ -2,24 +2,22 @@
 
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="bundle.summary" template="Magento_Bundle::catalog/product/view/simplified-summary.phtml" />
-        <referenceContainer name="bundle.options.container" htmlClass="" />
-        <move element="bundle.options.container" destination="product.info.main" after="product.info.price" />
+        <attribute name="class" value="page-product-bundle-simplified" />
 
-        <referenceBlock name="product.info.options.wrapper.bottom">
-            <action method="unsetChild">
-                <argument name="block" xsi:type="string">product.info.stock</argument>
-            </action>
-            <action method="unsetChild">
-                <argument name="block" xsi:type="string">product.info.social</argument>
-            </action>
+        <referenceBlock name="bundle.summary" template="Magento_Bundle::catalog/product/view/simplified-summary.phtml" />
+
+        <referenceBlock name="product.info.addtocart.bundle">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string"></argument>
+            </arguments>
         </referenceBlock>
 
+        <move element="product.info" destination="product.info.main.section.form" before="-" />
+
         <referenceContainer name="bundle.product.options.wrapper" htmlClass="bundle-options-wrapper cs-no-display" />
-        <referenceBlock name="product.info.addto.bundle" remove="true" />
-        <referenceBlock name="product.info.addto" display="true" />
-        <referenceBlock name="customize.button" remove="true" />
-        <referenceBlock name="product.price.render.bundle.customization" remove="true" />
-        <referenceContainer name="product.info.stock" remove="true" />
+        <referenceBlock name="product.info.addto.bundle" display="false" />
+        <referenceBlock name="product.info.addto" ddisplay="false" />
+        <referenceBlock name="customize.button" display="false" />
+        <referenceBlock name="product.price.render.bundle.customization" display="false" />
     </body>
 </page>
