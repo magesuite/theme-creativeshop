@@ -26,7 +26,8 @@ $product-tile_details-font-size: inherit !default;
 $product-tile_swatches-container-height: 1.8rem !default;
 $product-tile_swatches-margin: 0 0 $product-tile_content-elements-gutter-factor !default;
 
-$product-tile_product-name-margin: 0 0 #{$product-tile_content-elements-gutter-factor / 3} !default;
+$product-tile_product-name-margin: 0 0 #{$product-tile_content-elements-gutter-factor /
+    3} !default;
 $product-tile_product-name-font-size: 1.5rem !default;
 $product-tile_product-name-max-lines-display: 2 !default;
 $product-tile_product-name-line-height: 1.8rem !default; // MUST BE a number value with unit, cannot be 'inherit'
@@ -39,16 +40,20 @@ $product-tile_product-name-link-text-decoration-hover: none !default;
 $product-tile_addons-background: $product-tile_content-background !default;
 $product-tile_addons-border-radius: $product-tile_border-radius !default;
 $product-tile_addons-box-shadow-hover: $box-shadow_base !default;
-$product-tile_left-and-right-side-padding: $product-tile_content-elements-gutter-factor / 3 !default;
-$product-tile_addon-padding-factor: #{$product-tile_content-elements-gutter-factor / 2} !default;
+$product-tile_left-and-right-side-padding: $product-tile_content-elements-gutter-factor /
+    3 !default;
+$product-tile_addon-padding-factor: #{$product-tile_content-elements-gutter-factor /
+    2} !default;
 $product-tile_addon-padding: $product-tile_addon-padding-factor 0 !default;
 
 $product-tile_in-stock-color: $color_apple !default;
 $product-tile_out-of-stock-color: $color_crimson !default;
 
-$product-tile_wishlist-comment-margin: 0 0 $product-tile_content-elements-gutter-factor !default;
+$product-tile_wishlist-comment-margin: 0 0
+    $product-tile_content-elements-gutter-factor !default;
 $product-tile_wishlist-comment-textarea-height: 5rem !default;
-$product-tile_wishlist-actions-margin: #{$product-tile_content-elements-gutter-factor / 2} 0 0 !default;
+$product-tile_wishlist-actions-margin: #{$product-tile_content-elements-gutter-factor /
+    2} 0 0 !default;
 $product-tile_wishlist-actions-display: flex !default;
 $product-tile_wishlist-actions-justify-content: space-between !default;
 
@@ -145,9 +150,7 @@ $product-tile_show-addons-for-static-tile: false !default;
 
     &__swatches {
         display: inline-block;
-        height: $product-tile_swatches-container-height;
         margin: $product-tile_swatches-margin;
-        overflow: hidden;
 
         &:empty {
             margin: 0;
@@ -155,13 +158,16 @@ $product-tile_show-addons-for-static-tile: false !default;
     }
 
     &__name {
-        height: $product-tile_product-name-max-lines-display * $product-tile_product-name-line-height + 0.2;
+        height: $product-tile_product-name-max-lines-display *
+            $product-tile_product-name-line-height + 0.2;
         margin: $product-tile_product-name-margin;
         line-height: $product-tile_product-name-line-height;
         font-weight: $product-tile_product-name-font-weight;
         overflow: hidden;
 
-        @if $product-tile_product-name-font-size != $product-tile_details-font-size {
+        @if $product-tile_product-name-font-size !=
+            $product-tile_details-font-size
+        {
             font-size: $product-tile_product-name-font-size;
         }
 
@@ -174,7 +180,9 @@ $product-tile_show-addons-for-static-tile: false !default;
     &__name-link {
         color: $product-tile_product-name-link-color;
 
-        @if $product-tile_product-name-link-color != $product-tile_product-name-link-color-hover {
+        @if $product-tile_product-name-link-color !=
+            $product-tile_product-name-link-color-hover
+        {
             transition: color 0.15s linear;
         }
 
@@ -220,13 +228,20 @@ $product-tile_show-addons-for-static-tile: false !default;
 
         @if $inherit-hover-effects {
             top: 0;
-            padding: #{get-aspect-ratio-padding-value($tile_aspect-ratio-width, $tile_aspect-ratio-height)} $product-tile_content-gutter $product-tile_content-gutter;
+            padding: #{get-aspect-ratio-padding-value(
+                    $tile_aspect-ratio-width,
+                    $tile_aspect-ratio-height
+                )}
+                $product-tile_content-gutter
+                $product-tile_content-gutter;
             opacity: 0;
             transform: translate3d(0, -3rem, 0);
             box-shadow: $product-tile_addons-box-shadow-hover;
         } @else {
             top: 100%;
-            padding: 0 $product-tile_content-gutter $product-tile_content-gutter;
+            padding: 0
+                $product-tile_content-gutter
+                $product-tile_content-gutter;
         }
 
         #{$root}.no-transition,
@@ -239,7 +254,8 @@ $product-tile_show-addons-for-static-tile: false !default;
                 #{$root}:hover & {
                     opacity: 1;
                     transform: translate3d(0, 0, 0);
-                    transition: opacity 0.1s linear, transform 0.33s $transition-easing_slowdown-900;
+                    transition: opacity 0.1s linear,
+                        transform 0.33s $transition-easing_slowdown-900;
                 }
             }
         }

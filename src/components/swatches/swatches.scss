@@ -1,0 +1,186 @@
+@import 'config/variables';
+@import 'utils/visually-hidden';
+@import 'include-media/dist/include-media';
+@import 'components/button/mixin';
+
+// Keep in sync with quantity wrapper in buybox.
+$swatches_label-width: 10rem !default;
+$swatches_label-width-laptop-up: 11rem !default;
+$swatches_label-margin: 0 1.5rem 0 0 !default;
+$swatches_label-font-size: 1.1em !default;
+
+$swatches_disable-show-more: true !default;
+$swatches_swatch-gutter: 0.4em !default;
+$swatches_swatch-size: 2.45em !default;
+$swatches_swatch-padding: 0 0.35em !default;
+$swatches_swatch-background: $color_background-500 !default;
+$swatches_swatch--disabled-opacity: 0.65 !default;
+$swatches_swatch-color: $color_text-600 !default;
+
+$swatches_swatch-border-radius: $border-radius_base !default;
+$swatches_swatch-border: 1px solid $color_border-100 !default;
+
+$swatches_swatch-outline-offset: 2px !default;
+$swatches_swatch-outline: 1px solid $color_border-500 !default;
+$swatches_swatch--hover-outline: 1px solid $color_primary-500 !default;
+$swatches_swatch--selected-outline: 1px solid $color_primary-800 !default;
+
+$swatches_rows-gutter: $swatches_swatch-gutter * 2 !default;
+
+$swatches--tile_font-size: 0.45em !default;
+// Tells how many rows of swatches will be displayed inside tile component.
+$swatches--tile_num-of-rows: 1 !default;
+// Calculates how much space should be reserved in tile for swatches to prevent content from jumping.
+$swatches--tile_min-height: calc(
+    #{$swatches--tile_num-of-rows} * (#{$swatches_swatch-size} + #{$swatches_swatch-outline-offset *
+                2})
+);
+$swatches--pdp_font-size: 0.9em !default;
+$swatches--filters_font-size: 0.8em !default;
+
+// Container selector for swatches in tile and daily deal teaser.
+[class^='swatch-opt-'] {
+    pointer-events: none;
+    font-size: $swatches--tile_font-size;
+    min-height: $swatches--tile_min-height;
+    opacity: 1;
+    transition: opacity 0.3s;
+
+    &:empty {
+        opacity: 0;
+    }
+}
+
+// Container selector for swatches on PDP
+.swatch-opt {
+    font-size: $swatches--pdp_font-size;
+}
+
+.swatch-attribute {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    align-items: center;
+
+    // The only selector we have to tell that swatches are inside aftersearch navigation.
+    &.swatch-layered {
+        font-size: $swatches--filters_font-size;
+    }
+
+    & + & {
+        margin-top: $swatches_rows-gutter;
+    }
+}
+
+.swatch-attribute-label {
+    text-transform: uppercase;
+    line-height: $swatches_swatch-size;
+    font-weight: 700;
+    font-size: $swatches_label-font-size;
+    width: $swatches_label-width;
+    margin: $swatches_label-margin;
+
+    @include media('>=laptop') {
+        width: $swatches_label-width-laptop-up;
+    }
+
+    &:after {
+        content: ': ';
+    }
+}
+
+.swatch-attribute-selected-option {
+    @include visually-hidden();
+}
+
+.swatch-attribute-options {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: calc(
+        -#{$swatches_swatch-gutter} + #{$swatches_swatch-outline-offset / 2}
+    );
+    margin-bottom: -#{$swatches_swatch-gutter};
+    min-width: 100%;
+    justify-content: center;
+
+    .swatch-attribute-label ~ & {
+        min-width: 0;
+        justify-content: flex-start;
+    }
+}
+
+// Element added as a parent of .swatch-option in filters.
+.swatch-option-link-layered {
+    font-size: 1em;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.swatch-option {
+    font-weight: normal;
+    position: relative;
+    min-width: $swatches_swatch-size;
+    height: $swatches_swatch-size;
+    padding: $swatches_swatch-padding;
+    margin: #{$swatches_swatch-outline-offset} calc(
+            #{$swatches_swatch-outline-offset} + #{$swatches_swatch-gutter / 2}
+        ) calc(#{$swatches_swatch-outline-offset} + #{$swatches_swatch-gutter});
+    border: $swatches_swatch-border;
+    border-radius: $swatches_swatch-border-radius;
+    background-color: $swatches_swatch-background;
+    color: $swatches_swatch-color;
+    cursor: pointer;
+    line-height: $swatches_swatch-size;
+    text-align: center;
+    transition: background-color 0.3s, opacity 0.3s;
+
+    @if $swatches_disable-show-more {
+        display: block !important;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: -$swatches_swatch-outline-offset;
+        left: -$swatches_swatch-outline-offset;
+        right: -$swatches_swatch-outline-offset;
+        bottom: -$swatches_swatch-outline-offset;
+        border: $swatches_swatch-outline;
+        border-radius: $swatches_swatch-border-radius;
+        transition: border-color 0.3s;
+    }
+
+    &:not(.disabled):not([disabled]) {
+        &:hover {
+            &:after {
+                border: $swatches_swatch--hover-outline;
+            }
+        }
+    }
+
+    &.selected {
+        background-color: inherit;
+
+        &:after {
+            border: $swatches_swatch--selected-outline;
+        }
+    }
+
+    &.disabled,
+    &[disabled] {
+        opacity: $swatches_swatch--disabled-opacity;
+        cursor: not-allowed;
+    }
+}
+
+.swatch-input {
+    @include visually-hidden();
+}
+
+.swatch-more {
+    @if $swatches_disable-show-more {
+        display: none;
+    }
+}
