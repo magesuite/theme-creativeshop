@@ -1,0 +1,121 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+@import 'components/button/mixin';
+@import 'utils/visually-hidden';
+@import 'include-media/dist/include-media';
+
+$modal_title-font-size: $font-size_headline-3 !default;
+$modal_secondary-button-type: 'secondary' !default;
+$modal_secondary-button-icon-pos: 'no-icon' !default;
+$modal_inside-borders: 1px solid $color_border-500 !default;
+$modal_background: $color_background-200 !default;
+$modal_slide-mobile-background: $color_background-200 !default;
+$modal_box-shadow: $box-shadow_base !default;
+$modal_border-radius: 0 !default;
+$modal-border: none !default;
+$modal_text-font-size: $font-size_paragraph !default;
+$modal_primary-button-type: 'primary' !default;
+$modal_primary-button-icon-pos: 'no-icon' !default;
+$modal_secondary-button-type: 'secondary' !default;
+$modal_secondary-button-icon-pos: 'no-icon' !default;
+
+.modal-slide, 
+.modal-popup {
+
+    &.confirm {
+        .modal-inner-wrap {
+            max-width: 50rem;
+        }
+    }
+
+    .modal-inner-wrap {
+        background: $modal_background;
+        box-shadow: $modal_box-shadow;
+        border-radius: $modal_border-radius;
+        border: $modal-border;
+    }
+    
+    .modal-content {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        font-size: $modal_text-font-size;
+    }
+    
+    .modal-header {
+        padding: 0;
+        margin: 0;
+    }
+    
+    .modal-footer {
+        padding: 2rem;
+        border-top: $modal_inside-borders;
+        display: flex;
+        justify-content: space-between;
+    
+        .action-primary, 
+        .primary {
+            @include button($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
+            min-width: 12rem;
+
+            span {
+                @include button-span($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
+            }
+        }
+        
+        .action-secondary, 
+        .secondary {
+            @include button($type: $modal_secondary-button-type, $icon_pos: $modal_secondary-button-icon-pos);
+            min-width: 12rem;
+
+            span {
+                @include button-span($type: $modal_secondary-button-type, $icon_pos: $modal_secondary-button-icon-pos);
+            }
+        }
+
+        button:only-child {
+            @include button($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
+            min-width: 12rem;
+
+            span {
+                @include button-span($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
+            }
+
+        }
+    }
+    
+    .modal-title {
+        @include headline($level: $modal_title-font-size);
+        padding: 2rem;
+        border-bottom: $modal_inside-borders;
+        margin: 0;
+    }
+
+    .action-close {
+        background: none;
+        border: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 1.5rem;
+        background-image: url('../images/icons/close.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 1rem;
+        width: 3rem;
+        height: 3rem;
+
+        span {
+            @include visually-hidden();
+        }
+
+    }
+    
+}
+
+.modal-popup.modal-slide {
+    .modal-inner-wrap[class] {
+        @include media('<tablet') {
+            background-color: $modal_slide-mobile-background;
+        }
+    }
+}
