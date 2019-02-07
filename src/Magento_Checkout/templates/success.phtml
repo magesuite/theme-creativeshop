@@ -2,10 +2,10 @@
 // @codingStandardsIgnoreFile
 ?>
 <?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
-<div class="checkout-success | cs-info-page__section">
+<div class="checkout-success | cs-page-success__section">
     <?php if ($block->getOrderId()):?>
         <?php if ($block->getCanViewOrder()) :?>
-            <p class="cs-info-page__subheadline">
+            <p class="cs-page-success__subheadline">
                 <?php
                     echo __('Your order number is: %1.', sprintf(
                         '<a href="%s" class="order-number"><strong>%s</strong></a>',
@@ -15,23 +15,21 @@
                 ?>
             </p>
         <?php  else :?>
-            <p class="cs-info-page__subheadline">
+            <p class="cs-page-success__subheadline">
                 <?php echo __('Your order # is: <span>%1</span>', $block->escapeHtml($block->getOrderId())) ?>
             </p>
         <?php endif;?>
-        <p class="cs-info-page__text">
+        <p class="cs-page-success__text">
             <?php /* @escapeNotVerified */ echo __('We\'ll email you an order confirmation with details and tracking info.') ?>
         </p>
     <?php endif;?>
 
     <?php echo $block->getAdditionalInfoHtml() ?>
 
-    <div class="cs-info-page__button">
-            <a class="cs-button cs-button--look_light" href="<?php /* @escapeNotVerified */ echo $block->getUrl() ?>">
-                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span>
-                <svg class="cs-button__icon">
-                    <use xlink:href="#arrow_next"></use>
-                </svg>
+    <div class="cs-page-success__button-wrapper">
+            <a class="cs-page-success__button" href="<?= /* @escapeNotVerified */ $block->getContinueUrl() ?>">
+                 <span class="cs-page-success__button-span"><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span>
+                 <?= $block->getChildHtml('success.page.continue.button.icon'); ?>
             </a>
     </div>
 </div>

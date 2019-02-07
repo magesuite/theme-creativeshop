@@ -24,6 +24,7 @@ import * as $ from 'jquery';
 
 import 'pages/category';
 import 'pages/product';
+import 'pages/success';
 
 // =============================================================================
 // Components

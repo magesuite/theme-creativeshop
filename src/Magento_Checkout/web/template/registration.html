@@ -1,0 +1,17 @@
+<!--
+/**
+ * Template overriden to add subheadline class to first paragraph
+ */
+-->
+<!-- ko foreach: getRegion('messages') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+<div>
+    <!-- ko if: isFormVisible -->
+    <p class="cs-page-success__subheadline" data-bind="i18n: 'You can track your order status by creating an account.'"></p>
+    <p class="cs-page-success__text"><span data-bind="i18n: 'Email Address'"></span>: <span data-bind="text: getEmailAddress()"></span></p>
+    <form method="get" data-bind="attr: { action: getUrl() }">
+        <input type="submit" class="action primary" data-bind="value: $t('Create an Account')" />
+    </form>
+    <!--/ko-->
+</div>
