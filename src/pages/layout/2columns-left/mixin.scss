@@ -14,6 +14,10 @@ $layout-2col-left_was-separator-called-yet: false !default;
 
 $layout-2col-left_elements-gutter-tablet: $page_edge-gutter !default;
 $layout-2col-left_elements-gutter-desktop: $layout-2col-left_elements-gutter-tablet !default;
+$layout-2col-left_elements-gutter-tablet: 1.5rem !default;
+$layout-2col-left_elements-gutter-desktop: 2 *
+    $layout-2col-left_elements-gutter-tablet !default;
+$layout-2col-left_elements-separator-apply: true !default;
 $layout-2col-left_elements-separator-color: $color_border-200 !default;
 
 $layout-2col-left_layout-align-items: stretch !default;
@@ -33,7 +37,7 @@ $layout-2col-left_main-padding-tablet: $layout-2col-left_main-top-spacing 0 0
 $layout-2col-left_main-padding-desktop: $layout-2col-left_main-top-spacing 0 0
     $layout-2col-left_elements-gutter-desktop !default;
 
-@mixin two-columns-left() {
+@mixin two-columns-left($apply-border: true) {
     &__columns {
         @include media('>=tablet') {
             display: flex;
@@ -59,7 +63,10 @@ $layout-2col-left_main-padding-desktop: $layout-2col-left_main-top-spacing 0 0
                         $layout-2col-left_sidebar-border-right !=
                         none
                     {
-                        border-right: $layout-2col-left_sidebar-border-right;
+                        @if $apply-border == true {
+                            border-right: $layout-2col-left_sidebar-border-right;
+                        }
+
                         $layout-2col-left_was-separator-called-yet: true;
                     }
 
