@@ -82,6 +82,7 @@ import 'components/bundle-box';
 import 'components/product-gallery';
 import 'components/slider';
 import 'components/aftersearch-nav';
+import 'components/tile-gallery';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
