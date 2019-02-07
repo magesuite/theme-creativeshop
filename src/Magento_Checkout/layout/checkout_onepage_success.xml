@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="breadcrumbs">
@@ -25,6 +19,8 @@
             </action>
         </referenceBlock>
 
+        <move element="page.main.title" destination="info.page" before="-"/>
+
         <referenceContainer name="main.content" htmlClass="cs-container cs-container--success-page"/>
 
         <referenceBlock name="page.main.title">
@@ -33,13 +29,24 @@
             </action>
         </referenceBlock>
         <referenceContainer name="content">
-            <container name="info.page" htmlTag="div" htmlClass="cs-container__inner cs-info-page">
-                <container name="info.page.inner" htmlTag="div" htmlClass="cs-info-page__inner">
-                    <block class="Magento\Checkout\Block\Onepage\Success" name="checkout.success" template="success.phtml" cacheable="false"/>
-                    <block class="Magento\Checkout\Block\Registration" name="checkout.registration" template="registration.phtml" cacheable="false"/>
-                </container>
+            <container name="info.page" htmlTag="div" htmlClass="cs-container__inner cs-page-success">
+                <container name="info.page.inner" htmlTag="div" htmlClass="cs-page-success__inner" />
             </container>
         </referenceContainer>
-        <move element="page.main.title" destination="info.page" before="-"/>
+
+        <move element="checkout.success" destination="info.page.inner"/>
+        <move element="checkout.registration" destination="info.page.inner"/>
+
+        <referenceBlock name="checkout.success">
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="success.page.continue.button.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-page-success__button-icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
     </body>
 </page>

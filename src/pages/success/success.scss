@@ -1,0 +1,97 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'components/typography/mixin';
+@import 'components/button/mixin';
+
+$page-success_separator: 2px solid $color_border-200 !default;
+$page-success_sections-separator: 1px solid $color_border-500 !default;
+$page-success_subheadline-font-size: $font-size_headline-3 !default;
+$page-success_continue-button-type: 'secondary' !default;
+$page-success_continue-button-icon-pos: 'right' !default;
+$page-success_register-button-type: 'primary' !default;
+$page-success_register-button-icon-pos: 'no-icon' !default;
+
+.#{$ns}page-success {
+    $root: &;
+    margin: 2rem 0;
+
+    @include media('>=tablet') {
+        margin: 4rem auto 2rem;    
+    }
+
+    &__inner {
+        border-top: $page-success_separator;
+        padding-top: 2.5rem;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        @include media('>=tablet') {
+            padding-top: 1.5rem;
+        }
+    }
+
+    &__section {
+        width: 100%;
+
+        &:nth-child(2n + 2) {
+            margin-top: 3rem;
+        }
+
+        @include media('>=tablet') {
+            width: 48%;
+            box-sizing: border-box;
+            padding-bottom: 2rem;
+
+            &:nth-child(2n + 1) {
+                padding-right: 4rem;
+            }
+
+            &:nth-child(2n + 2) {
+                padding-left: 4rem;
+                border-left: $page-success_sections-separator;
+                margin-top: 0;
+
+                @include media('<tablet') {
+                    margin-top: 1.5rem;
+                }
+            }
+        }
+
+        @include media('>=laptop') {
+            &:nth-child(2n + 1) {
+                padding-right: 6rem;
+            }
+
+            &:nth-child(2n + 2) {
+                padding-left: 6rem;
+            }
+        }
+    }
+
+    &__subheadline {
+        @include headline($level: $page-success_subheadline-font-size);
+        text-transform: none;
+    }
+
+    // Continue shopping button
+    &__button {
+        @include button($type: $page-success_continue-button-type, $icon_pos: $page-success_continue-button-icon-pos);
+        margin-top: 1rem;
+
+        &-span {
+            @include button_span($type: $page-success_continue-button-type, $icon_pos: $page-success_continue-button-icon-pos);
+        }
+
+        &-icon {
+            @include button_icon($type: $page-success_continue-button-type, $icon_pos: $page-success_continue-button-icon-pos);
+        }
+    }
+
+    // Register form
+    input.primary {
+        @include button($type: $page-success_register-button-type, $icon_pos: $page-success_register-button-icon-pos);
+        margin-top: 2rem;
+    }
+}
