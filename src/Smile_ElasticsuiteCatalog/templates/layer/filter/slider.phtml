@@ -1,0 +1,60 @@
+<?php
+/**
+ * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation\Renderer\Slider
+ */
+
+$filter = $block->getFilter();
+$filterRequestVar = $filter->getRequestVar();
+$attribute = $filter->getAttributeModel();
+$displayMode = $attribute->getSliderDisplayMode() ?? 'inputs-with-slider';
+?>
+
+<div
+    class="cs-aftersearch-nav__range cs-aftersearch-nav-range cs-aftersearch-nav-range--<?= $displayMode; ?> cs-aftersearch-nav-range--attr_<?= $filterRequestVar; ?> smile-es-range-slider"
+    data-role="<?= /* @noEscape */ $block->getDataRole(); ?>"
+>
+    <div class="cs-aftersearch-nav-range__fields">
+        <label for="<?= $filterRequestVar; ?>-from-input" class="cs-aftersearch-nav-range__label cs-aftersearch-nav-range__label--from">
+            <?= $block->escapeHtml(__('From')); ?>
+        </label>
+        <div class="cs-aftersearch-nav-range__field cs-aftersearch-nav-range__field--from">
+            <span class="cs-aftersearch-nav-range__currency" data-role="currency"></span>
+            <input
+                type="text"
+                id="<?= $filterRequestVar; ?>-from-input"
+                data-role="from-input"
+                class="cs-aftersearch-nav-range__input cs-aftersearch-nav-range__input--from"
+            >
+        </div>
+
+        <label for="<?= $filterRequestVar; ?>-to-input" class="cs-aftersearch-nav-range__label cs-aftersearch-nav-range__label--to">
+            <?= $block->escapeHtml(__('To')); ?>
+        </label>
+        <div class="cs-aftersearch-nav-range__field cs-aftersearch-nav-range__field--to">
+            <span class="cs-aftersearch-nav-range__currency" data-role="currency"></span>
+            <input
+                type="text"
+                id="<?= $filterRequestVar; ?>-to-input"
+                data-role="to-input"
+                class="cs-aftersearch-nav-range__input cs-aftersearch-nav-range__input--to"
+            >
+        </div>
+    </div>
+    <div class="cs-aftersearch-nav-range__slider">
+        <div class="cs-aftersearch-nav-range__slider-label cs-aftersearch-nav-range__slider-label--from" data-role="from-label"></div>
+        <div class="cs-aftersearch-nav-range__slider-label cs-aftersearch-nav-range__slider-label--to" data-role="to-label"></div>
+        <div class="cs-aftersearch-nav-range__slider-bar" data-role="slider-bar"></div>
+    </div>
+    <div class="cs-aftersearch-nav-range__actions-box actions-toolbar">
+        <div class="cs-aftersearch-nav-range__message" data-role="message-box"></div>
+        <div class="cs-aftersearch-nav-range__actions actions-primary">
+            <a class="cs-aftersearch-nav-range__apply" data-role="apply-range">
+                <?= $block->escapeHtml(__('Apply')); ?>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    { "[data-role=<?= /* @noEscape */ $block->getDataRole(); ?>]" : { "rangeSlider" : <?=  /* @noEscape */ $block->getJsonConfig(); ?> } }
+</script>

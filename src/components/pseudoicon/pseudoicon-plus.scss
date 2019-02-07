@@ -37,42 +37,43 @@ $pseudoicon-plus-position-side-offset: $page_edge-gutter !default;
         position: absolute;
         top: 50%;
         right: $position-side-offset;
+        left: auto;
         width: $size;
         height: $weight;
-        background-color: $color;
-        transform: translate3d(0, -50%, 0);
+        background: $color;
+        transform: translate3d(0, -50%, 0) !important;
         backface-visibility: hidden;
         transition: $transition;
     }
 
     &:after {
-        transform: translate3d(0, -50%, 0) rotate(90deg);
+        transform: translate3d(0, -50%, 0) rotate(90deg) !important;
     }
 
     @if $color-hover != $color {
         &:hover {
             &:before,
             &:after {
-                background-color: $color-hover;
+                background: $color-hover;
             }
         }
     }
 
     &[aria-expanded='true'] {
         &:before {
-            transform: translate3d(0, -50%, 0) rotate(-90deg);
+            transform: translate3d(0, -50%, 0) rotate(-90deg) !important;
             opacity: 0;
 
             @if $color-expanded != $color {
-                background-color: $color-expanded;
+                background: $color-expanded;
             }
         }
 
         &:after {
-            transform: translate3d(0, -50%, 0) rotate(0);
+            transform: translate3d(0, -50%, 0) rotate(0) !important;
 
             @if $color-expanded != $color {
-                background-color: $color-expanded;
+                background: $color-expanded;
             }
         }
     }

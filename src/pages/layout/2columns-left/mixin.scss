@@ -3,23 +3,35 @@
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 
-$layout-2col-left_columns-per-row: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, one-column) !default;
+$layout-2col-left_columns-per-row: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructor,
+    columns,
+    one-column
+) !default;
 $layout-2col-left_was-separator-called-yet: false !default;
 
-$layout-2col-left_elements-gutter-tablet: 1.5rem !default;
-$layout-2col-left_elements-gutter-desktop: 2 * $layout-2col-left_elements-gutter-tablet !default;
+$layout-2col-left_elements-gutter-tablet: $page_edge-gutter !default;
+$layout-2col-left_elements-gutter-desktop: $layout-2col-left_elements-gutter-tablet !default;
 $layout-2col-left_elements-separator-color: $color_border-200 !default;
 
 $layout-2col-left_layout-align-items: stretch !default;
 
-$layout-2col-left_sidebar-padding-tablet: 0 $layout-2col-left_elements-gutter-tablet 0 0 !default;
-$layout-2col-left_sidebar-padding-desktop: 0 $layout-2col-left_elements-gutter-desktop 0 0 !default;
-$layout-2col-left_sidebar-border-right: 2px solid $layout-2col-left_elements-separator-color !default;
+$layout-2col-left_sidebar-padding-tablet: 0
+    $layout-2col-left_elements-gutter-tablet 0 0 !default;
+$layout-2col-left_sidebar-padding-desktop: 0
+    $layout-2col-left_elements-gutter-desktop 0 0 !default;
+$layout-2col-left_sidebar-border-right: 2px solid
+    $layout-2col-left_elements-separator-color !default;
 
 $layout-2col-left_main-top-spacing: 1.5rem !default;
-$layout-2col-left_main-padding: $layout-2col-left_main-top-spacing 0 0 $layout-2col-left_elements-gutter-tablet !default;
-$layout-2col-left_main-padding-tablet: $layout-2col-left_main-top-spacing 0 0 $layout-2col-left_elements-gutter-tablet !default;
-$layout-2col-left_main-padding-desktop: $layout-2col-left_main-top-spacing 0 0 $layout-2col-left_elements-gutter-desktop !default;
+$layout-2col-left_main-padding: $layout-2col-left_main-top-spacing 0 0
+    $layout-2col-left_elements-gutter-tablet !default;
+$layout-2col-left_main-padding-tablet: $layout-2col-left_main-top-spacing 0 0
+    $layout-2col-left_elements-gutter-tablet !default;
+$layout-2col-left_main-padding-desktop: $layout-2col-left_main-top-spacing 0 0
+    $layout-2col-left_elements-gutter-desktop !default;
 
 @mixin two-columns-left() {
     &__columns {
@@ -29,7 +41,7 @@ $layout-2col-left_main-padding-desktop: $layout-2col-left_main-top-spacing 0 0 $
             align-items: $layout-2col-left_layout-align-items;
         }
     }
-    
+
     &__messages {
         width: 100%;
     }
@@ -40,7 +52,13 @@ $layout-2col-left_main-padding-desktop: $layout-2col-left_main-top-spacing 0 0 $
                 @include media('>=#{$breakpoint}') {
                     width: calc(100% / #{$itemsPerRow});
 
-                    @if $itemsPerRow > 1 and $layout-2col-left_was-separator-called-yet == false and $layout-2col-left_sidebar-border-right != none {
+                    @if $itemsPerRow >
+                        1 and
+                        $layout-2col-left_was-separator-called-yet ==
+                        false and
+                        $layout-2col-left_sidebar-border-right !=
+                        none
+                    {
                         border-right: $layout-2col-left_sidebar-border-right;
                         $layout-2col-left_was-separator-called-yet: true;
                     }

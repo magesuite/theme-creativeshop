@@ -1,229 +1,163 @@
 import * as $ from 'jquery';
 import breakpoint from 'utils/breakpoint/breakpoint';
 
-export default class Aftersearch {
+export interface AftersearchNavOptions {
+    horizontalClassName?: string;
+    filtersExpandedClassName?: string;
+    toggleButtonClassName?: string;
+    filterClassName?: string;
+    filterContentClassName?: string;
+    filterContentRightClassName?: string;
+    loaderClassName?: string;
+    showLoaderOnClick?: boolean;
+    loaderClickTargetsSelector?: string;
+}
+
+export class AftersearchNav {
     protected _$element: JQuery;
-    protected _allFiltersVisible: boolean;
-    protected _filtersExpandedClass: string;
     protected _$toggleButton: JQuery;
-    protected _$toggleButtonTextSpan: JQuery;
     protected _$listOfFilters: JQuery;
-    protected _widthOfElement: number;
+    protected _isHorizontal = false;
+    protected _options: AftersearchNavOptions = {
+        horizontalClassName: 'cs-aftersearch-nav--horizontal',
+        filtersExpandedClassName: 'cs-aftersearch-nav--expanded',
+        toggleButtonClassName: 'cs-aftersearch-nav__toggle-button',
+        filterClassName: 'cs-aftersearch-nav__filter',
+        filterContentClassName: 'cs-aftersearch-nav__filter-content',
+        filterContentRightClassName:
+            'cs-aftersearch-nav__filter-content--align-right',
+        loaderClassName: 'cs-aftersearch-nav__loader',
+        showLoaderOnClick: true,
+        loaderClickTargetsSelector:
+            '.cs-aftersearch-nav-range__apply, .cs-aftersearch-nav .item, .cs-aftersearch-nav__swatch-link',
+    };
 
     protected _eventListeners: {
-        onFilterClick?: (event: Event) => void;
-        onProductsGridHover?: (event: Event) => void;
-        toggleButtonClick?: (event: Event) => void;
+        filterClick?: (event: JQuery.Event) => void;
+        toggleButtonClick?: (event: JQuery.Event) => void;
+        filterApply?: (event: JQuery.Event) => void;
     } = {};
 
-    public constructor($element: JQuery) {
+    public constructor($element: JQuery, options?: AftersearchNavOptions) {
         this._$element = $element;
-
-        // Don't add horizontal features if there is no horizontal filters
-        if (!this._$element.hasClass('cs-aftersearch-nav--horizontal')) {
-            return;
-        }
-        this._allFiltersVisible = false;
-        this._filtersExpandedClass = 'cs-aftersearch-nav--expanded';
+        this._options = $.extend(this._options, options);
 
         this._$toggleButton = this._$element.find(
-            '.cs-aftersearch-nav__show-more-trigger'
-        );
-        this._$toggleButtonTextSpan = this._$element.find(
-            '.cs-aftersearch-nav__show-more-trigger-text'
+            `.${this._options.toggleButtonClassName}`
         );
         this._$listOfFilters = this._$element.find(
-            '.cs-aftersearch-nav__filter'
+            `.${this._options.filterClassName}`
         );
 
-        this._widthOfElement = this._$listOfFilters.length
-            ? $(this._$listOfFilters[0]).outerWidth()
-            : 0;
+        this._isHorizontal = this._$element.hasClass(
+            this._options.horizontalClassName
+        );
 
         this._attachEvents();
     }
 
     /**
-     *  Calculate height of collapsible elements to best fit available screen
+     * Method called when one of filter appliers is clicked.
      */
-    protected _calculateOptimalHeight(
-        initialHeight,
-        $filterContent: JQuery,
-        $filterTitle: JQuery
-    ): number {
-        const itemPosition: number =
-            $filterContent.offset().top -
-            $(window).scrollTop() +
-            $filterTitle.outerHeight();
+    protected _applyFilter() {
+        this._$element.find(`.${this._options.loaderClassName}`).show();
+    }
 
-        const itemOffset: number = $(window).height() - itemPosition;
-        const minimalFilterHeight: number = 200;
-        const spaceBetweenFilterAndWindowBottom: number = 30;
+    protected _adjustDropdown(event) {
+        const $filter: JQuery = $(event.target).closest(this._$listOfFilters);
 
-        if (initialHeight > itemOffset - spaceBetweenFilterAndWindowBottom) {
-            return itemOffset - spaceBetweenFilterAndWindowBottom <
-                minimalFilterHeight
-                ? minimalFilterHeight
-                : itemOffset - spaceBetweenFilterAndWindowBottom;
-        } else {
-            return initialHeight;
-        }
+        this._setProperHeightOfFlyout($filter);
+        this._adjustCollapseAlignment($filter);
     }
 
     /**
-     *  Set height of collapsible elements to best fit available screen
+     *  Set height of dropdown content elements to best fit available screen.
      */
     protected _setProperHeightOfFlyout($filter: JQuery): void {
-        if ($(window).width() >= breakpoint.tablet) {
-            const $filterContent: JQuery = $filter.find(
-                'div.cs-aftersearch-nav__filter-content'
-            );
-            const $filterTitle: JQuery = $filter.find(
-                '.cs-aftersearch-nav__filter-title'
-            );
-
-            // Remove height that was previously set to start with clean value
-            $filterContent.css('height', '');
-
-            const initialHeight: number = $filterContent.height();
-
-            $filterContent.height(
-                this._calculateOptimalHeight(
-                    initialHeight,
-                    $filterContent,
-                    $filterTitle
-                )
-            );
-        }
-    }
-
-    /**
-     *  Prevent item cloner from overlapping filters
-     */
-    protected _setFilterAboveItemCloner($hoveredProduct: JQuery): void {
-        const openFilter = $('.cs-aftersearch-nav__filter-content.active');
-        if (openFilter.length) {
-            const $hoverProductRect = $hoveredProduct
-                .get(0)
-                .getBoundingClientRect();
-            const $openFilterRect = openFilter.get(0).getBoundingClientRect();
-            const overlap = !(
-                $openFilterRect.right < $hoverProductRect.left ||
-                $openFilterRect.left > $hoverProductRect.right ||
-                $openFilterRect.bottom < $hoverProductRect.top ||
-                $openFilterRect.top > $hoverProductRect.bottom
-            );
-            if (overlap) {
-                $('#maincontent').css('z-index', 303);
-            } else {
-                $('#maincontent').css('z-index', '');
-            }
-        } else {
-            $('#maincontent').css('z-index', '');
-        }
-    }
-
-    /**
-     *  Add special class to right filter to align it properly
-     */
-    protected _setRightFilterClass(): void {
-        const $filtersRows: JQuery = $('.cs-aftersearch-nav__filter-row');
-        const $listOfFilters: JQuery = this._$listOfFilters;
-
-        $.each($filtersRows, function(i: number, e: any): void {
-            let offset: any = $(this).offset().left;
-            if (
-                $(window).width() -
-                    offset -
-                    2 * $($listOfFilters[0]).outerWidth() <
-                0
-            ) {
-                $(this)
-                    .find('.cs-aftersearch-nav__filter-content')
-                    .addClass(
-                        'cs-aftersearch-nav__filter-content--extremely-right'
-                    );
-            }
-        });
-    }
-
-    /**
-     *  Add z-indexes to correct alignment of filters
-     */
-    protected _fixFiltersOverlapping(): void {
-        $('.cs-aftersearch-nav__filter-content').css('z-index', '1');
-        $.each($('.cs-aftersearch-nav__filter-title'), function() {
-            if ($(this).attr('aria-expanded') === 'true') {
-                $(this).css('z-index', '4');
-                $('.cs-aftersearch-nav__filter-content.active').css(
-                    'z-index',
-                    '3'
-                );
-            } else {
-                $(this).css('z-index', '1');
-            }
-        });
-    }
-
-    /**
-     *  Show/Hide more rows of filters
-     */
-    protected _toggleMoreFilters(): void {
-        if (!this._allFiltersVisible) {
-            this._$element.addClass(this._filtersExpandedClass);
-            this._$toggleButtonTextSpan.text(
-                this._$toggleButton.data('hide-text')
-            );
-            this._$toggleButton.addClass('show');
-        } else {
-            this._$element.removeClass(this._filtersExpandedClass);
-            this._$toggleButtonTextSpan.text(
-                this._$toggleButton.data('show-text')
-            );
-            this._$toggleButton.removeClass('show');
-        }
-
-        this._allFiltersVisible = !this._allFiltersVisible;
-
-        const openFilters: JQuery = $(
-            '.cs-aftersearch-nav__filter-title[aria-expanded="true"]'
+        const $filterContent: JQuery = $filter.find(
+            '.cs-aftersearch-nav__filter-content'
         );
+        // Remove height that was previously set to start with clean value.
+        $filterContent.css('max-height', '');
 
-        if (openFilters.length) {
-            openFilters.trigger('click');
+        if (!this._isHorizontal || $(window).width() < breakpoint.tablet) {
+            return;
         }
+
+        const clientRect = $filterContent.get(0).getBoundingClientRect();
+        const windowHeight = $(window).height();
+        const contentOverflow = clientRect.bottom - windowHeight;
+
+        $filterContent.css(
+            'max-height',
+            Math.min(clientRect.height, clientRect.height - contentOverflow)
+        );
+    }
+
+    /**
+     *  Add right alignment class to dropdown content to prevent it from overflowing the screen.
+     */
+    protected _adjustCollapseAlignment($filter: JQuery): void {
+        if (!this._isHorizontal || $(window).width() < breakpoint.tablet) {
+            return;
+        }
+
+        const $filterContent = $filter.find(
+            `.${this._options.filterContentClassName}`
+        );
+        const $filterOptions = $filter.parent();
+        const filterOptionsWidth = $filterOptions.width();
+        const filterOptionsOffset = $filterOptions.offset();
+        const filterOffset = $filter.offset();
+
+        if (
+            filterOffset.left - filterOptionsOffset.left >=
+            filterOptionsWidth / 2
+        ) {
+            $filterContent.addClass(this._options.filterContentRightClassName);
+        } else {
+            $filterContent.removeClass(
+                this._options.filterContentRightClassName
+            );
+        }
+    }
+
+    /**
+     *  Toggle visibility of additional filters.
+     */
+    protected _toggleFilters(): void {
+        const areFiltersExpanded = this._$element.hasClass(
+            this._options.filtersExpandedClassName
+        );
+        const ariaValue = areFiltersExpanded ? 'false' : 'true';
+
+        this._closeCollapses(this._$listOfFilters);
+
+        this._$toggleButton
+            .attr('aria-expanded', ariaValue)
+            .attr('aria-selected', ariaValue);
+        this._$element.toggleClass(this._options.filtersExpandedClassName);
+    }
+
+    protected _closeCollapses($collapses: JQuery): void {
+        try {
+            $collapses.each((_, element) => {
+                $(element).collapsible('deactivate');
+            });
+        } catch (error) {} // Discard "collapses not yet initialized" error.
     }
 
     protected _attachEvents(): void {
-        this._eventListeners.onFilterClick = (event: Event): void => {
-            const $filterToOpen: JQuery = $(event.target).hasClass(
-                'cs-aftersearch-nav__filter'
-            )
-                ? $(event.target)
-                : $(event.target).closest('.cs-aftersearch-nav__filter');
-            this._setProperHeightOfFlyout($filterToOpen);
-            this._fixFiltersOverlapping();
-            this._setRightFilterClass();
-        };
+        this._eventListeners.filterClick = this._adjustDropdown.bind(this);
+        this._eventListeners.toggleButtonClick = this._toggleFilters.bind(this);
+        this._eventListeners.filterApply = this._applyFilter.bind(this);
 
-        this._eventListeners.onProductsGridHover = (event: Event): void => {
-            const $hoveredProduct: JQuery = $(event.target).hasClass(
-                'cs-grid-product'
-            )
-                ? $(event.target)
-                : $(event.target).closest('.cs-grid-product');
-            this._setFilterAboveItemCloner($hoveredProduct);
-        };
-
-        this._eventListeners.toggleButtonClick = (event: Event): void => {
-            this._toggleMoreFilters();
-        };
-
-        this._$listOfFilters.on('click', this._eventListeners.onFilterClick);
-        $('.cs-product-tile').on(
-            'mouseenter mouseleave',
-            this._eventListeners.onProductsGridHover
-        );
+        this._$listOfFilters.on('click', this._eventListeners.filterClick);
         this._$toggleButton.on('click', this._eventListeners.toggleButtonClick);
+        $(document).on(
+            'click',
+            this._options.loaderClickTargetsSelector,
+            this._eventListeners.filterApply
+        );
     }
 }

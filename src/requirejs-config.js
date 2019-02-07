@@ -49,6 +49,9 @@ var config = {
             'Smile_ElasticsuiteCore/js/form-mini': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
             },
+            'Smile_ElasticsuiteCatalog/js/range-slider-widget': {
+                'Smile_ElasticsuiteCatalog/js/range-slider-widget-ext': true,
+            },
             'Magento_CheckoutAgreements/js/view/checkout-agreements': {
                 'Magento_CheckoutAgreements/js/view/checkout-agreements-ext': true,
             },

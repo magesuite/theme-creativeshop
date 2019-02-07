@@ -1,0 +1,93 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+
+$aftersearch-nav-state__border: 1px solid $color_border-200 !default;
+$aftersearch-nav-state__item-button-type: 'secondary' !default;
+$aftersearch-nav-state__item-icon-pos: 'left' !default;
+$aftersearch-nav-state__item-gutter: 0.8em !default;
+$aftersearch-nav-state__item-font-size: 0.8em !default;
+// How many filters need to be at least selected to display "clear all" button.
+$aftersearch-nav-state__item-clear-all-from: 2 !default;
+
+.cs-aftersearch-nav-state {
+    $root: &;
+
+    font-size: 1.4rem;
+    padding: $aftersearch-nav-state__item-gutter 0 0;
+    border-top: $aftersearch-nav-state__border;
+    border-bottom: $aftersearch-nav-state__border;
+    width: 100%;
+    overflow: hidden;
+
+    &__items {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        box-sizing: border-box;
+        margin-right: -$aftersearch-nav-state__item-gutter;
+
+        &:after {
+            content: '';
+            flex: 1;
+            order: 1;
+        }
+    }
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        margin: 0 $aftersearch-nav-state__item-gutter
+            $aftersearch-nav-state__item-gutter 0;
+        order: 1;
+
+        &--clear {
+            display: none;
+            order: 2;
+
+            &:nth-child(n
+                    + #{$aftersearch-nav-state__item-clear-all-from
+                    + 1}) {
+                display: block;
+            }
+        }
+    }
+
+    &__link {
+        @include button(
+            $type: $aftersearch-nav-state__item-button-type,
+            $icon_pos: $aftersearch-nav-state__item-icon-pos
+        );
+        font-size: $aftersearch-nav-state__item-font-size;
+    }
+
+    &__text {
+        @include button-span(
+            $type: $aftersearch-nav-state__item-button-type,
+            $icon_pos: $aftersearch-nav-state__item-icon-pos
+        );
+    }
+
+    &__label {
+        &:after {
+            content: ': ';
+        }
+    }
+
+    &__value {
+        font-weight: normal;
+    }
+
+    &__remove-icon {
+        @include button-icon(
+            $type: $aftersearch-nav-state__item-button-type,
+            $icon_pos: $aftersearch-nav-state__item-icon-pos
+        );
+        height: $aftersearch-nav-state__item-font-size;
+        width: $aftersearch-nav-state__item-font-size;
+
+        path {
+            fill: currentColor;
+        }
+    }
+}
