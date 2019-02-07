@@ -76,6 +76,7 @@ import 'components/password-strength-meter';
 import 'components/messages';
 import 'components/checkout';
 import 'components/tabs';
+import 'components/modal';
 import 'components/buybox';
 import 'components/qty-increment';
 import 'components/indicators';
