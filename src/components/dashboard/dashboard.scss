@@ -1,44 +1,45 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 @import 'components/button/mixin';
+@import 'components/dashboard/mixin';
+@import 'pages/layout/2columns-left/mixin';
 
 $dashboard-button_type: $button_default-type !default;
 $dashboard-button_icon-pos: $button_default-icon-pos !default;
+$dashboard-button_no-icon-pos: 'no-icon' !default;
 
-$dashboard-back-button_type: 'secondary' !default;
-$dashboard-back-button_icon-pos: $button_default-icon-pos !default;
+$dashboard-secondary-button_type: 'secondary' !default;
+$dashboard-secondary-button_icon-pos: 'no-icon' !default;
+
+$dashboard_font-size: 1rem !default;
+$dashboard_button-font-size: inherit !default;
+$dashboard_label-font-size: inherit !default;
+
+$dashboard_price-font-color: $color_text-500 !default;
+
+$dashboard_main-separator-apply: false !default;
+$dashboard_bottom-border-top: 2px solid $color_border-500 !default;
+$dashboard_actions-toolbar-border-top: 1px solid $color_border-500 !default;
+
+$dashboard_box-width-third-size: 33%;
+$dashboard_box-width-half-size: 48%;
+$dashboard_box-width-full-size: 100%;
 
 .#{$ns}dashboard {
-    $menuTabletWidth: 27;
-    $menuWidth: 26.5;
-    $menuMarginRight: 3.6;
-    font-size: 1rem;
+    @include two-columns-left($dashboard_main-separator-apply);
+    font-size: $dashboard_font-size;
 
-    &__wrapper {
+    &__columns {
         position: relative;
         margin: 3rem 0;
 
         @include media('>=tablet') {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            align-content: stretch;
             padding: 0 0 2rem;
         }
     }
 
-    &__menu {
-        width: 100%;
-
-        @include media('>=tablet') {
-            width: #{$menuTabletWidth}rem;
-            margin-right: #{$menuMarginRight}rem;
-        }
-
-        @include media('>=laptop') {
-            width: #{$menuWidth}rem;
-            margin-right: #{$menuMarginRight}rem;
-        }
+    &__sidebar {
+        //
     }
 
     &__main {
@@ -47,17 +48,12 @@ $dashboard-back-button_icon-pos: $button_default-icon-pos !default;
 
         @include media('>=tablet') {
             padding: 0;
-            width: calc(100% - #{$menuTabletWidth + $menuMarginRight}rem);
-        }
-
-        @include media('>=laptop') {
-            width: calc(100% - #{$menuWidth + $menuMarginRight}rem);
         }
     }
 
     &__top {
         padding: 0 0 2.2rem;
-        font-size: 1.4rem;
+        font-size: $dashboard_label-font-size;
     }
 
     &__page-title {
@@ -70,20 +66,11 @@ $dashboard-back-button_icon-pos: $button_default-icon-pos !default;
         }
     }
 
-    &__block {
-        width: 100%;
-        margin: 1.5rem 0 2.5rem;
-
-        @include media('>=phoneLg') {
-            margin: 1.5rem 0 0;
-        }
-    }
-
     &__bottom {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        border-top: 2px solid $color_alto;
+        border-top: $dashboard_bottom-border-top;
         padding-top: 2rem;
 
         @include media('>=tablet') {
@@ -105,12 +92,12 @@ $dashboard-back-button_icon-pos: $button_default-icon-pos !default;
                 display: inline-block;
                 font-weight: 400;
                 margin: 0;
-                color: $color_dove-gray;
+                color: $dashboard_price-font-color;
             }
 
             .#{$ns}cart-item__options-label {
                 text-transform: none;
-                font-size: 1.4rem;
+                font-size: $dashboard_label-font-size;
                 width: auto;
                 margin-right: 1rem;
 
@@ -131,9 +118,12 @@ $dashboard-back-button_icon-pos: $button_default-icon-pos !default;
 
     //Packstation address fieldset styles fix
 
+    fieldset {
+        @include fieldset();
+    }
+
     fieldset.repertus_address_type_fieldset {
-        border: none;
-        padding: 0 0 2rem 0;
+        padding: 0 0 2rem 1.5rem;
         margin: 0;
         max-width: 45rem;
 
@@ -177,10 +167,20 @@ $dashboard-back-button_icon-pos: $button_default-icon-pos !default;
         }
     }
 
+    //User area refactor
+
     .actions-toolbar {
         margin-top: -1px;
         padding-top: 2rem;
-        border-top: 1px solid $color_gallery;
+        border-top: $dashboard_actions-toolbar-border-top;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+
+        > .primary {
+            margin-right: 0.5rem;
+        }
     }
 
     &__wishlist {
@@ -192,44 +192,98 @@ $dashboard-back-button_icon-pos: $button_default-icon-pos !default;
     .primary > button {
         @include button(
             $type: $dashboard-button_type,
-            $icon_pos: $dashboard-button_icon-pos
+            $icon_pos: $dashboard-button_no-icon-pos
         );
 
-        &-span {
+        span {
             @include button_span(
                 $type: $dashboard-button_type,
-                $icon_pos: $dashboard-button_icon-pos
+                $icon_pos: $dashboard-button_no-icon-pos
+            );
+        }
+    }
+
+    .form-address-edit .actions-toolbar .action.primary {
+        font-size: $dashboard_button-font-size;
+        line-height: normal;
+        padding: 1rem 1.7rem;
+
+        > button {
+            @include button(
+                $type: $dashboard-button_type,
+                $icon_pos: $dashboard-button_no-icon-pos
             );
         }
 
-        &-icon {
-            @include button_icon(
+        button > span {
+            @include button_span(
                 $type: $dashboard-button_type,
-                $icon_pos: $dashboard-button_icon-pos
+                $icon_pos: $dashboard-button_no-icon-pos
             );
         }
     }
 
     .secondary > a {
-        margin-top: 2rem;
-
         @include button(
-            $type: $dashboard-back-button_type,
-            $icon_pos: $dashboard-back-button_icon-pos
+            $type: $dashboard-secondary-button_type,
+            $icon_pos: $dashboard-secondary-button_icon-pos
         );
+    }
 
-        &-span {
-            @include button_span(
-                $type: $dashboard-back-button_type,
-                $icon_pos: $dashboard-back-button_icon-pos
-            );
+    .block {
+        width: 100%;
+        margin: 1.5rem 0 2.5rem;
+
+        @include media('>=phoneLg') {
+            margin: 1.5rem 0 0;
+        }
+    }
+
+    .block-title {
+        @include dashboard-headline-bordered();
+        @include dashboard-headline-primary();
+    }
+
+    .block-content {
+        @include dashboard-block-content();
+
+        .sales-order-history & {
+            @include media('<laptop') {
+                margin-top: 0;
+            }
         }
 
-        &-icon {
-            @include button_icon(
-                $type: $dashboard-back-button_type,
-                $icon_pos: $dashboard-back-button_icon-pos
-            );
+        &.no-display {
+            display: none;
         }
+    }
+
+    .box,
+    .addresses {
+        @include dashboard-block-box();
+        @include media('>=phoneLg') {
+            width: $dashboard_box-width-half-size;
+        }
+
+        @include media('>=tablet') {
+            width: $dashboard_box-width-full-size;
+        }
+
+        @include media('>=laptop') {
+            width: $dashboard_box-width-half-size;
+        }
+    }
+
+    .box-title {
+        @include dashboard-headline-secondary();
+    }
+
+    .box-content,
+    .item {
+        @include dashboard-text();
+    }
+
+    .item.actions > a:not(:first-of-type) > span::before {
+        @include dashboard-separator();
     }
 }

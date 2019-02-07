@@ -83,6 +83,7 @@ import 'components/product-gallery';
 import 'components/slider';
 import 'components/aftersearch-nav';
 import 'components/tile-gallery';
+import 'components/dashboard';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
