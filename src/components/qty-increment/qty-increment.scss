@@ -1,52 +1,89 @@
-// qty-increment
-// This component allows to use +/- buttons to increment/decrement input boolean
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-$ns: 'cs-' !default;
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'components/field/mixin.scss';
+
+$qty-increment_input-normalize-style: true !default;
+$qty-increment_input-font-size: inherit !default;
+$qty-increment_input-text-align: center !default;
+$qty-increment_input--error-border-color: $color_error-500 !default;
+
+$qty-increment_button-position-offset: 1px !default;
+$qty-increment_button-width: 3rem !default;
+$qty-increment_button-background: transparent !default;
+$qty-increment_button--hover-background: $qty-increment_button-background !default;
+$qty-increment_button--disabled-background: $qty-increment_button-background !default;
+$qty-increment_button--decrement-border-right: $field_input-border !default; // taken from components/field/mixin.scss
+$qty-increment_button--increment-border-left: $field_input-border !default; // taken from components/field/mixin.scss
+
+$qty-increment_icon-fill: $color_cerulean-blue !default;
+$qty-increment_icon--hover-fill: $color_torea-bay !default;
+$qty-increment_icon--disabled-fill: $color_alto !default;
+$qty-increment_icon--decrement-width: 1.2rem !default;
+$qty-increment_icon--decrement-height: 0.3rem !default;
+$qty-increment_icon--increment-width: $qty-increment_icon--decrement-width !default;
+$qty-increment_icon--increment-height: $qty-increment_icon--increment-width !default;
 
 .#{$ns}qty-increment {
     $root: &;
 
     position: relative;
-    min-width: 86px;
-    max-width: 100px;
 
-    &__input,
-    &__input:focus {
-        appearance: textfield;
-        margin: 0;
-        padding-left: 28px;
-        padding-right: 28px;
-        text-align: center;
+    &__input {
+        @include field-input();
+        padding-left: $qty-increment_button-width;
+        padding-right: $qty-increment_button-width;
+        font-size: $qty-increment_input-font-size;
+        text-align: $qty-increment_input-text-align;
+
+        @if $qty-increment_input-normalize-style {
+            /* stylelint-disable */
+            &[type="number"] {
+                &,
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+                    margin: 0;
+                    -moz-appearance: textfield;
+                    -webkit-appearance: none;
+                }
+            }
+            /* stylelint-enable */
+        }
+
+        &.mage-error {
+            border-color: $qty-increment_input--error-border-color !important;
+        }
     }
 
     &__button {
         position: absolute;
-        top: 0;
-        height: 100%;
-        width: 28px;
-        padding: 0;
-        border: 0;
-        margin: 0;
-        background-color: transparent;
-        font-size: 1.45em;
-        font-weight: 100;
+        top: $qty-increment_button-position-offset;
+        width: $qty-increment_button-width;
+        background-color: $qty-increment_button-background;
         cursor: pointer;
 
+        @if $qty-increment_button-position-offset != 0 {
+            height: calc(100% - 2 * #{$qty-increment_button-position-offset});
+        } @else {
+            height: 100%;
+        }
+
         &--decrement {
-            left: 0;
-            border-right: 1px solid #ddd;
+            left: $qty-increment_button-position-offset;
+            border-right: $qty-increment_button--decrement-border-right;
         }
 
         &--increment {
-            right: 0;
-            border-left: 1px solid #ddd;
+            right: $qty-increment_button-position-offset;
+            border-left: $qty-increment_button--increment-border-left;
         }
 
-        &:disabled,
         &--disabled {
             cursor: default;
+            background: $qty-increment_button--disabled-background;
+        }
+
+        &:not(&--disabled):hover {
+            background: $qty-increment_button--hover-background;
         }
     }
 
@@ -54,35 +91,26 @@ $ns: 'cs-' !default;
         position: absolute;
         top: 50%;
         left: 50%;
-        fill: #ddd;
-        transition: opacity .15s linear;
+        fill: $qty-increment_icon-fill;
+        transform: translate3d(-50%, -50%, 0);
+        transition: fill .15s linear;
 
-        &--plus {
-            width: 12px;
-            height: 12px;
-            margin-left: -6px;
-            margin-top: -6px;
+        &--decrement {
+            width: $qty-increment_icon--decrement-width;
+            height: $qty-increment_icon--decrement-height;
         }
 
-        &--minus {
-            width: 12px;
-            height: 3px;
-            margin-left: -6px;
-            margin-top: -1px;
-        }
-
-        &--dec,
-        &--inc {
-            display: none;
+        &--increment {
+            width: $qty-increment_icon--increment-width;
+            height: $qty-increment_icon--increment-height;
         }
 
         #{$root}__button--disabled & {
-            opacity: .25;
+            fill: $qty-increment_icon--disabled-fill;
         }
-    }
 
-    &--center {
-        margin-left: auto;
-        margin-right: auto;
+        #{$root}__button:not(#{$root}__button--disabled):hover & {
+            fill: $qty-increment_icon--hover-fill;
+        }
     }
 }

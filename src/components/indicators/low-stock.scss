@@ -1,0 +1,88 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import './mixins.scss';
+
+$indicator-low-stock_background: $color_background-500 !default;
+$indicator-low-stock_border-radius: $border-radius_base !default;
+$indicator-low-stock_color: $color_primary-500 !default;
+$indicator-low-stock_padding: 0.5em !default;
+
+$indicator-low-stock_display-top-arrow: true !default;
+$indicator-low-stock_top-arrow-from-right: 1.3rem !default;
+$indicator-low-stock_top-arrow-size: 1rem !default;
+
+$indicator-low-stock_icon-width: 2em !default;
+$indicator-low-stock_icon-height: $indicator_icon-height !default; // taken from ./mixins.scss
+$indicator-low-stock_icon-fill: currentColor !default;
+$indicator-low-stock_icon-apply-ringing-animation: true !default;
+$indicator-low-stock_icon-ringing-animation-repeat: 6s !default;
+
+$indicator-low-stock_label-make-keywords-bold: true !default;
+$indicator-low-stock_label-keywords-font-weight: 600 !default;
+
+
+.#{$ns}indicator-low-stock {
+    $root: &;
+
+    position: relative;
+    margin: -0.7rem 0 1rem;
+    background: $indicator-low-stock_background;
+    border-radius: $indicator-low-stock_border-radius;
+    padding: $indicator-low-stock_padding;
+    color: $indicator-low-stock_color;
+
+    @if $indicator-low-stock_display-top-arrow {
+        &:after {
+            position: absolute;
+            bottom: 100%;
+            right: $indicator-low-stock_top-arrow-from-right;
+            border: solid transparent;
+            content: '';
+            height: 0;
+            width: 0;
+            pointer-events: none;
+            border-color: rgba($indicator-low-stock_background, 0);
+            border-bottom-color: $indicator-low-stock_background;
+            border-width: $indicator-low-stock_top-arrow-size;
+            margin-left: -#{$indicator-low-stock_top-arrow-size};
+        }
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+    }
+
+    &__icon {
+        width: $indicator-low-stock_icon-width;
+        height: $indicator-low-stock_icon-height;
+        margin-right: 0.75em;
+        fill: $indicator-low-stock_icon-fill;
+
+        @if $indicator-low-stock_icon-apply-ringing-animation {
+            animation: ringing $indicator-low-stock_icon-ringing-animation-repeat infinite;
+        }
+    }
+
+    @if $indicator-low-stock_label-make-keywords-bold {
+        &__label span {
+            font-weight: $indicator-low-stock_label-keywords-font-weight;
+        }
+    }
+}
+
+@keyframes ringing {
+    0%,
+    12% {
+        transform: scale(1) rotate(0deg);
+    }
+    3%,
+    7% {
+        transform: scale(1.3) rotate(27deg);
+    }
+    5%,
+    9% {
+        transform: scale(1.3) rotate(-27deg);
+    }
+}
+

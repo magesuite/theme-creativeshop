@@ -1,8 +1,9 @@
 @import 'config/variables';
 @import 'components/typography/mixin';
 
-$typography_paragraph-color: $color_text-500 !default;
 $typography_link-color: $color_primary-500 !default;
+$typography_link-text-decoration: none !default;
+$typography_link--hover-text-decoration: $typography_link-text-decoration !default;
 
 h1 {
     @include headline($level: $font-size_headline-1);
@@ -28,18 +29,13 @@ h6 {
     @include headline($level: $font-size_headline-6);
 }
 
-p {
-    color: $typography_paragraph-color;
-    font-size: $font-size_paragraph;
-}
-
-
 a {
     color: $typography_link-color;
-    font-size: $font-size_paragraph;
+    text-decoration: $typography_link-text-decoration;
 
     &:visited,
     &:hover {
         color: $typography_link-color;
+        text-decoration: $typography_link--hover-text-decoration;
     }
 }

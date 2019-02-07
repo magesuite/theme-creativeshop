@@ -128,6 +128,7 @@ interface IAddToCartSettings {
 export default class AddToCart {
     private _$source: JQuery<HTMLElement>;
     private _$component: JQuery<HTMLElement>;
+    private _$button: JQuery<HTMLElement>;
     private _animationTimeout: ReturnType<typeof setTimeout>;
     private _visibilityTimeout: ReturnType<typeof setTimeout>;
     private _allDoneTimeout: ReturnType<typeof setTimeout>;
@@ -165,6 +166,7 @@ export default class AddToCart {
         );
 
         this._$component = null;
+        this._$button = null;
         this._animationTimeout = null;
         this._visibilityTimeout = null;
         this._allDoneTimeout = null;
@@ -185,6 +187,11 @@ export default class AddToCart {
         this._$component = $('.atc-ajax-processing').parents(
             `.${this._options.componentClass}`
         );
+        this._$button = this._$component.find('button[type="submit"]');
+
+        if (this._$component.length && this._$button.length) {
+            this._$button.prop('disabled', true);
+        }
 
         if (
             this._options.onProcessingHandler &&
@@ -222,8 +229,12 @@ export default class AddToCart {
         const actionFailed: boolean =
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
-        if (actionFailed) {
+        if (this._$component.length && actionFailed) {
             this._$component.addClass(`${this._options.componentClass}--no-transitions`);
+        }
+
+        if (this._$button.length) {
+            this._$button.prop('disabled', false);
         }
 
         if (

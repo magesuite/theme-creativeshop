@@ -1,4 +1,25 @@
-<?php
-// It is hard to remove this block because it is part of another block without its own name. Its content is moved to theme-creativeshop/Magento_Catalog/templates/product/view/addtocart.phtml
+<?php 
+    /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */
+    $isAvailable = $block->getProduct()->isAvailable();
+    $cssClass = $isAvailable ? 'available cs-buybox__stock--available' : 'unavailable cs-buybox__stock--unavailable';
+    $text = $isAvailable ? __('In stock') : __('Out of stock');
+    $iconEtcViewTarget = $isAvailable ? 'in_stock' : 'out_of_stock';
+    $icon = $block->getVar('stock_icons/display', 'Magento_Catalog') 
+        ? $this->getLayout()
+             ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+             ->setIconUrl($block->getVar('stock_icons/'.$iconEtcViewTarget.'/icon_url', 'Magento_Catalog'))
+             ->setCssClass($block->getVar('stock_icons/'.$iconEtcViewTarget.'/css_class', 'Magento_Catalog'))
+             ->setAltText($text)
+             ->setInlined($block->getVar('stock_icons/'.$iconEtcViewTarget.'/inlined', 'Magento_Catalog'))
+             ->setLazyLoaded($block->getVar('stock_icons/'.$iconEtcViewTarget.'/lazy_loaded', 'Magento_Catalog'))
+             ->toHtml()
+        : '';
 ?>
 
+<?php if ($block->displayProductStockStatus()): ?>
+    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= /* @escapeNotVerified */ __('Availability') ?>">
+        <?= $icon ?>
+        <span class="cs-buybox__stock-text"><?= $text ?></span>
+    </div>
+<?php endif; ?>
+<?= $block->getChildHtml() ?>

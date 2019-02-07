@@ -1,0 +1,25 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import './mixins.scss';
+
+$indicator-free-shipping_gutter: 1rem !default;
+
+.#{$ns}indicator-free-shipping {
+    $root: &;
+
+    @if $indicator-free-shipping_gutter != 0 {
+        &:not(:last-child) {
+            margin: 0 0 $indicator-free-shipping_gutter;
+        }
+    }
+
+    @include indicator();
+
+    &__icon {
+        @include indicator-icon();
+    }
+
+    &__headline {
+        @include indicator-headline();
+    }
+}

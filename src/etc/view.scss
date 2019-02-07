@@ -6,8 +6,8 @@ $view-xml: (
         "bundled_product_customization_page": (
           "id": "bundled_product_customization_page",
           "type": "thumbnail",
-          "width": 140,
-          "height": 140
+          "width": 50,
+          "height": 50
         ),
         "cart_cross_sell_products": (
           "id": "cart_cross_sell_products",
@@ -101,26 +101,28 @@ $view-xml: (
         ),
         "product_page_image_large": (
           "id": "product_page_image_large",
-          "type": "image"
+          "type": "image",
+          "width": 1000,
+          "height": 1000
         ),
         "product_page_image_large_no_frame": (
           "id": "product_page_image_large_no_frame",
           "type": "image",
           "frame": false,
-          "width": 700,
-          "height": 700
+          "width": 1000,
+          "height": 1000
         ),
         "product_page_image_medium": (
           "id": "product_page_image_medium",
           "type": "image",
-          "width": 700,
-          "height": 700
+          "width": 500,
+          "height": 500
         ),
         "product_page_image_medium_no_frame": (
           "id": "product_page_image_medium_no_frame",
           "type": "image",
-          "width": 700,
-          "height": 700,
+          "width": 500,
+          "height": 500,
           "frame": false
         ),
         "product_page_image_small": (
@@ -132,14 +134,14 @@ $view-xml: (
         "product_page_main_image": (
           "id": "product_page_main_image",
           "type": "image",
-          "width": 700,
-          "height": 700
+          "width": 500,
+          "height": 500
         ),
         "product_page_main_image_default": (
           "id": "product_page_main_image_default",
           "type": "image",
-          "width": 700,
-          "height": 700
+          "width": 500,
+          "height": 500
         ),
         "product_page_more_views": (
           "id": "product_page_more_views",
@@ -285,18 +287,18 @@ $view-xml: (
   "vars": (
     "Magento_Catalog": (
       "gallery": (
-        "nav": ".thumbs",
+        "nav": "thumbs",
         "loop": true,
         "keyboard": true,
         "arrows": true,
         "caption": null,
         "allowfullscreen": true,
-        "navdir": "vertical",
+        "navdir": "horizontal",
         "navarrows": true,
-        "navtype": "slides",
+        "navtype": "thumbs",
         "transition": (
           "effect": "slide",
-          "duration": 500
+          "duration": 250
         ),
         "fullscreen": (
           "nav": "thumbs",
@@ -306,13 +308,10 @@ $view-xml: (
           "navdir": "horizontal",
           "navtype": "slides",
           "transition": (
-            "effect": "slide",
-            "duration": 500
-          ),
-          "navarrows": null
-        ),
-        "maxheight": "500px",
-        "thumbmargin": 12
+            "effect": "dissolve",
+            "duration": 250
+          )
+        )
       ),
       "magnifier": (
         "fullscreenzoom": 20,
@@ -368,7 +367,56 @@ $view-xml: (
         )
       ),
       "ajax_addtocart": (
-        "tiles": true
+        "enabled": true,
+        "css_classes": (
+          "default_button": "cs-addtocart__button",
+          "default_label": "cs-addtocart__button-label",
+          "processing_label": null,
+          "success_overlay": "cs-addtocart__feedback-bg",
+          "success_label": "cs-addtocart__success-label",
+          "fail_label": "cs-addtocart__fail-label"
+        ),
+        "labels": (
+          "default": "Add to Cart",
+          "processing": null,
+          "success": "Thank you!",
+          "fail": "Something went wrong"
+        ),
+        "icons": (
+          "default": (
+            "path": "images/icons/addtocart/icon-addtocart.svg",
+            "css_class": "cs-addtocart__button-icon",
+            "inlined": true,
+            "lazy_loaded": true
+          ),
+          "success": (
+            "path": "images/icons/addtocart/icon-success.svg",
+            "css_class": "cs-addtocart__success-icon",
+            "inlined": true,
+            "lazy_loaded": true
+          ),
+          "fail": (
+            "path": "images/icons/addtocart/icon-fail.svg",
+            "css_class": "cs-addtocart__fail-icon",
+            "inlined": true,
+            "lazy_loaded": true
+          )
+        )
+      ),
+      "stock_icons": (
+        "display": true,
+        "in_stock": (
+          "icon_url": "Magento_Catalog::images/in-stock.svg",
+          "css_class": "cs-buybox__stock-icon cs-buybox__stock-icon--available",
+          "lazy_loaded": true,
+          "inlined": true
+        ),
+        "out_of_stock": (
+          "icon_url": "Magento_Catalog::images/out-of-stock.svg",
+          "css_class": "cs-buybox__stock-icon cs-buybox__stock-icon--unavailable",
+          "lazy_loaded": true,
+          "inlined": true
+        )
       )
     ),
     "Magento_Bundle": (
@@ -636,6 +684,27 @@ $view-xml: (
       ),
       "static_block": (
         "additional_css_classes": null
+      )
+    ),
+    "MageSuite_ThemeHelpers": (
+      "qty_increment": (
+        "template": "MageSuite_ThemeHelpers::qty-increment.phtml",
+        "icons": (
+          "decrement": "images/icons/minus.svg",
+          "increment": "images/icons/plus.svg"
+        )
+      )
+    ),
+    "MageSuite_DailyDeal": (
+      "countdown_labels": (
+        "day": "Day",
+        "days": "Days",
+        "hour": "Hour",
+        "hours": "Hours",
+        "minute": "Min",
+        "minutes": "Min",
+        "second": "Sec",
+        "seconds": "Sec"
       )
     ),
     "Magento_Theme": (

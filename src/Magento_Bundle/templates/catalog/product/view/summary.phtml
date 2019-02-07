@@ -1,69 +1,52 @@
 <?php
 // @codingStandardsIgnoreFile
+// Override due to reorganize elements and introduce BEM
 ?>
 
 <?php
-$product = $block->getProduct();
+    $product = $block->getProduct();
 ?>
 <?php if ($product->isSaleable() && $block->hasOptions()): ?>
-    <div id="bundleSummary"
-         class="cs-bundle-box__summary block-bundle-summary"
-         data-mage-init='{"sticky":{"container": ".product-add-form"}}'>
-        <div class="cs-bundle-box__title">
-            <?php /* @escapeNotVerified */ echo __('Your Customization'); ?> 
+<div id="bundleSummary"
+     class="block-bundle-summary cs-bundle-box__summary"
+     data-mage-init='{"sticky":{"container": ".product-add-form"}}'>
+    <div class="content cs-bundle-box__summary-content">
+        <div class="bundle-info cs-bundle-box__summary-section cs-bundle-box__summary-section--product-details">
+            <p class="title cs-bundle-box__summary-title"><?= /* @escapeNotVerified */ __('Your Customization') ?></p>
+            <div class="cs-bundle-box__summary-product-details">
+                <?= $block->getImage($product, 'bundled_product_customization_page')->toHtml() ?>
+                <p class="product name cs-bundle-box__summary-product-name"><?= $block->escapeHtml($product->getName()) ?></p>
+            </div>
         </div>
-
-        <div class="cs-bundle-box__summary-content | bundle-summary">
+        <div class="bundle-info cs-bundle-box__summary-section cs-bundle-box__summary-section--addtocart">
             <div id="bundle-summary" data-container="product-summary">
-                <ul data-mage-init='{"productSummary": []}' class="bundle items"></ul>
-                <script data-template="bundle-summary" type="text/x-magento-template">
-                    <li>
-                        <div class="cs-bundle-box__product-name cs-bundle-box__product-name--small-space"><%- data
-                            ._label_ %>:</div>
-                        <div data-container="options"></div>
+                <ul data-mage-init='{"productSummary": []}' class="bundle items cs-bundle-box__bunde-items"></ul>
+                <script data-defer-ignore="true" data-template="bundle-summary" type="text/x-magento-template">
+                    <li class="cs-bundle-box__bundle-item">
+                        <p class="label cs-bundle-box__bunde-item-name"><%- data._label_ %>:</p>
+                        <div class="cs-bundle-box__bunde-item-value" data-container="options"></div>
                     </li>
                 </script>
-                <script data-template="bundle-option" type="text/x-magento-template">
-                    <div><?php /* @escapeNotVerified */ echo __('%1 x %2', '<%- data._quantity_ %>', '<%- data._label_ %>') ?></div>
+                <script data-defer-ignore="true" data-template="bundle-option" type="text/x-magento-template">
+                    <div><?= /* @escapeNotVerified */ __('%1 x %2', '<%- data._quantity_ %>', '<%- data._label_ %>') ?></div>
                 </script>
             </div>
-        </div>
 
-        <div class="content">
-            <div class="bundle-info">
-                <div class="cs-bundle-box__add product-details">
-
-                    <?php if ($product->getIsSalable()): ?>
-                        <p class="cs-bundle-box__availability" title="<?php /*
- * @escapeNotVerified */ echo __
-                        ('Availability') ?>">
-                            <svg class="cs-product-sale-block__stock-icon cs-product-sale-block__stock-icon--available">
-                                <use xlink:href="#check"></use>
-                            </svg>
-                            <span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
-                        </p>
-                    <?php else: ?>
-                        <p class="cs-bundle-box__availability cs-bundle-box__availability--unavailable" title="<?php
-                        /* @escapeNotVerified */ echo __('Availability') ?>">
-                            <link itemprop="availability" href="http://schema.org/OutOfStock" />
-                            <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
-                        </p>
-                    <?php endif; ?>
-                    <?php echo $block->getChildHtml('', true);?>
-                </div>
+            <div class="product-details cs-bundle-box__summary-extras">
+                <?= $block->getChildHtml('', true) ?>    
             </div>
-
         </div>
     </div>
-    <script type="text/x-magento-init">
+</div>
+<script type="text/x-magento-init">
     {
         ".product-add-form": {
             "slide": {
-                "slideSpeed": 1500,
+                "slideSpeed": 300,
                 "slideSelector": "#bundle-slide",
                 "slideBackSelector": ".action.customization.back",
                 "bundleProductSelector": "#bundleProduct",
-                "bundleOptionsContainer": ".product-add-form"
+                "bundleOptionsContainer": ".cs-container--page-pdp-bundle-config"
                 <?php if ($block->isStartCustomization()): ?>
                 ,"autostart": true
                 <?php endif;?>

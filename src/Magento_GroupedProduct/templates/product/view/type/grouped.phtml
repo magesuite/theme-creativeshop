@@ -1,6 +1,8 @@
 <?php
 // @codingStandardsIgnoreFile
 
+// Override due to implementation of qty-increment component instead of native input
+
 /**
  * Grouped product data template
  *
@@ -8,108 +10,83 @@
  * @var $block \Magento\GroupedProduct\Block\Product\View\Type\Grouped
  */
 ?>
-<?php
-    $block->setPreconfiguredValue();
-    $product = $block->getProduct();
-    $associatedProducts = $block->getAssociatedProducts();
-    $hasAssociatedProducts = count($associatedProducts) > 0;
-?>
+<?php $block->setPreconfiguredValue(); ?>
+<?php $_product = $block->getProduct(); ?>
+<?php $_associatedProducts = $block->getAssociatedProducts(); ?>
+<?php $_hasAssociatedProducts = count($_associatedProducts) > 0; ?>
 
-<div class="cs-table grouped">
-    <table class="cs-table__body | data grouped" id="super-product-table">
-        <caption class="cs-visually-hidden | table-caption"><?php /* @escapeNotVerified */ echo __('Grouped product
-        items') ?></caption>
-        <thead class="cs-table__head">
+<div class="table-wrapper grouped">
+    <table class="table data grouped" id="super-product-table">
+        <caption class="table-caption"><?= /* @escapeNotVerified */ __('Grouped product items') ?></caption>
+        <thead>
         <tr>
-            <th class="cs-table__col-head | item" scope="col"><?php /* @escapeNotVerified */ echo __('Product Name')
-                ?></th>
-            <?php if ($product->isSaleable()): ?>
-                <th class="cs-table__col-head | qty" scope="col"><?php /* @escapeNotVerified */ echo __('Qty') ?></th>
+            <th class="col item" scope="col"><?= /* @escapeNotVerified */ __('Product Name') ?></th>
+            <?php if ($_product->isSaleable()): ?>
+                <th class="col qty" scope="col"><?= /* @escapeNotVerified */ __('Qty') ?></th>
             <?php endif; ?>
         </tr>
         </thead>
 
-        <?php if ($hasAssociatedProducts): ?>
-            <?php $productIterator = 0; ?>
-            <?php foreach ($associatedProducts as $item): ?>
-                <tbody>
-                <tr>
-                    <td data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>" class="cs-table__col | item">
-                        <strong class="product-item-name"><?php echo $block->escapeHtml($item->getName()) ?></strong>
-                        <?php if ($block->getCanShowProductPrice($product)): ?>
-                            <?php if ($block->getCanShowProductPrice($item)): ?>
-                                <?php /* @escapeNotVerified */ echo $block->getProductPrice($item) ?>
-                            <?php endif; ?>
+        <?php if ($_hasAssociatedProducts): ?>
+        <?php foreach ($_associatedProducts as $_item): ?>
+        <tbody>
+            <tr>
+                <td data-th="<?= $block->escapeHtml(__('Product Name')) ?>" class="col item">
+                    <strong class="product-item-name"><?= $block->escapeHtml($_item->getName()) ?></strong>
+                    <?php if ($block->getCanShowProductPrice($_product)): ?>
+                        <?php if ($block->getCanShowProductPrice($_item)): ?>
+                            <?= /* @escapeNotVerified */ $block->getProductPrice($_item) ?>
                         <?php endif; ?>
-                    </td>
-                    <?php if ($product->isSaleable()): ?>
-                        <td data-th="<?php echo $block->escapeHtml(__('Qty')); ?>" class="cs-table__col | qty">
-                            <?php if ($item->isSaleable()) : ?>
-                                <div class="control qty">
-
-                                    <div class="cs-box-addtocart__qty-increment">
-                                        <?php
-                                            $productDefaultQty = $block->getProductDefaultQty() * 1;
-                                            $inputName = 'super_group['.$item->getId().']';
-                                        ?>
-                                        <?=$this->getLayout()->createBlock(
-                                            'MageSuite\Frontend\Block\Twig',
-                                            'add-to-cart-pdp-'.$productIterator, [
-                                                'data' => [
-                                                    "namespace" => 'cs-',
-                                                    "initialValue" => /* @escapeNotVerified */ $item->getQty() * 1 ,
-                                                    "maxLength" => 12,
-                                                    "minValue" => 0,
-                                                    "size" => 2,
-                                                    "name" => $inputName,
-                                                    "inputParams" => 'data-validate="'.$block->escapeHtml(json_encode
-                                                        ("'validate-grouped-qty': '#super-product-table'")).'"
-                                                         data-selector="super_group['.$item->getId().']" title="'.__
-                                                        ('Qty').'" data-errors-message-box="#validation-message-box"',
-                                                    "icons" => [
-                                                        "increment" => '#plus',
-                                                        "decrement" => '#minus'
-                                                    ]
-                                                ]
-                                            ]
-                                        )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <div title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
-                                    <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
-                                </div>
-                            <?php endif; ?>
-                        </td>
-                    <?php endif; ?>
-                </tr>
-                <?php if ($block->getCanShowProductPrice($product)
-                    && $block->getCanShowProductPrice($item)
-                    && trim($block->getProductPriceHtml(
-                        $item,
-                        \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
-                    ))): ?>
-                    <tr class="row-tier-price">
-                        <td colspan="2">
-                            <?php echo $block->getProductPriceHtml(
-                                $item,
-                                \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
-                            ) ?>
-                        </td>
-                    </tr>
+                     <?php endif; ?>
+                </td>
+                <?php if ($_product->isSaleable()): ?>
+                <td data-th="<?= $block->escapeHtml(__('Qty')) ?>" class="col qty">
+                <?php if ($_item->isSaleable()) : ?>
+                    <div class="control qty">
+                        <?= $this->getLayout()
+                              ->createBlock('Magento\Framework\View\Element\Template')
+                              ->setInputName('super_group['.$_item->getId().']')
+                              ->setInputInitialValue($_item->getQty() * 1)
+                              ->setInputAdditionalParams('data-selector="super_group['.$_item->getId().']" data-validate="{\'validate-grouped-qty\':\'#super-product-table\'}"  data-errors-message-box="#validation-message-box" min="0" data-min-value="0" data-update-instances-under-parent="#super-product-table"')
+                              ->setDecrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers')))
+                              ->setIncrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers')))
+                              ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+                              ->toHtml(); ?>
+                    </div>
+                <?php else: ?>
+                    <div class="stock unavailable" title="<?= /* @escapeNotVerified */ __('Availability') ?>">
+                        <span><?= /* @escapeNotVerified */ __('Out of stock') ?></span>
+                    </div>
                 <?php endif; ?>
-                </tbody>
-                <?php $productIterator = $productIterator + 1; ?>
-            <?php endforeach; ?>
+                </td>
+                <?php endif; ?>
+            </tr>
+            <?php if ($block->getCanShowProductPrice($_product)
+                && $block->getCanShowProductPrice($_item)
+                && trim($block->getProductPriceHtml(
+                    $_item,
+                    \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
+                ))): ?>
+                <tr class="row-tier-price">
+                    <td colspan="2">
+                        <?= $block->getProductPriceHtml(
+                            $_item,
+                            \Magento\Catalog\Pricing\Price\TierPrice::PRICE_CODE
+                        ) ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+        <?php endforeach; ?>
         <?php else: ?>
-            <tbody>
+        <tbody>
             <tr>
                 <td class="unavailable"
-                    colspan="<?php if ($product->isSaleable()): ?>4<?php else : ?>3<?php endif; ?>">
-                    <?php /* @escapeNotVerified */ echo __('No options of this product are available.') ?>
+                    colspan="<?php if ($_product->isSaleable()): ?>4<?php else : ?>3<?php endif; ?>">
+                    <?= /* @escapeNotVerified */ __('No options of this product are available.') ?>
                 </td>
             </tr>
-            </tbody>
+        </tbody>
         <?php endif; ?>
     </table>
 </div>

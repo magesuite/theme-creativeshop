@@ -1,0 +1,24 @@
+<?php
+// @codingStandardsIgnoreFile
+/** @var \Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist $block */
+?>
+<?php if ($block->isWishListAllowed()) : ?>
+    <li class="cs-buybox__addto-item <?= $block->getAdditionalCssClasses() ?>">
+        <a href="#"
+           class="action towishlist cs-buybox__addto-link"
+           data-role="add-to-links"
+           data-post='<?= /* @noEscape */ $block->getWishlistParams() ?>'
+           data-action="add-to-wishlist"
+        >
+            <?= $block->getChildHtml(''); ?>
+            <span class="cs-buybox__addto-link-text"><?= $block->getLinkLabel() ?></span>
+        </a>
+    </li>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "addToWishlist": <?= /* @noEscape */ $block->getWishlistOptionsJson() ?>
+        }
+    }
+</script>

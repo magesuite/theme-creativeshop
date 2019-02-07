@@ -6,31 +6,20 @@
 
 <?php if ($block->getReviewsCount()): ?>
 
-    <?php
-        $rating = $block->getRatingSummary();
-        $dividedRating = round($rating*2/20)/2;
-    ?>
-
-    <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-        <?=$this->getLayout()->createBlock(
-            'MageSuite\Frontend\Block\Twig',
-            'rating-summary-product-sale-block', [
-                'data' => [
-                    'namespace' => 'cs-',
-                    'maxStars' => 5,
-                    'activeStars' => $dividedRating,
-                    'text' => '<span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span> (<span itemprop="reviewCount">'.$block->getReviewsCount().'</span> '.(($block->getReviewsCount() == 1) ? __('Review') : __('Reviews')).')'
-                ]
-            ]
-        )->setTemplate( 'star-rating/star-rating.twig' )->toHtml(); ?>
-    </div>
+        <?= $this->getLayout()
+                 ->createBlock(\Magento\Framework\View\Element\Template::class)
+                 ->setMaxStars(5)
+                 ->setActiveStars(round($block->getRatingSummary()*2/20)/2)
+                 ->setReviewsCount($block->getReviewsCount())
+                 ->setHideReviewsCount(true)
+                 ->setTemplate('Magento_Review::rating-stars.phtml')
+                 ->toHtml();
+        ?>
 
 <?php elseif ($block->getDisplayIfEmpty()): ?>
 
-    <div class="cs-product-sale-block__no-review">
-        <a href="<?php /* @escapeNotVerified */ echo $urlForm; ?>">
-            <?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?>
-        </a>
+    <div class="cs-buybox__no-review">
+        <a class="cs-buybox__no-review-link" href="<?php /* @escapeNotVerified */ echo $urlForm; ?>"><?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?></a>
     </div>
 
 <?php endif; ?>

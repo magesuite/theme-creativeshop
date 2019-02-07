@@ -1,5 +1,7 @@
 import * as $ from 'jquery';
 
+import requireAsync from 'utils/require-async';
+
 /**
  * This component is part of Indicators, but works standalone.
  * Please remember that it supports caching, but logic needs to be provided separately
@@ -41,6 +43,12 @@ interface FastShippingOptions {
      * @type {string}
      */
     deliveryDaySelector?: string;
+    /**
+     * Selector of labels element.
+     * By default there's a hidden input in every instance which holds them all as JSON
+     * @type {string}
+     */
+    labelsObjectSelector?: string;
     /**
      * Decides if time should be displayed in countdown form or time when option ends
      * Example of countdown:       'Free shipping if you order within 3h 12min'
@@ -88,6 +96,19 @@ interface FastShippingOptions {
      * @default false
      */
     showCountdownForTomorrow?: boolean;
+    /**
+     * Tells for how long received ajax request shall be cached (in minutes)
+     * This setting is valid only when it's possible to ship today, means scenario == 'today'.
+     * @type {number}
+     * @default 5
+     */
+    cachingTime?: number;
+    /**
+     * Tells for how long received ajax request shall be cached for scenarios when it's no longer possible to send order 'today', means for any other scenario. (in minutes)
+     * @type {number}
+     * @default 60
+     */
+    extendedCachingTime?: number;
 };
 
 /**
@@ -113,6 +134,16 @@ interface IAjaxData {
      * @type {string}
      */
     deliveryDay?: string;
+    /**
+     * Keeps information about the time of latest save to cache
+     * @type {number}
+     */
+    lastSave?: number;
+    /**
+     * Keeps timestamp of the nearest next midnight
+     * @type {number}
+     */
+    nextMidnight?: number;
 };
 
 /**
@@ -126,15 +157,18 @@ export default class FastShipping {
     protected _options: FastShippingOptions = {
         namespace: 'cs-',
         requestUrl: typeof location.origin === 'undefined' ? `${location.protocol}//${location.host}/indicators/fastshipping/index` : `${location.origin}/indicators/fastshipping/index`,
-        variantClassName: 'cs-indicators__fast-shipping-element',
-        timerSelector: '.cs-indicators__fast-shipping-time-left',
-        deliveryDaySelector: '.cs-indicators__fast-shipping-delivery-day',
+        variantClassName: 'cs-indicator-fast-shipping__element',
+        timerSelector: '.cs-indicator-fast-shipping__text-placeholder-today',
+        deliveryDaySelector: '.cs-indicator-fast-shipping__text-placeholder-other',
+        labelsObjectSelector: '.cs-indicator-fast-shipping__labels',
         timerVariant: 'time',
         timeNotation: '24h',
         countdownTemplate: '%d% %dl% %h% %hl% %m% %ml%',
         updateCountdown: false,
         countdownUpdateInterval: 30,
         showCountdownForTomorrow: false,
+        cachingTime: 5,
+        extendedCachingTime: 60,
     };
 
     /**
@@ -149,15 +183,17 @@ export default class FastShipping {
         }
 
         this._$element = $element;
-        this._options = $.extend( this._options, options );
+        this._options = $.extend(this._options, options);
         this._translations = this._getTranslationsJSON();
         this._countdownInterval = '';
 
-        if(this._isUpdateRequired()) {
-            this._updateFromServer();
-        } else {
-            this._updateFromCache();
-        }
+        this._isUpdateRequired().then(isUpdateRequired => {
+            if(isUpdateRequired) {
+                this._updateFromServer();
+            } else {
+                this._updateFromCache();
+            }
+        });
     }
 
     /**
@@ -176,6 +212,7 @@ export default class FastShipping {
                 $deadlinePlaceholder.html(this._getFormattedTimeTo(deadline));
             }
         } else {
+            console.warn('force update from server !!!!!!!!!!!!!!!!!!!!!!!!');
             this._updateFromServer(true);
         }
     }
@@ -239,23 +276,53 @@ export default class FastShipping {
     }
 
     /**
+     * Fetches local storage data about fastShipping
+     */
+    protected _getStorageData(): any {
+        return requireAsync(['Magento_Ui/js/lib/core/storage/local']).then(([storage]) => storage.get('fastShipping'));
+    }
+
+    /**
      * Checks if update from server is required. By defulat it is. 
      * In creativeshop we extend this functionality checking Magento's storage
      * @return {boolean}
      */
-    protected _isUpdateRequired(): boolean {
-        return true;
+    protected _isUpdateRequired(): JQueryDeferred<boolean> {
+        return this._getStorageData().then(storageData => {
+            const now: number = Math.floor(Date.now() / 1000);
+
+            if (typeof storageData !== 'undefined') {
+                if (storageData.day === 'today') {
+                    if (storageData.lastSave + this._options.cachingTime * 60 >= now) {
+                        return false;
+                    }
+                    return true;
+                } else {
+                    if (
+                        storageData.lastSave + this._options.extendedCachingTime * 60 > now 
+                        && storageData.nextMidnight > now
+                    ) {
+                        return false;
+                    }
+                    return true;
+                }
+            } 
+
+            return true;
+        });
     }
 
     /**
-     * Saves data provided by server to localStorage
-     * By default we do nothing here. It's handled in Creativeshop's extending class
-     * as we are using Magento's storage
+     * Saves data provided by server to localStorage (MAGENTO WAY)
      * @param {IAjaxData} data - data returned from server
-     * @return {boolean/void} - By default we return boolean but in Creativeshop there's no return
      */
     protected _saveToCache(data: IAjaxData): any {
-        return false;
+        requireAsync(['Magento_Ui/js/lib/core/storage/local']).then(([storage]) => {
+            const fullDate: Date = new Date();
+            data.nextMidnight = Math.floor(fullDate.setHours(24, 0, 0, 0) / 1000);
+            data.lastSave = Math.floor(Date.now() / 1000);
+            storage.set('fastShipping', data);
+        });
     }
 
     /**
@@ -264,8 +331,8 @@ export default class FastShipping {
      * @return {number} deadline - unix time (when possibility of shipping today expires)
      */
     protected _getTranslationsJSON(): any {
-        const $labelsInput: any = this._$element.find(`.${this._options.namespace}indicators__fast-shipping-labels`);
-        return $labelsInput.length && $labelsInput.val() !== '' ? JSON.parse($labelsInput.val()) : {};
+        const $labelsInput: JQuery<HTMLElement> = this._$element.find(this._options.labelsObjectSelector);
+        return $labelsInput.length && $labelsInput.val() !== '' ? JSON.parse($labelsInput.val() as string) : {};
     }
 
     /**
@@ -318,7 +385,9 @@ export default class FastShipping {
      * in Creativeshop we cover cache usage and then update template directly based on cached data
      */
     protected _updateFromCache(): void {
-        this._updateFromServer();
+        this._getStorageData().then(storage => {
+            this.updateTemplate(storage);
+        });
     }
 
     /**

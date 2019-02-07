@@ -1,40 +1,70 @@
 <?php 
-    $buttonLabel = $block->getAddtocartLabel();
+    $buttonLabel = $block->getAddtocartLabel() ?? __($block->getVar('ajax_addtocart/labels/default', 'Magento_Catalog'));
 ?>
 
 <button type="submit" title="<?= $buttonLabel ?>" 
-        class="tocart primary <?= $block->getButtonClass() ?>"
+        class="tocart primary <?= $block->getButtonClass() ?? $block->getVar('ajax_addtocart/css_classes/default_button', 'Magento_Catalog') ?>"
         <?= $block->getButtonParams() ?>
 >
-    <?= $block->getChildHtml('atc.button.icon'); ?>
-    <?php if(!empty($buttonLabel)): ?>
-        <strong class="<?= $block->getButtonLabelClass() ?>"><?= $buttonLabel ?></strong>
+
+    <?php if(!empty($block->getVar('ajax_addtocart/icons/default/path', 'Magento_Catalog'))): ?>
+        <?= $this->getLayout()
+               ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+               ->setIconUrl($block->getVar('ajax_addtocart/icons/default/path', 'Magento_Catalog'))
+               ->setCssClass($block->getVar('ajax_addtocart/icons/default/css_class', 'Magento_Catalog'))
+               ->setInlined($block->getVar('ajax_addtocart/icons/default/inlined', 'Magento_Catalog'))
+               ->setLazyLoaded($block->getVar('ajax_addtocart/icons/default/lazy_loaded', 'Magento_Catalog'))
+               ->toHtml();
+        ?>
     <?php endif; ?>
 
-    <?php if($block->getVar('ajax_addtocart/tiles', 'Magento_Catalog')): ?>
-        <?php // If you use ajax method for adding products to cart, don't use <span> inside button because Magento will replase its contents with "Adding..." and "Added" ?>
+    <?php if(!empty($buttonLabel)): ?>
+        <strong class="<?= $block->getButtonLabelClass() ?? $block->getVar('ajax_addtocart/css_classes/default_label', 'Magento_Catalog') ?>"><?= $buttonLabel ?></strong>
+    <?php endif; ?>
+
+    <?php if($block->getVar('ajax_addtocart/enabled', 'Magento_Catalog')): ?>
+        <?php // If you use ajax method for adding products to cart, don't use <span> inside button because Magento will replase its contents with "Adding..." and "Added". Use <strong> instead. ?>
         <?php
-            $processingLabel = $block->getAddtocartProcessingLabel();
-            $successLabel = $block->getAddtocartSuccessLabel();
-            $failLabel = $block->getAddtocartFailLabel();
+            $processingLabel = __($block->getVar('ajax_addtocart/labels/processing', 'Magento_Catalog'));
+            $successLabel = __($block->getVar('ajax_addtocart/labels/success', 'Magento_Catalog'));
+            $failLabel = __($block->getVar('ajax_addtocart/labels/fail', 'Magento_Catalog'));
         ?>
 
         <?php // Processing ?>
-        <?= $block->getChildHtml('atc.loading.indicator'); ?>
+        <?php include ($block->getTemplateFile('Magento_Catalog::addtocart/loading-indicator.phtml')); ?>
         <?php if(!empty($processingLabel)): ?>
-            <strong class="<?= $block->getAddtocartProcessingLabelClass() ?>"><?= $processingLabel ?></strong>
+            <strong class="<?= $block->getVar('ajax_addtocart/css_classes/processing_label', 'Magento_Catalog') ?>"><?= $processingLabel ?></strong>
         <?php endif; ?>
 
         <?php // Done ?>
-        <strong class="<?= $block->getAddtocartSuccessOverlayClass() ?>"></strong>
-        <?= $block->getChildHtml('atc.success.icon'); ?>
+        <strong class="<?= $block->getVar('ajax_addtocart/css_classes/success_overlay', 'Magento_Catalog') ?>"></strong>
+        <?php if(!empty($block->getVar('ajax_addtocart/icons/success/path', 'Magento_Catalog'))): ?>
+            <?= $this->getLayout()
+                   ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                   ->setIconUrl($block->getVar('ajax_addtocart/icons/success/path', 'Magento_Catalog'))
+                   ->setCssClass($block->getVar('ajax_addtocart/icons/success/css_class', 'Magento_Catalog'))
+                   ->setInlined($block->getVar('ajax_addtocart/icons/success/inlined', 'Magento_Catalog'))
+                   ->setLazyLoaded($block->getVar('ajax_addtocart/icons/success/lazy_loaded', 'Magento_Catalog'))
+                   ->toHtml();
+            ?>
+        <?php endif; ?>
         <?php if(!empty($successLabel)): ?>
-            <strong class="<?= $block->getAddtocartSuccessLabelClass() ?>"><?= $successLabel ?></strong>
+            <strong class="<?= $block->getVar('ajax_addtocart/css_classes/success_label', 'Magento_Catalog') ?>"><?= $successLabel ?></strong>
         <?php endif; ?>
 
-        <?= $block->getChildHtml('atc.fail.icon'); ?>
+        <?php // Done but failed ?>
+        <?php if(!empty($block->getVar('ajax_addtocart/icons/fail/path', 'Magento_Catalog'))): ?>
+            <?= $this->getLayout()
+                   ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                   ->setIconUrl($block->getVar('ajax_addtocart/icons/fail/path', 'Magento_Catalog'))
+                   ->setCssClass($block->getVar('ajax_addtocart/icons/fail/css_class', 'Magento_Catalog'))
+                   ->setInlined($block->getVar('ajax_addtocart/icons/fail/inlined', 'Magento_Catalog'))
+                   ->setLazyLoaded($block->getVar('ajax_addtocart/icons/fail/lazy_loaded', 'Magento_Catalog'))
+                   ->toHtml();
+            ?>
+        <?php endif; ?>
         <?php if(!empty($failLabel)): ?>
-            <strong class="<?= $block->getAddtocartFailLabelClass() ?>"><?= $failLabel ?></strong>
+            <strong class="<?= $block->getVar('ajax_addtocart/css_classes/fail_label', 'Magento_Catalog') ?>"><?= $failLabel ?></strong>
         <?php endif; ?>
     <?php endif; ?>
 </button>

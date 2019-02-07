@@ -24,7 +24,7 @@ export default class Pagination {
     protected _urlPattern: string;
     protected _currentPageNum: number;
     protected _lastPageNum: number;
-    protected _delay: number;
+    protected _delay: any;
     protected _options: any;
 
     /**

@@ -1,25 +1,30 @@
+<?php
+// @codingStandardsIgnoreFile
+// Custom stock indicator template, overriden completely
+?>
 <?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
-<?php $product = $block->getProduct() ?>
+<?php 
+    $associatedProducts = $block->getAssociatedProducts();
+    $isAvailable = $block->getProduct()->isAvailable() && count($associatedProducts) > 0;
+    $cssClass = $isAvailable ? 'available cs-buybox__stock--available' : 'unavailable cs-buybox__stock--unavailable';
+    $text = $isAvailable ? __('In stock') : __('Out of stock');
+    $iconEtcViewTarget = $isAvailable ? 'in_stock' : 'out_of_stock';
+    $icon = $block->getVar('stock_icons/display', 'Magento_Catalog') 
+        ? $this->getLayout()
+             ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+             ->setIconUrl($block->getVar('stock_icons/'.$iconEtcViewTarget.'/icon_url', 'Magento_Catalog'))
+             ->setCssClass($block->getVar('stock_icons/'.$iconEtcViewTarget.'/css_class', 'Magento_Catalog'))
+             ->setAltText($text)
+             ->setInlined($block->getVar('stock_icons/'.$iconEtcViewTarget.'/inlined', 'Magento_Catalog'))
+             ->setLazyLoaded($block->getVar('stock_icons/'.$iconEtcViewTarget.'/lazy_loaded', 'Magento_Catalog'))
+             ->toHtml()
+        : '';
+?>
 
-<?php $associatedProducts = $block->getAssociatedProducts(); ?>
-<?php $hasAssociatedProducts = count($associatedProducts) > 0; ?>
 <?php if ($block->displayProductStockStatus()): ?>
-    <?php if ($product->isAvailable() && $hasAssociatedProducts): ?>
-        <div
-            class="cs-product-sale-block__stock-text cs-product-sale-block__stock-text--available"
-            title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
-            >
-            <svg class="cs-product-sale-block__stock-icon cs-product-sale-block__stock-icon--available">
-                <use xlink:href="#check"></use>
-            </svg>
-            <span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
-        </div>
-    <?php else: ?>
-        <div
-            class="cs-product-sale-block__stock-text cs-product-sale-block__stock-text--unavailable"
-            title="<?php /* @escapeNotVerified */ echo __('Availability') ?>"
-            >
-            <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
-        </div>
-    <?php endif; ?>
+    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= /* @escapeNotVerified */ __('Availability') ?>">
+        <?= $icon ?>
+        <span class="cs-buybox__stock-text"><?= $text ?></span>
+    </div>
 <?php endif; ?>
+<?= $block->getChildHtml() ?>

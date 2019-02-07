@@ -9,11 +9,11 @@
     list($defaultQty, $canChangeQty) = $block->getDefaultValues();
 ?>
 
-<div class="cs-bundle-box__field field option <?php echo ($option->getRequired()) ? ' required': ''; ?>">
-    <label class="cs-bundle-box__product-name">
-        <?php echo $block->escapeHtml($option->getTitle()) ?>
+<div class="field option <?= ($option->getRequired()) ? ' required': '' ?> cs-bundle-box__field">
+    <label class="label cs-bundle-box__product-name">
+        <?= $block->escapeHtml($option->getTitle()) ?>
     </label>
-    <div class="cs-bundle-box__options-list | cs-input cs-input--type-radio">
+    <div class="control cs-bundle-box__options-list">
         <div class="nested options-list">
             <?php if ($block->showSingle()): ?>
                 <?php /* @escapeNotVerified */ echo $block->getSelectionTitlePrice($selections[0]) ?>
@@ -27,10 +27,10 @@
                     />
             <?php else:?>
                 <?php if (!$option->getRequired()): ?>
-                    <div class="cs-bundle-box__option field choice">
+                    <div class="field choice cs-bundle-box__option">
                         <input
                             type="radio"
-                            class="cs-input__radio product bundle option"
+                            class="radio product bundle option"
                             id="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>"
                             name="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
                             data-selector="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
@@ -38,7 +38,7 @@
                             value=""
                         />
                         <label
-                            class="cs-input__label  cs-input__label--big"
+                            class="label cs-bundle-box__product-option-name"
                             for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>"
                         >
                             <span><?php /* @escapeNotVerified */ echo __('None') ?></span>
@@ -49,7 +49,7 @@
                     <div class="cs-bundle-box__option">
                         <input
                             type="radio"
-                            class="cs-input__radio product bundle option change-container-classname"
+                            class="radio product bundle option change-container-classname"
                             id="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-<?php /* @escapeNotVerified */ echo $selection->getSelectionId() ?>"
                             <?php if ($option->getRequired()) echo 'data-validate="{\'validate-one-required-by-name\':true}"'?>
                             name="bundle_option[<?php /* @escapeNotVerified */ echo $option->getId() ?>]"
@@ -59,7 +59,7 @@
                             value="<?php /* @escapeNotVerified */ echo $selection->getSelectionId() ?>"
                         />
                         <label
-                            class="cs-input__label  cs-input__label--big"
+                            class="label cs-bundle-box__product-option-name"
                             for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-<?php /* @escapeNotVerified */ echo $selection->getSelectionId() ?>"
                         >
                             <span><?php /* @escapeNotVerified */ echo $block->getSelectionTitlePrice($selection) ?></span>
@@ -71,38 +71,23 @@
         </div>
 
         <?php if($canChangeQty): ?>
-            <div class="cs-bundle-box__qty cs-box-addtocart__qty-wrapper | field qty qty-holder">
-                <label class="cs-label | cs-box-addtocart__label" for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-qty-input">
+            <div class="field qty qty-holder cs-bundle-box__qty cs-box-addtocart__qty-wrapper">
+                <label class="cs-box-addtocart__label" for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-qty-input">
                     <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
                 </label>
-                <div class="cs-box-addtocart__qty-increment | control">
-                    <?php
-                    $inputName = 'bundle_option_qty['.$option->getId().']';
-                    $disabledClass = !$canChangeQty? ' qty-disabled' : '';
-                    $id = 'bundle-option-'.$option->getId().'-qty-input';
-                    $disabled = !$canChangeQty? ' disabled="disabled"' : '';
-                    ?>
-                    <?=$this->getLayout()->createBlock(
-                        'MageSuite\Frontend\Block\Twig',
-                        'add-to-cart-pdp-'.$option->getId(), [
-                            'data' => [
-                                "namespace" => 'cs-',
-                                "inputMix" => 'qty '.$disabledClass,
-                                "initialValue" => $defaultQty ,
-                                "maxLength" => 12,
-                                "minValue" => 0,
-                                "size" => 2,
-                                "name" => $inputName,
-                                "inputParams" => 'id="'.$id.'" data-selector="bundle_option_qty['.$option->getId().']"
-                                    title="'.__('Qty').'" '.$disabled,
-                                "icons" => [
-                                    "increment" => '#plus',
-                                    "decrement" => '#minus'
-                                ]
-                            ]
-                        ]
-                    )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+                <div class="control cs-box-addtocart__qty-increment">
+                    <?php $disabled = !$canChangeQty ? ' disabled="disabled"' : ''; ?>
 
+                    <?= $this->getLayout()
+                          ->createBlock('Magento\Framework\View\Element\Template')
+                          ->setInputName('bundle_option_qty['.$option->getId().']')
+                          ->setAdditionalInputCssClasses($canChangeQty ? ' input-text qty' : ' input-text qty qty-disabled')
+                          ->setInputInitialValue($defaultQty)
+                          ->setInputAdditionalParams('id="bundle-option-'.$option->getId().'-qty-input" data-selector="bundle_option_qty['.$option->getId().']" data-min-value="1" min="1"'.$disabled)
+                          ->setDecrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers')))
+                          ->setIncrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers')))
+                          ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+                          ->toHtml(); ?>
                 </div>
             </div>
         <?php endif; ?>

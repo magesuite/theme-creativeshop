@@ -1,0 +1,28 @@
+<?php
+    /** @var \Magento\Catalog\Block\Product\View\Description $block */
+    $isOnSale = $this->helper('MageSuite\Frontend\Helper\Product')->isOnSale($block->getProduct());
+?>
+
+<?php if($isOnSale): ?>
+    <?php 
+        $label = $block->getLabel();
+
+        $wrapperTag = $block->getWrapperTag() ?? 'li';
+
+        $wrapperClass = $block->getWrapperCssClass();
+        $wrapperClass = $wrapperClass ? sprintf('class="%s"', $wrapperClass) : '';
+
+        $cssClass = $block->getCssClass();
+        $cssClass = $cssClass ? sprintf('class="%s"', $cssClass) : '';
+
+        $badgeTextClass = $block->getTextCssClass();
+        $badgeTextClass = $badgeTextClass ? sprintf('class="%s"', $badgeTextClass) : '';
+    ?>
+    <<?= $wrapperTag ?> <?= $wrapperClass ?>>
+        <span <?= $cssClass ?>>
+            <span <?= $badgeTextClass ?>><?= $label ?></span>
+        </span>
+    </<?= $wrapperTag ?>>
+<?php endif; ?>
+
+
