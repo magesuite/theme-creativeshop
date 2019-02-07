@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'components/typography/hook';
+@import 'utils/font-family';
 
 $typography_headline-font-family: $font_family-primary !default;
 $typography_headline-font-weight: 700 !default;
@@ -8,13 +9,12 @@ $typography_headline-text-transform: uppercase !default;
 $typography_headline-margins: 1rem 0 2rem !default;
 
 @mixin headline($level: $font-size_headline-2) {
+    @include font-family($typography_headline-font-family);
     font-size: $level;
-    font-family: $typography_headline-font-family;
     color: $typography_headline-color;
     font-weight: $typography_headline-font-weight;
     text-transform: $typography_headline-text-transform;
     margin: $typography_headline-margins;
 
     @include headline_hook($level);
-
 }
