@@ -16,24 +16,16 @@
                     </label>
 
                     <div class="cs-box-addtocart__qty-increment">
-                        <?=$this->getLayout()->createBlock(
-                            'MageSuite\Frontend\Block\Twig',
-                            'add-to-cart-pdp', [
-                                'data' => [
-                                    "namespace" => 'cs-',
-                                    "minValue" => 1,
-                                    "initialValue" => /* @escapeNotVerified */ $block->getProductDefaultQty() * 1,
-                                    "maxLength" => 12,
-                                    "size" => 2,
-                                    "name" => 'qty',
-                                    "inputParams" => 'data-validate="'.$block->escapeHtml(json_encode($block->getQuantityValidators())).'"',
-                                    "icons" => [
-                                        "increment" => '#plus',
-                                        "decrement" => '#minus'
-                                    ]
-                                ]
-                            ]
-                        )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+                        <?php $qtyValidators = $block->getQuantityValidators(); ?>
+                        <?= $this->getLayout()
+                              ->createBlock(\Magento\Framework\View\Element\Template::class)
+                              ->setInputName('qty')
+                              ->setInputInitialValue($block->getProductDefaultQty() * 1)
+                              ->setInputAdditionalParams('data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="'.$qtyValidators["validate-item-quantity"]["minAllowed"].'" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
+                              ->setDecrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers')))
+                              ->setIncrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers')))
+                              ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+                              ->toHtml(); ?>
                     </div>
                 </div>
             <?php endif; ?>

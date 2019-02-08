@@ -164,13 +164,17 @@ switch ($type = $block->getType()) {
         <div class="block <?php /* @escapeNotVerified */ echo $class; ?>">
     <?php endif; ?>
 
-    <?=$this->getLayout()->createBlock(
-        'MageSuite\Frontend\Block\Twig', 'carousels-headline-'.$type, [
+    <?=$block->getLayout()->createBlock(
+        '\Creativestyle\ContentConstructorFrontendExtension\Block\Component', 'carousels-headline-'.$type, [
             'data' => [
-                'title' => $title
-            ]
+                'section' => 'content',
+                'type' => 'headline',
+                'data' => [
+                    'title' => $title
+                ]
+            ],
         ]
-    )->setTemplate("headline/headline.twig")->toHtml(); ?>
+    )->toHtml(); ?>
 
     <?php
     $skus = [];
