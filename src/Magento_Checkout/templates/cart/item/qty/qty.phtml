@@ -1,27 +1,14 @@
-<?php 
-/* @TODO: Remove twig in future */
-$_item = $block->getData('item');
-echo $this->getLayout()->createBlock(
-    'MageSuite\Frontend\Block\Twig',
-    'cart-item'.$_item->getId(), [
-        'data' => [
-            "namespace" => 'cs-',
-            "minValue" => 1,
-            "initialValue" =>  /* @escapeNotVerified */ $block->getQty(),
-            "maxLength" => 12,
-            "size" => 2,
-            "name" => 'cart['. /* @escapeNotVerified */ $_item->getId().'][qty]',
-            'inputClass' => 'qty',
-            "inputParams" => 'id="cart-'./* @escapeNotVerified */ $_item->getId().'-qty"
-                            name="cart'./* @escapeNotVerified */ $_item->getId().'][qty]"
-                            data-cart-item-id="'./* @escapeNotVerified */ $_item->getSku().'"
-                            data-role="cart-item-qty"
-                            data-validate="{required:true,\'validate-greater-than-zero\':true}"',
-            "icons" => [
-                "increment" => '#plus',
-                "decrement" => '#minus'
-            ]
-        ]
-    ]
-)->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); 
+<?php
+$item = $block->getData('item');
+
+echo $this->getLayout()
+    ->createBlock(\Magento\Framework\View\Element\Template::class)
+    ->setInputName('cart[' . $item->getId() . '][qty]')
+    ->setInputSize(1)
+    ->setInputInitialValue($block->getQty())
+    ->setInputAdditionalParams('data-validate="{required:true,\'validate-greater-than-zero\':true}" id="cart-' . /* @escapeNotVerified */ $item->getId().'-qty" data-cart-item-id="' ./* @escapeNotVerified */ $item->getSku() . '" data-role="cart-item-qty"')
+    ->setDecrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers')))
+    ->setIncrementIconUrl($block->getViewFileUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers')))
+    ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+    ->toHtml();
 ?>

@@ -87,6 +87,7 @@ import 'components/aftersearch-nav';
 import 'components/tile-gallery';
 import 'components/dashboard';
 import 'components/swatches';
+import 'components/qty-increment';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
@@ -98,9 +99,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();
-
-import { QtyIncrementCollection } from 'customizations/qty-increment/qty-increment';
-new QtyIncrementCollection();
 
 import 'customizations/image-teaser/image-teaser';
 import 'customizations/sticky-block/sticky-block';

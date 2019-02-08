@@ -2,13 +2,19 @@
 @import 'include-media/dist/include-media';
 
 $cart-item_border-top: 1px solid $color_border-500 !default;
+
 $cart-item_icon-color: $color_primary-500 !default;
 $cart-item_icon-color--hover: $color_primary-800 !default;
+
 $cart-item_name-color: $color_text-800 !default;
 $cart-item_price-color: $color_text-800 !default;
+
 $cart-item_options-in-row: false !default;
 $cart-item_options-label-color: $color_text-800 !default;
 $cart-item_options-value-color: $color_text-500 !default;
+
+$cart-item_qty-input-width: 10rem !default;
+$cart-item_qty-input-width--laptop-and-up: 11rem !default;
 
 .#{$ns}cart-item {
     $root: &;
@@ -103,7 +109,7 @@ $cart-item_options-value-color: $color_text-500 !default;
     }
 
     &__options {
-        @if($cart-item_options-in-row) {
+        @if ($cart-item_options-in-row) {
             @include media('>=laptop') {
                 display: flex;
             }
@@ -237,9 +243,11 @@ $cart-item_options-value-color: $color_text-500 !default;
     }
 
     &__qty-input {
-        @include media('<laptop') {
-            display: flex;
-            justify-content: center;
+        margin: 0 auto;
+        width: $cart-item_qty-input-width;
+
+        @include media('>=laptop') {
+            width: $cart-item_qty-input-width--laptop-and-up;
         }
     }
 
