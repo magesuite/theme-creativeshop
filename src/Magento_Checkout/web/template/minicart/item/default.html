@@ -52,7 +52,7 @@
                 <span class="cs-minicart-product__options-value" data-bind="i18n: qty">
                 </span>
             </div>
-            <div class="product-item-pricing">
+            <div class="product-item-pricing cs-minicart-product__item-pricing">
                 <!-- ko if: canApplyMsrp -->
                 <div class="details-map">
                     <span class="label" data-bind="i18n: 'Price'"></span>
@@ -66,6 +66,30 @@
                 <!-- /ko -->
             </div>
             <div class="product actions cs-minicart-product__actions">
+                <div class="details-qty qty cs-minicart-product__qty">
+                    <label class="label cs-minicart-product__qty-label" data-bind="i18n: 'Qty', attr: {
+                            for: 'cart-item-'+item_id+'-qty'}"></label>
+                    <input data-bind="attr: {
+                            id: 'cart-item-'+item_id+'-qty',
+                            'data-cart-item': item_id,
+                            'data-item-qty': qty,
+                            'data-cart-item-id': product_sku
+                            }, value: qty"
+                            type="number"
+                            size="4"
+                            class="item-qty cart-item-qty cs-minicart-product__qty-input">
+                    <button data-bind="attr: {
+                            id: 'update-cart-item-'+item_id,
+                            'data-cart-item': item_id,
+                            title: $t('Update')
+                            }"
+                            class="update-cart-item cs-minicart-product__qty-button"
+                            style="display: none">
+                        <img class="inline-svg cs-minicart-product__qty-button-icon" data-bind="attr: { src: require.toUrl('images/icons/minicart-product/icon-update.svg') }" alt="">
+                        <span data-bind="i18n: 'Update'" class="cs-minicart-product__qty-button-span"></span>
+                    </button>
+                </div>
+                
                 <!-- ko if: is_visible_in_site_visibility -->
                 <div class="primary cs-minicart-product__action-wrapper cs-minicart-product__action-wrapper--primary">
                     <a data-bind="attr: {href: configure_url, title: $t('Edit item')}" class="action edit cs-minicart-product__action cs-minicart-product__action--edit">
