@@ -1,6 +1,8 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/button/mixin';
+
 $minicart_padding: 2rem !default;
 
 $minicart_item-border: 1px solid $color_border-500 !default;
@@ -10,6 +12,12 @@ $minicart_background: $color_background-200 !default;
 $minicart_box-shadow: 0 0 21px 0 rgba($color_background-800, 0.27) !default;
 
 $minicart_width: 29.5rem !default;
+
+$minicart_button-checkout-type: $button_default-type !default;
+$minicart_button-checkout-icon-pos: $button_default-icon-pos !default;
+
+$minicart_button-viewcart-type: 'secondary' !default;
+$minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
 
 .#{$ns}minicart {
     $root: &;
@@ -168,6 +176,52 @@ $minicart_width: 29.5rem !default;
         .price {
             font-weight: 700;
             font-size: 1.5rem !important;
+        }
+    }
+
+    &__button-checkout {
+        @include button(
+            $type: $minicart_button-checkout-type,
+            $icon_pos: $minicart_button-checkout-icon-pos
+        );
+
+        width: 100%;
+
+        &-span {
+            @include button_span(
+                $type: $minicart_button-checkout-type,
+                $icon_pos: $minicart_button-checkout-icon-pos
+            )
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $minicart_button-checkout-type,
+                $icon_pos: $minicart_button-checkout-icon-pos
+            )
+        }
+    }
+
+    &__button-viewcart {
+        @include button(
+            $type: $minicart_button-viewcart-type,
+            $icon_pos: $minicart_button-viewcart-icon-pos
+        );
+
+        width: 100%;
+
+        &-span {
+            @include button_span(
+                $type: $minicart_button-viewcart-type,
+                $icon_pos: $minicart_button-viewcart-icon-pos
+            )
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $minicart_button-viewcart-type,
+                $icon_pos: $minicart_button-viewcart-icon-pos
+            )
         }
     }
 }

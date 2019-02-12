@@ -1,6 +1,9 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/button/mixin';
+@import 'components/field/mixin.scss';
+
 $minicart-product_action-icon-color: $color_primary-500 !default;
 $minicart-product_action-icon-color-hover: $color_primary-800 !default;
 
@@ -13,6 +16,12 @@ $minicart-product_options-label-color: $color_text-800 !default;
 $minicart-product_options-value-color: $color_text-800 !default;
 
 $minicart-product_price-color: $color_text-400 !default;
+
+$minicart-product_qty-enable: true !default;
+$minicart-product_qty-height: 3rem !default;
+$minicart-product_qty-font-size: 1.2rem !default;
+$minicart-product_qty-button-type: $button_default-type !default;
+$minicart-product_qty-button-icon-pos: 'only-icon' !default;
 
 .#{$ns}minicart-product {
     $root: &;
@@ -154,8 +163,62 @@ $minicart-product_price-color: $color_text-400 !default;
     &__actions {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
         margin-top: 1rem;
+    }
+
+    @if ($minicart-product_qty-enable) {
+        &__qty {
+            display: flex;
+            flex: 0 0 8rem;
+
+            &-label {
+                display: none;
+            }
+
+            &-input {
+                @include field-input();
+
+                padding: 0;
+                text-align: center;
+                box-sizing: border-box;
+                margin-bottom: 0;
+                height: $minicart-product_qty-height;
+                width: 4rem;
+                font-size: $minicart-product_qty-font-size;
+            }
+            
+            &-button {
+                @include button(
+                    $type: $minicart-product_qty-button-type,
+                    $icon_pos: $minicart-product_qty-button-icon-pos
+                );
+
+                padding: 0;
+                width: 3rem;
+                height: $minicart-product_qty-height;
+                margin-left: 0.5rem;
+            }
+
+            &-button-span {
+                @include button_span(
+                    $type: $minicart-product_qty-button-type,
+                    $icon_pos: $minicart-product_qty-button-icon-pos
+                );
+            }
+
+            &-button-icon {
+                @include button_icon(
+                    $type: $minicart-product_qty-button-type,
+                    $icon_pos: $minicart-product_qty-button-icon-pos
+                );
+            }
+        }
+    } @else {
+        &__qty {
+            display: none;
+        }
     }
 
     &__action {
