@@ -2,14 +2,33 @@
 @import 'config/breakpoints';
 @import 'include-media/dist/include-media';
 @import 'components/teaser/mixins';
+@import 'components/button/mixin';
 
 $hero_margin: 0 0 1.5rem !default;
-
 $hero_slider-width--centered: 77%;
 
 $hero_nav-button-horizontal-position: 1.5rem !default;
-
 $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
+
+$hero_slide-background: $color_background_200 !default;
+$hero_headline-font-weight: $texts-on-image_headline-font-weight !default;
+$hero_headline-text-transform: $texts-on-image_headline-text-transform !default;
+$hero_subheadline-font-weight: $texts-on-image_subheadline-font-weight !default;
+$hero_subheadline-text-transform: $texts-on-image_subheadline-text-transform !default;
+$hero_text-font-weight: $texts-on-image_text-font-weight !default;
+$hero_text-text-transform: $texts-on-image_text-text-transform !default;
+
+$hero_cta-button-type: 'primary' !default;
+$hero_cta-button-icon-pos: 'right' !default;
+
+// Scheme dark. It is default scheme. If no scheme is specify in html (no class for scheme) dark colors of texts will be used.
+$hero_scheme--dark-background: $scheme--dark_background !default;
+$hero_scheme--dark-texts-color: $scheme--dark_texts-color !default;
+
+// Scheme light
+$hero_scheme--light-background: $scheme--light_background !default;
+$hero_scheme--light-texts-color: $scheme--light_texts-color !default;
+
 
 .#{$ns}hero {
     $root: &;
@@ -23,7 +42,7 @@ $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
     }
 
     &__slide {
-        background-color: $color_white;
+        background-color: $hero_slide-background;
 
         &--prev,
         &--next {
@@ -31,11 +50,11 @@ $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
         }
 
         &--scheme-dark {
-            background-color: $color_white;
+            background-color: $hero_scheme--dark-background;
         }
 
         &--scheme-light:not(#{$root}__slide--image-uploaded) {
-            background-color: $color_mineshaft;
+            background-color: $hero_scheme--light-background;
         }
     }
 
@@ -125,27 +144,22 @@ $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
         flex-direction: column;
         height: 100%;
         justify-content: center;
-        color: $color_alto;
-        font-weight: 300;
-
-        &--light {
-            color: $color_white;
-        }
     }
 
     &__headline {
         margin: 0.5rem 0 0;
         line-height: 110%;
-        font-weight: 900;
-        color: $color_mineshaft;
+        font-weight: $hero_headline-font-weight;
+        color: $hero_scheme--dark-texts-color;
         font-size: 5vw;
+        text-transform: $hero_headline-text-transform;
 
         .ie11 & {
             width: 100%;
         }
 
         #{$root}__slide--scheme-light & {
-            color: $color_white;
+            color: $hero_scheme--light-texts-color;
         }
 
         @include media('>=tablet') {
@@ -170,16 +184,17 @@ $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
     &__subheadline {
         margin: 1vw 0 0;
         line-height: 110%;
-        font-weight: 400;
-        color: $color_mineshaft;
+        font-weight: $hero_subheadline-font-weight;
+        color: $hero_scheme--dark-texts-color;
         font-size: 3.3vw;
+        text-transform: $hero_subheadline-text-transform;
 
         .ie11 & {
             width: 100%;
         }
 
         #{$root}__slide--scheme-light & {
-            color: $color_white;
+            color: $hero_scheme--light-texts-color;
         }
 
         @include media('>=tablet') {
@@ -204,17 +219,18 @@ $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
     &__text {
         margin: 1rem 1rem 0.2rem;
         font-size: 4vw;
-        font-weight: 400;
-        color: $color_mineshaft;
+        font-weight: $hero_text-font-weight;
+        color: $hero_scheme--dark-texts-color;
         line-height: 110%;
         display: none;
+        text-transform: $hero_text-text-transform;
 
         .ie11 & {
             width: 100%;
         }
 
         #{$root}__slide--scheme-light & {
-            color: $color_white;
+            color: $hero_scheme--light-texts-color;
         }
 
         @include media('>=tablet') {
@@ -252,6 +268,18 @@ $teaser_nav-button-horizontal-position: $hero_nav-button-horizontal-position;
 
         @include media('<phoneLg') {
             transform: scale(0.7);
+        }
+
+        &-button {
+            @include button($type: $hero_cta-button-type, $icon_pos: $hero_cta-button-icon-pos);
+    
+            &-span {
+                @include button_span($type: $hero_cta-button-type, $icon_pos: $hero_cta-button-icon-pos);
+            }
+    
+            &-icon {
+                @include button_icon($type: $hero_cta-button-type, $icon_pos: $hero_cta-button-icon-pos);
+            }
         }
     }
 
