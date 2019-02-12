@@ -10,6 +10,7 @@
 @import 'utils/clearfix';
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
+@import 'components/button/mixin';
 
 $grid-layout_rows-separator-show: true !default;
 $grid-layout_rows-separator-height: 1px !default;
@@ -23,12 +24,13 @@ $grid-layout_brick-ratio-width: $tile_aspect-ratio-width !default;
 $grid-layout_brick-ratio-height: $tile_aspect-ratio-height !default;
 
 $grid-layout_teaser-content-padding: 1.5rem !default;
-$grid-layout_teaser-light-scheme: $color_white !default;
-$grid-layout_teaser-dark-scheme: $color_mineshaft !default;
+$grid-layout_teaser-light-scheme-color: $scheme--light_texts-color !default;
+$grid-layout_teaser-dark-scheme-color: $scheme--dark_texts-color !default;
 $grid-layout_teaser-content-line-height: 1.15 !default;
 
 $grid-layout_teaser-headline-bottom-margin: 0.2em !default;
-$grid-layout_teaser-headline-font-weight: 600 !default;
+$grid-layout_teaser-headline-font-weight: $texts-on-image_headline-font-weight !default;
+$grid-layout_teaser-headline-text-transform: none !default;
 $grid-layout_teaser-headline-font-size-min: 1.8rem !default;
 $grid-layout_teaser-headline-font-size-max: 2.8rem !default;
 $grid-layout_teaser-headline-font-map: (
@@ -44,7 +46,8 @@ $grid-layout_teaser-x2-headline-font-map: (
 ) !default;
 
 $grid-layout_teaser-subheadline-bottom-margin: 0.6em !default;
-$grid-layout_teaser-subheadline-font-weight: 400 !default;
+$grid-layout_teaser-subheadline-font-weight: $texts-on-image_subheadline-font-weight !default;
+$grid-layout_teaser-subheadline-text-transform: $texts-on-image_subheadline-text-transform !default;
 $grid-layout_teaser-subheadline-font-size-min: 1.6rem !default;
 $grid-layout_teaser-subheadline-font-size-max: 1.8rem !default;
 $grid-layout_teaser-subheadline-font-map: (
@@ -60,7 +63,8 @@ $grid-layout_teaser-x2-subheadline-font-map: (
 ) !default;
 
 $grid-layout_teaser-paragraph-bottom-margin: 1em !default;
-$grid-layout_teaser-paragraph-font-weight: 400 !default;
+$grid-layout_teaser-paragraph-font-weight: $texts-on-image_text-font-weight !default;
+$grid-layout_teaser-paragraph-text-transform: $texts-on-image_text-text-transform !default;
 $grid-layout_teaser-paragraph-font-size-min: 1.3rem !default;
 $grid-layout_teaser-paragraph-font-size-max: 1.4rem !default;
 $grid-layout_teaser-paragraph-font-map: (
@@ -74,6 +78,10 @@ $grid-layout_teaser-x2-paragraph-font-map: (
     $page_min-width: $grid-layout_teaser-x2-paragraph-font-size-min, 
     $page_max-width: $grid-layout_teaser-x2-paragraph-font-size-max
 ) !default;
+
+$grid-layout_teaser-cta-button-type: 'primary' !default;
+$grid-layout_teaser-cta-button-icon-pos: 'right' !default;
+
 
 // values: false / breakpoint name - the same as for @media mixin;
 // Use false if you don't want to hide button at all
@@ -133,12 +141,7 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
             display: flex;
             flex-direction: column;
             padding: $grid-layout_teaser-content-padding;
-            color: $grid-layout_teaser-dark-scheme;
             line-height: $grid-layout_teaser-content-line-height;
-
-            #{$root}__teaser--scheme-light & {
-                color: $grid-layout_teaser-light-scheme;
-            }
 
             /* Variants will be refactored after CC IT refactor due to new position options */
             &--variant-1 {
@@ -166,47 +169,69 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
 
         &-headline {
             margin: 0 0 $grid-layout_teaser-headline-bottom-margin;
+            color: $grid-layout_teaser-dark-scheme-color;
             font-weight: $grid-layout_teaser-headline-font-weight;
+            text-transform: $grid-layout_teaser-headline-text-transform;
             @include poly-fluid-sizing('font-size', $grid-layout_teaser-headline-font-map);
 
             #{$root}__brick--x2 & {
                 margin: 0 0 $grid-layout_teaser-x2-headline-bottom-margin;
                 @include poly-fluid-sizing('font-size', $grid-layout_teaser-x2-headline-font-map);
             }
+
+            #{$root}__teaser--scheme-light & {
+                color: $grid-layout_teaser-light-scheme-color;
+            }
         }
 
         &-subheadline {
             display: block;
             margin: 0 0 $grid-layout_teaser-subheadline-bottom-margin;
+            color: $grid-layout_teaser-dark-scheme-color;
             font-weight: $grid-layout_teaser-subheadline-font-weight;
+            text-transform: $grid-layout_teaser-subheadline-text-transform;
             @include poly-fluid-sizing('font-size', $grid-layout_teaser-subheadline-font-map);
 
             #{$root}__brick--x2 & {
                 margin: 0 0 $grid-layout_teaser-x2-subheadline-bottom-margin;
                 @include poly-fluid-sizing('font-size', $grid-layout_teaser-x2-subheadline-font-map);
             }
+
+            #{$root}__teaser--scheme-light & {
+                color: $grid-layout_teaser-light-scheme-color;
+            }
         }
 
         &-text {
             margin: 0 0 $grid-layout_teaser-paragraph-bottom-margin;
+            color: $grid-layout_teaser-dark-scheme-color;
             font-weight: $grid-layout_teaser-paragraph-font-weight;
+            text-transform: $grid-layout_teaser-paragraph-text-transform;
             @include poly-fluid-sizing('font-size', $grid-layout_teaser-paragraph-font-map);
 
             #{$root}__brick--x2 & {
                 margin: 0 0 $grid-layout_teaser-x2-paragraph-bottom-margin;
                 @include poly-fluid-sizing('font-size', $grid-layout_teaser-x2-paragraph-font-map);
             }
+
+            #{$root}__teaser--scheme-light & {
+                color: $grid-layout_teaser-light-scheme-color;
+            }
         }
 
-        /* @TODO: add class to button and use it here */
-        .#{$ns}button {
-            @if $grid-layout_teaser-button-visible-from {
-                display: none;
-
-                @include media(#{$grid-layout_teaser-button-visible-from}) {
-                    display: block;
+        &-cta {
+            &-button {
+                @include button($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
+        
+                &-span {
+                    @include button_span($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
+                }
+        
+                &-icon {
+                    @include button_icon($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
                 }
             }
+    
         }
     }
 
