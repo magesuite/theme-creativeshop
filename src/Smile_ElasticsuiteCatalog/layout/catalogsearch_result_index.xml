@@ -11,5 +11,25 @@
         </referenceBlock>
 
         <move element="catalogsearch.navigation.state" destination="search_result_list" as="state" />
+
+        <referenceContainer name="main.content" htmlClass="cs-page-category cs-page-category--search-results">
+            <referenceContainer name="columns" htmlClass="columns cs-container cs-container--page-category">
+                <container name="columns.container.inner" htmlTag="div" htmlClass="cs-page-category__columns cs-container__inner" />
+            </referenceContainer>
+        </referenceContainer>
+
+        <!--Move grid into main column-->
+        <referenceContainer name="main" htmlClass="cs-page-category__main" />
+        <move element="main" destination="columns.container.inner" />
+
+        <!--Move filters/sidebar into sidebar column-->
+        <referenceContainer name="div.sidebar.main" htmlClass="cs-page-category__sidebar" />
+        <referenceContainer name="div.sidebar.additional" htmlClass="cs-page-category__sidebar-extras" display="false" />
+        <move element="div.sidebar.additional" destination="div.sidebar.main" after="-" />
+        <move element="div.sidebar.main" destination="columns.container.inner" before="-" />
+
+        <!--Move messages to inner container-->
+        <referenceContainer name="page.messages" htmlClass="page messages cs-page-category__messages" />
+        <move element="page.messages" destination="columns.container.inner" before="-" />
     </body>
 </page>
