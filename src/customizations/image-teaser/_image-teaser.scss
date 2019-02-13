@@ -1,6 +1,10 @@
 $ns: 'cs-';
 @import 'components/teaser/mixins.scss';
 @import 'components/image-teaser/image-teaser.scss';
+@import 'components/button/mixin';
+
+$image-teaser_cta-button-type: 'primary' !default;
+$image-teaser_cta-button-icon-pos: 'right' !default;
 
 .#{$ns}image-teaser {
     $root: &;
@@ -206,15 +210,15 @@ $ns: 'cs-';
 
     &__cta {
         white-space: nowrap;
+        &-button {
+            @include button($type: $image-teaser_cta-button-type, $icon_pos: $image-teaser_cta-button-icon-pos);
 
-        .#{$ns}button--type_long {
-            font-size: 1.19rem;
-
-            @include media('<laptop') {
-                min-width: 10rem;
-                text-indent: 0;
-                min-height: 3.35rem;
-                padding: 0.65rem 5rem 0.65rem 1.5rem;
+            &-span {
+                @include button_span($type: $image-teaser_cta-button-type, $icon_pos: $image-teaser_cta-button-icon-pos);
+            }
+    
+            &-icon {
+                @include button_icon($type: $image-teaser_cta-button-type, $icon_pos: $image-teaser_cta-button-icon-pos);
             }
         }
     }
