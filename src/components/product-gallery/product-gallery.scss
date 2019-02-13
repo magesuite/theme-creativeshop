@@ -5,8 +5,17 @@
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 
-$product-gallery_base-image-data: deep-get($view-xml, media, images, image, product_page_image_medium_no_frame) !default;
-$product-gallery_scene-max-height: #{map-get($product-gallery_base-image-data, height)}px !default;
+$product-gallery_base-image-data: deep-get(
+    $view-xml,
+    media,
+    images,
+    image,
+    product_page_image_medium_no_frame
+) !default;
+$product-gallery_scene-max-height: #{map-get(
+        $product-gallery_base-image-data,
+        height
+    )}px !default;
 
 $product-gallery_nav-arrows-show: true !default;
 $product-gallery_nav-arrow-wrapper-background-color: transparent !default;
@@ -102,7 +111,7 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
         }
 
         &:active {
-            backround-color: $product-gallery_nav-arrow-wrapper--active-background-color;
+            background-color: $product-gallery_nav-arrow-wrapper--active-background-color;
         }
 
         // Arrow. Nested to handle fotoramas' cascade
@@ -203,10 +212,10 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
 
     .fotorama__thumb {
         cursor: pointer;
-        background-color: $product-gallery_thumb-background; 
-        background-image: url($product-gallery_spinner-image-url); 
+        background-color: $product-gallery_thumb-background;
+        background-image: url($product-gallery_spinner-image-url);
         background-size: 50%;
-        background-repeat: no-repeat; 
+        background-repeat: no-repeat;
         background-position: 50% 50%;
 
         &.fotorama__loaded--img {
@@ -277,14 +286,12 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
      * Bullet pagination (dots)
      */
     // Bullets wrapper
-    .fotorama__nav--dots 
-    .fotorama__nav__shaft {
+    .fotorama__nav--dots .fotorama__nav__shaft {
         @include bullet-pagination-list();
     }
 
     // Single dot wrapper
-    .fotorama__nav--dots
-    .fotorama__nav__frame--dot {
+    .fotorama__nav--dots .fotorama__nav__frame--dot {
         @include bullet-pagination-item();
 
         &.fotorama__active {
