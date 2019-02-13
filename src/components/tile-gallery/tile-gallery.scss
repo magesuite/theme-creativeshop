@@ -35,8 +35,14 @@ $tile-gallery_main-image-transition: transform 0.5s $transition-easing_slowdown-
     top: $tile-gallery_postion-top;
     bottom: $tile-gallery_postion-bottom;
 
+    .touch-device & {
+        display: none !important;
+    }
+
     .#{$ns}product-tile:hover & {
-        display: flex;
+        @include media('>=laptop') {
+            display: flex;
+        }
     }
     
     &__item {
