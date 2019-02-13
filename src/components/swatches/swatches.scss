@@ -54,6 +54,17 @@ $swatches--filters_font-size: 0.8em !default;
 // Container selector for swatches on PDP
 .swatch-opt {
     font-size: $swatches--pdp_font-size;
+
+    // Selector for error container when swatches are required but not selected.
+    .mage-error {
+        font-size: 1em;
+        width: 100%;
+        margin-left: calc(#{$swatches_label-width} + 1.5rem);
+
+        @include media('>=tablet') {
+            margin-left: calc(#{$swatches_label-width-laptop-up} + 1.5rem);
+        }
+    }
 }
 
 .swatch-attribute {
@@ -61,6 +72,7 @@ $swatches--filters_font-size: 0.8em !default;
     width: 100%;
     overflow: hidden;
     align-items: center;
+    flex-wrap: wrap;
 
     // The only selector we have to tell that swatches are inside aftersearch navigation.
     &.swatch-layered {
