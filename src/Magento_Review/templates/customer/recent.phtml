@@ -31,9 +31,6 @@
                             <?php echo $block->escapeHtml($review->getName()) ?>
                         </a>
                         <?php if ($review->getSum()): ?>
-
-                        <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-
                             <?php
                                 $rating = $review->getSum() / $review->getCount();
                                 $dividedRating = floor(($rating / 20) * 2) / 2;
@@ -53,9 +50,7 @@
                                     ]
                                 ]
                             )->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
-                        </div>
                         <?php endif; ?>
-
                     </li>
                     <?php $iterator++ ?>
                 <?php endforeach; ?>
