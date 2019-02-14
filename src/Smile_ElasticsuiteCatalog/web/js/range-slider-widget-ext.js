@@ -12,6 +12,7 @@ define(['jquery'], function($) {
                 toInput: '[data-role=to-input]',
                 toLabel: '[data-role="to-label"]',
                 currencyField: '[data-role="currency"]',
+                maxLabelOffset: 0,
             },
             _create: function() {
                 this._super();
@@ -46,10 +47,6 @@ define(['jquery'], function($) {
                             this._formatLabel(this.to).replace(/[^\d\.\,]/, '')
                         );
                 }
-
-                this.element
-                    .find(this.options.toLabel)
-                    .html(this._formatLabel(this.to));
             },
             _prepareInputs: function() {
                 this.element
@@ -78,10 +75,12 @@ define(['jquery'], function($) {
                 );
                 // Make sure range is a valid one on blur.
                 if (event.type === 'blur') {
+                    if (!to) {
+                        to = this.maxValue;
+                    }
+
                     if (from > to) {
-                        var fromTmp = from;
-                        from = to;
-                        to = fromTmp;
+                        from = to - this.rate;
                     }
 
                     if (from < this.minValue) {
