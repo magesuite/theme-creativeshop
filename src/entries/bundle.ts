@@ -6,6 +6,8 @@
 // It is a job of every component if it is present of the page.
 // This approach creates nice bundle, with all of the components and their dependencies.
 
+import 'config/base.scss';
+
 import 'bundle.scss';
 
 // =============================================================================
