@@ -1,5 +1,8 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
+
+@import 'components/badge/mixin';
+
 @import 'utils/reset-list-style';
 
 $page-product_top-2col-breakpoint: '>=tablet' !default;
@@ -71,7 +74,7 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
         #{$page-product_badges-x-axis-placement}: $page-product_badges-x-axis-position;
     }
 
-    &__badge {
+    &__badge-item {
         margin-bottom: $page-product_badges-gutter;
         
         @if $page-product_badges-x-axis-placement == left {
@@ -79,6 +82,30 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
         } @else if $page-product_badges-x-axis-placement == right {
             margin-left: $page-product_badges-gutter;
         }
+    }
+
+    &__badge {
+        @include badge();
+
+        &--new {
+            @include badge_type('new');
+        }
+
+        &--sale {
+            @include badge_type('sale');
+        }
+
+        &--popular {
+            @include badge_type('popular');
+        }
+
+        &--free-shipping {
+            @include badge_type('free-shipping');
+        }
+    }
+
+    &__badge-text {
+        @include badge_span();
     }
 }
 

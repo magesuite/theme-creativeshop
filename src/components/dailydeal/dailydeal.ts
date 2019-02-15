@@ -360,8 +360,7 @@ export default class Dailydeal {
       */
      protected _updateBadgeContainer(): void {
          const $badgeContainer: JQuery = this._$badgeContainer;
-
-         if(this._isTile() && $badgeContainer.find(`.${this._options.namespace}badge--discount`).length){
+         if(this._isTile() && $badgeContainer.find(`.${this._options.namespace}product-tile__badge--discount`).length){
              if(!$badgeContainer.hasClass(`${this._options.namespace}product-tile__badges--dailydeal-countdown`)){
                  $badgeContainer.addClass(`${this._options.namespace}product-tile__badges--dailydeal-countdown`);
              }

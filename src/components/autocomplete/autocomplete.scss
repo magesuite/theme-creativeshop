@@ -1,6 +1,8 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/badge/mixin';
+
 $autocomplete_list-background: $color_text-200 !default;
 $autocomplete_list-border-radius: 3px !default;
 $autocomplete_list-border: 1px solid $color_border-500 !default;
@@ -111,6 +113,22 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
             color: $autocomplete_item-name-color;
             font-weight: 700;
         }
+    }
+
+    &__badge {
+        @include badge();
+
+        &--popular {
+            @include badge_type('popular');
+        }
+
+        &--free-shipping {
+            @include badge_type('free-shipping');
+        }
+    }
+
+    &__badge-text {
+        @include badge_span();
     }
 }
 

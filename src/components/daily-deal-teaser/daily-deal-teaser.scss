@@ -1,7 +1,10 @@
 @import 'config/variables';
 @import 'config/breakpoints';
+
 @import 'include-media/dist/include-media';
+
 @import 'components/teaser/mixins';
+@import 'components/badge/mixin';
 
 $daily-deal-teaser_global-bold-font: 600 !default;
 $daily-deal-teaser_global-small-font: 1.2rem !default;
@@ -322,8 +325,18 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
         }
     }
 
-    &__badge-text {
+    &__badge {
+        @include badge();
+
         font-size: $daily-deal-teaser_discount-badge-font-size;
+
+        &--discount {
+            @include badge_type('discount');
+        }
+    }
+
+    &__badge-text {
+        @include badge_span();
     }
 
     &__addtocart {

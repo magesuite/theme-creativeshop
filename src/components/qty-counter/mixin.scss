@@ -1,0 +1,60 @@
+@import 'config/variables';
+@import 'components/qty-counter/hook';
+
+$qty-counter_font-size: 1rem !default;
+$qty-counter_font-weight: 700 !default;
+$qty-counter_height: 1.8em !default;
+$qty-counter_padding: 0 0.6rem !default;
+$qty-counter_border: 0 !default;
+$qty-counter_border-radius: 0.2rem !default;
+
+$qty-counter_transform: $transform_skew-300 !default;
+$qty-counter_span-transform: $transform_skew-300-revert !default;
+
+$qty-counter--default-background: $color_primary-500 !default;
+$qty-counter--default-color: $color_text-200 !default;
+
+$qty-counter--minicart-background: $color_error-500 !default;
+$qty-counter--minicart-color: $color_text-200 !default;
+
+$qty-counter--wishlist-background: $color_secondary-500 !default;
+$qty-counter--wishlist-color: $color_text-900 !default;
+
+@mixin qty-counter($type: 'default') {
+    display: inline-flex;
+    background-color: $qty-counter--default-background;
+    color: $qty-counter--default-color;
+    transform: $qty-counter_transform;
+    border: $qty-counter_border;
+    border-radius: $qty-counter_border-radius;
+    padding: $qty-counter_padding;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    font-size: $qty-counter_font-size;
+    font-weight: $qty-counter_font-weight;
+    height: $qty-counter_height;
+
+    @include qty-counter_hook($type);
+}
+
+@mixin qty-counter_type($type: 'default') {
+    @if ($type == 'wishlist') {
+        background-color: $qty-counter--wishlist-background;
+        color: $qty-counter--wishlist-color;
+    }
+    
+    @if ($type == 'minicart') {
+        background-color: $qty-counter--minicart-background;
+        color: $qty-counter--minicart-color;
+    }
+
+    @include qty-counter_type-hook($type);
+}
+
+@mixin qty-counter_span($type: 'default') {
+    transform: $qty-counter_span-transform;
+    min-width: 1ch;
+
+    @include qty-counter_span-hook($type);
+}
