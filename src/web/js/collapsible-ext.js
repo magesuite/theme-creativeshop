@@ -18,18 +18,17 @@ define([
             },
 
             _create: function(isMediaCheckActive) {
+                /**
+                 * Save original `active` option to another one as original widget operates on the original option. We want to recreate collapse with original settings passed to options
+                 */
+                this.options.initialActiveOption = this.options.active;
+
                 // we only want to run _scopeToMediaQuery once if needed at all
                 if (typeof isMediaCheckActive === 'undefined') {
                     isMediaCheckActive = false;
                 }
 
                 if (!this.options.mediaQueryScope.length || isMediaCheckActive) {
-                    /**
-                     * Save original `active` option to another one as original widget operates on the original option. We want to recreate collapse with original settings passed to options
-                     */
-                    if (typeof this.options.initialActiveOption === 'undefined') {
-                        this.options.initialActiveOption = this.options.active;
-                    }
                     this._super();
                     this.options.isCreated = true;
                 } else {
