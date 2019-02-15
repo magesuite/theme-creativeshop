@@ -1,6 +1,8 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/badge/mixin';
+
 $cart-item_border-top: 1px solid $color_border-500 !default;
 
 $cart-item_icon-color: $color_primary-500 !default;
@@ -86,9 +88,19 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
     }
 
     &__badge {
-        + #{$root}__name {
-            padding-top: 0;
+        @include badge();
+
+        &--free {
+            @include badge_type('free');
         }
+
+        + #{$root}__name {
+            padding-top: 0.5rem;
+        }
+    }
+
+    &__badge-text {
+        @include badge_span();
     }
 
     &__details {

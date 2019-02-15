@@ -30,7 +30,6 @@
 
         <referenceContainer name="product.info.media" htmlClass="cs-page-product__gallery" />
 
-        <!-- @TODO: use common badges module after it's created and move indicators badges to positive-indicators extension dir -->
         <!-- Badges -->
         <referenceContainer name="product.info.media">
             <container name="product.badges" htmlTag="ul" htmlClass="cs-page-product__badges">
@@ -40,10 +39,10 @@
                 >
                     <arguments>
                         <argument xsi:type="string" name="html_tag">li</argument>
-                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--new</argument>
-                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--new</argument>
+                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge-item</argument>
+                        <argument xsi:type="string" name="css_class">cs-page-product__badge cs-page-product__badge--new</argument>
+                        <argument xsi:type="string" name="text_css_class">cs-page-product__badge-text</argument>
                         <argument translate="true" xsi:type="string" name="label">New</argument>
-                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
                     </arguments>
                 </block>
 
@@ -53,40 +52,36 @@
                 >
                     <arguments>
                         <argument xsi:type="string" name="html_tag">li</argument>
-                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--sale</argument>
-                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--attention cs-badge--sale</argument>
+                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge-item</argument>
+                        <argument xsi:type="string" name="css_class">cs-page-product__badge cs-page-product__badge--sale</argument>
+                        <argument xsi:type="string" name="text_css_class">cs-page-product__badge-text</argument>
                         <argument translate="true" xsi:type="string" name="label">Sale</argument>
-                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
-                    </arguments>
-                </block>
-
-                <block class="MageSuite\ProductPositiveIndicators\Block\PopularIcon\Product" 
-                       name="product.badge.popular" 
-                       template="Magento_Catalog::product/view/badges/popular.phtml"
-                >
-                    <arguments>
-                        <argument xsi:type="string" name="html_tag">li</argument>
-                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--popular</argument>
-                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--positive cs-badge--popular</argument>
-                        <argument translate="true" xsi:type="string" name="label">Popular</argument>
-                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
-                    </arguments>
-                </block>
-
-                <block class="MageSuite\ProductPositiveIndicators\Block\FreeShipping\Product" 
-                       name="product.badge.free-shipping" 
-                       template="Magento_Catalog::product/view/badges/free-shipping.phtml"
-                >
-                    <arguments>
-                        <argument xsi:type="string" name="html_tag">li</argument>
-                        <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge cs-page-product__badge--free-shipping</argument>
-                        <argument xsi:type="string" name="css_class">cs-badge cs-badge--cut cs-badge--positive cs-badge--free-shipping</argument>
-                        <argument translate="true" xsi:type="string" name="label">Free Shipping</argument>
-                        <argument xsi:type="string" name="text_css_class">cs-badge__span cs-page-product__badge-text</argument>
                     </arguments>
                 </block>
             </container>
         </referenceContainer>
+
+        <referenceBlock name="indicator.popular.badge">
+            <arguments>
+                <argument xsi:type="string" name="html_tag">li</argument>
+                <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge-item</argument>
+                <argument xsi:type="string" name="css_class">cs-page-product__badge cs-page-product__badge--popular</argument>
+                <argument xsi:type="string" name="text_css_class">cs-page-product__badge-text</argument>
+                <argument translate="true" xsi:type="string" name="label">Popular</argument>
+            </arguments>
+        </referenceBlock>
+        <move element="indicator.popular.badge" destination="product.badges" before="-" />
+
+        <referenceBlock name="indicator.free-shipping.badge">
+            <arguments>
+                <argument xsi:type="string" name="html_tag">li</argument>
+                <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge-item</argument>
+                <argument xsi:type="string" name="css_class">cs-page-product__badge cs-page-product__badge--free-shipping</argument>
+                <argument xsi:type="string" name="text_css_class">cs-page-product__badge-text</argument>
+                <argument translate="true" xsi:type="string" name="label">Free Shipping</argument>
+            </arguments>
+        </referenceBlock>
+        <move element="indicator.free-shipping.badge" destination="product.badges" before="-" />
 
         <!-- BUYBOX start -->
         <referenceContainer name="product.info.main" htmlTag="div" htmlClass="product-info-main cs-buybox">

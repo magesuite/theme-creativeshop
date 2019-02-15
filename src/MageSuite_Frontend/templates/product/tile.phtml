@@ -19,13 +19,13 @@
 
         if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] !== 'none') {
             if($dailyDealData['displayType'] === 'badge') {
-                $itemsLimit = $dailyDealData['items'] && $dailyDealData['items'] > 0 ? '<span class="cs-badge">
-                    <span class="cs-badge__span">' . __('%1 item(s) left', $dailyDealData['items']) . '</span>
+                $itemsLimit = $dailyDealData['items'] && $dailyDealData['items'] > 0 ? '<span class="cs-product-tile__badge cs-product-tile__badge--items-left">
+                    <span class="cs-product-tile__badge-text">' . __('%1 item(s) left', $dailyDealData['items']) . '</span>
                 </span>' : '';
                 $badges[] = [
                     'mix' => 'cs-multiple-badges',
-                    'content' => '<span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
-                            <span class="cs-badge__span">' . __('Limited offer!') . ' </span>
+                    'content' => '<span class="cs-product-tile__badge cs-product-tile__badge-text--limited-offer">
+                            <span class="cs-product-tile__badge-text">' . __('Limited offer!') . ' </span>
                         </span>' . $itemsLimit
                 ];
             } else {
@@ -51,12 +51,12 @@
         }
 
         if( $discount ) {
-            $oldDiscountHtml = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? '<span class="cs-badge cs-badge--discount cs-badge--discount_old" style="display: none;">
-                <span class="cs-badge__span">'  . $oldDiscount . '%</span>
+            $oldDiscountHtml = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? '<span class="cs-product-tile__badge cs-product-tile__badge--discount" style="display: none;">
+                <span class="cs-product-tile__badge-text">'  . $oldDiscount . '%</span>
             </span>' : '';
             $badges[] = [
-                'content' => '<span class="cs-badge cs-badge--discount">
-                    <span class="cs-badge__span">'  . $discount . '%</span>
+                'content' => '<span class="cs-product-tile__badge cs-product-tile__badge--discount">
+                    <span class="cs-product-tile__badge-text">'  . $discount . '%</span>
                 </span>' . $oldDiscountHtml
             ];
 
@@ -64,24 +64,24 @@
 
         if ( $newBadge ) {
             $badges[] = [
-                'content' => '<span class="cs-badge cs-badge--new">
-                    <span class="cs-badge__span">' . __('New') . '</span>
+                'content' => '<span class="cs-product-tile__badge cs-product-tile__badge--new">
+                    <span class="cs-product-tile__badge-text">' . __('New') . '</span>
                 </span>'
             ];
         }
 
         if ( $isPopular ) {
             $badges[] = [
-                'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
-                    <span class="cs-badge__span">' . __('Popular') . '</span>
+                'content' => '<span class="cs-product-tile__badge cs-product-tile__badge--popular">
+                    <span class="cs-product-tile__badge-text">' . __('Popular') . '</span>
                 </span>'
             ];
         }
 
         if ( $isFreeShipped ) {
             $badges[] = [
-                'content' => '<span class="cs-badge cs-badge--cut cs-badge--positive">
-                    <span class="cs-badge__span">' . __('Free Shipping') . '</span>
+                'content' => '<span class="cs-product-tile__badge cs-product-tile__badge--free-shipping">
+                    <span class="cs-product-tile__badge-text">' . __('Free Shipping') . '</span>
                 </span>'
             ];
         }

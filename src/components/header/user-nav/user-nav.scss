@@ -1,6 +1,8 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/qty-counter/mixin';
+
 $header-user-nav_items: 3 !default; // number of items in header user nav (without search item)
 
 $header-user-nav_icon-color: $color_primary-500 !default; 
@@ -10,13 +12,9 @@ $header-user-nav_label-show: true !default;
 $header-user-nav_label-color: $color_text-500 !default; 
 $header-user-nav_label-color-hover: $color_text-500 !default; 
 
-$header-user-nav_badge-wishlist-background: $color_error-500 !default;
-$header-user-nav_badge-wishlist-show-empty: false !default;
-
-$header-user-nav_badge-cart-background: $color_secondary-500 !default;
-$header-user-nav_badge-minicart-show-empty: false !default;
-
-$header-user-nav_badge-show-animation: true !default;
+$header-user-nav_qty-counter-wishlist-show-empty: false !default;
+$header-user-nav_qty-counter-minicart-show-empty: false !default;
+$header-user-nav_qty-counter-show-animation: true !default;
 
 .#{$ns}header-user-nav {
     $root: &;
@@ -114,14 +112,24 @@ $header-user-nav_badge-show-animation: true !default;
         }
     }
 
-    &__badge {
+    &__qty-counter {
+        @include qty-counter();
+
         position: absolute;
         left: 55%;
-        top: -1rem;
+        top: -0.5rem;
         opacity: 0;
 
-        @if ($header-user-nav_badge-show-animation) {
-            transition: opacity 0.3s;
+        @if ($header-user-nav_qty-counter-show-animation) {
+            transition: opacity 0.5s;
+        }
+ 
+        &--wishlist {
+            @include qty-counter_type('wishlist');
+        }
+
+        &--minicart {
+            @include qty-counter_type('minicart');
         }
 
         &--have-items {
@@ -129,17 +137,21 @@ $header-user-nav_badge-show-animation: true !default;
         }
 
         &--empty {
-            &#{$root}__badge--wishlist {
-                @if ($header-user-nav_badge-wishlist-show-empty) {
+            &#{$root}__qty-counter--wishlist {
+                @if ($header-user-nav_qty-counter-wishlist-show-empty) {
                     opacity: 1;
                 }
             }
 
-            &#{$root}__badge--minicart {
-                @if ($header-user-nav_badge-minicart-show-empty) {
+            &#{$root}__qty-counter--minicart {
+                @if ($header-user-nav_qty-counter-minicart-show-empty) {
                     opacity: 1;
                 }
             }
         }
+    }
+
+    &__qty-counter-span {
+        @include qty-counter_span();
     }
 }

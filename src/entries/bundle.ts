@@ -44,7 +44,6 @@ import 'components/topbar';
 import 'components/logo';
 import 'components/authorization-link';
 import 'components/header';
-import 'components/badge';
 import 'components/autocomplete';
 import 'components/addtocart';
 import 'components/footer';

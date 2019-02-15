@@ -5,7 +5,9 @@ $label = $block->getXmlLabel();
 <li class="item link compare cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>" data-bind="scope: 'compareProducts'" data-role="compare-products-link">
     <a class="action compare no-display cs-header-user-nav__link" title="<?= /* @escapeNotVerified */ __('Compare Products') ?>" data-bind="attr: {'href': compareProducts().listUrl}, css: {'no-display': !compareProducts().count}">
         <?= $block->getChildHtml('catalog.compare.link.icon'); ?>
-        <span class="cs-header-user-nav__badge <?= $block->getBadgeAdditionalCssClasses() ?> counter qty" data-bind="text: compareProducts().countCaption"></span>
+        <span class="cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?> counter qty">
+            <span class="cs-header-user-nav__qty-counter-span" data-bind="text: compareProducts().countCaption"></span>
+        </span>
         <?php if(!empty($label)): ?>
             <span class="cs-header-user-nav__label"><?= $block->escapeHtml($label) ?></span>
         <?php endif; ?>

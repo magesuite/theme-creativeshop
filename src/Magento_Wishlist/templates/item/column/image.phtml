@@ -18,27 +18,31 @@ $dailyDealData = $dailyDealHelper->prepareOfferData($product);
 
     <ul class="cs-product-tile__badges">
         <?php if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] == 'badge') { ?>
-            <li class="cs-product-tile__badge cs-multiple-badges">
-                <span class="cs-badge cs-badge--attention cs-badge--cut cs-badge--limited-offer">
-                    <span class="cs-badge__span"><?php echo __('Limited offer!'); ?></span>
+            <li class="cs-product-tile__badge-item cs-multiple-badges">
+                <span class="cs-product-tile__badge cs-product-tile__badge--limited-offer">
+                    <span class="cs-product-tile__badge-text"><?php echo __('Limited offer!'); ?></span>
                 </span>
                 <?php if($dailyDealData['items'] && $dailyDealData['items'] > 0) { ?>
-                    <span class="cs-badge">
-                        <span class="cs-badge__span"><?php echo __('%1 item(s) left', $dailyDealData['items']); ?></span>
+                    <span class="cs-product-tile__badge cs-product-tile__badge--items-left">
+                        <span class="cs-product-tile__badge-text"><?php echo __('%1 item(s) left', $dailyDealData['items']); ?></span>
                     </span>
                 <?php } ?>
             </li>
         <?php } ?>
 
         <?php if($isPopular) { ?>
-            <li class="cs-product-tile__badge">
-                <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Popular'); ?></span></span>
+            <li class="cs-product-tile__badge-item">
+                <span class="cs-product-tile__badge cs-product-tile__badge--popular">
+                    <span class="cs-product-tile__badge-text"><?php echo __('Popular'); ?></span>
+                </span>
             </li>
         <?php } ?>
 
         <?php if ( $isFreeShipped ) { ?>
-            <li class="cs-product-tile__badge">
-                <span class="cs-badge cs-badge--positive cs-badge--popular"><span class="cs-badge__span"><?php echo __('Free Shipping'); ?></span></span>
+            <li class="cs-product-tile__badge-item">
+                <span class="cs-product-tile__badge cs-product-tile__badge--free-shipping">
+                    <span class="cs-product-tile__badge-text"><?php echo __('Free Shipping'); ?></span>
+                </span>
             </li>
         <?php } ?>
     </ul>

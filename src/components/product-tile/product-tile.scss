@@ -1,5 +1,8 @@
 @import 'utils/breakpoint/breakpoint.scss';
 @import 'config/variables';
+
+@import 'components/badge/mixin';
+
 @import 'utils/aspect-ratio';
 @import 'utils/reset-list-style';
 
@@ -132,13 +135,45 @@ $product-tile_show-addons-for-static-tile: false !default;
         }
     }
 
-    &__badge {
+    &__badge-item {
         display: flex;
         margin: $product-tile_badge-margin;
 
         &:empty {
             display: none;
         }
+    }
+
+    &__badge {
+        @include badge();
+
+        &--discount {
+            @include badge_type('discount');
+        }
+
+        &--new {
+            @include badge_type('new');
+        }
+
+        &--free-shipping {
+            @include badge_type('free-shipping');
+        }
+
+        &--popular {
+            @include badge_type('popular');
+        }
+
+        &--limited-offer {
+            @include badge_type('limited-offer');
+        }
+
+        &--items-left {
+            @include badge_type('items-left');
+        }
+    }
+
+    &__badge-text {
+        @include badge_span();
     }
 
     &__details {

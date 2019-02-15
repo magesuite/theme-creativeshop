@@ -1,0 +1,132 @@
+@import 'config/variables';
+@import 'components/badge/hook';
+
+$badge_font-size: 1.1rem !default;
+$badge_font-weight: 700 !default;
+$badge_height: 2em !default;
+$badge_padding: 0 0.7rem 0 0.3rem !default;
+$badge_border: 0 !default;
+$badge_border-radius: $border-radius_base !default;
+$badge_text-transform: uppercase !default;
+
+$badge_transform: $transform_skew-300 !default;
+$badge_span-transform: $transform_skew-300-revert !default;
+
+$badge--default-background: $color_primary-500 !default;
+$badge--default-color: $color_text-200 !default;
+
+$badge--new-background: $color_secondary-500 !default;
+$badge--new-color: $color_text-900 !default;
+
+$badge--sale-background: $color_error-500 !default;
+$badge--sale-color: $color_text-200 !default;
+
+$badge--discount-background: $color_error-500 !default;
+$badge--discount-color: $color_text-200 !default;
+
+$badge--free-background: $color_success-500 !default;
+$badge--free-color: $color_text-200 !default;
+
+$badge--free-shipping-background: $color_success-500 !default;
+$badge--free-shipping-color: $color_text-200 !default;
+
+$badge--popular-background: $color_success-500 !default;
+$badge--popular-color: $color_text-200 !default;
+
+$badge--recently-bought-background: $color_success-500 !default;
+$badge--recently-bought-color: $color_text-200 !default;
+
+$badge--limited-offer-background: $color_error-500 !default;
+$badge--limited-offer-color: $color_text-200 !default;
+
+$badge--items-left-background: $color_background-700 !default;
+$badge--items-left-color: $color_text-200 !default;
+
+@mixin badge($type: 'default') {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transform: $badge_transform;
+    background-color: $badge--default-background;
+    color: $badge--default-color;
+    border: $badge_border;
+    border-radius: $badge_border-radius;
+    padding: $badge_padding;
+    font-size: $badge_font-size;
+    font-weight: $badge_font-weight;
+    min-height: $badge_height;
+    text-transform: $badge_text-transform;
+
+    &:before {
+        content: '';
+        width: 1rem;
+        position: absolute;
+        min-height: inherit;
+        height: 100%;
+        left: 0;
+        background-color: inherit;
+        transform: $badge_span-transform;
+        border-radius: $badge_border-radius 0 0 $badge_border-radius;
+        border: inherit;
+        border-right: 0;
+        transform-origin: bottom left;
+    }
+
+    @include badge_hook($type);
+}
+
+@mixin badge_type($type: 'default') {
+    @if ($type == 'new') {
+        background-color: $badge--new-background;
+        color: $badge--new-color;
+    }
+
+    @if ($type == 'sale') {
+        background-color: $badge--sale-background;
+        color: $badge--sale-color;
+    }
+
+    @if ($type == 'free') {
+        background-color: $badge--free-background;
+        color: $badge--free-color;
+    }
+
+    @if ($type == 'free-shipping') {
+        background-color: $badge--free-shipping-background;
+        color: $badge--free-shipping-color;
+    }
+    
+    @if ($type == 'popular') {
+        background-color: $badge--popular-background;
+        color: $badge--popular-color;
+    }
+    
+    @if ($type == 'discount') {
+        background-color: $badge--discount-background;
+        color: $badge--discount-color;
+    }
+
+    @if ($type == 'recently-bought') {
+        background-color: $badge--recently-bought-background;
+        color: $badge--recently-bought-color;
+    }
+
+    @if ($type == 'limited-offer') {
+        background-color: $badge--limited-offer-background;
+        color: $badge--limited-offer-color;
+    }
+
+    @if ($type == 'items-left') {
+        background-color: $badge--items-left-background;
+        color: $badge--items-left-color;
+    }
+
+    @include badge_type-hook($type);
+}
+
+@mixin badge_span($type: 'default') {
+    transform: $badge_span-transform;
+
+    @include badge_span-hook($type);
+}
