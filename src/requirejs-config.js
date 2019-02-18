@@ -22,6 +22,9 @@ var config = {
             'mage/collapsible': {
                 'js/collapsible-ext': true,
             },
+            'mage/validation': {
+                'js/validation-ext': true,
+            },
             'Magento_Catalog/js/catalog-add-to-cart': {
                 'Magento_Catalog/js/catalog-add-to-cart-ext': true,
             },
