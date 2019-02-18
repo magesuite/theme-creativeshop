@@ -114,13 +114,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         width: auto;
         list-style: none;
         max-width: 100%;
-        padding: 0 $checkout_base-space;
+        padding: 0;
         margin-bottom: 0; 
         box-sizing: border-box;
 
         @include media('>=tablet') {
             position: absolute;
-            padding: 0;
             right: 0;
             top: -7rem;
             z-index: 2;
@@ -148,7 +147,11 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     &__sidebar-bottom {
         display: flex;
         justify-content: flex-end;
-        padding: $checkout_base-space;
+        padding: $checkout_base-space 0;
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space;
+        }
     }
 
     // Button next step
@@ -237,13 +240,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     // Container for main column of the checkout
     .opc-wrapper {
-        padding: $checkout_base-space $checkout_base-space 0;
+        padding: 0;
         z-index: 2;
         width: 100%;
         float: none;
 
         @include media('>=tablet') {
-            padding: 0;
             width: calc(100% - #{$checkout_sidebar-width});
         }
 
@@ -279,20 +281,27 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     &__discounts {
         margin: 0 0 $checkout_steps-space;
         background: $checkout_boxes-background;
-        box-shadow: $checkout_boxes-box-shadow;
-        border-radius: $checkout_boxes-border-radius;  
+
+        @include media('>=tablet') {
+            box-shadow: $checkout_boxes-box-shadow;
+            border-radius: $checkout_boxes-border-radius;  
+        }
     }
 
     &__shipping-method-wrapper, 
     &__shipping-method, 
     &__payments,
     &__discounts {
-        padding: $checkout_base-space;
+        padding: $checkout_base-space 0;
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space;
+        }
     }
 
     &__sidebar {
         width: 100%;
-        margin: 0 $checkout_base-space;
+        margin: 0;
 
         @include media('>=tablet') {
             height: 100%;
@@ -446,6 +455,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .shipping-address-items {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
+
         @include media('>=tablet', '<laptop') {
             flex-direction: column;
         }
@@ -497,8 +508,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         padding: 1rem;
 
         @include media('>=laptop') {
-            width: calc(50% - #{$checkout_base-space});
-            margin: 0 $checkout_base-space $checkout_base-space 0;
+            width: calc(50% - (#{$checkout_base-space}/2));
+            margin: 0 0 $checkout_base-space;
         }
 
         &.selected-item {
@@ -519,11 +530,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
     
     .opc-estimated-wrapper {
-        padding: $checkout_base-space;
+        padding: $checkout_base-space 0;
         z-index: 2;
         width: 100%;
-        margin-left: $checkout_base-space;
-        margin-right: $checkout_base-space;
+        margin: 0;
 
         @include media('>=tablet') {
             display: none;
@@ -552,11 +562,26 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     // Billing
 
-    .billing-address-same-as-shipping-block label span {
-        display: inline-block;
-        white-space: normal;
-        font-weight: 600;
-        font-size: $checkout_texts-font-size;
+    .field-select-billing {
+        label {
+            display: none;
+        }
+    }
+
+    .billing-address-same-as-shipping-block {
+        margin-bottom: 1rem;
+
+        label span {
+            display: inline-block;
+            white-space: normal;
+            font-weight: 600;
+            font-size: $checkout_texts-font-size;
+            padding-left: 0.5rem;
+        }
+
+        input {
+            margin: 0.4rem 0.3rem 0.3rem 0;
+        }
     }
 
     .billing-address-details {
@@ -567,15 +592,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .checkout-billing-address {
+        padding-left: 0.5rem;
+
         .actions-toolbar .primary {
             margin-top: $checkout_base-space;
             display: flex;
             justify-content: space-between;
         }
-    }
-
-    .field-select-billing {
-        display: none;
     }
 
     .action-update, 
@@ -589,6 +612,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .checkout-agreements-block {
         font-size: 1.2rem;
         border-top: $checkout_place-order-border-bottom;
+        padding: $checkout_base-space $checkout_base-space 0;
 
         .modal._show & {
             display: none;
@@ -638,6 +662,18 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 display: none;
             }
         }
+
+        .discount {
+            .title {
+                padding: 0;
+            }
+        }
+    
+        .aw-giftcard-totals {
+            .title {
+                padding: 0 0 0 2rem;
+            }
+        }
     }
 
     .opc-summary-wrapper {
@@ -647,6 +683,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 display: block;
             }
         }
+    }
+
+    .modal-custom .modal-inner-wrap {
+        box-shadow: none;
     }
 
     .items-in-cart {
@@ -746,6 +786,11 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             display: block;
         }
 
+        .price {
+            font-weight: 600;
+            font-size: $checkout_texts-font-size;
+        }
+
         .item-name-block {
             margin: 0;
         }
@@ -818,10 +863,14 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 margin: 0;
             }
 
+            input {
+                margin-top: 1px;
+            }
+
             .label {
                 font-size: 1.5rem;
                 font-weight: 400;
-                padding: 1.5rem;
+                padding: 1.5rem 1.5rem 1.5rem 0.5rem;
                 margin: 0;
                 background-position: right center;
                 background-size: 4rem 2.5rem;
@@ -886,6 +935,20 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 &[for=payolution] {
                     background-image: url('../images/icons/payment-logos/payment-logo-payolution.png');
                 }
+
+                &[for=payenginecw_creditcard] {
+                    background-image: url('../images/icons/payment-logos/creditcard.svg');
+                }
+
+                &[for=payenginecw_paypal] {
+                    background-image: url('../images/icons/payment-logos/paypal.svg');
+                    background-size: auto 1.5rem;
+                }
+
+                &[for=payenginecw_postfinancecard] {
+                    background-image: url('../images/icons/payment-logos/payment-logo-postfinance-card.png');
+                    background-size: auto 1.7rem;
+                }
         
                 &[for=postfinance] {
                     background-image: url('../images/icons/payment-logos/payment-logo-postfinance.jpg');
@@ -910,6 +973,11 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 &[for=payone_obt_sofortueberweisung] {
                     background-image: url('../images/icons/payment-logos/sofort_uberweisung.svg');
                 }
+
+                &[for=twintcw_twint] {
+                    background-image: url('../images/icons/payment-logos/twint.svg');
+                    background-size: 4.5rem 3rem;
+                }
             }
         }
 
@@ -925,7 +993,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             padding: 0 0 0 3rem;
             line-height: 1.6;
             font-weight: 300;
-            margin-bottom: $checkout_base-space;
         }
 
         .checkout-agreements-block {
@@ -935,7 +1002,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         .payment-method-content {
             line-height: 150%;
             display: none;
-            padding: 0 0 $checkout_base-space $checkout_base-space;
+            padding: 0 0 0 $checkout_base-space;
 
             .payolution_overlay {
                 width: 100%;
