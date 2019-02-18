@@ -5,35 +5,28 @@ $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
 $items = $wishlistHelper->getWishlistItemCollection()->getItems();
 ?>
 <?php if ($wishlistHelper->isAllow()) : ?>
-    <div class="cs-info-block block-wishlist" xmlns="http://www.w3.org/1999/html">
-
-        <div class="cs-info-block__title | cs-title-block cs-title-block--bordered">
-            <h2 class="cs-title-block__span">
-                <?php /* @escapeNotVerified */
-                echo $block->getTitle(); ?>
-                <?php if(count($items)): ?>
-                    <span><?=__('(%1 items)', count($items))?></span>
-                <?php endif; ?>
-            </h2>
-
-            <div class="cs-title-block__span">
-                <a href="<?php /* @escapeNotVerified */
-                   echo $this->helper('Magento\Wishlist\Helper\Data')->getListUrl() ?>"
-                   title="<?php /* @escapeNotVerified */
-                   echo __('Go to Wish List') ?>"><span><?php /* @escapeNotVerified */
-                        echo __('Go to Wish List') ?></span></a>
-            </div>
+    <div class="block block-wishlist" data-bind="scope: 'wishlist'">
+        <div class="block-title">
+            <strong role="heading" aria-level="2"><?= $block->escapeHtml($block->getTitle()) ?></strong>
+            <!-- ko if: wishlist().counter -->
+            <span data-bind="text: wishlist().counter" class="counter"></span>
+            <!-- /ko -->
+            <a 
+                href="<?php /* @escapeNotVerified */ echo $this->helper('Magento\Wishlist\Helper\Data')->getListUrl() ?>"
+                title="<?php /* @escapeNotVerified */ echo __('Go to Wish List') ?>"
+            >
+                <?php /* @escapeNotVerified */ echo __('Go to Wish List') ?>
+            </a>
         </div>
 
-        <div class="cs-info-block__content">
+        <div class="block-content">
             <?php if(empty($items)): ?>
-                <div class="cs-info-block__line"><?php /* @escapeNotVerified */
-                    echo __('You have no items in your wish list.') ?></div>
+                <p><?php /* @escapeNotVerified */ echo __('You have no items in your wish list.') ?></p>
             <?php else: ?>
-                <ul class="cs-items-grid" id="wishlist-sidebar">
+                <ul class="cs-dashboard__bottom-wishlist" id="wishlist-sidebar">
                     <?php $iterator = 0; ?>
                     <?php foreach($items as $item): ?>
-                        <li class="cs-items-grid__item">
+                        <li class="cs-dashboard__bottom-wishlist-item">
                             <?= $this->getLayout()
                                 ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
                                 ->setIterator($iterator)

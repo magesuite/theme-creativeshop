@@ -89,6 +89,7 @@ import 'components/tile-gallery';
 import 'components/dashboard';
 import 'components/swatches';
 import 'components/qty-increment';
+import 'components/page-title';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';

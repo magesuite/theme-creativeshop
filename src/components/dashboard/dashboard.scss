@@ -1,33 +1,42 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 @import 'components/button/mixin';
-@import 'components/dashboard/mixin';
 @import 'pages/layout/2columns-left/mixin';
+@import 'components/field/mixin';
 
 $dashboard-button_type: $button_default-type !default;
-$dashboard-button_icon-pos: $button_default-icon-pos !default;
-$dashboard-button_no-icon-pos: 'no-icon' !default;
-
-$dashboard-secondary-button_type: 'secondary' !default;
-$dashboard-secondary-button_icon-pos: 'no-icon' !default;
-
-$dashboard_font-size: 1rem !default;
-$dashboard_button-font-size: inherit !default;
-$dashboard_label-font-size: inherit !default;
-
-$dashboard_price-font-color: $color_text-500 !default;
+$dashboard-button_icon-pos: 'no-icon' !default;
 
 $dashboard_main-separator-apply: false !default;
 $dashboard_bottom-border-top: 2px solid $color_border-500 !default;
-$dashboard_actions-toolbar-border-top: 1px solid $color_border-500 !default;
+$dashboard_headline-links-separator: 2px solid $color_border-500 !default;
+$dashboard_login-sections-separator: 1px solid $color_border-500 !default;
 
-$dashboard_box-width-third-size: 33%;
-$dashboard_box-width-half-size: 48%;
-$dashboard_box-width-full-size: 100%;
+$dashboard_headline-border: 1px solid $color_border-500 !default;
+$dashboard_headline-margin-bottom: 1rem !default;
+$dashboard_headline-padding-bottom: 0.8rem !default;
+$dashboard_headline-font-size: $font-size_headline-3 !default;
+$dashboard_headline-font-weight: 600 !default;
+$dashboard_headline-link-font-size: $font-size_paragraph !default;
+
+$dashboard_box-title-font-size: 1.1rem !default;
+$dashboard_box-title-font-weight: 600 !default;
+$dashboard_box-title-text-transform: uppercase !default;
+
+$dashboard_text-font-weight: 300 !default;
+$dashboard_text-color: $color_text-500 !default;
+$dashboard_text-line-height: 2.5rem !default;
+
+$dashboard_links-font-size: 1.2rem !default;
+$dashboard_links-font-weight: 300 !default;
+
+
+// Order table
+$dashboard_price-font-color: $color_text-500 !default;
 
 .#{$ns}dashboard {
     @include two-columns-left($dashboard_main-separator-apply);
-    font-size: $dashboard_font-size;
+    width: 100%;
 
     &__columns {
         position: relative;
@@ -47,13 +56,16 @@ $dashboard_box-width-full-size: 100%;
         margin-bottom: 2rem;
 
         @include media('>=tablet') {
-            padding: 0;
+            padding: 0 0 0 1.5rem;
+        }
+
+        @include media('>=laptop') {
+            padding: 0 0 0 2.5rem;
         }
     }
 
     &__top {
         padding: 0 0 2.2rem;
-        font-size: $dashboard_label-font-size;
     }
 
     &__page-title {
@@ -78,7 +90,268 @@ $dashboard_box-width-full-size: 100%;
             padding-top: 4rem;
         }
     }
+    
+    &__wishlist {
+        &-line {
+            margin: 0;
+        }
+    }
 
+    &__bottom-wishlist {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        width: 100%;
+
+        &-item {
+            width: 100%;
+
+            @include media('>=phoneLg') {
+                width: 50%;
+            }
+
+            @include media('>=tablet') {
+                width: 33.33%
+            }
+
+            &:nth-child(n+4) {
+                display: none;  
+            }
+        }
+    }
+
+    &__login {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        @include media('>=tablet') {
+            flex-wrap: nowrap;
+            padding: 0;
+        }
+    
+        &-section {
+            width: 100%;
+
+            @include media('>=tablet') {
+                width: 50%;
+    
+                &:nth-child(2n + 1) {
+                    padding-right: 4rem;
+                    border-right: $dashboard_login-sections-separator;
+                }
+    
+                &:nth-child(2n + 2) {
+                    padding-left: 2rem;
+                    margin-left: 2rem;
+                }
+            }
+    
+            @include media('>=laptop') {
+                &:nth-child(2n + 1) {
+                    padding-right: 8rem;
+                }
+    
+                &:nth-child(2n + 2) {
+                    padding-left: 3rem;
+                    margin-left: 4rem;
+                }
+            }
+        }
+    }
+
+    // General User Area styles
+
+    .fieldset, 
+    .form {
+        width: 100%;
+        max-width: 45rem !important;
+        min-width: 15rem !important;
+
+        .info {
+            margin-bottom: 3rem;
+        }
+    }
+
+    .fieldset {
+        width: 100%;
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    .field {
+        margin-bottom: 1rem;
+    }
+
+    .choice {
+        .label {
+            width: auto;
+        }
+    }
+
+    .field-name-prefix {
+        max-width: 12rem;
+    }
+
+    .primary {
+        > button,
+        .create {
+            @include button(
+                $type: $dashboard-button_type,
+                $icon_pos: $dashboard-button_icon-pos
+            );
+            min-width: 12rem;
+
+            span {
+                @include button_span(
+                    $type: $dashboard-button_type,
+                    $icon_pos: $dashboard-button_icon-pos
+                );
+            }
+        }
+
+        > button.action.tocart {
+            display: none;
+        }
+    }
+
+    .remind, 
+    .back {
+        font-size: $dashboard_links-font-size;
+        margin-top: 1rem;
+        display: inline-block;
+    }
+
+    .action.tocart button {
+        display: none;
+    }
+
+    .counter {
+        font-weight: $dashboard_links-font-weight;
+        transform: translateX(-1rem);
+        display: inline-block;
+        
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
+    }
+
+    .block {
+        width: 100%;
+        margin: 1.5rem 0 2.5rem;
+
+        @include media('>=phoneLg') {
+            margin: 1.5rem 0 0;
+        }
+    }
+
+    .block-title,
+    .legend {
+        border-bottom: $dashboard_headline-border;
+        margin-bottom: $dashboard_headline-margin-bottom;
+        padding-bottom: $dashboard_headline-padding-bottom;
+        font-weight: $dashboard_headline-font-weight;
+        font-size: $dashboard_headline-font-size;
+        width: 100%;
+    
+        strong {
+            font-weight: $dashboard_headline-font-weight;
+            margin-right: 1rem;
+        }
+    }
+
+    .block-title a {
+        font-weight: $dashboard_links-font-weight;
+        font-size: $dashboard_headline-link-font-size;
+        font-weight: $dashboard_links-font-weight;
+        vertical-align: text-bottom;
+        white-space: nowrap;
+    }
+
+    .box-title {
+        font-size: $dashboard_box-title-font-size;
+        font-weight: $dashboard_box-title-font-weight;
+        text-transform: $dashboard_box-title-text-transform;
+    }
+
+    .block-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 2rem 0 0;
+
+        .sales-order-history & {
+            @include media('<laptop') {
+                margin-top: 0;
+            }
+        }
+
+        &.no-display {
+            display: none;
+        }
+    }
+
+    .box-actions {
+        a + a {
+            &:before {
+                margin: 0 0.5rem;
+                content: '';
+                display: inline-block;
+                width: 1px;
+                height: 1.2rem;
+                border-right: $dashboard_headline-links-separator;
+            }
+        }
+
+        a {
+            font-weight: $dashboard_links-font-weight;
+        }
+    }
+
+    .box,
+    .addresses {
+        width: 100%;
+        margin-bottom: 2rem;
+        box-sizing: border-box;
+
+        @include media('>=phoneLg') {
+            width: 48%;
+        }
+
+        @include media('>=tablet') {
+            width: 100%;
+        }
+
+        @include media('>=laptop') {
+            width: 48%;
+        }
+    }
+
+    .box-content,
+    .item {
+        font-weight: $dashboard_text-font-weight;
+        color: $dashboard_text-color;
+        line-height: $dashboard_text-line-height;
+        margin-bottom: 0;
+    }
+
+    .tooltip.wrapper {
+        font-size: $dashboard_links-font-size;
+        display: inline-block;
+        padding-left: 0.5rem;
+    }
+
+    .choice.persistent {
+        padding-bottom: 1.5rem;
+    }
+
+    // Order page
     .table-order-items {
         @include media('<laptop') {
             .#{$ns}table__col:last-child {
@@ -97,7 +370,6 @@ $dashboard_box-width-full-size: 100%;
 
             .#{$ns}cart-item__options-label {
                 text-transform: none;
-                font-size: $dashboard_label-font-size;
                 width: auto;
                 margin-right: 1rem;
 
@@ -116,11 +388,38 @@ $dashboard_box-width-full-size: 100%;
         }
     }
 
-    //Packstation address fieldset styles fix
+    .form.create.account,
+    .form-address-edit, 
+    .form-edit-account {
+        margin-bottom: 3rem;
 
-    fieldset {
-        @include fieldset();
+        .fullname {
+            .label {
+                text-align: left;
+                width: 100%;
+            }
+    
+            .control {
+                width: 100%;
+            }
+        }
+
+        .action.primary {
+            font-size: 1.4rem;
+        }
+
+        .back {
+            display: none;
+        }
     }
+
+    .form-newsletter-manage {
+        .fieldset {
+            margin-bottom: 1rem;
+        }
+    }
+
+    //Packstation address fieldset styles fix
 
     fieldset.repertus_address_type_fieldset {
         padding: 0 0 2rem 1.5rem;
@@ -166,134 +465,8 @@ $dashboard_box-width-full-size: 100%;
             flex-basis: auto;
         }
     }
+}
 
-    //User area refactor
-
-    .actions-toolbar {
-        margin-top: -1px;
-        padding-top: 2rem;
-        border-top: $dashboard_actions-toolbar-border-top;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-
-        > .primary {
-            margin-right: 0.5rem;
-        }
-    }
-
-    &__wishlist {
-        &-line {
-            margin: 0;
-        }
-    }
-
-    .primary {
-        > button {
-            @include button(
-                $type: $dashboard-button_type,
-                $icon_pos: $dashboard-button_no-icon-pos
-            );
-
-            span {
-                @include button_span(
-                    $type: $dashboard-button_type,
-                    $icon_pos: $dashboard-button_no-icon-pos
-                );
-            }
-        }
-
-        > button.action.tocart {
-            display: none;
-        }
-    }
-
-    .action.tocart button {
-        display: none;
-    }
-
-    .form-address-edit .actions-toolbar .action.primary {
-        font-size: $dashboard_button-font-size;
-        line-height: normal;
-        padding: 1rem 1.7rem;
-
-        > button {
-            @include button(
-                $type: $dashboard-button_type,
-                $icon_pos: $dashboard-button_no-icon-pos
-            );
-        }
-
-        button > span {
-            @include button_span(
-                $type: $dashboard-button_type,
-                $icon_pos: $dashboard-button_no-icon-pos
-            );
-        }
-    }
-
-    .secondary > a {
-        @include button(
-            $type: $dashboard-secondary-button_type,
-            $icon_pos: $dashboard-secondary-button_icon-pos
-        );
-    }
-
-    .block {
-        width: 100%;
-        margin: 1.5rem 0 2.5rem;
-
-        @include media('>=phoneLg') {
-            margin: 1.5rem 0 0;
-        }
-    }
-
-    .block-title {
-        @include dashboard-headline-bordered();
-        @include dashboard-headline-primary();
-    }
-
-    .block-content {
-        @include dashboard-block-content();
-
-        .sales-order-history & {
-            @include media('<laptop') {
-                margin-top: 0;
-            }
-        }
-
-        &.no-display {
-            display: none;
-        }
-    }
-
-    .box,
-    .addresses {
-        @include dashboard-block-box();
-        @include media('>=phoneLg') {
-            width: $dashboard_box-width-half-size;
-        }
-
-        @include media('>=tablet') {
-            width: $dashboard_box-width-full-size;
-        }
-
-        @include media('>=laptop') {
-            width: $dashboard_box-width-half-size;
-        }
-    }
-
-    .box-title {
-        @include dashboard-headline-secondary();
-    }
-
-    .box-content,
-    .item {
-        @include dashboard-text();
-    }
-
-    .item.actions > a:not(:first-of-type) > span::before {
-        @include dashboard-separator();
-    }
+.account .page-title-wrapper .page-title {
+    margin: 0;
 }
