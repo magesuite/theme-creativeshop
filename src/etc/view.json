@@ -425,10 +425,34 @@
     "Js_Bundle": {
       "bundle_size": "1MB"
     },
-    "MageSuite_ContentConstructor": {
-      "columns": {
-        "default_layout": "multiple-columns",
-        "one-column": {
+    "MageSuite_ContentConstructorFrontend": {
+      "component_hidden_classes": {
+        "mobile": "cs-display-controller--hidden-mobile",
+        "desktop": "cs-display-controller--hidden-desktop"
+      },
+      "product_carousel": {
+        "show_navigation": true,
+        "show_pagination": true,
+        "icon": {
+          "left": "#icon_arrow-left",
+          "right": "#icon_arrow-right"
+        },
+        "navigation": {
+          "show": true,
+          "arrows": {
+            "prev": {
+              "additional_css_classes": null,
+              "path": "images/icons/icon_arrow-left.svg"
+            },
+            "next": {
+              "additional_css_classes": null,
+              "path": "images/icons/icon_arrow-right.svg"
+            }
+          }
+        }
+      },
+      "product_grid": {
+        "columns_configuration": {
           "phone": 1,
           "phoneLg": 2,
           "tablet": 3,
@@ -437,74 +461,21 @@
           "desktop": 4,
           "tv": 4
         },
-        "multiple-columns": {
-          "phone": 1,
-          "phoneLg": 2,
-          "tablet": 2,
-          "laptop": 3,
-          "laptopLg": 3,
-          "desktop": 3,
-          "tv": 3
-        }
-      },
-      "sections": {
-        "cms_page_form.cms_page_form": {
-          "0": "content"
-        },
-        "product_form.product_form": {
-          "0": "cc-content"
-        },
-        "category_form.category_form": {
-          "0": "cc-top",
-          "1": "grid",
-          "2": "cc-bottom"
-        },
-        "brands_edit_form.brands_edit_form": {
-          "0": "cc-top",
-          "1": "grid",
-          "2": "cc-bottom"
-        },
-        "defaults": {
-          "cms_page_form.cms_page_form": "content",
-          "product_form.product_form": "cc-content",
-          "category_form.category_form": "grid",
-          "brands_edit_form.brands_edit_form": "grid"
-        }
-      },
-      "special_components": {
-        "0": "magento-product-grid-teasers"
-      },
-      "filters": {
-        "component_visibility": {
-          "icon": "#icon_eye",
-          "title": "Storefront visibility",
-          "options": {
-            "mobile": {
-              "label": "Mobile",
-              "value": true
-            },
-            "desktop": {
-              "label": "Desktop",
-              "value": true
-            },
-            "none": {
-              "label": "Not visible",
-              "value": true
-            }
+        "teasers_configuration": {
+          "id": 1,
+          "mobile": null,
+          "size": {
+            "x": 2,
+            "y": 1
+          },
+          "gridPosition": {
+            "x": "left",
+            "y": 1
           }
-        }
-      },
-      "image_teasers_content_positions": {
-        "0": "Text vertically centered on the left",
-        "1": "Text on the bottom, left corner",
-        "2": "Text vertically centered in the middle",
-        "3": "Text on the bottom - centered"
-      }
-    },
-    "MageSuite_ContentConstructorFrontend": {
-      "component_hidden_classes": {
-        "mobile": "cs-display-controller--hidden-mobile",
-        "desktop": "cs-display-controller--hidden-desktop"
+        },
+        "additional_css_classes": null,
+        "lazyload_heros_images": true,
+        "cta_button_icon_path": "images/icons/arrow_next.svg"
       },
       "max_content_width": 1200,
       "brand_carousel": {
@@ -647,43 +618,91 @@
       "paragraph": {
         "additional_css_classes": null
       },
-      "product_carousel": {
-        "navigation": {
-          "show": true,
-          "arrows": {
-            "prev": {
-              "additional_css_classes": null,
-              "path": "images/icons/icon_arrow-left.svg"
-            },
-            "next": {
-              "additional_css_classes": null,
-              "path": "images/icons/icon_arrow-right.svg"
-            }
-          }
-        }
-      },
       "product_finder": {
         "additional_css_classes": null,
         "button_icon_path": "#arrow_next"
-      },
-      "product_grid": {
-        "additional_css_classes": null,
-        "lazyload_heros_images": true,
-        "teasers_configuration": {
-          "id": 1,
-          "mobile": null,
-          "size": {
-            "x": 2,
-            "y": 1
-          }
-        },
-        "cta_button_icon_path": "images/icons/arrow_next.svg"
       },
       "separator": {
         "additional_css_classes": null
       },
       "static_block": {
         "additional_css_classes": null
+      }
+    },
+    "MageSuite_ContentConstructor": {
+      "columns": {
+        "default_layout": "multiple-columns",
+        "one-column": {
+          "phone": 1,
+          "phoneLg": 2,
+          "tablet": 3,
+          "laptop": 4,
+          "laptopLg": 4,
+          "desktop": 4,
+          "tv": 4
+        },
+        "multiple-columns": {
+          "phone": 1,
+          "phoneLg": 2,
+          "tablet": 2,
+          "laptop": 3,
+          "laptopLg": 3,
+          "desktop": 3,
+          "tv": 3
+        }
+      },
+      "sections": {
+        "cms_page_form.cms_page_form": {
+          "0": "content"
+        },
+        "product_form.product_form": {
+          "0": "cc-content"
+        },
+        "category_form.category_form": {
+          "0": "cc-top",
+          "1": "grid",
+          "2": "cc-bottom"
+        },
+        "brands_edit_form.brands_edit_form": {
+          "0": "cc-top",
+          "1": "grid",
+          "2": "cc-bottom"
+        },
+        "defaults": {
+          "cms_page_form.cms_page_form": "content",
+          "product_form.product_form": "cc-content",
+          "category_form.category_form": "grid",
+          "brands_edit_form.brands_edit_form": "grid"
+        }
+      },
+      "special_components": {
+        "0": "magento-product-grid-teasers"
+      },
+      "filters": {
+        "component_visibility": {
+          "icon": "#icon_eye",
+          "title": "Storefront visibility",
+          "options": {
+            "mobile": {
+              "label": "Mobile",
+              "value": true
+            },
+            "desktop": {
+              "label": "Desktop",
+              "value": true
+            },
+            "none": {
+              "label": "Not visible",
+              "value": true
+            }
+          }
+        }
+      },
+      "image_teasers_content_positions": {
+        "0": "Text vertically centered on the left",
+        "1": "Text on the bottom, left corner",
+        "2": "Text vertically centered in the middle",
+        "3": "Text on the bottom - centered"
       }
     },
     "MageSuite_ThemeHelpers": {

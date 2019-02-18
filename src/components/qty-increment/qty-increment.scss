@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
-@import 'components/field/mixin.scss';
+@import 'components/field/mixin';
+@import 'components/button/mixin';
 
 $qty-increment_input-font-size: inherit !default;
 $qty-increment_input-text-align: center !default;
@@ -11,8 +12,6 @@ $qty-increment_button-width: 3rem !default;
 $qty-increment_button-background: transparent !default;
 $qty-increment_button--hover-background: $qty-increment_button-background !default;
 $qty-increment_button--disabled-background: $qty-increment_button-background !default;
-$qty-increment_button--decrement-border-right: $field_input-border !default; // taken from components/field/mixin.scss
-$qty-increment_button--increment-border-left: $field_input-border !default; // taken from components/field/mixin.scss
 
 $qty-increment_icon-fill: $color_cerulean-blue !default;
 $qty-increment_icon--hover-fill: $color_torea-bay !default;
@@ -26,6 +25,8 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
     $root: &;
 
     position: relative;
+    display: flex;
+    flex-wrap: wrap;
 
     &__input {
         @include field-input();
@@ -33,53 +34,64 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
         padding-right: $qty-increment_button-width;
         font-size: $qty-increment_input-font-size;
         text-align: $qty-increment_input-text-align;
-        margin-bottom: 0;
+        margin: 0;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        border-radius: 0;
+        width: 0;
+        min-width: 0;
+        flex: 1;
+        order: 2;
+
+        &,
+        &:hover:not([disabled]),
+        &:focus:not([disabled]) {
+            border-left: 0;
+            border-right: 0;
+        }
 
         &.mage-error {
             border-color: $qty-increment_input--error-border-color !important;
+
+            ~ #{$root}__button {
+                border-color: $qty-increment_input--error-border-color !important;
+            }
+        }
+
+        + .mage-error {
+            order: 3;
+            width: 100%;
         }
     }
 
     &__button {
-        position: absolute;
-        top: $qty-increment_button-position-offset;
-        width: $qty-increment_button-width;
-        background-color: $qty-increment_button-background;
-        cursor: pointer;
+        @include button($type: 'secondary', $icon_pos: 'only-icon');
 
-        @if $qty-increment_button-position-offset != 0 {
-            height: calc(100% - 2 * #{$qty-increment_button-position-offset});
-        } @else {
-            height: 100%;
-        }
+        max-width: $qty-increment_button-width;
+        background-color: $qty-increment_button-background;
+        flex: 0 1 #{$qty-increment_button-width};
+        position: relative;
 
         &--decrement {
-            left: $qty-increment_button-position-offset;
-            border-right: $qty-increment_button--decrement-border-right;
+            order: 1;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
         &--increment {
-            right: $qty-increment_button-position-offset;
-            border-left: $qty-increment_button--increment-border-left;
-        }
-
-        &--disabled {
-            cursor: default;
-            background: $qty-increment_button--disabled-background;
-        }
-
-        &:not(&--disabled):hover {
-            background: $qty-increment_button--hover-background;
+            order: 2;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
     }
 
     &__icon {
+        @include button_icon($type: 'secondary', $icon_pos: 'only-icon');
         position: absolute;
         top: 50%;
         left: 50%;
-        fill: $qty-increment_icon-fill;
-        transform: translate3d(-50%, -50%, 0);
-        transition: fill 0.15s linear;
+        transform: translate(-50%, -50%);
+        fill: inherit;
 
         &--decrement {
             width: $qty-increment_icon--decrement-width;
@@ -89,14 +101,6 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
         &--increment {
             width: $qty-increment_icon--increment-width;
             height: $qty-increment_icon--increment-height;
-        }
-
-        #{$root}__button--disabled & {
-            fill: $qty-increment_icon--disabled-fill;
-        }
-
-        #{$root}__button:not(#{$root}__button--disabled):hover & {
-            fill: $qty-increment_icon--hover-fill;
         }
     }
 }
