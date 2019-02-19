@@ -19,6 +19,8 @@ $button_padding-when-icon: 2.5em !default;
 $button_line-height: 1.275em !default;
 $button_border-radius: $border-radius_base !default;
 $button_animation-time: 0.5s !default;
+$button_text-transform: none !default;
+$button_text-letter-spacing: normal !default;
 
 // Styles for `primary` button
 $button_primary-border: $button_border-size solid $color_primary-500 !default;
@@ -79,6 +81,7 @@ $button_icon-offset: 0.1em !default;
     display: inline-block;
     font-size: $button_font-size;
     font-weight: $button_font-weight;
+    font-family: inherit;
     padding: $button_padding;
     text-align: center;
     box-sizing: border-box;
@@ -92,6 +95,8 @@ $button_icon-offset: 0.1em !default;
     z-index: 5;
     will-change: transform, background-color, border-color, fill, color;
     margin: 0;
+    text-transform: $button_text-transform;
+    border: $button_border-size solid;
 
     @if ($type == 'primary') {
         @if ($button_primary-enable-animation) {
@@ -234,6 +239,7 @@ $button_icon-offset: 0.1em !default;
     vertical-align: baseline;
     display: inline-block;
     line-height: $button_line-height;
+    letter-spacing: $button_text-letter-spacing;
 
     @if ($icon_pos == 'right') {
         padding-right: $button_padding-when-icon +
