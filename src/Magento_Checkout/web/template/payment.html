@@ -1,6 +1,6 @@
 <!--
 /**
- * File is overriden to introduce separate box for disount area
+ * Template has been overriden in order to add custom class to payment-method element (l.26)
  */
 -->
 <li id="payment" role="presentation" class="checkout-payment-method" data-bind="fadeVisible: isVisible">
@@ -31,15 +31,9 @@
                     <div class="no-quotes-block" data-bind="visible: isPaymentMethodsAvailable() == false">
                         <!-- ko i18n: 'No Payment method available.'--><!-- /ko -->
                     </div>
-
-                    <div class="cs-checkout__discounts">
-                        <div class="step-title" translate="'Discounts'" data-role="title" />
-
-                        <!-- ko foreach: getRegion('afterMethods') -->
-                            <!-- ko template: getTemplate() --><!-- /ko -->
-                        <!-- /ko -->
-                    </div>
-
+                    <!-- ko foreach: getRegion('afterMethods') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
                 </fieldset>
             </form>
         </div>
