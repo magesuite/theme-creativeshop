@@ -12,6 +12,14 @@
             </block>
         </referenceBlock>
 
+        <!-- Add containers to keep proper page width. This change is reverted on pages that use Content Constructor
+        because CC components have their own containers -->
+        <referenceContainer name="main.content" htmlClass="cs-container">
+            <container name="page.main.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>
+        </referenceContainer>
+        <move element="columns.top" destination="page.main.container.inner" after="-"/>
+        <move element="columns" destination="page.main.container.inner" after="-"/>
+
         <referenceContainer name="page.wrapper">
             <!-- Top Bar above header -->
             <container name="top.bar.container" htmlTag="div" htmlClass="cs-container cs-container--top-bar" before="-">
