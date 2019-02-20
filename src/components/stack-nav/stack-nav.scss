@@ -43,6 +43,19 @@ $stack-nav_delimiter-disabled: false !default;
         @include media('>=tablet') {
             display: none;
         }
+
+        &-icon {
+            margin-left: 1.5rem;
+            width: 6px;
+            height: 10px;
+            fill: #888;
+            transform: rotate(90deg);
+            transition: transform .3s;
+        }
+
+        &[aria-expanded=true] #{$root}__trigger-icon {
+            transform: rotate(270deg);
+        }
     }
 
     &__content {
@@ -60,6 +73,10 @@ $stack-nav_delimiter-disabled: false !default;
 
     &__list {
         @include reset-list-style();
+
+        > svg {
+            display: none;
+        }
     }
 
     &__nav {
@@ -125,6 +142,10 @@ $stack-nav_delimiter-disabled: false !default;
                     width: $stack-nav_current-indicator-width;
                     height: 100%;
                     background: $stack-nav_current-indicator-background;
+
+                    @if $stack-nav_skewed-indicator-enabled {
+                        height: 82%;
+                    }
                 }
 
                 @if $stack-nav_skewed-indicator-enabled {

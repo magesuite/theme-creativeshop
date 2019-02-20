@@ -1,16 +1,20 @@
 <?php
 /** @var $block \Magento\Framework\View\Element\Html\Links */
+/** @var $block \Magento\Customer\Block\Account\Navigation */ 
+$collapseOptions = $block->getCollapsibleWidgetOptions();
+$isMediaQueryScopeSet = $collapseOptions['mediaQueryScope'];
 ?>
-<?php /** @var $block \Magento\Customer\Block\Account\Navigation */ ?>
 <div class="cs-stack-nav | cs-sticky-block cs-sticky-block--no-mobile">
-    <div class="cs-stack-nav__content | account-nav | cs-collapse cs-collapse--only-mobile">
-        <div class="cs-stack-nav__trigger | cs-collapse__trigger cs-collapse__trigger--arrowed">
+    <div class="cs-stack-nav__content | account-nav"
+    <?php if($block->getIsCollapsible()): ?>
+         data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
+    <?php endif; ?> 
+    >
+        <div class="cs-stack-nav__trigger" data-role="title">
            <?php /* @escapeNotVerified */ echo __('My Account Menu'); ?>
-            <svg class="cs-stack-nav__trigger-icon | cs-collapse__trigger-icon">
-                <use xlink:href="#arrow_next"></use>
-            </svg>
+           <?= $block->getChildHtml('dashboard.nav.collapse.icon'); ?>
         </div>
-        <nav class="cs-stack-nav__nav | nav items | cs-collapse__content">
+        <nav class="cs-stack-nav__nav | nav items" data-role="content">
             <ul class="cs-stack-nav__list">
                 <?php echo $block->getChildHtml();?>
             </ul>

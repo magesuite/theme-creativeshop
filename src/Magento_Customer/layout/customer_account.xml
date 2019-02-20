@@ -2,10 +2,35 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
     <body>
 
-        <move element="customer_account_navigation" destination="sticky.menu"/>
+        <!-- Change navigation template to include additional classes and collapse -->
         <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml">
+            <arguments>
+                <argument name="is_collapsible" xsi:type="boolean">true</argument>
+                <argument name="collapsible_widget_options" xsi:type="array">
+                    <item name="mediaQueryScope" xsi:type="string">(max-width: 767px)</item>
+                </argument>
+            </arguments>
+
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="dashboard.nav.collapse.icon">
+                <arguments>
+                    <argument name="icon_url" xsi:type="string">images/icons/arrow_next.svg</argument>
+                    <argument name="css_class" xsi:type="string">cs-stack-nav__trigger-icon</argument>
+                    <argument name="inlined" xsi:type="boolean">true</argument>
+                    <argument name="lazy_loaded" xsi:type="boolean">false</argument>
+                </arguments>
+            </block>    
+
             <!--Add sign out link as the last position in dashboard menu-->
-            <block class="Magento\Customer\Block\Account\AuthorizationLink" name="logout-user-area" template="Magento_Customer::account/link/logout.phtml" after="-"/>
+            <block class="Magento\Customer\Block\Account\AuthorizationLink" name="logout-user-area" template="Magento_Customer::account/link/logout.phtml" after="-">
+                <block class="MageSuite\ThemeHelpers\Block\Icon" name="dashboard.logout.icon">
+                    <arguments>
+                        <argument name="icon_url" xsi:type="string">images/icons/sign-out.svg</argument>
+                        <argument name="css_class" xsi:type="string"></argument>
+                        <argument name="inlined" xsi:type="boolean">true</argument>
+                        <argument name="lazy_loaded" xsi:type="boolean">false</argument>
+                    </arguments>
+                </block>    
+            </block>
         </referenceBlock>
 
         <referenceContainer name="main.content" htmlClass="cs-container cs-container--my-account-page cs-dashboard page-main" />
@@ -17,49 +42,26 @@
         </referenceContainer>
 
         <referenceContainer name="content" htmlTag="div" htmlClass="cs-dashboard__top">
-            <container name="dashboard.page.main.title" htmlTag="div" htmlClass="cs-dashboard__page-title">
-            </container>
+            <container name="dashboard.page.main.title" htmlTag="div" htmlClass="cs-dashboard__page-title" />
         </referenceContainer>
-
-        <move element="page.messages" destination="dashboard.page.main.title" before="-"/>
-
-        <move element="page.main.title" destination="dashboard.page.main.title"/>
-
-        <referenceContainer name="sidebar.main" remove="true"/>
-
-        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
-        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
-        <referenceBlock name="wishlist_sidebar" remove="true"/>
-        <referenceBlock name="paypal.partner.right.logo" remove="true"/>
-        <referenceBlock name="bml.right.logo" remove="true"/>
-        <referenceContainer name="sidebar.additional" remove="true"/>
-
 
         <referenceContainer name="main" htmlClass="cs-dashboard__main">
-
-            <container name="dashboard.bottom" htmlTag="div" htmlClass=" cs-dashboard__bottom" after="content">
-
-                <container name="dashboard.bottom.wishlist" htmlTag="div" htmlClass="cs-dashboard__block">
-                    <block class="Magento\Wishlist\Block\Customer\Sidebar" name="wishlist.dashboard" template="Magento_Wishlist::bottom.phtml"/>
-                </container>
-
-                <container name="dashboard.bottom.compare" htmlTag="div" htmlClass="cs-dashboard__block">
-                    <block class="Magento\Framework\View\Element\Template" name="catalog.compare.dashboard" template="Magento_Catalog::product/compare/bottom.phtml">
-                        <arguments>
-                            <argument name="jsLayout" xsi:type="array">
-                                <item name="components" xsi:type="array">
-                                    <item name="compareProducts" xsi:type="array">
-                                        <item name="component" xsi:type="string">Magento_Catalog/js/view/compare-products</item>
-                                    </item>
-                                </item>
-                            </argument>
-                        </arguments>
-                    </block>
-                </container>
-
+            <container name="dashboard.bottom.wishlist" htmlTag="div" htmlClass="cs-dashboard__block">
+                <block class="Magento\Wishlist\Block\Customer\Sidebar" name="wishlist.dashboard" template="Magento_Wishlist::bottom.phtml"/>
             </container>
-
         </referenceContainer>
+
+        <move element="customer_account_navigation" destination="sticky.menu"/>
+        <move element="page.messages" destination="dashboard.page.main.title" before="-"/>
+        <move element="page.main.title" destination="dashboard.page.main.title"/>
+
+        <referenceContainer name="sidebar.main" display="false"/>
+        <referenceBlock name="catalog.compare.sidebar" display="false"/>
+        <referenceBlock name="sale.reorder.sidebar" display="false"/>
+        <referenceBlock name="paypal.partner.right.logo" display="false"/>
+        <referenceBlock name="bml.right.logo" display="false"/>
+        <referenceContainer name="sidebar.additional" display="false"/>
+        <referenceBlock name="wishlist_sidebar" display="false"/>
 
         <referenceBlock name="customer-account-navigation-account-link">
             <arguments>
@@ -67,7 +69,7 @@
                 <argument name="path" xsi:type="string">customer/account</argument>
             </arguments>
         </referenceBlock>
-        <referenceBlock name="customer-account-navigation-account-edit-link">
+        <referenceBlock name="customer-account-navigation-account-edit-link" after="customer-account-navigation-address-link">
             <arguments>
                 <argument name="label" xsi:type="string" translate="true">Edit Account Information</argument>
                 <argument name="path" xsi:type="string">customer/account/edit</argument>
@@ -79,9 +81,13 @@
                 <argument name="path" xsi:type="string">customer/address</argument>
             </arguments>
         </referenceBlock>
-        <referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true"/>
-        <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
 
+        <move element="customer-account-navigation-account-edit-link"
+              destination="customer_account_navigation"
+              after="customer-account-navigation-address-link"/>
+
+        <referenceBlock name="customer-account-navigation-my-credit-cards-link" display="false"/>
+        <referenceBlock name="customer-account-navigation-billing-agreements-link" display="false"/>
 
     </body>
 </page>
