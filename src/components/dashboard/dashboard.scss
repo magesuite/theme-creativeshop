@@ -5,7 +5,10 @@
 @import 'components/field/mixin';
 
 $dashboard-button_type: $button_default-type !default;
+$dashboard-button_secondary-type: 'secondary' !default;
 $dashboard-button_icon-pos: 'no-icon' !default;
+
+$dashboard-button_small-font-size: 1.2rem !default;
 
 $dashboard_main-separator-apply: false !default;
 $dashboard_bottom-border-top: 2px solid $color_border-500 !default;
@@ -27,7 +30,7 @@ $dashboard_text-font-weight: 300 !default;
 $dashboard_text-color: $color_text-500 !default;
 $dashboard_text-line-height: 2.5rem !default;
 
-$dashboard_links-font-size: 1.2rem !default;
+$dashboard_links-font-size: 1.4rem !default;
 $dashboard_links-font-weight: 300 !default;
 
 
@@ -185,9 +188,15 @@ $dashboard_price-font-color: $color_text-500 !default;
         margin-bottom: 1rem;
     }
 
+    select {
+        @include field-select();
+    }
+
     .choice {
         .label {
             width: auto;
+            font-weight: $dashboard_links-font-weight;
+            font-size: $dashboard_links-font-size;
         }
     }
 
@@ -203,6 +212,10 @@ $dashboard_price-font-color: $color_text-500 !default;
                 $icon_pos: $dashboard-button_icon-pos
             );
             min-width: 12rem;
+
+            .wishlist-index-index & {
+                z-index: 1;
+            }
 
             span {
                 @include button_span(
@@ -220,7 +233,7 @@ $dashboard_price-font-color: $color_text-500 !default;
     .remind, 
     .back {
         font-size: $dashboard_links-font-size;
-        margin-top: 1rem;
+        margin-top: 0.7rem;
         display: inline-block;
     }
 
@@ -246,13 +259,14 @@ $dashboard_price-font-color: $color_text-500 !default;
         width: 100%;
         margin: 1.5rem 0 2.5rem;
 
-        @include media('>=phoneLg') {
-            margin: 1.5rem 0 0;
+        @include media('>=tablet') {
+            margin: 1.5rem 0 4rem;
         }
     }
 
     .block-title,
-    .legend {
+    .legend,
+    .order-title {
         border-bottom: $dashboard_headline-border;
         margin-bottom: $dashboard_headline-margin-bottom;
         padding-bottom: $dashboard_headline-padding-bottom;
@@ -297,10 +311,11 @@ $dashboard_price-font-color: $color_text-500 !default;
         }
     }
 
-    .box-actions {
+    .box-actions,
+    .actions {
         a + a {
             &:before {
-                margin: 0 0.5rem;
+                margin: 0 0.7rem 0 0.5rem;
                 content: '';
                 display: inline-block;
                 width: 1px;
@@ -314,11 +329,19 @@ $dashboard_price-font-color: $color_text-500 !default;
         }
     }
 
+    .table-wrapper .action {
+        margin-right: 0;
+    }
+
+    .actions-toolbar > .secondary .action.back {
+        display: none;
+    }
+
     .box,
     .addresses {
         width: 100%;
-        margin-bottom: 2rem;
         box-sizing: border-box;
+        margin-bottom: 2rem;
 
         @include media('>=phoneLg') {
             width: 48%;
@@ -351,7 +374,7 @@ $dashboard_price-font-color: $color_text-500 !default;
         padding-bottom: 1.5rem;
     }
 
-    // Order page
+    // Order sction and page
     .table-order-items {
         @include media('<laptop') {
             .#{$ns}table__col:last-child {
@@ -388,6 +411,82 @@ $dashboard_price-font-color: $color_text-500 !default;
         }
     }
 
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+
+        &::after, 
+        &::before {
+            display: none;
+        }
+    }
+
+    .actions {
+        .sales-order-view & {
+            width: 100%;
+            margin-top: 2rem;
+            display: flex;
+        }
+
+        .order {
+
+            .sales-order-view & {
+                @include button(
+                    $type: $dashboard-button_type,
+                    $icon_pos: $dashboard-button_icon-pos
+                );
+                font-size: $dashboard-button_small-font-size;
+                margin-right: 1rem;
+                margin-bottom: .8rem;
+    
+                &::before {
+                    display: none;
+                }
+    
+                span {
+                    @include button_span(
+                        $type: $dashboard-button_type,
+                        $icon_pos: $dashboard-button_icon-pos
+                    );
+                }
+            }
+
+        }
+
+        .print {
+
+            .sales-order-view & {
+                @include button(
+                    $type: $dashboard-button_secondary-type,
+                    $icon_pos: $dashboard-button_icon-pos
+                );
+                font-size: $dashboard-button_small-font-size;
+                margin-right: 1rem;
+                margin-bottom: .8rem;
+    
+                &::before {
+                    display: none;
+                }
+    
+                span {
+                    @include button_span(
+                        $type: $dashboard-button_secondary-type,
+                        $icon_pos: $dashboard-button_icon-pos
+                    );
+                }
+            }
+
+        }
+    }
+
+    // Reviews section and page
+    .block-reviews-dashboard {
+        .product-name {
+            font-weight: $dashboard_links-font-weight;
+        }
+    }
+
+    // Address forms sections
     .form.create.account,
     .form-address-edit, 
     .form-edit-account {
@@ -404,6 +503,10 @@ $dashboard_price-font-color: $color_text-500 !default;
             }
         }
 
+        .legend > br {
+            display: none;
+        }
+
         .action.primary {
             font-size: 1.4rem;
         }
@@ -411,8 +514,13 @@ $dashboard_price-font-color: $color_text-500 !default;
         .back {
             display: none;
         }
+
+        .fieldset {
+            margin-bottom: 2rem;
+        }
     }
 
+    // Newsletter section
     .form-newsletter-manage {
         .fieldset {
             margin-bottom: 1rem;
@@ -420,7 +528,6 @@ $dashboard_price-font-color: $color_text-500 !default;
     }
 
     //Packstation address fieldset styles fix
-
     fieldset.repertus_address_type_fieldset {
         padding: 0 0 2rem 1.5rem;
         margin: 0;
