@@ -1,7 +1,9 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 @import 'utils/font-family';
+@import 'components/button/mixin';
 @import 'components/typography/mixin';
+@import 'components/headline/mixin';
 
 $product-finder_font-size: 1rem !default;
 
@@ -17,8 +19,19 @@ $product-finder_justify-options: center !default;
 // Value option-sizes padding hack. 100% means that option will be square.
 $product-finder_vertical-ratio: 100% !default;
 // Value of back button transition
-$product-finder_back-button-transition: opacity 0.3s 0.4s, 0.15s linear,
+$product-finder_back-button-transition: opacity 0.3s 0.4s, 0.15s linear, 
     border-color 0.15s linear, color 0.15s linear !default;
+$product-finder_back-button-type: 'secondary' !default;
+$product-finder_back-button-icon-position: 'left' !default;
+// Previous step button position variables
+$product-finder_back-button-horizontal-position: 50% !default;
+$product-finder_back-button-horizontal-translation: translateX(-50%) !default;
+
+$product-finder_title-color: $headline_title-color !default;
+$product-finder_title-font-size: $headline_title-font-size !default;
+$product-finder_title-font-weight: $headline_title-font-weight !default;
+$product-finder_title-lines-enabled: $headline_title-lines-enabled !default;
+$product-finder_title-lines-color: $headline_title-lines-color !default;
 
 $product-finder_description-color: $color_text-400 !default;
 $product-finder_option-border-width: 1px !default;
@@ -38,18 +51,33 @@ $product-finder_option-border-radius: 0.5rem !default;
     &__back-button {
         position: absolute;
         bottom: 0;
-        left: 50%;
-        transform: translateX(-50%) scale(0);
         opacity: 0;
         transition: $product-finder_back-button-transition;
+        left: $product-finder_back-button-horizontal-position;
+        transform: $product-finder_back-button-horizontal-translation scale(0);
+        
+        @include button(
+            $type: $product-finder_back-button-type,
+            $icon_pos: $product-finder_back-button-icon-position
+        );
 
-        // TODO replace with specialized buttons when ready
-        // @extend .cs-button;
-        // @extend .cs-button--look_light;
+        &-span {
+            @include button_span(
+                $type: $product-finder_back-button-type,
+                $icon_pos: $product-finder_back-button-icon-position
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $product-finder_back-button-type,
+                $icon_pos: $product-finder_back-button-icon-position
+            );
+        }
 
         &--visible {
             opacity: 1;
-            transform: translateX(-50%) scale(1);
+            transform: $product-finder_back-button-horizontal-translation scale(1);
 
             @if $product-finder_back-button-per-step {
                 display: none;
@@ -88,45 +116,22 @@ $product-finder_option-border-radius: 0.5rem !default;
     }
 
     &__step-header {
-        width: 100%;
-        text-align: center;
-        padding: 2rem 0;
-        margin: 2rem 0;
+        @include headline();
+            width: 100%;
     }
 
     &__step-title {
-        display: flex;
-        align-items: center;
-        margin: 0;
-
-        @include media('<tablet') {
-            display: block;
-        }
-
-        &:before,
-        &:after {
-            display: flex;
-            height: 1px;
-            flex-grow: 1;
-            background-color: $color_border-500;
-            @include media('>=tablet') {
-                content: '';
-            }
-        }
-
-        &:before {
-            margin-right: 0.6rem;
-        }
-
-        &:after {
-            margin-left: 0.6rem;
-        }
+        @include headline-title(
+            $color: $product-finder_title-color,
+            $font-size: $product-finder_title-font-size,
+            $font-weight: $product-finder_title-font-weight,
+            $lines-enabled: $product-finder_title-lines-enabled,
+            $lines-color: $product-finder_title-lines-color
+        );
     }
 
     &__step-description {
-        color: $product-finder_description-color;
-        font-size: 1.3rem;
-        margin: 0;
+        @include headline-subtitle($color: $product-finder_description-color);
     }
 
     &__step-options {
