@@ -1,0 +1,30 @@
+<?php
+$layout = $block->getLayout();
+$detailsBlock = $layout->getBlock('product.info.details');
+$detailedInfoGroup = $detailsBlock->getGroupChildNames('detailed_info', 'getChildHtml') ?? [];
+?>
+<?php if (!empty($detailedInfoGroup)): ?>
+<nav class="cs-product-details-nav">
+    <h2 class="cs-product-details-nav__title"><?= __('Product Navigation'); ?></h2>
+    <ul class="cs-product-details-nav__list">
+    <?php
+    foreach ($detailedInfoGroup as $blockName):
+        $alias = $layout->getElementAlias($blockName);
+        $html = trim($layout->renderElement($blockName));
+        $inNav = $detailsBlock->getChildData($alias, 'in_nav') ?? true;
+        $label = __($detailsBlock->getChildData($alias, 'title'));
+        $id = str_replace('.', '-', $alias);
+
+        if (empty($html) || !$inNav) {
+            continue;
+        }
+    ?>
+        <li class="cs-product-details-nav__item">
+            <a class="cs-product-details-nav__link" href="#<?= $id; ?>">
+                <?= /* @escapeNotVerified */ $label; ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+</nav>
+<?php endif; ?>

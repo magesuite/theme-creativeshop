@@ -1,96 +1,56 @@
-<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):
-    $layout = $block->getLayout();
+<?php
+$layout = $block->getLayout();
+$detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml') ?? [];
 ?>
-    <div class="cs-product-description__nav">
-        <ul class="cs-list cs-list--menu cs-list--menu-dark | cs-pdp-nav">
-            <?php
-            foreach ($detailedInfoGroup as $name):
-                $alias = $layout->getElementAlias($name);
-                $label = $block->getChildData($alias, 'title');
-                $html = $layout->renderElement($name);
-                $id = '#pdp-' . preg_replace("/[\.]/", "-", $alias);
-                if (!trim($html)) {
-                    continue;
-                }
-                if($html):
-                    ?>
-                    <li class="cs-list__item cs-list__item--menu-dark">
-                        <a class="cs-list__link" href="<?=$id ?>">
-                            <?php /* @escapeNotVerified */ echo __($label) ?>
-                        </a>
-                    </li>
-                    <?php
-                endif;
-            endforeach;
-            ?>
-        </ul>
-    </div>
+<?php if (!empty($detailedInfoGroup)): ?>
 
-    <?php foreach ($detailedInfoGroup as $name):
-    $html = $layout->renderElement($name);
-    if (!trim($html)) {
+<div class="cs-product-details">
+
+<?php foreach ($detailedInfoGroup as $blockName):
+    $html = trim($layout->renderElement($blockName));
+
+    if (empty($html)) {
         continue;
     }
-    $alias = $layout->getElementAlias($name);
-    $id = 'pdp-' . preg_replace("/[\.]/", "-", $alias);
-    $label = $block->getChildData($alias, 'title');
-    $itemExtraClasses = '';
-    $isReviews = $name == 'reviews.tab';
-    $initialiyOpened = $id == 'pdp-product-info-description' || $id == 'pdp-additional';
-    if ($isReviews) {
-        $itemExtraClasses = $itemExtraClasses . ' cs-product-description__item--bottom';
-    }
-    elseif ($name == 'product.attributes' ||  $name == 'aw_pq_ajax_container') {
-        $itemExtraClasses = $itemExtraClasses . ' cs-product-description__item--penultimate';
-    }
 
-    if ($html):
-        ?>
-
-        <div
-            class="cs-product-description__item | cs-collapse cs-collapse--only-mobile<?php echo $itemExtraClasses ?>"
-            id="<?php echo $id ?>">
-            <?php if ($isReviews): ?>
-                <div class="cs-product-description__item--bottom_inner" id="reviews">
-                    <div class="cs-product-description__item--bottom_column">
-            <?php endif;?>
-                        <h2 class="cs-product-description__headline | cs-collapse__trigger">
-                            <?php /* @escapeNotVerified */ echo $label; ?>
+    $alias = $layout->getElementAlias($blockName);
+    $label = __($block->getChildData($alias, 'title'));
+    $id = str_replace('.', '-', $alias);
+    $containContent = $block->getChildData($alias, 'contain_content') ?? true;
+    $isCollapsible = $block->getChildData($alias, 'is_collapsible') ?? true;
+    $collapseOptions = $block->getChildData($alias, 'collapsible_widget_options');
+    $collapseOptionsJson = empty($collapseOptions) ? '{}' : json_encode($collapseOptions);
+    $additionalCssClasses = $block->getChildData($alias, 'additional_css_classes');
+?>
+    <section
+        class="cs-product-details__item cs-product-details__item--<?= $alias; ?> <?= $additionalCssClasses ?>"
+        id="<?= $id; ?>"
+        <?= $isCollapsible ? 'data-mage-init=\'{"collapsible": ' . $collapseOptionsJson . '}\'' : '' ?>
+    >
+        <div class="cs-container cs-container--page-pdp-details-<?= $alias; ?>">
+            <div class="cs-container__inner">
+                <?php if (!empty($label)): ?>
+                    <header class="cs-product-details__headline" data-role="title">
+                        <h2 class="cs-product-details__headline-title">
+                            <?= /* @escapeNotVerified */ $label; ?>
                         </h2>
-                        <div class="cs-collapse__content<?= $isReviews ? '' : ' | cs-cms-block'; ?><?= $initialiyOpened ? ' cs-collapse__content--initial-in' : '' ?>">
-                            <div class="cs-product-description__content">
-                                <?php /* @escapeNotVerified */ echo $html; ?>
-                            </div>
-                        </div>
-            <?php if ($isReviews): ?>
-                    </div>
-                </div>
-            <?php endif;?>
+                    </header>
+                <?php endif; ?>
+    <?php if (!$containContent): ?>
+            </div>
         </div>
-    <?php endif;
-endforeach;
-endif; ?>
-<script>
-    require([
-        'jquery'
-    ], function($) {
+    <?php endif; ?>
+        <div class="cs-product-details__content" data-role="content">
+            <?= /* @escapeNotVerified */ $html; ?>
+        </div>
+    <?php if ($containContent): ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    </section>
 
-        $( '.cs-pdp-nav .cs-list__item,  .cs-product-sale-block__no-review' ).on( 'click', function( e ) {
-            e.preventDefault();
-            var href = $( this ).find( 'a' ).attr( 'href' );
-            var target = href.substring( 0, 1 ) == '#' ? href : href.substring( href.indexOf( '#' ) );
-            if ( $( window ).width() < 1024 ) {
-                $( 'html, body' ).animate( {
-                    scrollTop: $( target ).offset().top - $( '.cs-header__content' )
-                        .height()
-                }, 350 );
-            } else {
-                $( 'html, body' ).animate( {
-                    scrollTop: $( target ).offset().top
-                }, 350 );
-            }
+<?php endforeach; ?>
 
-        });
-    } );
-</script>
+</div>
 
+<?php endif; ?>

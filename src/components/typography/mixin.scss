@@ -8,6 +8,11 @@ $typography_headline-color: $color_text-800 !default;
 $typography_headline-text-transform: uppercase !default;
 $typography_headline-margins: 1rem 0 2rem !default;
 
+$typography_link-color: $color_primary-500 !default;
+$typography_link--hover-color: $color_primary-800 !default;
+$typography_link-text-decoration: none !default;
+$typography_link--hover-text-decoration: $typography_link-text-decoration !default;
+
 @mixin headline($level: $font-size_headline-2) {
     @include font-family($typography_headline-font-family);
     font-size: $level;
@@ -17,4 +22,20 @@ $typography_headline-margins: 1rem 0 2rem !default;
     margin: $typography_headline-margins;
 
     @include headline_hook($level);
+}
+
+@mixin link() {
+    &,
+    &:visited {
+        color: $typography_link-color;
+        text-decoration: $typography_link-text-decoration;
+    }
+
+    &:hover,
+    &:visited:hover,
+    &:focus,
+    &:visited:focus {
+        color: $typography_link--hover-color;
+        text-decoration: $typography_link--hover-text-decoration;
+    }
 }
