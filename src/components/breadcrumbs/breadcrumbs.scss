@@ -1,6 +1,20 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 @import 'utils/reset-list-style';
+@import 'etc/view';
+@import 'utils/deep-get/deep-get.scss';
+
+$breadcrumbs_separator-custom-data: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    breadcrumbs,
+    custom_separator
+) !default;
+$breadcrumbs_separator-custom-show: #{map-get(
+    $breadcrumbs_separator-custom-data,
+    display
+)} !default;
 
 $breadcrumbs_item-font-size: 1.2rem !default;
 $breadcrumbs_item-color: $color_text-400 !default;
@@ -14,6 +28,7 @@ $breadcrumbs_separator-content: '\2044' !default;
 $breadcrumbs_vertical-space: 1.3rem !default;
 
 .#{$ns}breadcrumbs {
+    $root: &;
     padding-top: $breadcrumbs_vertical-space;
     padding-bottom: $breadcrumbs_vertical-space;
     font-weight: 400;
@@ -26,7 +41,7 @@ $breadcrumbs_vertical-space: 1.3rem !default;
         position: relative;
         display: inline-block;
         margin: 0;
-        padding: 0 2.3rem 0 0;
+        padding: 0 1.95em 0 0;
         cursor: pointer;
         font-size: $breadcrumbs_item-font-size;
 
@@ -35,19 +50,26 @@ $breadcrumbs_vertical-space: 1.3rem !default;
             color: $breadcrumbs_last-item-color;
             cursor: default;
         }
-
+        
         &:not(:last-child):after {
             position: absolute;
             top: 50%;
-            right: 0.8rem;
+            right: 0.8em;
             content: $breadcrumbs_separator-content;
             transform: translateY(-50%);
             line-height: 1;
             color: $breadcrumbs_separator-color;
         }
+
+        @if ($breadcrumbs_separator-custom-show != '') {
+            &:after {
+                display: none;
+            }
+        }
     }
 
     &__link {
+        position: relative;
         display: inline-block;
         color: $breadcrumbs_item-color;
 
@@ -59,5 +81,15 @@ $breadcrumbs_vertical-space: 1.3rem !default;
             text-decoration: none;
             color: $breadcrumbs-item-hover-color;
         }
+    }
+    
+    &__separator-icon {
+        position: absolute;
+        top: 50%;
+        right: 0.5em;
+        transform: translateY(-50%);
+        width: 0.8em;
+        height: 0.8em;
+        fill: $breadcrumbs_item-color;
     }
 }
