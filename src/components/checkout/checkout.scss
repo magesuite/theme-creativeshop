@@ -175,9 +175,17 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     &__place-order {
-        padding: $checkout_base-space;
+        padding: $checkout_base-space 0;
         border-bottom: $checkout_place-order-border-bottom;
         width: 100%;
+
+        .modal-inner-wrap & {
+            padding: $checkout_base-space;
+        }
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space;
+        }
 
         &-button {
             @include button($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
@@ -295,6 +303,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
         @include media('>=tablet') {
             padding: $checkout_base-space;
+        }
+    }
+
+    &__payments, 
+    &__after-payments {
+        @include media('<tablet') {
+            margin-bottom: 0;
         }
     }
 
@@ -608,10 +623,18 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     // Agreements
 
-    .checkout-agreements-block {
+    &__agreements {
         font-size: 1.2rem;
         border-top: $checkout_place-order-border-bottom;
-        padding: $checkout_base-space $checkout_base-space 0;
+        padding: $checkout_base-space 0 0;
+
+        .modal-inner-wrap & {
+            padding: $checkout_base-space $checkout_base-space 0;
+        }
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space $checkout_base-space 0;
+        }
 
         .modal._show & {
             display: none;
