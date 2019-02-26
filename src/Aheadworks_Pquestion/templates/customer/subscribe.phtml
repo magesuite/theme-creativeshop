@@ -15,18 +15,18 @@
 
         <ul class="cs-list">
             <?php foreach ($notificationTypes as $type): ?>
-                <li class="cs-input cs-input--type-checkbox">
+                <li class="aw-pq__customer-subscribe-checkbox-input">
                     <input
                         type="checkbox"
-                        id="aw_pq_customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
-                        name="aw_pq_customer_subscribe_to[]"
+                        id="aw_pq__customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
+                        name="aw_pq__customer_subscribe_to[]"
                         value="<?php echo $this->escapeHtml($type['value'])?>"
-                        class="cs-input__checkbox"
+                        class="aw-pq_customer-subscribe-checkbox"
                         <?php echo $type['checked']?'checked':'';?>
                     />
                     <label
-                        for="aw_pq_customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
-                        class="cs-input__label"
+                        for="aw_pq__customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
+                        class="aw-pq__customer-subscribe-checkbox-label"
                     >
                         <?php echo $this->escapeHtml($type['label']);?>
                     </label>
@@ -34,8 +34,11 @@
             <?php endforeach;?>
         </ul>
 
-        <button type="submit" title="<?php echo $this->escapeHtml(__('Save'));?>" class="cs-button aw-pq_customer-subscription-save">
-            <span><span><?php echo $this->escapeHtml(__('Save'));?></span></span>
+        <button type="submit" title="<?php echo $this->escapeHtml(__('Save'));?>" class="aw-pq__customer-subscription-save-button">
+            <span class="aw-pq__customer-subscription-save-button-span"><?php echo $this->escapeHtml(__('Save'));?></span>
+            <svg class="aw-pq__customer-subscription-save-button-icon">
+                <use xlink:href="#arrow_next"></use>
+            </svg>
         </button>
     </form>
 <?php endif;?>
