@@ -11,6 +11,7 @@ $dashboard-button_icon-pos: 'no-icon' !default;
 $dashboard-button_small-font-size: 1.2rem !default;
 
 $dashboard_main-separator-apply: false !default;
+$dashboard_sidebar-main-space: 3.5rem !default;
 $dashboard_bottom-border-top: 2px solid $color_border-500 !default;
 $dashboard_headline-links-separator: 2px solid $color_border-500 !default;
 $dashboard_login-sections-separator: 1px solid $color_border-500 !default;
@@ -33,10 +34,25 @@ $dashboard_text-line-height: 2.5rem !default;
 $dashboard_links-font-size: 1.4rem !default;
 $dashboard_links-font-weight: 300 !default;
 
+// For shops with darker background elements in user area are placed in separate boxes
+
+// Values specific for shops with background
+$dashboard_has-darker-background: false !default;
+$dashboard_boxes-background: transparent !default;
+$dashboard_hide-sections-separators: false !default;
+$dashboard_hide-titles-separators: false !default;
+// Set value if $dashboard_has-darker-background is set to true
+$dashboard_boxes-inner-padding: 0 !default;
+// For shops white white background it is also needed as it is part of spacing system. 
+// For shops with darker background value here can be smaller of higher
+$dashboard_space-between-boxes: 2rem !default;
+
 // Order table
 $dashboard_price-font-color: $color_text-500 !default;
 
 .#{$ns}dashboard {
+    $root: &;
+
     @include two-columns-left($dashboard_main-separator-apply);
     width: 100%;
 
@@ -50,33 +66,54 @@ $dashboard_price-font-color: $color_text-500 !default;
     }
 
     &__sidebar {
-        //
+        @include media('>=laptop') {
+            padding: 0;
+        }
     }
 
     &__main {
-        padding: 0 1.5rem 2rem;
         margin-bottom: 2rem;
 
         @include media('>=tablet') {
-            padding: 0 0 0 1.5rem;
-        }
+            padding: 0 0 0 $dashboard_sidebar-main-space;
 
-        @include media('>=laptop') {
-            padding: 0 0 0 2.5rem;
+            @if ($dashboard_has-darker-background == true) {
+                padding: 0 0 0 $dashboard_space-between-boxes;
+            }
         }
     }
 
     &__top {
-        padding: 0 0 2.2rem;
+        @if ($dashboard_has-darker-background == false) {
+            padding: 0 0 3rem;
+        } @else {
+            padding: 0 0 1rem;
+        }
     }
 
     &__page-title {
-        padding-bottom: 1rem;
+        @if ($dashboard_has-darker-background == false) {
+            padding-bottom: 3rem;
+        }
 
         .ie11 & {
             @include media('>=tablet') {
                 margin-top: 1.5rem;
             }
+        }
+    }
+
+    .page-title {
+        padding: 0;
+        margin: 0;
+    }
+
+    .page-title-wrapper {
+        background: $dashboard_boxes-background;
+
+        @if ($dashboard_has-darker-background == true) {
+            padding: $dashboard_space-between-boxes;
+            margin-bottom: $dashboard_space-between-boxes;
         }
     }
 
@@ -89,7 +126,7 @@ $dashboard_price-font-color: $color_text-500 !default;
 
         @include media('>=tablet') {
             width: 100%;
-            padding-top: 4rem;
+            padding-top: 3rem;
         }
     }
 
@@ -135,29 +172,43 @@ $dashboard_price-font-color: $color_text-500 !default;
 
         &-section {
             width: 100%;
+            background: $dashboard_boxes-background;
 
-            @include media('>=tablet') {
-                width: 50%;
 
-                &:nth-child(2n + 1) {
-                    padding-right: 4rem;
-                    border-right: $dashboard_login-sections-separator;
-                }
+            @if ($dashboard_has-darker-background == true) {
+                padding: $dashboard_boxes-inner-padding;
 
-                &:nth-child(2n + 2) {
-                    padding-left: 2rem;
-                    margin-left: 2rem;
+                @include media('<tablet') {
+                    &:nth-child(2n + 1) {
+                        margin-bottom: $dashboard_space-between-boxes;
+                    }
                 }
             }
+            
+            @include media('>=tablet') {
 
-            @include media('>=laptop') {
+                @if ($dashboard_has-darker-background == false) {
+                    width: 50%;
+                } @else {
+                    width: calc(50% - (#{$dashboard_space-between-boxes} / 2));
+                }
+
                 &:nth-child(2n + 1) {
-                    padding-right: 8rem;
+                    border-right: $dashboard_login-sections-separator;
+
+                    @if ($dashboard_hide-sections-separators == true) {
+                        border-right: none;
+                    }
+
+                    @if ($dashboard_has-darker-background == false) {
+                        padding-right: $dashboard_space-between-boxes;
+                    }
                 }
 
                 &:nth-child(2n + 2) {
-                    padding-left: 3rem;
-                    margin-left: 4rem;
+                    @if ($dashboard_has-darker-background == false) {
+                        padding-left: $dashboard_space-between-boxes;
+                    }
                 }
             }
         }
@@ -168,12 +219,7 @@ $dashboard_price-font-color: $color_text-500 !default;
     .fieldset,
     .form {
         width: 100%;
-        max-width: 45rem !important;
         min-width: 15rem !important;
-
-        .info {
-            margin-bottom: 3rem;
-        }
     }
 
     .fieldset {
@@ -181,10 +227,15 @@ $dashboard_price-font-color: $color_text-500 !default;
         border: 0;
         padding: 0;
         margin: 0;
+        max-width: 45rem !important;
     }
 
     .field {
         margin-bottom: 1rem;
+    }
+
+    .limiter {
+        margin-bottom: 0;
     }
 
     select {
@@ -257,9 +308,19 @@ $dashboard_price-font-color: $color_text-500 !default;
     .block {
         width: 100%;
         margin: 1.5rem 0 2.5rem;
+        background: $dashboard_boxes-background;
+        padding: $dashboard_boxes-inner-padding;
+
+        @if ($dashboard_has-darker-background == true) {
+            margin: 0 0 $dashboard_space-between-boxes;
+        }
 
         @include media('>=tablet') {
             margin: 1.5rem 0 4rem;
+
+            @if ($dashboard_has-darker-background == true) {
+                margin: 0 0 $dashboard_space-between-boxes;
+            }
         }
     }
 
@@ -273,10 +334,18 @@ $dashboard_price-font-color: $color_text-500 !default;
         font-size: $dashboard_headline-font-size;
         width: 100%;
 
+        @if ($dashboard_hide-titles-separators == true) {
+            border-bottom: none;
+        }
+    
         strong {
             font-weight: $dashboard_headline-font-weight;
             margin-right: 1rem;
         }
+    }
+
+    .table-wrapper {
+        width: 100%;
     }
 
     .block-title a {
@@ -328,8 +397,40 @@ $dashboard_price-font-color: $color_text-500 !default;
         }
     }
 
-    .table-wrapper .action {
-        margin-right: 0;
+    // Tables not placed inside box in markup
+    .table-wrapper, 
+    .orders-history,
+    .form-wishlist-items {
+        background: $dashboard_boxes-background;
+        padding: $dashboard_boxes-inner-padding;
+
+        @if ($dashboard_has-darker-background == true) {
+            margin-bottom: 0;
+        }
+
+        & + .toolbar,
+        & + .actions-toolbar {
+            background: $dashboard_boxes-background;
+            padding: $dashboard_boxes-inner-padding; 
+        }
+
+        .action {
+            margin-right: 0;
+        }
+    }
+
+    .toolbar {
+        display: flex;
+        justify-content: space-between;
+
+        &::after, 
+        &::before {
+            display: none;
+        }
+
+        .toolbar-amount {
+            padding-top: 1rem;
+        }
     }
 
     .actions-toolbar > .secondary .action.back {
@@ -340,7 +441,6 @@ $dashboard_price-font-color: $color_text-500 !default;
     .addresses {
         width: 100%;
         box-sizing: border-box;
-        margin-bottom: 2rem;
 
         @include media('>=phoneLg') {
             width: 48%;
@@ -352,7 +452,7 @@ $dashboard_price-font-color: $color_text-500 !default;
     }
 
     .box-content,
-    .item {
+    .addresses .item {
         font-weight: $dashboard_text-font-weight;
         color: $dashboard_text-color;
         line-height: $dashboard_text-line-height;
@@ -368,6 +468,7 @@ $dashboard_price-font-color: $color_text-500 !default;
     .choice.persistent {
         padding-bottom: 1.5rem;
     }
+
 
     // Order sction and page
     .table-order-items {
@@ -403,16 +504,6 @@ $dashboard_price-font-color: $color_text-500 !default;
             .price-excluding-tax .price {
                 font-weight: 400;
             }
-        }
-    }
-
-    .toolbar {
-        display: flex;
-        justify-content: space-between;
-
-        &::after,
-        &::before {
-            display: none;
         }
     }
 
@@ -479,9 +570,19 @@ $dashboard_price-font-color: $color_text-500 !default;
 
     // Address forms sections
     .form.create.account,
-    .form-address-edit,
-    .form-edit-account {
-        margin-bottom: 3rem;
+    .form-address-edit, 
+    .form-edit-account,
+    #aw_giftcard__check_code_form {
+        background: $dashboard_boxes-background;
+        padding: $dashboard_boxes-inner-padding;
+
+        @include media('>=tablet') {
+            width: 100%;
+        }
+
+        br {
+            display: none;
+        }
 
         .fullname {
             .label {
@@ -492,10 +593,6 @@ $dashboard_price-font-color: $color_text-500 !default;
             .control {
                 width: 100%;
             }
-        }
-
-        .legend > br {
-            display: none;
         }
 
         .action.primary {
@@ -509,10 +606,48 @@ $dashboard_price-font-color: $color_text-500 !default;
         .fieldset {
             margin-bottom: 2rem;
         }
+
+        .fieldset-fullname {
+            margin-bottom: 0;
+        }
+    }
+
+    .addresses {
+        width: 100%;
+    }
+
+    .block-addresses-list {
+        @if ($dashboard_has-darker-background == true) {
+            margin-bottom: 0;
+
+            @include media('>=tablet') {
+                margin-bottom: 0;
+            }
+        } 
+    }
+
+    .block-addresses-list + .actions-toolbar {
+        background: $dashboard_boxes-background;
+
+        @if ($dashboard_has-darker-background == true) {
+            padding: $dashboard_boxes-inner-padding;
+        }
+    }
+
+    .box-billing-address {
+        @include media('<tablet') {
+            margin-bottom: 2rem;;
+        }
     }
 
     // Newsletter section
     .form-newsletter-manage {
+        background: $dashboard_boxes-background;
+
+        @if ($dashboard_has-darker-background == true) {
+            padding: $dashboard_boxes-inner-padding;
+        }
+
         .fieldset {
             margin-bottom: 1rem;
         }
@@ -563,8 +698,4 @@ $dashboard_price-font-color: $color_text-500 !default;
             flex-basis: auto;
         }
     }
-}
-
-.account .page-title-wrapper .page-title {
-    margin: 0;
 }
