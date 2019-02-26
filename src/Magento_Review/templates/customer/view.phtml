@@ -40,14 +40,15 @@ $product = $block->getProductData();
                                     <?php echo $block->escapeHtml($reviewRating->getRatingCode()) ?>
                                 </h3>
                                 <div class="cs-reviews__content">
-                                <?= $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'my-review-rating-',
-                                        ['data' => [
-                                            'namespace' => 'cs-',
-                                            'maxStars' => 5,
-                                            'activeStars' => $rating/20,
-                                            'text' => ''
-                                        ]
-                                        ])->setTemplate("star-rating/star-rating.twig")->toHtml(); ?>
+                                    <?= $this->getLayout()
+                                            ->createBlock(\Magento\Framework\View\Element\Template::class)
+                                            ->setMaxStars(5)
+                                            ->setActiveStars($rating/20)
+                                            ->setReviewsCount('')
+                                            ->setHideReviewsCount(true)
+                                            ->setTemplate('Magento_Review::rating-stars.phtml')
+                                            ->toHtml();
+                                    ?>
                                 </div>
 
                         <?php endif; ?>
