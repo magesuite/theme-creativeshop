@@ -55,6 +55,24 @@ $topbar_link-color: $color_primary-500 !default;
         color: $topbar_item-text-color;
         display: flex;
         flex: 0 0 auto;
+        white-space: nowrap;
+
+        &--usps {
+            @include media('<laptopLg') {
+                display: none !important;
+            }
+
+            .page-wrapper--checkout & {
+                display: none !important;
+            }
+        }
+
+        &--hotline {
+            @include media('<laptopLg') {
+                flex: 1;
+                justify-content: flex-end;
+            }
+        }
     }
 
     &__list,
@@ -65,18 +83,6 @@ $topbar_link-color: $color_primary-500 !default;
         list-style: none;
         margin: 0;
         padding: 0;
-    }
-
-    &__list {
-        &--featured {
-            @include media('<laptopLg') {
-                display: none !important;
-            }
-
-            .page-wrapper--checkout & {
-                display: none !important;
-            }
-        }
     }
 
     &__list-item {
