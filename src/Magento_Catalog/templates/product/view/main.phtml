@@ -1,0 +1,41 @@
+<?php
+$layout = $block->getLayout();
+$detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml') ?? [];
+?>
+<?php if (!empty($detailedInfoGroup)): ?>
+
+<div class="cs-product-details-main">
+
+<?php foreach ($detailedInfoGroup as $blockName):
+    $html = trim($layout->renderElement($blockName));
+
+    if (empty($html)) {
+        continue;
+    }
+
+    $alias = $layout->getElementAlias($blockName);
+    $label = __($block->getChildData($alias, 'title'));
+    $id = str_replace('.', '-', $alias);
+    $additionalCssClasses = $block->getChildData($alias, 'additional_css_classes');
+?>
+    <section
+        class="cs-product-details-main__item cs-product-details-main__item--<?= $alias; ?> <?= $additionalCssClasses ?>"
+        id="<?= $id; ?>"
+    >
+        <?php if (!empty($label)): ?>
+            <header class="cs-product-details-main__headline" data-role="title">
+                <h3 class="cs-product-details-main__headline-title">
+                    <?= /* @escapeNotVerified */ $label; ?>
+                </h2>
+            </header>
+        <?php endif; ?>
+        <div class="cs-product-details-main__content" data-role="content">
+            <?= /* @escapeNotVerified */ $html; ?>
+        </div>
+    </section>
+
+<?php endforeach; ?>
+
+</div>
+
+<?php endif; ?>

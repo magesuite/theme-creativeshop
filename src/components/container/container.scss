@@ -1,3 +1,7 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/container/mixin';
+
 $container_background-top-bar: $color_background-500 !default;
 
 .#{$ns}container {
@@ -6,13 +10,13 @@ $container_background-top-bar: $color_background-500 !default;
     @include container();
     margin: 0 auto;
     width: 100%;
-    max-width: 189rem;
     box-sizing: border-box;
 
     &__inner {
         @include container-wrapper();
         position: relative;
 
+        &:before,
         &:after {
             content: '';
             display: table;
@@ -30,13 +34,6 @@ $container_background-top-bar: $color_background-500 !default;
 
             &:after {
                 display: none;
-            }
-        }
-
-        #{$root}--edge-to-edge & {
-            @include media('>=tablet') {
-                padding-left: 15px;
-                padding-right: 15px;
             }
         }
     }
@@ -192,7 +189,7 @@ $container_background-top-bar: $color_background-500 !default;
         }
     }
 
-    &--create-account-page, 
+    &--create-account-page,
     &--login-page {
         padding-top: 2rem;
 

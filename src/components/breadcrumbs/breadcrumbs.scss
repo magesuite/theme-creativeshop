@@ -12,9 +12,12 @@ $breadcrumbs_separator-custom-data: deep-get(
     custom_separator
 ) !default;
 $breadcrumbs_separator-custom-show: #{map-get(
-    $breadcrumbs_separator-custom-data,
-    display
-)} !default;
+        $breadcrumbs_separator-custom-data,
+        display
+    )} !default;
+
+$breadcrumbs_background: url('../images/breadcrumbs.png') no-repeat right auto
+    4.8rem;
 
 $breadcrumbs_item-font-size: 1.2rem !default;
 $breadcrumbs_item-color: $color_text-400 !default;
@@ -27,7 +30,7 @@ $breadcrumbs_separator-content: '\2044' !default;
 
 $breadcrumbs_vertical-space: 1.3rem !default;
 
-.#{$ns}breadcrumbs {
+.cs-breadcrumbs {
     $root: &;
     padding-top: $breadcrumbs_vertical-space;
     padding-bottom: $breadcrumbs_vertical-space;
@@ -50,7 +53,7 @@ $breadcrumbs_vertical-space: 1.3rem !default;
             color: $breadcrumbs_last-item-color;
             cursor: default;
         }
-        
+
         &:not(:last-child):after {
             position: absolute;
             top: 50%;
@@ -82,7 +85,7 @@ $breadcrumbs_vertical-space: 1.3rem !default;
             color: $breadcrumbs-item-hover-color;
         }
     }
-    
+
     &__separator-icon {
         position: absolute;
         top: 50%;
@@ -91,5 +94,17 @@ $breadcrumbs_vertical-space: 1.3rem !default;
         width: 0.8em;
         height: 0.8em;
         fill: $breadcrumbs_item-color;
+    }
+}
+
+.cs-container {
+    &--breadcrumbs {
+        max-width: none;
+        background: $breadcrumbs_background;
+        display: none;
+
+        @include media('>=tablet') {
+            display: block;
+        }
     }
 }

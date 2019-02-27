@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page layout="1column"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
 
         <!-- Revert containers to allow Content Constructor elements -->
@@ -16,15 +17,10 @@
                     </container>
                 </container>
             </container>
-            <container name="product.carousels.container" htmlTag="section" htmlClass="cs-container" after="-">
-                <container name="product.carousels.container.content" htmlTag="div" htmlClass="cs-container__inner" />
-            </container>
-            <container name="cc-content.container" htmlTag="section" htmlClass="cs-container" after="product.carousels.container">
-                <container name="cc-content" htmlTag="div" htmlClass="cs-container__inner cs-container__cc-content-pdp" after="product.carousels.container.content" />
-            </container>
-
-            <container name="product.details.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--edge-to-edge" after="product.info.main">
-                <container name="product.details.container.wrapper" htmlTag="div" htmlClass="cs-container__inner cs-product-description"/>
+            <container name="product.info.nav.container" htmlTag="div" htmlClass="cs-container cs-container--page-pdp-details-nav" after="product.pdptop.container">
+                <container name="product.info.nav.container.inner" htmlTag="div" htmlClass="cs-container__inner">
+                    <block name="product.info.nav" template="Magento_Catalog::product/view/nav.phtml" />
+                </container>
             </container>
         </referenceContainer>
 
@@ -40,10 +36,7 @@
         <!-- Badges -->
         <referenceContainer name="product.info.media">
             <container name="product.badges" htmlTag="ul" htmlClass="cs-page-product__badges">
-                <block class="Magento\Catalog\Block\Product\View\Description" 
-                       name="product.badge.new" 
-                       template="Magento_Catalog::product/view/badges/new.phtml"
-                >
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.badge.new" template="Magento_Catalog::product/view/badges/new.phtml">
                     <arguments>
                         <argument xsi:type="string" name="html_tag">li</argument>
                         <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge-item</argument>
@@ -53,10 +46,7 @@
                     </arguments>
                 </block>
 
-                <block class="Magento\Catalog\Block\Product\View\Description" 
-                       name="product.badge.sale" 
-                       template="Magento_Catalog::product/view/badges/sale.phtml"
-                >
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.badge.sale" template="Magento_Catalog::product/view/badges/sale.phtml">
                     <arguments>
                         <argument xsi:type="string" name="html_tag">li</argument>
                         <argument xsi:type="string" name="wrapper_css_class">cs-page-product__badge-item</argument>
@@ -104,9 +94,7 @@
 
             <container name="product.info.main.section.usps" htmlTag="div" htmlClass="cs-buybox__section cs-buybox__section--usps">
                 <container name="product.info.usps" htmlTag="ul" htmlClass="cs-buybox__usps">
-                    <block class="Magento\Framework\View\Element\Template" 
-                           name="product.info.usp.availability" 
-                           template="Magento_Catalog::product/view/buybox-usp-item.phtml">
+                    <block class="Magento\Framework\View\Element\Template" name="product.info.usp.availability" template="Magento_Catalog::product/view/buybox-usp-item.phtml">
                         <arguments>
                             <argument name="additional_css_class" xsi:type="string">cs-buybox__usp--availability</argument>
                             <argument name="label" xsi:type="string" translate="true">Immediately available</argument>
@@ -122,9 +110,7 @@
                         </block>
                     </block>
 
-                    <block class="Magento\Framework\View\Element\Template" 
-                           name="product.info.usp.discreet-packaging" 
-                           template="Magento_Catalog::product/view/buybox-usp-item.phtml">
+                    <block class="Magento\Framework\View\Element\Template" name="product.info.usp.discreet-packaging" template="Magento_Catalog::product/view/buybox-usp-item.phtml">
                         <arguments>
                             <argument name="additional_css_class" xsi:type="string">cs-buybox__usp--discreet-packaging</argument>
                             <argument name="label" xsi:type="string" translate="true">Discreet Packaging</argument>
@@ -140,9 +126,7 @@
                         </block>
                     </block>
 
-                    <block class="Magento\Framework\View\Element\Template" 
-                           name="product.info.usp.free-shipping" 
-                           template="Magento_Catalog::product/view/buybox-usp-item.phtml">
+                    <block class="Magento\Framework\View\Element\Template" name="product.info.usp.free-shipping" template="Magento_Catalog::product/view/buybox-usp-item.phtml">
                         <arguments>
                             <argument name="additional_css_class" xsi:type="string">cs-buybox__usp--free-shipping</argument>
                             <argument name="label" xsi:type="string" translate="true">Free Shipping</argument>
@@ -202,9 +186,7 @@
                 <argument name="qty_label" xsi:type="string" translate="true"></argument>
             </arguments>
 
-            <block class="Magento\Framework\View\Element\Template"
-                   name="product.info.addtocart.button"
-                   template="Magento_Catalog::addtocart/button.phtml">
+            <block class="Magento\Framework\View\Element\Template" name="product.info.addtocart.button" template="Magento_Catalog::addtocart/button.phtml">
                 <arguments>
                     <argument xsi:type="string" name="button_class">cs-addtocart__button cs-buybox__addtocart-button</argument>
                     <argument xsi:type="string" name="button_params"><![CDATA[disabled="disabled"]]></argument>
@@ -220,9 +202,7 @@
                 <argument name="qty_label" xsi:type="string" translate="true"></argument>
             </arguments>
 
-            <block class="Magento\Framework\View\Element\Template"
-                   name="product.info.addtocart.additional.button"
-                   template="Magento_Catalog::addtocart/button.phtml">
+            <block class="Magento\Framework\View\Element\Template" name="product.info.addtocart.additional.button" template="Magento_Catalog::addtocart/button.phtml">
                 <arguments>
                     <argument xsi:type="string" name="button_class">cs-addtocart__button cs-buybox__addtocart-button</argument>
                     <argument xsi:type="string" name="button_params"><![CDATA[disabled="disabled"]]></argument>
@@ -238,42 +218,78 @@
         <referenceBlock name="product.info.mailto" display="false" />
         <!-- BUYBOX end -->
 
-        <referenceBlock name="product.info.description">
-            <action method="setTemplate">
-                <argument name="template" xsi:type="string">Magento_Catalog::product/view/description.phtml</argument>
-            </action>
-            <arguments>
-                <argument name="is_collapse_enabled" xsi:type="boolean">true</argument>
-                <argument name="collapse_height" xsi:type="string">100</argument>
-            </arguments>
-        </referenceBlock>
-
-        <referenceBlock name="product.attributes">
-            <arguments>
-                <argument name="is_collapse_enabled" xsi:type="boolean">true</argument>
-                <argument name="collapse_height" xsi:type="string">100</argument>
-            </arguments>
-        </referenceBlock>
-
-        <move element="product.info.overview" destination="product.info.details"  />
-
         <referenceBlock name="product.info.details">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.details.main" as="main" template="Magento_Catalog::product/view/main.phtml" group="detailed_info" before="-">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Product Details</argument>
+                    <argument name="is_collapsible" xsi:type="boolean">true</argument>
+                    <argument name="collapsible_widget_options" xsi:type="array">
+                        <item name="active" xsi:type="boolean">true</item>
+                        <item name="openedState" xsi:type="string">active</item>
+                        <item name="mediaQueryScope" xsi:type="string">(max-width: 767px)</item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <referenceBlock name="product.info.description">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Description</argument>
+                    <argument name="contain_content" xsi:type="boolean">false</argument>
+                    <argument name="sort_order" xsi:type="string">10</argument>
+                </arguments>
+            </referenceBlock>
+
+            <referenceBlock name="product.attributes">
+                <arguments>
+                    <argument name="contain_content" xsi:type="boolean">false</argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                </arguments>
+            </referenceBlock>
+
+            <block name="product.info.content-constructor" as="content-constructor" template="Magento_Catalog::product/view/content-constructor.phtml" group="detailed_info">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Product Showcase</argument>
+                    <argument name="sort_order" xsi:type="string">30</argument>
+                    <argument name="contain_content" xsi:type="boolean">false</argument>
+                    <argument name="is_collapsible" xsi:type="boolean">false</argument>
+                    <argument name="in_nav" xsi:type="boolean">false</argument>
+                </arguments>
+                <container name="cc-content" htmlTag="div" htmlClass="cs-product-details__content-constructor" />
+            </block>
+
             <referenceBlock name="product.info.overview">
                 <arguments>
                     <argument name="title" translate="true" xsi:type="string">Highlights</argument>
+                    <argument name="is_collapsible" xsi:type="boolean">true</argument>
+                    <argument name="collapsible_widget_options" xsi:type="array">
+                        <item name="mediaQueryScope" xsi:type="string">(max-width: 767px)</item>
+                    </argument>
                 </arguments>
             </referenceBlock>
 
             <referenceBlock name="catalog.product.related">
                 <arguments>
                     <argument translate="true" name="title" xsi:type="string">Related products</argument>
+                    <argument name="sort_order" xsi:type="string">80</argument>
+                    <argument name="contain_content" xsi:type="boolean">false</argument>
+                    <argument name="include_headline" xsi:type="boolean">false</argument>
+                    <argument name="is_collapsible" xsi:type="boolean">false</argument>
+                </arguments>
+            </referenceBlock>
+
+            <referenceBlock name="product.info.upsell">
+                <arguments>
+                    <argument name="sort_order" xsi:type="string">100</argument>
+                    <argument name="contain_content" xsi:type="boolean">false</argument>
+                    <argument name="include_headline" xsi:type="boolean">false</argument>
+                    <argument name="is_collapsible" xsi:type="boolean">false</argument>
                 </arguments>
             </referenceBlock>
         </referenceBlock>
-
-        <move element="product.info.details" destination="product.details.container.wrapper"/>
-
-        <move element="catalog.product.related" destination="product.carousels.container.content" />
-        <move element="product.info.upsell" destination="product.carousels.container.content" />
+        <move element="product.info.details" destination="content" after="product.info.nav.container"/>
+        <move element="product.info.description" destination="product.info.details.main"/>
+        <move element="product.attributes" destination="product.info.details.main"/>
+        <move element="catalog.product.related" as="related" destination="product.info.details"/>
+        <move element="product.info.upsell" as="upsell" destination="product.info.details"/>
     </body>
 </page>
