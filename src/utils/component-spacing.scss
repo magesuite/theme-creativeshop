@@ -1,0 +1,25 @@
+@import 'config/variables';
+@import 'config/breakpoints';
+@import 'include-media/dist/include-media';
+
+@mixin component-spacing($margins-config: $component-spacing-configuration) {
+    @if map-has-key($margins-config, default) {
+        margin: map-get($margins-config, default);
+    } @else {
+        // Default component margin value
+        margin: 0 0 3rem;
+    }
+
+    @if map-has-key($margins-config, responsive) {
+        // Adding margin rules for each passed breakpoint
+        @each $breakpoint, $margin in map-get($margins-config, responsive) {
+            @include media(#{$breakpoint}) {
+                margin: $margin;
+            }
+        }
+    }
+    
+    &--skip-spacing {
+        margin: 0;
+    }
+}

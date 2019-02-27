@@ -1,0 +1,46 @@
+/**
+ * Styles for default table with attribute displayed on product page.
+ **/
+
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$additional-attributes_th-font-weight: 700 !default;
+$additional-attributes_tr-border: 1px solid $color_border-500 !default;
+$additional-attributes_cell-padding: 1em 1.5em 1em 0 !important !default;
+
+.additional-attributes {
+    &-wrapper {
+        margin-bottom: 0;
+    }
+
+    // Below cascade is unfortunately required because of Magento styles.
+    tbody {
+        > tr {
+            border: $additional-attributes_tr-border;
+            border-left: 0;
+            border-right: 0;
+            border-collapse: collapse;
+
+            & + tr {
+                // For some reason border-collapse doesn't work well on mobile FireFox.
+                border-top: 0;
+            }
+
+            > th {
+                font-weight: $additional-attributes_th-font-weight;
+                padding: $additional-attributes_cell-padding;
+            }
+
+            > td {
+                padding: $additional-attributes_cell-padding;
+            }
+        }
+    }
+}
+
+.cs-container {
+    &--page-pdp-details-additional {
+        padding: 0;
+    }
+}

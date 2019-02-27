@@ -8,22 +8,42 @@ $swatches_label-width: 10rem !default;
 $swatches_label-width-laptop-up: 11rem !default;
 $swatches_label-margin: 0 1.5rem 0 0 !default;
 $swatches_label-font-size: 1.1em !default;
+// Keep in sync width quantity wrapper in buybox end.
 
 $swatches_disable-show-more: true !default;
 $swatches_swatch-gutter: 0.4em !default;
-$swatches_swatch-size: 2.45em !default;
+$swatches_swatch-height: 2.8em !default;
+$swatches_swatch-width: 3.2em !default;
 $swatches_swatch-padding: 0 0.35em !default;
+$swatches_swatch-color: $color_text-500 !default;
+
 $swatches_swatch-background: $color_background-500 !default;
-$swatches_swatch--disabled-opacity: 0.65 !default;
-$swatches_swatch-color: $color_text-600 !default;
+$swatches_swatch--hover-background: $color_background-200 !default;
+$swatches_swatch--selected-background: $color_background-200 !default;
 
 $swatches_swatch-border-radius: $border-radius_base !default;
-$swatches_swatch-border: 1px solid $color_border-100 !default;
+$swatches_swatch-border-width: 3px !default;
+$swatches_swatch-border: $swatches_swatch-border-width solid
+    $swatches_swatch-background !default;
+$swatches_swatch--hover-border: $swatches_swatch-border-width solid
+    $swatches_swatch--hover-background !default;
+$swatches_swatch--selected-border: $swatches_swatch-border-width solid
+    $swatches_swatch--selected-background !default;
 
-$swatches_swatch-outline-offset: 2px !default;
-$swatches_swatch-outline: 1px solid $color_border-500 !default;
-$swatches_swatch--hover-outline: 1px solid $color_primary-500 !default;
-$swatches_swatch--selected-outline: 1px solid $color_primary-800 !default;
+$swatches_swatch--text-disabled-background: $color_background-200 !default;
+$swatches_swatch--text-disabled-border: 1px solid $color_border-500 !default;
+$swatches_swatch--text-disabled-color: $color_text-400 !default;
+$swatches_swatch--text-opacity: 0.65 !default;
+
+$swatches_swatch-outline-width: 1px !default;
+$swatches_swatch-outline-offset: (
+    $swatches_swatch-border-width + $swatches_swatch-outline-width
+) !default;
+$swatches_swatch-outline: $swatches_swatch-outline-width solid $color_border-500 !default;
+$swatches_swatch--hover-outline: $swatches_swatch-outline-width solid
+    $color_primary-500 !default;
+$swatches_swatch--selected-outline: $swatches_swatch-outline-width solid
+    $color_primary-800 !default;
 
 $swatches_rows-gutter: $swatches_swatch-gutter * 2 !default;
 
@@ -32,7 +52,7 @@ $swatches--tile_font-size: 0.45em !default;
 $swatches--tile_num-of-rows: 1 !default;
 // Calculates how much space should be reserved in tile for swatches to prevent content from jumping.
 $swatches--tile_min-height: calc(
-    #{$swatches--tile_num-of-rows} * (#{$swatches_swatch-size} + #{$swatches_swatch-outline-offset *
+    #{$swatches--tile_num-of-rows} * (#{$swatches_swatch-height} + #{$swatches_swatch-outline-offset *
                 2})
 );
 $swatches--pdp_font-size: 0.9em !default;
@@ -86,7 +106,7 @@ $swatches--filters_font-size: 0.8em !default;
 
 .swatch-attribute-label {
     text-transform: uppercase;
-    line-height: $swatches_swatch-size;
+    line-height: $swatches_swatch-height;
     font-weight: 700;
     font-size: $swatches_label-font-size;
     width: $swatches_label-width;
@@ -109,7 +129,7 @@ $swatches--filters_font-size: 0.8em !default;
     display: flex;
     flex-wrap: wrap;
     margin-left: calc(
-        -#{$swatches_swatch-gutter} + #{$swatches_swatch-outline-offset / 2}
+        -#{$swatches_swatch-gutter} + #{$swatches_swatch-outline-width}
     );
     margin-bottom: -#{$swatches_swatch-gutter};
     min-width: 100%;
@@ -133,26 +153,29 @@ $swatches--filters_font-size: 0.8em !default;
 .swatch-option {
     font-weight: normal;
     position: relative;
-    min-width: $swatches_swatch-size;
-    height: $swatches_swatch-size;
+    min-width: $swatches_swatch-width;
+    height: $swatches_swatch-height;
     padding: $swatches_swatch-padding;
-    margin: #{$swatches_swatch-outline-offset} calc(
-            #{$swatches_swatch-outline-offset} + #{$swatches_swatch-gutter / 2}
-        ) calc(#{$swatches_swatch-outline-offset} + #{$swatches_swatch-gutter});
-    border: $swatches_swatch-border;
+    margin: #{$swatches_swatch-outline-width} calc(
+            #{$swatches_swatch-outline-width} + #{$swatches_swatch-gutter / 2}
+        ) calc(#{$swatches_swatch-outline-width} + #{$swatches_swatch-gutter});
     border-radius: $swatches_swatch-border-radius;
     background-color: $swatches_swatch-background;
+    border: $swatches_swatch-border;
     color: $swatches_swatch-color;
     cursor: pointer;
-    line-height: $swatches_swatch-size;
+    line-height: calc(
+        #{$swatches_swatch-height} - #{$swatches_swatch-border-width * 2}
+    );
     text-align: center;
-    transition: background-color 0.3s, opacity 0.3s;
+    transition: background-color 0.3s, border-color 0.3s, opacity 0.3s,
+        color 0.3s;
 
     @if $swatches_disable-show-more {
         display: block !important;
     }
 
-    &:after {
+    &:before {
         content: '';
         position: absolute;
         top: -$swatches_swatch-outline-offset;
@@ -164,26 +187,62 @@ $swatches--filters_font-size: 0.8em !default;
         transition: border-color 0.3s;
     }
 
-    &:not(.disabled):not([disabled]) {
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        background: url(../images/icons/swatches/disabled.svg)
+            rgba($color_background-600, 0.5) center no-repeat;
+        transform: translate(-50%, -50%);
+        width: ($swatches_swatch-height - 1.4em);
+        height: ($swatches_swatch-height - 1.4em);
+        background-size: 0.6em;
+        transition: opacity 0.3s;
+        opacity: 0;
+    }
+
+    &:not(.disabled):not(.selected):not([disabled]) {
         &:hover {
-            &:after {
+            border: $swatches_swatch--hover-border;
+            background: $swatches_swatch--hover-background;
+
+            &:before {
                 border: $swatches_swatch--hover-outline;
             }
         }
     }
 
     &.selected {
-        background-color: inherit;
+        border: $swatches_swatch--selected-border;
+        background: $swatches_swatch--selected-background;
 
-        &:after {
+        &:before {
             border: $swatches_swatch--selected-outline;
         }
     }
 
     &.disabled,
     &[disabled] {
-        opacity: $swatches_swatch--disabled-opacity;
         cursor: not-allowed;
+
+        &.text {
+            opacity: $swatches_swatch--text-opacity;
+            color: $swatches_swatch--text-disabled-color;
+            background: $swatches_swatch--text-disabled-background;
+
+            &:before {
+                border: $swatches_swatch--text-disabled-border;
+            }
+        }
+
+        &.image,
+        &.color {
+            &:after {
+                opacity: 1;
+            }
+        }
     }
 }
 

@@ -3,15 +3,16 @@
         <remove src="Aheadworks_Pquestion::css/style.css"/>
     </head>
     <body>
-
-        <!-- move Q&A to bottom -->
-        <referenceContainer name="main.content">
-            <container name="product.qa.container" htmlTag="section" htmlClass="cs-container cs-container--pdp-qa" after="product.carousels.container">
-                <container name="product.qa.container.inner" htmlTag="section" htmlId="pdp-qa" htmlClass="cs-container__inner" />
-            </container>
-        </referenceContainer>
-        <referenceBlock name="aw_pq_ajax_container" group="" />
-        <move element="aw_pq_ajax_container" destination="product.qa.container.inner" after="-"/>
-
+        <referenceBlock name="aw_pq_ajax_container">
+            <arguments>
+                <argument name="include_headline" xsi:type="boolean">false</argument>
+                <argument name="is_collapsible" xsi:type="boolean">true</argument>
+                <argument name="collapsible_widget_options" xsi:type="array">
+                    <item name="mediaQueryScope" xsi:type="string">(max-width: 767px)</item>
+                </argument>
+                <argument name="sort_order" xsi:type="string">110</argument>
+            </arguments>
+        </referenceBlock>
+        <!-- <move element="aw_pq_ajax_container" as="product-questions" destination="product.info.details" after="-" /> -->
     </body>
 </page>

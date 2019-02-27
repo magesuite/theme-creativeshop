@@ -164,17 +164,19 @@ switch ($type = $block->getType()) {
         <div class="block <?php /* @escapeNotVerified */ echo $class; ?>">
     <?php endif; ?>
 
-    <?=$block->getLayout()->createBlock(
-        '\Creativestyle\ContentConstructorFrontendExtension\Block\Component', 'carousels-headline-'.$type, [
-            'data' => [
-                'section' => 'content',
-                'type' => 'headline',
+    <?php if ($block->getIncludeHeadline() ?? true): ?>
+        <?= $block->getLayout()->createBlock(
+            '\Creativestyle\ContentConstructorFrontendExtension\Block\Component', 'carousels-headline-'.$type, [
                 'data' => [
-                    'title' => $title
-                ]
-            ],
-        ]
-    )->toHtml(); ?>
+                    'section' => 'content',
+                    'type' => 'headline',
+                    'data' => [
+                        'title' => $title
+                    ]
+                ],
+            ]
+        )->toHtml(); ?>
+    <?php endif; ?>
 
     <?php
     $skus = [];

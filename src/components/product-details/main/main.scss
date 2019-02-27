@@ -1,0 +1,60 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+@import 'vendors/include-media';
+
+$product-details-main_columns: true !default;
+$product-details-main_description-flex-basis: 65% !default;
+$product-details-main_attributes-flex-basis: 35% !default;
+$product-details-main_item-gutter: 2em !default;
+
+.cs-product-details-main {
+    $root: &;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: ($product-details-main_item-gutter * 2);
+
+    @if $product-details-main_columns {
+        @include media('>=tablet') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &__headline-title {
+        @include headline($level: $font-size_headline-3);
+    }
+
+    &__item {
+        width: 100%;
+
+        & + & {
+            margin-top: $product-details-main_item-gutter;
+        }
+
+        @if $product-details-main_columns {
+            & + & {
+                margin-top: 0;
+            }
+
+            @include media('>=tablet') {
+                width: auto;
+                flex: 1 1 50%;
+            }
+
+            &--description {
+                @include media('>=tablet') {
+                    width: auto;
+                    flex-basis: $product-details-main_description-flex-basis;
+                }
+            }
+
+            &--additional {
+                @include media('>=tablet') {
+                    width: auto;
+                    flex-basis: $product-details-main_attributes-flex-basis;
+                    margin-left: $product-details-main_item-gutter;
+                }
+            }
+        }
+    }
+}

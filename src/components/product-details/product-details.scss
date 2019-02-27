@@ -1,0 +1,75 @@
+@import 'config/variables';
+@import 'components/headline/mixin';
+@import 'components/pseudoicon/pseudoicon-plus.scss';
+@import 'utils/visually-hidden';
+
+$product-description_item-background: transparent !important !default;
+$product-description_item-background--odd: $color_background-500
+    url('../images/background.png') !default;
+
+$product-description_headline-title-font-size: $font-size_headline-2 !default;
+$product-description_headline-title-counter-visible: true !default;
+
+.#{$ns}product-details {
+    $root: &;
+
+    &__item {
+        &:nth-child(2n - 1) {
+            background: $product-description_item-background--odd;
+        }
+
+        &--related,
+        &--upsell,
+        &--content-constructor {
+            background: $product-description_item-background;
+        }
+
+        &--content-constructor {
+            #{$root}__headline {
+                @include visually-hidden();
+            }
+        }
+    }
+
+    &__headline {
+        @include headline();
+
+        position: relative;
+
+        // This attribute is added when element is collapsible.
+        &[tabindex] {
+            @include pseudoicon-plus();
+        }
+    }
+
+    &__headline-title {
+        @include headline-title(
+            $font-size: $product-description_headline-title-font-size
+        );
+
+        text-align: left;
+
+        @include media('>=tablet') {
+            text-align: center;
+        }
+
+        .counter {
+            display: none;
+        }
+
+        @if $product-description_headline-title-counter-visible {
+            .counter {
+                display: inline;
+                margin-left: 0.2em;
+
+                &:before {
+                    content: ' (';
+                }
+
+                &:after {
+                    content: ')';
+                }
+            }
+        }
+    }
+}

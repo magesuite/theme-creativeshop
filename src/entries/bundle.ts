@@ -32,6 +32,7 @@ import 'pages/success';
 // Components
 // =============================================================================
 
+import 'components/container';
 import 'components/navigation';
 import 'components/grid-layout';
 import 'components/product-tile';
@@ -91,6 +92,7 @@ import 'components/swatches';
 import 'components/qty-increment';
 import 'components/page-title';
 import 'components/social-media-list';
+import 'components/product-details';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
