@@ -4,6 +4,7 @@
 @import 'utils/component-spacing';
 @import 'components/teaser/mixins';
 @import 'components/badge/mixin';
+@import 'components/button/mixin';
 
 $daily-deal-teaser_global-bold-font: 600 !default;
 $daily-deal-teaser_global-small-font: 1.2rem !default;
@@ -75,9 +76,13 @@ $daily-deal-teaser_discount-badge-font-size: 1.5rem !default;
 $daily-deal-teaser_price-old-font-size: 1.4rem !default;
 $daily-deal-teaser_price-final-font-size: 2.2rem !default;
 
+$daily-deal-teaser_addtocart-button-type: 'primary' !default;
+$daily-deal-teaser_addtocart-button-icon-pos: 'right' !default;
 $daily-deal-teaser_addtocart-margin-top: 1.5rem !default;
 $daily-deal-teaser_addtocart-min-width: 25rem !default;
 $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
+
+
 
 .#{$ns}daily-deal-teaser {
     $root: &;
@@ -339,9 +344,27 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
         @include badge_span();
     }
 
-    &__addtocart {
+    .tocart {
         margin-top: $daily-deal-teaser_addtocart-margin-top;
         min-width: $daily-deal-teaser_addtocart-min-width;
+        @include button(
+            $type: $daily-deal-teaser_addtocart-button-type,
+            $icon_pos: $daily-deal-teaser_addtocart-button-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $daily-deal-teaser_addtocart-button-type,
+                $icon_pos: $daily-deal-teaser_addtocart-button-icon-pos
+            );
+        }
+
+        svg {
+            @include button_icon(
+                $type: $daily-deal-teaser_addtocart-button-type,
+                $icon_pos: $daily-deal-teaser_addtocart-button-icon-pos
+            );
+        }
 
         @include media('>=tablet') {
             margin-top: 0;
