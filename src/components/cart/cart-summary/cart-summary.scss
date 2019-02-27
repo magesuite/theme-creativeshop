@@ -1,15 +1,19 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 @import 'components/typography/mixin';
+@import 'components/button/mixin';
 
 $cart-summary_background: $color_background-200 !default;
 $cart-summary_border-color: $color_border-500 !default;
 $cart-summary_border-radius: 3px !default;
-$cart-summary_box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27) !default;
+$cart-summary_box-shadow: $box-shadow_base !default;
 $cart-summary_label-color: $color_text-500 !default;
 $cart-summary_value-color: $color_text-800 !default;
 $cart-summary_border: $color_border-500 !default;
 $cart-summary_title-font-size: $font-size_headline-3 !default;
+$cart-summary_next-button-type: 'primary' !default;
+$cart-summary_next-button-icon-pos: 'right' !default;
+$cart-summary_headlines-text-transform: none !default;
 
 .#{$ns}cart-summary {
     $root: &;
@@ -39,6 +43,7 @@ $cart-summary_title-font-size: $font-size_headline-3 !default;
     &__title {
         display: none;
         @include headline($level: $cart-summary_title-font-size);
+        text-transform: $cart-summary_headlines-text-transform;
 
         @include media('>=tablet') {
             display: block;
@@ -102,6 +107,19 @@ $cart-summary_title-font-size: $font-size_headline-3 !default;
         }
     }
 
+    &__to-checkout-button {
+        @include button($type: $cart-summary_next-button-type, $icon_pos: $cart-summary_next-button-icon-pos);
+        width: 100%;
+
+        &-span {
+            @include button_span($type: $cart-summary_next-button-type, $icon_pos: $cart-summary_next-button-icon-pos);
+        }
+
+        &-icon {
+            @include button_icon($type: $cart-summary_next-button-type, $icon_pos: $cart-summary_next-button-icon-pos);
+        }
+    }
+
     .multicheckout,
     .#{$ns}cart-summary__shipping {
         display: none;
@@ -110,4 +128,5 @@ $cart-summary_title-font-size: $font-size_headline-3 !default;
     .checkout-methods-items .item + .item {
         margin-top: 0 !important; /* stylelint-disable-line declaration-no-important */
     }
+
 }

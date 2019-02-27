@@ -130,16 +130,15 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    &__messages {
+        width: 100%;
+    }
+
     &__sidebar {
         .action-close {
             @include media('>=tablet') {
                 display: none;
             }
-        }
-
-        .modal-content {
-            padding-top: 0;
-            padding-bottom: 0;
         }
     }
 
@@ -176,9 +175,17 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     &__place-order {
-        padding: $checkout_base-space;
+        padding: $checkout_base-space 0;
         border-bottom: $checkout_place-order-border-bottom;
         width: 100%;
+
+        .modal-inner-wrap & {
+            padding: $checkout_base-space;
+        }
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space;
+        }
 
         &-button {
             @include button($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
@@ -296,6 +303,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
         @include media('>=tablet') {
             padding: $checkout_base-space;
+        }
+    }
+
+    &__payments, 
+    &__after-payments {
+        @include media('<tablet') {
+            margin-bottom: 0;
         }
     }
 
@@ -609,10 +623,18 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     // Agreements
 
-    .checkout-agreements-block {
+    &__agreements {
         font-size: 1.2rem;
         border-top: $checkout_place-order-border-bottom;
-        padding: $checkout_base-space $checkout_base-space 0;
+        padding: $checkout_base-space 0 0;
+
+        .modal-inner-wrap & {
+            padding: $checkout_base-space $checkout_base-space 0;
+        }
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space $checkout_base-space 0;
+        }
 
         .modal._show & {
             display: none;
@@ -656,6 +678,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             @include headline($level: $checkout_headlines-font-size);
             text-transform: $checkout_headlines-text-transform;
             padding-bottom: 0;
+            padding-top: 0;
             margin: 0;
 
             @include media('<tablet') {
@@ -676,19 +699,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    .opc-summary-wrapper {
-        .items-in-cart,
-        .title {
-            @include media('<tablet') {
-                display: block;
-            }
-        }
-    }
-
-    .modal-custom .modal-inner-wrap {
-        box-shadow: none;
-    }
-
     .items-in-cart {
         position: relative;
 
@@ -699,8 +709,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    
-
     .minicart-items-wrapper {
         margin: 0;
         max-height: none;
@@ -709,6 +717,11 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .table-totals {
+
+        .ie11 & {
+            table-layout: fixed;
+        }
+        
         td,
         th {
             font-weight: 400;
@@ -832,6 +845,30 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
             > span {
                 width: 100%;
+            }
+        }
+    }
+
+    // Modal
+    .modal-custom .modal-inner-wrap {
+        box-shadow: none;
+
+        .title {
+            @include media('<tablet') {
+                display: block;
+                padding-bottom: $checkout_base-space;
+            }
+        }
+
+        .items-in-cart {
+            @include media('<tablet') {
+                display: block;
+            }
+
+            .title {
+                @include media('<tablet') {
+                    padding-top: $checkout_base-space;
+                }
             }
         }
     }
@@ -1046,13 +1083,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 display: inline-block;
                 margin-left: 0.8rem;
                 height: 0.6rem;
-                width: 1.1rem;
+                width: 1.3rem;
                 box-sizing: border-box;
                 transition: transform .3s;
                 background-image: url('../images/icons/arrow_down.svg');
                 background-repeat: no-repeat;
-                background-size: 1.1rem 0.6rem;
-
+                background-size: contain;
+                transform: translateY(-2px);
             }
         }
 
@@ -1067,6 +1104,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     .payment-option-content {
         margin-top: $checkout_base-space;
+    }
+
+    .aw-giftcard-code {
+        margin-top: 2rem;
     }
 }
 
