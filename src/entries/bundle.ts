@@ -90,6 +90,7 @@ import 'components/dashboard';
 import 'components/swatches';
 import 'components/qty-increment';
 import 'components/page-title';
+import 'components/social-media-list';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';

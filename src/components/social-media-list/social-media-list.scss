@@ -1,0 +1,117 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/reset-list-style';
+
+$social-media-list_display: flex !default;
+$social-media-list_flex-justify-content: center !default;
+$social-media-list_flex-align-items: center !default;
+$social-media-list_padding: $page_edge-gutter 0 0 !default;
+
+$social-media-list_list-item-margin: 0 0.4em !default;
+$social-media-list_list-item-padding: 0 !default;
+
+$social-media-list_link-display: flex !default;
+$social-media-list_link-padding: 1em !default;
+$social-media-list_link-height: 3.5em !default;
+$social-media-list_link-min-width: 4em !default;
+$social-media-list_link-border-radius: $border-radius_base !default;
+$social-media-list_link-transition: background-color 0.15s linear !default;
+$social-media-list_link-transform: $transform_skew-400 !default;
+$social-media-list_link-background: $color_mineshaft !default;
+$social-media-list_link-hover-background: $color_primary-800 !default;
+
+$social-media-list_icon-position: absolute !default;
+$social-media-list_icon-transform: translate3d(-55%, -55%, 0)
+    $transform_skew-400-revert !default;
+$social-media-list_icon-color: $color_background-200 !default;
+$social-media-list_icon-hover-color: $social-media-list_icon-color !default;
+$social-media-list_icon-transition: fill 0.15s linear !default;
+
+@if $social-media-list_icon-position == absolute {
+    $social-media-list_icon-transform: translate3d(-50%, -50%, 0)
+        $transform_skew-400-revert !default;
+}
+
+.#{$ns}social-media-list {
+    $root: &;
+
+    @include reset-list-style();
+
+    display: $social-media-list_display;
+    padding: $social-media-list_padding;
+
+    @if $social-media-list_display ==
+        flex or
+        $social-media-list_display ==
+        inline-flex
+    {
+        justify-content: $social-media-list_flex-justify-content;
+        align-items: $social-media-list_flex-align-items;
+
+        @include media('>=tablet') {
+            justify-content: flex-start;
+        }
+    }
+
+    @include media('>=tablet') {
+        padding-top: 0;
+    }
+
+    &__item {
+        margin: $social-media-list_list-item-margin;
+        padding: $social-media-list_list-item-padding;
+    }
+
+    &__link {
+        display: $social-media-list_link-display;
+        position: relative;
+        height: $social-media-list_link-height;
+        min-width: $social-media-list_link-min-width;
+        background: $social-media-list_link-background;
+        color: inherit;
+        border-radius: $social-media-list_link-border-radius;
+        transform: $social-media-list_link-transform;
+        transition: $social-media-list_link-transition;
+
+        @if $social-media-list_link-hover-background !=
+            $social-media-list_link-background
+        {
+            &:hover {
+                background: $social-media-list_link-hover-background;
+            }
+        }
+    }
+
+    &__icon {
+        position: $social-media-list_icon-position;
+        fill: $social-media-list_icon-color;
+        transform: $social-media-list_icon-transform;
+        transition: $social-media-list_icon-transition;
+
+        @if $social-media-list_icon-position == absolute {
+            top: 50%;
+            left: 55%;
+        }
+
+        @if $social-media-list_icon-hover-color != $social-media-list_icon-color {
+            &:hover {
+                fill: $social-media-list_icon-hover-color;
+            }
+        }
+
+        #{$root}__item--fb & {
+            width: 0.9em;
+            height: 1.8em;
+        }
+
+        #{$root}__item--tw & {
+            width: 2.5em;
+            height: 2em;
+        }
+
+        #{$root}__item--yt & {
+            width: 1.8em;
+            height: 2.1em;
+        }
+    }
+}
