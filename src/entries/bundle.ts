@@ -91,6 +91,7 @@ import 'components/dashboard';
 import 'components/swatches';
 import 'components/qty-increment';
 import 'components/page-title';
+import 'components/social-media-list';
 import 'components/product-details';
 
 export { Flyout } from 'components/flyout/flyout';
