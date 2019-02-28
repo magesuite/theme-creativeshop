@@ -3,16 +3,9 @@ import * as $ from 'jquery';
 import BrandCarousel from 'components/brand-carousel/brand-carousel';
 import 'components/brand-carousel/brand-carousel.scss';
 
-const componentClass: string = 'cs-brand-carousel';
-
-$(`.${componentClass}`).each(function(): void {
-    new BrandCarousel($(this), {
-        spaceBetween: 50,
+$('.cs-brand-carousel').each((i, element) => {
+    new BrandCarousel($(element), {
         slidesPerView: 6,
-        centeredSlides: false,
-        slideMinWidth: 50,
-        roundLengths: false,
-        paginationBreakpoint: 10,
         breakpoints: {
             380: {
                 slidesPerView: 2,
