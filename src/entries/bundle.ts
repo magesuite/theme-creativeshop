@@ -14,8 +14,6 @@ import 'bundle.scss';
 // Vendors
 // =============================================================================
 
-import * as $ from 'jquery';
-
 // =============================================================================
 // Utilities
 // =============================================================================
@@ -94,6 +92,7 @@ import 'components/page-title';
 import 'components/image-teaser';
 import 'components/social-media-list';
 import 'components/product-details';
+import 'components/device-detection';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
@@ -109,27 +108,6 @@ collapsibleText();
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
-import 'customizations/item-cloner/item-cloner';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
 import 'customizations/searchresults-switcher/searchresults-switcher';
-
-// Sometimes there is a need to apply different styling for mobile/tablet devices and body class is necessary
-if (isMobile.any) {
-    document.body.classList.add('is-mobile');
-}
-
-if (isMobile.tablet) {
-    document.body.classList.add('is-tablet');
-} else if (isMobile.phone) {
-    document.body.classList.add('is-phone');
-}
-
-window.addEventListener(
-    'touchstart',
-    function onFirstTouch(): void {
-        document.body.classList.add('touch-device');
-        window.removeEventListener('touchstart', onFirstTouch, false);
-    },
-    false
-);
