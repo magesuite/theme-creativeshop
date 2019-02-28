@@ -4,8 +4,9 @@ import breakpoint from 'utils/breakpoint/breakpoint';
 import csTeaser from 'components/teaser/teaser';
 
 /**
- * component options interface.
- * Please refer to swiper documentation and our teaser component for more options and callbacks
+ * Component options interface.
+ * Please refer to Swiper documentation (http://idangero.us/swiper/api/)
+ * and teaser component for more options and callbacks
  */
 interface HeroOptions {
     /**
@@ -36,12 +37,14 @@ interface HeroOptions {
      */
     centeredSlides?: boolean;
 
-    /**
-     * Autoplay in miliseconds
-     * @type {number}
-     * @default 5000
-     */
-    autoplay?: number;
+    autoplay?: {
+        /**
+        * Autoplay delay
+        * @type {number}
+        * @default 5000
+        */
+        delay?: number;
+    };
 
     /**
      * Tells component if height of slider should be automatically adjusted every slide
@@ -86,29 +89,31 @@ interface HeroOptions {
      * @type {boolean}
      * @default false
      */
-    calculateSlides: boolean;
+    calculateSlides?: boolean;
 
     /**
      * Tells if swiper should automatically round decimals in pixels
      * @type {boolean}
      * @default true
      */
-    roundLengths: boolean;
+    roundLengths?: boolean;
 
     callbacks?: {
         /**
          * Fires right after hero has been initialized (once)
          * @type {function}
          */
-        onInit?: any;
+        onInit?: (swiperInstance: any) => void;
     };
 }
 
 export default class Hero {
-    protected _$element: JQuery;
-    protected _instance: any;
-    protected options: HeroOptions;
-    protected _swiperDefaults: any;
+    protected _$element: JQuery<HTMLElement>;
+    protected _teaserInstance: any;
+    /**
+     * Holds all settings for the hero, which are be passed to csTeaser
+     */
+    protected _settings: any;
 
     /**
      * Creates new Hero component with optional settings.
@@ -118,95 +123,87 @@ export default class Hero {
     public constructor($element?: JQuery, options?: HeroOptions) {
         const _this: any = this;
         const teaserName: string = (options && options.teaserName) || 'cs-hero';
-        const pauseAutoplayOnHover: boolean =
-            options && options.pauseAutoplayOnHover
-                ? options.pauseAutoplayOnHover
-                : true;
+        this._$element = $element ? $element : $(`.${options.teaserName}`);
 
-        this._$element = $element || $(`.${this._options.teaserName}`);
-
-        this._swiperDefaults = {
+        /**
+         * Default options
+         */
+        const defaultOptions = {
             teaserName: teaserName,
-            slidesPerView: 'auto',
-            spaceBetween: 10,
-            centeredSlides: true,
-            autoplay: 5000,
-            autoHeight: true,
-            paginationBreakpoint: 50,
-            slideToClickedSlide: true,
             loop: true,
-            calculateSlides: false,
-            roundLengths: true,
-            autoplayDisableOnInteraction: true,
-            pauseAutoplayOnHover: pauseAutoplayOnHover,
-            onInit(swiper: any): void {
-                if (pauseAutoplayOnHover) {
-                    swiper.container.parents(`.${teaserName}`).on({
-                        mouseenter(): void {
-                            if (_this._instance) {
-                                swiper.pauseAutoplay();
-                                swiper.emit('onAutoplayPause', swiper);
-                            }
-                        },
-                        mouseleave(): void {
-                            if (
-                                swiper.autoplayPaused &&
-                                swiper.autoplaying &&
-                                _this._instance
-                            ) {
-                                swiper.stopAutoplay();
-                                swiper.startAutoplay();
-                                swiper.emit('onAutoplayResume', swiper);
-                            }
-                        },
-                    });
-                }
-
-                if (
-                    options &&
-                    options.callbacks &&
-                    options.callbacks.onInit &&
-                    typeof options.callbacks.onInit === 'function'
-                ) {
-                    options.callbacks.onInit(swiper);
-                }
+            loopedSlides: 5,
+            spaceBetween: 2,
+            centeredSlides: true,
+            slideToClickedSlide: true,
+            autoplay: {
+                delay: 5000,
             },
+            autoHeight: true,
+            roundLengths: true,
+            paginationBreakpoint: 50,
+            calculateSlides: false,
+            pauseAutoplayOnHover: true,
+            on: {
+                init: function() {
+                    /**
+                     * "this" in swiper event listeners refers to swiper instance
+                     */
+                    const swiperInstance = this;
+                    if (_this._settings.pauseAutoplayOnHover) {
+                        const $hero = swiperInstance.$el.parents(`.${teaserName}`);
+                        $hero.on('mouseenter', _this._autoplayPauseMouseEnterHandler);
+                        $hero.on('mouseleave', _this._autoplayPauseMouseLeaveHandler);
+                    }
+
+                    _this._fireCallback("onInit", swiperInstance)
+                },
+                beforeDestroy: function() {
+                    /**
+                     * Remove autoplay start/stop events on swiper destroy.
+                     * "this" in swiper event listeners refers to swiper instance
+                     */
+                    const swiperInstance = this;
+                    if (_this._settings.pauseAutoplayOnHover) {
+                        const $hero = swiperInstance.$el.parents(`.${teaserName}`);
+                        $hero.off('mouseenter', _this._autoplayPauseMouseEnterHandler);
+                        $hero.off('mouseleave', _this._autoplayPauseMouseLeaveHandler);
+                    }
+                }
+            }
         };
 
-        this._options = $.extend(true, this._swiperDefaults, options);
-        this._options.destroyForMobile =
+        this._settings = $.extend(true, defaultOptions, options);
+
+        const destroyForMobile =
             this._$element.hasClass(`${teaserName}--as-list-mobile`) ||
             this._$element.hasClass(`${teaserName}--hidden-mobile`)
-                ? true
-                : false;
 
         if (
-            this._$element.find(`.${this._options.teaserName}__slide`).length >
-            1
+            this._$element.find(`.${this._settings.teaserName}__slide`).length > 1
         ) {
-            if (this._options.destroyForMobile) {
+            if (destroyForMobile) {
                 this._toggleMobileHeros();
 
-                $(window).on('resize', function(): void {
-                    _this._toggleMobileHeros();
+                $(window).on('resize', (): void => {
+                    this._toggleMobileHeros();
                 });
             } else {
                 this._initHeros();
             }
         } else {
-            this._$element.addClass(`${this._options.teaserName}--static`);
+            this._$element.addClass(`${this._settings.teaserName}--static`);
         }
     }
 
     public getInstance(): any {
-        return this._instance;
+        return this._teaserInstance;
     }
 
     /**
      * Initializes heros
      */
     protected _initHeros(): void {
-        this._instance = new csTeaser(this._$element, this._options);
+        this._teaserInstance = new csTeaser(this._$element, this._settings);
     }
 
     /**
@@ -215,19 +212,44 @@ export default class Hero {
      */
     protected _toggleMobileHeros(): any {
         if ($(window).width() >= breakpoint.tablet) {
-            if (!this._instance) {
+            if (!this._teaserInstance) {
                 this._initHeros();
             }
         } else {
-            if (this._instance) {
-                this._instance.destroy();
+            if (this._teaserInstance) {
+                this._teaserInstance.destroy();
                 this._$element
-                    .find(`.${this._options.teaserName}__slides`)
+                    .find(`.${this._settings.teaserName}__slides`)
                     .removeAttr('style')
-                    .find(`.${this._options.teaserName}__slide`)
+                    .find(`.${this._settings.teaserName}__slide`)
                     .removeAttr('style');
-                this._instance = undefined;
+                this._teaserInstance = undefined;
             }
+        }
+    }
+
+    protected _fireCallback(callbackName, swiper: any) {
+        const callbacks = this._settings.callbacks;
+        if (
+            callbacks &&
+            callbacks[callbackName] &&
+            typeof(callbacks[callbackName]) === 'function'
+        ) {
+            callbacks[callbackName](swiper);
+        }
+    }
+
+    protected _autoplayPauseMouseEnterHandler = (): void => {
+        const swiperInstance = this.getInstance().getSwiper()
+        if (swiperInstance) {
+            swiperInstance.autoplay.stop();
+        }
+    }
+
+    protected _autoplayPauseMouseLeaveHandler = (): void => {
+        const swiperInstance = this.getInstance().getSwiper()
+        if (swiperInstance) {
+            swiperInstance.autoplay.start();
         }
     }
 }

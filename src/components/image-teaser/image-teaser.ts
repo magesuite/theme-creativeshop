@@ -89,6 +89,14 @@ interface ImageTeaserOptions {
      */
     isSliderMobile?: boolean;
 
+    callbacks?: {
+        /**
+         * Fires right after image-teaser init (once)
+         * @type {function}
+         */
+        onInit?: (swiperInstance: any) => void;
+    };
+
     /**
      * Tells if videos shall be handled
      * @type {boolean}
@@ -170,20 +178,30 @@ interface ImageTeaserOptions {
 }
 
 export default class ImageTeaser {
-    public _options: ImageTeaserOptions;
     public _ytModal: any;
     public _ytPlayer: any;
     protected _$container: JQuery;
     protected _swiperDefaults: object;
-    protected _optionsOverrides: any;
-    protected _instance: any;
+    protected _settingsOverrides: any;
+    protected _teaserInstance: any;
     protected _$videosTriggers: JQuery;
+    /**
+     * Fields for setting navigation position for lazy loaded images
+     */
+    protected _lazyLoadedImages = [];
+    protected _lazyImageResizeEventHandlerAdded = false;
+    /**
+     * Holds all settings for the image-teaser, which are be passed to csTeaser
+     */
+    public _settings: any;
 
     /**
      * Creates new ImageTeaser component with optional settings.
      * @param  {ImageTeaser} options  Optional settings object.
      */
-    public constructor($element: JQuery, options?: ImageTeaserOptions) {
+    public constructor($element: JQuery<HTMLElement>, options?: ImageTeaserOptions) {
+        this._$container = $element;
+        const _this = this;
         const defaultOptions: any = {
             teaserName: 'cs-image-teaser',
             allowVideos: true,
@@ -199,13 +217,11 @@ export default class ImageTeaser {
                 openModal: (ImageTeaser: ImageTeaser) => false,
                 closeModal: (ImageTeaser: ImageTeaser) => false,
             },
+            carouselBreakpoint: breakpoint.tablet
         };
 
-        this._options = $.extend(defaultOptions, options);
-        this._$container = $element;
-
         const maxMobileWidth: number = breakpoint.tablet - 1;
-        this._swiperDefaults = {
+        const swiperDefaults = {
             spaceBetween: 8,
             slidesPerView:
                 parseInt(this._$container.data('items-per-view'), 10) || 1,
@@ -214,7 +230,6 @@ export default class ImageTeaser {
             isSlider: Boolean(this._$container.data('is-slider')) || false,
             isSliderMobile:
                 Boolean(this._$container.data('mobile-is-slider')) || false,
-            carouselBreakpoint: breakpoint.tablet,
             loop: true,
             centeredSlides: false,
             breakpoints: {
@@ -236,22 +251,35 @@ export default class ImageTeaser {
                 },
             },
             preloadImages: false,
-            lazyLoading: true,
-            lazyLoadingInPrevNext: true,
-            lazyLoadingOnTransitionStart: true,
+            lazy: {
+                loadPrevNext: true,
+                loadOnTransitionStart: true,
+            },
+            on: {
+                init: function() {
+                    /**
+                     * "this" in swiper events refers to the swiper instance
+                     */
+                    _this._fireCallback('onInit', this)
+                },
+                lazyImageReady: function(slide, image) {
+                    const swiperInstance = this;
+                    _this._handleLazyImageReadyEvent(swiperInstance, image);
+                }
+            }
         };
 
-        this._options = $.extend(this._swiperDefaults, this._options);
-        this._optionsOverrides = this._getDataAttrOverrideOptions();
-        if (this._optionsOverrides) {
-            this._options = $.extend(this._options, this._optionsOverrides);
+        this._settings = $.extend(true, defaultOptions, swiperDefaults, options);
+        this._settingsOverrides = this._getDataAttrOverrideSettings();
+        if (this._settingsOverrides) {
+            this._settings = $.extend(true, this._settings, this._settingsOverrides);
         }
 
-        if (this._options.isSlider) {
+        if (this._settings.isSlider) {
             this._initTeaser(this._$container);
         }
 
-        if (this._options.isSliderMobile && !this._options.isSlider) {
+        if (this._settings.isSliderMobile && !this._settings.isSlider) {
             const _this: any = this;
 
             this._toggleMobileTeaser();
@@ -261,9 +289,9 @@ export default class ImageTeaser {
             });
         }
 
-        if (this._options.allowVideos) {
+        if (this._settings.allowVideos) {
             this._$videosTriggers = $(
-                `.${this._options.teaserName} a[href*="youtube.com"]`
+                `.${this._settings.teaserName} a[href*="youtube.com"]`
             );
             if (this._$videosTriggers.length) {
                 if (!this._isYTapiLoaded()) {
@@ -275,7 +303,7 @@ export default class ImageTeaser {
     }
 
     public getInstance(): any {
-        return this._instance;
+        return this._teaserInstance;
     }
 
     /**
@@ -284,10 +312,10 @@ export default class ImageTeaser {
      */
     public renderModal(): any {
         if (
-            this._options.modalHandlers.renderModal &&
-            typeof this._options.modalHandlers.renderModal === 'function'
+            this._settings.modalHandlers.renderModal &&
+            typeof this._settings.modalHandlers.renderModal === 'function'
         ) {
-            this._options.modalHandlers.renderModal(this);
+            this._settings.modalHandlers.renderModal(this);
         }
     }
 
@@ -297,10 +325,10 @@ export default class ImageTeaser {
      */
     public openModal(): any {
         if (
-            this._options.modalHandlers.openModal &&
-            typeof this._options.modalHandlers.openModal === 'function'
+            this._settings.modalHandlers.openModal &&
+            typeof this._settings.modalHandlers.openModal === 'function'
         ) {
-            this._options.modalHandlers.openModal(this);
+            this._settings.modalHandlers.openModal(this);
         }
     }
 
@@ -310,10 +338,10 @@ export default class ImageTeaser {
      */
     public closeModal(): any {
         if (
-            this._options.modalHandlers.closeModal &&
-            typeof this._options.modalHandlers.closeModal === 'function'
+            this._settings.modalHandlers.closeModal &&
+            typeof this._settings.modalHandlers.closeModal === 'function'
         ) {
-            this._options.modalHandlers.closeModal(this);
+            this._settings.modalHandlers.closeModal(this);
         }
     }
 
@@ -324,12 +352,12 @@ export default class ImageTeaser {
      */
     public shallOpenVideoInFullscreen(): boolean {
         return (
-            this._options.openVideoInFullscreenMobile &&
+            this._settings.openVideoInFullscreenMobile &&
             ('ontouchstart' in window || navigator.msMaxTouchPoints > 0)
         );
     }
 
-    protected _getDataAttrOverrideOptions(): any {
+    protected _getDataAttrOverrideSettings(): any {
         let result: any;
         const dataAttrCfg: any = this._$container.data('js-configuration');
 
@@ -348,30 +376,99 @@ export default class ImageTeaser {
      * Initializes teaser
      */
     protected _initTeaser($element: JQuery): void {
-        this._instance = new csTeaser($element, this._options);
+        this._teaserInstance = new csTeaser($element, this._settings);
     }
 
     /**
      * Initializes teaser only for mobiles
      */
     protected _toggleMobileTeaser(): void {
-        if ($(window).width() < this._options.carouselBreakpoint) {
-            if (!this._instance) {
+        if ($(window).width() < this._settings.carouselBreakpoint) {
+            if (!this._teaserInstance) {
                 this._$container.addClass(
-                    `${this._options.teaserName}--slider`
+                    `${this._settings.teaserName}--slider`
                 );
                 this._initTeaser(this._$container);
             }
         } else {
-            if (this._instance) {
-                this._instance.destroy();
+            if (this._teaserInstance) {
+                this._teaserInstance.destroy();
                 this._$container
-                    .removeClass(`${this._options.teaserName}--slider`)
-                    .find(`.${this._options.teaserName}__slides`)
+                    .removeClass(`${this._settings.teaserName}--slider`)
+                    .find(`.${this._settings.teaserName}__slides`)
                     .removeAttr('style')
-                    .find(`.${this._options.teaserName}__slide`)
+                    .find(`.${this._settings.teaserName}__slide`)
                     .removeAttr('style');
-                this._instance = undefined;
+                this._teaserInstance = undefined;
+            }
+        }
+    }
+
+    protected _fireCallback(callbackName, swiper: any) {
+        const callbacks = this._settings.callbacks;
+        if (
+            callbacks &&
+            callbacks[callbackName] &&
+            typeof(callbacks[callbackName]) === 'function'
+        ) {
+            callbacks[callbackName](swiper);
+        }
+    }
+
+    /**
+     * Adds handler for setting navigation position correctly when outside texts are enabled.
+     * It centers navigation relatively to image, not whole slide container.
+     * @TODO: get rid of this if possible after refactoring teaser bridge
+     */
+    protected _handleLazyImageReadyEvent(swiperInstance: any, image): void {
+        this._lazyLoadedImages.push(image);
+
+        if (
+            $(swiperInstance.$el).hasClass(`${this._settings.teaserName}__wrapper--content-display-outside`) &&
+            swiperInstance.navigation.prevEl &&
+            swiperInstance.navigation.nextEl &&
+            this._lazyLoadedImages.length >= swiperInstance.params.slidesPerView
+        ) {
+            let throttler: number;
+            let $tallestImage: any;
+
+            const setNavButtonsPosition: any = () => {
+                if (
+                    $(window).width() >= breakpoint.tablet &&
+                    !!$(swiperInstance.$el).parents(`.${this._settings.teaserName}--slider`)
+                ) {
+                    let h: number = 0;
+
+                    swiperInstance.slides.each(
+                        (idx: number, slide: any): void => {
+                            const $img: any = $(slide).find(`.${this._settings.teaserName}__image`);
+                            if ($img.length && $img.outerHeight() > h) {
+                                $tallestImage = $img
+                                h = $tallestImage.outerHeight();
+                            }
+                        }
+                    );
+
+                    if ($tallestImage.length) {
+                        const newNavPosition: number = h / 2;
+                        $(swiperInstance.navigation.prevEl).css('top', newNavPosition);
+                        $(swiperInstance.navigation.nextEl).css('top', newNavPosition);
+                    }
+                }
+            };
+
+            const resizeListener: any = function(): void {
+                clearTimeout(throttler);
+                throttler = setTimeout(setNavButtonsPosition, 250);
+            };
+
+            setNavButtonsPosition();
+
+            /**
+             * Register resize event if not registered before.
+             */
+            if (!this._lazyImageResizeEventHandlerAdded) {
+                $(window).on('resize', resizeListener);
             }
         }
     }
@@ -426,9 +523,9 @@ export default class ImageTeaser {
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         function onYouTubeIframeAPIReady(): void {
-            _obj._ytPlayer = new YT.Player(_obj._options.videoPlayerId, {
-                width: _obj._options.videoPlayerWidth,
-                height: _obj._options.videoPlayerHeight,
+            _obj._ytPlayer = new YT.Player(_obj._settings.videoPlayerId, {
+                width: _obj._settings.videoPlayerWidth,
+                height: _obj._settings.videoPlayerHeight,
                 playerVars: {
                     autoplay: 1,
                     controls: 1,

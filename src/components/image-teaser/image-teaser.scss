@@ -1,586 +1,276 @@
-@import 'utils/breakpoint/breakpoint.scss';
-@import 'utils/component-spacing';
+@import 'config/variables';
+@import 'components/teaser/mixins';
+@import 'components/button/mixin';
+@import 'components/image-teaser/mixin';
 
-@mixin imageTeaser() {
+$image-teaser_cta-button-type: 'primary' !default;
+$image-teaser_cta-button-icon-pos: 'right' !default;
+
+.#{$ns}image-teaser {
     $root: &;
-    @include component-spacing();
 
-    &:not(#{$root}--slider) {
-        #{$root}__nav,
-        #{$root}__pagination {
-            display: none;
+    @include teaser();
+    @include imageTeaser();
+    margin-bottom: 3rem;
+
+    &__slides {
+        #{$root}--cms-pages & {
+            justify-content: flex-start !important;
         }
-
-        #{$root}__slides {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        #{$root}__slide {
-            width: 100%;
-        }
-
-        #{$root}__figure {
-            margin: 0;
-            line-height: 1;
-        }
-
-        #{$root}__image {
-            max-width: 100%;
-            width: 100%;
-            vertical-align: bottom;
-        }
-    }
-
-    &#{$root}--slider {
-        #{$root}__image {
-            &[src^='data:image/'] {
-                height: 0;
-            }
-        }
-    }
-
-    &__wrapper {
-        position: static;
     }
 
     &__slide {
-        text-align: center;
-        position: relative;
+        #{$root}:not(#{$root}--slider) & {
+            height: auto;
+        }
 
-        #{$root}__wrapper--content-display-outside & {
-            flex-wrap: wrap;
+        #{$root}--slider & {
+            margin-bottom: 0;
+        }
+
+        &--scheme-light:not(#{$root}__slide--image-uploaded) {
+            background-color: $color_mineshaft;
         }
     }
 
-    &__figure {
+    &__slide-link {
+        display: flex;
+        width: 100%;
+
+        &:hover {
+            text-decoration: none;
+        }
+
         #{$root}__wrapper--content-display-outside & {
-            width: 100%;
+            flex-wrap: wrap;
         }
     }
 
     &__content-wrapper {
-        line-height: 1.15em;
-        color: #dd2e2e;
-
-        #{$root}__wrapper--content-display-outside & {
-            width: 100%;
-            padding: 1em 0.65em;
-            background-color: #f1f1f1;
-            text-align: center;
-        }
+        color: $color_mineshaft;
 
         #{$root}__wrapper--content-display-inside & {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 90%;
-            height: 100%;
-            display: flex;
-            box-sizing: border-box;
-            padding: 3% 5%;
+            padding: 2rem 1rem;
+            @include media('>=laptop') {
+                padding: 2rem;
+            }
+        }
 
-            @include media('>=phoneLg') {
-                #{$root}--items-in-row-2,
-                #{$root}--items-in-row-3,
-                #{$root}--items-in-row-4,
-                #{$root}--items-in-row-5,
-                #{$root}--items-in-row-6 {
-                    &#{$root}--slider {
-                        width: 80%;
-                    }
+        #{$root}--items-in-row-1 #{$root}__wrapper--content-display-inside & {
+            @include media('>=laptop') {
+                padding: 2rem 3rem;
+            }
+        }
+
+        #{$root}__wrapper--content-display-outside & {
+            background-color: transparent;
+        }
+
+        #{$root}__wrapper--content-display-inside &--content-display-scenario-1,
+        #{$root}__wrapper--content-display-inside
+            &--content-display-scenario-2 {
+            #{$root}__subheadline,
+            #{$root}__text,
+            #{$root}__cta {
+                //Style specific for creativeshop template, probably should be removed in child template
+                padding-left: 1rem;
+                @include media('>=laptop') {
+                    padding-left: 0;
                 }
-            }
-
-            @include media('>=tablet') {
-                #{$root}--items-in-row-2 #{$root}--items-in-row-3,
-                #{$root}--items-in-row-4,
-                #{$root}--items-in-row-5,
-                #{$root}--items-in-row-6 {
-                    &#{$root}--slider {
-                        width: 70%;
-                    }
-                }
-            }
-        }
-
-        &--content-display-scenario-1 {
-            #{$root}__wrapper--content-display-inside & {
-                align-items: center;
-                text-align: left;
-            }
-        }
-
-        &--content-display-scenario-2 {
-            #{$root}__wrapper--content-display-inside & {
-                align-items: flex-end;
-                text-align: left;
-            }
-        }
-
-        &--content-display-scenario-3 {
-            #{$root}__wrapper--content-display-inside & {
-                left: 50%;
-                transform: translateX(-50%);
-                justify-content: center;
-                align-items: center;
             }
         }
 
         &--content-display-scenario-4 {
-            #{$root}__wrapper--content-display-inside & {
-                left: 50%;
-                transform: translateX(-50%);
-                justify-content: center;
-                align-items: flex-end;
-            }
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
     }
 
     &__headline {
-        margin: 0;
-        font-size: 1.5rem;
-        line-height: 1;
-        text-transform: uppercase;
+        //Below are styles specific for creativeshop template, probably should be removed in child template
 
-        @include media('>=phone') {
-            font-size: 2rem;
-            #{$root}--items-in-row-1 & {
-                font-size: 2rem;
+        #{$root}__slide--scheme-light & {
+            color: $color_white;
+        }
+
+        #{$root}:not(#{$root}--items-in-row-1)
+            #{$root}__wrapper--content-display-inside
+            #{$root}__content-wrapper--content-display-scenario-1
+            &,
+        #{$root}:not(#{$root}--items-in-row-1)
+            #{$root}__wrapper--content-display-inside
+            #{$root}__content-wrapper--content-display-scenario-2
+            & {
+            max-width: 70%;
+            margin-left: -1rem;
+            padding: 0.5rem 1.5rem 0.5rem 2rem;
+            background-color: $color_gold;
+            @include media('>=laptop') {
+                margin-left: -2rem;
+            }
+
+            &:after {
+                //Style specific for creativeshop template, probably should be removed in child template
+                display: block;
+                content: '';
+                position: absolute;
+                right: -2rem;
+                top: 0;
+                z-index: -1;
+                background: $color_gold;
+                height: 100%;
+                width: 4.5rem;
+                transform: skew(-18deg);
             }
         }
 
-        @include media('>=phoneLg') {
-            font-size: 2.39rem;
-            #{$root}--items-in-row-1 & {
-                font-size: 3.75vw;
-            }
+        #{$root}--items-in-row-2
+            #{$root}__wrapper--content-display-inside
+            #{$root}__content-wrapper--content-display-scenario-1
+            &,
+        #{$root}--items-in-row-2
+            #{$root}__wrapper--content-display-inside
+            #{$root}__content-wrapper--content-display-scenario-2
+            & {
+            max-width: 50% !important;
         }
 
-        @include media('>=tablet') {
-            #{$root}--items-in-row-1 & {
-                font-size: 4vw;
-            }
+        //End of style very specific to creativeshop template
 
-            #{$root}--items-in-row-2 & {
-                font-size: 2.45vw;
-            }
-
-            #{$root}--items-in-row-3 & {
-                font-size: 2.25vw;
-            }
-
-            #{$root}--items-in-row-3#{$root}--slider & {
-                font-size: 2.05vw;
-            }
-
-            #{$root}--items-in-row-4 & {
-                font-size: 2vw;
-            }
-
-            #{$root}--items-in-row-4#{$root}--slider & {
-                font-size: 1.9vw;
-            }
-
-            #{$root}--items-in-row-6 & {
-                font-size: 1.5vw;
-            }
-
-            #{$root}--items-in-row-8 & {
-                font-size: 1.35vw;
-            }
+        #{$root}__wrapper--content-display-inside & {
+            width: auto;
+            position: relative;
+            z-index: 3;
+            font-weight: 700;
+            text-transform: none;
         }
 
-        @include media('>=laptop') {
-            #{$root}--items-in-row-1 & {
-                font-size: 3.5vw;
-            }
+        #{$root}__wrapper--content-display-outside & {
+            margin-bottom: 0.5rem;
+            font-weight: 700;
 
-            #{$root}--items-in-row-2 & {
-                font-size: 2.35vw;
-            }
+            @include media('>=laptop') {
+                #{$root}--items-in-row-2 & {
+                    font-size: 2.43rem;
+                }
 
-            #{$root}--items-in-row-3 & {
-                font-size: 1.9vw;
-            }
+                #{$root}--items-in-row-3 & {
+                    font-size: 2.1rem;
+                }
 
-            #{$root}--items-in-row-4 & {
-                font-size: 1.6vw;
-            }
+                #{$root}--items-in-row-4 & {
+                    font-size: 1.95rem;
+                }
 
-            #{$root}--items-in-row-6 & {
-                font-size: 1.35vw;
-            }
-            #{$root}--items-in-row-8 & {
-                font-size: 1.2vw;
-            }
-        }
-
-        @include media('>=laptopLg') {
-            #{$root}--items-in-row-1 & {
-                font-size: 4.65rem;
-            }
-
-            #{$root}--items-in-row-2 & {
-                font-size: 2.9rem;
-            }
-
-            #{$root}--items-in-row-3 &,
-            #{$root}--items-in-row-4 & {
-                font-size: 2.7rem;
-            }
-
-            #{$root}--items-in-row-3#{$root}--slider & {
-                font-size: 2.5rem;
-            }
-
-            #{$root}--items-in-row-4#{$root}--slider & {
-                font-size: 2.3rem;
-            }
-
-            #{$root}--items-in-row-6 & {
-                font-size: 1.7rem;
-            }
-
-            #{$root}--items-in-row-8 & {
-                font-size: 1.5rem;
-            }
-        }
-
-        //In scenario with 2 images in row on mobile below styles overwrite all above font-sizes
-        #{$root}--items-in-row-mobile-2 & {
-            @include media('<tablet') {
-                font-size: 3.5vw;
-            }
-            @include media('<phone') {
-                font-size: 3.8vw;
+                #{$root}--items-in-row-6 & {
+                    font-size: 1.74rem;
+                }
             }
         }
 
         + #{$root}__subheadline {
-            margin: 0.25em 0 0;
+            margin: 0.25rem 0 0;
+        }
+
+        + #{$root}__text {
+            margin: 0.25rem 0 0;
         }
     }
 
     &__subheadline {
-        margin: 0;
-        font-size: 1.2rem;
-        line-height: 1;
-        font-weight: 300;
+        margin-bottom: 1rem;
 
-        @include media('>=phone') {
-            font-size: 1.4rem;
+        #{$root}__slide--scheme-light & {
+            color: $color_white;
         }
 
-        @include media('>=phoneLg') {
-            font-size: 1.69rem;
-        }
-
-        @include media('>=tablet') {
-            #{$root}--items-in-row-1 & {
-                font-size: 2.55vw;
-            }
-
-            #{$root}--items-in-row-2 & {
-                font-size: 2vw;
-            }
-
-            #{$root}--items-in-row-3 & {
-                font-size: 1.78vw;
-            }
-
-            #{$root}--items-in-row-3#{$root}--slider & {
-                font-size: 1.5vw;
-            }
-
-            #{$root}--items-in-row-4 & {
-                font-size: 1.5vw;
-            }
-
-            #{$root}--items-in-row-4#{$root}--slider & {
-                font-size: 1.4vw;
-            }
-
-            #{$root}--items-in-row-6 & {
-                font-size: 1.2vw;
-            }
-
-            #{$root}--items-in-row-8 & {
-                font-size: 1.1vw;
-            }
-        }
-
-        @include media('>=laptop') {
-            #{$root}--items-in-row-1 & {
-                font-size: 2.25vw;
-            }
-
-            #{$root}--items-in-row-2 & {
-                font-size: 1.85vw;
-            }
-
-            #{$root}--items-in-row-3 & {
-                font-size: 1.5vw;
-            }
-
-            #{$root}--items-in-row-4 & {
-                font-size: 1.35vw;
-            }
-
-            #{$root}--items-in-row-6 & {
-                font-size: 1.3vw;
-            }
-
-            #{$root}--items-in-row-8 & {
-                font-size: 1.2vw;
-            }
-        }
-
-        @include media('>=laptopLg') {
-            #{$root}--items-in-row-1 & {
-                font-size: 2.85rem;
-            }
-
-            #{$root}--items-in-row-2 & {
-                font-size: 2.2rem;
-            }
-
-            #{$root}--items-in-row-3 &,
-            #{$root}--items-in-row-4 & {
-                font-size: 2rem;
-            }
-
-            #{$root}--items-in-row-3#{$root}--slider & {
-                font-size: 1.8rem;
-            }
-
-            #{$root}--items-in-row-4#{$root}--slider & {
-                font-size: 1.6rem;
-            }
-
-            #{$root}--items-in-row-6 & {
-                font-size: 1.2rem;
-            }
-
-            #{$root}--items-in-row-6
-                #{$root}__wrapper--content-display-outside
-                & {
-                font-size: 1.6rem;
-            }
-
-            #{$root}--items-in-row-8
-                #{$root}__wrapper--content-display-outside
-                & {
-                font-size: 1.5rem;
-            }
-        }
-
-        //In scenario with 2 images in row on mobile below styles overwrite all above font-sizes
-        #{$root}--items-in-row-mobile-2 & {
-            @include media('<tablet') {
-                font-size: 2.5vw;
-            }
-            @include media('<phone') {
-                font-size: 3vw;
-            }
+        + #{$root}__text {
+            margin: 0.25rem 0 0;
         }
     }
 
     &__text {
         line-height: 1.18;
+        color: $color_dove-gray;
+        font-weight: 400;
         display: none;
 
-        @include media('>=tablet') {
-            font-size: 1.4rem;
-
-            #{$root}__wrapper--content-display-outside &,
-            #{$root}--items-in-row-1 & {
-                display: block;
-            }
+        #{$root}__slide--scheme-light & {
+            color: $color_white;
         }
 
-        @include media('>=laptopLg') {
-            #{$root}--items-in-row-2 & {
-                display: block;
-            }
+        @include media('<laptop') {
+            font-size: 1.45rem;
+        }
+
+        @include media('>=laptop') {
+            display: block;
         }
     }
 
     &__cta {
-        display: none;
+        white-space: nowrap;
+        &-button {
+            @include button($type: $image-teaser_cta-button-type, $icon_pos: $image-teaser_cta-button-icon-pos);
 
-        @include media('>=tablet') {
-            display: block;
-            margin-top: 0.7rem;
-
-            #{$root}--items-in-row-2:not(#{$root}--slider) & {
-                padding: 1em 2.5em;
+            &-span {
+                @include button_span($type: $image-teaser_cta-button-type, $icon_pos: $image-teaser_cta-button-icon-pos);
             }
 
-            #{$root}--items-in-row-3
-                #{$root}__wrapper--content-display-inside
-                &,
-            #{$root}--items-in-row-4
-                #{$root}__wrapper--content-display-inside
-                &,
-            #{$root}--items-in-row-6
-                #{$root}__wrapper--content-display-inside
-                &,
-            #{$root}--items-in-row-6
-                #{$root}__wrapper--content-display-outside
-                & {
-                display: none;
-            }
-
-            #{$root}--items-in-row-8 & {
-                display: none;
-            }
-        }
-
-        @include media('>=laptop') {
-            #{$root}--items-in-row-3:not(#{$root}--slider)
-                #{$root}__wrapper--content-display-inside
-                & {
-                display: block;
-            }
-
-            #{$root}--items-in-row-6:not(#{$root}--slider) & {
-                padding: 0.65em 1.25em;
+            &-icon {
+                @include button_icon($type: $image-teaser_cta-button-type, $icon_pos: $image-teaser_cta-button-icon-pos);
             }
         }
     }
 
     &__pagination {
-        text-align: center;
+        position: static;
+        transform: none;
     }
 
-    &--items-in-row-mobile-2 {
-        &:not(#{$root}--slider) {
-            #{$root}__slide {
-                width: calc(50% - 0.25em);
-                text-align: center;
+    &__nav {
+        z-index: 3;
+        background-color: $color_white;
+
+        @include media('<tablet') {
+            display: none;
+        }
+
+        &--disabled {
+            opacity: 0.5;
+            cursor: initial !important;
+
+            &:hover {
+                transform: translateY(-50%) !important;
             }
         }
-    }
 
-    &--mobile-cfg-big-small-small {
-        &:not(#{$root}--slider) {
-            #{$root}__slide {
-                width: calc(
-                    50% - 0.25em
-                ); // Small slides should be half width minus gap.
-
-                &:first-child {
-                    line-height: 1;
-                    width: 100%; // Big slide should be full width.
-
-                    #{$root}__image {
-                        width: 100%;
-                        vertical-align: bottom;
-                    }
-                }
-            }
+        &--prev {
+            left: 1.5rem;
         }
-    }
 
-    &--mobile-cfg-big-small-small-big {
-        &:not(#{$root}--slider) {
-            #{$root}__slide {
-                width: calc(
-                    50% - 0.25em
-                ); // Small slides should be half width minus gap.
-
-                &:first-child,
-                &:last-child {
-                    line-height: 1;
-                    width: 100%; // Big slides should be full width.
-
-                    #{$root}__image {
-                        width: 100%;
-                        vertical-align: bottom;
-                    }
-                }
-            }
+        &--next {
+            right: 1.5rem;
         }
     }
 
-    &--full-width {
-        margin: 0 calc(((100vw - 100%) / 2) * -1);
+    &__nav-icon {
+        fill: $color_cerulean-blue;
+
+        @include media('<tablet') {
+            height: calc(5.5rem * 0.75);
+        }
     }
 
-    @include media('>=tablet') {
-        &--items-in-row-2,
-        &--items-in-row-3,
-        &--items-in-row-4,
-        &--items-in-row-5,
-        &--items-in-row-6,
-        &--items-in-row-8 {
-            &:not(#{$root}--slider) {
-                #{$root}__slide {
-                    text-align: center;
-                }
-            }
-        }
+    &--full-width-slider {
+        width: 100%;
+        padding: 0;
+        margin: 0 auto;
+        margin-right: auto;
+        margin-left: auto;
+    }
 
-        &--items-in-row-2 {
-            &:not(#{$root}--slider) {
-                #{$root}__slide {
-                    width: calc(50% - 0.25em);
-                }
-            }
-        }
-
-        &--items-in-row-3 {
-            &:not(#{$root}--slider) {
-                #{$root}__slide {
-                    width: calc(100% / 3 - 0.3333em);
-                }
-            }
-        }
-
-        &--items-in-row-4 {
-            &:not(#{$root}--slider) {
-                #{$root}__slide {
-                    width: calc(100% / 4 - 0.375em);
-                }
-            }
-        }
-
-        &--items-in-row-6 {
-            &:not(#{$root}--slider) {
-                #{$root}__slide {
-                    width: calc(100% / 6 - 0.8333em);
-                }
-            }
-        }
-
-        &--items-in-row-8 {
-            &:not(#{$root}--slider) {
-                #{$root}__slide {
-                    width: calc(100% / 8 - 0.875em);
-                }
-            }
-        }
-
-        &--mobile-cfg-big-small-small {
-            &:not(#{$root}--slider) {
-                #{$root}__slide:first-child {
-                    width: calc(100% / 3 - 0.3333em);
-                }
-            }
-        }
-
-        &--mobile-cfg-big-small-small-big {
-            &:not(#{$root}--slider) {
-                #{$root}__slide:first-child,
-                #{$root}__slide:last-child {
-                    width: calc(100% / 4 - 0.5em);
-                }
-            }
-        }
+    &__number--current {
+        color: $color_gold;
     }
 }

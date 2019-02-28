@@ -91,6 +91,7 @@ import 'components/dashboard';
 import 'components/swatches';
 import 'components/qty-increment';
 import 'components/page-title';
+import 'components/image-teaser';
 import 'components/social-media-list';
 import 'components/product-details';
 
@@ -105,7 +106,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
 collapsibleText();
 
-import 'customizations/image-teaser/image-teaser';
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';

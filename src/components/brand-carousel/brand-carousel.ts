@@ -3,8 +3,9 @@ import * as $ from 'jquery';
 import csTeaser from 'components/teaser/teaser';
 
 /**
- * component options interface.
+ * Component options interface.
  * Please refer to swiper documentation and our teaser component for more options and callbacks
+ *
  */
 interface BrandCarouselOptions {
     /**
@@ -24,24 +25,60 @@ interface BrandCarouselOptions {
     /**
      * Space between slides (in px)
      * @type {number}
-     * @default 30
+     * @default 50
      */
     spaceBetween?: number;
 
     /**
      * Maximum width of single slide (in px)
      * @type {number}
-     * @default 220
+     * @default 50
      */
     slideMinWidth?: number;
+
+    /**
+    * Maximum number of groups that will be still visible as dots.
+    * If you want pagination to always be dots you can either don't add
+    * .${teaserName}__numbers element in HTML or set this to something big.
+    * @type {number}
+    * @default 10
+    */
+    paginationBreakpoint?: number;
+
+     /**
+     * Defines if slides should be centered
+     * Default: false
+     * @type {boolean}
+     * @default false
+     */
+    centeredSlides?: boolean;
+
+    /**
+     * Rounds values of slides width and height
+     * to prevent blurry texts on usual resolution screens
+     * @type {boolean}
+     * @default false
+     */
+    roundLengths?: boolean;
+
+    /**
+     * Object with options for breakpoints.
+     * Please refer to swiper documentation
+     * http://idangero.us/swiper/api/#parameters
+     * @default null
+     */
+    breakpoints?: any;
 }
 
 export default class BrandCarousel {
     protected _$element: JQuery;
     protected _$items: JQuery;
-    protected _options: BrandCarouselOptions;
     protected _breakpointsArray: Array<any>;
-    protected _instance: any;
+    protected _teaserInstance: any;
+    /**
+     * Holds all settings that will be passed to csTeaser
+     */
+    protected _settings: any;
 
     /**
      * Creates new ProductsPromo component with optional settings.
@@ -49,41 +86,43 @@ export default class BrandCarousel {
      * @param {options}  Optional settings object.
      */
     public constructor($element?: JQuery, options?: BrandCarouselOptions) {
-        this._options = $.extend(
+        this._settings = $.extend(true,
             {
                 teaserName: 'cs-brand-carousel',
                 slidesPerView: 'auto',
-                spaceBetween: 30,
-                slideMinWidth: 220,
-                roundLengths: true,
+                spaceBetween: 50,
+                slideMinWidth: 50,
+                paginationBreakpoint: 10,
+                roundLengths: false,
+                centeredSlides: false,
                 calculateSlides: false,
                 loop: true,
-                centeredSlides: true,
-                lazyLoading: true,
-                lazyLoadingOnTransitionStart: true,
+                lazy: {
+                    loadOnTransitionStart: true,
+                }
             },
             options
         );
 
-        this._$element = $element || $(`.${this._options.teaserName}`);
+        this._$element = $element || $(`.${this._settings.teaserName}`);
 
         if (this._$element.length) {
             this._$items = this._$element.find(
-                $(`.${this._options.teaserName}__slide`)
+                $(`.${this._settings.teaserName}__slide`)
             );
         }
 
-        if (this._options.breakpoints) {
-            this._breakpointsArray = Object.keys(this._options.breakpoints);
+        if (this._settings.breakpoints) {
+            this._breakpointsArray = Object.keys(this._settings.breakpoints);
         }
 
         if (this._$element.length && this._$items.length > 1) {
             let throttler: number;
             const _this: any = this;
 
-            $(window).on('resize', function(): void {
+            $(window).on('resize', (): void => {
                 clearTimeout(throttler);
-                throttler = setTimeout(function(): void {
+                throttler = setTimeout((): void => {
                     _this._init();
                 }, 250);
             });
@@ -93,7 +132,7 @@ export default class BrandCarousel {
     }
 
     public getInstance(): any {
-        return this._instance;
+        return this._teaserInstance;
     }
 
     protected _getSlidesPerView(): number {
@@ -101,7 +140,7 @@ export default class BrandCarousel {
         const wWidth: number = $(window).width();
 
         if (wWidth >= next) {
-            return this._options.slidesPerView;
+            return this._settings.slidesPerView;
         } else {
             for (let i: number = 0; i < this._breakpointsArray.length; i++) {
                 const currentBreakpoint: number = parseInt(
@@ -114,7 +153,7 @@ export default class BrandCarousel {
                 }
             }
 
-            return this._options.breakpoints[next].slidesPerView;
+            return this._settings.breakpoints[next].slidesPerView;
         }
     }
 
@@ -124,30 +163,30 @@ export default class BrandCarousel {
     protected _init(): void {
         if (this._breakpointsArray) {
             if (this._$items.length > this._getSlidesPerView()) {
-                if (!this._instance) {
+                if (!this._teaserInstance) {
                     this._$element.addClass(
-                        `${this._options.teaserName}--slider`
+                        `${this._settings.teaserName}--slider`
                     );
-                    this._instance = new csTeaser(
+                    this._teaserInstance = new csTeaser(
                         this._$element,
-                        this._options
+                        this._settings
                     );
                 }
             } else {
-                if (this._instance) {
-                    this._instance.destroy();
+                if (this._teaserInstance) {
+                    this._teaserInstance.destroy();
                     this._$element
-                        .removeClass(`${this._options.teaserName}--slider`)
-                        .find(`.${this._options.teaserName}__slides`)
+                        .removeClass(`${this._settings.teaserName}--slider`)
+                        .find(`.${this._settings.teaserName}__slides`)
                         .removeAttr('style')
-                        .find(`.${this._options.teaserName}__slide`)
+                        .find(`.${this._settings.teaserName}__slide`)
                         .removeAttr('style');
-                    this._instance = undefined;
+                    this._teaserInstance = undefined;
                 }
             }
         } else {
-            this._$element.addClass(`${this._options.teaserName}--slider`);
-            this._instance = new csTeaser(this._$element, this._options);
+            this._$element.addClass(`${this._settings.teaserName}--slider`);
+            this._teaserInstance = new csTeaser(this._$element, this._settings);
         }
     }
 }
