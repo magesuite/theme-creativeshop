@@ -1,3 +1,5 @@
+import 'components/cookie-message/cookie-message.scss';
+
 /* tslint:disable:no-unused-new object-literal-key-quotes max-classes-per-file */
 import * as $ from 'jquery';
 

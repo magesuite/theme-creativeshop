@@ -1,3 +1,8 @@
+@import 'components/button/mixin';
+
+$info-block_button-type: $button_default-type !default;
+$info-block_button-icon-pos: $button_default-icon-pos !default;
+
 .#{$ns}info-block {
     $root: &;
     font-size: 1rem;
@@ -160,10 +165,29 @@
     }
 
     &__button {
+        @include button(
+            $type: $info-block_button-type,
+            $icon_pos: $info-block_button-icon-pos
+        );
+
         margin-right: 1rem;
         margin-bottom: 0.8rem;
     }
 
+    &__button-span {
+        @include button_span(
+            $type: $info-block_button-type,
+            $icon_pos: $info-block_button-icon-pos
+        );
+    }
+
+    &__button-icon {
+        @include button_icon(
+            $type: $info-block_button-type,
+            $icon_pos: $info-block_button-icon-pos
+        );
+    }
+    
     &__toolbar {
         position: relative;
         font-size: 1.4rem;

@@ -1,4 +1,10 @@
-.#{$ns}reviews-summary {
+@import 'config/variables';
+@import 'components/button/mixin';
+
+$reviews-summary_button-type: $button_default-type !default;
+$reviews-summary_button-icon-pos: $button_default-icon-pos !default;
+
+.cs-reviews-summary {
     $root: &;
     display: flex;
     margin-bottom: 3rem;
@@ -22,12 +28,24 @@
     }
 
     &__button {
+        @include button(
+            $type: $reviews-summary_button-type,
+            $icon_pos: $reviews-summary_button-icon-pos
+        );
+
         margin-top: 1.2rem;
         margin-bottom: 2rem;
 
         @include media('>=tablet') {
             margin-bottom: 0;
         }
+    }
+
+    &__button-span {
+        @include button_span(
+            $type: $reviews-summary_button-type,
+            $icon_pos: $reviews-summary_button-icon-pos
+        );
     }
 
     &__stars {

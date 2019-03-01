@@ -8,7 +8,7 @@ $discount_border-top: 1px solid $color_alto !default;
 $discount_title-icon-color: $color_gray !default;
 
 $discount_button-type: 'secondary' !default;
-$discount_button-icon-pos: 'no-icon' !default;
+$discount_button-icon-pos: $button_default-icon-pos !default;
 
 .#{$ns}discount {
     $root: &;
@@ -98,15 +98,25 @@ $discount_button-icon-pos: 'no-icon' !default;
 .#{$ns}discount, 
 .opc-payment-additional {
     button.action {
-        @include button($type: $discount_button-type, $icon_pos: $discount_button-icon-pos);
+        @include button(
+            $type: $discount_button-type, 
+            $icon_pos: $discount_button-icon-pos
+        );
+
         margin-top: 1rem;
 
         span {
-            @include button-span($type: $discount_button-type, $icon_pos: $discount_button-icon-pos);
+            @include button-span(
+                $type: $discount_button-type, 
+                $icon_pos: $discount_button-icon-pos
+            );
         }
 
         svg {
-            @include button-icon($type: $discount_button-type, $icon_pos: $discount_button-icon-pos);
+            @include button-icon(
+                $type: $discount_button-type, 
+                $icon_pos: $discount_button-icon-pos
+            );
         }
     }
 }

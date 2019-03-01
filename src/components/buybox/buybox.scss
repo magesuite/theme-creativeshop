@@ -78,6 +78,10 @@ $buybox_usp-label-width: min-content !default; // this value will make sure it w
 $buybox_downloadable-option-margin: 0 0 0.7em !default;
 $buybox_downloadable-hide-duplicated-price-box: true !default;
 
+// Update button
+$buybox_update-button-type: $button_default-type !default;
+$buybox_update-button-icon-pos: $button_default-icon-pos 'no-icon';
+
 .#{$ns}buybox {
     height: 100%;
     font-size: $buybox_font-size;
@@ -226,6 +230,30 @@ $buybox_downloadable-hide-duplicated-price-box: true !default;
         .page-product-downloadable & {
             display: none;
         }
+    }
+
+    &__update {
+        @include button(
+            $type: $buybox_update-button-type,
+            $icon_pos: $buybox_update-button-icon-pos
+        );
+        
+        width: 100%;
+        margin: 1rem 0;
+    }
+
+    &__update-span {
+        @include button_span(
+            $type: $buybox_update-button-type,
+            $icon_pos: $buybox_update-button-icon-pos
+        );
+    }
+
+    &__update-icon {
+        @include button_icon(
+            $type: $buybox_update-button-type,
+            $icon_pos: $buybox_update-button-icon-pos
+        );
     }
 
     /* Default styling is for IN STOCK variant */

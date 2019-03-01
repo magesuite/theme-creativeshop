@@ -8,13 +8,13 @@
     <?php if ($block->isFixedAmount()): ?>
         <?php /* @noEscape */ echo $block->getChildHtml('giftcard_price'); ?>
     <?php endif; ?>
-    <div class="aw-gc-product-form-options | cs-product-sale-block__giftcard" id="aw-gc-product-form-options" tabindex="0">
+    <div class="aw-gc-product-form-options cs-product-sale-block__giftcard" id="aw-gc-product-form-options" tabindex="0">
         <?php if ($block->isFixedAmount()): ?>
             <input type="hidden" name="aw_gc_amount" value="<?php /* @noEscape */ echo $block->getFixedAmount() ?>" />
         <?php else: ?>
             <fieldset class="cs-form__fieldset">
                 <legend class="cs-product-sale-block__giftcard-headline">
-                    <span class="aw-gc-product-form-options__step-number | cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
+                    <span class="aw-gc-product-form-options__step-number cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
                     <span><?php echo $block->escapeHtml(__('Choose an amount')) ?></span>
                 </legend>
                 <div class="field required aw-gc-product-form-options__field-full-width">
@@ -23,12 +23,12 @@
                     </label>
                     <div class="cs-form__fieldset">
                         <?php if ($block->getAmountOptions()): ?>
-                            <div class="cs-form__field | cs-input | aw-gc-product-form-options__amount-control">
-                                <div class="cs-input__control | amount-options">
+                            <div class="cs-form__field cs-input aw-gc-product-form-options__amount-control">
+                                <div class="cs-input__control amount-options">
                                     <select
                                         id="aw_gc_amount"
                                         name="aw_gc_amount"
-                                        class="required-entry aw-gc-amount-entry | cs-select"
+                                        class="required-entry aw-gc-amount-entry cs-select"
                                         data-mage-init='{"awGiftCardChangeAmount":{}}'>
                                         <?php foreach ($block->getGiftcardAmounts() as $amount): ?>
                                             <option value="<?php /* @noEscape */ echo $amount['value'] ?>"
@@ -46,7 +46,7 @@
                             <div id="aw-gc-custom-amount-box"
                                  class="field aw-gc-product-form-options__amount-control"
                                 <?php /* @noEscape */ echo $block->getAmountOptions() ? 'style="display: none"' : '' ?>>
-                                <div class="cs-input__control | amount-custom">
+                                <div class="cs-input__control amount-custom">
                                     <input
                                         type="text"
                                         name="aw_gc_custom_amount"
@@ -71,11 +71,11 @@
         <?php if ($block->isAllowDesignSelect()): ?>
         <fieldset class="cs-form__fieldset">
             <legend class="cs-product-sale-block__giftcard-headline">
-                <span class="aw-gc-product-form-options__step-number  | cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
+                <span class="aw-gc-product-form-options__step-number  cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
                 <span><?php echo $block->escapeHtml(__('Select a design')) ?></span>
             </legend>
             <div class="field required aw-gc-product-form-options__field-full-width">
-                <div class="cs-form__field | cs-input | aw-gc-product-form-options__template-options">
+                <div class="cs-form__field cs-input aw-gc-product-form-options__template-options">
                     <?php foreach ($block->getGiftcardTemplates() as $template): ?>
                         <div class="aw-gc-product-form-options__template-option <?php /* @noEscape */ echo $template['value'] === $block->getTemplateOptionValue() ? 'selected' : '' ?>"
                              data-mage-init='{"awGiftCardChangeDesign":{
@@ -111,7 +111,7 @@
     <?php endif; ?>
         <fieldset class="cs-form__fieldset">
             <legend class="cs-product-sale-block__giftcard-headline">
-                <span class="cs-product-sale-block__giftcard-step-number | cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
+                <span class="cs-product-sale-block__giftcard-step-number cs-product-sale-block__giftcard-step-number"><?php /* @noEscape */ echo $stepCount++ ?></span>
                 <span><?php echo $block->escapeHtml($block->isAllowEmail() ? __('Compose your email') : __('Compose your message')) ?></span>
             </legend>
             <div>
@@ -119,7 +119,7 @@
                     <div class="email delivery-date">
                         <div class="fieldset">
                             <div class="field aw-gc-product-form-options__delivery-date">
-                                <label class="cs-input__label | fromto" for="aw_gc_delivery_date">
+                                <label class="cs-input__label fromto" for="aw_gc_delivery_date">
                                     <span><?php echo $block->escapeHtml(__('Delivery Date')) ?></span>
                                 </label>
                                 <div class="cs-input__control delivery-date-name">
@@ -139,7 +139,7 @@
                             </div>
 
                             <div class="field aw-gc-product-form-options__delivery-date-timezone">
-                                <label class="cs-input__label | fromto" for="aw_gc_delivery_date_timezone">
+                                <label class="cs-input__label fromto" for="aw_gc_delivery_date_timezone">
                                     <span><?php echo $block->escapeHtml(__('Delivery Date Timezone')) ?></span>
                                 </label>
                                 <div class="cs-input__control delivery-date-timezone-name">
@@ -159,7 +159,7 @@
                 <div class="email fromto">
                     <div class="fieldset">
                         <div class="field required aw-gc-product-form-options__fromto">
-                            <label class="cs-input__label | fromto" for="aw_gc_recipient_name">
+                            <label class="cs-input__label fromto" for="aw_gc_recipient_name">
                                 <span><?php echo $block->escapeHtml(__('To')) ?></span>
                             </label>
                             <div class="cs-input__control fromto-name">
@@ -184,7 +184,7 @@
                             <?php endif; ?>
                         </div>
                         <div class="field required aw-gc-product-form-options__fromto" data-bind="scope: 'awGiftcardCustomer'">
-                            <label class="cs-input__label | fromto" for="aw_gc_recipient_name">
+                            <label class="cs-input__label fromto" for="aw_gc_recipient_name">
                                 <span><?php echo $block->escapeHtml(__('From')) ?></span>
                             </label>
                             <div class="cs-input__control fromto-name">
@@ -236,7 +236,7 @@
                     <div class="email body aw-gc-product-form-options__email-content">
                         <div class="fieldset">
                             <?php if ($block->isAllowHeadline()): ?>
-                                <div class="cs-form__field | cs-input | aw-gc-product-form-options__field-full-width">
+                                <div class="cs-form__field cs-input aw-gc-product-form-options__field-full-width">
                                     <label class="cs-input__label" for="aw_gc_headline">
                                         <span><?php echo $block->escapeHtml(__('Headline')) ?></span>
                                     </label>
@@ -270,19 +270,17 @@
                     </div>
                 <?php endif; ?>
                 <?php if ($block->isAllowPreview()): ?>
-                    <div class="aw-gc-product-form-options__preview | cs-product-sale-block__giftcard-button-wrapper">
+                    <div class="aw-gc-product-form-options__preview cs-product-sale-block__giftcard-button-wrapper">
                         <button
                             type="button"
-                            <?php /* TO DO when magesuite and new styling approach with mixins is ready remove all cs-button classes */ ?>
-                            class="cs-product-sale-block__giftcard-button | cs-button cs-button--look_light cs-button--size_300"
+                            class="cs-product-sale-block__giftcard-button"
                             data-mage-init='{"awGiftCardPreview":{
                                     "url": "<?php /* @noEscape */ echo $block->escapeXssInUrl($block->getPreviewUrl()) ?>"
                                 }}'
                         >
-                            <?php echo $block->escapeHtml(__('Preview')) ?>
-                            <svg class="cs-button__icon">
-                                <use xlink:href="#arrow_next"></use>
-                            </svg>
+                            <span class="cs-product-sale-block__giftcard-button-span">
+                                <?php echo $block->escapeHtml(__('Preview')) ?>
+                            </span>
                         </button>
                     </div>
                     <div id="aw-gc-product-preview-popup" title="Gift Card Preview" style="display: none;"></div>

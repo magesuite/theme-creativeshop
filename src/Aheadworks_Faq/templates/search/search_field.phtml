@@ -1,39 +1,30 @@
 <?php
-/**
-* Copyright 2016 aheadWorks. All rights reserved.
-* See LICENSE.txt for license details.
-*/
-
 // @codingStandardsIgnoreFile
-
 /** @var $block \Aheadworks\Faq\Block\Search\Search */
 ?>
 
 <?php $searchQuery = $block->getData('data') ? $block->getData('data') : $block->getSearchQueryString();?>
     <div class="cs-faq-index__search">
-        <form class="cs-faq-index__search-form cs-form" action="<?php echo $block->escapeUrl($block->getFaqSearchUrl()) ?>" method="get" role="search">
-            <div class="cs-faq-index__search-field cs-input">
-                <div class="cs-faq-index__search-control cs-input__control">
+        <form class="cs-faq-index__search-form" action="<?php echo $block->escapeUrl($block->getFaqSearchUrl()) ?>" method="get" role="search">
+            <div class="cs-faq-index__search-field">
+                <div class="cs-faq-index__search-control">
                     <input id="cs-faq-index-search-field" type="text"
                             placeholder="<?php echo $block->escapeHtml(__('Type here to search FAQ articles')); ?>"
-                            class="cs-faq-index__search-input cs-input__input cs-input__input--with-button"
+                            class="cs-faq-index__search-input"
                             name="<?php /* @noEscape */ echo $block->getQueryParamName() ?>"
                             role="combobox"
                             aria-required="true"
                             required
                             value="<?php echo $block->escapeHtml($searchQuery) ?>"/>
                     <input type="hidden" name="routeName" value="<?php echo $block->escapeHtml($block->getRouteName()) ?>" />
-                    <div id="search_autocomplete" class="cs-faq-index__search-autocomplete | search-autocomplete"></div>
+                    <div id="search_autocomplete" class="cs-faq-index__search-autocomplete search-autocomplete"></div>
                 </div>
             </div>
-            <div class="cs-input__button">
-                <button type="submit" title="<?php echo  $block->escapeHtml(__('Search')); ?>" class="cs-button cs-button--look_default cs-button--look_on-input cs-faq-index__search-button" >
-                    <svg class="cs-button__icon cs-button__icon--center cs-button__icon--search">
-                        <use xlink:href="#magnifier"></use>
-                    </svg>
-                    <span class="cs-visually-hidden"><?php echo  $block->escapeHtml(__('Search')); ?></span>
+            <div class="cs-faq-index__search-action">
+                <button type="submit" title="<?php echo  $block->escapeHtml(__('Search')); ?>" class="cs-faq-index__search-button" >
+                    <?= $block->getChildHtml('aw_faq.search.button.icon'); ?>
+                    <span class="cs-faq-index__search-button-span"><?php echo  $block->escapeHtml(__('Search')); ?></span>
                 </button>
             </div>
-
         </form>
     </div>

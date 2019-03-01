@@ -1,49 +1,122 @@
-// cookie-message
-// This component displays cookie message and sets cookie after user agree by clicking &quot;OK&quot; button
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-@mixin cookieMessage() {
-    $root: &;
+@import 'config/variables';
+@import 'include-media/dist/include-media';
 
+@import 'components/button/mixin';
+@import 'utils/link';
+
+$cookie-message_background-color: $color_background-200 !default;
+$cookie-message_text-color: $color_text-900 !default;
+$cookie-message_link-color: $color_primary-500 !default;
+$cookie-message_link-color--hover: $color_primary-800 !default;
+
+$cookie-message_button-type: $button_default-type !default;
+$cookie-message_icon-pos: $button_default-icon-pos !default;
+
+$cookie-message_button-pos-breakpoint: 'tablet';
+$cookie-message_button-pos-align: flex-start;
+
+.cs-cookie-message {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     margin: 0 auto;
+    box-sizing: border-box;
+    padding: 1.2rem;
+    background-color: $cookie-message_background-color;
+    color: $cookie-message_text-color;
+    box-shadow: 0 -.3rem .5rem 0 rgba(0, 0, 0 , .15);
+    font-size: 85%;
+    z-index: 90;
+    transform: translate3d(0, 110%, 0);
+    opacity: 0;
+    transition: transform .25s ease-out, opacity .18s linear;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
-    padding: .8rem 1.5rem;
-    background-color: #fff;
-    box-shadow: 0 -.3rem .5rem 0 rgba( 0, 0, 0 , .15 );
-    font-size: 85%;
-    z-index: 90;
-    transform: translate3d( 0, 110%, 0 );
-    opacity: 0;
-    transition: transform .25s ease-out, opacity .18s linear;
 
     &--shown {
-        transform: translate3d( 0, 0, 0 );
+        z-index: 400;
+        transform: translate3d(0, 0, 0);
         opacity: 1;
+    }
+
+    &__inner {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding-left: 8rem;
+
+        @include media('>=#{$cookie-message_button-pos-breakpoint}') {
+            flex-direction: row;
+        }
+    }
+
+    &__button-wrapper {
+        align-self: $cookie-message_button-pos-align;
+        
+        @include media('>=#{$cookie-message_button-pos-breakpoint}') {
+            align-self: unset;
+        }
     }
 
     &__text {
         position: relative;
         margin: 0;
-        padding: 0 0 0 5rem;
+
+        .block-cms-link.widget,
+        p {
+            margin: 0;
+            display: inline;
+        }
+
+        a {
+            @include link($cookie-message_link-color, $cookie-message_link-color--hover);
+        }
     }
 
     &__icon {
         position: absolute;
-        top: -2.4rem;
-        left: 0;
-        width: 4rem;
-        height: 4rem;
+        left: 0.5rem;
+        width: 5.5rem;
+        height: 5.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+
+        @include media('>=#{$cookie-message_button-pos-breakpoint}') {
+            top: -3.5rem;
+            transform: translateY(0);
+        }
     }
 
     &__button {
-        margin-left: 1rem;
+        @include button(
+            $type: $cookie-message_button-type,
+            $icon_pos: $cookie-message_icon-pos
+        );  
+        
+        white-space: nowrap;
+        margin-top: 1.2rem;
+
+        @include media('>=#{$cookie-message_button-pos-breakpoint}') {
+            margin-top: 0;
+            margin-left: 1.2rem;
+        }
     }
+
+    &__button-span {
+        @include button_span(
+            $type: $cookie-message_button-type,
+            $icon_pos: $cookie-message_icon-pos
+        );
+    }
+
+    &__button-icon {
+        @include button_icon(
+            $type: $cookie-message_button-type,
+            $icon_pos: $cookie-message_icon-pos
+        );
+    }  
 }

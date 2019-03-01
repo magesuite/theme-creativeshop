@@ -1,6 +1,11 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
 
+@import 'components/button/mixin';
+
+$teaser_button-type: $button_default-type !default;
+$teaser_button-icon-pos: $button_default-icon-pos !default;
+
 .#{$ns}navigation-teaser {
     &__figure {
         display: block;
@@ -71,5 +76,26 @@
 
     &__cta {
         margin-top: 2rem;
+    }
+
+    &__button {
+        @include button(
+            $type: $teaser_button-type,
+            $icon_pos: $teaser_button-icon-pos
+        );
+    }
+
+    &__button-span {
+        @include button_span(
+            $type: $teaser_button-type,
+            $icon_pos: $teaser_button-icon-pos
+        );
+    }
+
+    &__button-icon {
+        @include button_icon(
+            $type: $teaser_button-type,
+            $icon_pos: $teaser_button-icon-pos
+        );
     }
 }

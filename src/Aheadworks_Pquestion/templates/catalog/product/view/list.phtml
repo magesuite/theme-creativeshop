@@ -125,13 +125,11 @@
                             </div>
                             <div class="aw-pq-list__add-answer-button-wrapper">
                                 <?php if ($this->canAnswerQuestion()) : ?>
-                                    <button type="button" class="aw_pq__add-answer-button" title="<?php echo $this->escapeHtml(__('Add Answer')); ?>">
-                                        <span class="aw_pq__add-answer-button-span">
+                                    <button type="button" class="aw_pq__add-answer-button aw-pq-list__add-answer-button" title="<?php echo $this->escapeHtml(__('Add Answer')); ?>">
+                                        <span class="aw_pq__add-answer-button-span aw-pq-list__add-answer-button-span">
                                             <?php echo $this->escapeHtml(__('Add Answer')); ?>
                                         </span>
-                                        <svg class="aw_pq__add-answer-button-icon">
-                                            <use xlink:href="#arrow_next"></use>
-                                        </svg>
+                                        <?= $block->getChildHtml('aw_pq_question_list.add-answer.button.icon'); ?>
                                     </button>
                                 <?php else : ?>
                                     <?php /* @noEscape */ echo $this->getAnswerMessage(); ?>
@@ -209,19 +207,13 @@
         <p class="aw-pq-list__next-question" style="display:none;">
             <button class="aw-pq-list__next-question-button">
                 <span class="aw-pq-list__next-question-button-span"><?php echo $this->escapeHtml(__('Next Questions')); ?></span>
-                <svg class="aw-pq-list__next-question-button-icon">
-                    <use xlink:href="#arrow_next"></use>
-                </svg>
+                <?= $block->getChildHtml('aw_pq_question_list.next-question.button.icon'); ?>
             </button>
         </p>
         <?php if ($this->canAskQuestion()) : ?>
             <button type="button" class="aw-pq-list__add-question-button" title="<?php echo $this->escapeHtml(__('Ask Question')); ?>" >
-        <span>
-            <span class="aw-pq-list__add-question-button-span"><?php echo $this->escapeHtml(__('Ask Question')); ?></span>
-            <svg class="aw-pq-list__add-question-button-icon">
-                <use xlink:href="#arrow_next"></use>
-            </svg>
-        </span>
+                <span class="aw-pq-list__add-question-button-span"><?php echo $this->escapeHtml(__('Ask Question')); ?></span>
+                <?= $block->getChildHtml('aw_pq_question_list.add-question.button.icon'); ?>
             </button>
         <?php else : ?>
             <div class="aw-pq-list__please-login-note">

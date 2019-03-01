@@ -93,6 +93,7 @@ import 'components/image-teaser';
 import 'components/social-media-list';
 import 'components/product-details';
 import 'components/device-detection';
+import 'components/cookie-message';
 
 export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
