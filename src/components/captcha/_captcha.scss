@@ -1,3 +1,9 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+
+$captcha_button-type: $button_default-type !default;
+$captcha_button-icon-pos: 'no-icon' !default;
+
 .#{$ns}captcha {
     $root: &;
 
@@ -16,11 +22,17 @@
         margin-right: 1rem;
     }
 
-    &__reload {
-        @include media('<tablet') {
-            margin: 1.5rem 0 0.5rem;
-            width: 100%;
-            max-width: 40rem;
-        }
+    &__button {
+        @include button(
+            $type: $captcha_button-type,
+            $icon_pos: $captcha_button-icon-pos
+        );
+    }
+
+    &__button-span {
+        @include button_span(
+            $type: $captcha_button-type,
+            $icon_pos: $captcha_button-icon-pos
+        );
     }
 }

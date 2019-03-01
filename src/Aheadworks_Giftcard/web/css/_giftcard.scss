@@ -1,3 +1,8 @@
+@import 'components/button/mixin';
+
+$giftcard_button-type: $button_default-type !default;
+$giftcard_button-icon-pos: $button_default-icon-pos !default;
+
 .#{$ns}giftcard {
     &__info {
         margin: 1.5rem 0;
@@ -32,42 +37,6 @@
 
     &__table-inline {
         display: inline;
-    }
-
-    &__button-apply {
-        @extend .cs-button--look_default !optional;
-        @extend .cs-button--size_300 !optional;
-        min-width: 55% !important;
-        margin-bottom: 1rem;
-
-        @include media('<tablet') {
-            width: 100%;
-        }
-    }
-
-    &__button-status {
-        @extend .cs-button--look_default !optional;
-        @extend .cs-button--size_300 !optional;
-        margin-bottom: 1rem;
-        min-width: 55% !important;
-
-        @include media('<tablet') {
-            width: 100%;
-        }
-    }
-
-    &__button-checkout {
-        @extend .cs-button--look_default !optional;
-        @extend .cs-button--size_300 !optional;
-
-        @include media('<tablet') {
-            width: 100%;
-        }
-    }
-
-    &__button-ua {
-        @extend .cs-button--look_default !optional;
-        @extend .cs-button--size_300 !optional;
     }
 
     &__codes-table {
@@ -138,5 +107,28 @@
     .title {
         display: block;
         padding-left: 1.8rem;
+    }
+}
+
+// Buttons
+.aw_giftcard__code_info {
+    .action-toolbar {
+        .button {
+            @include button(
+                $type: $giftcard_button-type,
+                $icon_pos: $giftcard_button-icon-pos
+            );
+    
+            @include media('<tablet') {
+                width: 100%;
+            }
+        }
+    
+        .button > span {
+            @include button_span(
+                $type: $giftcard_button-type,
+                $icon_pos: $giftcard_button-icon-pos
+            );
+        }
     }
 }

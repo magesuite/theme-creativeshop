@@ -2,7 +2,12 @@ $ns: 'cs-';
 @import 'config/variables';
 @import 'components/typography/mixin';
 
+@import 'components/button/mixin';
+@import 'components/field/mixin.scss';
+
 $faq_main-title-font-size: $font-size_headline-1 !default;
+$faq_search-button-type: $button_default-type !default;
+$faq_search-button-icon-pos: 'only-icon' !default;
 
 .#{$ns}faq-index {
     $root: &;
@@ -184,19 +189,17 @@ $faq_main-title-font-size: $font-size_headline-1 !default;
             width: 100%;
         }
 
-        &-field {
-            width: 100%;
+        &-form {
+            @include field();
         }
 
-        &-button {
-            background-color: transparent !important;
-
-            > .#{$ns}button__icon {
-                fill: $color_cerulean-blue;
-            }
+        &-field {
+            margin-right: 0.5rem;
         }
 
         &-input {
+            @include field-input();
+            
             min-width: calc(100vw - 4rem);
 
             @include media('>=tablet') {

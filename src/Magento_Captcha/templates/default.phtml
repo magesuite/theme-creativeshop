@@ -28,13 +28,11 @@ $captcha = $block->getCaptchaModel();
                 src="<?= $block->escapeUrl($captcha->getImgSrc()) ?>"/>
             <button
                 type="button"
-                class="cs-captcha__reload cs-button cs-button--look_light | captcha-reload"
+                class="cs-captcha__button captcha-reload"
                 title="<?= $block->escapeHtmlAttr(__('Reload captcha')) ?>"
             >
-                <span class="cs-button__span"><?= $block->escapeHtml(__('Reload captcha')) ?></span>
-                <svg class="cs-button__icon">
-                    <use xlink:href="#arrow_next"></use>
-                </svg>
+                <?= $block->getChildHtml('captcha.button.icon'); ?>
+                <span class="cs-captcha__button-span"><?= $block->escapeHtml(__('Reload captcha')) ?></span>
             </button>
         </div>
 

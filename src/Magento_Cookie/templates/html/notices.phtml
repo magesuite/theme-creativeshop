@@ -25,20 +25,23 @@
             ->toHtml();
     ?>
     <div class="cs-cookie-message cs-cookie-message--shown" id="notice-cookie-block" style="display: none">
-        <div class="cs-cookie-message__text">
+        <div class="cs-cookie-message__inner">
             <?php if($cookieIcon && $cookieIcon != ''): ?>
-                <svg class="cs-cookie-message__icon"><use xlink:href="<?php echo $cookieIcon; ?>"></use></svg>
+                <?= $block->getChildHtml('cookie_notices.block.icon'); ?>
             <?php endif; ?>
-            <?php if($cookieNoticeCmsBlock && $cookieNoticeCmsBlock != ''): 
-                echo $cookieNoticeCmsBlock;
-            else: ?>
-                <strong><?php /* @escapeNotVerified */ echo __('We use cookies to make your experience better.') ?></strong> <?php /* @escapeNotVerified */ echo __('To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.') ?> <?php /* @escapeNotVerified */ echo __('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()) ?>
-            <?php endif; ?>
-        </div>
-        <div>
-            <button type="button" id="btn-cookie-allow" class="cs-button cs-button--look_default cs-button--size_300 | cs-cookie-message__button">
-                <span class="cs-button__span"><?php echo $block->getAllowCookiesButtonText();?></span>
-            </button>
+            <div class="cs-cookie-message__text">
+                <?php if($cookieNoticeCmsBlock && $cookieNoticeCmsBlock != ''): 
+                    echo $cookieNoticeCmsBlock;
+                else: ?>
+                    <strong><?php /* @escapeNotVerified */ echo __('We use cookies to make your experience better.') ?></strong> <?php /* @escapeNotVerified */ echo __('To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.') ?> <?php /* @escapeNotVerified */ echo __('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()) ?>
+                <?php endif; ?>
+            </div>
+            <div class="cs-cookie-message__button-wrapper">
+                <button type="button" id="btn-cookie-allow" class="cs-cookie-message__button">
+                    <span class="cs-cookie-message__button-span"><?php echo $block->getAllowCookiesButtonText();?></span>
+                    <?= $block->getChildHtml('cookie_notices.button.icon'); ?>
+                </button>
+            </div>
         </div>
     </div>
     <script type="text/x-magento-init">

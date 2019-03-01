@@ -1,4 +1,10 @@
-$ns: 'cs-';
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+@import 'components/button/mixin';
+
+$brands-index_button-type: $button_default-type !default;
+$brands-index_button-icon-pos: 'no-icon' !default;
 
 .#{$ns}brands-index {
     $root: &;
@@ -31,6 +37,7 @@ $ns: 'cs-';
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
         position: relative;
         box-sizing: border-box;
+
         @include media('>=tablet') {
             width: calc(25% - 1rem);
         }
@@ -203,6 +210,11 @@ $ns: 'cs-';
     }
 
     &__button {
+        @include button(
+            $type: $brands-index_button-type,
+            $icon_pos: $brands-index_button-icon-pos
+        );
+
         position: absolute !important;
         right: 3rem;
         bottom: 0;
@@ -212,5 +224,12 @@ $ns: 'cs-';
                 right: 1.8rem;
             }
         }
+    }
+
+    &__button-span {
+        @include button_span(
+            $type: $brands-index_button-type,
+            $icon_pos: $brands-index_button-icon-pos
+        );
     }
 }

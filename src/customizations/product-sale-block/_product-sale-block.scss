@@ -1,8 +1,12 @@
 @import 'config/variables';
+
 @import 'components/typography/mixin';
+@import 'components/button/mixin';
 
 $product-sale-block_name-font-size: $font-size_headline-1 !default;
 $product-sale-block_giftcard-name-font-size: $font-size_headline-4 !default;
+$product-sale-block_giftcard-button-type: $button_default-type !default;
+$product-sale-block_giftcard-button-icon-pos: 'no-icon' !default;
 
 .#{$ns}product-sale-block {
     background: $color_white;
@@ -214,6 +218,20 @@ $product-sale-block_giftcard-name-font-size: $font-size_headline-4 !default;
                 display: block !important;
             }
         }
+    }
+
+    &__giftcard-button {
+        @include button(
+            $type: $giftcard_button-type,
+            $icon_pos: $giftcard_button-icon-pos
+        );
+    }
+
+    &__giftcard-button-span {
+        @include button_span(
+            $type: $giftcard_button-type,
+            $icon_pos: $giftcard_button-icon-pos
+        );
     }
 
     &__giftcard {
