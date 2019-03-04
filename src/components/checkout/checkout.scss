@@ -45,7 +45,7 @@ $checkout_login-button-type: 'primary' !default;
 $checkout_login-button-icon-pos: 'no-icon' !default;
 $checkout_estimation-button-type: 'secondary' !default;
 $checkout_estimation-button-icon-pos: 'no-icon' !default;
-$checkout_billing-address-button-type: 'secondary'!default;
+$checkout_billing-address-button-type: 'secondary' !default;
 $checkout_billing-address-button-icon-pos: 'no-icon' !default;
 $checkout_show-popup-button-type: 'primary' !default;
 $checkout_show-popup-button-icon-pos: 'no-icon' !default;
@@ -53,7 +53,6 @@ $checkout_addresses-button-type: 'secondary' !default;
 $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
 .checkout-index-index {
-
     .page-title-wrapper {
         @include visually-hidden();
     }
@@ -66,7 +65,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         @include media('>=tablet') {
             margin: 2.5rem auto 1rem;
         }
-    
+
         .#{$ns}logo {
             padding-left: $checkout_base-space;
 
@@ -93,7 +92,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 }
 
-
 .#{$ns}checkout {
     $root: &;
     display: flex;
@@ -107,7 +105,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         max-width: $checkout_page-max-width;
     }
 
-
     // General checkout layout and checkout forms
 
     &__progress-bar {
@@ -115,7 +112,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         list-style: none;
         max-width: 100%;
         padding: 0;
-        margin-bottom: 0; 
+        margin-bottom: 0;
         box-sizing: border-box;
 
         @include media('>=tablet') {
@@ -155,18 +152,27 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     // Button next step
     &__sidebar-button {
-        @include button($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
+        @include button(
+            $type: $checkout_next-button-type,
+            $icon_pos: $checkout_next-button-icon-pos
+        );
 
         @include media('>=tablet') {
             min-width: 20rem;
         }
 
         &-span {
-            @include button_span($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
+            @include button_span(
+                $type: $checkout_next-button-type,
+                $icon_pos: $checkout_next-button-icon-pos
+            );
         }
 
         &-icon {
-            @include button_icon($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
+            @include button_icon(
+                $type: $checkout_next-button-type,
+                $icon_pos: $checkout_next-button-icon-pos
+            );
         }
 
         @include media('<tablet') {
@@ -188,16 +194,25 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
 
         &-button {
-            @include button($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
+            @include button(
+                $type: $checkout_next-button-type,
+                $icon_pos: $checkout_next-button-icon-pos
+            );
             width: 100%;
 
             &-span {
-                @include button_span($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
+                @include button_span(
+                    $type: $checkout_next-button-type,
+                    $icon_pos: $checkout_next-button-icon-pos
+                );
             }
-    
+
             &-icon {
-                @include button_icon($type: $checkout_next-button-type, $icon_pos: $checkout_next-button-icon-pos);
-            } 
+                @include button_icon(
+                    $type: $checkout_next-button-type,
+                    $icon_pos: $checkout_next-button-icon-pos
+                );
+            }
         }
     }
 
@@ -210,14 +225,14 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         .label {
             margin-bottom: 0.5rem;
         }
-    }   
+    }
 
     .form-shipping-address {
         .field[name*='postcode'] {
             @include media('>=tablet') {
                 width: 25%;
-                float: left;
-    
+                display: inline-flex;
+
                 .error,
                 .warning {
                     width: 400%;
@@ -227,11 +242,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 }
             }
         }
-    
+
         .field[name*='city'] {
             @include media('>=tablet') {
-                width: 75%;
+                width: calc(75% - 1.5rem);
                 padding-left: 1.5rem;
+                display: inline-flex;
             }
         }
     }
@@ -256,7 +272,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             width: calc(100% - #{$checkout_sidebar-width});
         }
 
-        .step-title, 
+        .step-title,
         .block-title {
             @include headline($level: $checkout_headlines-font-size);
             text-transform: $checkout_headlines-text-transform;
@@ -279,24 +295,24 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     // Checkout boxes
-    &__sidebar, 
-    &__step-tabs .#{$ns}tabs ,
-    &__shipping-method-wrapper, 
-    &__shipping-method, 
-    .opc-estimated-wrapper, 
-    &__payments, 
+    &__sidebar,
+    &__step-tabs .#{$ns}tabs,
+    &__shipping-method-wrapper,
+    &__shipping-method,
+    .opc-estimated-wrapper,
+    &__payments,
     &__after-payments {
         margin: 0 0 $checkout_steps-space;
         background: $checkout_boxes-background;
 
         @include media('>=tablet') {
             box-shadow: $checkout_boxes-box-shadow;
-            border-radius: $checkout_boxes-border-radius;  
+            border-radius: $checkout_boxes-border-radius;
         }
     }
 
-    &__shipping-method-wrapper, 
-    &__shipping-method, 
+    &__shipping-method-wrapper,
+    &__shipping-method,
     &__payments,
     &__after-payments {
         padding: $checkout_base-space 0;
@@ -306,7 +322,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    &__payments, 
+    &__payments,
     &__after-payments {
         @include media('<tablet') {
             margin-bottom: 0;
@@ -320,7 +336,9 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         @include media('>=tablet') {
             height: 100%;
             z-index: 2;
-            width: calc(#{$checkout_sidebar-width} - #{$checkout_main-column-and-sidebar-gap});
+            width: calc(
+                #{$checkout_sidebar-width} - #{$checkout_main-column-and-sidebar-gap}
+            );
             margin: 0 0 0 $checkout_main-column-and-sidebar-gap;
             order: 2;
         }
@@ -339,8 +357,9 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 margin: 0 0 $checkout_steps-space;
                 background: $checkout_boxes-background;
                 box-shadow: $checkout_boxes-box-shadow;
-                border-radius: $checkout_boxes-border-radius;              }
-        } 
+                border-radius: $checkout_boxes-border-radius;
+            }
+        }
     }
 
     &__sidebar-bottom {
@@ -348,12 +367,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             margin: 0 0 $checkout_steps-space;
             background: $checkout_boxes-background;
             box-shadow: $checkout_boxes-box-shadow;
-            border-radius: $checkout_boxes-border-radius;  
+            border-radius: $checkout_boxes-border-radius;
 
             @include media('<tablet') {
                 margin: 0 $checkout_base-space;
             }
-        } 
+        }
     }
 
     &__sidebar-button {
@@ -362,14 +381,15 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    // Authentication
 
- 
-    // Authentication   
-
-    .form-login, 
+    .form-login,
     .block-authentication {
         .primary .action {
-            @include button($type: $checkout_login-button-type, $icon_pos: $checkout_login-button-icon-pos);
+            @include button(
+                $type: $checkout_login-button-type,
+                $icon_pos: $checkout_login-button-icon-pos
+            );
             min-width: 15rem;
 
             @include media('<tablet') {
@@ -377,7 +397,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             }
 
             span {
-                @include button_span($type: $checkout_login-button-type, $icon_pos: $checkout_login-button-icon-pos);
+                @include button_span(
+                    $type: $checkout_login-button-type,
+                    $icon_pos: $checkout_login-button-icon-pos
+                );
             }
         }
 
@@ -396,7 +419,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    .action.remind, 
+    .action.remind,
     .action-remind {
         margin-top: 0.3rem;
         font-size: $checkout_form-notes-font-size;
@@ -405,7 +428,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .form-login {
         margin: 0;
     }
-
 
     // Shipping
 
@@ -424,7 +446,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             &.col-method {
                 padding-left: 0;
             }
-
         }
 
         tr:last-child {
@@ -441,9 +462,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 display: none;
             }
         }
+
+        .radio {
+            @include field-radio();
+        }
     }
 
-    .ship-to, 
+    .ship-to,
     .ship-via {
         border-top: $checkout_elements-border;
     }
@@ -488,27 +513,35 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .action-show-popup {
-        @include button($type: $checkout_show-popup-button-type, $icon_pos: $checkout_show-popup-button-icon-pos);
+        @include button(
+            $type: $checkout_show-popup-button-type,
+            $icon_pos: $checkout_show-popup-button-icon-pos
+        );
     }
-
 
     // Shipping section for logged in user
 
     .shipping-address-items {
         display: flex;
         flex-wrap: wrap;
-        
+
         @include media('>=tablet', '<laptop') {
             flex-direction: column;
         }
 
-        .edit-address-link, 
+        .edit-address-link,
         .action-select-shipping-item {
-            @include button($type: $checkout_addresses-button-type, $icon_pos: $checkout_addresses-button-icon-pos);
+            @include button(
+                $type: $checkout_addresses-button-type,
+                $icon_pos: $checkout_addresses-button-icon-pos
+            );
             margin-top: $checkout_base-space;
 
             span {
-                @include button_span($type: $checkout_addresses-button-type, $icon_pos: $checkout_addresses-button-icon-pos);
+                @include button_span(
+                    $type: $checkout_addresses-button-type,
+                    $icon_pos: $checkout_addresses-button-icon-pos
+                );
             }
         }
     }
@@ -522,7 +555,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         padding: 1rem;
 
         @include media('>=laptop') {
-            width: calc(50% - (#{$checkout_base-space}/2));
+            width: calc(50% - (#{$checkout_base-space}/ 2));
             margin: 0 0 $checkout_base-space;
         }
 
@@ -533,16 +566,14 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         a {
             font-size: $checkout_texts-font-size;
         }
-
     }
-
 
     // Estimation block
 
     .estimated-block {
         display: none;
     }
-    
+
     .opc-estimated-wrapper {
         padding: $checkout_base-space 0;
         z-index: 2;
@@ -554,10 +585,16 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
 
         .action.showcart {
-            @include button($type: $checkout_repertus-button-type, $icon_pos: $checkout_repertus-button-icon-pos);
+            @include button(
+                $type: $checkout_repertus-button-type,
+                $icon_pos: $checkout_repertus-button-icon-pos
+            );
 
             span:first-child {
-                @include button-span($type: $checkout_repertus-button-type, $icon_pos: $checkout_repertus-button-icon-pos);
+                @include button-span(
+                    $type: $checkout_repertus-button-type,
+                    $icon_pos: $checkout_repertus-button-icon-pos
+                );
             }
         }
 
@@ -572,7 +609,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             }
         }
     }
-
 
     // Billing
 
@@ -590,11 +626,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             white-space: normal;
             font-weight: 600;
             font-size: $checkout_texts-font-size;
-            padding-left: 0.5rem;
+            padding-left: 1.2rem;
         }
 
         input {
-            margin: 0.4rem 0.3rem 0.3rem 0;
+            @include field-checkbox();
+
+            margin: 0.2rem 0.3rem 0.3rem 0;
         }
     }
 
@@ -606,8 +644,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .checkout-billing-address {
-        padding-left: 0.5rem;
-
         .actions-toolbar .primary {
             margin-top: $checkout_base-space;
             display: flex;
@@ -615,11 +651,20 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    .action-update, 
+    .action-edit-address,
+    .action-update,
     .action-cancel {
-        @include button($type: $checkout_billing-address-button-type, $icon_pos: $checkout_billing-address-button-icon-pos);
+        @include button(
+            $type: $checkout_billing-address-button-type,
+            $icon_pos: $checkout_billing-address-button-icon-pos
+        );
+
+        font-size: 1.4rem;
     }
 
+    .action-edit-address {
+        margin-top: 2rem;
+    }
 
     // Agreements
 
@@ -649,15 +694,14 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-
     // Summary (sidebar on desktop and tablets)
 
     .opc-block-summary {
         padding: 0;
 
         .table-totals,
-        .action.checkout, 
-        .items-in-cart, 
+        .action.checkout,
+        .items-in-cart,
         .title {
             @include media('<tablet') {
                 display: none;
@@ -691,7 +735,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 padding: 0;
             }
         }
-    
+
         .aw-giftcard-totals {
             .title {
                 padding: 0 0 0 2rem;
@@ -717,11 +761,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .table-totals {
-
         .ie11 & {
             table-layout: fixed;
         }
-        
+
         td,
         th {
             font-weight: 400;
@@ -736,7 +779,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         .grand {
             th,
             td {
-                font-size: 1.5rem; 
+                font-size: 1.5rem;
             }
         }
     }
@@ -833,7 +876,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             .label {
                 font-size: 1.2rem;
                 text-transform: uppercase;
-                font-weight: 600;    
+                font-weight: 600;
             }
         }
 
@@ -873,7 +916,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    
     // Payments
 
     .payments {
@@ -883,7 +925,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .payment-method {
-
         .action.checkout {
             @include visually-hidden();
         }
@@ -907,111 +948,111 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             .label {
                 font-size: 1.5rem;
                 font-weight: 400;
-                padding: 1.5rem 1.5rem 1.5rem 0.5rem;
+                padding: 1.5rem 1.5rem 1.5rem 0;
                 margin: 0;
                 background-position: right center;
                 background-size: 4rem 2.5rem;
                 background-repeat: no-repeat;
 
-                &[for=banktransfer] {
+                &[for='banktransfer'] {
                     background-image: url('../images/icons/payment-logos/bank_transfer.svg');
                 }
 
-                &[for=barzhalen] {
+                &[for='barzhalen'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-barzhalen.png');
                 }
-        
-                &[for=billsafe] {
+
+                &[for='billsafe'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-billsafe.png');
                 }
 
-                &[for=creditcard] {
+                &[for='creditcard'] {
                     background-image: url('../images/icons/payment-logos/creditcard.svg');
                 }
 
-                &[for=cashondelivery] {
+                &[for='cashondelivery'] {
                     background-image: url('../images/icons/payment-logos/on_delivery.svg');
                 }
 
-                &[for=checkmo] {
+                &[for='checkmo'] {
                     background-image: url('../images/icons/payment-logos/money_order.svg');
                 }
-                
-                &[for=giropay] {
+
+                &[for='giropay'] {
                     background-image: url('../images/icons/payment-logos/giropay.svg');
                 }
-        
-                &[for=ideal] {
+
+                &[for='ideal'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-ideal.jpg');
                 }
 
-                &[for=invoice] {
+                &[for='invoice'] {
                     background-image: url('../images/icons/payment-logos/invoice.svg');
                 }
-        
-                &[for=eps] {
+
+                &[for='eps'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-eps.jpg');
                 }
 
-                &[for=lastschrift] {
+                &[for='lastschrift'] {
                     background-image: url('../images/icons/payment-logos/lastschrift..svg');
                 }
-            
-                &[for=payone_invoice] {
+
+                &[for='payone_invoice'] {
                     background-image: url('../images/icons/payment-logos/invoice.svg');
                 }
 
-                &[for=payone_creditcard] {
+                &[for='payone_creditcard'] {
                     background-image: url('../images/icons/payment-logos/creditcard.svg');
                 }
 
-                &[for=paydirekt] {
+                &[for='paydirekt'] {
                     background-image: url('../images/icons/payment-logos/paydirekt.svg');
                 }
-        
-                &[for=payolution] {
+
+                &[for='payolution'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-payolution.png');
                 }
 
-                &[for=payenginecw_creditcard] {
+                &[for='payenginecw_creditcard'] {
                     background-image: url('../images/icons/payment-logos/creditcard.svg');
                 }
 
-                &[for=payenginecw_paypal] {
+                &[for='payenginecw_paypal'] {
                     background-image: url('../images/icons/payment-logos/paypal.svg');
                     background-size: auto 1.5rem;
                 }
 
-                &[for=payenginecw_postfinancecard] {
+                &[for='payenginecw_postfinancecard'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-postfinance-card.png');
                     background-size: auto 1.7rem;
                 }
-        
-                &[for=postfinance] {
+
+                &[for='postfinance'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-postfinance.jpg');
                 }
-        
-                &[for=postfinance-card] {
+
+                &[for='postfinance-card'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-postfinance-card.png');
                 }
-        
-                &[for=przelewy24] {
+
+                &[for='przelewy24'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-przelewy24.png');
                 }
-        
-                &[for=paypal-agreement] {
+
+                &[for='paypal-agreement'] {
                     background-image: url('../images/icons/payment-logos/payment-logo-paypal-agreement.png');
                 }
 
-                &[for=purchaseorder] {
+                &[for='purchaseorder'] {
                     background-image: url('../images/icons/payment-logos/purchase_order.svg');
                 }
 
-                &[for=payone_obt_sofortueberweisung] {
+                &[for='payone_obt_sofortueberweisung'] {
                     background-image: url('../images/icons/payment-logos/sofort_uberweisung.svg');
                 }
 
-                &[for=twintcw_twint] {
+                &[for='twintcw_twint'] {
                     background-image: url('../images/icons/payment-logos/twint.svg');
                     background-size: 4.5rem 3rem;
                 }
@@ -1085,7 +1126,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 height: 0.6rem;
                 width: 1.3rem;
                 box-sizing: border-box;
-                transition: transform .3s;
+                transition: transform 0.3s;
                 background-image: url('../images/icons/arrow_down.svg');
                 background-repeat: no-repeat;
                 background-size: contain;
@@ -1114,7 +1155,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 // Style payment methods that are generated from php scripts
 
 .customweb-payenginecw-payment-form {
-
     .label {
         float: none !important;
         width: 100% !important;
@@ -1124,9 +1164,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .control:not(.select-field) {
         float: none !important;
         width: 100% !important;
-    }   
+    }
 }
-
 
 // Repertus packstation
 
@@ -1175,7 +1214,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     widows: 100%;
 
     button {
-        @include button($type: $checkout_repertus-button-type, $icon_pos: $checkout_repertus-button-icon-pos);
+        @include button(
+            $type: $checkout_repertus-button-type,
+            $icon_pos: $checkout_repertus-button-icon-pos
+        );
         width: 100%;
         margin-top: 0.5rem;
     }
