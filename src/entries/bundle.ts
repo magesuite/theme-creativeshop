@@ -25,6 +25,7 @@ import 'bundle.scss';
 import 'pages/category';
 import 'pages/product';
 import 'pages/success';
+import 'pages/cart';
 
 // =============================================================================
 // Components
@@ -92,6 +93,8 @@ import 'components/social-media-list';
 import 'components/product-details';
 import 'components/device-detection';
 import 'components/cookie-message';
+import 'components/links-block-addto';
+import 'components/price-box';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';

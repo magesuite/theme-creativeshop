@@ -1,36 +1,112 @@
-// price-box
-// This component is responsible for styling prices by markup provided by Magento2
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-@mixin priceBox() {
-    display: inline-block;
+@import 'config/variables';
+@import 'components/price-box/mixin';
+@import 'utils/visually-hidden';
+
+$price-box_price-color: $price_color !default;
+$price-box_special-price-color: $price_special-color !default;
+$price-box_old-price-color: $price_old-color !default;
+
+
+.price-box {
+    $root: &;
+    @include priceBox();
 
     .price {
-        font-weight: 700;
-        line-height: 1;
-        white-space: nowrap;
+        color: $price-box_old-price-color;
+        font-size: 1.51rem;
 
         &-label {
             display: none;
+            font-size: 1.15;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding-bottom: 0.3rem;
+
+            body:not(.page-product-bundle, .page-product-grouped)
+                p:not(.price-from, .price-to)
+                & {
+                    @include visually-hidden();
+                }
+        }
+    }
+
+    .price-from,
+    .price-to {
+        display: inline-block;
+
+        .price-label {
+            display: inline-block;
+            margin-right: 0.5rem;
         }
     }
 
     .old-price {
-        float: left;
+        text-decoration: none;
 
         .price {
-            font-size: .65rem;
-            text-decoration: line-through;
+            font-size: 1rem;
+            color: $price-box_old-price-color;
+            margin-right: 0.7rem;
+        }
+    }
+
+    .special-price {
+        .price {
+            padding-left: 0;
+            color: $price-box_special-price-color;
         }
 
-        // Old price should not be displayed for prices where normal price is "As low as {price}"
-        &.no-display {
+        &.active {
+            .price {
+                padding-left: 0.4rem;
+                color: $price-box_special-price-color;
+            }
+        }
+    }
+
+    .price-from {
+        margin-right: 1.5rem;
+    }
+
+    .#{$ns}product-tile__price--dailydeal-countdown &,
+    .#{$ns}price--pdp_dailydeal-countdown & {
+        &:not(.price-final_price_without_daily_deal) {
             display: none;
         }
     }
 
-    .special-price .price {
-        padding-left: .4em;
+    .#{$ns}product-tile__price--dailydeal-countdown & {
+        &#{$root}--visible {
+            display: inline-block !important;
+        }
+    }
+
+    .price-container.price-final_price {
+        &:not(:only-child) .price {
+            color: $price-box_special-price-color;
+        }
     }
 }
+
+.#{$ns}bundle-box__add {
+    .price-as-configured {
+        margin: 1rem 0 0;
+    }
+}
+
+.minimal-price-link {
+    margin-top: 0 !important;
+    margin-right: 1.5rem;
+    position: relative;
+
+    &:after {
+        color: $price-box_price-color;
+        display: block;
+        content: '-';
+        right: -1rem;
+        top: 0;
+        position: absolute;
+    }
+}
+
+
