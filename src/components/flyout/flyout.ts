@@ -8,7 +8,7 @@ interface IFlyout {
 interface IFlyoutSettings {
     name: string;
     /**
-     * Define type: flyout, dropdown or collapse
+     * Define type: flyout
      * @type {String}
      */
     type: string;
@@ -28,12 +28,12 @@ interface IFlyoutSettings {
      */
     trigger?: string;
     /**
-     * Define if flyout/collapse should be shown from the beginning
+     * Define if flyoutshould be shown from the beginning
      * @type {Boolean}
      */
     initiallyShown?: boolean;
     /**
-     * Collapse content can have min visible height but default is 0
+     * Flyout content can have min visible height but default is 0
      * @type {String}
      */
     minHeight?: string;
@@ -113,7 +113,7 @@ class Flyout implements IFlyout {
         );
 
         this.name = settings.name;
-        // Element is main wrapper for flyout/collapse
+        // Element is main wrapper for flyout
         this.$element = $element;
         this.$content = settings.content
             ? settings.content
@@ -171,7 +171,6 @@ class Flyout implements IFlyout {
      * Perform show action if element is not transitioning at the moment.
      * Remove class out for content and add class in. Add aria-expanded true for trigger
      * Set transitioning flag to true.
-     * If is collapse type calculate height
      * Trigger event show
      * Trigger method showComplete after transition time
      */
@@ -190,11 +189,6 @@ class Flyout implements IFlyout {
         this.$triggers.addClass(this.triggerInClass);
         this.$triggers.prop('aria-expanded', true);
         this._isTransitioning = true;
-
-        if (this.settings.type === 'collapse') {
-            // Let scrollHeight: number = this.$content[0].scrollHeight;
-            // Animation can be added here
-        }
 
         // Trigger show event and callback
         this.$element.trigger(`${this.name}.show`);
@@ -232,7 +226,6 @@ class Flyout implements IFlyout {
      * Perform hide action if element is not transitioning at the moment.
      * Remove class in for content and trigger. Add class transitioning for content. Add aria-expanded false for trigger
      * Set transitioning flag to true.
-     * If is collapse type calculate height
      * Trigger event hide
      * Trigger method hideComplete after transition time
      */
@@ -251,11 +244,6 @@ class Flyout implements IFlyout {
 
         this.$triggers.prop('aria-expanded', false);
         this._isTransitioning = true;
-
-        if (this.settings.type === 'collapse') {
-            // Let scrollHeight: number = this.$content.innerHeight();
-            // Animation can be added here
-        }
 
         // Trigger hide event and callback
         this.$element.trigger(`${this.name}.hide`);
@@ -287,19 +275,13 @@ class Flyout implements IFlyout {
         if (this.settings.onHideCompleted) {
             this.settings.onHideCompleted();
         }
-        if (this.settings.type === 'collapse') {
-            this.$content.css({
-                height: '',
-                'max-height': this.settings.minHeight,
-            });
-        }
     }
 
     /**
      * Update width of flyout
      */
     protected closeOnClickOutside(event: Event): void {
-        if (this._shown === false || this.settings.type === 'collapse') {
+        if (this._shown === false) {
             return;
         }
 

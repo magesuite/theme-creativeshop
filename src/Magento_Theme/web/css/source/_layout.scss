@@ -21,84 +21,12 @@ html {
 }
 
 .page-wrapper {
-    //@include container-wrapper(); Don't remove it yet, might be needed
     display: block !important;
     min-height: 100%;
 
     @include media('>=tablet') {
         display: flex !important;
         flex-direction: column !important;
-    }
-
-    &--checkout {
-        @include media('<tablet') {
-            max-width: 100vw;
-            overflow: hidden;
-        }
-
-        .#{$ns}information-stripe {
-            max-width: 93rem;
-            margin: 0 auto;
-            box-sizing: border-box;
-        }
-    }
-}
-
-.ie11 .page-wrapper {
-    display: block !important;
-}
-
-.ie11
-    .modal-popup:not(.#{$ns}video-player__modal)
-    .#{$ns}modal__content {
-    max-height: calc(100vh - 33rem);
-}
-
-.rss {
-    @extend .#{$ns}link;
-}
-
-.gift-options-cart-item {
-    display: none;
-}
-
-.checkout-payment-method .payment-methods {
-    @include media('<tablet') {
-        max-width: 100vw;
-        padding-right: 0.5rem;
-        box-sizing: border-box;
-    }
-}
-
-.#{$ns}cart-page {
-    position: relative;
-    width: 100%;
-    @include media('<tablet') {
-        max-width: 45rem;
-        margin: 0 auto;
-
-        .page-title {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-}
-
-h2 {
-    margin: 0 0 0.75em;
-    font-size: 2.2rem;
-    font-weight: 400;
-}
-
-a {
-    color: $color_cerulean-blue;
-
-    &:visited {
-        color: $color_cerulean-blue;
-    }
-
-    &:hover {
-        color: $color_torea-bay;
     }
 }
 
@@ -107,10 +35,6 @@ a {
     padding: $layout_padding;
     max-width: 100%;
     min-height: 10rem;
-}
-
-.category-image {
-    margin: 2rem 0;
 }
 
 .page-layout-1column {
@@ -130,18 +54,6 @@ a {
     }
 }
 
-.catalog-product-view .column.main {
-    @include media('<tablet') {
-        padding-top: 15px;
-        border-top: 1px solid $color_alto;
-    }
-
-    > section,
-    > div {
-        order: 3;
-    }
-}
-
 @include media('>=tablet') {
     .page-layout-2columns-left {
         .sidebar-main,
@@ -153,70 +65,27 @@ a {
     }
 }
 
-.page-product-downloadable {
-    .product-options-bottom,
-    .product-options-wrapper {
-        float: none;
-        width: 100%;
+.ie11 .page-wrapper {
+    display: block !important;
+}
+
+a {
+    color: $link-color_base;
+
+    &:visited {
+        color: $link-color_base;
     }
 
-    .product-add-form {
-        margin-bottom: 0;
+    &:hover {
+        color: $link-color_base-hover;
     }
 }
 
-.frontend-styleguide-index .page-wrapper {
-    max-width: none;
-
-    #maincontent {
-        padding: 0;
-
-        .#{$ns}container__inner {
-            max-width: none;
-        }
-    }
-}
-
-.page-product-giftcard {
-    .product-info-wrapper {
-        z-index: 2;
-    }
-}
-
-// Below is a piece of code to style properly special prices for bundle products
-// Other types of product have different combination of classes - they use .special-price, but not bundles.
-.page-product-bundle {
-    .price-box.price-final_price .price-container.price-final_price {
-        order: 2;
-
-        &:not(:only-child) .price {
-            color: $color_crimson;
-        }
-    }
-}
-
-.#{$ns}product-tile {
-    .price-box.price-final_price {
-        .price-container.price-final_price + .old-price {
-            order: 1;
-        }
-
-        .price-container.price-final_price {
-            order: 2;
-        }
-    }
-}
-
-.price-box {
-    .price-container.price-final_price {
-        &:not(:only-child) .price {
-            color: $color_crimson;
-        }
-    }
+.gift-options-cart-item {
+    display: none;
 }
 
 //Paypal module
-
 .paypal-express-review .page-title-wrapper {
     @include media('>=tablet') {
         padding: 0 1.5rem;
@@ -245,27 +114,6 @@ a {
     }
 }
 
-.paypal.checkout {
-    text-align: center;
-
-    &.after,
-    &.before {
-        &:before {
-            content: attr(data-label);
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin: 1rem 0.5rem 0.2rem;
-        }
-    }
-
-    input {
-        &:focus {
-            outline: none;
-            box-shadow: none;
-        }
-    }
-}
-
 .paypal-express-in-context-mini-cart-container {
     margin-top: 1rem;
 }
@@ -274,37 +122,12 @@ a {
     border-bottom: none;
 }
 
-//Amazon Pay - payment method
-
-//Style Amazon widget wrapper for iframe/ and iframe element
-
-.amazon-widget {
-    width: 100%;
-    max-width: 100%;
-    height: 25rem;
-    margin-top: 0;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
-    margin-bottom: 2rem;
-
-    iframe {
-        border: none !important;
-    }
-}
-
-.amazon-payment-method {
-    .payment-method-content,
-    .payment-method-title {
-        padding: 0;
-        margin-top: 0;
-    }
-}
 
 //Amazon Pay login button
 
 //The highest of all amazon pay containers
 //Should not be too long
 //in minicart, sale block, checkout summary it should be center
-
 .amazon-button-container {
     max-width: 25rem;
     position: relative;
@@ -316,20 +139,9 @@ a {
         max-width: 32rem;
     }
 
-    .#{$ns}checkout__step-content & {
-        max-width: 22rem;
-    }
-
     img {
         margin-left: auto;
         margin-right: auto;
-
-        .#{$ns}checkout__step-content & {
-            @include media('<tablet') {
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
     }
 
     &__cell {
@@ -365,7 +177,6 @@ a {
 
             //Move tooltip from right to top because there is no space in our shops on the right
             .amazon-minicart-container &,
-            .#{$ns}product-sale-block &,
             .#{$ns}cart-summary & {
                 top: auto;
                 bottom: 42px;
@@ -428,15 +239,6 @@ a {
                     @include media('>=tablet') {
                         top: calc(100% + 2rem);
                         transform: rotate(180deg);
-                    }
-                }
-            }
-
-            // Checkout tooltip can stay as it is - on the right
-            .#{$ns}checkout__step-content & {
-                &:before {
-                    @include media('<tablet') {
-                        border-right-color: transparent;
                     }
                 }
             }

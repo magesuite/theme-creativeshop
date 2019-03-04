@@ -1,36 +1,8 @@
-/**
- * Generic list component customized.
- * This component usually contain different versions of lists present on the website.
- */
-
 .#{$ns}list {
     @include list();
     $root: &;
     margin: 0;
     padding: 0;
-
-    &--multiline {
-        width: 100%;
-    }
-
-    &--menu {
-        display: flex;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid $color_gallery;
-
-        li {
-            @extend #{$root}__item;
-            @extend #{$root}__item--menu;
-        }
-
-        a {
-            @extend .#{$ns}link;
-        }
-    }
-
-    &--menu-dark {
-        border-bottom: 1px solid $color_alto;
-    }
 
     &__item {
         font-size: 1.4rem;
@@ -40,99 +12,8 @@
         align-items: center;
         box-sizing: border-box;
 
-        &--half {
-            width: 50%;
-        }
-
-        &--inputs {
-            width: 100%;
-            @include media('>=phoneLg') {
-                width: 50%;
-            }
-            @include media('>=tablet') {
-                width: 33%;
-            }
-            @include media('>=laptop') {
-                width: 25%;
-            }
-        }
-
-        &--menu {
-            font-size: 1.4rem;
-            color: $color_dove-gray;
-            padding: 0.8rem 1.8rem;
-            border-right: 1px solid $color_gallery;
-
-            &:last-child {
-                border-right: none !important;
-
-                &:first-child {
-                    display: none;
-                }
-            }
-
-            &:first-child {
-                padding-left: 0;
-            }
-        }
-
-        &--menu-dark {
-            @extend #{$root}__item--menu;
-            border-right: 1px solid $color_alto !important;
-
-            #{$root}__link {
-                font-weight: 700;
-            }
-
-            &--check {
-                &:before {
-                    display: inline-block;
-                    content: '';
-                    background-image: url('../images/check-green.png');
-                    background-repeat: no-repeat;
-                    background-size: contain;
-                    width: 2rem;
-                    height: 0.8rem;
-                }
-            }
-        }
-
         &--bold {
             font-weight: 600;
-        }
-
-        &--separate {
-            margin-top: 1.5rem;
-        }
-    }
-
-    &__link {
-        color: $color_dove-gray !important;
-        text-decoration: none;
-        cursor: pointer;
-
-        &:hover,
-        &:visited,
-        &:active {
-            color: $color_dove-gray !important;
-            text-decoration: none;
-        }
-
-        .counter {
-            margin-left: 0.3rem;
-            display: inline-block;
-
-            &:before {
-                content: '(';
-            }
-
-            &:after {
-                content: ')';
-            }
-        }
-
-        &--short {
-            max-width: 80%;
         }
     }
 
@@ -149,13 +30,6 @@
             height: 0.727em;
             padding-right: 0.2rem;
             fill: $color_apple;
-        }
-
-        &--close {
-            width: 1rem;
-            height: 1rem;
-            fill: $color_dove-gray;
-            margin-right: 0.7em;
         }
 
         &--article {

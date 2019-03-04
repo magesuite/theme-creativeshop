@@ -25,6 +25,7 @@ import 'bundle.scss';
 import 'pages/category';
 import 'pages/product';
 import 'pages/success';
+import 'pages/cart';
 
 // =============================================================================
 // Components
@@ -34,8 +35,6 @@ import 'components/container';
 import 'components/navigation';
 import 'components/grid-layout';
 import 'components/product-tile';
-import 'components/collapse/collapse';
-import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
@@ -94,8 +93,9 @@ import 'components/social-media-list';
 import 'components/product-details';
 import 'components/device-detection';
 import 'components/cookie-message';
+import 'components/links-block-addto';
+import 'components/price-box';
 
-export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
 
