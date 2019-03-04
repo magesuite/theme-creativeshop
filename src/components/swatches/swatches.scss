@@ -6,7 +6,7 @@
 // Keep in sync with quantity wrapper in buybox.
 $swatches_label-width: 10rem !default;
 $swatches_label-width-laptop-up: 11rem !default;
-$swatches_label-margin: 0 1.5rem 0 0 !default;
+$swatches_label-gutter: 1.5rem !default;
 $swatches_label-font-size: 1.1em !default;
 // Keep in sync width quantity wrapper in buybox end.
 
@@ -79,10 +79,12 @@ $swatches--filters_font-size: 0.8em !default;
     .mage-error {
         font-size: 1em;
         width: 100%;
-        margin-left: calc(#{$swatches_label-width} + 1.5rem);
+        margin-left: calc(#{$swatches_label-width} + #{$swatches_label-gutter});
 
-        @include media('>=tablet') {
-            margin-left: calc(#{$swatches_label-width-laptop-up} + 1.5rem);
+        @include media('>=laptop') {
+            margin-left: calc(
+                #{$swatches_label-width-laptop-up} + #{$swatches_label-gutter}
+            );
         }
     }
 }
@@ -110,7 +112,7 @@ $swatches--filters_font-size: 0.8em !default;
     font-weight: 700;
     font-size: $swatches_label-font-size;
     width: $swatches_label-width;
-    margin: $swatches_label-margin;
+    margin-right: $swatches_label-gutter;
 
     @include media('>=laptop') {
         width: $swatches_label-width-laptop-up;
@@ -128,9 +130,7 @@ $swatches--filters_font-size: 0.8em !default;
 .swatch-attribute-options {
     display: flex;
     flex-wrap: wrap;
-    margin-left: calc(
-        -#{$swatches_swatch-gutter} + #{$swatches_swatch-outline-width}
-    );
+    margin-left: calc(-#{$swatches_swatch-gutter / 2});
     margin-bottom: -#{$swatches_swatch-gutter};
     min-width: 100%;
     justify-content: center;
@@ -138,6 +138,15 @@ $swatches--filters_font-size: 0.8em !default;
     .swatch-attribute-label ~ & {
         min-width: 0;
         justify-content: flex-start;
+        max-width: calc(
+            100% - #{$swatches_label-gutter} - #{$swatches_label-width}
+        );
+
+        @include media('>=laptop') {
+            max-width: calc(
+                100% - #{$swatches_label-gutter} - #{$swatches_label-width-laptop-up}
+            );
+        }
     }
 }
 

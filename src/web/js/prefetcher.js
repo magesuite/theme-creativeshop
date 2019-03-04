@@ -9,7 +9,7 @@
         if (!link) return;
 
         var href = link.getAttribute('href');
-        if (href.indexOf(origin) === 0) {
+        if (href && href.indexOf(origin) === 0) {
             prefetcher.setAttribute('href', href);
         }
     };
