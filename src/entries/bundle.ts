@@ -34,8 +34,6 @@ import 'components/container';
 import 'components/navigation';
 import 'components/grid-layout';
 import 'components/product-tile';
-import 'components/collapse/collapse';
-import 'components/dropdown/dropdown';
 import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
@@ -95,7 +93,6 @@ import 'components/product-details';
 import 'components/device-detection';
 import 'components/cookie-message';
 
-export { Flyout } from 'components/flyout/flyout';
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
 
