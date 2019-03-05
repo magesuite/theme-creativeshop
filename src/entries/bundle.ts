@@ -97,6 +97,7 @@ import 'components/price-box';
 import 'components/table';
 import 'components/sticky-block';
 import 'components/visually-hidden';
+import 'components/star-rating';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
