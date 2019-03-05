@@ -1,0 +1,206 @@
+/** Styles form _tables.less of theme blank are moved here.
+   * For some tables there is mobile layout applied also for tablet resolutions
+   * Variables for typograpy, colors, border etc. are added
+*/
+
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'utils/visually-hidden';
+@import 'components/typography/mixin';
+@import 'components/table/mixin';
+
+
+$table_background: transparent !default;
+$table_border-bottom: 1px solid $color_border-500 !default;
+
+$table_row-border: 1px solid $color_border-500 !default;
+$table_column-border: none !default;
+$table_even-row-background: transparent !default;
+
+$table_head-border-bottom: 2px solid $color_border-500 !default;
+$table_head-color: $color_text-800 !default;
+$table_head-font-size: $font-size_headline-5 !default;
+$table_head-text-transform: uppercase !default;
+
+$table_item-color: $color_text-800 !default;
+$table_item-font-size: $font-size_paragraph !default;
+$table_item-font-weight: 300 !default;
+$table_item-padding: 0.8rem 1rem !default;
+$table_actions-links-separator: 2px solid $color_border-500 !default;
+
+.table-wrapper {
+   margin-bottom: 2rem;
+
+   @include media('<tablet') {
+        border: none;
+        display: block;
+    }
+
+   &.cart {
+        @include media('>=tablet') {
+            .table-wrapper.cart & {
+                border-top: none;
+            }
+        }
+    }
+
+   &.grouped {
+        tbody:last-child {
+            td {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+.table {
+    border-bottom: $table_border-bottom;
+    max-width: 100%;
+    width: 100%;
+    background: $table_background;
+
+    & > caption {
+        @include visually-hidden();
+    }
+
+    &:not(.totals) {
+        border: none;
+
+        td {
+            border: none;
+            padding: $table_item-padding;
+        }
+
+       thead {
+           border-bottom: $table_head-border-bottom;
+           color: $table_head-color;
+
+           th {
+               @include headline($level: $table_head-font-size);
+               text-transform: $table_head-text-transform;
+           }
+        }
+
+        tbody {
+            td {
+                font-size: $table_item-font-size;
+                color: $table_item-color;
+                font-weight: $table_item-font-weight;
+                border-bottom: $table_row-border;
+                border-left: $table_column-border;
+
+                &.actions {
+                    @include media('<tablet') {
+                        border-bottom: $table_row-border;
+                    }
+        
+                    a + a:before {
+                        margin: 0 0.7rem 0 0.5rem;
+                        content: '';
+                        display: inline-block;
+                        width: 1px;
+                        height: $table_item-font-size;
+                        border-right: $table_actions-links-separator;
+                        vertical-align: middle;
+                    }
+                }
+
+                &:first-child {
+                    border-left: none;
+                }
+            }
+
+            tr:first-child td {
+                .account & {
+                    @include media('<laptop') {
+                        padding-top: 0;
+                    }
+                }
+            }
+
+            tr {
+                &:nth-child(even) {
+                    background: $table_even-row-background;
+                }
+            }
+        }
+
+       tfoot {
+           font-size: 1.4rem;
+           @include media('<tablet') {
+               background: $color_gallery;
+           }
+   
+           .mark {
+               text-align: right;
+           }
+   
+           @include media('<tablet') {
+               .amount {
+                   text-align: right;
+               }
+           }
+       }
+
+    }
+}
+
+
+//  Mobile layout
+@include media('<tablet') {
+   .table-wrapper {
+        @include table-wrapper-mobile-layout();
+
+       .table {
+           &:not(.comparison) {
+               &:not(.totals) {
+                    @include table-mobile-layout();
+
+                    &.additional-attributes {
+                        tbody {
+                            th {
+                                display: none;
+                            }
+
+                            td {
+                                &:last-child {
+                                    border: none;
+                                    padding: 0 0 0.5rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+   }
+
+   .data-table-definition-list {
+       thead {
+           display: none;
+       }
+
+       tbody th {
+           padding-bottom: 0;
+       }
+
+       tbody th,
+       tbody td {
+           display: block;
+           padding-left: 0;
+           padding-right: 0;
+       }
+   }
+}
+
+// Some tables display mobile layout also on tablet resolution
+.table-wrapper.cart,
+.account .table-wrapper {
+    @include table-wrapper-mobile-layout();
+
+    .table {
+        @include media('>=tablet', '<laptop') {
+            @include table-mobile-layout();
+        }
+    }
+}

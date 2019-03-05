@@ -95,6 +95,7 @@ import 'components/device-detection';
 import 'components/cookie-message';
 import 'components/links-block-addto';
 import 'components/price-box';
+import 'components/table';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
