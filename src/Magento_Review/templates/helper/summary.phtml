@@ -11,7 +11,7 @@
         $dividedRating = round($rating*2/20)/2;
     ?>
 
-    <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+    <div>
         <?=$this->getLayout()->createBlock(
             'Creativestyle\FrontendExtension\Block\Twig',
             'rating-summary-product-sale-block', [
@@ -19,7 +19,7 @@
                     'namespace' => 'cs-',
                     'maxStars' => 5,
                     'activeStars' => $dividedRating,
-                    'text' => '<span itemprop="ratingValue">'.$dividedRating.'</span> / <span itemprop="bestRating">5</span> (<span itemprop="reviewCount">'.$block->getReviewsCount().'</span> '.(($block->getReviewsCount() == 1) ? __('Review') : __('Reviews')).')'
+                    'text' => '<span>'.$dividedRating.'</span> / <span>5</span> (<span>'.$block->getReviewsCount().'</span> '.(($block->getReviewsCount() == 1) ? __('Review') : __('Reviews')).')'
                 ]
             ]
         )->setTemplate( 'star-rating/star-rating.twig' )->toHtml(); ?>
