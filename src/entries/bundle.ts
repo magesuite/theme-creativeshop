@@ -35,7 +35,6 @@ import 'components/container';
 import 'components/navigation';
 import 'components/grid-layout';
 import 'components/product-tile';
-import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
 import 'components/topbar';
