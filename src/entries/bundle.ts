@@ -104,9 +104,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 // Customizations
 // =============================================================================
 
-import { init as collapsibleText } from 'components/collapsible-text/collapsible-text';
-collapsibleText();
-
 import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
