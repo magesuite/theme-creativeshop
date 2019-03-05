@@ -96,6 +96,7 @@ import 'components/cookie-message';
 import 'components/links-block-addto';
 import 'components/price-box';
 import 'components/table';
+import 'components/sticky-block';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
@@ -104,7 +105,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 // Customizations
 // =============================================================================
 
-import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';

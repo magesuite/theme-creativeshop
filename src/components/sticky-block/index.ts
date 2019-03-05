@@ -1,7 +1,6 @@
-/* tslint:disable:no-unused-new ordered-imports */
-import StickyBlock from 'components/sticky-block/sticky-block';
-import breakpoint from 'utils/breakpoint/breakpoint';
 import * as $ from 'jquery';
+import StickyBlock from 'components/sticky-block/sticky-block';
+import 'components/sticky-block/sticky-block.scss';
 
 /**
  * StickyBlock component initialization for template
