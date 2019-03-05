@@ -3,6 +3,7 @@
 @import 'components/button/mixin';
 @import 'pages/layout/2columns-left/mixin';
 @import 'components/field/mixin';
+@import 'components/typography/typography';
 
 $dashboard-button_type: $button_default-type !default;
 $dashboard-button_secondary-type: 'secondary' !default;
@@ -43,7 +44,7 @@ $dashboard_hide-sections-separators: false !default;
 $dashboard_hide-titles-separators: false !default;
 // Set value if $dashboard_has-darker-background is set to true
 $dashboard_boxes-inner-padding: 0 !default;
-// For shops white white background it is also needed as it is part of spacing system. 
+// For shops white white background it is also needed as it is part of spacing system.
 // For shops with darker background value here can be smaller of higher
 $dashboard_space-between-boxes: 2rem !default;
 
@@ -106,6 +107,37 @@ $dashboard_price-font-color: $color_text-500 !default;
     .page-title {
         padding: 0;
         margin: 0;
+    }
+
+    .columns .column.main {
+        @include media('>=tablet') {
+            padding: 3rem 0 0;
+        }
+    }
+
+    .message-error,
+    .message-success,
+    .message-notice {
+        margin-top: 3rem;
+        margin-bottom: 0;
+    }
+
+    .#{$ns}captcha__wrapper {
+        margin-bottom: 2rem;
+
+        @include media('>=phoneLg') {
+            margin-bottom: 3rem;
+        }
+    }
+
+    .captcha-reload {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        @include media('>=phone') {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
     }
 
     .page-title-wrapper {
@@ -174,7 +206,6 @@ $dashboard_price-font-color: $color_text-500 !default;
             width: 100%;
             background: $dashboard_boxes-background;
 
-
             @if ($dashboard_has-darker-background == true) {
                 padding: $dashboard_boxes-inner-padding;
 
@@ -184,9 +215,8 @@ $dashboard_price-font-color: $color_text-500 !default;
                     }
                 }
             }
-            
-            @include media('>=tablet') {
 
+            @include media('>=tablet') {
                 @if ($dashboard_has-darker-background == false) {
                     width: 50%;
                 } @else {
@@ -337,7 +367,7 @@ $dashboard_price-font-color: $color_text-500 !default;
         @if ($dashboard_hide-titles-separators == true) {
             border-bottom: none;
         }
-    
+
         strong {
             font-weight: $dashboard_headline-font-weight;
             margin-right: 1rem;
@@ -398,7 +428,7 @@ $dashboard_price-font-color: $color_text-500 !default;
     }
 
     // Tables not placed inside box in markup
-    .table-wrapper, 
+    .table-wrapper,
     .orders-history,
     .form-wishlist-items {
         background: $dashboard_boxes-background;
@@ -411,7 +441,7 @@ $dashboard_price-font-color: $color_text-500 !default;
         & + .toolbar,
         & + .actions-toolbar {
             background: $dashboard_boxes-background;
-            padding: $dashboard_boxes-inner-padding; 
+            padding: $dashboard_boxes-inner-padding;
         }
 
         .action {
@@ -423,7 +453,7 @@ $dashboard_price-font-color: $color_text-500 !default;
         display: flex;
         justify-content: space-between;
 
-        &::after, 
+        &::after,
         &::before {
             display: none;
         }
@@ -464,7 +494,6 @@ $dashboard_price-font-color: $color_text-500 !default;
     .choice.persistent {
         padding-bottom: 1.5rem;
     }
-
 
     // Order sction and page
     .table-order-items {
@@ -575,7 +604,7 @@ $dashboard_price-font-color: $color_text-500 !default;
 
     // Address forms sections
     .form.create.account,
-    .form-address-edit, 
+    .form-address-edit,
     .form-edit-account,
     #aw_giftcard__check_code_form {
         background: $dashboard_boxes-background;
@@ -628,7 +657,7 @@ $dashboard_price-font-color: $color_text-500 !default;
             @include media('>=tablet') {
                 margin-bottom: 0;
             }
-        } 
+        }
     }
 
     .block-addresses-list + .actions-toolbar {
@@ -641,7 +670,7 @@ $dashboard_price-font-color: $color_text-500 !default;
 
     .box-billing-address {
         @include media('<tablet') {
-            margin-bottom: 2rem;;
+            margin-bottom: 2rem;
         }
     }
 
