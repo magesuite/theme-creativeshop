@@ -96,7 +96,6 @@ import 'components/links-block-addto';
 import 'components/price-box';
 import 'components/table';
 import 'components/sticky-block';
-import 'components/items-grid-layout';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
