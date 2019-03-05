@@ -1,0 +1,94 @@
+@import 'utils/visually-hidden';
+@import 'config/variables';
+
+@mixin table-mobile-layout() {
+
+    border: none;
+    font-size: 1.4rem;
+    padding: 0;
+
+    &:last-child {
+        padding-bottom: 1.2rem;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody td {
+        border: none;
+        display: block;
+        font-size: 1.4rem;
+        padding: 0.2rem;
+
+        &:first-child {
+            padding-top: 2rem;
+        }
+
+        &:last-child {
+            padding-bottom: 1rem;
+        }
+
+        &:before {
+            @include media('<laptop') {
+                padding-right: 10px;
+                content: attr(data-th) ': ';
+                display: inline-block;
+                color: $color_mineshaft;
+                font-weight: 700;
+            }
+        }
+
+        &.actions {
+            @include media('<laptop') {
+                border-bottom: 1px solid $color_alto;
+            }
+
+            &:before {
+                @include media('<laptop') {
+                    @include visually-hidden;
+                }
+            }
+        }
+    }
+
+    tfoot {
+        display: block;
+
+        tr {
+            display: block;
+
+            &:first-child {
+                th,
+                td {
+                    padding-top: 2rem;
+                }
+            }
+        }
+
+        th {
+            box-sizing: border-box;
+            float: left;
+            padding-left: 0;
+            padding-right: 0;
+            text-align: left;
+            width: 70%;
+        }
+
+        td {
+            box-sizing: border-box;
+            float: left;
+            padding-left: 0;
+            padding-right: 0;
+            text-align: right;
+            width: 30%;
+        }
+    }
+}
+
+@mixin table-wrapper-mobile-layout() {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    position: relative; // To hide unnecessary horizontal scrollbar in Safari
+}
