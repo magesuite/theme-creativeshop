@@ -3,8 +3,8 @@
 @import 'components/button/mixin';
 @import 'include-media/dist/include-media';
 
-$addtocart_button-type: 'primary' !default;
-$addtocart_button-icon-position: 'right' !default;
+$addtocart_button-type: $button_default-type !default;
+$addtocart_button-icon-position: $button_default-icon-pos !default;
 
 $addtocart_button-icon-width: 2.2rem !default;
 $addtocart_button-icon-height: $addtocart_button-icon-width !default;
@@ -26,6 +26,17 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
 
 .#{$ns}addtocart {
     $root: &;
+
+    &__wrapper {
+        // because button can't have overflow, we need to add it on button wrapper
+        overflow: hidden;
+
+        @if ($button_border-radius > 0) {
+            @supports (clip-path: inset(0 0 0 0 round $button_border-radius)) {
+                clip-path: inset(0 0 0 0 round $button_border-radius);
+            }
+        }
+    }
 
     &__button {
         @include button(
@@ -116,10 +127,10 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
         &:after {
             content: '';
             position: absolute;
-            top: 0;
             left: -1em;
+            top: -#{$button_border-size};
+            bottom: -#{$button_border-size};
             width: calc(100% + 2em);
-            height: 100%;
             transform: $addtocart_feedback-bg-skew translate3d(-100%, 0, 0);
             transform-origin: 0 0;
             transition: transform 0.45s cubic-bezier(0.01, 0.65, 0.38, 1);
