@@ -6,11 +6,10 @@
 <li class="link wishlist cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>" data-bind="scope: 'wishlist'">
     <a class="cs-header-user-nav__link" <?= /* @noEscape */ $block->getLinkAttributes() ?>>
         <?= $block->getChildHtml('wish-list-link.icon'); ?>
-        <!-- TODO: Update class names after badge component refactor -->
         <span class="cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__qty-counter--have-items': wishlist().counter, 'cs-header-user-nav__qty-counter--empty': !wishlist().counter }">
             <span class="counter qty cs-header-user-nav__qty-counter-span">
                 <!-- ko if: wishlist().counter -->
-                    <!-- ko text: wishlist().counter --><!-- /ko -->
+                    <!-- ko text: parseInt(wishlist().counter) --><!-- /ko -->
                 <!-- /ko -->
                 <!-- ko if: !wishlist().counter -->
                 0
