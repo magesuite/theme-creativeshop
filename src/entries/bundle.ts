@@ -35,7 +35,6 @@ import 'components/container';
 import 'components/navigation';
 import 'components/grid-layout';
 import 'components/product-tile';
-import 'components/filter-horizontal/filter-horizontal';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
 import 'components/topbar';
@@ -96,6 +95,13 @@ import 'components/cookie-message';
 import 'components/links-block-addto';
 import 'components/price-box';
 import 'components/table';
+import 'components/sticky-block';
+import 'components/visually-hidden';
+import 'components/star-rating';
+import 'components/dropdown-switcher';
+import 'components/display-controller';
+import 'components/captcha';
+import 'components/lazyload';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
@@ -104,7 +110,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 // Customizations
 // =============================================================================
 
-import 'customizations/sticky-block/sticky-block';
 import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';

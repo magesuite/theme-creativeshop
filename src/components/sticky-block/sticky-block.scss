@@ -1,7 +1,43 @@
-@mixin stickyBlock() {
-    @include media('>=laptop') {
-        position: sticky;
-        z-index: 10;
-        top: 1em;
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+@import 'components/sticky-block/mixin';
+
+.#{$ns}sticky-block {
+    @include stickyBlock;
+    box-sizing: border-box;
+
+    &--pdp {
+        @include media('>=tablet') {
+            position: relative;
+            z-index: 3;
+            margin-right: calc(15px - 0.5rem);
+
+            .page-product-bundle & {
+                margin-right: 0;
+            }
+        }
+
+        @include media('>=laptop') {
+            top: 3rem;
+            margin-right: 15px;
+
+            .page-product-bundle & {
+                margin-right: 0;
+            }
+        }
+
+        @media screen and (min-width: 1230px) {
+            margin-right: 0;
+        }
+    }
+
+    &--no-mobile {
+        @include media('>=tablet') {
+            position: sticky;
+            top: 8.5rem;
+        }
+        @include media('>=laptop') {
+            top: 1.5rem;
+        }
     }
 }
