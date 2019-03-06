@@ -100,6 +100,7 @@ import 'components/visually-hidden';
 import 'components/star-rating';
 import 'components/dropdown-switcher';
 import 'components/display-controller';
+import 'components/captcha';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
