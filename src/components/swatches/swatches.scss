@@ -16,6 +16,7 @@ $swatches_swatch-height: 2.8em !default;
 $swatches_swatch-width: 3.2em !default;
 $swatches_swatch-padding: 0 0.35em !default;
 $swatches_swatch-color: $color_text-500 !default;
+$swatches_swatch-text-offset: 0.1em !default;
 
 $swatches_swatch-background: $color_background-500 !default;
 $swatches_swatch--hover-background: $color_background-200 !default;
@@ -108,7 +109,9 @@ $swatches--filters_font-size: 0.8em !default;
 
 .swatch-attribute-label {
     text-transform: uppercase;
-    line-height: $swatches_swatch-height;
+    line-height: calc(
+        #{$swatches_swatch-height} - #{$swatches_swatch-border-width * 2} + #{$swatches_swatch-text-offset}
+    );
     font-weight: 700;
     font-size: $swatches_label-font-size;
     width: $swatches_label-width;
@@ -120,6 +123,10 @@ $swatches--filters_font-size: 0.8em !default;
 
     &:after {
         content: ': ';
+        line-height: calc(
+            #{$swatches_swatch-height} - #{$swatches_swatch-border-width * 2} +
+                #{$swatches_swatch-text-offset}
+        );
     }
 }
 
@@ -174,7 +181,7 @@ $swatches--filters_font-size: 0.8em !default;
     color: $swatches_swatch-color;
     cursor: pointer;
     line-height: calc(
-        #{$swatches_swatch-height} - #{$swatches_swatch-border-width * 2}
+        #{$swatches_swatch-height} - #{$swatches_swatch-border-width * 2} + #{$swatches_swatch-text-offset}
     );
     text-align: center;
     transition: background-color 0.3s, border-color 0.3s, opacity 0.3s,

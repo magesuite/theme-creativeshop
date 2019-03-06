@@ -1,8 +1,9 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/button/mixin';
+@import 'components/field/mixin';
 
-$captcha_button-type: $button_default-type !default;
+$captcha_button-type: 'secondary' !default;
 $captcha_button-icon-pos: 'no-icon' !default;
 
 .#{$ns}captcha {
@@ -35,6 +36,10 @@ $captcha_button-icon-pos: 'no-icon' !default;
             $type: $captcha_button-type,
             $icon_pos: $captcha_button-icon-pos
         );
+    }
+
+    &__note {
+        @include field-note();
     }
 
     &__wrapper {

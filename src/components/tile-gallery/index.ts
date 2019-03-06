@@ -9,25 +9,15 @@ const ns: string = 'cs-';
  * TileGallery component initialization
  */
 
-const $productTile: JQuery = $(
-    `.${ns}product-tile`
-);
+const $productTile: JQuery = $(`.${ns}product-tile`);
 
 $productTile.each(function(): void {
     const $tile: JQuery<HTMLElement> = $(this);
-    const $gallery: JQuery<HTMLElement> = $tile.find($(
-        `.${ns}tile-gallery`
-    ));
-    let isInitialized: boolean = false;
+    const $gallery: JQuery<HTMLElement> = $tile.find($(`.${ns}tile-gallery`));
 
     if ($gallery.length) {
-        $tile.on({
-            mouseenter: function(): void {
-                if (!isInitialized) {
-                    new TileGallery($gallery);
-                    isInitialized = true;
-                }
-            }
+        $tile.one('mouseenter', () => {
+            new TileGallery($gallery);
         });
     }
 });

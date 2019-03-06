@@ -12,7 +12,7 @@ $addtocart_button-icon-edge-gutter: 0.8em !default;
 
 $addtocart_button-skewed-background-width: 5.1rem !default;
 $addtocart_button-padding-left: 1rem !default;
-$addtocart_button-padding-right: 4.5rem !default; 
+$addtocart_button-padding-right: 4.5rem !default;
 
 $addtocart_loading-indicator-ball-color: $color_text-200 !default;
 $addtocart_loading-indicator-ball-size: 10px !default;
@@ -56,6 +56,7 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
             $type: $addtocart_button-type,
             $icon_pos: $addtocart_button-icon-position
         );
+        white-space: nowrap;
     }
 
     &__button-icon,
@@ -78,7 +79,8 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
 
     &__button-label,
     &__success-label {
-        transition: opacity 0.15s linear, transform 1s cubic-bezier(0, 0.77, 0.18, 1);
+        transition: opacity 0.15s linear,
+            transform 1s cubic-bezier(0, 0.77, 0.18, 1);
     }
 
     &__button-label {
@@ -94,7 +96,8 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
         width: $addtocart_loading-indicator-ball-size * 4;
         height: $addtocart_loading-indicator-ball-size;
         opacity: 0;
-        transition: opacity 0.15s linear, transform 1s cubic-bezier(0, 0.77, 0.18, 1);
+        transition: opacity 0.15s linear,
+            transform 1s cubic-bezier(0, 0.77, 0.18, 1);
         transition-delay: 0.2s;
 
         &-ball {
@@ -180,13 +183,14 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
         transform: translate3d(-50%, -50%, 0) translateX(-2em); // calc() doesn't work in IE so i had to duplicate translateX() transform to adjust X position
         transition-delay: 0.2s;
         white-space: nowrap;
-        padding-right: #{$addtocart_button-padding-right - $addtocart_button-padding-left};
+        padding-right: #{$addtocart_button-padding-right -
+            $addtocart_button-padding-left};
     }
 
     &__minicart {
         width: 100%;
         text-align: center;
-        
+
         &--sticky,
         &--unstick {
             @include container-wrapper();
@@ -233,7 +237,8 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
         position: absolute;
         opacity: 0;
         z-index: 600;
-        transition: top 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93), left 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93);
+        transition: top 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93),
+            left 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93);
 
         &--animating {
             animation: move-qty-badge 1.2s cubic-bezier(0.42, 0.31, 0.34, 0.93);
@@ -289,7 +294,11 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
             transform: skew(-18deg) translate3d(0, 0, 0);
 
             &:after {
-                transform: translate3d(-#{$addtocart_button-skewed-background-width + 0.2}, 0, 0);
+                transform: translate3d(
+                    -#{$addtocart_button-skewed-background-width + 0.2},
+                    0,
+                    0
+                );
             }
         }
     }
@@ -321,9 +330,9 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
         #{$root}__button-icon {
             transition-delay: 0.5s;
         }
-        
+
         #{$root}__feedback-bg {
-            &, 
+            &,
             &:after {
                 transition: transform 0.4s cubic-bezier(0.86, 0.01, 0.83, 0.51);
             }
@@ -336,14 +345,15 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
                 transition-delay: 0;
             }
         }
-        
-        #{$root}__success-label, 
+
+        #{$root}__success-label,
         #{$root}__fail-icon {
-            transition: opacity 0.6s linear, transform 0.6s cubic-bezier(0.86, 0.01, 0.83, 0.51);
+            transition: opacity 0.6s linear,
+                transform 0.6s cubic-bezier(0.86, 0.01, 0.83, 0.51);
             transition-delay: 0;
         }
-        
-        #{$root}__success-icon, 
+
+        #{$root}__success-icon,
         #{$root}__fail-icon {
             transition-delay: 0;
         }

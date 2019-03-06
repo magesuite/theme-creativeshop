@@ -31,7 +31,7 @@ export default class AddressAutofill {
         options.region = countrySelectValue || 'DE';
         options.language =
             countrySelectValue ||
-            window.navigator.userLanguage ||
+            window.navigator['userLanguage'] ||
             window.navigator.language;
 
         this.googleAddressDetector = new GoogleAddressDetector(options);
@@ -65,6 +65,8 @@ export default class AddressAutofill {
                 currentValue = newValue;
             }
         );
+
+        this.options.streetField.on('blur', this._hideAutosuggest.bind(this));
     }
 
     /**
@@ -237,7 +239,7 @@ export default class AddressAutofill {
                 const selectedAddress: FormattedAddress = $items
                     .eq(selectedIndex)
                     .data('value');
-                if(selectedAddress) {
+                if (selectedAddress) {
                     this._fillFields(selectedAddress);
                     this._focusEmptyField();
                     this._hideAutosuggest();
@@ -245,14 +247,16 @@ export default class AddressAutofill {
             }
         });
 
-        $(document).click(
-            (event: JQuery.Event): void => {
-                if ($(event.target).closest('.cs-html-select').length) {
+        $(document).on(
+            'click',
+            (event: JQuery.ClickEvent): void => {
+                const $target: JQuery = $(event.target);
+                if ($target.closest('.cs-html-select').length) {
+                    event.preventDefault();
                     const $items: JQuery = this.$autosuggestSelectMenu.find(
                         '.cs-html-select__menu-item'
                     );
-                    event.preventDefault();
-                    const selectedAddress: FormattedAddress = $(event.target)
+                    const selectedAddress: FormattedAddress = $target
                         .closest($items)
                         .data('value');
                     this._fillFields(selectedAddress);
