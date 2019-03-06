@@ -3,6 +3,9 @@
 @import 'components/button/mixin';
 @import 'components/field/mixin';
 
+$pq-subscription-label-font-weight: 300 !default;
+$pq-subscription-label-font-size: 1.4rem !default;
+
 $pq-note_font-size: 1.2rem !default;
 $pq-note_font-color: $color_text-500 !default;
 
@@ -583,43 +586,44 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
         }
     }
+}
 
-    &__customer {
-        &-subscription-save-button {
-            @include button(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-            margin: 2rem 0;
-        }
+//Aheadworks product questions - User Area
 
-        &-subscription-save-button-span {
-            @include button_span(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
+#aw_pq_subscribe_to_form {
+    .button {
+        @include button(
+            $type: $pq-button_type,
+            $icon_pos: $pq-button_secondary-icon-pos
+        );
+    }
 
-        &-subscription-save-button-icon {
-            @include button_icon(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
+    button > span {
+        @include button_span(
+            $type: $pq-button_type,
+            $icon_pos: $pq-button_secondary-icon-pos
+        );
+    }
 
-        &-subscribe-checkbox {
-            @include field-checkbox();
-        }
+    ul {
+        padding-left: 0;
+    }
 
-        &-subscribe-checkbox-input {
-            @include field();
-            align-items: center;
-            margin-top: 1rem;
-        }
+    //Subscription item
+    li {
+        @include field();
+        align-items: center;
+        margin-top: 1rem;
+    }
 
-        &-subscribe-checkbox-label {
-            @include field-label();
-            width: auto;
-        }
+    //Subscription checkbox
+    li > input {
+        @include field-checkbox();
+    }
+
+    //Subscription checkbox label
+    li > label {
+        font-weight: $pq-subscription-label-font-weight;
+        font-size: $pq-subscription-label-font-size;
     }
 }
