@@ -6,24 +6,23 @@
 $helper = $this->helper('Magento\Search\Helper\Data');
 ?>
 
-<!-- TODO: Update class names after input & button component refactor -->
 <div class="cs-header__search">
-    <form class="cs-header-search" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
+    <form class="cs-header-search" id="search_mini_form" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get">
         <input id="search"
             data-mage-init='{
                 "quickSearch":{
                     "formSelector":"#search_mini_form",
-                    "url":"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
+                    "url":"<?= /* @escapeNotVerified */ $block->getUrl('search/ajax/suggest'); ?>",
                     "destinationSelector":"#search_autocomplete",
-                    "templates": <?php /* @noEscape */ echo $block->getJsonSuggestRenderers();?>,
-                    "priceFormat" : <?php /* @noEscape */ echo $block->getJsonPriceFormat();?>}
+                    "templates": <?= /* @noEscape */ $block->getJsonSuggestRenderers();?>,
+                    "priceFormat" : <?= /* @noEscape */ $block->getJsonPriceFormat();?>}
                 }'
             type="search"
-            name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName(); ?>"
-            value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText(); ?>"
-            placeholder="<?php /* @escapeNotVerified */ echo $block->getSearchPlaceholder(); ?>"
+            name="<?= /* @escapeNotVerified */ $helper->getQueryParamName(); ?>"
+            value="<?= /* @escapeNotVerified */ $helper->getEscapedQueryText(); ?>"
+            placeholder="<?= /* @escapeNotVerified */ $block->getSearchPlaceholder(); ?>"
             class="cs-header-search__input"
-            maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength(); ?>"
+            maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength(); ?>"
             role="combobox"
             aria-haspopup="false"
             aria-autocomplete="both"
@@ -33,7 +32,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         <div class="cs-header-search__action">
             <span class="cs-header-search__close">
                 <?= $block->getChildHtml('top.search.icon.close'); ?>
-                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Close search'); ?></span>
+                <span class="cs-header-search__close-label"><?= /* @escapeNotVerified */ __('Close search'); ?></span>
             </span>
             <button class="cs-header-search__button" type="submit">
                 <div class="cs-header-search__button-container cs-header-search__button-container--search">
@@ -42,7 +41,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                 <div class="cs-header-search__button-container cs-header-search__button-container--loader">
                     <?= $block->getChildHtml('top.search.icon.loader'); ?>
                 </div>
-                <span class="cs-visually-hidden"><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+                <span class="cs-header-search__button-label"><?= /* @escapeNotVerified */ __('Search'); ?></span>
             </button>
         </div>
         <div id="search_autocomplete" class="search-autocomplete cs-autocomplete"></div>
