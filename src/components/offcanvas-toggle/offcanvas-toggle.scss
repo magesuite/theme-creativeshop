@@ -1,0 +1,113 @@
+@import 'config/variables';
+@import 'include-media/dist/include-media';
+
+$offcanvas-toggle_icon-background: transparent !default;
+$offcanvas-toggle_icon-color: $color_primary-500 !default;
+$offcanvas-toggle_icon-background-active: $color_primary-500 !default;
+$offcanvas-toggle_icon-color-active: $color_background-200 !default;
+$offcanvas-toggle_icon-transition-time: $transition-default-time !default;
+$offcanvas-toggle_animation-direction: 'left' !default; // 'left' or 'right'
+
+.cs-offcanvas-toggle {
+    $root: &;
+
+    display: flex;
+    border: 0;
+    align-items: center;
+    padding: 1.5rem;
+    align-self: stretch;
+    height: 100%;
+
+    &,
+    &:active,
+    &:focus,
+    &:hover {
+        border: 0;
+        background: $offcanvas-toggle_icon-background;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        transform: scale(0);
+        background: $offcanvas-toggle_icon-background-active;
+        transition: transform $offcanvas-toggle_icon-transition-time;
+        bottom: 0;
+
+        @if ($offcanvas-toggle_animation-direction == 'right') {
+            right: 0;
+            transform-origin: right;
+        } @else {
+            left: 0;
+            transform-origin: left;
+        }
+    }
+
+    @include media('>=laptop') {
+        display: none;
+    }
+
+    &--active {
+        &,
+        &:active,
+        &:focus,
+        &:hover {
+            background: $offcanvas-toggle_icon-background-active;
+        }
+
+        &:after {
+            transform: scale(1);
+        }
+
+        #{$root}__icon {
+            transform: rotate(-45deg);
+
+            &,
+            &:before,
+            &:after {
+                background: $offcanvas-toggle_icon-color-active;
+            }
+
+            &:before,
+            &:after {
+                transform: rotate(90deg);
+            }
+        }
+    }
+
+    &__icon {
+        padding: 0;
+        margin: 0;
+        position: relative;
+
+        &,
+        &:before,
+        &:after {
+            width: 1.8rem;
+            height: 0.2rem;
+            background: $offcanvas-toggle_icon-color;
+            transition: background-color $offcanvas-toggle_icon-transition-time, transform $offcanvas-toggle_icon-transition-time;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+        }
+
+        &:before {
+            transform: translateY(-250%);
+            transform: translate3d(0, -250%, 0);
+        }
+
+        &:after {
+            transform: translateY(250%);
+            transform: translate3d(0, 250%, 0);
+        }
+    }
+}

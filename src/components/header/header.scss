@@ -4,11 +4,6 @@
 
 $header_border-bottom: 1px solid $color_border-200 !default;
 
-$header_burger-icon-background: transparent !default;
-$header_burger-icon-color: $color_primary-500 !default;
-$header_burger-icon-background-active: $color_primary-500 !default;
-$header_burger-icon-color-active: $color_background-200 !default;
-
 $header_is-sticky-on-mobile: true !default;
 $header_background: $color_background-200 !default;
 
@@ -70,107 +65,16 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
         }
     }
 
-    &__burger {
-        display: flex;
-        padding: 1.5rem;
+    &__offcanvas-toggle {
+        height: 100%;
         flex: 0 1 4rem;
-        border: 0;
-        align-items: center;
-        margin-right: 0.5rem;
-        align-self: stretch;
-
-        &,
-        &:active,
-        &:focus,
-        &:hover {
-            border: 0;
-            background: $header_burger-icon-background;
-            box-shadow: none;
-            border-radius: 0;
-        }
-
-        &:after {
-            content: '';
-            position: absolute;
-            height: 2px;
-            width: 100%;
-            transform: scale(0);
-            transform-origin: left;
-            background: $header_burger-icon-background-active;
-            transition: transform 0.3s;
-            bottom: 0;
-            left: 0;
-        }
-
-        @include media('>=laptop') {
-            display: none;
-        }
-
-        &--active {
-            &,
-            &:active,
-            &:focus,
-            &:hover {
-                background: $header_burger-icon-background-active;
-            }
-
-            &:after {
-                transform: scale(1);
-            }
-
-            #{$root}__burger-icon {
-                transform: rotate(-45deg);
-
-                &,
-                &:before,
-                &:after {
-                    background: $header_burger-icon-color-active;
-                }
-
-                &:before,
-                &:after {
-                    transform: rotate(90deg);
-                }
-            }
-        }
-    }
-
-    &__burger-icon {
-        padding: 0;
-        margin: 0;
-        position: relative;
-
-        &,
-        &:before,
-        &:after {
-            width: 1.8rem;
-            height: 0.2rem;
-            background: $header_burger-icon-color;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        &:before,
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-        }
-
-        &:before {
-            transform: translateY(-250%);
-            transform: translate3d(0, -250%, 0);
-        }
-
-        &:after {
-            transform: translateY(250%);
-            transform: translate3d(0, 250%, 0);
-        }
     }
 
     &__logo {
         display: flex;
         flex: 1 1 0%;
         margin-bottom: 0;
+        height: 100%;
 
         @include media('>=phoneLg') {
             flex: 0 1 auto;

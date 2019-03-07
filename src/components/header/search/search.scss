@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'include-media/dist/include-media';
+@import 'utils/visually-hidden';
 
 @import 'components/field/mixin';
 @import 'components/button/mixin';
@@ -109,23 +110,8 @@ $header-search_button-container-transition: transform 0.5s
         }
     }
 
-    &__button {
-        @include button(
-            $type: $header-search_button-type,
-            $icon_pos: 'only-icon'
-        );
-
-        width: $header-search_button-width;
-        height: 100%;
-        overflow: hidden;
-        position: relative;
-        border-radius: $header-search_button-border-radius;
-        backface-visibility: hidden;
-        transform: $header-search_button-transform;
-
-        &[disabled] {
-            opacity: 1;
-        }
+    &__close-label {
+        @include visually-hidden();
     }
 
     &__button-container {
@@ -148,6 +134,25 @@ $header-search_button-container-transition: transform 0.5s
         }
     }
 
+    &__button {
+        @include button(
+            $type: $header-search_button-type,
+            $icon_pos: 'only-icon'
+        );
+
+        width: $header-search_button-width;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: $header-search_button-border-radius;
+        backface-visibility: hidden;
+        transform: $header-search_button-transform;
+
+        &[disabled] {
+            opacity: 1;
+        }
+    }
+
     &__button-icon {
         transform: $header-search_icon-transform;
 
@@ -165,6 +170,10 @@ $header-search_button-container-transition: transform 0.5s
             width: 3.2rem;
             height: 3.2rem;
         }
+    }
+
+    &__button-label {
+        @include visually-hidden();
     }
 
     &__autocomplete {

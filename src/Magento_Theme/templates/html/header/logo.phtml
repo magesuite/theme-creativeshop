@@ -5,19 +5,21 @@
  */
 ?>
 <?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
-<?php if ($block->isHomePage()):?>
-    <div class="cs-header__logo | cs-logo cs-logo--text">
-<?php else: ?>
-    <a class="cs-header__logo | cs-logo cs-logo--link" href="<?php echo $block->getUrl(''); ?>" title="<?php /* @escapeNotVerified */ echo $storeName ?>">
-<?php endif ?>
-        <img class="cs-logo__image"
-             src="<?php /* @escapeNotVerified */ echo $block->getLogoSrc() ?>"
-             alt="<?php /* @escapeNotVerified */ echo $block->getLogoAlt() ?>"
-             <?php echo $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
-             <?php echo $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
-        />
-<?php if (!$block->isHomePage()):?>
-    </a>
-<?php else:?>
-    </div>
-<?php endif?>
+<div class="cs-header__logo">
+    <?php if ($block->isHomePage()): ?>
+        <div class="logo cs-logo cs-logo--text">
+    <?php else: ?>
+        <a class="logo cs-logo cs-logo--link" href="<?= $block->getUrl(''); ?>" title="<?= /* @escapeNotVerified */ $storeName ?>">
+    <?php endif; ?>
+            <img class="cs-logo__image"
+                src="<?= /* @escapeNotVerified */ $block->getLogoSrc() ?>"
+                alt="<?= /* @escapeNotVerified */ $block->getLogoAlt() ?>"
+                <?= $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
+                <?= $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+            />
+    <?php if (!$block->isHomePage()): ?>
+        </a>
+    <?php else: ?>
+        </div>
+    <?php endif; ?>
+</div>

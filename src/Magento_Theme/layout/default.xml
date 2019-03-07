@@ -59,7 +59,7 @@
         </referenceContainer>
         <referenceContainer name="header.container" htmlClass="cs-header" />
         <referenceContainer name="header-wrapper" htmlClass="cs-header__content">
-            <block class="Magento\Framework\View\Element\Template" name="header.burger" template="Magento_Theme::html/burger.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="header.offcanvas-toggle" template="Magento_Theme::html/offcanvas-toggle.phtml" before="-"/>
         </referenceContainer>
         <move element="header.container" destination="header.page.container.inner"/>
 
@@ -73,7 +73,12 @@
         </referenceBlock>
 
         <referenceContainer name="page.top">
-            <block class="Magento\Framework\View\Element\Template" name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-">
+                <arguments>
+                    <!-- Side for offcanvas -->
+                    <argument name="additional_css_classes" xsi:type="string">cs-offcanvas--side_left</argument>
+                </arguments>
+            </block>
             <!-- Adding global container for Breadcrumbs -->
             <container name="breadcrumbs.container" htmlTag="div" htmlClass="cs-container cs-container--breadcrumbs" after="-">
                 <container name="breadcrumbs.container.inner" htmlTag="div" htmlClass="cs-container__inner"/>

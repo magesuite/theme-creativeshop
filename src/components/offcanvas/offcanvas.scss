@@ -3,6 +3,7 @@
 
 $offcanvas_top-offset-mobile: $global_header-height-mobile !default; // Move below the navigation on mobile.
 $offcanvas_top-offset-tablet: $global_header-height-tablet !default; // Move below the navigation on tablet.
+$offcanvas_transition-time: $transition-default-time !default;
 
 $offcanvas_overlay-background: rgba($color_background-800, 0.7) !default;
 
@@ -34,14 +35,14 @@ $offcanvas_drawer-background: $color_background-200 !default;
         height: 100%;
         background-color: transparent;
         // Setting 1ms because 0 doesn't seem to work and we need seamless transition for scale here.
-        transition: background-color 0.3s, transform 1ms 0.3s;
+        transition: background-color $offcanvas_transition-time, transform 1ms $offcanvas_transition-time;
         transform: scale(0);
         cursor: pointer;
 
         &--visible {
             transform: scale(1);
             background: $offcanvas_overlay-background;
-            transition: background-color 0.3s;
+            transition: background-color $offcanvas_transition-time;
         }
     }
 
@@ -49,12 +50,17 @@ $offcanvas_drawer-background: $color_background-200 !default;
         position: fixed;
         bottom: 0;
         background: $offcanvas_drawer-background;
-        transform: translate3d(-105%, 0, 0);
-        transition: transform 0.3s;
+        transition: transform $offcanvas_transition-time;
         width: 90%;
         max-width: 40rem;
+        
+        #{$root}--side_left & {
+            left: 0;
+            right: auto;
+            transform: translate3d(-105%, 0, 0);
+        }
 
-        #{$root}--slide-from-right & {
+        #{$root}--side_right & {
             left: auto;
             right: 0;
             transform: translate3d(105%, 0, 0);
