@@ -187,7 +187,9 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         width: 100%;
 
         .modal-inner-wrap & {
-            padding: $checkout_base-space;
+            @include media('<tablet') {
+                display: none;
+            }
         }
 
         @include media('>=tablet') {
@@ -671,15 +673,20 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
     &__agreements {
         font-size: 1.2rem;
-        border-top: $checkout_place-order-border-bottom;
-        padding: $checkout_base-space 0 0;
 
         .modal-inner-wrap & {
-            padding: $checkout_base-space $checkout_base-space 0;
+            @include media('<tablet') {
+                display: none;
+            }
         }
 
-        @include media('>=tablet') {
-            padding: $checkout_base-space $checkout_base-space 0;
+        .checkout-agreements {
+            padding: $checkout_base-space 0 0;
+            border-top: $checkout_place-order-border-bottom;
+
+            @include media('>=tablet') {
+                padding: $checkout_base-space $checkout_base-space 0;
+            }
         }
 
         .modal._show & {
@@ -700,7 +707,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .opc-block-summary {
         padding: 0;
 
-        .table-totals,
         .action.checkout,
         .items-in-cart,
         .title {
@@ -770,11 +776,16 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         th {
             font-weight: 400;
             font-size: $checkout_texts-font-size;
-            padding: 0.8rem $checkout_base-space;
+            padding: 0.8rem 0;
+
+            @include media('>=tablet') {
+                padding: 0.8rem $checkout_base-space;
+            }
         }
 
         .amount {
             text-align: right;
+            border-bottom: none;
         }
 
         .grand {
@@ -904,12 +915,23 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             }
         }
 
+        .table-totals {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
+
         .items-in-cart {
             @include media('<tablet') {
                 display: block;
             }
 
             .title {
+                // Summary amount of product (magento markup)
+                strong {
+                    font-size: 1.4rem;
+                }
+
                 @include media('<tablet') {
                     padding-top: $checkout_base-space;
                 }
