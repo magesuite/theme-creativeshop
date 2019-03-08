@@ -232,6 +232,7 @@ export default class ImageTeaser {
                 Boolean(this._$container.data('mobile-is-slider')) || false,
             loop: true,
             centeredSlides: false,
+            calculateSlides: false,
             breakpoints: {
                 [maxMobileWidth]: {
                     slidesPerView:

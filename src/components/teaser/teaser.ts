@@ -148,19 +148,19 @@ const csTeaser: any = function($element: any, settings: any): void {
      * Updates slider sizing by adjusting number of visible slides and pagination.
      */
     const updateSliderSizing: any = (): void => {
-        if (!$element.is(':visible')) {
-            return null;
-        }
-
-        if (dynamicNumOfSlides && currentSettings.calculateSlides) {
+        if (
+            $element.is(':visible') &&
+            dynamicNumOfSlides &&
+            currentSettings.calculateSlides
+        ) {
             currentSettings.slidesPerView = currentSettings.slidesPerGroup = calculateSlidesNumber();
-        }
 
-        swiperInstance.params = $.extend(
-            true,
-            swiperInstance.params,
-            currentSettings
-        );
+            swiperInstance.params = $.extend(
+                true,
+                swiperInstance.params,
+                currentSettings
+            );
+        }
     };
 
     const postInit = (): void => {
@@ -181,6 +181,8 @@ const csTeaser: any = function($element: any, settings: any): void {
             } else {
                 swiperInstance.params.pagination.type = 'bullets';
             }
+            swiperInstance.pagination.render()
+            swiperInstance.pagination.update()
         }
     };
 
@@ -192,11 +194,17 @@ const csTeaser: any = function($element: any, settings: any): void {
     postInit();
     swiperInstance.update();
 
+    let currentWindowWidth = $(window).width();
     $(window).on('resize', (): void => {
-        if (!destroyed) {
+        const newWindowWidth = $(window).width();
+        if (
+            !destroyed
+            && newWindowWidth !== currentWindowWidth
+        ) {
             updateSliderSizing();
             postInit();
             swiperInstance.update();
+            currentWindowWidth = newWindowWidth;
         }
     });
 
