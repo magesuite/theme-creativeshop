@@ -444,6 +444,7 @@ $dashboard_price-font-color: $color_text-500 !default;
     .toolbar {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
 
         &::after,
         &::before {
@@ -452,6 +453,34 @@ $dashboard_price-font-color: $color_text-500 !default;
 
         .toolbar-amount {
             padding-top: 1rem;
+        }
+
+        .pages {
+            @include media('>=tablet') {
+                position: static;
+                display: flex;
+                justify-content: center;
+                width: auto;
+            }
+        }
+
+        @include media('<laptop') {
+            .#{$ns}toolbar__item--amount {
+                width: 100%;
+                padding-bottom: 1.5rem;
+            }
+        }
+
+        @include media('<tablet') {
+            .#{$ns}toolbar__item {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                p {
+                    margin-bottom: 1rem;
+                }
+            }
         }
     }
 
