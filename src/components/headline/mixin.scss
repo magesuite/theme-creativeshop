@@ -11,6 +11,9 @@ $headline_title-lines-color: $color_border-500 !default;
 
 $headline_subtitle-color: $color_border-700 !default;
 $headline_subtitle-font-size: 1.3em !default;
+$headline_subtitle-font-weight: 400 !default;
+$headline_subtitle-text-transform: none !default;
+$headline_subtitle-margin: 0 !default;
 
 @mixin headline {
     font-size: 1rem;
@@ -64,10 +67,18 @@ $headline_subtitle-font-size: 1.3em !default;
     }
 }
 
-@mixin headline-subtitle($color: $headline_subtitle-color) {
+@mixin headline-subtitle(
+    $color: $headline_subtitle-color,
+    $font-size: $headline_subtitle-font-size,
+    $font-weight: $headline_subtitle-font-weight,
+    $text-transform: $headline_subtitle-text-transform,
+    ) {
     color: $color;
-    font-size: 1.3em;
-    margin: 0;
+    font-size: $font-size;
+    font-weight: $font-weight;
+    color: $color;
+    text-transform: $text-transform;
+    margin: $headline_subtitle-margin;
     display: none;
     text-align: center;
 
