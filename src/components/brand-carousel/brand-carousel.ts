@@ -68,6 +68,14 @@ interface BrandCarouselOptions {
      * @default null
      */
     breakpoints?: any;
+
+     /**
+     * Number of slides to duplicate.
+     * You see dupicated slides when you swipe on sides/
+     * @type {number}
+     * @default 6
+     */
+    loopedSlides?: number;
 }
 
 export default class BrandCarousel {
@@ -75,6 +83,7 @@ export default class BrandCarousel {
     protected _$items: JQuery;
     protected _breakpointsArray: Array<any>;
     protected _teaserInstance: any;
+    protected _currentWindowWidth = $(window).width();
     /**
      * Holds all settings that will be passed to csTeaser
      */
@@ -92,11 +101,11 @@ export default class BrandCarousel {
                 slidesPerView: 'auto',
                 spaceBetween: 50,
                 slideMinWidth: 50,
-                paginationBreakpoint: 10,
                 roundLengths: false,
                 centeredSlides: false,
                 calculateSlides: false,
                 loop: true,
+                loopedSlides: 6,
                 lazy: {
                     loadOnTransitionStart: true,
                 }
@@ -121,10 +130,14 @@ export default class BrandCarousel {
             const _this: any = this;
 
             $(window).on('resize', (): void => {
-                clearTimeout(throttler);
-                throttler = setTimeout((): void => {
-                    _this._init();
-                }, 250);
+                const newWindowWidth = $(window).width()
+                if(_this._currentWindowWidth !== newWindowWidth) {
+                    clearTimeout(throttler);
+                    throttler = setTimeout((): void => {
+                        _this._init();
+                    }, 250);
+                    _this._currentWindowWidth = newWindowWidth;
+                }
             });
 
             this._init();

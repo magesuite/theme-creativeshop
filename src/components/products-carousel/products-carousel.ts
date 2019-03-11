@@ -48,8 +48,8 @@ interface ProductsCarouselOptions {
          * @type {function}
          */
         onInit?: (swiperInstance: any) => void,
-        onSlideChangeTransitionStart?: (swiperInstance: any) => void,
-        onSlideChangeTransitionEnd?: (swiperInstance: any) => void,
+        onTransitionStart?: (swiperInstance: any) => void,
+        onTransitionEnd?: (swiperInstance: any) => void,
         onResize?: (swiperInstance: any) => void
     };
 }
@@ -93,14 +93,14 @@ export default class ProductsCarousel {
                         _this._onInit(swiper)
                         _this._fireCallback('onInit', swiper);
                     },
-                    slideChangeTransitionStart: function() {
+                    transitionStart: function() {
                         const swiper = this;
-                        _this._onSlideChangeTransitionStart(swiper)
+                        _this._onTransitionStart(swiper)
                         _this._fireCallback('onSlideChangeTransitionStart', swiper);
                     },
-                    slideChangeTransitionEnd: function() {
+                    transitionEnd: function() {
                         const swiper = this;
-                        _this._onSlideChangeTransitionEnd(swiper)
+                        _this._onTransitionEnd(swiper)
                         _this._fireCallback('onSlideChangeTransitionEnd', swiper);
                     },
                     resize: function() {
@@ -131,12 +131,12 @@ export default class ProductsCarousel {
         this._handleOverflow(swiper);
     }
 
-    protected _onSlideChangeTransitionStart(swiper: any): void {
+    protected _onTransitionStart(swiper: any): void {
         swiper.$el.parent().css('overflow', 'hidden');
         this._handleOverflow(swiper);
     }
 
-    protected _onSlideChangeTransitionEnd(swiper: any): void {
+    protected _onTransitionEnd(swiper: any): void {
         swiper.$el.parent().css('overflow', '');
     }
 
@@ -152,12 +152,10 @@ export default class ProductsCarousel {
      * @param swiper {Object} swiper instance object.
      */
     protected _handleOverflow(swiper: any): void {
-        swiper.slides.removeClass(`${swiper.params.slideClass}--in-viewport`);
-
         const itemsPerView: number = swiper.params.slidesPerView;
         const activeIndex: number = swiper.isEnd ? swiper.slides.length - itemsPerView : swiper.activeIndex;
         const $itemsToShow: JQuery<HTMLUListElement> = $(swiper.slides).slice(activeIndex, activeIndex + itemsPerView);
-
+        swiper.slides.removeClass(`${swiper.params.slideClass}--in-viewport`);
         $itemsToShow.addClass(`${swiper.params.slideClass}--in-viewport`);
     }
 
