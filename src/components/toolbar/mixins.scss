@@ -18,7 +18,8 @@ $pagination-item_margin: 0 !default;
 $pagination-item_padding: 0 !default;
 $pagination-item_border-width: 1px !default;
 $pagination-item_border-color: $color_border-500 !default;
-$pagination-item_border: $pagination-item-border-width solid $pagination-item-border-color !default;
+$pagination-item_border: $pagination-item-border-width solid
+    $pagination-item-border-color !default;
 $pagination-item_round-edges: true !default;
 $pagination-item_round-edges-radius: $border-radius_base !default;
 @mixin pagination-item {
@@ -27,7 +28,13 @@ $pagination-item_round-edges-radius: $border-radius_base !default;
     border: $pagination-item_border;
     text-align: center;
 
-    @if $pagination-item_margin == 0 and $pagination-item_border-width != 0 and $pagination-item_border != none {
+    @if $pagination-item_margin ==
+        0 and
+        $pagination-item_border-width !=
+        0 and
+        $pagination-item_border !=
+        none
+    {
         margin-left: -#{$pagination-item_border-width};
     }
 
@@ -85,15 +92,15 @@ $pagination-number--hover_text-decoration: inherit !default;
     }
 }
 
-$pagination-number--current-color: $color_primary-500 !default;
-$pagination-number--current_background: inherit !default;
+$pagination-number--current_color: $color_primary-500 !default;
+$pagination-number--current_background: $color_background-500 !default;
 @mixin pagination-number--current {
     &,
     &:hover,
-    &:focus
+    &:focus,
     &:active {
-        color: $pagination-number--current-color;
-        background: $pagination-number--current-background;
+        color: $pagination-number--current_color;
+        background: $pagination-number--current_background;
         cursor: default;
     }
 }
