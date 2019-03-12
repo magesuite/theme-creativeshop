@@ -3,7 +3,7 @@
 @import 'components/button/hook';
 
 // Define default type for buttons. You can override it individually per button in each component
-// Variants: primary | secondary | success | error
+// Variants: primary | secondary | link | success | error
 $button_default-type: 'primary' !default;
 
 // Define default position for icons in button. You can override it individually per button in each component
@@ -22,7 +22,7 @@ $button_animation-time: 0.5s !default;
 $button_text-transform: none !default;
 $button_text-letter-spacing: normal !default;
 
-// Styles for `primary` button
+// Styles for `primary` button type
 $button_primary-border: $button_border-size solid transparent !default;
 $button_primary--hover-border: $button_border-size solid transparent !default;
 $button_primary-background: $color_primary-500 !default;
@@ -33,7 +33,7 @@ $button_primary-fill: $color_text-200 !default;
 $button_primary--hover-fill: $color_text-200 !default;
 $button_primary-enable-animation: true !default;
 
-// Styles for `secondary` button
+// Styles for `secondary` button type
 $button_secondary-border: $button_border-size solid $color_primary-500 !default;
 $button_secondary--hover-border: $button_border-size solid $color_primary-800 !default;
 $button_secondary-background: $color_white !default;
@@ -44,7 +44,12 @@ $button_secondary-fill: $color_primary-500 !default;
 $button_secondary--hover-fill: $color_text-200 !default;
 $button_secondary-enable-animation: false !default;
 
-// Styles for `success` button
+// Style for `link` button type
+$button_link-color: $color_primary-500 !default;
+$button_link--hover-color: $color_primary-800 !default;
+$button_link-icon-padding: 2rem !default;
+
+// Styles for `success` button type
 $button_success-border: $button_border-size solid transparent !default;
 $button_success--hover-border: $button_border-size solid transparent !default;
 $button_success-background: $color_success-500 !default;
@@ -55,7 +60,7 @@ $button_success-fill: $color_text-200 !default;
 $button_success--hover-fill: $color_text-200 !default;
 $button_success-enable-animation: false !default;
 
-// Styles for `error` button
+// Styles for `error` button type
 $button_error-border: $button_border-size solid transparent !default;
 $button_error--hover-border: $button_border-size solid transparent !default;
 $button_error-background: $color_error-500 !default;
@@ -81,19 +86,20 @@ $button_icon-offset: 0.1em !default;
     display: inline-block;
     font-size: $button_font-size;
     font-weight: $button_font-weight;
-    padding: $button_padding;
     text-align: center;
-    box-sizing: border-box;
     position: relative;
-    transition: background-color $button_animation-time,
-        border-color $button_animation-time, fill $button_animation-time,
-        color $button_animation-time;
-    vertical-align: middle;
     line-height: $button_line-height;
-    z-index: 5;
-    will-change: transform, background-color, border-color, fill, color;
     margin: 0;
     text-transform: $button_text-transform;
+
+    @if ($type != 'link') {
+        padding: $button_padding;
+        box-sizing: border-box;
+        transition: background-color $button_animation-time, border-color $button_animation-time, fill $button_animation-time, color $button_animation-time;
+        vertical-align: middle;
+        z-index: 5;
+        will-change: transform, background-color, border-color, fill, color;
+    }
 
     @if ($type == 'primary') {
         @if ($button_primary-enable-animation) {
@@ -114,6 +120,16 @@ $button_icon-offset: 0.1em !default;
                 $color_end: $button_secondary--hover-background,
                 $icon_pos: $icon_pos
             );
+        }
+    }
+
+    @if ($type == 'link') {
+        transition: color $button_animation-time, fill $button_animation-time;
+        will-change: fill, color;
+
+        * {
+            transition: color $button_animation-time, fill $button_animation-time;
+            will-change: fill, color;
         }
     }
 
@@ -147,11 +163,13 @@ $button_icon-offset: 0.1em !default;
 
     &,
     &:visited {
-        cursor: pointer;
-        border-radius: $button_border-radius;
-        outline-offset: 1px;
-        text-decoration: none;
-        box-shadow: none;
+        @if ($type != 'link') {
+            cursor: pointer;
+            border-radius: $button_border-radius;
+            outline-offset: 1px;
+            text-decoration: none;
+            box-shadow: none;
+        }
 
         @if ($type == 'primary') {
             border: $button_primary-border;
@@ -172,6 +190,15 @@ $button_icon-offset: 0.1em !default;
             * {
                 color: $button_secondary-color;
                 fill: $button_secondary-fill;
+            }
+        }
+
+        @if ($type == 'link') {
+            color: $button_link-color;
+
+            * {
+                color: $button_link-color;
+                fill: $button_link-color;
             }
         }
 
@@ -201,9 +228,11 @@ $button_icon-offset: 0.1em !default;
     &:hover,
     &:focus,
     &:active {
-        box-shadow: none;
-        outline: none;
-        text-decoration: none;
+        @if ($type != 'link') {
+            box-shadow: none;
+            outline: none;
+            text-decoration: none;
+        }
 
         @if ($type == 'primary') {
             border: $button_primary--hover-border;
@@ -224,6 +253,15 @@ $button_icon-offset: 0.1em !default;
             * {
                 color: $button_secondary--hover-color;
                 fill: $button_secondary--hover-fill;
+            }
+        }
+
+        @if ($type == 'link') {
+            color: $button_link--hover-color;
+
+            * {
+                color: $button_link--hover-color;
+                fill: $button_link--hover-color;
             }
         }
 
@@ -271,11 +309,17 @@ $button_icon-offset: 0.1em !default;
     letter-spacing: $button_text-letter-spacing;
 
     @if ($icon_pos == 'right') {
-        padding-right: $button_padding-when-icon +
-            get-value-from-list($variable: $button_padding, $side: $icon_pos);
+        @if ($type == 'link') {
+            padding-right: $button_link-icon-padding;
+        } @else {
+            padding-right: $button_padding-when-icon + get-value-from-list($variable: $button_padding, $side: $icon_pos);
+        }
     } @else if ($icon_pos == 'left') {
-        padding-left: $button_padding-when-icon +
-            get-value-from-list($variable: $button_padding, $side: $icon_pos);
+        @if ($type == 'link') {
+            padding-left: $button_link-icon-padding;
+        } @else {
+            padding-left: $button_padding-when-icon + get-value-from-list($variable: $button_padding, $side: $icon_pos);
+        }
     } @else if ($icon_pos == 'only-icon') {
         display: none;
     }
@@ -290,27 +334,40 @@ $button_icon-offset: 0.1em !default;
     max-width: 1em;
     max-height: $button_font-size;
     z-index: 2;
-    width: 100%;
     height: auto;
+    width: 100%;
 
     @if ($icon_pos == 'right') or ($icon_pos == 'left') {
         position: absolute;
         top: 50%;
         transform: translate3d(0, -50%, 0);
     }
-
+    
     @if ($icon_pos == 'only-icon') {
         position: relative;
         top: $button_icon-offset;
+
+        @if ($type == 'link') {
+            margin-left: $button_link-icon-padding / 2;
+            margin-right: $button_link-icon-padding / 2;
+        }
     } @else if ($icon_pos == 'right') {
-        margin-right: 0;
-        right: get-value-from-list(
-            $variable: $button_padding,
-            $side: $icon_pos
-        );
+        @if ($type == 'link') {
+            right: 0;
+        } @else {
+            margin-right: 0;
+            right: get-value-from-list(
+                $variable: $button_padding,
+                $side: $icon_pos
+            );
+        }
     } @else if ($icon_pos == 'left') {
-        margin-left: 0;
-        left: get-value-from-list($variable: $button_padding, $side: $icon_pos);
+        @if ($type == 'link') {
+            left: 0;
+        } @else {
+            margin-left: 0;
+            left: get-value-from-list($variable: $button_padding, $side: $icon_pos);
+        }
     } @else {
         display: none;
     }
