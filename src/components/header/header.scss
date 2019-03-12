@@ -1,5 +1,5 @@
 @import 'config/variables';
-@import 'include-media/dist/include-media';
+@import 'vendors/include-media';
 @import 'components/container/mixin';
 
 $header_border-bottom: 1px solid $color_border-200 !default;
@@ -21,7 +21,7 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
 
     @if ($header_is-sticky-on-mobile) {
         height: $global_header-height-mobile;
-    
+
         @include media('>=tablet') {
             height: $global_header-height-tablet;
         }
@@ -93,7 +93,7 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
             position: relative;
             height: auto;
             padding: 2rem 0;
-    
+
             &:after {
                 content: '';
                 display: table;
@@ -112,7 +112,7 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
         left: 0;
         right: 0;
         z-index: 300;
-        
+
         @if ($global_header-searchbox-as-layer-breakpoint) {
             @include media($global_header-searchbox-as-layer-breakpoint) {
                 flex-grow: 1;
@@ -136,7 +136,7 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
                 padding: 1.5rem 0;
             }
         }
-        
+
         &--active {
             display: flex;
         }
@@ -157,14 +157,14 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
                     }
                 }
             }
-        } 
+        }
 
         @if ($global_header-hide-search-item-trigger-breakpoint and $header_searchbox-justify-content == 'flex-end') {
             @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 margin: 0;
             } @else {
                 margin-right: $header_searchbox-margin-to-cover-search-item;
-                
+
                 @include media($global_header-hide-search-item-trigger-breakpoint) {
                     margin: 0;
                 }
