@@ -1,7 +1,9 @@
 @import 'config/variables';
 @import 'utils/visually-hidden';
-@import 'components/button/mixin';
 @import 'include-media/dist/include-media';
+
+@import 'components/button/mixin';
+@import 'components/qty-counter/mixin';
 @import 'components/typography/mixin';
 @import 'components/field/mixin';
 
@@ -599,6 +601,27 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                     $icon_pos: $checkout_repertus-button-icon-pos
                 );
             }
+
+            &:hover {
+                .counter {
+                    background-color: $color_text-200;
+                }
+                
+                .counter-number {
+                    color: $color_primary-500;
+                }
+            }
+        }
+
+        .counter {
+            @include qty-counter();
+
+            transition: background-color $button_animation-time, fill $button_animation-time, color $button_animation-time;
+            margin-left: 0.5rem;
+        }
+
+        .counter-number {
+            @include qty-counter_span();
         }
 
         .minicart-wrapper,

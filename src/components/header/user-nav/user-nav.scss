@@ -22,7 +22,12 @@ $header-user-nav_qty-counter-show-animation: true !default;
     list-style: none;
     margin: 0;
     padding: 0;
+    padding-right: 1rem;
     height: 100%;
+
+    @include media('>=tablet') {
+        padding-right: 0;
+    }
 
     &__item {
         margin-bottom: 0;
@@ -30,7 +35,7 @@ $header-user-nav_qty-counter-show-animation: true !default;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1rem 0.75rem;
+        padding: 1rem;
         min-width: 100% / ($header-user-nav_items + 1);
         width: 100% / $header-user-nav_items;
 
@@ -57,6 +62,7 @@ $header-user-nav_qty-counter-show-animation: true !default;
         justify-content: center;
         flex-direction: column;
         position: relative;
+        width: 100%;
 
         &:hover {
             text-decoration: none;
@@ -116,9 +122,21 @@ $header-user-nav_qty-counter-show-animation: true !default;
         @include qty-counter();
 
         position: absolute;
-        left: 55%;
+        right: -40%;
         top: -0.5rem;
         opacity: 0;
+
+        @include media('<phoneLg') {
+            font-size: 0.9rem;
+        }
+
+        @include media('>=tablet') {
+            right: 0;
+        }
+
+        @include media('>=laptop') {
+            right: 25%;
+        }
 
         @if ($header-user-nav_qty-counter-show-animation) {
             transition: opacity 0.5s;
