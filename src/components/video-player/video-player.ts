@@ -7,7 +7,7 @@ import * as $ from 'jquery';
  */
 interface IVideoModalHandlers {
     /**
-     * Handler of modal render. 
+     * Handler of modal render.
      * Used to prepare modal if it's done via JS
      * @type {function}
      */
@@ -24,7 +24,7 @@ interface IVideoModalHandlers {
      * @type {function}
      */
     closeModal?: Function;
-};
+}
 
 /**
  * component options interface.
@@ -35,7 +35,7 @@ interface IVideoPlayer {
      * It tells where to look for links pointing to the youtube videos
      * Use to pass selector(s)
      * @type {string}
-     * @default '.cs-image-teaser, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser'
+     * @default '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser'
      */
     scope?: string;
 
@@ -100,7 +100,8 @@ export default class VideoPlayer {
      */
     public constructor(options?: IVideoPlayer) {
         const defaultOptions: any = {
-            scope: '.cs-image-teaser, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser',
+            scope:
+                '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser',
             useModal: true,
             videoAutoplay: true,
             videoPlayerId: 'yt-player',
@@ -114,8 +115,10 @@ export default class VideoPlayer {
             },
         };
 
-        this._options = $.extend( defaultOptions, options );
-        this._$videosTriggers = $(this._options.scope).find('a[href*="youtube.com"]');
+        this._options = $.extend(defaultOptions, options);
+        this._$videosTriggers = $(this._options.scope).find(
+            'a[href*="youtube.com"]'
+        );
 
         if (this._$videosTriggers.length) {
             if (!this._isYTapiLoaded()) {
@@ -134,7 +137,10 @@ export default class VideoPlayer {
      * (shall be delivered from the outside component)
      */
     public renderModal(): any {
-        if (this._options.modalHandlers.renderModal && typeof (this._options.modalHandlers.renderModal) === 'function') {
+        if (
+            this._options.modalHandlers.renderModal &&
+            typeof this._options.modalHandlers.renderModal === 'function'
+        ) {
             this._options.modalHandlers.renderModal(this);
         }
     }
@@ -144,7 +150,10 @@ export default class VideoPlayer {
      * (shall be delivered from the outside component)
      */
     public openModal(): any {
-        if (this._options.modalHandlers.openModal && typeof (this._options.modalHandlers.openModal) === 'function') {
+        if (
+            this._options.modalHandlers.openModal &&
+            typeof this._options.modalHandlers.openModal === 'function'
+        ) {
             this._options.modalHandlers.openModal(this);
         }
     }
@@ -154,7 +163,10 @@ export default class VideoPlayer {
      * (shall be delivered from the outside component)
      */
     public closeModal(): any {
-        if (this._options.modalHandlers.closeModal && typeof (this._options.modalHandlers.closeModal) === 'function') {
+        if (
+            this._options.modalHandlers.closeModal &&
+            typeof this._options.modalHandlers.closeModal === 'function'
+        ) {
             this._options.modalHandlers.closeModal(this);
         }
     }
@@ -171,13 +183,13 @@ export default class VideoPlayer {
                 width: _obj._options.videoPlayerWidth,
                 height: _obj._options.videoPlayerHeight,
                 playerVars: {
-                    'autoplay': _obj._options.videoAutoplay,
-                    'controls': 1,
-                    'rel': 0,
+                    autoplay: _obj._options.videoAutoplay,
+                    controls: 1,
+                    rel: 0,
                 },
                 events: {
-                    'onReady': onYTplayerReady,
-                }
+                    onReady: onYTplayerReady,
+                },
             });
         }
 
@@ -190,7 +202,10 @@ export default class VideoPlayer {
      * @return Boolean
      */
     public shallOpenVideoInFullscreen(): boolean {
-        return this._options.openVideoInFullscreenMobile && (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
+        return (
+            this._options.openVideoInFullscreenMobile &&
+            ('ontouchstart' in window || navigator.msMaxTouchPoints > 0)
+        );
     }
 
     /**
@@ -201,7 +216,9 @@ export default class VideoPlayer {
 
         this._$videosTriggers.on('click', function(e: Event): void {
             e.preventDefault();
-            const videoId: string = _obj._extractYTvideoId($(this).attr('href'));
+            const videoId: string = _obj._extractYTvideoId(
+                $(this).attr('href')
+            );
 
             _obj._runYTvideo(videoId);
         });
@@ -211,7 +228,9 @@ export default class VideoPlayer {
      * Strips url to extract ID of the video
      */
     protected _extractYTvideoId(YTvideoUrl: string): string {
-        const url: any = YTvideoUrl.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+        const url: any = YTvideoUrl.split(
+            /(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/
+        );
         return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
     }
 
@@ -219,7 +238,10 @@ export default class VideoPlayer {
      * Checks if API script has been already added to the DOM
      */
     protected _isYTapiLoaded(): boolean {
-        return $('head').find('script[src*="https://www.youtube.com/iframe_api"]').length > 0;
+        return (
+            $('head').find('script[src*="https://www.youtube.com/iframe_api"]')
+                .length > 0
+        );
     }
 
     /**
