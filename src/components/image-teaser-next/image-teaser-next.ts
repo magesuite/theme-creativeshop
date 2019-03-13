@@ -9,7 +9,7 @@ import ProportionalScaler from 'components/proportional-scaler/proportional-scal
  * WARNING: Modal is not supported by this component. Most likely you have it alredy.
  *          This interface defines methods needed by ImageTeaser component to make videos work.
  */
-interface ImageTeaserModalHandlers {
+interface ImageTeaserNextModalHandlers {
     /**
      * Handler of modal render.
      * Used to prepare modal if it's done via JS
@@ -33,7 +33,7 @@ interface ImageTeaserModalHandlers {
 /**
  * component options interface.
  */
-interface ImageTeaserOptions {
+interface ImageTeaserNextOptions {
     /**
      * Classname of image teaser
      * Default: 'cs-image-teaser'
@@ -167,11 +167,11 @@ interface ImageTeaserOptions {
      * Set of methods to handle modal behavior.
      * @type {Object}
      */
-    modalHandlers?: ImageTeaserModalHandlers;
+    modalHandlers?: ImageTeaserNextModalHandlers;
 }
 
-export default class ImageTeaser {
-    public _options: ImageTeaserOptions;
+export default class ImageTeaserNext {
+    public _options: ImageTeaserNextOptions;
     public _ytModal: any;
     public _ytPlayer: any;
     protected _$container: JQuery;
@@ -184,11 +184,11 @@ export default class ImageTeaser {
      * Creates new ImageTeaser component with optional settings.
      * @param  {ImageTeaser} options  Optional settings object.
      */
-    public constructor($element: JQuery, options?: ImageTeaserOptions) {
+    public constructor($element: JQuery, options?: ImageTeaserNextOptions) {
         const defaultOptions: any = {
-            teaserName: 'cs-image-teaser',
+            teaserName: 'cs-image-teaser-next',
             allowVideos: true,
-            videoModalClass: 'cs-image-teaser__modal',
+            videoModalClass: 'cs-image-teaser-next__modal',
             videoAutoplay: true,
             videoModalSelector: '#yt-modal',
             videoPlayerId: 'yt-player',
@@ -196,9 +196,9 @@ export default class ImageTeaser {
             videoPlayerHeight: '675',
             openVideoInFullscreenMobile: true,
             modalHandlers: {
-                renderModal: (ImageTeaser: ImageTeaser) => false,
-                openModal: (ImageTeaser: ImageTeaser) => false,
-                closeModal: (ImageTeaser: ImageTeaser) => false,
+                renderModal: (ImageTeaser: ImageTeaserNext) => false,
+                openModal: (ImageTeaser: ImageTeaserNext) => false,
+                closeModal: (ImageTeaser: ImageTeaserNext) => false,
             },
         };
 
@@ -218,7 +218,6 @@ export default class ImageTeaser {
             carouselBreakpoint: breakpoint.tablet,
             loop: true,
             centeredSlides: false,
-            calculateSlides: false,
             breakpoints: {
                 [maxMobileWidth]: {
                     slidesPerView:
@@ -341,10 +340,8 @@ export default class ImageTeaser {
             try {
                 result = JSON.parse(JSON.stringify(dataAttrCfg));
             } catch (err) {
-                console.warn(
-                    `Could not parse settings from data-attribute: ${err}`
-                );
-            }
+                console.warn(`Could not parse settings from data-attribute: ${err}`);
+            };
         }
 
         return result;
@@ -457,10 +454,8 @@ export default class ImageTeaser {
     }
 
     protected _initializeProportionalSlideScaling(): void {
-        this._$container
-            .find(`.${this._options.teaserName}__slide`)
-            .each(function(): void {
-                new ProportionalScaler($(this));
-            });
+        this._$container.find(`.${this._options.teaserName}__slide`).each(function(): void {
+            new ProportionalScaler($(this));
+        });
     }
 }
