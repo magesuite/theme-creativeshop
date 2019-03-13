@@ -1,10 +1,10 @@
-/* 
+/*
  * Fair warning: Don't mix units while using 'utils/poly-fluid-sizing' feature.
  * If you use rems, stick to rems everywhere in the area of whole map, or else the mixin will throw an error
  */
 @import 'config/variables';
 @import 'config/breakpoints';
-@import 'include-media/dist/include-media';
+@import 'vendors/include-media';
 @import 'utils/aspect-ratio';
 @import 'utils/poly-fluid-sizing';
 @import 'utils/clearfix';
@@ -34,14 +34,14 @@ $grid-layout_teaser-headline-text-transform: none !default;
 $grid-layout_teaser-headline-font-size-min: 1.8rem !default;
 $grid-layout_teaser-headline-font-size-max: 2.8rem !default;
 $grid-layout_teaser-headline-font-map: (
-    $page_min-width: $grid-layout_teaser-headline-font-size-min, 
+    $page_min-width: $grid-layout_teaser-headline-font-size-min,
     $page_max-width: $grid-layout_teaser-headline-font-size-max
 ) !default;
 $grid-layout_teaser-x2-headline-bottom-margin: $grid-layout_teaser-headline-bottom-margin !default;
 $grid-layout_teaser-x2-headline-font-size-min: $grid-layout_teaser-headline-font-size-min !default;
 $grid-layout_teaser-x2-headline-font-size-max: 4rem !default;
 $grid-layout_teaser-x2-headline-font-map: (
-    $page_min-width: $grid-layout_teaser-x2-headline-font-size-min, 
+    $page_min-width: $grid-layout_teaser-x2-headline-font-size-min,
     $page_max-width: $grid-layout_teaser-x2-headline-font-size-max
 ) !default;
 
@@ -51,14 +51,14 @@ $grid-layout_teaser-subheadline-text-transform: $texts-on-image_subheadline-text
 $grid-layout_teaser-subheadline-font-size-min: 1.6rem !default;
 $grid-layout_teaser-subheadline-font-size-max: 1.8rem !default;
 $grid-layout_teaser-subheadline-font-map: (
-    $page_min-width: $grid-layout_teaser-subheadline-font-size-min, 
+    $page_min-width: $grid-layout_teaser-subheadline-font-size-min,
     $page_max-width: $grid-layout_teaser-subheadline-font-size-max
 ) !default;
 $grid-layout_teaser-x2-subheadline-bottom-margin: $grid-layout_teaser-subheadline-bottom-margin !default;
 $grid-layout_teaser-x2-subheadline-font-size-min: $grid-layout_teaser-subheadline-font-size-min !default;
 $grid-layout_teaser-x2-subheadline-font-size-max: 2.5rem !default;
 $grid-layout_teaser-x2-subheadline-font-map: (
-    $page_min-width: $grid-layout_teaser-x2-subheadline-font-size-min, 
+    $page_min-width: $grid-layout_teaser-x2-subheadline-font-size-min,
     $page_max-width: $grid-layout_teaser-x2-subheadline-font-size-max
 ) !default;
 
@@ -68,14 +68,14 @@ $grid-layout_teaser-paragraph-text-transform: $texts-on-image_text-text-transfor
 $grid-layout_teaser-paragraph-font-size-min: 1.3rem !default;
 $grid-layout_teaser-paragraph-font-size-max: 1.4rem !default;
 $grid-layout_teaser-paragraph-font-map: (
-    $page_min-width: $grid-layout_teaser-paragraph-font-size-min, 
+    $page_min-width: $grid-layout_teaser-paragraph-font-size-min,
     $page_max-width: $grid-layout_teaser-paragraph-font-size-max
 ) !default;
 $grid-layout_teaser-x2-paragraph-bottom-margin: $grid-layout_teaser-paragraph-bottom-margin !default;
 $grid-layout_teaser-x2-paragraph-font-size-min: $grid-layout_teaser-paragraph-font-size-min !default;
 $grid-layout_teaser-x2-paragraph-font-size-max: 1.6rem !default;
 $grid-layout_teaser-x2-paragraph-font-map: (
-    $page_min-width: $grid-layout_teaser-x2-paragraph-font-size-min, 
+    $page_min-width: $grid-layout_teaser-x2-paragraph-font-size-min,
     $page_max-width: $grid-layout_teaser-x2-paragraph-font-size-max
 ) !default;
 
@@ -85,7 +85,7 @@ $grid-layout_teaser-cta-button-icon-pos: $button_default-icon-pos !default;
 
 // values: false / breakpoint name - the same as for @media mixin;
 // Use false if you don't want to hide button at all
-$grid-layout_teaser-button-visible-from: '>=tablet'; 
+$grid-layout_teaser-button-visible-from: '>=tablet';
 
 $grid-layout_bricks-per-row: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, one-column) !default;
 $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, multiple-columns) !default;
@@ -222,16 +222,16 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
         &-cta {
             &-button {
                 @include button($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
-        
+
                 &-span {
                     @include button_span($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
                 }
-        
+
                 &-icon {
                     @include button_icon($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
                 }
             }
-    
+
         }
     }
 
@@ -241,9 +241,9 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
         padding: $grid-layout_brick-padding;
         float: left;
         @include aspect-ratio(
-            $width: $grid-layout_brick-ratio-width, 
-            $height: $grid-layout_brick-ratio-height, 
-            $childClass: #{$ns}product-tile, 
+            $width: $grid-layout_brick-ratio-width,
+            $height: $grid-layout_brick-ratio-height,
+            $childClass: #{$ns}product-tile,
             $autoposition: true
         );
 
@@ -261,7 +261,7 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
 
         &--x2:not(#{$root}__brick--y2) {
             @include aspect-ratio-override(
-                $width: $grid-layout_brick-ratio-width * 2, 
+                $width: $grid-layout_brick-ratio-width * 2,
                 $height: $grid-layout_brick-ratio-height
             );
         }
@@ -274,7 +274,7 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
 
             &:not(#{$root}__brick--x2) {
                 @include aspect-ratio-override(
-                    $width: $grid-layout_brick-ratio-width, 
+                    $width: $grid-layout_brick-ratio-width,
                     $height: $grid-layout_brick-ratio-height * 2
                 );
             }
@@ -329,7 +329,7 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
 
         & {
             margin-bottom: -#{$grid-layout_rows-separator-height};
-            
+
             &:after {
                 background: $page_background;
             }
