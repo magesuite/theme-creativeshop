@@ -33,10 +33,26 @@
 
     &__radio {
         @include field-radio();
+
+        // To rewrite to proper scss syntax after getting rid of .cs-input class
+        & + .cs-input__label,
+        & + .cs-field__label {
+            @include field-radio-label();
+        }
     }
 
     &__checkbox {
         @include field-checkbox();
+
+        &.mage-error {
+            @include field-input-error();
+        }
+
+        // To rewrite to proper scss syntax after getting rid of .cs-input class
+        & + .cs-input__label,
+        & + .cs-field__label {
+            @include field-checkbox-label();
+        }
     }
 
     &__icon {
@@ -95,10 +111,22 @@
 
     .checkbox {
         @include field-checkbox();
+
+        &.mage-error {
+            @include field-input-error();
+        }
+
+        & + .label {
+            @include field-checkbox-label();
+        }
     }
 
     .radio {
         @include field-radio();
+
+        & + .label {
+            @include field-radio-label();
+        }
     }
 
     &.customer-name-prefix {
