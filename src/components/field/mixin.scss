@@ -4,14 +4,18 @@
 @import 'components/field/hook';
 
 $field_font-size: 1.4rem !default;
+$field_transition-time: 0.5s !default;
 
 $field_label-font-weight: 700 !default;
 $field_label-font-size: 0.85em !default;
+$field_label-color: inherit !default;
+$field_label-text-transform: none !default;
 
 $field_input-font-size: 1em !default;
 $field_input-line-height: $button_line-height !default;
 $field_input-padding: $button_padding !default;
 $field_input-color: $color_text-800 !default;
+$field_input-background: $color_background-200 !default;
 $field_input-border: 1px solid $color_border-500 !default;
 $field_input-border-active: 1px solid $color-primary-500 !default;
 $field_input-border-radius: $border-radius_base !default;
@@ -88,6 +92,7 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
+    align-items: center;
     border: 0;
     padding: 0;
     margin: 0;
@@ -108,6 +113,8 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     font-weight: $field_label-font-weight;
     font-size: $field_label-font-size;
     width: 100%;
+    text-transform: $field_label-text-transform;
+    color: $field_label-color;
 
     @include field-label-hook();
 }
@@ -132,10 +139,11 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     line-height: $field_input-line-height;
     padding: $field_input-padding;
     color: $field_input-color;
+    background: $field_input-background;
     border-radius: $field_input-border-radius;
     border: $field_input-border;
     box-shadow: $field_input-box-shadow;
-    transition: border-color 0.5s;
+    transition: border-color $field_transition-time;
     margin: 0 0 0.2em; // Add spacing under label. This can't be added to label itself because they are sometimes rendered empty.
     width: 100%;
     background-clip: padding-box; // Removes drop shadow from inputs on iOS.
@@ -162,7 +170,10 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
 }
 
 @mixin field-input-error() {
-    border: $field_error-input-border;
+    &,
+    &:hover:not(:focus) {
+        border: $field_error-input-border;
+    }
 
     @include field-input-error-hook();
 }
@@ -223,7 +234,7 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     background-repeat: no-repeat, repeat;
     background-position: $field_select-background-position;
     background-size: $field_select-background-size;
-    transition: border-color 0.5s;
+    transition: border-color $field_transition-time;
 
     &:-moz-focusring,
     &::-moz-focus-inner {
@@ -256,6 +267,10 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     @include field-select-hook();
 }
 
+@mixin field-radio-label() {
+    @include field-radio-label-hook();
+}
+
 @mixin field-radio() {
     display: inline-block;
     height: $field_radio-size;
@@ -276,7 +291,7 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     background-size: $field_radio-background-size;
     outline: 0;
     border-radius: 50%;
-    transition: background-color 0.5s, border-color 0.5s;
+    transition: background-color $field_transition-time, border-color $field_transition-time;
 
     // Styling for IE11, needs to be duplicated.
     &::-ms-check {
@@ -289,7 +304,7 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
         background-size: $field_radio-background-size;
         outline: 0;
         border-radius: 50%;
-        transition: background-color 0.5s, border-color 0.5s;
+        transition: background-color $field_transition-time, border-color $field_transition-time;
         background-color: $field_radio-background-color-checked;
 
         &:checked {
@@ -313,17 +328,29 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     }
 
     &:checked {
-        border: $field_radio-border-checked;
-        box-shadow: $field_radio-box-shadow-checked;
-        background-color: $field_radio-background-color-checked;
         background-image: $field_radio-background-image-checked;
+
+        &,
+        &:hover,
+        &:focus {
+            border: $field_radio-border-checked;
+            box-shadow: $field_radio-box-shadow-checked;
+            background-color: $field_radio-background-color-checked;
+            box-shadow: $field_radio-box-shadow-checked;
+        }
     }
 
-    &[disabled] {
+    &[disabled],
+    &[disabled]+.label,
+    &[disabled]+.cs-input__label {
         opacity: $field_radio-disabled-opacity;
     }
 
     @include field-radio-hook();
+}
+
+@mixin field-checkbox-label() {
+    @include field-checkbox-label-hook();
 }
 
 @mixin field-checkbox() {
