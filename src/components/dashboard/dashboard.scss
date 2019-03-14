@@ -451,11 +451,48 @@ $dashboard_price-font-color: $color_text-500 !default;
             display: none;
         }
 
+        .#{$ns}toolbar__item {
+            @include media('<tablet') {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+
+                p {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            &--amount {
+                @include media('<laptop') {
+                    width: 100%;
+                    margin-bottom: 1.5rem;
+                }
+
+                @include media('<tablet') {
+                    padding-bottom: 0;
+                }
+
+                + .#{$ns}toolbar__item--limiter {
+                    margin-top: 0;
+                } 
+            }
+
+            &--limiter {
+                @include media('<tablet') {
+                    margin-top: 2.5rem;
+                }
+            }
+        }
+
         .toolbar-amount {
             padding-top: 1rem;
         }
 
         .pages {
+            @include media('<tablet') {
+                margin: 0 auto;
+            }
+
             @include media('>=tablet') {
                 position: static;
                 display: flex;
@@ -464,22 +501,16 @@ $dashboard_price-font-color: $color_text-500 !default;
             }
         }
 
-        @include media('<laptop') {
-            .#{$ns}toolbar__item--amount {
-                width: 100%;
-                padding-bottom: 1.5rem;
-            }
-        }
-
-        @include media('<tablet') {
-            .#{$ns}toolbar__item {
-                width: 100%;
+        .limiter {
+            @include media('<tablet') {
                 display: flex;
                 justify-content: center;
+            }
 
-                p {
-                    margin-bottom: 1rem;
-                }
+            .label {
+                @include media('<tablet') {
+                    width: auto;
+                } 
             }
         }
     }
@@ -620,6 +651,17 @@ $dashboard_price-font-color: $color_text-500 !default;
 
         &::before {
             display: none;
+        }
+    }
+
+    .customer-review {
+        .product-name {
+            @include headline($font-size_headline-4);
+        }
+
+        .review-title {
+            @include headline($font-size_headline-4);
+            text-transform: none;
         }
     }
 
