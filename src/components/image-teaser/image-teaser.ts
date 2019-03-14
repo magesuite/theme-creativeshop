@@ -238,9 +238,10 @@ export default class ImageTeaser {
                 },
             },
             preloadImages: false,
-            lazyLoading: true,
-            lazyLoadingInPrevNext: true,
-            lazyLoadingOnTransitionStart: true,
+            lazy: {
+                loadPrevNext: true,
+                loadOnTransitionStart: true,
+            },
         };
 
         this._options = $.extend(this._swiperDefaults, this._options);
