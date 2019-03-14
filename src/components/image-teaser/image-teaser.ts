@@ -207,7 +207,7 @@ export default class ImageTeaser {
 
         const maxMobileWidth: number = breakpoint.tablet - 1;
         this._swiperDefaults = {
-            spaceBetween: 8,
+            spaceBetween: 0,
             slidesPerView:
                 parseInt(this._$container.data('items-per-view'), 10) || 1,
             slidesPerGroup:

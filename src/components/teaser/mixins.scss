@@ -78,8 +78,12 @@
             left: $teaser_nav-button-horizontal-position;
 
             @if $teaser_nav-button-horizontal-offset-breakpoint != '' {
-                @include media(#{$teaser_nav-button-horizontal-offset-breakpoint}) {
-                    left: $teaser_nav-button-horizontal-offset-desktop;
+                #{$root}:not(#{$root}--full-width-slider) {
+                    @include media(
+                        #{$teaser_nav-button-horizontal-offset-breakpoint}
+                    ) {
+                        left: $teaser_nav-button-horizontal-offset-desktop;
+                    }
                 }
             }
         }
@@ -88,8 +92,12 @@
             right: $teaser_nav-button-horizontal-position;
 
             @if $teaser_nav-button-horizontal-offset-breakpoint != '' {
-                @include media(#{$teaser_nav-button-horizontal-offset-breakpoint}) {
-                    right: $teaser_nav-button-horizontal-offset-desktop;
+                #{$root}:not(#{$root}--full-width-slider) {
+                    @include media(
+                        #{$teaser_nav-button-horizontal-offset-breakpoint}
+                    ) {
+                        right: $teaser_nav-button-horizontal-offset-desktop;
+                    }
                 }
             }
         }
@@ -124,7 +132,9 @@
         height: $teaser_nav-button-icon-height;
         fill: $teaser_nav-button-icon-color;
 
-        @if $teaser_nav-button-icon-color != $teaser_nav-button-icon--hover-color {
+        @if $teaser_nav-button-icon-color !=
+            $teaser_nav-button-icon--hover-color
+        {
             #{$root}__nav:hover & {
                 fill: $teaser_nav-button-icon--hover-color;
             }
