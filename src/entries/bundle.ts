@@ -104,6 +104,7 @@ import 'components/dropdown-switcher';
 import 'components/display-controller';
 import 'components/captcha';
 import 'components/lazyload';
+import 'components/typography';
 
 export { Select } from 'components/select';
 export { default as AddressAutofill } from 'components/address-autofill';
