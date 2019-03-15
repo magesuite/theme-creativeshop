@@ -113,7 +113,6 @@ export { default as AddressAutofill } from 'components/address-autofill';
 // Customizations
 // =============================================================================
 
-import 'customizations/pagination/pagination';
 import 'customizations/reviews/reviews';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
