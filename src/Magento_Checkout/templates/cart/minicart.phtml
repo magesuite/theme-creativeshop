@@ -7,13 +7,14 @@ $label = $block->getXmlLabel();
 <li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>"> 
     <div class="cs-addtocart__minicart minicart-wrapper" data-block="minicart">
         <a class="cs-header-user-nav__link cs-addtocart__minicart-link action showcart" href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>" data-bind="scope: 'minicart_content'">
-            <?= $block->getChildHtml('minicart.icon'); ?>
-            <!-- TODO: Update class names after badge component refactor -->
-            <span class="counter qty empty cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__qty-counter--have-items': getCartParam('summary_count') > 0, 'cs-header-user-nav__qty-counter--empty': !getCartParam('summary_count') }">
-                <span class="cs-header-user-nav__qty-counter-span cs-addtocart__minicart-qty-text">
-                    <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
+            <div class="cs-header-user-nav__icon-wrapper">
+                <?= $block->getChildHtml('minicart.icon'); ?>
+                <span class="counter qty empty cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__qty-counter--have-items': getCartParam('summary_count') > 0, 'cs-header-user-nav__qty-counter--empty': !getCartParam('summary_count') }">
+                    <span class="cs-header-user-nav__qty-counter-span cs-addtocart__minicart-qty-text">
+                        <!-- ko text: getCartParam('summary_count') --><!-- /ko -->
+                    </span>
                 </span>
-            </span>
+            </div>
             <?php if (!empty($label)): ?>
                 <span class="cs-header-user-nav__label"><?= /* @escapeNotVerified */ $block->escapeHtml($label) ?></span>
             <?php endif; ?>
