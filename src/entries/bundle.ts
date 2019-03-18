@@ -106,8 +106,9 @@ import 'components/captcha';
 import 'components/lazyload';
 import 'components/typography';
 
+// Exported for usage in templates:
 export { Select } from 'components/select';
-export { default as AddressAutofill } from 'components/address-autofill';
+export { AddressAutofill } from 'components/address-autofill';
 
 // =============================================================================
 // Customizations

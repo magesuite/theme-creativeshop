@@ -1,9 +1,10 @@
-import * as $ from 'jquery';
-
 import {
-    AddressAutofill,
+    AddressAutofill as AddressAutofillComponent,
     IAddressAutofillOptions,
 } from '../../components/address-autofill/address-autofill';
 
-export default (options: IAddressAutofillOptions): AddressAutofill =>
-    new AddressAutofill(options);
+const AddressAutofill =  (options: IAddressAutofillOptions): AddressAutofillComponent => (
+    new AddressAutofillComponent(options)
+);
+
+export { AddressAutofill }
