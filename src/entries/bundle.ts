@@ -1,5 +1,3 @@
-/* tslint:disable:no-unused-expression no-unused-new */
-
 // =============================================================================
 // Main scripting entry point.
 // We import all of the components here and initialize them.
@@ -7,16 +5,8 @@
 // This approach creates nice bundle, with all of the components and their dependencies.
 
 import 'config/base.scss';
-
+// TODO: Remove this file when possible
 import 'bundle.scss';
-
-// =============================================================================
-// Vendors
-// =============================================================================
-
-// =============================================================================
-// Utilities
-// =============================================================================
 
 // =============================================================================
 // Pages
