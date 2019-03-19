@@ -12,22 +12,23 @@ $allVotes = array_sum($votes);
 <div class="cs-reviews-summary">
     <div class="cs-reviews-summary__stars">
         <div class="cs-reviews-summary__note">
-            <span class="cs-reviews-summary__note-left"><?php echo $ratingData['activeStars'] ?></span><span
-                class="cs-reviews-summary__note-right"> / <?php echo $ratingData['maxStars'] ?></span>
+            <span class="cs-reviews-summary__note-left"><?= $ratingData['activeStars'] ?></span>
+            <span class="cs-reviews-summary__note-right"> / <?= $ratingData['maxStars'] ?></span>
         </div>
 
-        <?= $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'product-tile-rating--', [
-                'data' => [
-                    'namespace' => 'cs-',
-                    'maxStars' => $ratingData['maxStars'],
-                    'activeStars' => $ratingData['activeStars'],
-                    'mix' => 'cs-star-rating--big'
-                ]
-            ]
-        )->setTemplate("star-rating/star-rating.twig")->toHtml() ?>
+        <?= $this->getLayout()
+                 ->createBlock(\Magento\Framework\View\Element\Template::class)
+                 ->setMaxStars($ratingData['maxStars'])
+                 ->setActiveStars($ratingData['activeStars'])
+                 ->setReviewsCount($allVotes)
+                 ->setHideReviewsCount(true)
+                 ->setAdditionalClasses('cs-star-rating--summary')
+                 ->setTemplate('Magento_Review::rating-stars.phtml')
+                 ->toHtml();
+        ?>
 
         <button class="cs-reviews-summary__button">
-            <span class="cs-reviews-summary__button-span"> <?php /* @escapeNotVerified */  echo __('Add Review') ?></span>
+            <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */ __('Add Review') ?></span>
         </button>
     </div>
 

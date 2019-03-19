@@ -44,19 +44,24 @@ export default class Reviews {
         const _this: any = this;
         let msg: string = this._$feedbackEl.data('default-message');
         const $radios: any = _this._$wrapper.find('input[type="radio"]');
+        const $icons: any = _this._$wrapper.find('label svg');
 
         for (let i: number = 0; i < $radios.length; i++) {
             $radios[i].addEventListener('change', function(): void {
                 if (
                     _this._$wrapper.find('input[type="radio"]:checked').length
                 ) {
+                    $icons.each((index: number, element: JQuery) => {
+                        $(element).toggleClass("cs-star-rating__form-stars--active", index <= i)
+                    });
+
                     msg = _this._$wrapper
                         .find('input[type="radio"]:checked')
                         .data('feedback-message');
                 } else {
                     msg = _this._$wrapper.data('default-message');
                 }
-
+                
                 _this._$feedbackEl.text(msg);
             });
         }
