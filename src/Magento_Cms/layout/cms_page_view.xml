@@ -1,13 +1,23 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Attach css bundle for this page type -->
+        <css src="css/cms.css" media="all"/>
+    </head>
     <body>
+        <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">cms</argument>
+            </arguments>
+        </referenceBlock>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" 
+            <block class="Magento\Framework\View\Element\Template"
                    name="cms_page.ajax.atc.init"
-                   template="Magento_Cms::ajax-addtocart-init.phtml" 
+                   template="Magento_Cms::ajax-addtocart-init.phtml"
                    after="-" />
         </referenceContainer>
-        
+
         <referenceBlock name="page.main.title" display="false"/>
 
         <!-- Revert containers to allow Content Constructor elements -->

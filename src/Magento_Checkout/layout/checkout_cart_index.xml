@@ -1,8 +1,17 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="checkout_cart_item_renderers"/>
+    <head>
+        <!-- Attach css bundle for this page type -->
+        <css src="css/checkout.css" media="all"/>
+    </head>
     <body>
-
+        <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">checkout</argument>
+            </arguments>
+        </referenceBlock>
         <referenceBlock name="breadcrumbs">
             <action method="addCrumb">
                 <argument name="crumbName" xsi:type="string">home</argument>
@@ -96,7 +105,7 @@
         <referenceBlock name="checkout.cart.coupon">
             <arguments>
                 <argument name="additional_css_classes" xsi:type="string">cs-discount--coupon</argument>
-                <argument name="headline" xsi:type="string" translate="true">Apply Discount Code</argument>                  
+                <argument name="headline" xsi:type="string" translate="true">Apply Discount Code</argument>
                 <argument name="input_label" xsi:type="string" translate="true">Enter discount code</argument>
                 <argument name="input_placeholder" xsi:type="string" translate="true">Enter discount code</argument>
                 <argument name="button_apply_label" xsi:type="string" translate="true">Apply Discount</argument>
@@ -131,6 +140,6 @@
                     <argument name="lazy_loaded" xsi:type="boolean">true</argument>
                 </arguments>
             </block>
-        </referenceBlock> 
+        </referenceBlock>
     </body>
 </page>

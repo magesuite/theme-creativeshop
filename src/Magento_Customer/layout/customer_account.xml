@@ -1,7 +1,16 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <head>
+        <!-- Attach css bundle for this page type -->
+        <css src="css/customer.css" media="all"/>
+    </head>
     <body>
-
+        <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">customer</argument>
+            </arguments>
+        </referenceBlock>
         <!-- Change navigation template to include additional classes and collapse -->
         <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml">
             <arguments>
@@ -18,7 +27,7 @@
                     <argument name="inlined" xsi:type="boolean">true</argument>
                     <argument name="lazy_loaded" xsi:type="boolean">false</argument>
                 </arguments>
-            </block>    
+            </block>
 
             <!--Add sign out link as the last position in dashboard menu-->
             <block class="Magento\Customer\Block\Account\AuthorizationLink" name="logout-user-area" template="Magento_Customer::account/link/logout.phtml" after="-">
@@ -29,7 +38,7 @@
                         <argument name="inlined" xsi:type="boolean">true</argument>
                         <argument name="lazy_loaded" xsi:type="boolean">false</argument>
                     </arguments>
-                </block>    
+                </block>
             </block>
         </referenceBlock>
 

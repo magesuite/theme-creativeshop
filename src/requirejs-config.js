@@ -1,6 +1,5 @@
 var config = {
     paths: {
-        bundle: 'js/bundle',
         Swiper: 'js/vendor/swiper',
         dropdown: 'js/vendor/bootstrap-dropdown',
         selectpicker: 'js/vendor/bootstrap-select',
