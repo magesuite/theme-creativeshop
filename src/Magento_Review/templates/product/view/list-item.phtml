@@ -1,0 +1,28 @@
+<?php
+// @codingStandardsIgnoreFile
+$ratingData = $block->getRatingData();
+?>
+
+<div class="cs-review" itemscope itemprop="review" itemtype="http://schema.org/Review">
+    <span class="cs-review__title" itemprop="name"><?= $block->getTitle(); ?></span>
+
+    
+    <div class="cs-review__rating">
+        <?= $this->getLayout()
+                 ->createBlock(\Magento\Framework\View\Element\Template::class)
+                 ->setMaxStars($ratingData['maxStars'])
+                 ->setActiveStars($ratingData['activeStars'])
+                 ->setHideReviewsCount(true)
+                 ->setAdditionalClasses('cs-star-rating--review')
+                 ->setTemplate('Magento_Review::rating-stars.phtml')
+                 ->toHtml();
+        ?>
+    </div>
+    <div class="cs-review__meta">
+        <span class="cs-review__author cs-review__meta-item" itemprop="author"><?= $block->getAuthor(); ?></span>
+        <time class="cs-review__date cs-review__meta-item" itemprop="datePublished" datetime="<?= $block->getDate(); ?>">
+            <?= $block->getDate(); ?>
+        </time>
+    </div>
+    <p class="cs-review__content" itemprop="description"><?= $block->getContent(); ?></p>
+</div>

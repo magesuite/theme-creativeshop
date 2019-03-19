@@ -7,42 +7,38 @@ $items = $block->getReviewsCollection()->getItems();
 $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 ?>
 <?php if (count($items)): ?>
-
     <div class="cs-reviews__content" id="customer-reviews">
         <ol class="cs-reviews__list">
-            <?php $i = 0;
+            <?php
             foreach ($items as $review): ?>
+                
                 <?php
-                $i++;
                 $createdAt = $review->getCreatedAt();
                 $ratingVotes = $review->getRatingVotes();
-                $overallRating = !count($ratingVotes) ? null : round(array_sum(array_map(function ($vote) {
+                $numberOfVotes = count($ratingVotes);
+                $ratingVotesInPercent = array_map(
+                    function ($vote) {
                         return $vote->getPercent();
-                    }, iterator_to_array($ratingVotes))) / (100 * count($ratingVotes)) * 5);
-                $span = '
-                    <span itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
-                        <meta itemprop="worstRating" content="1"/>
-                        <meta itemprop="bestRating" content="5"/>
-                        <meta itemprop="ratingValue" content="'.$overallRating.'" />
-                    </span>
-                ';
-                ?>
-                <li class="cs-reviews__item">
-                    <?= $this->getLayout()->createBlock('MageSuite\Frontend\Block\Twig', 'pdp-review-' . $i, [
-                        'data' => [
-                            'title' => $block->escapeHtml($review->getTitle()),
-                            'rating' => [
-                                'maxStars' => 5,
-                                'activeStars' => $overallRating,
-                                'text' => $span
-                            ],
-                            'author' => $block->escapeHtml($review->getNickname()),
-                            'datetime' => $block->formatDate($createdAt, $format),
-                            'date' => $block->formatDate($createdAt, $format),
-                            'content' => nl2br($block->escapeHtml($review->getDetail()))
-                        ]
-                    ])->setTemplate("review/review.twig")->toHtml(); ?>
+                    },
+                    iterator_to_array($ratingVotes)
+                );
+                $averageRating = $numberOfVotes ? null : round(array_sum($ratingVotesInPercent) / (100 * $numberOfVotes) * 5);
+                ?>                
 
+                <li class="cs-reviews__item">
+                    <?= $this->getLayout()
+                             ->createBlock(\Magento\Framework\View\Element\Template::class)
+                             ->setTemplate('Magento_Review::product/view/list-item.phtml')
+                             ->setTitle($block->escapeHtml($review->getTitle()))
+                             ->setRatingData([
+                                "maxStars" => 5,
+                                "activeStars" => $averageRating
+                             ])
+                             ->setAuthor($block->escapeHtml($review->getNickname()))
+                             ->setDate($block->formatDate($createdAt, $format))
+                             ->setContent(nl2br($block->escapeHtml($review->getDetail())))
+                             ->toHtml();
+                    ?>
                 </li>
             <?php endforeach; ?>
         </ol>

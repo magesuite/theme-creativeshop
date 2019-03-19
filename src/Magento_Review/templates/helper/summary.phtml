@@ -3,17 +3,20 @@
     $url = $block->getReviewsUrl() . '#reviews';
     $urlForm = $block->getReviewsUrl() . '#review-form';
 ?>
-
 <?php if ($block->getReviewsCount()): ?>
 
-        <?= $this->getLayout()
-                 ->createBlock(\Magento\Framework\View\Element\Template::class)
-                 ->setMaxStars(5)
-                 ->setActiveStars(round($block->getRatingSummary()*2/20)/2)
-                 ->setReviewsCount($block->getReviewsCount())
-                 ->setHideReviewsCount(true)
-                 ->setTemplate('Magento_Review::rating-stars.phtml')
-                 ->toHtml();
+        <?php
+            // Transforms rating summary (0..100) into star count (0..5, with a step of a 0.5)  
+            $activeStars = round($block->getRatingSummary()/10)/2;
+
+            echo $this->getLayout()
+                    ->createBlock(\Magento\Framework\View\Element\Template::class)
+                    ->setMaxStars(5)
+                    ->setActiveStars($activeStars)
+                    ->setReviewsCount($block->getReviewsCount())
+                    ->setHideReviewsCount(true)
+                    ->setTemplate('Magento_Review::rating-stars.phtml')
+                    ->toHtml();
         ?>
 
 <?php elseif ($block->getDisplayIfEmpty()): ?>

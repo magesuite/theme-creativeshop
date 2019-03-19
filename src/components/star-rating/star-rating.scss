@@ -1,69 +1,104 @@
 @import 'config/variables';
-// star-rating
-// Reviews&#x27; stars with a number for products
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
+
+$star-rating_color-active: $color_review-active;
+$star-rating_color-inactive: $color_review-inactive;
+$review-control_star-color-active: $color_review-active;
+$review-control_star-color-inactive: $color_review-control-inactive;
+// Determines flex justification of stars
+$star-rating_justify: space-between !default;
+// Determines width of a single star
+$star-rating_star-width-default: 1.5rem !default;
+$star-rating_star-width-reviews-summary: 2rem !default;
+$star-rating_star-width-review: 1.5rem !default;
+$star-rating_star-width-review-form: 2.4rem !default;
+// Determines width of review stars container
+$star-rating_container-width-default: 7.5rem !default;
+$star-rating_container-width-reviews-summary: 10rem !default;
+$star-rating_container-width-review: 7.5rem !default;
+// Padding for review form stars
+$star-rating_star-padding-review-form: 0.5rem !default;
+// Determines padding ruleset
+$star-rating_padding-default: 0 !default;
+$star-rating_padding-reviews-summary: 1rem 0 1.5rem !default;
+$star-rating_padding-review: 0 !default;
+
 .#{$ns}star-rating {
+    $root: &;
     display: flex;
     align-items: center;
 
     &__stars {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 1;
-        box-sizing: border-box;
-        white-space: nowrap;
-        min-width: 96px;
+        display: inline-flex;
+        padding: $star-rating_padding-default;
+        width: $star-rating_container-width-default;
+        justify-content: $star-rating_justify;
+
+        #{$root}--summary & {
+            width: $star-rating_container-width-reviews-summary;
+            padding: $star-rating_padding-reviews-summary;
+        }
+
+        #{$root}--review & {
+            width: $star-rating_container-width-review;
+            padding: $star-rating_padding-review;
+        }
     }
 
     &__star {
-        font-size: 1.2rem;
-        width: 1.2rem;
-        height: 1.2rem;
-        position: relative;
-        display: block;
-        margin-right: 2px;
-        float: left;
-        box-sizing: border-box;
-        font-style: normal;
-        color: #444;
+        display: flex;
+        width: $star-rating_star-width-default;
 
-        &:before {
-            content: '\2605';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            z-index: 1;
-            overflow: hidden;
-            transform: translateY( -50% );
+        #{$root}--summary & {
+            width: $star-rating_star-width-reviews-summary;
         }
 
-        &:last-child {
-            margin-right: 0;
+        #{$root}--review & {
+            width: $star-rating_star-width-review;
+        }
+    }
+
+    &__half-star {
+        width: 50%;
+        height: 100%;
+        fill: $star-rating_color-inactive;
+
+        &--active {
+            fill: $star-rating_color-active;
         }
 
-        &--half-active {
-            &:before {
-                width: 50%;
-                color: #ffa500;
-            }
+        path {
+            fill-opacity: 1;    
+        }
+    }
 
-            &:after {
-                content: '\2605';
-                position: absolute;
-                left: .6rem;
-                top: 50%;
-                width: 50%;
-                text-indent: -.6rem;
-                overflow: hidden;
-                z-index: 2;
-                transform: translateY( -50% );
-            }
+    &__form-stars {
+        display: inline-flex;
+    }
+    
+    &__form-star {
+        opacity: 1;
+        fill: $review-control_star-color-inactive;
+        width: 100%;
+        padding-right: $star-rating_star-padding-review-form;
+
+        &--active {
+            fill: $review-control_star-color-active;
         }
 
-        &--active:before {
-            color: #ffa500;
+        path {
+            fill-opacity: 1;    
+        }
+
+        &:nth-last-of-type(){
+            padding-right: 0;
+        }
+
+        .#{$ns}star-rating__form-stars:hover & {
+            fill: $review-control_star-color-active;
+        }
+
+        .#{$ns}star-rating__form-stars label:hover ~ label & {
+            fill: $review-control_star-color-inactive;
         }
     }
 
@@ -71,5 +106,28 @@
         display: inline-block;
         padding-left: .5em;
         line-height: 1;
+    }
+}
+
+.review-control-vote {
+
+    @for $i from 1 through 5 {
+        .rating-#{$i}:before {
+            content: none;
+        }
+    }
+
+    &:before {
+        content: none;
+    }
+
+    label {
+        position: static;
+        width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form;
+        line-height: 0;
+
+        &:nth-last-of-type {
+            width: $star-rating_star-width-review-form;
+        }
     }
 }
