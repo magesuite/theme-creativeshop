@@ -52,7 +52,7 @@ export default class Reviews {
                     _this._$wrapper.find('input[type="radio"]:checked').length
                 ) {
                     $icons.each((index: number, element: JQuery) => {
-                        $(element).toggleClass("cs-star-rating__form-stars--active", index <= i)
+                        $(element).toggleClass("cs-star-rating__form-star--active", index <= i)
                     });
 
                     msg = _this._$wrapper
