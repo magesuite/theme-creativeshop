@@ -1,6 +1,6 @@
 // =============================================================================
-// Category page entry point
-// It imports all the components required by Category page.
+// ** ** entry point
+// It imports all the components required by ****
 // Each page type has own entry point containing required components.
 // It allows optimizing bundles in webpack - which gathers common imports in separate package.
 // It is a job of every component to initilize itself.
@@ -12,6 +12,10 @@ import 'bundle.scss';
 // =============================================================================
 // Components
 // =============================================================================
+import 'pages/category';
+import 'pages/product';
+import 'pages/success';
+import 'pages/cart';
 
 // Base components
 import 'components/authorization-link';
@@ -67,16 +71,44 @@ import 'components/products-carousel';
 import 'components/products-grid';
 import 'components/product-finder';
 import 'components/separator';
-// Category page
-import 'pages/category';
+// PDP
+import 'components/bundle-box';
+import 'components/buybox';
+import 'components/indicators';
+import 'components/product-gallery';
+import 'components/product-details';
+// CATEGORY
 import 'components/aftersearch-nav';
+// CUSTOMER
+import 'components/calendar';
+import 'components/stack-nav';
+import 'components/password-strength-meter';
+import 'components/captcha';
+import 'components/dashboard';
+// CHECKOUT
+import 'components/cart';
+import 'components/checkout';
+import 'components/discount';
+import 'components/progress-bar';
+// CATEGORY/CUSTOMER
 import 'components/toolbar';
+// CATEGORY/PDP/CHECKOUT
 import 'components/tabs';
+// CHECKOUT/PDP
+import 'components/qty-increment';
+// CHECKOUT/CUSTOMER/PDP
+import 'components/form';
+import 'components/sticky-block';
+import 'components/table';
 
-import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'customizations/video-player/video-player';
-import 'customizations/searchresults-switcher/searchresults-switcher';
-
-// Exported for usage in templates:
 export { Select } from 'components/select';
 export { AddressAutofill } from 'components/address-autofill';
+
+// =============================================================================
+// Customizations
+// =============================================================================
+
+import 'customizations/reviews/reviews'; // PDP/USER
+import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
+import 'customizations/video-player/video-player'; // Content Constructor
+import 'customizations/searchresults-switcher/searchresults-switcher'; // CATEGORY

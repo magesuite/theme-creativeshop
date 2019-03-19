@@ -16,7 +16,7 @@ import 'bundle.scss';
 // Base components
 import 'components/authorization-link';
 import 'components/addtocart';
-import 'components/autocomplete'; //consider moving to ElasticSuite?
+import 'components/autocomplete';
 import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
@@ -24,13 +24,13 @@ import 'components/cookie-message';
 import 'components/device-detection';
 import 'components/display-controller';
 import 'components/dropdown-switcher';
-import 'components/field'; // ??
+import 'components/field';
 import 'components/footer';
 import 'components/grid-layout';
 import 'components/headline';
 import 'components/header';
 import 'components/lazyload';
-import 'components/links-block-addto'; // It is part of a navigation, why not there?
+import 'components/links-block-addto';
 import 'components/logo';
 import 'components/messages';
 import 'components/minicart';
@@ -54,12 +54,10 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/usps';
 import 'components/visually-hidden';
-
 // Content Constructor (used only for usps component)
 import 'components/image-teaser';
 import 'components/image-teaser-legacy';
-
-// User Area specific
+// Customer Area specific
 import 'components/calendar';
 import 'components/captcha';
 import 'components/dashboard';
@@ -70,12 +68,9 @@ import 'components/sticky-block';
 import 'components/toolbar';
 import 'components/table';
 
+import 'customizations/reviews/reviews';
+import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
+
+// Exported for usage in templates:
 export { Select } from 'components/select';
 export { AddressAutofill } from 'components/address-autofill';
-
-// =============================================================================
-// Customizations
-// =============================================================================
-
-import 'customizations/reviews/reviews'; // PDP/USER
-import 'customizations/plugincompany-contactforms/plugincompany-contactforms';

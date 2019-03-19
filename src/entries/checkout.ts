@@ -12,8 +12,6 @@ import 'bundle.scss';
 // =============================================================================
 // Components
 // =============================================================================
-import 'pages/success';
-import 'pages/cart';
 
 // Base components
 import 'components/authorization-link';
@@ -69,8 +67,9 @@ import 'components/products-carousel';
 import 'components/products-grid';
 import 'components/product-finder';
 import 'components/separator';
-
-// Checkout Specific
+// Checkout
+import 'pages/success';
+import 'pages/cart';
 import 'components/cart';
 import 'components/checkout';
 import 'components/discount';
@@ -81,12 +80,8 @@ import 'components/form';
 import 'components/sticky-block';
 import 'components/table';
 
+import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
+
+// Exported for usage in templates:
 export { Select } from 'components/select';
 export { AddressAutofill } from 'components/address-autofill';
-
-// =============================================================================
-// Customizations
-// =============================================================================
-
-import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'customizations/video-player/video-player';

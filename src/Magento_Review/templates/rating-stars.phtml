@@ -5,19 +5,42 @@
 ?>
 
 <?php if ($activeStars): ?>
-    <div class="cs-star-rating">
-        <span class="cs-star-rating__stars">
-            <?php for ($i = 0; $i < $maxStars; $i++): ?>
-                <?php if ($i < $activeStars and $i + 1 > $activeStars): ?>
-                    <i class="cs-star-rating__star cs-star-rating__star--half-active"></i>
-                <?php elseif ($i < $activeStars): ?>
-                    <i class="cs-star-rating__star cs-star-rating__star--active"></i>
-                <?php else: ?>
-                    <i class="cs-star-rating__star"></i>
-                <?php endif; ?>
-            <?php endfor; ?>
-        </span>
-        <?php  if ($reviewsCount > 0 && !$block->getHideReviewsCount()): ?>
+    <div class="cs-star-rating <?= $block->getAdditionalClasses(); ?>">
+        <div class="cs-star-rating__stars">
+            <?php
+                $iconClass = 'cs-star-rating__half-star';
+
+                for ($starIndex = 0; $starIndex < $maxStars; $starIndex++) {
+                    $iconStatusLeft = '';
+                    $iconStatusRight = '';
+
+                    if ($activeStars > $starIndex) {
+                        $iconStatusLeft = ' ' . $iconClass . '--active';
+                        if (floor($activeStars) > $starIndex) {
+                            $iconStatusRight = ' ' . $iconClass . '--active';
+                        }
+                    }
+
+                    echo( 
+                        '<span class="cs-star-rating__star">' . 
+                            $this->getLayout()
+                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                ->setIconUrl('images/icons/reviews/half-star-left.svg')
+                                ->setCssClass($iconClass . ' ' . $iconClass . '--left' . $iconStatusLeft)
+                                ->setInlined(true)
+                                ->toHtml() .
+                            $this->getLayout()
+                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                ->setIconUrl('images/icons/reviews/half-star-right.svg')
+                                ->setCssClass($iconClass . ' ' . $iconClass . '--right' . $iconStatusRight)
+                                ->setInlined(true)
+                                ->toHtml() .
+                        '</span>'
+                    ); 
+                }
+            ?>
+        </div>
+        <?php if ($reviewsCount > 0 && !$block->getHideReviewsCount()): ?>
             <span class="cs-star-rating__text">(<?= $reviewsCount ?>)</span>
         <?php endif; ?>
     </div>
