@@ -33,6 +33,8 @@ $page-product--bundle-show-top-arrow-size: 2rem !default;
 $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_mineshaft, 0.08) !default;
 
 .#{$ns}page-product {
+    $root: &;
+    
     &__top {
         @include media(#{$page-product_top-2col-breakpoint}) {
             display: flex;
@@ -89,18 +91,34 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
 
         &--new {
             @include badge_type('new');
+
+            #{$root}__badge-text {
+                @include badge_span('new');
+            }
         }
 
         &--sale {
             @include badge_type('sale');
+
+            #{$root}__badge-text {
+                @include badge_span('sale');
+            }
         }
 
         &--popular {
             @include badge_type('popular');
+
+            #{$root}__badge-text {
+                @include badge_span('popular');
+            }
         }
 
         &--free-shipping {
             @include badge_type('free-shipping');
+
+            #{$root}__badge-text {
+                @include badge_span('free-shipping');
+            }
         }
     }
 
