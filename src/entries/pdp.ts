@@ -69,6 +69,7 @@ import 'components/product-finder';
 import 'components/separator';
 // PDP specific
 import 'pages/product';
+
 import 'components/authorization-link';
 import 'components/bundle-box';
 import 'components/buybox';

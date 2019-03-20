@@ -70,6 +70,7 @@ import 'components/separator';
 // Checkout
 import 'pages/success';
 import 'pages/cart';
+
 import 'components/cart';
 import 'components/checkout';
 import 'components/discount';
