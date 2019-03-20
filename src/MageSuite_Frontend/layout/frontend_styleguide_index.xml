@@ -1,5 +1,16 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <!-- Remove cms bundle and attach css bundle for styleguide -->
+        <remove src="css/cms.css" />
+        <css src="css/styleguide.css" />
+    </head>
     <body>
+        <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">styleguide</argument>
+            </arguments>
+        </referenceBlock>
         <referenceContainer name="content">
             <block class="Magento\Framework\View\Element\Template" name="styleguide.colors" template="Magento_Styleguide::colors.phtml"/>
             <block class="Magento\Framework\View\Element\Template" name="styleguide.typography" template="Magento_Styleguide::typography.phtml"/>
@@ -21,7 +32,7 @@
             <block class="Magento\Framework\View\Element\Template" name="styleguide.messages" template="Magento_Styleguide::messages.phtml"/>
             <block class="Magento\Framework\View\Element\Template" name="styleguide.extras" template="Magento_Styleguide::extras.phtml"/>
             <block class="Magento\Framework\View\Element\Template" name="styleguide.icons" template="Magento_Styleguide::icons.phtml"/>
-
+            <referenceBlock name="footer.usps.container" remove="true" />
         </referenceContainer>
     </body>
 </page>
