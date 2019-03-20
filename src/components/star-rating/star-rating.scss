@@ -1,4 +1,5 @@
 @import 'config/variables';
+@import 'vendors/include-media';
 
 $star-rating_color-active: $color_review-active;
 $star-rating_color-inactive: $color_review-inactive;
@@ -18,10 +19,12 @@ $star-rating_container-width-reviews-summary: 10rem !default;
 $star-rating_container-width-review: 7.5rem !default;
 // Padding for review form stars
 $star-rating_star-padding-review-form: 0.5rem !default;
+$star-rating_star-padding-review-form-mobile: 1.5rem !default;
 // Determines padding ruleset
 $star-rating_padding-default: 0 !default;
 $star-rating_padding-reviews-summary: 1rem 0 1.5rem !default;
 $star-rating_padding-review: 0 !default;
+$star-rating_padding-review-form: 0 !default;
 
 .#{$ns}star-rating {
     $root: &;
@@ -74,13 +77,18 @@ $star-rating_padding-review: 0 !default;
 
     &__form-stars {
         display: inline-flex;
+        padding: $star-rating_padding-review-form;
     }
     
     &__form-star {
         opacity: 1;
         fill: $review-control_star-color-inactive;
         width: 100%;
-        padding-right: $star-rating_star-padding-review-form;
+        padding-right: $star-rating_star-padding-review-form-mobile;
+
+        @include media('>=tablet'){
+            padding-right: $star-rating_padding-review-form;
+        }
 
         &--active {
             fill: $review-control_star-color-active;
@@ -126,8 +134,12 @@ $star-rating_padding-review: 0 !default;
 
     label {
         position: static;
-        width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form;
+        width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form-mobile;
         line-height: 0;
+
+        @include media('>=tablet'){
+            width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form;
+        }
 
         &:nth-last-of-type {
             width: $star-rating_star-width-review-form;
