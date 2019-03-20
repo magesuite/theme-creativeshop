@@ -1,8 +1,16 @@
 <?xml version="1.0"?>
-<page layout="1column"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Attach css bundle for this page type -->
+        <css src="css/pdp.css" />
+    </head>
     <body>
-
+         <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">pdp</argument>
+            </arguments>
+        </referenceBlock>
         <!-- Revert containers to allow Content Constructor elements -->
         <move element="columns.top" destination="main.content" after="-"/>
         <move element="columns" destination="main.content" after="-"/>

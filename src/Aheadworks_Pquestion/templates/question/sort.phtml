@@ -31,8 +31,8 @@
 </div>
 <script type="text/javascript">
     require([
-        'AWPquestionSorter', 'jquery', 'bundle'
-    ], function(sorter, $, bundle) {
+        'AWPquestionSorter', 'jquery', 'js/pdp'
+    ], function(sorter, $, pdpBundle) {
         var config = {
             'sortBlockSelector': '.aw-pq-question-sort-block',
             'sortbySelector': '.aw-pq-question-sort__sortby',
@@ -51,11 +51,11 @@
         };
         new AWPqSorter(config);
 
-        new bundle.Select($('.aw-pq-question-sort__sortby.cs-select'));
+        new pdpBundle.Select($('.aw-pq-question-sort__sortby.cs-select'));
 
         window.AWPqSorter.prototype._hideOverlay = function() {
             if (this.overlay) {
-                new bundle.Select($('.aw-pq-question-sort__sortby.cs-select'));
+                new pdpBundle.Select($('.aw-pq-question-sort__sortby.cs-select'));
                 this.overlay.remove();
             }
         };
