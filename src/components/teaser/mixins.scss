@@ -11,6 +11,7 @@
 @import 'components/teaser/mixins/pagination';
 @import 'components/teaser/mixins/contrast-optimizers/gradient';
 @import 'components/teaser/mixins/contrast-optimizers/text-shadow';
+@import 'components/teaser/hooks';
 
 @mixin teaser {
     $root: &;
@@ -78,7 +79,7 @@
             left: $teaser_nav-button-horizontal-position;
 
             @if $teaser_nav-button-horizontal-offset-breakpoint != '' {
-                #{$root}:not(#{$root}--full-width-slider) {
+                #{$root}:not(#{$root}--full-width-slider) & {
                     @include media(
                         #{$teaser_nav-button-horizontal-offset-breakpoint}
                     ) {
@@ -92,7 +93,7 @@
             right: $teaser_nav-button-horizontal-position;
 
             @if $teaser_nav-button-horizontal-offset-breakpoint != '' {
-                #{$root}:not(#{$root}--full-width-slider) {
+                #{$root}:not(#{$root}--full-width-slider) & {
                     @include media(
                         #{$teaser_nav-button-horizontal-offset-breakpoint}
                     ) {
@@ -113,6 +114,14 @@
         &:not(&--disabled) {
             #{$root}--ready & {
                 display: block;
+            }
+
+            &:hover,
+            &:active,
+            &:focus {
+                @if $teaser_nav-button--hover-additional-transform != '' {
+                    transform: $teaser_nav-button-transform $teaser_nav-button--hover-additional-transform;
+                }
             }
         }
 
@@ -164,4 +173,6 @@
             color: $teaser_pagination-number--current-color;
         }
     }
+
+    @include teaser-hook();
 }
