@@ -1,7 +1,6 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/field/mixin';
-@import 'components/button/mixin';
 
 $qty-increment_input-font-size: inherit !default;
 $qty-increment_input-text-align: center !default;
@@ -9,12 +8,16 @@ $qty-increment_input--error-border-color: $color_error-500 !default;
 
 $qty-increment_button-position-offset: 1px !default;
 $qty-increment_button-width: 3rem !default;
+$qty-increment_button-border-radius: $border-radius_base !default;
 $qty-increment_button-background: transparent !default;
-$qty-increment_button--hover-background: $qty-increment_button-background !default;
+$qty-increment_button--hover-background: $color_primary-500 !default;
 $qty-increment_button--disabled-background: $qty-increment_button-background !default;
+$qty-increment_button-border: 1px solid $color_primary-500 !default;
+$qty-increment_button--hover-border: 1px solid $color_primary-500 !default;
+$qty-increment_button-animation-time: 0.5s !default;
 
-$qty-increment_icon-fill: $color_cerulean-blue !default;
-$qty-increment_icon--hover-fill: $color_torea-bay !default;
+$qty-increment_icon-fill: $color_primary-500 !default;
+$qty-increment_icon--hover-fill: $color_text-200 !default;
 $qty-increment_icon--disabled-fill: $color_alto !default;
 $qty-increment_icon--decrement-width: 1.2rem !default;
 $qty-increment_icon--decrement-height: 0.3rem !default;
@@ -65,14 +68,37 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
     }
 
     &__button {
-        @include button($type: 'secondary', $icon_pos: 'only-icon');
-
+        transition: background-color $qty-increment_button-animation-time, border-color $qty-increment_button-animation-time, fill $qty-increment_button-animation-time;
+        will-change: transform, background-color, border-color, fill;
         max-width: $qty-increment_button-width;
         background-color: $qty-increment_button-background;
-        flex: 1 1 2rem;
+        flex: 1 1 (#{$qty-increment_button-width - 1});
         position: relative;
         padding-left: 0.5em;
         padding-right: 0.5em;
+        border-radius: $qty-increment_button-border-radius;
+        
+        &,
+        &:visited,
+        &:focus {
+            background-color: $qty-increment_button-background;
+            border: $qty-increment_button-border;
+            
+            * {
+                fill: $qty-increment_icon-fill;
+            }
+        }
+        
+        &:hover,
+        &:active {
+            background-color: $qty-increment_button--hover-background;
+            border: $qty-increment_button--hover-border;
+            cursor: pointer;
+
+            * {
+                fill: $qty-increment_icon--hover-fill;
+            }
+        }
 
         &--decrement {
             order: 1;
@@ -88,12 +114,10 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
     }
 
     &__icon {
-        @include button_icon($type: 'secondary', $icon_pos: 'only-icon');
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        fill: inherit;
 
         &--decrement {
             width: $qty-increment_icon--decrement-width;
