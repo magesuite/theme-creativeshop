@@ -76,11 +76,14 @@ import 'components/form';
 import 'components/indicators';
 import 'components/product-gallery';
 import 'components/product-details';
+import 'components/review';
+import 'components/reviews';
+import 'components/reviews-summary';
 import 'components/tabs';
-import 'components/qty-increment';
 import 'components/table';
+import 'components/toolbar';
+import 'components/qty-increment';
 
-import 'customizations/reviews/reviews'; // PDP/USER
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
 

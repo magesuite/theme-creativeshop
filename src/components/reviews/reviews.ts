@@ -20,7 +20,9 @@ interface ReviewsOptions {
 }
 
 export default class Reviews {
-    protected _$wrapper: JQuery;
+    protected _$wrapper: JQuery<HTMLElement>;
+    private _$feedbackEl: JQuery<HTMLElement>
+    private _options: ReviewsOptions;
 
     /**
      * Creates new Reviews component with optional settings.
@@ -61,11 +63,9 @@ export default class Reviews {
                 } else {
                     msg = _this._$wrapper.data('default-message');
                 }
-                
+
                 _this._$feedbackEl.text(msg);
             });
         }
     }
 }
-
-new Reviews();

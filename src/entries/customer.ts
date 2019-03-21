@@ -63,12 +63,15 @@ import 'components/captcha';
 import 'components/dashboard';
 import 'components/form';
 import 'components/password-strength-meter';
+import 'components/review';
+import 'components/reviews';
+import 'components/reviews-summary';
 import 'components/stack-nav';
 import 'components/sticky-block';
-import 'components/toolbar';
 import 'components/table';
+import 'components/toolbar';
 
-import 'customizations/reviews/reviews';
+
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 
 // Exported for usage in templates:
