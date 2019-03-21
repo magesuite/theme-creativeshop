@@ -5,7 +5,7 @@ define([
     'rjsResolver',
     'jquery',
     'mage/validation',
-    'bundle',
+    'js/checkout',
     'mage/translate',
 ], function(resolver, $, validation, bundle) {
     'use strict';
