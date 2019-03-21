@@ -26,11 +26,6 @@ $allVotes = array_sum($votes);
                  ->setTemplate('Magento_Review::rating-stars.phtml')
                  ->toHtml();
         ?>
-
-        <button class="cs-reviews-summary__button">
-            <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */ __('Add Review') ?></span>
-            <?= $block->getChildHtml('reviews.summary.button.icon'); ?>
-        </button>
     </div>
 
     <ul class="cs-reviews-summary__bars">
@@ -45,10 +40,16 @@ $allVotes = array_sum($votes);
                 <span class="cs-reviews-summary__bar-progress">
                     <span class="cs-reviews-summary__bar-progress-inner" style="width:<?= $votesPercentage; ?>%;"></span>
                 </span>
-                <span class="cs-reviews-summary__bar-label"><?= $numOfVotes; ?></span>
+                <span class="cs-reviews-summary__bar-count"><?= $numOfVotes; ?></span>
             </li>
         <?php endfor; ?>
     </ul>
+    <div class="cs-reviews-summary__button-wrapper">
+        <button class="cs-reviews-summary__button">
+            <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */ __('Add Review') ?></span>
+            <?= $block->getChildHtml('reviews.summary.button.icon'); ?>
+        </button>
+    </div>
 </div>
 
 <script>
