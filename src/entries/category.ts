@@ -69,6 +69,7 @@ import 'components/product-finder';
 import 'components/separator';
 // Category page
 import 'pages/category';
+
 import 'components/aftersearch-nav';
 import 'components/toolbar';
 import 'components/tabs';

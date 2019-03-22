@@ -15,18 +15,18 @@ $image-teaser_cta-button-type: 'primary' !default;
 $image-teaser_cta-button-icon-pos: 'right' !default;
 
 $image-teaser_text-content-font-size: 1.4rem !default;
-$image-teaser_headline-font-size: 2.583em !default;
+$image-teaser_slogan-font-size: 2.583em !default;
 $image-teaser_description-font-size: 1.55em !default;
 
-$image-teaser_text-content-color: $color_text-200 !default;
-$image-teaser_headline-color: inherit !default;
+$image-teaser_text-content-color: $scheme--light_texts-color !default;
+$image-teaser_slogan-color: inherit !default;
 $image-teaser_description-color: inherit !default;
 
-$image-teaser_text-content-color--dark: $color_text-900 !default;
-$image-teaser_headline-color--dark: inherit !default;
+$image-teaser_text-content-color--dark: $scheme--dark_texts-color !default;
+$image-teaser_slogan-color--dark: inherit !default;
 $image-teaser_description-color--dark: inherit !default;
 
-$image-teaser_headline-font-weight: 900 !default;
+$image-teaser_slogan-font-weight: 900 !default;
 $image-teaser_description-font-weight: 300 !default;
 
 $image-teaser_text-shadow-color--dark: $color_background-200 !default;
@@ -181,12 +181,21 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
         + #{$root}__slide-wrapper,
         + #{$root}__figure {
             position: absolute;
-            top: 4px;
-            left: 4px;
-            width: calc(100% - 8px);
 
-            #{$root}__wrapper:not(#{$root}__wrapper--content-under) & {
-                height: calc(100% - 8px);
+            @if $image-teaser_slides-gutter > 0 {
+                top: $image-teaser_slides-gutter / 2;
+                left: $image-teaser_slides-gutter / 2;
+                width: calc(100% - #{$image-teaser_slides-gutter});
+            } @else {
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+
+           @if $image-teaser_slides-gutter > 0 {
+                #{$root}__wrapper:not(#{$root}__wrapper--content-under) & {
+                    height: calc(100% - #{$image-teaser_slides-gutter});
+                }
             }
         }
     }
@@ -266,14 +275,14 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
 
     &__slogan {
         margin: 0 0 0.3em;
-        font-size: $image-teaser_headline-font-size;
-        font-weight: $image-teaser_headline-font-weight;
+        font-size: $image-teaser_slogan-font-size;
+        font-weight: $image-teaser_slogan-font-weight;
         text-transform: none;
         line-height: 1.05;
-        color: $image-teaser_headline-color;
+        color: $image-teaser_slogan-color;
 
         #{$root}__slide--scheme-dark & {
-            color: $image-teaser_headline-color--dark;
+            color: $image-teaser_slogan-color--dark;
         }
     }
 

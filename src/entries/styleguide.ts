@@ -1,6 +1,6 @@
 // =============================================================================
-// Checkout entry point
-// It imports all the components required by Checkout
+// frontend/styleguide entry point
+// It imports all the components required by frontend/styleguide page
 // Each page type has own entry point containing required components.
 // It allows optimizing bundles in webpack - which gathers common imports in separate package.
 // It is a job of every component to initilize itself.
@@ -16,21 +16,20 @@ import 'bundle.scss';
 // Base components
 import 'components/authorization-link';
 import 'components/addtocart';
-import 'components/autocomplete'; //consider moving to ElasticSuite?
+import 'components/autocomplete';
 import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
 import 'components/cookie-message';
 import 'components/device-detection';
-import 'components/display-controller';
 import 'components/dropdown-switcher';
-import 'components/field'; // ??
+import 'components/field';
 import 'components/footer';
 import 'components/grid-layout';
 import 'components/headline';
 import 'components/header';
 import 'components/lazyload';
-import 'components/links-block-addto'; // It is part of a navigation, why not there?
+import 'components/links-block-addto';
 import 'components/logo';
 import 'components/messages';
 import 'components/minicart';
@@ -52,37 +51,24 @@ import 'components/swatches';
 import 'components/tile-gallery';
 import 'components/topbar';
 import 'components/typography';
-import 'components/usps';
 import 'components/visually-hidden';
-// Content Constructor
-import 'components/brand-carousel';
-import 'components/category-links';
-import 'components/daily-deal-teaser';
-import 'components/dailydeal';
-import 'components/hero';
-import 'components/image-teaser';
-import 'components/image-teaser-legacy';
-import 'components/paragraph';
-import 'components/products-carousel';
-import 'components/products-grid';
-import 'components/product-finder';
-import 'components/separator';
-// Checkout
-import 'pages/success';
-import 'pages/cart';
 
+// Others
+import 'components/bundle-box';
+import 'components/buybox';
+import 'components/indicators';
+import 'components/product-gallery';
+import 'components/product-details';
+import 'components/calendar';
+import 'components/password-strength-meter';
 import 'components/cart';
 import 'components/checkout';
 import 'components/discount';
 import 'components/progress-bar';
+import 'components/toolbar';
 import 'components/tabs';
 import 'components/qty-increment';
 import 'components/form';
-import 'components/sticky-block';
 import 'components/table';
 
-import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-
-// Exported for usage in templates:
 export { Select } from 'components/select';
-export { AddressAutofill } from 'components/address-autofill';

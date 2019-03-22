@@ -24,6 +24,13 @@ interface ITileGallery {
     galleryClass?: string;
 
     /**
+     * Defines class of a initialized gallery object (thumbnails)
+     * @default {active}
+     * @type {String}
+     */
+    activeGalleryClass?: string;
+
+    /**
      * Defines class of a single gallery item object (thumbnail)
      * @default {cs-tile-gallery__item}
      * @type {String}
@@ -98,6 +105,7 @@ export default class TileGallery {
                 galleryAndMainImageWrapperClass: 'cs-product-tile',
                 mainImageClass: 'cs-product-tile__image',
                 galleryClass: 'cs-tile-gallery',
+                activeGalleryClass: 'active',
                 galleryItemClass: 'cs-tile-gallery__item',
                 activeGalleryItemClass: 'cs-tile-gallery__item--active',
                 itemSwitchEvent: 'mouseenter',
@@ -109,6 +117,7 @@ export default class TileGallery {
         );
 
         this._oldImagesRemovalTimeout = undefined;
+        this._setGalleryActiveClass();
         this._loadThumbnails();
         this._setItemActiveClass(this._options.initialActiveItem);
         if (this._options.initialActiveItem > 0) {
@@ -116,6 +125,13 @@ export default class TileGallery {
         }
         this._setGalleryEvents();
         this._setTilesGalleryEvents();
+    }
+
+    /**
+     * Adds active class to initialized gallery object on gallery init
+     */
+    protected _setGalleryActiveClass(): void {
+        this._$gallery.addClass(`${this._options.activeGalleryClass}`);
     }
 
     /**
