@@ -20,9 +20,9 @@ var config = {
         'js/cms': ['js/commons'],
         'js/pdp': ['js/commons'],
         'js/category': ['js/commons'],
-        'js/checkout': ['js/checkout'],
-        'js/customer': ['js/customer'],
-        'js/styleguide': ['js/customer'],
+        'js/checkout': ['js/commons'],
+        'js/customer': ['js/commons'],
+        'js/styleguide': ['js/commons'],
     },
     config: {
         mixins: {
