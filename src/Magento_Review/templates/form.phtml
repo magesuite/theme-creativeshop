@@ -6,181 +6,173 @@
  * @var $block \Magento\Review\Block\Form
  */
 ?>
-<div class="cs-reviews__form-wrapper">
-    <?php if ($block->getAllowWriteReviewFlag()): ?>
-        <form
-            action="<?= /* @escapeNotVerified */ $block->getAction() ?>"
-            class="cs-reviews__form | cs-form"
-            method="post"
-            id="review-form"
-            data-role="product-review-form"
-            data-bind="scope: 'review-form'"
-        >
-            <?= $block->getBlockHtml('formkey'); ?>
-            <?= $block->getChildHtml('form_fields_before')?>
+<?php if ($block->getAllowWriteReviewFlag()): ?>
+    <form
+        action="<?= /* @escapeNotVerified */ $block->getAction() ?>"
+        class="cs-form | cs-reviews__form"
+        method="post"
+        id="review-form"
+        data-role="product-review-form"
+        data-bind="scope: 'review-form'"
+    >
+        <?= $block->getBlockHtml('formkey'); ?>
+        <?= $block->getChildHtml('form_fields_before')?>
 
-            <div class="cs-reviews__fieldset" data-hasrequired="<?php __('* Required Fields'); ?>">
-                <h2 class="cs-reviews__legend">
-                    <?= /* @escapeNotVerified */ __("You're reviewing:"); ?>
-                    <span>
-                        <?= $block->escapeHtml($block->getProductInfo()->getName()) ?>
-                    </span>
-                </h2>
-
-                <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
-                    <div id="input-message-box"></div>
-
-                    <div class="cs-input cs-input--no-margin required">
-                        <label class="cs-input__label">
+        <h3 class="cs-reviews__headline">
+            <?= /* @escapeNotVerified */ __("You're reviewing:"); ?>
+            <span class="cs-reviews__product-name">
+                <?= $block->escapeHtml($block->getProductInfo()->getName()) ?>
+            </span>
+        </h3>
+        <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
+            <div class="cs-reviews__ratings" data-hasrequired="<?php __('* Required Fields'); ?>">
+                <div id="input-message-box"></div>
+                <div class="cs-reviews__rating" id="product-review-table">
+                    <div class="cs-field required">
+                        <label class="cs-field__label">
                             <span><?= /* @escapeNotVerified */ __('Your rating') ?>:</span>
                         </label>
                     </div>
-                    <div class="cs-input | cs-reviews__rate" id="product-review-table">
-                        <?php foreach ($block->getRatings() as $rating): ?>
-                            <div class="cs-input choice review-field-rating">
-                                <div class="cs-input__control | cs-reviews__rate | review-control-vote">
-                                    <?php
-                                        $options = $rating->getOptions();
-                                        $msg = __('Click on stars to rate');
-                                        $getRatingCode = $rating->getRatingCode();
-                                    ?>
+                    <?php foreach ($block->getRatings() as $rating): ?>
+                        <div class="cs-reviews__rating-control | review-control-vote">
+                            <?php
+                                $options = $rating->getOptions();
+                                $msg = __('Click on stars to rate');
+                                $getRatingCode = $rating->getRatingCode();
+                            ?>
 
-                                    <div class="cs-reviews__rate-feedback" data-default-message="<?= /* @escapeNotVerified */ $msg ?>">
-                                        <?= /* @escapeNotVerified */ $msg ?>
-                                    </div>
+                            <span class="cs-reviews__rate-feedback" data-default-message="<?= /* @escapeNotVerified */ $msg ?>"><?=/* @escapeNotVerified */$msg?></span>
 
-                                    <div class="cs-star-rating__form-stars">
-                                        <?php $iterator = 1; foreach ($options as $option): ?>
-                                            <?php
-                                                $optionValue = $option->getValue();
-                                            ?>
+                            <div class="cs-star-rating__form-stars">
+                                <?php $iterator = 1; foreach ($options as $option): ?>
+                                    <?php $optionValue = $option->getValue(); ?>
 
-                                            <?php switch ($optionValue) {
-                                                case 1:
-                                                    $msg = __('Very bad');
-                                                    break;
-                                                case 2:
-                                                    $msg = __('Bad');
-                                                    break;
-                                                case 3:
-                                                    $msg = __('Could be better');
-                                                    break;
-                                                case 4:
-                                                    $msg = __('Good');
-                                                    break;
-                                                case 5:
-                                                    $msg = __('Very good!');
-                                                    break;
-                                                default:
-                                                    $msg = __('Click on stars to rate');
-                                            } ?>
+                                    <?php switch ($optionValue) {
+                                        case 1:
+                                            $msg = __('Very bad');
+                                            break;
+                                        case 2:
+                                            $msg = __('Bad');
+                                            break;
+                                        case 3:
+                                            $msg = __('Could be better');
+                                            break;
+                                        case 4:
+                                            $msg = __('Good');
+                                            break;
+                                        case 5:
+                                            $msg = __('Very good!');
+                                            break;
+                                        default:
+                                            $msg = __('Click on stars to rate');
+                                    } ?>
 
-                                            <input
-                                                type="radio"
-                                                name="ratings[<?= /* @escapeNotVerified */ $rating->getId() ?>]"
-                                                id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
-                                                value="<?= /* @escapeNotVerified */ $option->getId() ?>"
-                                                class="radio"
-                                                data-validate="{required:true, messages:{required:'<?php /* * @escapeNotVerified */  echo __('Please select one of each of the ratings above.'); ?>'}}"
-                                                data-feedback-message="<?= /* @escapeNotVerified */ $msg ?>"
-                                                aria-labelledby="<?= $block->escapeHtml($getRatingCode) ?>_rating_label <?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
-                                            />
-                                            <label
-                                                class="cs-reviews__rate-stars rating-<?= /* @escapeNotVerified */ $iterator; ?>"
-                                                for="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
-                                                title="<?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?>"
-                                                id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
-                                            >
-                                                <?=
-                                                    $this->getLayout()
-                                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                                        ->setIconUrl('images/icons/reviews/full-star.svg')
-                                                        ->setCssClass('cs-star-rating__form-star ' . $optionValue)
-                                                        ->setInlined(true)
-                                                        ->toHtml();
-                                                ?>
-                                                <span><?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?></span>
-                                            </label>
-                                            <?php $iterator++; ?>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
+                                    <input
+                                        type="radio"
+                                        name="ratings[<?= /* @escapeNotVerified */ $rating->getId() ?>]"
+                                        id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
+                                        value="<?= /* @escapeNotVerified */ $option->getId() ?>"
+                                        class="radio"
+                                        data-validate="{required:true, messages:{required:'<?php /* * @escapeNotVerified */  echo __('Please select one of each of the ratings above.'); ?>'}}"
+                                        data-feedback-message="<?= /* @escapeNotVerified */ $msg ?>"
+                                        aria-labelledby="<?= $block->escapeHtml($getRatingCode) ?>_rating_label <?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
+                                    />
+                                    <label
+                                        class="cs-reviews__rate-stars rating-<?= /* @escapeNotVerified */ $iterator; ?>"
+                                        for="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
+                                        title="<?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?>"
+                                        id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
+                                    >
+                                        <?=
+                                            $this->getLayout()
+                                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                                ->setIconUrl('images/icons/reviews/full-star.svg')
+                                                ->setCssClass('cs-star-rating__form-star ' . $optionValue)
+                                                ->setInlined(true)
+                                                ->toHtml();
+                                        ?>
+                                        <span><?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?></span>
+                                    </label>
+                                    <?php $iterator++; ?>
+                                <?php endforeach; ?>
                             </div>
-                        <?php endforeach; ?>
-                        <input type="hidden" name="validate_rating" class="validate-rating" value="" />
-                    </div>
-                <?php endif ?>
+                        </div>
+                    <?php endforeach; ?>
 
-                <div class="cs-form__field cs-form__field--half | cs-input required">
-                    <label for="nickname_field" class="cs-input__label">
-                        <span><?= /* @escapeNotVerified */ __('Nickname') ?>:</span>
-                    </label>
-                    <div class="cs-input__control">
-                        <input
-                            type="text"
-                            name="nickname"
-                            id="nickname_field"
-                            class="cs-input__input"
-                            data-validate="{required:true}"
-                            data-bind="value: nickname()"
-                        />
-                    </div>
                 </div>
+            </div>
+        <?php endif ?>
 
-                <div class="cs-form__field cs-form__field--full | cs-input required">
-                    <label for="summary_field" class="cs-input__label">
-                        <?= /* @escapeNotVerified */ __('Summary') ?>:
-                    </label>
-                    <div class="cs-input__control">
-                        <input
-                            type="text"
-                            name="title"
-                            id="summary_field"
-                            class="cs-input__input"
-                            data-validate="{required:true}"
-                            data-bind="value: review().title"
-                        />
-                    </div>
-                </div>
-
-                <div class="cs-form__field cs-form__field--full | cs-input required">
-                    <label for="review_field" class="cs-input__label cs-input__label--look-top-align">
-                        <?= /* @escapeNotVerified */ __('Review') ?>:
-                    </label>
-                    <div class="cs-input__control">
-                        <textarea
-                            name="detail"
-                            class="cs-input__textarea | cs-reviews__review-field"
-                            id="review_field"
-                            data-validate="{required:true}"
-                            data-bind="value: review().detail"></textarea>
-                    </div>
+        <div class="cs-reviews__fieldset" data-hasrequired="<?php __('* Required Fields'); ?>">
+            <div class="cs-field cs-form__field required">
+                <label for="nickname_field" class="cs-field__label">
+                    <span><?= /* @escapeNotVerified */ __('Nickname') ?>:</span>
+                </label>
+                <div class="cs-field__control">
+                    <input
+                        type="text"
+                        name="nickname"
+                        id="nickname_field"
+                        class="cs-field__input"
+                        data-validate="{required:true}"
+                        data-bind="value: nickname()"
+                    />
                 </div>
             </div>
 
-            <div class="cs-form__buttons">
-                <button type="submit" class="cs-form__button">
-                    <span class="cs-form__button-span"><?= /* @escapeNotVerified */ __('Submit Review') ?></span>
-                    <?= $block->getChildHtml('product.review.form.button.icon'); ?>
-                </button>
-
+            <div class="cs-field cs-form__field required">
+                <label for="summary_field" class="cs-field__label">
+                    <?= /* @escapeNotVerified */ __('Summary') ?>:
+                </label>
+                <div class="cs-field__control">
+                    <input
+                        type="text"
+                        name="title"
+                        id="summary_field"
+                        class="cs-field__input"
+                        data-validate="{required:true}"
+                        data-bind="value: review().title"
+                    />
+                </div>
             </div>
-        </form>
-        <script type="text/x-magento-init">
-        {
-            "[data-role=product-review-form]": {
-                "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout();?>
-            },
-            "#review-form": {
-                "Magento_Review/js/error-placement": {}
-            }
-        }
-        </script>
-    <?php else: ?>
-        <div class="cs-reviews__login-msg" id="review-form">
-            <?= /* @escapeNotVerified */ __('Only registered users can write reviews. Please <a href="%1">Sign in</a> or <a href="%2">create an account</a>',
-                $block->getLoginLink(), $block->getRegisterUrl())
-            ?>
+
+            <div class="cs-field cs-form__field required">
+                <label for="review_field" class="cs-field__label">
+                    <?= /* @escapeNotVerified */ __('Review') ?>:
+                </label>
+                <div class="cs-field__control">
+                    <textarea
+                        name="detail"
+                        class="cs-field__input | cs-reviews__review-field"
+                        id="review_field"
+                        data-validate="{required:true}"
+                        data-bind="value: review().detail">
+                    </textarea>
+                </div>
+            </div>
         </div>
-    <?php endif ?>
-</div>
+
+        <div class="cs-reviews__submit cs-form__buttons">
+            <button type="submit" class="cs-form__button">
+                <span class="cs-form__button-span"><?= /* @escapeNotVerified */ __('Submit Review') ?></span>
+                <?= $block->getChildHtml('product.review.form.button.icon'); ?>
+            </button>
+        </div>
+    </form>
+    <script type="text/x-magento-init">
+    {
+        "[data-role=product-review-form]": {
+            "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout();?>
+        },
+        "#review-form": {
+            "Magento_Review/js/error-placement": {}
+        }
+    }
+    </script>
+<?php else: ?>
+    <div class="cs-reviews__login-msg" id="review-form">
+        <?= /* @escapeNotVerified */ __('Only registered users can write reviews. Please <a href="%1">Sign in</a> or <a href="%2">create an account</a>',
+            $block->getLoginLink(), $block->getRegisterUrl())
+        ?>
+    </div>
+<?php endif ?>

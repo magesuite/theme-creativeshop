@@ -32,7 +32,7 @@ export default class Reviews {
         this._options = $.extend(this._options, options);
         this._options.namespace = this._options.namespace || 'cs-';
 
-        this._$wrapper = $wrapper || $('.cs-reviews__rate');
+        this._$wrapper = $wrapper || $('.cs-reviews__rating-control');
         this._$feedbackEl = this._options.feedbackElementSelector
             ? $(this._options.feedbackElementSelector)
             : $('.cs-reviews__rate-feedback');

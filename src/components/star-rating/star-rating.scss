@@ -3,8 +3,8 @@
 
 $star-rating_color-active: $color_review-active;
 $star-rating_color-inactive: $color_review-inactive;
-$review-control_star-color-active: $color_review-active;
-$review-control_star-color-inactive: $color_review-control-inactive;
+$star-rating_form-star-color-active: $color_review-active;
+$star-rating_form-star-color-inactive: $color_review-control-inactive;
 $star-rating_text-color: $color_text-500;
 // Determines flex justification of stars
 $star-rating_justify: space-between !default;
@@ -12,17 +12,17 @@ $star-rating_justify: space-between !default;
 $star-rating_star-width-default: 1.5rem !default;
 $star-rating_star-width-reviews-summary: 2rem !default;
 $star-rating_star-width-review: 1.5rem !default;
-$star-rating_star-width-review-form: 2.4rem !default;
+$star-rating_star-width-review-form: 2rem !default;
 // Determines width of review stars container
 $star-rating_container-width-default: 7.5rem !default;
 $star-rating_container-width-reviews-summary: 10rem !default;
 $star-rating_container-width-review: 7.5rem !default;
 // Padding for review form stars
-$star-rating_star-padding-review-form: 0.5rem !default;
-$star-rating_star-padding-review-form-mobile: 1.5rem !default;
+$star-rating_star-padding-review-form: 0.6rem !default;
+$star-rating_star-padding-review-form-mobile: 1rem !default;
 // Determines padding ruleset
 $star-rating_padding-default: 0 !default;
-$star-rating_padding-reviews-summary: 1rem 0 1.5rem !default;
+$star-rating_padding-reviews-summary: 0 !default;
 $star-rating_padding-review: 0 !default;
 $star-rating_padding-review-form: 0 !default;
 
@@ -71,7 +71,7 @@ $star-rating_padding-review-form: 0 !default;
         }
 
         path {
-            fill-opacity: 1;    
+            fill-opacity: 1;
         }
     }
 
@@ -79,23 +79,18 @@ $star-rating_padding-review-form: 0 !default;
         display: inline-flex;
         padding: $star-rating_padding-review-form;
     }
-    
+
     &__form-star {
         opacity: 1;
-        fill: $review-control_star-color-inactive;
+        fill: $star-rating_form-star-color-inactive;
         width: 100%;
-        padding-right: $star-rating_star-padding-review-form-mobile;
-
-        @include media('>=tablet'){
-            padding-right: $star-rating_padding-review-form;
-        }
 
         &--active {
-            fill: $review-control_star-color-active;
+            fill: $star-rating_form-star-color-active;
         }
 
         path {
-            fill-opacity: 1;    
+            fill-opacity: 1;
         }
 
         &:nth-last-of-type(){
@@ -103,11 +98,11 @@ $star-rating_padding-review-form: 0 !default;
         }
 
         .#{$ns}star-rating__form-stars:hover & {
-            fill: $review-control_star-color-active;
+            fill: $star-rating_form-star-color-active;
         }
 
         .#{$ns}star-rating__form-stars label:hover ~ label & {
-            fill: $review-control_star-color-inactive;
+            fill: $star-rating_form-star-color-inactive;
         }
     }
 
@@ -115,8 +110,7 @@ $star-rating_padding-review-form: 0 !default;
         display: inline-block;
         color: $star-rating_text-color;
         padding-left: .5em;
-        line-height: 1;
-        margin: auto 0;
+        line-height: 1.1rem;
     }
 }
 
@@ -135,14 +129,17 @@ $star-rating_padding-review-form: 0 !default;
     label {
         position: static;
         width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form-mobile;
+        padding-right: $star-rating_star-padding-review-form-mobile;
         line-height: 0;
 
         @include media('>=tablet'){
             width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form;
+            padding-right: $star-rating_star-padding-review-form;
         }
 
-        &:nth-last-of-type {
+        &:last-child {
             width: $star-rating_star-width-review-form;
+            padding-right: 0;
         }
     }
 }

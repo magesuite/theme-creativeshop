@@ -1,10 +1,29 @@
 @import 'config/variables';
+@import 'components/button/mixin';
 @import 'vendors/include-media';
 
-$reviews_legend-font-size: $font-size_headline-3 !default;
-$reviews_subtitle-font-size: $font-size_headline-4 !default;
+$reviews_border: 1px solid $color_border-500 !default;
+$reviews_spacing: 2.5rem !default;
+
+// Reviews form styling
+$reviews-form-two-columns-desktop: true !default;
+$reviews-form-background-desktop: $color_background-500 !default;
+$reviews-headline-font-size: $font-size_headline-3 !default;
+$reviews_product-name-font-weight: 200 !default;
+$reviews_form-padding-desktop: 3rem !default;
+$reviews_rating-control-padding: $button_padding !default;
+$reviews_fedback-text-color: $color_text-400 !default;
+$reviews_fedback-font-size: 0.85em !default;
+$reviews-form-button-align: flex-start !default;
+$reviews-form-button-align-desktop: center !default;
 
 .cs-reviews {
+    flex: 1 0 100%;
+
+    @include media('>=laptop') {
+        flex: 1 0 auto;
+    }
+
     &__title {
         background: $color_gallery;
 
@@ -26,108 +45,102 @@ $reviews_subtitle-font-size: $font-size_headline-4 !default;
     }
 
     &__item {
-        padding: 0 0 2.5rem !important;
-        margin: 0 0 2.5rem !important;
-        border-bottom: 1px solid $color_alto;
+        padding: 0 0 $reviews_spacing;
+        margin: 0 0 $reviews_spacing;
+        border-bottom: $reviews_border;
         list-style: none;
 
         &:last-of-type {
             border-bottom: 0;
-            margin-bottom: 0 !important;
-        }
-
-        &:before {
-            display: none !important;
+            margin-bottom: 0;
         }
     }
 
     &__form {
-        text-align: right;
+        display: flex;
+        flex-flow: row wrap;
+        margin: $reviews_spacing 0;
 
-        //For reviews star and German wording it is min-width to fit them in one line
-        .#{$ns}form__field--half {
-            min-width: 37rem;
+        @include media('>=laptop') {
+            background: $reviews_form-background-desktop;
+            padding: $reviews_form-padding-desktop;
         }
     }
 
-    &__legend {
-        margin-bottom: 1em;
+    &__headline {
+        width: 100%;
+        margin: 0 0 1.4em;
         text-align: left;
-        font-size: $reviews_legend-font-size;
+        font-size: $reviews-headline-font-size;
     }
 
-    &__legend-product-name {
-        font-weight: 700;
+    &__product-name {
+        font-weight: $reviews_product-name-font-weight;
+    }
+
+    &__ratings {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+
+        @if ($reviews-form-two-columns-desktop) {
+            @include media('>=laptop') {
+                width: 50%;
+                padding-right: $reviews_form-padding-desktop;
+                border-right: $reviews_border;
+            }
+        }
     }
 
     &__fieldset {
+        width: 100%;
         margin-bottom: 1.5em;
         text-align: left;
+        box-sizing: border-box;
 
-        .cs-form__field {
-            margin-bottom: 2rem;
+        @if ($reviews-form-two-columns-desktop) {
+            @include media('>=laptop') {
+                width: 50%;
+                padding-left: $reviews_form-padding-desktop;
+            }
         }
     }
 
-    &__rate {
-        height: 7rem;
-        overflow: hidden;
-        margin-top: 0;
-        margin-bottom: 2rem;
-        @include media('>=phoneLg') {
-            height: 4.1rem;
-        }
+    &__submit {
+        display: flex;
+        justify-content: $reviews-form-button-align;
+        width: 100%;
 
-        &:before {
-            @include media('<phoneLg') {
-                top: 2.6rem;
-            }
+        @include media('>=laptop') {
+            justify-content: $reviews-form-button-align-desktop;
         }
+    }
 
-        + .mage-error {
-            margin: -2rem 0 2rem !important; // stylelint-disable-line
-        }
+    &__rating-control {
+        border: 1px solid $color_border-500;
+        border-radius: $border-radius_base;
+        padding: $button_padding;
+        margin: 0 0 0.2em;
+        display: flex;
+        align-items: center;
     }
 
     &__rate-stars {
-        @include media('<phoneLg') {
-            top: 2.5rem;
-        }
+        order: 0
     }
 
     &__rate-feedback {
-        position: absolute;
-        top: 0.8rem;
-        left: 0;
-        padding: 2rem 1rem 0;
-        font-size: 1.08rem;
+        order: 1;
+        font-size: $reviews_fedback-font-size;
+        line-height: 0.9em;
+        color: $reviews_fedback-text-color;
         font-weight: 700;
-        transform: translateY(-50%);
-        color: $color_gray;
-        @include media('>=phoneLg') {
-            top: 50%;
-            right: 0;
-            left: auto;
-            padding: 0 1rem;
-        }
+        margin-left: 1.5rem;
+        display: flex;
+        align-items: center;
     }
 
     &__review-field {
         min-height: 10rem;
-    }
-}
-
-.review-control-vote {
-    background: $color_white;
-    border-radius: 3px;
-    max-width: 40rem;
-    width: 100%;
-
-    @include media('>=tablet') {
-        background: $color_gallery;
-        max-width: 50%;
-
-        //For reviews star and German wording it is min-width to fit them in one line
-        min-width: 37rem;
     }
 }
