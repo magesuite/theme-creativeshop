@@ -31,6 +31,8 @@ $checkout_active-elements-color: $color_primary-500 !default;
 $checkout_texts-font-size: $font-size_paragraph !default;
 $checkout_headlines-font-size: $font-size_headline-3 !default;
 $checkout_headlines-text-transform: none !default;
+$checkout_headlines-color: $color_text-800 !default;
+$checkout_headlines-font-weight: 700 !default;
 $checkout_form-notes-font-size: $font-size_paragraph-300 !default;
 
 $checkout_next-button-type: $button_default-type !default;
@@ -156,6 +158,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    &__mobile-summary {
+        @include media('>=tablet') {
+            display: none;
+        }   
+    }
+
     // Button next step
     &__sidebar-button {
         width: 100%;
@@ -191,6 +199,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         padding: $checkout_base-space 0;
         border-bottom: $checkout_place-order-border-bottom;
         width: 100%;
+        box-sizing: border-box;
 
         .modal-inner-wrap & {
             @include media('<tablet') {
@@ -257,6 +266,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 width: calc(75% - 1.5rem);
                 padding-left: 1.5rem;
                 display: inline-flex;
+                box-sizing: border-box;
             }
         }
     }
@@ -285,6 +295,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         .block-title {
             @include headline($level: $checkout_headlines-font-size);
             text-transform: $checkout_headlines-text-transform;
+            font-weight: $checkout_headlines-font-weight;
+            color: $checkout_headlines-color;
             margin: 0;
             border-bottom: none;
             padding: 0 0 $checkout_base-space;
@@ -379,7 +391,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             border-radius: $checkout_boxes-border-radius;
 
             @include media('<tablet') {
-                margin: 0 $checkout_base-space;
+                margin-top: $checkout_steps-space;
+                padding: $checkout_base-space;
             }
         }
     }
@@ -422,8 +435,11 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
 
         .block-title {
+            @include headline($level: $checkout_headlines-font-size);
+            text-transform: $checkout_headlines-text-transform;
+            font-weight: $checkout_headlines-font-weight;
+            color: $checkout_headlines-color;
             margin: 0 0 $checkout_base-space;
-            text-transform: none;
             padding-bottom: 0;
         }
     }
@@ -760,6 +776,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         & > .title {
             @include headline($level: $checkout_headlines-font-size);
             text-transform: $checkout_headlines-text-transform;
+            font-weight: $checkout_headlines-font-weight;
+            color: $checkout_headlines-color;
             padding-bottom: 0;
             padding-top: 0;
             margin: 0;
@@ -809,6 +827,8 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 @include visually-visible();
                 @include headline($level: $checkout_headlines-font-size);
                 text-transform: $checkout_headlines-text-transform;
+                font-weight: $checkout_headlines-font-weight;
+                color: $checkout_headlines-color;
                 text-align: left;
             }
         }
@@ -1017,6 +1037,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 background-position: right center;
                 background-size: 4rem 2.5rem;
                 background-repeat: no-repeat;
+                width: 100%;
 
                 &[for='banktransfer'] {
                     background-image: url('../images/icons/payment-logos/bank_transfer.svg');
