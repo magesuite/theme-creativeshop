@@ -5,7 +5,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'utils/visually-hidden';
-@import 'components/pseudoicon/pseudoicon-plus';
+@import 'components/pseudoicon/mixin';
 
 $footer_text-color: $color_text-200 !default;
 $footer_background: $color_background-800 !default;
@@ -22,7 +22,7 @@ $footer_section-title-color: $color_gray !default;
 $footer_section-title-font-size: 1.2em !default;
 $footer_section-title-transform: uppercase !default;
 
-$footer_section-plus-include: true !default;
+$footer_section-pseudoicon-include: true !default;
 
 $footer_promo-display-on-mobile: false !default;
 $footer_logo-display: block !default;
@@ -142,8 +142,8 @@ $footer_logo-height: 2.3em !default;
             #{$root}__section[data-collapsible] & {
                 cursor: pointer;
 
-                @if $footer_section-plus-include {
-                    @include pseudoicon-plus();
+                @if $footer_section-pseudoicon-include {
+                    @include pseudoicon();
                 }
             }
 
