@@ -228,62 +228,64 @@ $button_icon-offset: 0.1em !default;
     &:hover,
     &:focus,
     &:active {
-        @if ($type != 'link') {
-            box-shadow: none;
-            outline: none;
-            text-decoration: none;
-        }
+        &:not([disabled]) {
+            @if ($type != 'link') {
+                box-shadow: none;
+                outline: none;
+                text-decoration: none;
+            }
 
-        @if ($type == 'primary') {
-            border: $button_primary--hover-border;
-            color: $button_primary--hover-color;
-            background-color: $button_primary--hover-background;
-
-            * {
+            @if ($type == 'primary') {
+                border: $button_primary--hover-border;
                 color: $button_primary--hover-color;
-                fill: $button_primary--hover-fill;
+                background-color: $button_primary--hover-background;
+
+                * {
+                    color: $button_primary--hover-color;
+                    fill: $button_primary--hover-fill;
+                }
             }
-        }
 
-        @if ($type == 'secondary') {
-            border: $button_secondary--hover-border;
-            color: $button_secondary--hover-color;
-            background-color: $button_secondary--hover-background;
-
-            * {
+            @if ($type == 'secondary') {
+                border: $button_secondary--hover-border;
                 color: $button_secondary--hover-color;
-                fill: $button_secondary--hover-fill;
+                background-color: $button_secondary--hover-background;
+
+                * {
+                    color: $button_secondary--hover-color;
+                    fill: $button_secondary--hover-fill;
+                }
             }
-        }
 
-        @if ($type == 'link') {
-            color: $button_link--hover-color;
-
-            * {
+            @if ($type == 'link') {
                 color: $button_link--hover-color;
-                fill: $button_link--hover-color;
+
+                * {
+                    color: $button_link--hover-color;
+                    fill: $button_link--hover-color;
+                }
             }
-        }
 
-        @if ($type == 'success') {
-            border: $button_success--hover-border;
-            color: $button_success--hover-color;
-            background-color: $button_success--hover-background;
-
-            * {
+            @if ($type == 'success') {
+                border: $button_success--hover-border;
                 color: $button_success--hover-color;
-                fill: $button_success--hover-fill;
+                background-color: $button_success--hover-background;
+
+                * {
+                    color: $button_success--hover-color;
+                    fill: $button_success--hover-fill;
+                }
             }
-        }
 
-        @if ($type == 'error') {
-            border: $button_error--hover-border;
-            color: $button_error--hover-color;
-            background-color: $button_error--hover-background;
-
-            * {
+            @if ($type == 'error') {
+                border: $button_error--hover-border;
                 color: $button_error--hover-color;
-                fill: $button_error--hover-fill;
+                background-color: $button_error--hover-background;
+
+                * {
+                    color: $button_error--hover-color;
+                    fill: $button_error--hover-fill;
+                }
             }
         }
     }
@@ -312,13 +314,13 @@ $button_icon-offset: 0.1em !default;
         @if ($type == 'link') {
             padding-right: $button_link-icon-padding;
         } @else {
-            padding-right: $button_padding-when-icon + get-value-from-list($variable: $button_padding, $side: $icon_pos);
+            padding-right: calc(#{$button_padding-when-icon} + #{get-value-from-list($variable: $button_padding, $side: $icon_pos)});
         }
     } @else if ($icon_pos == 'left') {
         @if ($type == 'link') {
             padding-left: $button_link-icon-padding;
         } @else {
-            padding-left: $button_padding-when-icon + get-value-from-list($variable: $button_padding, $side: $icon_pos);
+            padding-left: calc(#{$button_padding-when-icon} + #{get-value-from-list($variable: $button_padding, $side: $icon_pos)});
         }
     } @else if ($icon_pos == 'only-icon') {
         display: none;
