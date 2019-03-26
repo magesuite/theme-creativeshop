@@ -3,21 +3,39 @@
 @import 'components/pseudoicon/mixin';
 @import 'vendors/include-media';
 
-$product-details-main_columns: true !default;
-$product-details-main_description-flex-basis: 65% !default;
-$product-details-main_attributes-flex-basis: 35% !default;
 $product-details-main_item-gutter: 2em !default;
+$product-details-main_column-breakpoint: '>=tablet';
+$product-details-main_left-column-flex: 0 0 65% !default;
+$product-details-main_right-column-flex: 0 0 calc(35% - #{$product-details-main_item-gutter}) !default;
 
 .cs-product-details-main {
     $root: &;
+    
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     padding-bottom: ($product-details-main_item-gutter * 2);
 
-    @if $product-details-main_columns {
-        @include media('>=tablet') {
-            flex-wrap: nowrap;
+    &--column {
+        flex-direction: column;
+    }
+
+    &__column {
+        flex: 1 1 100%;
+
+        &--left {
+            @include media(#{$product-details-main_column-breakpoint}) {
+                flex: $product-details-main_left-column-flex;
+            }
+        }
+
+        &--right {
+            margin-top: $product-details-main_item-gutter;
+
+            @include media(#{$product-details-main_column-breakpoint}) {
+                margin-top: 0;
+                flex: $product-details-main_right-column-flex;
+            }
         }
     }
 
@@ -38,32 +56,6 @@ $product-details-main_item-gutter: 2em !default;
 
         & + & {
             margin-top: $product-details-main_item-gutter;
-        }
-
-        @if $product-details-main_columns {
-            & + & {
-                margin-top: 0;
-            }
-
-            @include media('>=tablet') {
-                width: auto;
-                flex: 1 1 50%;
-            }
-
-            &--description {
-                @include media('>=tablet') {
-                    width: auto;
-                    flex-basis: $product-details-main_description-flex-basis;
-                }
-            }
-
-            &--additional {
-                @include media('>=tablet') {
-                    width: auto;
-                    flex-basis: $product-details-main_attributes-flex-basis;
-                    margin-left: $product-details-main_item-gutter;
-                }
-            }
         }
     }
 }
