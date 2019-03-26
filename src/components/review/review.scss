@@ -1,24 +1,37 @@
-// cs-single-review
-// Single review component
-//
-// See http://warpspire.com/kss/ for documentation guidelines.
-// Version 0.0.1
-$ns: 'cs-' !default;
+@import 'config/variables';
 
-@import 'components/star-rating/star-rating.scss';
+$review_font-size: 1.4rem !default;
+$review_title-font-weight: 700 !default;
+$review_title-color: $color_text-800 !default;
+$review_author-color: $color_text-800 !default;
+$review_content-color: $color_text-400 !default;
+$review_date-color: $color_text-400 !default;
+$review_meta-item-font-size: 0.9em !default;
+$review_meta-item-border: 1px solid $color_border-500 !default;
 
 .#{$ns}review {
-    font-size: 1rem;
-    @include font-family($font_family-primary);
+    font-size: $review_font-size;
 
     &__title {
-        display: block;
-        font-weight: 700;
+        font-weight: $review_title-font-weight;
+        margin: 0 0 0.7rem;
+        color: $review_title-color;
+    }
+
+    &__rating {
+        margin: 0 0 0.7rem;
+    }
+
+    &__meta {
+        margin: 0 0 2rem;
+        font-size: $review_meta-item-font-size;
     }
 
     &__meta-item {
         vertical-align: middle;
-        padding: 0 0.5em;
+        padding: 0 1rem;
+        line-height: 1em;
+        border-right: $review_meta-item-border;
 
         &:first-child {
             padding-left: 0;
@@ -29,15 +42,17 @@ $ns: 'cs-' !default;
         }
     }
 
-    &__stars {
-        height: 1em;
-    }
-
     &__author {
-        line-height: 1em;
+        color: $review_author-color;
     }
 
     &__date {
-        line-height: 1em;
+        margin-left: -4px;
+        color: $review_date-color;
+    }
+
+    &__content {
+        margin: 0;
+        color: $review_content-color;
     }
 }
