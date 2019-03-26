@@ -4,35 +4,28 @@
 
 /** @var \Aheadworks\Pquestion\Block\Question\Sort $this */
 ?>
-<div class="aw-pq-question-sort-block | cs-form__field cs-form__field--inline | cs-input">
-    <label class="cs-input__label aw-pq-question-sort__sortby-label">
+<div class="aw-pq-question-sort-block field">
+    <label class="aw-pq-question-sort__sortby-label">
         <?php echo $this->escapeHtml(__('Sort by:')) ?>
     </label>
-    <div class="cs-input__control">
-        <select class="cs-select aw-pq-question-sort__sortby">
-            <?php foreach ($this->getOptions() as $value => $label): ?>
-                <option
-                    value="<?php echo $this->escapeHtml($value); ?>" <?php if ($this->getCurrentOrder() == $value): ?>
-                    selected="selected"<?php endif ?>
-                >
-                    <?php echo $this->escapeHtml($label); ?>
-                </option>
-            <?php endforeach ?>
-        </select>
-    </div>
+    <select class="select aw-pq-question-sort__sortby">
+        <?php foreach ($this->getOptions() as $value => $label): ?>
+            <option
+                value="<?php echo $this->escapeHtml($value); ?>"
+                <?php if ($this->getCurrentOrder() == $value): ?> selected<?php endif ?>
+            >
+                <?php echo $this->escapeHtml($label); ?>
+            </option>
+        <?php endforeach ?>
+    </select>
+    <a href="javascript:void(0)" class="aw-pq-question-sort__dir">
 
-    <a href="javascript:void(0)" class="aw-pq-question-sort__dir | cs-input__option">
-
-        <svg class="aw-pq-question-sort__icon <?php if ($this->getCurrentDir() == 'DESC'): ?> cs-visually-hidden<?php endif; ?>"><use xlink:href="#arrow_down"></use></svg>
-        <svg class="aw-pq-question-sort__icon <?php if ($this->getCurrentDir() == 'ASC'): ?> cs-visually-hidden<?php endif; ?>"><use xlink:href="#arrow_up"></use></svg>
-
-        <img class="aw-pq-question-sort__dir-arrow cs-visually-hidden" src="<?php echo $this->escapeUrl($this->getImageUrl($this->getCurrentDir())); ?>" alt=<?php echo $this->escapeHtml($this->getTargetDir()); ?>/>
     </a>
 </div>
 <script type="text/javascript">
     require([
-        'AWPquestionSorter', 'jquery', 'js/pdp'
-    ], function(sorter, $, pdpBundle) {
+        'AWPquestionSorter', 'jquery'
+    ], function(sorter, $) {
         var config = {
             'sortBlockSelector': '.aw-pq-question-sort-block',
             'sortbySelector': '.aw-pq-question-sort__sortby',
@@ -50,12 +43,8 @@
             'formKey': '<?php /* @noEscape */ echo $this->getSessionFormKey(); ?>'
         };
         new AWPqSorter(config);
-
-        new pdpBundle.Select($('.aw-pq-question-sort__sortby.cs-select'));
-
         window.AWPqSorter.prototype._hideOverlay = function() {
             if (this.overlay) {
-                new pdpBundle.Select($('.aw-pq-question-sort__sortby.cs-select'));
                 this.overlay.remove();
             }
         };
