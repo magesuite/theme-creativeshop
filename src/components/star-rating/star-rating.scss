@@ -25,6 +25,13 @@ $star-rating_padding-default: 0 !default;
 $star-rating_padding-reviews-summary: 0 !default;
 $star-rating_padding-review: 0 !default;
 $star-rating_padding-review-form: 0 !default;
+// Determines score and count textfield display ruleset
+$star-rating_hide-text-pdp: false !default;
+$star-rating_hide-text-tile: false !default;
+// Determines display ruleset for "review" annotation
+$star-rating_hide-annotation-pdp: false !default;
+$star-rating_hide-annotation-tile: true !default;
+
 
 .#{$ns}star-rating {
     $root: &;
@@ -110,6 +117,36 @@ $star-rating_padding-review-form: 0 !default;
         display: inline-block;
         color: $star-rating_text-color;
         padding-left: .5em;
+        line-height: 1;
+        margin: auto 0;
+
+        @if $star-rating_hide-text-pdp {
+            .#{$ns}buybox & {
+                display: none;
+            }
+        }
+
+        @if $star-rating_hide-text-tile {
+            .#{$ns}product-tile & {
+                display: none;
+            }
+        }
+    }
+
+    &__text-annotation {
+        display: inline;
+
+        @if $star-rating_hide-annotation-pdp {
+            .#{$ns}buybox & {
+                display: none;
+            }
+        }
+        
+        @if $star-rating_hide-annotation-tile { 
+            .#{$ns}product-tile & {
+                display: none;
+            }
+        }
         line-height: 1.1rem;
     }
 }

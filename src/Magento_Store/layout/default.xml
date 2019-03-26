@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="information.stripe">
+        <referenceContainer name="top.bar.container.wrapper">
             <block class="Magento\Store\Block\Switcher" name="store_language" template="Magento_Store::switch/languages.phtml" before="currency.switcher">
                 <arguments>
                     <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--topbar cs-dropdown-switcher--language</argument>
@@ -10,7 +10,7 @@
                 </arguments>
                 <block class="MageSuite\ThemeHelpers\Block\Icon" name="store_language.trigger-icon">
                     <arguments>
-                        <argument name="icon_url" xsi:type="string">images/icons/dropdown-switcher/icon-trigger.svg</argument>
+                        <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
                         <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
                         <argument name="inlined" xsi:type="boolean">true</argument>
                         <argument name="lazy_loaded" xsi:type="boolean">true</argument>
@@ -18,25 +18,23 @@
                 </block>
             </block>
         </referenceContainer>
-        <referenceContainer name="page.top">
-            <referenceBlock name="navigation.offcanvas">
-                <block class="Magento\Store\Block\Switcher" name="navigation.offcanvas.switcher-language" template="Magento_Store::switch/languages.phtml" after="navigation.offcanvas.authorization">
+        <referenceBlock name="navigation.offcanvas">
+            <block class="Magento\Store\Block\Switcher" name="navigation.offcanvas.switcher-language" template="Magento_Store::switch/languages.phtml" after="navigation.offcanvas.authorization">
+                <arguments>
+                    <argument name="id_modifier" xsi:type="string">offcanvas</argument>
+                    <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--offcanvas cs-dropdown-switcher--language</argument>
+                    <argument name="show_flags" xsi:type="boolean">true</argument>
+                    <argument name="show_labels" xsi:type="boolean">true</argument>
+                </arguments>
+                <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-language.trigger-icon" as="store_language.trigger-icon">
                     <arguments>
-                        <argument name="id_modifier" xsi:type="string">offcanvas</argument>
-                        <argument name="additional_css_classes" xsi:type="string">cs-dropdown-switcher--offcanvas cs-dropdown-switcher--language</argument>
-                        <argument name="show_flags" xsi:type="boolean">true</argument>
-                        <argument name="show_labels" xsi:type="boolean">true</argument>
+                        <argument name="icon_url" xsi:type="string">images/icons/arrow_down.svg</argument>
+                        <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
+                        <argument name="inlined" xsi:type="boolean">true</argument>
+                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
                     </arguments>
-                    <block class="MageSuite\ThemeHelpers\Block\Icon" name="navigation.offcanvas.switcher-language.trigger-icon" as="store_language.trigger-icon">
-                        <arguments>
-                            <argument name="icon_url" xsi:type="string">images/icons/dropdown-switcher/icon-trigger.svg</argument>
-                            <argument name="css_class" xsi:type="string">cs-dropdown-switcher__trigger-icon</argument>
-                            <argument name="inlined" xsi:type="boolean">true</argument>
-                            <argument name="lazy_loaded" xsi:type="boolean">true</argument>
-                        </arguments>
-                    </block>
                 </block>
-            </referenceBlock>
-        </referenceContainer>
+            </block>
+        </referenceBlock>
     </body>
 </page>

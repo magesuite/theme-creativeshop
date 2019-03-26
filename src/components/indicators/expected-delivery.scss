@@ -1,0 +1,39 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/indicators/mixins';
+
+$indicator-expected-delivery_gutter: 1rem !default;
+
+.#{$ns}indicator-exp-delivery {
+    $root: &;
+
+    width: 100%;
+
+    @if $indicator-expected-delivery_gutter != 0 {
+        &:not(:last-child) {
+            margin: 0 0 $indicator-expected-delivery_gutter;
+        }
+    }
+
+    &__element {
+        display: flex;
+    }
+
+    &__element-icon {
+        @include indicator-icon();
+        vertical-align: middle;
+    }
+
+    &__text {
+        @include indicator-text();
+        display: none;
+
+        &--visible {
+            display: inline-block;
+        }
+
+        &--date {
+            font-weight: 700;
+        }
+    }
+}
