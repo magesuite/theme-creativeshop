@@ -1,6 +1,6 @@
 @import 'config/variables';
 @import 'vendors/include-media';
-@import './mixins.scss';
+@import 'components/indicators/mixins';
 
 $indicator-low-stock_background: $color_background-500 !default;
 $indicator-low-stock_border-radius: $border-radius_base !default;
@@ -19,7 +19,6 @@ $indicator-low-stock_icon-ringing-animation-repeat: 6s !default;
 
 $indicator-low-stock_label-make-keywords-bold: true !default;
 $indicator-low-stock_label-keywords-font-weight: 600 !default;
-
 
 .#{$ns}indicator-low-stock {
     $root: &;
@@ -60,7 +59,9 @@ $indicator-low-stock_label-keywords-font-weight: 600 !default;
         fill: $indicator-low-stock_icon-fill;
 
         @if $indicator-low-stock_icon-apply-ringing-animation {
-            animation: ringing $indicator-low-stock_icon-ringing-animation-repeat infinite;
+            animation: ringing
+                $indicator-low-stock_icon-ringing-animation-repeat
+                infinite;
         }
     }
 
@@ -85,4 +86,3 @@ $indicator-low-stock_label-keywords-font-weight: 600 !default;
         transform: scale(1.3) rotate(-27deg);
     }
 }
-

@@ -1,0 +1,39 @@
+<?php
+/** @var $block \MageSuite\ProductPositiveIndicators\Block\ExpectedDelivery\Product */
+$isEnabled = $block->isEnabled();
+$displayExpectedDeliveryIcon = $block->getShowIcon();
+?>
+
+<?php if ($isEnabled): ?>
+    <div class="cs-indicator-exp-delivery" id="expected-delivery" data-max-time-today="<?= $block->getMaxTimeToday(); ?>">
+        <div class="cs-indicator-exp-delivery__content">
+            <div class="cs-indicator-exp-delivery__element">
+                <?php if ($displayExpectedDeliveryIcon): ?>
+                    <?= $this->getLayout()
+                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                        ->setIconUrl('MageSuite_ProductPositiveIndicators::images/fast-delivery.svg')
+                        ->setCssClass('cs-indicator-exp-delivery__element-icon')
+                        ->setInlined(true)
+                        ->setLazyLoaded(true)
+                        ->toHtml();
+                    ?>
+                    <?= $block->getChildHtml('indicator.expected-delivery'); ?>
+                <?php endif; ?>
+                <span class="cs-indicator-exp-delivery__text cs-indicator-exp-delivery__text--same-day">
+                    <?= __(
+                        'You can get this product on <span class="cs-indicator-exp-delivery__text--date">%1 (%2)</span> if you buy it now',
+                        date('d.m.Y', $block->getShipDayTime()),
+                        __($block->getShipDayName())
+                    ) ?>
+                </span>
+                <span class="cs-indicator-exp-delivery__text cs-indicator-exp-delivery__text--next-day">
+                    <?= __(
+                        'You can get this product on <span class="cs-indicator-exp-delivery__text--date">%1 (%2)</span> if you buy it now',
+                        date('d.m.Y', $block->getNextShipDayTime()),
+                        __($block->getShipDayName())
+                    ) ?>
+                </span>
+            </div>
+        </div>
+    </div>
+<?php endif ?>
