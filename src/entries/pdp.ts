@@ -84,6 +84,15 @@ import 'components/tabs';
 import 'components/table';
 import 'components/toolbar';
 import 'components/qty-increment';
+import 'components/sticky-block';
+import 'components/visually-hidden';
+import 'components/star-rating';
+import 'components/dropdown-switcher';
+import 'components/display-controller';
+import 'components/captcha';
+import 'components/lazyload';
+import 'components/typography';
+import 'components/dropdown-switcher';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';

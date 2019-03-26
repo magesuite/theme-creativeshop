@@ -2,33 +2,56 @@
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
 
-//Switcher background color for tablet & desktop.
-$dropdown-switcher_background: $color_background-210 !default;
-//Color of the trigger in offcanvas navigation.
-$dropdown-switcher_trigger-color: $color_primary-500 !default;
-//Color of the active list border.
+$dropdown-switcher_background: transparent !default;
+
+$dropdown-switcher_offcanvas-bottom-border: 1px $color_border-500 solid !default;
+$dropdown-switcher_offcanvas-trigger-icon-color: $color_primary-500 !default;
+$dropdown-switcher_trigger-icon-color: $color_background-800 !default;
+
 $dropdown-switcher_list-border-color: $color_border-200 !default;
-//Bottom border configuration for the switcher in offcanvas navigation.
-$dropdown-switcher_border: 1px $color_border-500 solid !default;
-//Switcher hover
+$dropdown-switcher_list-background-color: $color_background-200 !default;
+$dropdown-switcher_list-item-color: $color_text-800 !default;
+
 $dropdown-switcher_hover-background: $color_background-500 !default;
+
+$dropdown-switcher_topbar-separator-border: 0.2rem solid $color_border-100 !default;
+$dropdown-switcher_topbar-separator-transform: $transform_skew-400 !default;
+$dropdown-switcher_trigger-icon-transform: rotate(180deg) !default;
+
+$dropdown-switcher_border-radius: 3px !default;
+$dropdown-switcher_language-flag-width: 1.5rem !default;
+$dropdown-switcher_language-flag-height: 1.5rem !default;
+
+$dropdown-switcher_font-size-primary: 1.4rem !default;
+$dropdown-switcher_font-size-secondary: 1.1rem !default;
 
 .cs-dropdown-switcher {
     $root: &;
 
     white-space: nowrap;
     cursor: pointer;
+    width: 100%;
+
+    @include media('>=laptop') {
+        .mage-dropdown-dialog {
+            position: absolute;
+            top: 100%;
+            right: -1rem;
+            left: 1rem;
+        }
+    }
+
+    &--currency {
+        .mage-dropdown-dialog {
+            right: -1rem;
+        }
+    }
 
     @include media('>=laptop') {
         position: relative;
         display: inline-flex;
         align-items: stretch;
-        flex-basis: 14%;
         flex-shrink: 0;
-
-        .page-layout-checkout & {
-            flex-basis: 18%;
-        }
 
         &:before {
             position: absolute;
@@ -36,16 +59,16 @@ $dropdown-switcher_hover-background: $color_background-500 !default;
             bottom: 0;
             left: 1.3rem;
             content: '';
-            border-left: 0.2rem solid $color_white;
-            transform: skew(-18deg);
+            border-left: $dropdown-switcher_topbar-separator-border;
+            transform: $dropdown-switcher_topbar-separator-transform;
             display: block;
         }
     }
 
     &__option {
         &-icon {
-            width: 1.5rem;
-            height: 1.5rem;
+            min-width: $dropdown-switcher_language-flag-width;
+            height: $dropdown-switcher_language-flag-height;
             margin-right: 0.6rem;
             margin-bottom: 0.2rem;
             display: inline-block;
@@ -53,46 +76,45 @@ $dropdown-switcher_hover-background: $color_background-500 !default;
     }
 
     &__trigger {
-        @include media('<laptop') {
-            position: relative;
-            padding: 2.4rem 2rem;
-            font-size: 1.4rem;
-            font-weight: 700;
-            border-bottom: $dropdown-switcher_border;
-        }
+        padding: 2.4rem 2rem;
+        font-size: $dropdown-switcher_font-size-primary;
+        font-weight: 700;
+        border-bottom: $dropdown-switcher_offcanvas-bottom-border;
+        position: relative;
 
         @include media('>=laptop') {
             height: 100%;
             display: inline-flex;
             align-items: center;
             margin-left: 2rem;
-            font-size: 1.1rem;
-            padding: 0 0.8rem;
+            font-size: $dropdown-switcher_font-size-secondary;
+            font-weight: 400;
+            padding: 0 0.5rem 0 0.8rem;
+            border-bottom: none;
         }
 
         &-icon {
-            margin-left: 0.5rem;
-            width: 0.8rem;
-            height: 0.7rem;
-            transition: transform 0.3s ease-out;
+            position: absolute;
+            top: calc(50% - 0.35rem);
+            right: 2rem;
+            height: 1rem;
+            width: 1rem;
+            fill: $dropdown-switcher_offcanvas-trigger-icon-color;
 
-            @include media('<laptop') {
-                position: absolute;
-                top: calc(50% - 0.35rem);
-                right: 2rem;
-                height: 1rem;
-                width: 1rem;
-
-                path {
-                    fill: $dropdown-switcher_trigger-color;
-                }
+            @include media('>=laptop') {
+                position: static;
+                margin-left: 0.5rem;
+                width: 0.8rem;
+                height: 0.7rem;
+                transition: transform 0.3s ease-out;
+                fill: $dropdown-switcher_trigger-icon-color;
             }
         }
 
         &.active {
             background: $dropdown-switcher_background;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
+            border-top-left-radius: $dropdown-switcher_border-radius;
+            border-top-right-radius: $dropdown-switcher_border-radius;
             border: none;
             position: relative;
             width: 100%;
@@ -112,7 +134,7 @@ $dropdown-switcher_hover-background: $color_background-500 !default;
             }
 
             #{$root}__trigger-icon {
-                transform: rotate(180deg);
+                transform: $dropdown-switcher_trigger-icon-transform;
             }
         }
 
@@ -125,34 +147,29 @@ $dropdown-switcher_hover-background: $color_background-500 !default;
     &__list {
         @include reset-list-style();
         display: none;
-        font-size: 1.1rem;
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
+        list-style: none;
+        font-size: $dropdown-switcher_font-size-secondary;
+        border-bottom-left-radius: $dropdown-switcher_border-radius;
+        border-bottom-right-radius: $dropdown-switcher_border-radius;
         border-color: $dropdown-switcher_list-border-color;
         border-style: solid;
         border-width: 0 1px 1px;
         width: 100%;
 
-        @include media('<laptop') {
-            border-style: none;
-        }
-
         @include media('>=laptop') {
-            position: absolute;
-            top: 100%;
-            left: 1rem;
-            right: 0;
-            background: $color_white;
+            background: $dropdown-switcher_list-background-color;
+            min-width: 100%;
         }
 
         &-item {
             margin: 0;
-            white-space: normal;
+            white-space: nowrap;
         }
 
         &-item-link {
             display: block;
-            color: $color_mineshaft !important;
+            width: 100%;
+            color: $dropdown-switcher_list-item-color !important;
             display: flex;
             align-items: center;
 
@@ -163,12 +180,12 @@ $dropdown-switcher_hover-background: $color_background-500 !default;
 
             @include media('<laptop') {
                 padding: 1.4rem 2rem;
-                font-size: 1.4rem;
+                font-size: $dropdown-switcher_font-size-primary;
             }
 
             @include media('>=laptop') {
                 padding: 0.6rem 1.8rem;
-                font-size: 1.1rem;
+                font-size: $dropdown-switcher_font-size-secondary;
             }
         }
     }

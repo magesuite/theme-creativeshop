@@ -11,53 +11,53 @@
     $showFlags = $block->getShowFlags();
     $showLabels = $block->getShowLabels();
 ?>
-<div class="switcher language switcher-language cs-dropdown-switcher <?= $block->getAdditionalCssClasses(); ?>" data-ui-id="language-switcher" id="switcher-language<?= /* @escapeNotVerified */ $id?>">
-    <strong class="cs-visually-hidden label switcher-label"><span><?= /* @escapeNotVerified */ __('Language') ?></span></strong>
-    <div class="actions dropdown options switcher-options">
-        <div class="action toggle switcher-trigger cs-dropdown-switcher__trigger" id="switcher-language-trigger<?= /* @escapeNotVerified */ $id?>">
-            <span class="cs-dropdown-switcher__trigger-span view-<?= $block->escapeHtml($block->getCurrentStoreCode()) ?>">
-                <?php if ($showFlags): ?>
-                    <?= $this->getLayout()
-                        ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
-                        ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($block->getCurrentStoreCode())).'.svg')
-                        ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--active')
-                        ->setAltText($block->escapeHtml($block->getStoreName()))
-                        ->toHtml(); ?>
-                <?php endif ?>
-                <?php if ($showLabels): ?>
-                    <?= $block->escapeHtml($block->getStoreName()) ?>
-                <?php endif ?>
-                <?= $block->getChildHtml('store_language.trigger-icon'); ?>
-            </span>
+    <div class="switcher language switcher-language cs-dropdown-switcher <?= $block->getAdditionalCssClasses(); ?>" data-ui-id="language-switcher" id="switcher-language<?= /* @escapeNotVerified */ $id?>">
+        <span class="cs-visually-hidden label switcher-label"><span><?= /* @escapeNotVerified */ __('Language') ?></span></span>
+        <div class="actions dropdown options switcher-options">
+            <div class="action toggle switcher-trigger cs-dropdown-switcher__trigger" id="switcher-language-trigger<?= /* @escapeNotVerified */ $id?>">
+                <span class="cs-dropdown-switcher__trigger-span view-<?= $block->escapeHtml($block->getCurrentStoreCode()) ?>">
+                    <?php if ($showFlags): ?>
+                        <?= $this->getLayout()
+                            ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
+                            ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($block->getCurrentStoreCode())).'.svg')
+                            ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--active')
+                            ->setAltText($block->escapeHtml($block->getStoreName()))
+                            ->toHtml(); ?>
+                    <?php endif ?>
+                    <?php if ($showLabels): ?>
+                        <?= $block->escapeHtml($block->getStoreName()) ?>
+                    <?php endif ?>
+                    <?= $block->getChildHtml('store_language.trigger-icon'); ?>
+                </span>
+            </div>
+            <ul class="cs-dropdown-switcher__list dropdown switcher-dropdown"
+                data-mage-init='{"dropdownDialog":{
+                    "appendTo":"#switcher-language<?= /* @escapeNotVerified */ $id ?> > .options",
+                    "triggerTarget":"#switcher-language-trigger<?= /* @escapeNotVerified */ $id ?>",
+                    "closeOnMouseLeave": false,
+                    "triggerClass":"active",
+                    "parentClass":"active",
+                    "buttons":null}}'>
+                <?php foreach ($block->getStores() as $_lang): ?>
+                    <li class="cs-dropdown-switcher__list-item | view-<?= $block->escapeHtml($_lang->getCode()); ?> switcher-option">
+                        <?php if ($_lang->getId() != $block->getCurrentStoreId()): ?>
+                            <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @escapeNotVerified */ $block->getTargetStorePostData($_lang); ?>'>
+                                <?php if ($showFlags): ?>
+                                    <?= $this->getLayout()
+                                        ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
+                                        ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($_lang->getCode())).'.svg')
+                                        ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($block->escapeHtml($_lang->getCode())))
+                                        ->setAltText($block->escapeHtml($_lang->getName()))
+                                        ->toHtml(); ?>
+                                <?php endif ?>
+                                <?php if ($showLabels): ?>
+                                    <?= $block->escapeHtml($_lang->getName()) ?>
+                                <?php endif ?>
+                            </a>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
         </div>
-        <ul class="cs-dropdown-switcher__list dropdown switcher-dropdown"
-            data-mage-init='{"dropdownDialog":{
-                "appendTo":"#switcher-language<?= /* @escapeNotVerified */ $id ?> > .options",
-                "triggerTarget":"#switcher-language-trigger<?= /* @escapeNotVerified */ $id ?>",
-                "closeOnMouseLeave": false,
-                "triggerClass":"active",
-                "parentClass":"active",
-                "buttons":null}}'>
-            <?php foreach ($block->getStores() as $_lang): ?>
-                <li class="cs-dropdown-switcher__list-item | view-<?= $block->escapeHtml($_lang->getCode()); ?> switcher-option">
-                    <?php if ($_lang->getId() != $block->getCurrentStoreId()): ?>
-                        <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @escapeNotVerified */ $block->getTargetStorePostData($_lang); ?>'>
-                            <?php if ($showFlags): ?>
-                                <?= $this->getLayout()
-                                    ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
-                                    ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($_lang->getCode())).'.svg')
-                                    ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($block->escapeHtml($_lang->getCode())))
-                                    ->setAltText($block->escapeHtml($_lang->getName()))
-                                    ->toHtml(); ?>
-                            <?php endif ?>
-                            <?php if ($showLabels): ?>
-                                <?= $block->escapeHtml($_lang->getName()) ?>
-                            <?php endif ?>
-                        </a>
-                    <?php endif; ?>
-                </li>
-            <?php endforeach; ?>
-        </ul>
     </div>
-</div>
 <?php endif; ?>
