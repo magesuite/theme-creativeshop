@@ -1,0 +1,258 @@
+@import 'config/variables';
+@import 'components/pseudoicon/hook';
+
+$pseudoicon-type: 'plus' !default; // plus (default) or arrow
+// Animation for arrows works only if default and active direction are opposite
+$pseudoicon-animate: true !default;
+$pseudoicon-animation-time: 0.15s !default;
+$pseudoicon-color: $color_border-700 !default;
+$pseudoicon-hover-color: $color_border-700 !default;
+$pseudoicon-expanded-color: $color_border-700 !default;
+$pseudoicon-width: 1.2rem !default;
+$pseudoicon-height: 0.2rem !default;
+$pseudoicon-position-side-offset: $page_edge-gutter !default;
+
+// Additional settings for arrows
+$pseudoicon-arrow-default-direction: 'up' !default;
+$pseudoicon-arrow-active-direction: 'down' !default;
+// In some cases (it depends on $pseudoicon-width/height value), we need to fix offset for left part of icon
+$pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + (#{$pseudoicon-width} - (2 * #{$pseudoicon-height}))) !default;
+
+@mixin pseudoicon(
+    $type: $pseudoicon-type,
+    $animated: $pseudoicon-animate,
+    $animation-time: $pseudoicon-animation-time,
+    $color: $pseudoicon-color,
+    $color-hover: $pseudoicon-hover-color,
+    $color-expanded: $pseudoicon-expanded-color,
+    $width: $pseudoicon-width,
+    $height: $pseudoicon-height,
+    $position-side-offset: $pseudoicon-position-side-offset,
+    $arrow-default: $pseudoicon-arrow-default-direction,
+    $arrow-active: $pseudoicon-arrow-active-direction,
+    $arrow-offset: $pseudoicon-arrow-left-offset
+) {
+    position: relative;
+
+    &:before,
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: $width;
+        height: $height;
+        left: auto;
+        background-color: $color;
+
+        @if ($animated) {
+            @if ($type == 'arrow') {
+                @if (($arrow-default == 'up') and ($arrow-active == 'down'))
+                or (($arrow-default == 'down') and ($arrow-active == 'up'))
+                or (($arrow-default == 'left') and ($arrow-active == 'right'))
+                or (($arrow-default == 'right') and ($arrow-active == 'left')) {
+                    transition: transform $pseudoicon-animation-time linear, right $pseudoicon-animation-time linear, background-color $pseudoicon-animation-time linear;
+                } @else {
+                    transition: background-color $pseudoicon-animation-time linear;
+                }
+            } @else {
+                transition: transform (2 * $pseudoicon-animation-time) ease-out, opacity $pseudoicon-animation-time ease-out, background-color $pseudoicon-animation-time linear;
+            }
+        } @else {
+            @if ($color-hover != $color) {
+                transition: background-color $pseudoicon-animation-time linear;
+            }
+        }
+
+        backface-visibility: hidden;
+    }
+
+    @if ($color-hover != $color) {
+        &:hover {
+            &:before,
+            &:after {
+                background-color: $color-hover;
+            }
+        }
+    }
+
+    &[aria-expanded='true'] {
+        &:before,
+        &:after {
+            @if ($color-expanded != $color) {
+                background-color: $color-expanded;
+            }
+        }
+    }
+    
+    @if ($type == 'arrow') {
+        &:before {
+            @if ($arrow-default == 'right') {
+                transform: rotate(135deg) translate3d(50%, 0, 0);
+                right: $position-side-offset;
+            } @else if ($arrow-default == 'down') {
+                transform: rotate(45deg) translate3d(0, 0, 0);
+                right: $arrow-offset;
+            } @else if ($arrow-default == 'left') {
+                transform: rotate(45deg) translate3d(50%, 0, 0);
+                right: $arrow-offset;
+            } @else if ($arrow-default == 'up') {
+                transform: rotate(-45deg) translate3d(0, 0, 0);
+                right: $arrow-offset;
+            }
+        }
+            
+        &:after {
+            @if ($arrow-default == 'right') {
+                right: $position-side-offset;
+                transform: rotate(-135deg) translate3d(50%, 0, 0);
+            } @else if ($arrow-default == 'down') {
+                transform: rotate(-45deg) translate3d(0, 0, 0);
+                right: $position-side-offset;
+            } @else if ($arrow-default == 'left') {
+                right: $arrow-offset;
+                transform: rotate(-45deg) translate3d(50%, 0, 0);
+            } @else if ($arrow-default == 'up'){
+                transform: rotate(45deg) translate3d(0, 0, 0);
+                right: $position-side-offset;
+            }
+        }
+
+        &[aria-expanded='true'] {
+            @if ($arrow-default == 'right') {
+                &:before {
+                    @if ($arrow-active == 'down') {
+                        transform: rotate(225deg) translate3d(0, 0, 0);
+                        right: $arrow-offset;
+                    } @else if ($arrow-active == 'left') {
+                        transform: rotate(45deg) translate3d(50%, 0, 0);
+                        right: $arrow-offset;
+                    } @else if ($arrow-active == 'up') {
+                        transform: rotate(45deg) translate3d(0, 0, 0);
+                        right: $position-side-offset;
+                    }
+                }
+
+                &:after {
+                    @if ($arrow-active == 'down') {
+                        transform: rotate(-45deg) translate3d(0, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'left') {
+                        transform: rotate(-45deg) translate3d(50%, 0, 0);
+                        right: $arrow-offset;
+                    } @else if ($arrow-active == 'up') {
+                        transform: rotate(-225deg) translate3d(0, 0, 0);
+                        right: $arrow-offset;
+                    }
+                }
+            }
+            
+            @if ($arrow-default == 'down') {
+                &:before {
+                    @if ($arrow-active == 'right') {
+                        transform: rotate(-45deg) translate3d(-50%, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'left') {
+                        transform: rotate(135deg) translate3d(-50%, 0, 0);
+                        right: $arrow-offset;
+                    } @else if ($arrow-active == 'up') {
+                        transform: rotate(-45deg);
+                    }
+                }
+
+                &:after {
+                    @if ($arrow-active == 'right') {
+                        transform: rotate(-135deg) translate3d(50%, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'left') {
+                        transform: rotate(45deg) translate3d(50%, 0, 0);
+                        right: $arrow-offset;
+                    } @else if ($arrow-active == 'up') {
+                        transform: rotate(45deg);
+                    }
+                }
+            }
+            
+            @if ($arrow-default == 'left') {
+                &:before {
+                    @if ($arrow-active == 'right') {
+                        transform: rotate(135deg) translate3d(50%, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'down') {
+                        transform: rotate(-45deg) translate3d(0, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'up') {
+                        transform: rotate(135deg) translate3d(0, 0, 0);
+                        right: $arrow-offset;
+                    }
+                }
+
+                &:after {
+                    @if ($arrow-active == 'right') {
+                        transform: rotate(-135deg) translate3d(50%, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'down') {
+                        transform: rotate(-135deg) translate3d(0, 0, 0);
+                        right: $arrow-offset;
+                    } @else if ($arrow-active == 'up') {
+                        transform: rotate(45deg) translate3d(0, 0, 0);
+                        right: $position-side-offset;
+                    }
+                }
+            }
+            
+            @if ($arrow-default == 'up') {
+                &:before {
+                    @if ($arrow-active == 'right') {
+                        transform: rotate(45deg) translate3d(-50%, 0, 0);
+                        right: $position-side-offset;
+                    } @else if ($arrow-active == 'down') {
+                        transform: rotate(45deg);
+                    } @else if ($arrow-active == 'left') {
+                        transform: rotate(-135deg) translate3d(-50%, 0, 0);
+                        right: $arrow-offset;
+                    }
+                }
+
+                &:after {
+                    @if ($arrow-active == 'right') {
+                        transform: rotate(135deg) translate3d(50%, 0, 0);
+                    } @else if ($arrow-active == 'down') {
+                        transform: rotate(-45deg);
+                    } @else if ($arrow-active == 'left') {
+                        transform: rotate(-45deg) translate3d(50%, 0, 0);
+                        right: $arrow-offset;
+                    }
+                }
+            }
+        }
+    } @else {
+        &:before,
+        &:after {
+            right: $position-side-offset;
+            transform: translate3d(0, -50%, 0) !important;
+        }
+
+        &:after {
+            transform: translate3d(0, -50%, 0) rotate(90deg) !important;
+        }
+
+        &[aria-expanded='true'] {
+            &:before {
+                transform: translate3d(0, -50%, 0) rotate(-90deg) !important;
+                opacity: 0;
+            }
+
+            &:after {
+                transform: translate3d(0, -50%, 0) rotate(0) !important;
+            }
+        }
+    }
+
+    &:before {
+        @include pseudoicon_before-hook($type);   
+    }
+
+    &:after {
+        @include pseudoicon_after-hook($type);
+    }
+}

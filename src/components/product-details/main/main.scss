@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'components/typography/mixin';
+@import 'components/pseudoicon/mixin';
 @import 'vendors/include-media';
 
 $product-details-main_columns: true !default;
@@ -17,6 +18,14 @@ $product-details-main_item-gutter: 2em !default;
     @if $product-details-main_columns {
         @include media('>=tablet') {
             flex-wrap: nowrap;
+        }
+    }
+
+    &__headline {
+        position: relative;
+        
+        &[tabindex] {
+            @include pseudoicon();
         }
     }
 
