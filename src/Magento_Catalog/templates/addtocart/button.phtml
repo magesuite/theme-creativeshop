@@ -1,20 +1,21 @@
 <?php 
     $buttonLabel = $block->getAddtocartLabel() ?? __($block->getVar('ajax_addtocart/labels/default', 'Magento_Catalog'));
+    $canBeConfigured = $block->getCanBeConfigured();
 ?>
 
 <div class="cs-addtocart__wrapper">
 <button type="submit" title="<?= $buttonLabel ?>" 
         class="tocart primary <?= $block->getButtonClass() ?? $block->getVar('ajax_addtocart/css_classes/default_button', 'Magento_Catalog') ?>"
-        <?= $block->getButtonParams() ?>
+        <?= $block->getButtonParams() ?>        
 >
-
     <?php if(!empty($block->getVar('ajax_addtocart/icons/default/path', 'Magento_Catalog'))): ?>
+        <?php $variablesPath = 'ajax_addtocart/icons/' . ($canBeConfigured ? 'configure' : 'default'); ?>
         <?= $this->getLayout()
                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-               ->setIconUrl($block->getVar('ajax_addtocart/icons/default/path', 'Magento_Catalog'))
-               ->setCssClass($block->getVar('ajax_addtocart/icons/default/css_class', 'Magento_Catalog'))
-               ->setInlined($block->getVar('ajax_addtocart/icons/default/inlined', 'Magento_Catalog'))
-               ->setLazyLoaded($block->getVar('ajax_addtocart/icons/default/lazy_loaded', 'Magento_Catalog'))
+               ->setIconUrl($block->getVar($variablesPath . '/path', 'Magento_Catalog'))
+               ->setCssClass($block->getVar($variablesPath . '/css_class', 'Magento_Catalog'))
+               ->setInlined($block->getVar($variablesPath . '/inlined', 'Magento_Catalog'))
+               ->setLazyLoaded($block->getVar($variablesPath . '/lazy_loaded', 'Magento_Catalog'))
                ->toHtml();
         ?>
     <?php endif; ?>
