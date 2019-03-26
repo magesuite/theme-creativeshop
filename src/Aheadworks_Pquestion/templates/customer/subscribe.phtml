@@ -1,33 +1,27 @@
 <?php
-/**
- * Copyright 2019 aheadWorks. All rights reserved.
- * See LICENSE.txt for license details.
- */
-
 // @codingStandardsIgnoreFile
-
 /** @var \Aheadworks\Pquestion\Block\Customer\Subscribe $this */
 ?>
-    <h4><?php echo $this->escapeHtml(__('Subscribe to:'));?></h4>
+    <h4><?= $this->escapeHtml(__('Subscribe to:'));?></h4>
 <?php $notificationTypes = $this->getNotificationTypes(); ?>
 <?php if (count($notificationTypes) > 0): ?>
-    <form class="cs-form" action="<?php echo $this->escapeUrl($this->getActionUrl())?>" method="POST" id="aw_pq_subscribe_to_form">
+    <form class="cs-form" action="<?= $this->escapeUrl($this->getActionUrl())?>" method="POST" id="aw_pq_subscribe_to_form">
         <p>
             <ul>
                 <?php foreach ($notificationTypes as $type): ?>
                     <li>
-                        <input type="checkbox" id="aw_pq_customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"
-                            name="aw_pq_customer_subscribe_to[]" value="<?php echo $this->escapeHtml($type['value'])?>"
-                            <?php echo $type['checked']?'checked':'';?>
+                        <input type="checkbox" id="aw_pq_customer_subscribe_to_<?= $this->escapeHtml($type['value'])?>"
+                            name="aw_pq_customer_subscribe_to[]" value="<?= $this->escapeHtml($type['value'])?>"
+                            <?= $type['checked']?'checked':'';?>
                             />
-                        <label for="aw_pq_customer_subscribe_to_<?php echo $this->escapeHtml($type['value'])?>"><?php echo $this->escapeHtml($type['label']);?></label>
+                        <label for="aw_pq_customer_subscribe_to_<?= $this->escapeHtml($type['value'])?>"><?= $this->escapeHtml($type['label']);?></label>
                     </li>
                 <?php endforeach;?>
             </ul>
         </p>
-        <button type="submit" title="<?php echo $this->escapeHtml(__('Save'));?>" class="cs-form__button">
-            <span class="cs-form__button-span"><?php echo $this->escapeHtml(__('Save'));?></span>
-            <?php echo $this->getChildHtml('aw_pq.customer.subscribe.button.icon'); ?>
+        <button type="submit" title="<?= $this->escapeHtml(__('Save'));?>" class="cs-form__button">
+            <span class="cs-form__button-span"><?= $this->escapeHtml(__('Save'));?></span>
+            <?= $this->getChildHtml('aw_pq.customer.subscribe.button.icon'); ?>
         </button>
     </form>
 <?php endif;?>
