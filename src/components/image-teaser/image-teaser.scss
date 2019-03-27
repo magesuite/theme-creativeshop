@@ -76,7 +76,6 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
         &--content-under {
             #{$root}__slide {
                 display: block;
-                margin-bottom: 3rem;
 
                 &--scheme-light {
                     #{$root}__content {
@@ -141,20 +140,10 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
             width: 50%;
         }
 
-        @for $i from 2 through 4 {
+        @for $i from 2 through 8 {
             #{$root}--items-in-row-#{$i} & {
-                @if $i > 3 {
-                    @include media('>=tablet') {
-                        width: calc(100% / #{$i / 2});
-                    }
-
-                    @include media('>=laptop') {
-                        width: calc(100% / #{$i});
-                    }
-                } @else {
-                    @include media('>=tablet') {
-                        width: calc(100% / #{$i});
-                    }
+                @include media('>=tablet') {
+                    width: calc(100% / #{$i});
                 }
             }
         }
@@ -192,7 +181,7 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
                 width: 100%;
             }
 
-           @if $image-teaser_slides-gutter > 0 {
+            @if $image-teaser_slides-gutter > 0 {
                 #{$root}__wrapper:not(#{$root}__wrapper--content-under) & {
                     height: calc(100% - #{$image-teaser_slides-gutter});
                 }
@@ -264,7 +253,6 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
     }
 
     &__text-content {
-        margin-bottom: 1.5rem;
         font-size: $image-teaser_text-content-font-size;
         color: $image-teaser_text-content-color;
 

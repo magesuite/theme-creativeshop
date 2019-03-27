@@ -1,18 +1,19 @@
 <?php
     $data = $block->getData();
+
     foreach($data['data']['items'] as $key => &$slide):
-        if(isset($slide['display']) && $slide['display'] != true):
+        if (isset($slide['display']) && $slide['display'] != true):
             unset($data['data']['items'][$key]);
             continue;
         endif;
 
-        if(isset($slide['decodedImage']) && !empty($slide['decodedImage'])):
-            $slide['decodedImage'] = $this->getViewFileUrl($slide['decodedImage']);
+        if (isset($slide['image'], $slide['image']['decoded'])):
+            $slide['image']['decoded'] = $this->getViewFileUrl($slide['image']['decoded']);
         endif;
     endforeach;
 ?>
 
-<?= $this->getLayout()->createBlock('MageSuite\ContentConstructorFrontend\Block\Component', 'image-teaser-legacy-usps-footer-sqmu20', [
+<?= $this->getLayout()->createBlock('MageSuite\ContentConstructorFrontend\Block\Component', 'icon-usps-footer-sqmu20', [
         'data' => $data
     ]
 )->toHtml(); ?>
