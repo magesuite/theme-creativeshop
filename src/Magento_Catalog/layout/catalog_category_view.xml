@@ -11,6 +11,7 @@
                 <argument name="bundle_name" xsi:type="string">category</argument>
             </arguments>
         </referenceBlock>
+
         <referenceContainer name="main.content" htmlClass="cs-page-category">
             <referenceContainer name="columns" htmlClass="columns cs-container cs-container--page-category">
                 <container name="columns.container.inner" htmlTag="div" htmlClass="cs-page-category__columns cs-container__inner" />
@@ -20,7 +21,6 @@
         <!-- Revert containers to allow Content Constructor elements -->
         <move element="columns.top" destination="main.content" after="-"/>
         <move element="columns" destination="main.content" after="-"/>
-        <referenceContainer name="main.content" htmlClass="" />
         <referenceContainer name="page.main.container.inner" display="false" />
 
         <!--Move grid into main column-->
@@ -32,7 +32,7 @@
         <referenceContainer name="div.sidebar.main" htmlClass="cs-page-category__sidebar" />
         <referenceContainer name="div.sidebar.additional" htmlClass="cs-page-category__sidebar-extras" display="false" />
         <move element="div.sidebar.additional" destination="div.sidebar.main" after="-" />
-        <move element="div.sidebar.main" destination="columns.container.inner" before="-" />
+        <move element="div.sidebar.main" destination="columns.container.inner" after="-" />
 
         <!--Inside main container there are some additional default Magento containers (see: magento/module-theme/view/frontend/layout/default.xml): content, content.top, content.bottom. -->
 
@@ -66,7 +66,7 @@
 
             <container name="hotspot.before.list" as="hotspot.before.list" />
 
-            <container name="empty.category.message" htmlTag="div" htmlClass="message info empty cs-messages__message cs-messages__message--info"  as="empty.category.message">
+            <container name="empty.category.message" htmlTag="div" htmlClass="message info empty cs-messages__message cs-messages__message--info" as="empty.category.message">
                 <block class="Magento\Framework\View\Element\Text" name="empty.category.message.text">
                     <arguments>
                         <argument translate="true" name="text" xsi:type="string">We can't find products matching the selection.</argument>

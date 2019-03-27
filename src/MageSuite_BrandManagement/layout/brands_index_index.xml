@@ -15,6 +15,32 @@
         <referenceContainer name="main.content" htmlClass="" />
         <referenceContainer name="page.main.container.inner" display="false" />
 
+        <referenceBlock name="search_result_list">
+            <arguments>
+                <argument name="grid_component_class" xsi:type="string">cs-grid-layout</argument>
+                <argument name="additional_grid_component_class" xsi:type="string">cs-grid-layout--brand</argument>
+                <argument name="grid_component_list_class" xsi:type="string">cs-grid-layout__grid</argument>
+                <argument name="grid_component_list_item_class" xsi:type="string">cs-grid-layout__brick</argument>
+                <argument name="list_component_class" xsi:type="string">cs-products-list</argument>
+                <argument name="list_component_list_class" xsi:type="string">cs-products-list__items</argument>
+                <argument name="list_component_list_item_class" xsi:type="string">cs-products-list__item</argument>
+            </arguments>
+
+            <container name="hotspot.before.active.filters" as="hotspot.before.active.filters" />
+
+            <container name="hotspot.before.list" as="hotspot.before.list" />
+
+            <container name="empty.category.message" htmlTag="div" htmlClass="message info empty cs-messages__message cs-messages__message--info" as="empty.category.message">
+                <block class="Magento\Framework\View\Element\Text" name="empty.category.message.text">
+                    <arguments>
+                        <argument translate="true" name="text" xsi:type="string">We can't find products matching the query.</argument>
+                    </arguments>
+                </block>
+            </container>
+
+            <container name="hotspot.after.list" as="hotspot.after.list" />
+        </referenceBlock>
+
         <referenceBlock name="product_list_toolbar">
             <arguments>
                 <argument translate="true" name="descending_direction_label" xsi:type="string">Set Descending Direction</argument>
