@@ -52,7 +52,7 @@ import 'components/tile-gallery';
 import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
-
+import 'components/select';
 // Others
 import 'components/bundle-box';
 import 'components/buybox';

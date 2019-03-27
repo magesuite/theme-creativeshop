@@ -1,5 +1,40 @@
 @import 'config/variables';
-@import 'utils/font-family';
+@import 'vendors/include-media';
+@import 'components/field/mixin.scss';
+@import 'utils/reset-list-style';
+
+$html-select_trigger-font-size: $field_select-font-size !default;
+$html-select_trigger-line-height: $field_select-line-height !default;
+$html-select_trigger-font-weight: 400 !default;
+$html-select_trigger-select_color: $field_select-color !default;
+$html-select_trigger-background: $color_background-200 !default;
+$html-select_trigger-padding: $field_select-padding !default;
+$html-select_trigger-padding-right: $field_select-padding-right !default;
+$html-select_trigger-border-radius: $border-radius_base !default;
+$html-select_trigger-border: $field_select-border !default;
+$html-select_trigger-border-active: 1px solid $color-primary_500 !default;
+$html-select_trigger-box-shadow: $field_select-box-shadow !default;
+
+$html-select_caret-color: $color_border-500 !default;
+$html-select_caret-active-color: $color-primary_500 !default;
+
+$html-select_item-background: $color_background-200 !default;
+$html-select_item-color: $color_text-800 !default;
+$html-select_item-hover-background: $color_primary-500 !default;
+$html-select_item-hover-color: $color_text-200 !default;
+$html-select_item-selected-background: $color_primary-500 !default;
+$html-select_item-selected-color: $color_text-200 !default;
+
+$html-select_menu-background: $color_background-200 !default;
+$html-select_menu-border-radius: $border-radius_base !default;
+$html-select_menu-box-shadow: 0 1px 5px 0 rgba(100, 100, 100, 0.2) !default;
+$html-select_menu-border: 1px solid $color_primary-500 !default;
+
+$html-select_item-border-top: none !default;
+$html-select_item-height: 2.8em !default;
+
+$html-select_disabled-opacity: $field_select-disabled-opacity !default;
+
 // select
 // Custom HTML select version of native select with native fallback on mobiles
 //
@@ -7,31 +42,22 @@
 // Version 0.0.1
 
 .#{$ns}select {
-    $root: &;
-
-    position: absolute !important;
+    min-width: 0.5px;
+    position: absolute;
     bottom: 0;
     left: 50%;
-    display: block !important;
-    width: 0.5px !important;
-    height: 100% !important;
-    padding: 0 !important;
-    opacity: 0 !important;
+    display: block;
+    height: 100%;
+    padding: 0;
+    opacity: 0;
     border: none;
-    font-size: 1rem;
-    line-height: 1;
 
     &--mobile {
         top: 0;
         left: 0;
-        display: block !important;
-        width: 100% !important;
+        display: block;
+        width: 100%;
         z-index: 4;
-    }
-
-    &__icon {
-        vertical-align: middle;
-        margin-right: 4px;
     }
 }
 
@@ -39,15 +65,10 @@
     $root: &;
 
     position: relative;
-    display: block !important;
-    // z-index: 7; fixes dropdowns overlapping each other but possible that this will break sth else - don't remove
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 0;
+    display: block;
     min-width: 15rem;
     box-sizing: border-box;
     z-index: 2;
-    text-transform: none;
 
     &.open {
         z-index: 99;
@@ -58,29 +79,22 @@
         align-items: center;
         position: relative;
         cursor: pointer;
-        width: 100%;
-        padding: 0 3em 0 0.75em;
-        background-color: #fafafa;
-        box-shadow: inset 0 4px 2px 0 rgba(214, 214, 214, 0.2);
-        border-radius: 3px;
-        height: 2.55em;
-        border: 1px solid #e7e7e7;
+        width: 100%;        
+        min-width: 13rem;
         text-align: left;
         z-index: 3;
-        outline: none;
         overflow: hidden;
         box-sizing: border-box;
-        font-size: 1em;
-
-        #{$root}--open &,
-        #{$root}.open & {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            box-shadow: 0 1px 5px 0 rgba(100, 100, 100, 0.1);
-        }
+        background: $html-select_trigger-background;
+        border: $html-select_trigger-border;
+        padding: $html-select_trigger-padding;
+        padding-right: $html-select_trigger-padding-right;
+        border-radius: $html-select_trigger-border-radius;
+        box-shadow: $html-select_trigger-box-shadow;
+        font-size: $html-select_trigger-font-size;
 
         &--disabled {
-            color: #a2a2a2;
+            opacity: $html-select_disabled-opacity;
             cursor: not-allowed;
         }
 
@@ -90,44 +104,32 @@
             border-bottom-right-radius: 0;
         }
 
-        &:focus {
-            box-shadow: 0 0 5px 0 #3899e2;
+        #{$root}--open &, 
+        #{$root}.open & {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border: $html-select_trigger-border-active;
+            border-bottom: $html-select_trigger-border
         }
     }
 
     &__trigger-text {
-        display: block;
+        font-size: $html-select_trigger-font-size;
+        color: $html-select_trigger-select_color;
+        line-height: $html-select_trigger-line-height;
+        font-weight: $html-select_trigger-font-weight;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        @include font-family($font_family-primary);
-        font-size: 1rem;
-        line-height: 1.155em;
-    }
-
-    &__text-content {
-        overflow: hidden;
-        float: left;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-        padding: 0.125em 0.313em 0.125em 0;
-    }
-
-    &__flag {
-        height: 1em;
-        width: auto;
-        margin: 0 0.375em -0.125em 0;
+        font-size: $field_select-font-size;
     }
 
     &__trigger-caret {
         position: absolute;
-        top: 0;
         right: 0;
+        top: 20%;
+        height: 60%;
         width: 2.65em;
-        height: 100%;
-        border-left: 1px solid #e7e7e7;
     }
 
     &__trigger-caret-arrow {
@@ -140,11 +142,6 @@
         transform-origin: 50% 30%;
         transition: transform 0.25s ease;
 
-        #{$root}--open &,
-        #{$root}.open & {
-            transform: rotateX(180deg) translate3d(50%, -50%, 0);
-        }
-
         &:before,
         &:after {
             position: absolute;
@@ -152,28 +149,29 @@
             width: 7px;
             height: 2px;
             content: '';
-            background-color: #bfbfbf;
+            background-color: $html-select_caret-color;
         }
 
         &:before {
             left: 0;
-            transform: rotate(40deg);
             transform-origin: 0 50%;
+            transform: rotate(40deg);
         }
 
         &:after {
             right: 0;
-            transform: rotate(-40deg);
             transform-origin: 100% 50%;
+            transform: rotate(-40deg);
         }
-    }
 
-    &__trigger-subtext {
-        position: absolute;
-        right: 0.625em;
+        #{$root}--open &,
+        #{$root}.open & {
+            transform: translate3d(50%, -50%, 0);
 
-        #{$root}__trigger & {
-            right: 3.275em;
+            &:before,
+            &:after {
+                background-color: $html-select_caret-active-color;
+            }
         }
     }
 
@@ -183,69 +181,65 @@
         left: 0;
         z-index: 5;
         display: none;
-        background-color: #fafafa;
-        border: 1px solid #e7e7e7;
-        border-bottom-left-radius: 3px;
-        border-bottom-right-radius: 3px;
-        box-shadow: 0 1px 5px 0 rgba(100, 100, 100, 0.1);
-        font-size: 1rem;
-        line-height: 1.35rem;
-        box-sizing: border-box;
-        min-width: 100%;
-        z-index: -1;
+        border: $html-select_menu-border;
+        border-top: $html-select_trigger-border;
+        border-bottom-left-radius: $html-select_menu-border-radius;
+        border-bottom-right-radius: $html-select_menu-border-radius;
+        background-color: $html-select_menu-background;
+        box-shadow: $html-select_menu-box-shadow;
         margin-top: -1px;
+        min-width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
 
-        #{$root}--open &,
-        #{$root}.open & {
+        #{$root}--open & {
             display: block;
-            opacity: 0;
-            transform: translate3d(0, -10px, 0);
-            transition: transform 0.25s ease, opacity 0.32s ease;
-
-            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-                transform: none;
-                transition: opacity 0.32s ease;
-            }
+            opacity: 1;
         }
 
-        #{$root}--animate & {
-            transform: translate3d(0, 0, 0) !important;
-            opacity: 0.99 !important;
-
-            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-                transform: none !important;
-            }
+        #{$root}--autosuggest:not(#{$root}--open) & {
+            padding: 0;
+            border: none;
         }
     }
 
     &__menu-list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+        @include reset-list-style();
     }
 
     &__menu-item {
-        &--divider {
-            width: 100%;
-            height: 1px;
-            margin: 0.313em 0;
-            background-color: #e7e7e7;
-        }
-
-        &--header {
-            padding: 0.563em 0.625em 0.313em;
-            font-size: 0.6875rem;
-            text-transform: uppercase;
-            color: #676767;
-        }
+        margin: 0;
+        padding: 0;
+        border-top: $html-select_item-border-top;
 
         &--hidden {
             display: none;
         }
+    }
 
-        &--no-results {
-            padding: 0.563em 0.625em;
-            background-color: #fafafa;
+    &__menu-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 0 1em;
+        height: $html-select_item-height;
+        color: $html-select_item-color;
+        background-color: $html-select_item-background;
+        cursor: pointer;
+        transition: background-color 0.15s linear, color 0.15s linear;
+
+        #{$root}__menu-item--selected & {
+            color: $html-select_item-selected-color;
+            background-color: $html-select_item-selected-background;
+        }
+
+        &:hover,
+        &:focus,
+        #{$root}__menu-item--focused & {
+            background-color: $html-select_item-hover-background;
+            color: $html-select_item-hover-color;
+            text-decoration: none;
+            outline: none;
         }
     }
 
@@ -254,69 +248,19 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        line-height: 1.35;
     }
 
-    &__menu-link {
-        display: block;
-        position: relative;
-        padding: 0.563em 0.625em;
-        cursor: pointer;
-        background-color: #fafafa;
-        transition: background-color 0.15s linear, color 0.15s linear;
+    &--autosuggest {
+        padding: 0;
 
-        &:focus {
-            outline: none;
-            background-color: darken(#fafafa, 5%);
+        #{$root}__menu {
+            overflow-y: hidden;
+            max-height: 220px;
         }
 
-        &:hover,
-        &:hover:focus {
-            background-color: #c9c9c9;
-            color: #fff;
-        }
-
-        #{$root}__menu-item--selected & {
-            color: #3899e2;
-
-            &:hover {
-                background-color: #3899e2;
-                color: #fff;
-            }
-        }
-
-        #{$root}__menu-item--in-group & {
-            padding-left: 1.25em;
-        }
-
-        #{$root}__menu-item--disabled & {
-            cursor: not-allowed;
-            background-color: #fafafa;
-            color: #c9c9c9;
-            text-decoration: none;
-
-            &:hover {
-                background-color: #fafafa;
-                color: #c9c9c9;
-            }
-        }
-
-        #{$root}__menu-item--active & {
-            background-color: darken(#fafafa, 5%);
-        }
-    }
-
-    &--multi.#{$ns}html-select--mobile {
-        #{$root}__trigger {
-            display: none;
-        }
-
-        .#{$ns}select--mobile {
-            position: static !important;
-            opacity: 1 !important;
-            border: 1px solid #e7e7e7;
-            min-height: 2em;
-            background-color: #fafafa;
+        #{$root}__menu-list {
+            overflow-y: scroll;
+            max-height: 220px;
         }
     }
 }
