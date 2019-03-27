@@ -2,20 +2,38 @@
 @import 'components/button/mixin';
 @import 'vendors/include-media';
 
-$reviews_border: 1px solid $color_border-500 !default;
-$reviews_spacing: 2.5rem !default;
+$reviews-border: 1px solid $color_border-500 !default;
+$reviews-spacing: 2.5rem !default;
 
 // Reviews form styling
-$reviews-form-two-columns-desktop: true !default;
-$reviews-form-background-desktop: $color_background-500 !default;
-$reviews-headline-font-size: $font-size_headline-3 !default;
-$reviews_product-name-font-weight: 200 !default;
+$reviews_form-two-columns-desktop: true !default;
+$reviews_form-background-desktop: $color_background-500 !default;
 $reviews_form-padding-desktop: 3rem !default;
-$reviews_rating-control-padding: $button_padding !default;
-$reviews_fedback-text-color: $color_text-400 !default;
-$reviews_fedback-font-size: 0.85em !default;
-$reviews-form-button-align: flex-start !default;
-$reviews-form-button-align-desktop: center !default;
+$reviews_form-button-align: flex-start !default;
+$reviews_form-button-align-desktop: center !default;
+$reviews_form-headline-font-size: $font-size_headline-3 !default;
+$reviews_form-product-name-font-weight: 200 !default;
+$reviews_form-rating-control-padding: $button_padding !default;
+$reviews_form-fedback-text-color: $color_text-400 !default;
+$reviews_form-fedback-font-size: 0.85em !default;
+
+.cs-container--page-pdp-details-reviews .cs-product-details__content {
+    display: flex;
+    flex-flow: row wrap;
+
+    .cs-reviews {
+        flex: 1 0 auto;
+
+        @include media('<laptop') {
+            border-bottom: $reviews-border;
+        }
+
+        .cs-pagination__content {
+            justify-content: center;
+            margin: $reviews-spacing 0;
+        }
+    }
+}
 
 .cs-reviews {
     flex: 1 0 100%;
@@ -45,9 +63,9 @@ $reviews-form-button-align-desktop: center !default;
     }
 
     &__item {
-        padding: 0 0 $reviews_spacing;
-        margin: 0 0 $reviews_spacing;
-        border-bottom: $reviews_border;
+        padding: 0 0 $reviews-spacing;
+        margin: 0 0 $reviews-spacing;
+        border-bottom: $reviews-border;
         list-style: none;
 
         &:last-of-type {
@@ -59,7 +77,7 @@ $reviews-form-button-align-desktop: center !default;
     &__form {
         display: flex;
         flex-flow: row wrap;
-        margin: $reviews_spacing 0;
+        margin: $reviews-spacing 0;
 
         @include media('>=laptop') {
             background: $reviews_form-background-desktop;
@@ -71,11 +89,11 @@ $reviews-form-button-align-desktop: center !default;
         width: 100%;
         margin: 0 0 1.4em;
         text-align: left;
-        font-size: $reviews-headline-font-size;
+        font-size: $reviews_form-headline-font-size;
     }
 
     &__product-name {
-        font-weight: $reviews_product-name-font-weight;
+        font-weight: $reviews_form-product-name-font-weight;
     }
 
     &__ratings {
@@ -83,11 +101,11 @@ $reviews-form-button-align-desktop: center !default;
         box-sizing: border-box;
         margin-bottom: 1.5em;
 
-        @if ($reviews-form-two-columns-desktop) {
+        @if ($reviews_form-two-columns-desktop) {
             @include media('>=laptop') {
                 width: 50%;
                 padding-right: $reviews_form-padding-desktop;
-                border-right: $reviews_border;
+                border-right: $reviews-border;
             }
         }
     }
@@ -98,7 +116,7 @@ $reviews-form-button-align-desktop: center !default;
         text-align: left;
         box-sizing: border-box;
 
-        @if ($reviews-form-two-columns-desktop) {
+        @if ($reviews_form-two-columns-desktop) {
             @include media('>=laptop') {
                 width: 50%;
                 padding-left: $reviews_form-padding-desktop;
@@ -107,12 +125,18 @@ $reviews-form-button-align-desktop: center !default;
     }
 
     &__submit {
-        display: flex;
-        justify-content: $reviews-form-button-align;
         width: 100%;
+        display: flex;
+        justify-content: $reviews_form-button-align;
 
         @include media('>=laptop') {
-            justify-content: $reviews-form-button-align-desktop;
+            justify-content: $reviews_form-button-align-desktop;
+        }
+    }
+
+    &__submit-button {
+        @include media('<=phoneLg') {
+            width: 100%;
         }
     }
 
@@ -131,9 +155,9 @@ $reviews-form-button-align-desktop: center !default;
 
     &__rate-feedback {
         order: 1;
-        font-size: $reviews_fedback-font-size;
+        font-size: $reviews_form-fedback-font-size;
         line-height: 0.9em;
-        color: $reviews_fedback-text-color;
+        color: $reviews_form-fedback-text-color;
         font-weight: 700;
         margin-left: 1.5rem;
         display: flex;
