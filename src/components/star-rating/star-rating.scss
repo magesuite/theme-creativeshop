@@ -31,6 +31,8 @@ $star-rating_hide-text-tile: false !default;
 // Determines display ruleset for "review" annotation
 $star-rating_hide-annotation-pdp: false !default;
 $star-rating_hide-annotation-tile: true !default;
+// Determines star svg for ie11 height calculations
+$star-rating_star-aspect-ratio: 1.05 !default; 
 
 
 .#{$ns}star-rating {
@@ -58,18 +60,6 @@ $star-rating_hide-annotation-tile: true !default;
     &__star {
         display: flex;
         width: $star-rating_star-width-default;
-
-        #{$root}--summary & {
-            width: $star-rating_star-width-reviews-summary;
-        }
-
-        #{$root}--review & {
-            width: $star-rating_star-width-review;
-        }
-    }
-
-    &__half-star {
-        width: 50%;
         height: 100%;
         fill: $star-rating_color-inactive;
 
@@ -77,9 +67,45 @@ $star-rating_hide-annotation-tile: true !default;
             fill: $star-rating_color-active;
         }
 
+        &--half-active {
+
+            .star-left {
+                fill: $star-rating_color-active;
+            }
+
+            .star-rigth {
+                fill: $star-rating_color-inactive;
+            }
+        }
+
+        #{$root}--summary & {
+            width: $star-rating_star-width-reviews-summary;
+
+            .ie11 & {
+                height: calc(#{$star-rating_star-width-reviews-summary}/#{$star-rating_star-aspect-ratio});
+            }
+        }
+
+        #{$root}--review & {
+            width: $star-rating_star-width-review;
+
+            .ie11 & {
+                height: calc(#{$star-rating_star-width-review}/#{$star-rating_star-aspect-ratio});
+            }
+        }
+
         path {
             fill-opacity: 1;
         }
+
+        .ie11 & {
+            height: calc(#{$star-rating_star-width-default}/#{$star-rating_star-aspect-ratio});
+        }
+    }
+
+    img {
+        width: $star-rating_star-width-default;
+        height: 100%;
     }
 
     &__form-stars {
@@ -111,6 +137,10 @@ $star-rating_hide-annotation-tile: true !default;
         .#{$ns}star-rating__form-stars label:hover ~ label & {
             fill: $star-rating_form-star-color-inactive;
         }
+
+        .ie11 & {
+            height: calc(#{$star-rating_star-width-review-form}/#{$star-rating_star-aspect-ratio});
+        }
     }
 
     &__text {
@@ -118,7 +148,7 @@ $star-rating_hide-annotation-tile: true !default;
         color: $star-rating_text-color;
         padding-left: .5em;
         line-height: 1;
-        margin: auto 0;
+        padding-top: calc(#{$star-rating_star-width-default}*0.1);
 
         @if $star-rating_hide-text-pdp {
             .#{$ns}buybox & {
@@ -147,7 +177,7 @@ $star-rating_hide-annotation-tile: true !default;
                 display: none;
             }
         }
-        line-height: 1.1rem;
+        line-height: 1;
     }
 }
 
