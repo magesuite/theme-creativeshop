@@ -1,12 +1,10 @@
 <?php
 // @codingStandardsIgnoreFile
-    $url = $block->getReviewsUrl() . '#reviews';
-    $urlForm = $block->getReviewsUrl() . '#review-form';
 ?>
 <?php if ($block->getReviewsCount()): ?>
 
         <?php
-            // Transforms rating summary (0..100) into star count (0..5, with a step of a 0.5)  
+            // Transforms rating summary (0..100) into star count (0..5, with a step of a 0.5)
             $activeStars = round($block->getRatingSummary()/10)/2;
 
             echo $this->getLayout()
@@ -23,7 +21,7 @@
 <?php elseif ($block->getDisplayIfEmpty()): ?>
 
     <div class="cs-buybox__no-review">
-        <a class="cs-buybox__no-review-link" href="<?php /* @escapeNotVerified */ echo $urlForm; ?>"><?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?></a>
+        <a class="cs-buybox__no-review-link" href="#reviews"><?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?></a>
     </div>
 
 <?php endif; ?>
