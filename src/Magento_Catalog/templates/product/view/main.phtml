@@ -15,7 +15,7 @@ $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? []
                 continue;
             }
             $alias = $layout->getElementAlias($blockName);
-            $label = __($block->getChildData($alias, 'title'));
+            $label = __($block->getChildData($alias, 'title'))->render();
             $id = str_replace('.', '-', $alias);
             $isCollapsible = $block->getChildData($alias, 'is_collapsible') ?? false;
             $collapseOptions = $block->getChildData($alias, 'collapsible_widget_options');
@@ -28,10 +28,11 @@ $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? []
                 <?= $isCollapsible ? 'data-mage-init=\'{"collapsible": ' . $collapseOptionsJson . '}\'' : '' ?>
             >
                 <?php if (!empty($label)): ?>
+                    <?php var_dump($label); ?>
                     <header class="cs-product-details-main__headline" data-role="title">
                         <h3 class="cs-product-details-main__headline-title">
                             <?= /* @escapeNotVerified */ $label; ?>
-                        </h2>
+                        </h3>
                     </header>
                 <?php endif; ?>
                 <div class="cs-product-details-main__content" data-role="content">
@@ -39,7 +40,7 @@ $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? []
                 </div>
             </section>
         <?php endforeach; ?>
-        <?php if (!$one_column): ?></div><?php endif; ?>
+    <?php if (!$one_column): ?></div><?php endif; ?>
     <?php endif; ?>
 
     <?php if (!empty($column_right)): ?>
@@ -50,7 +51,7 @@ $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? []
                 continue;
             }
             $alias = $layout->getElementAlias($blockName);
-            $label = __($block->getChildData($alias, 'title'));
+            $label = __($block->getChildData($alias, 'title'))->render();
             $id = str_replace('.', '-', $alias);
             $isCollapsible = $block->getChildData($alias, 'is_collapsible') ?? false;
             $collapseOptions = $block->getChildData($alias, 'collapsible_widget_options');
@@ -74,7 +75,7 @@ $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? []
                 </div>
             </section>
         <?php endforeach; ?>
-        <?php if (!$one_column): ?></div><?php endif; ?>
+    <?php if (!$one_column): ?></div><?php endif; ?>
     <?php endif; ?>
 
 </div>

@@ -28,73 +28,75 @@
             <div class="cs-reviews__ratings" data-hasrequired="<?php __('* Required Fields'); ?>">
                 <div id="input-message-box"></div>
                 <div class="cs-reviews__rating" id="product-review-table">
-                    <div class="cs-field required">
-                        <label class="cs-field__label">
-                            <span><?= /* @escapeNotVerified */ __('Your rating') ?>:</span>
-                        </label>
-                    </div>
                     <?php foreach ($block->getRatings() as $rating): ?>
-                        <div class="cs-reviews__rating-control | review-control-vote">
-                            <?php
-                                $options = $rating->getOptions();
-                                $msg = __('Click on stars to rate');
-                                $getRatingCode = $rating->getRatingCode();
-                            ?>
+                        <div class="cs-field required">
+                            <label class="cs-field__label">
+                                <span><?= /* @escapeNotVerified */ __('Your rating') ?>:</span>
+                            </label>
+                            <div class="cs-field__control">
+                                <div class="cs-reviews__rating-control | review-control-vote">
+                                    <?php
+                                        $options = $rating->getOptions();
+                                        $msg = __('Click on stars to rate');
+                                        $getRatingCode = $rating->getRatingCode();
+                                    ?>
 
-                            <span class="cs-reviews__rate-feedback" data-default-message="<?= /* @escapeNotVerified */ $msg ?>"><?=/* @escapeNotVerified */$msg?></span>
+                                    <span class="cs-reviews__rate-feedback" data-default-message="<?= /* @escapeNotVerified */ $msg ?>"><?=/* @escapeNotVerified */$msg?></span>
 
-                            <div class="cs-star-rating__form-stars">
-                                <?php $iterator = 1; foreach ($options as $option): ?>
-                                    <?php $optionValue = $option->getValue(); ?>
+                                    <div class="cs-star-rating__form-stars">
+                                        <?php $iterator = 1; foreach ($options as $option): ?>
+                                            <?php $optionValue = $option->getValue(); ?>
 
-                                    <?php switch ($optionValue) {
-                                        case 1:
-                                            $msg = __('Very bad');
-                                            break;
-                                        case 2:
-                                            $msg = __('Bad');
-                                            break;
-                                        case 3:
-                                            $msg = __('Could be better');
-                                            break;
-                                        case 4:
-                                            $msg = __('Good');
-                                            break;
-                                        case 5:
-                                            $msg = __('Very good!');
-                                            break;
-                                        default:
-                                            $msg = __('Click on stars to rate');
-                                    } ?>
+                                            <?php switch ($optionValue) {
+                                                case 1:
+                                                    $msg = __('Very bad');
+                                                    break;
+                                                case 2:
+                                                    $msg = __('Bad');
+                                                    break;
+                                                case 3:
+                                                    $msg = __('Could be better');
+                                                    break;
+                                                case 4:
+                                                    $msg = __('Good');
+                                                    break;
+                                                case 5:
+                                                    $msg = __('Very good!');
+                                                    break;
+                                                default:
+                                                    $msg = __('Click on stars to rate');
+                                            } ?>
 
-                                    <input
-                                        type="radio"
-                                        name="ratings[<?= /* @escapeNotVerified */ $rating->getId() ?>]"
-                                        id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
-                                        value="<?= /* @escapeNotVerified */ $option->getId() ?>"
-                                        class="radio"
-                                        data-validate="{required:true, messages:{required:'<?php /* * @escapeNotVerified */  echo __('Please select one of each of the ratings above.'); ?>'}}"
-                                        data-feedback-message="<?= /* @escapeNotVerified */ $msg ?>"
-                                        aria-labelledby="<?= $block->escapeHtml($getRatingCode) ?>_rating_label <?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
-                                    />
-                                    <label
-                                        class="cs-reviews__rate-stars rating-<?= /* @escapeNotVerified */ $iterator; ?>"
-                                        for="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
-                                        title="<?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?>"
-                                        id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
-                                    >
-                                        <?=
-                                            $this->getLayout()
-                                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                                ->setIconUrl('images/icons/reviews/full-star.svg')
-                                                ->setCssClass('cs-star-rating__form-star ' . $optionValue)
-                                                ->setInlined(true)
-                                                ->toHtml();
-                                        ?>
-                                        <span><?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?></span>
-                                    </label>
-                                    <?php $iterator++; ?>
-                                <?php endforeach; ?>
+                                            <input
+                                                type="radio"
+                                                name="ratings[<?= /* @escapeNotVerified */ $rating->getId() ?>]"
+                                                id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
+                                                value="<?= /* @escapeNotVerified */ $option->getId() ?>"
+                                                class="radio"
+                                                data-validate="{required:true, messages:{required:'<?php /* * @escapeNotVerified */  echo __('Please select one of each of the ratings above.'); ?>'}}"
+                                                data-feedback-message="<?= /* @escapeNotVerified */ $msg ?>"
+                                                aria-labelledby="<?= $block->escapeHtml($getRatingCode) ?>_rating_label <?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
+                                            />
+                                            <label
+                                                class="cs-reviews__rate-stars rating-<?= /* @escapeNotVerified */ $iterator; ?>"
+                                                for="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>"
+                                                title="<?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?>"
+                                                id="<?= $block->escapeHtml($getRatingCode) ?>_<?= /* @escapeNotVerified */ $optionValue ?>_label"
+                                            >
+                                                <?=
+                                                    $this->getLayout()
+                                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                                        ->setIconUrl('images/icons/reviews/full-star.svg')
+                                                        ->setCssClass('cs-star-rating__form-star ' . $optionValue)
+                                                        ->setInlined(true)
+                                                        ->toHtml();
+                                                ?>
+                                                <span><?= /* @escapeNotVerified */ __('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star') ?></span>
+                                            </label>
+                                            <?php $iterator++; ?>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
