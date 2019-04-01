@@ -49,7 +49,7 @@ $cacheGenerationTime = time();
                     <?php endif; ?>
                 </a>
                 <?php
-                    if ($itemHasSubItems) {
+                    if ($itemHasSubItems || $item->hasFeaturedProducts() || $item->hasImageTeaser()) {
                         echo $this->getLayout()
                             ->createBlock(Magento\Framework\View\Element\Template::class)
                             ->setTemplate("MageSuite_Navigation::main/flyout.phtml")
