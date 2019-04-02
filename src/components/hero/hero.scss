@@ -32,7 +32,6 @@ $hero_scheme--dark-texts-color: $scheme--dark_texts-color !default;
 $hero_scheme--light-background: $scheme--light_background !default;
 $hero_scheme--light-texts-color: $scheme--light_texts-color !default;
 
-
 .#{$ns}hero {
     $root: &;
 
@@ -45,6 +44,11 @@ $hero_scheme--light-texts-color: $scheme--light_texts-color !default;
 
     &__slide {
         background-color: $hero_slide-background;
+        transition: opacity 0.3s;
+
+        &[data-swiper-slide-index]:not(&--active) {
+            opacity: 0.5;
+        }
 
         &--prev,
         &--next {
@@ -74,6 +78,10 @@ $hero_scheme--light-texts-color: $scheme--light_texts-color !default;
         display: block;
         width: 100%;
         max-height: 100%;
+        // Hides alt text so it doesn't show before image is loaded.
+        font: 0/0 a; // stylelint-disable-line
+        text-shadow: none;
+        color: transparent;
     }
 
     &__content-wrapper {
@@ -278,14 +286,23 @@ $hero_scheme--light-texts-color: $scheme--light_texts-color !default;
         }
 
         &-button {
-            @include button($type: $hero_cta-button-type, $icon_pos: $hero_cta-button-icon-pos);
+            @include button(
+                $type: $hero_cta-button-type,
+                $icon_pos: $hero_cta-button-icon-pos
+            );
 
             &-span {
-                @include button_span($type: $hero_cta-button-type, $icon_pos: $hero_cta-button-icon-pos);
+                @include button_span(
+                    $type: $hero_cta-button-type,
+                    $icon_pos: $hero_cta-button-icon-pos
+                );
             }
 
             &-icon {
-                @include button_icon($type: $hero_cta-button-type, $icon_pos: $hero_cta-button-icon-pos);
+                @include button_icon(
+                    $type: $hero_cta-button-type,
+                    $icon_pos: $hero_cta-button-icon-pos
+                );
             }
         }
     }
@@ -331,10 +348,6 @@ $hero_scheme--light-texts-color: $scheme--light_texts-color !default;
         #{$root}__slide {
             padding: 0 2px;
             box-sizing: border-box;
-
-            &:not(#{$root}__slide--active) {
-                opacity: .5;
-            }
         }
 
         #{$root}__nav {
@@ -357,12 +370,12 @@ $hero_scheme--light-texts-color: $scheme--light_texts-color !default;
 
         #{$root}__slide {
             width: 100% !important;
-            opacity: 1 !important;
+            opacity: 1;
         }
     }
 
     &--hidden-mobile {
-        @include media( '<tablet' ) {
+        @include media('<tablet') {
             display: none;
         }
     }

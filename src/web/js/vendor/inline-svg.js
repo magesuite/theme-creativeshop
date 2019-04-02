@@ -127,18 +127,118 @@
             return svgs;
         };
 
+        var cache = {};
+        var queued = {};
+
+        var parseAndReplace = function(text, svg) {
+            // Setup a parser to convert the response to text/xml in order for it
+            // to be manipulated and changed
+            var parser = new DOMParser(),
+                result = parser.parseFromString(text, 'text/xml'),
+                inlinedSVG = result.getElementsByTagName('svg')[0],
+                attributes = svg.attributes;
+
+            // Remove some of the attributes that aren't needed
+            inlinedSVG.removeAttribute('xmlns:a');
+            inlinedSVG.removeAttribute('width');
+            inlinedSVG.removeAttribute('height');
+            inlinedSVG.removeAttribute('x');
+            inlinedSVG.removeAttribute('y');
+            inlinedSVG.removeAttribute('enable-background');
+            inlinedSVG.removeAttribute('xmlns:xlink');
+            inlinedSVG.removeAttribute('xml:space');
+            inlinedSVG.removeAttribute('version');
+
+            // Add in the attributes from the original <img> except `src` or
+            // `alt`, we don't need either
+            Array.prototype.slice.call(attributes).forEach(function(attribute) {
+                if (attribute.name !== 'src' && attribute.name !== 'alt') {
+                    inlinedSVG.setAttribute(attribute.name, attribute.value);
+                }
+            });
+
+            // Add an additional class to the inlined SVG to imply it was
+            // infact inlined, might be useful to know
+            if (inlinedSVG.classList) {
+                inlinedSVG.classList.add('inlined-svg');
+            } else {
+                inlinedSVG.className += ' ' + 'inlined-svg';
+            }
+
+            // Add in some accessibility quick wins
+            inlinedSVG.setAttribute('role', 'img');
+
+            // Use the `longdesc` attribute if one exists
+            if (attributes.longdesc) {
+                var description = document.createElementNS(
+                        'http://www.w3.org/2000/svg',
+                        'desc'
+                    ),
+                    descriptionText = document.createTextNode(
+                        attributes.longdesc.value
+                    );
+
+                description.appendChild(descriptionText);
+                inlinedSVG.insertBefore(description, inlinedSVG.firstChild);
+            }
+
+            // Use the `alt` attribute if one exists
+            if (attributes.alt) {
+                inlinedSVG.setAttribute('aria-labelledby', 'title');
+
+                var title = document.createElementNS(
+                        'http://www.w3.org/2000/svg',
+                        'title'
+                    ),
+                    titleText = document.createTextNode(attributes.alt.value);
+
+                title.appendChild(titleText);
+                inlinedSVG.insertBefore(title, inlinedSVG.firstChild);
+            }
+
+            // Replace the image with the SVG
+            if (svg.parentNode) {
+                svg.parentNode.replaceChild(inlinedSVG, svg);
+            }
+        };
+
+        var resolveQueue = function(text, src) {
+            queued[src] = queued[src] || [];
+
+            var svg;
+            while ((svg = queued[src].shift())) {
+                parseAndReplace(text, svg);
+            }
+        };
+
         /**
          * Inline all the SVGs in the array
          * @public
          */
         var inliner = function(cb) {
             var svgs = getAll();
-            var callback = after(svgs.length, cb);
 
             Array.prototype.forEach.call(svgs, function(svg, i) {
                 // Store some attributes of the image
-                var src = svg.getAttribute('data-src') || svg.src,
-                    attributes = svg.attributes;
+                var src = svg.getAttribute('data-src') || svg.src;
+
+                if (svg.classList) {
+                    svg.classList.remove('inline-svg');
+                } else {
+                    svg.className.replace(/inline\-svg/, '');
+                }
+
+                if (cache[src]) {
+                    parseAndReplace(cache[src], svg);
+                    return;
+                }
+
+                if (queued[src]) {
+                    queued[src].push(svg);
+                    return;
+                }
+
+                queued[src] = [svg];
 
                 // Get the contents of the SVG
                 var request = new XMLHttpRequest();
@@ -146,98 +246,8 @@
 
                 request.onload = function() {
                     if (request.status >= 200 && request.status < 400) {
-                        // Setup a parser to convert the response to text/xml in order for it
-                        // to be manipulated and changed
-                        var parser = new DOMParser(),
-                            result = parser.parseFromString(
-                                request.responseText,
-                                'text/xml'
-                            ),
-                            inlinedSVG = result.getElementsByTagName('svg')[0];
-
-                        // Remove some of the attributes that aren't needed
-                        inlinedSVG.removeAttribute('xmlns:a');
-                        inlinedSVG.removeAttribute('width');
-                        inlinedSVG.removeAttribute('height');
-                        inlinedSVG.removeAttribute('x');
-                        inlinedSVG.removeAttribute('y');
-                        inlinedSVG.removeAttribute('enable-background');
-                        inlinedSVG.removeAttribute('xmlns:xlink');
-                        inlinedSVG.removeAttribute('xml:space');
-                        inlinedSVG.removeAttribute('version');
-
-                        // Add in the attributes from the original <img> except `src` or
-                        // `alt`, we don't need either
-                        Array.prototype.slice
-                            .call(attributes)
-                            .forEach(function(attribute) {
-                                if (
-                                    attribute.name !== 'src' &&
-                                    attribute.name !== 'alt'
-                                ) {
-                                    inlinedSVG.setAttribute(
-                                        attribute.name,
-                                        attribute.value
-                                    );
-                                }
-                            });
-
-                        // Add an additional class to the inlined SVG to imply it was
-                        // infact inlined, might be useful to know
-                        if (inlinedSVG.classList) {
-                            inlinedSVG.classList.add('inlined-svg');
-                        } else {
-                            inlinedSVG.className += ' ' + 'inlined-svg';
-                        }
-
-                        // Add in some accessibility quick wins
-                        inlinedSVG.setAttribute('role', 'img');
-
-                        // Use the `longdesc` attribute if one exists
-                        if (attributes.longdesc) {
-                            var description = document.createElementNS(
-                                    'http://www.w3.org/2000/svg',
-                                    'desc'
-                                ),
-                                descriptionText = document.createTextNode(
-                                    attributes.longdesc.value
-                                );
-
-                            description.appendChild(descriptionText);
-                            inlinedSVG.insertBefore(
-                                description,
-                                inlinedSVG.firstChild
-                            );
-                        }
-
-                        // Use the `alt` attribute if one exists
-                        if (attributes.alt) {
-                            inlinedSVG.setAttribute('aria-labelledby', 'title');
-
-                            var title = document.createElementNS(
-                                    'http://www.w3.org/2000/svg',
-                                    'title'
-                                ),
-                                titleText = document.createTextNode(
-                                    attributes.alt.value
-                                );
-
-                            title.appendChild(titleText);
-                            inlinedSVG.insertBefore(
-                                title,
-                                inlinedSVG.firstChild
-                            );
-                        }
-
-                        // Replace the image with the SVG
-                        if (svg.parentNode) {
-                            svg.parentNode.replaceChild(inlinedSVG, svg);
-                        }
-
-                        // Fire the callback
-                        if (callback) {
-                            callback(settings.svgSelector);
-                        }
+                        cache[src] = request.responseText;
+                        resolveQueue(request.responseText, src);
                     } else {
                         console.error(
                             'There was an error retrieving the source of the SVG.'
@@ -261,7 +271,7 @@
          */
         inlineSVG.init = function(options, callback) {
             // Test for support
-            if (!supports) return;
+            if (!supports) { return; }
 
             // Merge users option with defaults
             settings = extend(defaults, options || {});
