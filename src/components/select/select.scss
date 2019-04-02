@@ -191,6 +191,7 @@ $html-select_disabled-opacity: $field_select-disabled-opacity !default;
         min-width: 100%;
         overflow: hidden;
         box-sizing: border-box;
+        transform: translate3d(0, 0, 0);
 
         #{$root}--open & {
             display: block;
@@ -250,6 +251,18 @@ $html-select_disabled-opacity: $field_select-disabled-opacity !default;
         text-overflow: ellipsis;
     }
 
+    &__text-image-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    &__thumbnail {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: block;
+        margin-right: 1rem;
+    }
+
     &--autosuggest {
         padding: 0;
 
@@ -261,6 +274,11 @@ $html-select_disabled-opacity: $field_select-disabled-opacity !default;
         #{$root}__menu-list {
             overflow-y: scroll;
             max-height: 220px;
+        }
+
+        &:not(#{$root}--animate) #{$root}__menu {
+            padding: 0;
+            border: none;
         }
     }
 }
