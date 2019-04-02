@@ -1,34 +1,29 @@
 <?php
-// @codingStandardsIgnoreFile
-/** @var \Magento\Framework\View\Element\Template $block */
+    // @codingStandardsIgnoreFile
+    /** @var \Magento\Framework\View\Element\Template $block */
 
-$item = $block->getItem();
-$featuredProducts = $item->getFeaturedProducts();
-$productsList = $featuredProducts->getProducts();
-$header = $featuredProducts->getHeader();
+    $item = $block->getItem();
+    $featuredProducts = $item->getFeaturedProducts();
+    $productsList = $featuredProducts->getProducts();
+    $header = $featuredProducts->getHeader();
+    $iterator = 0;
 ?>
-    <div class="cs-navigation__products">
+<div class="cs-navigation__products">
     <?php if ($header): ?>
         <p class="cs-navigation__products-header"><?= $header; ?></p>
     <?php endif; ?>
-        <ul class="cs-navigation__products-list">
-            <?php foreach($productsList as $product): ?>
-                <li class="cs-navigation__product">
-                    <?=$this->getLayout()
-                        ->createBlock(
-                            "MageSuite\Frontend\Block\Twig",
-                            "featured-product-" . $product->getId(),
-                            [
-                                "data" => [
-                                    "namespace" => "cs-",
-                                    "product" => $product
-                                ]
-                            ]
-                        )
-                        ->setTemplate("navigation/product.twig")
-                        ->toHtml();
-                    ?>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
+
+    <ul class="cs-navigation__products-list">
+        <?php foreach($productsList as $product): ?>
+            <li class="cs-navigation__product">
+                <?= $this->getLayout()
+                    ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
+                    ->setIterator($iterator)
+                    ->setAreas(['navigation'])
+                    ->setSection('navigation')
+                    ->render($product);
+                ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
