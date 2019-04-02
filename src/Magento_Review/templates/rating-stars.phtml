@@ -8,34 +8,25 @@
     <div class="cs-star-rating <?= $block->getAdditionalClasses(); ?>">
         <div class="cs-star-rating__stars">
             <?php
-                $iconClass = 'cs-star-rating__half-star';
+                $iconClass = 'cs-star-rating__star';
 
                 for ($starIndex = 0; $starIndex < $maxStars; $starIndex++) {
-                    $iconStatusLeft = '';
-                    $iconStatusRight = '';
 
+                    $iconStatus = '';
                     if ($activeStars > $starIndex) {
-                        $iconStatusLeft = ' ' . $iconClass . '--active';
-                        if (floor($activeStars) > $starIndex) {
-                            $iconStatusRight = ' ' . $iconClass . '--active';
-                        }
+                        $iconStatus = ' ' . $iconClass . '--half-active';
+                    }
+                    if (floor($activeStars) > $starIndex) {
+                        $iconStatus = ' ' . $iconClass . '--active';
                     }
 
                     echo( 
-                        '<span class="cs-star-rating__star">' . 
-                            $this->getLayout()
-                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                ->setIconUrl('images/icons/reviews/half-star-left.svg')
-                                ->setCssClass($iconClass . ' ' . $iconClass . '--left' . $iconStatusLeft)
-                                ->setInlined(true)
-                                ->toHtml() .
-                            $this->getLayout()
-                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                ->setIconUrl('images/icons/reviews/half-star-right.svg')
-                                ->setCssClass($iconClass . ' ' . $iconClass . '--right' . $iconStatusRight)
-                                ->setInlined(true)
-                                ->toHtml() .
-                        '</span>'
+                        $this->getLayout()
+                            ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                            ->setIconUrl('images/icons/reviews/star.svg')
+                            ->setCssClass($iconClass . $iconStatus)
+                            ->setInlined(true)
+                            ->toHtml()
                     ); 
                 }
             ?>
