@@ -1,0 +1,52 @@
+<?php
+/**
+ * Template has been overwritten in order to:
+ * 1. Add additional container (label) for filter title and count (lines: 22, 34)
+ * 2. All echoes changed into shorthand
+ * 3. Helper for displaying count assigned to variable
+ *
+ * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation\FilterRenderer
+ */
+
+$displayProductCountOnLayer = $this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer();
+?>
+
+<ol class="items">
+    <?php foreach ($filterItems as $filterItem): ?>
+        <li class="item">
+            <?php if ($filterItem->getCount() > 0): ?>
+                <a href="<?= $block->escapeUrl($filterItem->getUrl()) ?>">
+                    <?php if ($this->isMultipleSelectEnabled()) : ?>
+                        <input type="checkbox" onclick="this.parentNode.click();" <?php if($filterItem->getIsSelected()) : ?>checked<?php endif; ?> />
+                    <?php endif; ?>
+                    <label>
+                        <?= /* @escapeNotVerified */ $filterItem->getLabel() ?>
+                        <?php if ($displayProductCountOnLayer): ?>
+                            <span class="count">
+                                <?= /* @escapeNotVerified */ $filterItem->getCount()?>
+                            <span class="filter-count-label">
+                            <?php if ($filterItem->getCount() == 1):?>
+                                <?= /* @escapeNotVerified */ __('item')?>
+                            <?php else:?>
+                                <?= /* @escapeNotVerified */ __('items') ?>
+                            <?php endif;?></span></span>
+                        <?php endif; ?>
+                    </label>
+                </a>
+            <?php else:?>
+                <?= /* @escapeNotVerified */ $filterItem->getLabel() ?>
+                <?php if ($displayProductCountOnLayer): ?>
+                    <span class="count">
+                        <?= /* @escapeNotVerified */ $filterItem->getCount()?>
+                        <span class="filter-count-label">
+                        <?php if ($filterItem->getCount() == 1):?>
+                            <?= /* @escapeNotVerified */ __('item')?>
+                        <?php else:?>
+                            <?= /* @escapeNotVerified */ __('items') ?><?php endif;?>
+                        </span>
+                    </span>
+                <?php endif; ?>
+            <?php endif; ?>
+        </li>
+    <?php endforeach ?>
+</ol>
