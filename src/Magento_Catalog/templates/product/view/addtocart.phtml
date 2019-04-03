@@ -9,14 +9,14 @@
         <div class="cs-buybox__addtocart-fieldset">
             <?php if ($block->shouldRenderQuantity()): ?>
                 <div class="cs-buybox__qty-wrapper">
-                    <?php if(!empty($block->getQtyLabel())): ?>
+                    <?php if (!empty($block->getQtyLabel())): ?>
                         <label class="cs-label cs-buybox__qty-label" for="qty"><?= $block->getQtyLabel() ?></label>
                     <?php endif; ?>
 
                     <div class="cs-buybox__qty-increment">
                         <?php $qtyValidators = $block->getQuantityValidators(); ?>
                         <?= $this->getLayout()
-                              ->createBlock('Magento\Framework\View\Element\Template')
+                              ->createBlock(Magento\Framework\View\Element\Template::class)
                               ->setInputName('qty')
                               ->setInputInitialValue($block->getProductDefaultQty() * 1)
                               ->setInputAdditionalParams('data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="'.$qtyValidators["validate-item-quantity"]["minAllowed"].'" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')

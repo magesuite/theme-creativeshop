@@ -31,7 +31,6 @@ $header-search_button-container-transition: transform 0.5s
     $root: &;
 
     width: 100%;
-    position: relative;
 
     @if ($global_header-searchbox-as-layer-breakpoint) {
         @include media($global_header-searchbox-as-layer-breakpoint) {
@@ -39,12 +38,15 @@ $header-search_button-container-transition: transform 0.5s
         }
     }
 
+    &__field {
+        position: relative;
+    }
+
     &__input {
         @include field-input();
 
         font-size: $header-search_font-size;
         position: relative;
-        margin-top: 0;
         z-index: 210;
         margin: 0;
         -webkit-appearance: none;
@@ -177,8 +179,7 @@ $header-search_button-container-transition: transform 0.5s
     }
 
     &__autocomplete {
-        width: 100% !important;
-        top: 100%;
-        left: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }

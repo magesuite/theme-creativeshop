@@ -7,15 +7,15 @@
     $buttonTitle = __('Update Cart');
 ?>
 <?php if ($product->isSaleable()): ?>
-    <div class="cs-box-addtocart | update">
-        <div class="cs-box-addtocart__fieldset">
+    <div class="cs-buybox__addtocart | update <?= $block->getAdditionalCssClasses() ?>">
+        <div class="cs-buybox__addtocart-fieldset">
             <?php if ($block->shouldRenderQuantity()): ?>
-                <div class="cs-box-addtocart__qty-wrapper">
-                    <label class="cs-label | cs-box-addtocart__label" for="qty">
-                        <?php /* @escapeNotVerified */ echo __('Qty') ?>
-                    </label>
+                <div class="cs-buybox__qty-wrapper">
+                    <?php if(!empty($block->getQtyLabel())): ?>
+                        <label class="cs-label cs-buybox__qty-label" for="qty"><?= $block->getQtyLabel() ?></label>
+                    <?php endif; ?>
 
-                    <div class="cs-box-addtocart__qty-increment">
+                    <div class="cs-buybox__qty-increment">
                         <?php $qtyValidators = $block->getQuantityValidators(); ?>
                         <?= $this->getLayout()
                               ->createBlock(\Magento\Framework\View\Element\Template::class)
@@ -29,16 +29,16 @@
                     </div>
                 </div>
             <?php endif; ?>
-            <div class="cs-box-addtocart__actions">
+            <div class="cs-buybox__addtocart-actions">
                 <button
                     type="submit"
-                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    title="<?= /* @escapeNotVerified */ $buttonTitle ?>"
                     class="action primary tocart cs-buybox__update"
                     id="product-updatecart-button"
                 >
-                    <span class="cs-buybox__update-span"><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
+                    <span class="cs-buybox__update-span"><?= /* @escapeNotVerified */ $buttonTitle ?></span>
                 </button>
-                <?php echo $block->getChildHtml('', true) ?>
+                <?= $block->getChildHtml('', true) ?>
             </div>
         </div>
     </div>

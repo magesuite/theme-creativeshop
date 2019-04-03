@@ -19,9 +19,19 @@ define(['jquery'], function($) {
             _validateElement: function(event) {
                 // Invoke original method only if autosuggest is already loaded.
                 if (this.responseList.selected) {
-                    this._super(event);
+                    return this._super(event);
                 }
                 this.searchForm.trigger('submit');
+            },
+            _resetResponseList: function(all) {
+                this._super(all);
+
+                if (!all) {
+                    this.autoComplete.css({
+                        minWidth: this.autoComplete.css('width'),
+                        width: 'auto',
+                    });
+                }
             },
         });
 
