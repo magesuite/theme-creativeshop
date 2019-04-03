@@ -55,7 +55,6 @@ import 'components/typography';
 import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
-import 'components/side-nav';
 // Content Constructor
 import 'components/brand-carousel';
 import 'components/category-links';
@@ -77,6 +76,7 @@ import 'components/toolbar';
 import 'components/tabs';
 import 'components/search-results-switcher';
 import 'components/search-results-cms';
+import 'components/side-nav';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
