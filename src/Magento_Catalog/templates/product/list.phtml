@@ -57,7 +57,6 @@
             <ol class="products list items product-items <?= $viewModeListClass ?>">
                 <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
                 <?php foreach ($productCollection as $product): ?>
-                    <?php $iterator++; ?>
                     <li class="<?= $viewModeListItemClass ?>">
                         <?= $this->getLayout()
                             ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
@@ -67,8 +66,9 @@
                             ->render($product);
                         ?>
                     </li>
+                    <?php $iterator++; ?>
                 <?php endforeach; ?>
-                
+
                 <?php if($viewMode == 'grid'): ?>
                     <?= $block->getChildHtml('hotspot.inside.list') ?>
                 <?php endif; ?>
@@ -87,7 +87,7 @@
         {
             "[data-role=tocart-form], .form.map.checkout": {
                 "catalogAddToCart": {
-                    
+
                 }
             }
         }

@@ -53,7 +53,7 @@ interface ITileGallery {
     itemSwitchEvent?: string;
 
     /**
-     * Defines initial active gallery item object... 
+     * Defines initial active gallery item object...
      * ...(thumbnail with class `{cs-tile-gallery__item--active}`) by index (0, 1, etc.)
      * @default 0
      * @type {Number}
@@ -77,14 +77,15 @@ interface ITileGallery {
 
 /**
  * TileGallery alters tile main image with selected gallery image (thumbanil).
- * Gallery by default resides in badges container. 
- * HTML structure, tags, classes, etc. can be altered by updating XML file (product_tile.xml) 
+ * Gallery by default resides in badges container.
+ * HTML structure, tags, classes, etc. can be altered by updating XML file (product_tile.xml)
  * but keep in mind that those changes has to be reflected in script as well.
  */
 export default class TileGallery {
     private _$gallery: JQuery;
+    private _$galleryItems: JQuery;
+
     private _options?: ITileGallery;
-    private _oldImagesRemovalTimeout: any;
 
     /**
      * Creates and initiates new TileGallery component with given settings.
@@ -116,15 +117,14 @@ export default class TileGallery {
             options
         );
 
-        this._oldImagesRemovalTimeout = undefined;
+        this._$galleryItems = this._$gallery.find(
+            `.${this._options.galleryItemClass}`
+        );
+
+        this._setActiveThumbnail(this._options.initialActiveItem);
         this._setGalleryActiveClass();
         this._loadThumbnails();
-        this._setItemActiveClass(this._options.initialActiveItem);
-        if (this._options.initialActiveItem > 0) {
-            this._switchImageOnInit();
-        }
         this._setGalleryEvents();
-        this._setTilesGalleryEvents();
     }
 
     /**
@@ -139,44 +139,10 @@ export default class TileGallery {
      * So that we're not loading them if it's not necessary
      */
     protected _loadThumbnails(): void {
-        this._$gallery
-            .find(`.${this._options.galleryItemClass} img`)
-            .each(function(): void {
-                $(this).attr('src', $(this).data('src'));
-                $(this).attr('srcset', $(this).data('srcset'));
-            });
-    }
-
-    /**
-     * Adds active class to selected gallery item object (thumbnail) on gallery init
-     */
-    protected _setItemActiveClass(initialActiveItem: number = 0): void {
-        const $galleryItem: JQuery = this._$gallery.find(
-            `.${this._options.galleryItemClass}`);
-
-        if (!($galleryItem.hasClass(`${this._options.activeGalleryItemClass}`))) {
-            $galleryItem
-                .eq(initialActiveItem)
-                .addClass(` ${this._options.activeGalleryItemClass}`);
-        }
-    }
-
-    /**
-     * Switches to the active gallery item (`{cs-tile-gallery__item--active}`) thumbnail
-     * on component's initialization
-     */
-    protected _switchImageOnInit(): void {
-        const $activeThumb: JQuery = this._$gallery.find(
-            `.${this._options.activeGalleryItemClass} img`
-        );
-
-        if ($activeThumb.length) {
-            const imageSrc: string = $activeThumb.data('src');
-            const imageSrcset: string = $activeThumb.attr('data-srcset')
-                ? $activeThumb.data('srcset')
-                : '';
-            this._switchImage($activeThumb, imageSrc, imageSrcset, false);
-        }
+        this._$galleryItems.find('img').each(function(): void {
+            $(this).attr('src', $(this).data('src'));
+            $(this).attr('srcset', $(this).data('srcset'));
+        });
     }
 
     /**
@@ -189,7 +155,7 @@ export default class TileGallery {
     protected _loadChosenImage(
         imgSrc: string,
         imgSrcset: string
-    ): Promise<any> {
+    ): Promise<HTMLElement> {
         return new Promise(
             (resolve: any, reject: any): any => {
                 const img = new Image();
@@ -206,151 +172,71 @@ export default class TileGallery {
 
     /**
      * Switches gallery image with and marks active thumbnail with CSS class.
-     * This method provides additional classes that can be used to animate switch
-     * @param  {JQuery}  $galleryItem: whole thumbnail as jQuery object
-     * @param  {string}  imgSrc: path to main image to be loaded
-     * @param  {string}  imgSrcSet: srcset of main image to be loaded.
-     * @param  {boolean} setThumbnailActiveClass tells if script should add class to the active thumbnail
-     * @param  {boolean} resetThumbnailsSetup tells if script should reset thumbnails setup to the initial one
-     * @return {any}: may return nothing to stop this method if given $galleryItem is not in DOM
+     * This method provides additional classes that can be used to animate switch.
      */
-    protected _switchImage(
-        $galleryItem: JQuery,
-        imgSrc: string,
-        imgSrcset: string,
-        setThumbnailActiveClass: boolean = true,
-        resetThumbnailsSetup: boolean = false
-    ): any {
-        if (!$galleryItem.length || !imgSrc.length) {
+    protected _switchImage(imgSrc: string, imgSrcset: string): any {
+        if (!imgSrc) {
             return;
         }
 
-        clearTimeout(this._oldImagesRemovalTimeout);
+        const $currentImage: JQuery = this._$gallery
+            .closest(`.${this._options.galleryAndMainImageWrapperClass}`)
+            .find(`.${this._options.mainImageClass}`)
+            .last();
 
-        const $mainImages: JQuery = $galleryItem
-            .parents(`.${this._options.galleryAndMainImageWrapperClass}`)
-            .first()
-            .find(`.${this._options.mainImageClass}`);
+        if (
+            $currentImage.attr('data-src') === imgSrc ||
+            $currentImage.attr('src') === imgSrc
+        ) {
+            return;
+        }
 
-        if ($mainImages.length && imgSrc.length) {
-            this._loadChosenImage(imgSrc, imgSrcset).then(
-                (newImage: any): void => {
-                    $mainImages.parent().append(newImage);
-                    window.requestAnimationFrame(
-                        (): void => {
-                            $(newImage).addClass(
-                                `${this._options.mainImageClass}--animate`
-                            );
-
-                            this._oldImagesRemovalTimeout = setTimeout(
-                                (): void => {
-                                    $mainImages.not(':last-child').remove();
-                                },
-                                this._options.imagesCleanupDelay
-                            );
-                        }
+        this._loadChosenImage(imgSrc, imgSrcset).then(
+            (newImage: HTMLElement): void => {
+                $currentImage.parent().append(newImage);
+                requestAnimationFrame(() => {
+                    $(newImage).addClass(
+                        `${this._options.mainImageClass}--animate`
                     );
-                }
-            );
-        }
 
-        if (setThumbnailActiveClass) {
-            $galleryItem
-                .siblings()
-                .removeClass(`${this._options.activeGalleryItemClass}`);
-
-            if (resetThumbnailsSetup) {
-                this._$gallery
-                    .find(`.${this._options.galleryItemClass}`)
-                    .removeClass(`${this._options.activeGalleryItemClass}`);
+                    setTimeout((): void => {
+                        $currentImage.remove();
+                    }, this._options.imagesCleanupDelay);
+                });
             }
+        );
+    }
 
-            const $thumb: JQuery = resetThumbnailsSetup
-                ? this._$gallery.find(
-                      `.${this._options.galleryItemClass}:eq(${this._options.initialActiveItem})`
-                  )
-                : $galleryItem;
+    protected _setActiveThumbnail(index: number): void {
+        const $thumbs: JQuery = this._$gallery.find(
+            `.${this._options.galleryItemClass}`
+        );
 
-            if ($thumb.length) {
-                $thumb.addClass(`${this._options.activeGalleryItemClass}`);
-            }
-        }
+        $thumbs
+            .removeClass(this._options.activeGalleryItemClass)
+            .eq(index)
+            .addClass(this._options.activeGalleryItemClass);
     }
 
     /**
-     * Setup all gallery events for...
-     * ...interaction with gallery items (thumbnails)
+     * Setup all gallery events for interaction with gallery items (thumbnails)
      */
     protected _setGalleryEvents(): void {
-        const _component: any = this;
+        this._$galleryItems.on(
+            this._options.itemSwitchEvent,
+            (event: JQuery.MouseEnterEvent | JQuery.ClickEvent): void => {
+                event.preventDefault();
 
-        $(`.${this._options.galleryItemClass}`)
-            .stop()
-            .on(this._options.itemSwitchEvent, function(e: JQuery.Event): void {
-                    e.preventDefault();
+                const $item = $(event.target).closest(this._$galleryItems);
+                const $itemImg = $item.find('img');
+                const imageSrc: string =
+                    $itemImg.data('data-src') || $itemImg.data('src');
+                const imageSrcset: string =
+                    $itemImg.attr('data-srcset') || $itemImg.attr('srcset');
 
-                    const $item: JQuery = $(this);
-                    const imageSrc: string = $item.find('img').data('src');
-                    const imageSrcset: string = $item
-                        .find('img')
-                        .attr('data-srcset')
-                        ? $item.find('img').data('srcset')
-                        : '';
-                    const mainImageSrc: string = $item
-                        .parents(
-                            `.${
-                                _component._options
-                                    .galleryAndMainImageWrapperClass
-                            }`
-                        )
-                        .first()
-                        .find(`.${_component._options.mainImageClass}`)
-                        .attr('src');
-
-                    if (imageSrc !== mainImageSrc) {
-                        _component._switchImage($item, imageSrc, imageSrcset);
-                    }
-            });
-    }
-
-    /**
-     * Setups additional hover event so that tiles...
-     * ... know when to initially switch image to the second from gallery and then switch back ...
-     * ... to the first one after interaction with product ends
-     */
-    protected _setTilesGalleryEvents(): void {
-        const _component: any = this;
-        
-        this._$gallery
-            .parents(`.${this._options.galleryAndMainImageWrapperClass}`)
-            .first()
-            .on({
-                mouseenter: function(): void {
-                    _component._switchImageOnInit();
-                },
-                mouseleave: function(): void {
-                    if (_component._options.resetMainImageOnTileLeave) {
-                        const $firstItemInGallery: JQuery = _component._$gallery
-                            .find(`.${_component._options.galleryItemClass}`)
-                            .first();
-                        const imageSrc: string = $firstItemInGallery
-                            .find('img')
-                            .data('src');
-                        const imageSrcset: string = $firstItemInGallery
-                            .find('img')
-                            .attr('data-srcset')
-                            ? $firstItemInGallery.find('img').data('srcset')
-                            : '';
-
-                        _component._switchImage(
-                            $firstItemInGallery,
-                            imageSrc,
-                            imageSrcset,
-                            true,
-                            true
-                        );
-                    }
-                },
-            });
+                this._setActiveThumbnail(this._$galleryItems.index($item));
+                this._switchImage(imageSrc, imageSrcset);
+            }
+        );
     }
 }
