@@ -27,6 +27,9 @@ $header-search_button-container-transition: transform 0.5s
         $transition-easing_slowdown-900,
     opacity 0.15s linear !default;
 
+$header-search_autocomplete-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.17) !default;
+$header-search_autocomplete-background: $color_background-200 !default;
+
 .#{$ns}header-search {
     $root: &;
 
@@ -40,6 +43,45 @@ $header-search_button-container-transition: transform 0.5s
 
     &__field {
         position: relative;
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.3s;
+            left: -0.5rem;
+            right: -0.5rem;
+            background: $header-search_autocomplete-background;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
+            top: -0.5rem;
+            bottom: -0.5rem;
+            border-radius: 5px 5px 0 0;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            top: 100%;
+            z-index: 209;
+        }
+
+        @if ($global_header-searchbox-as-layer-breakpoint) {
+            @include media($global_header-searchbox-as-layer-breakpoint) {
+                .active-popup & {
+                    &:before,
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
     }
 
     &__input {
@@ -179,7 +221,14 @@ $header-search_button-container-transition: transform 0.5s
     }
 
     &__autocomplete {
-        left: 50%;
-        transform: translateX(-50%);
+        @if ($global_header-searchbox-as-layer-breakpoint) {
+            @include media($global_header-searchbox-as-layer-breakpoint) {
+                margin-top: 0.5rem;
+                left: 50%;
+                transform: translateX(-50%);
+                box-shadow: $header-search_autocomplete-box-shadow;
+                border: 0;
+            }
+        }
     }
 }
