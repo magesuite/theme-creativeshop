@@ -4,54 +4,54 @@
 
 /** @var \Aheadworks\Pquestion\Block\Answer\Form $this */
 ?>
-<form id="aw-pq-answer-form-<?php echo (int)$this->getQuestionId(); ?>" class="aw-pq-form" action="<?php echo $this->escapeUrl($this->getAddAnswerUrl()); ?>" method="post">
+<form id="aw-pq-answer-form-<?= (int)$this->getQuestionId(); ?>" class="aw-pq-form" action="<?= $this->escapeUrl($this->getAddAnswerUrl()); ?>" method="post">
     <div class="aw-pq-form__field-wrapper">
         <div class="aw-pq-form__field aw-pq-form__field_position_left required | cs-form__field cs-form__field--full | cs-input">
-            <label for="answer_author_name_<?php echo (int)$this->getQuestionId(); ?>" class="aw-pq-form__label | cs-input__label">
-                <span><?php echo $this->escapeHtml(__('Name')); ?></span>
+            <label for="answer_author_name_<?= (int)$this->getQuestionId(); ?>" class="aw-pq-form__label | cs-input__label">
+                <span><?= $this->escapeHtml(__('Name')); ?></span>
             </label>
             <div class="aw-pq-form__input-box | cs-input__control">
-                <input class="aw-pq-form__input input-text required-entry | input-text | cs-input__input" type="text" id="answer_author_name_<?php echo (int)$this->getQuestionId(); ?>" name="author_name" value="<?php echo $this->escapeHtml(trim($this->getCustomerName())); ?>" title="<?php echo $this->escapeHtml(__('Name')); ?>" maxlength="255">
+                <input class="aw-pq-form__input input-text required-entry | input-text | cs-input__input" type="text" id="answer_author_name_<?= (int)$this->getQuestionId(); ?>" name="author_name" value="<?= $this->escapeHtml(trim($this->getCustomerName())); ?>" title="<?= $this->escapeHtml(__('Name')); ?>" maxlength="255">
             </div>
         </div>
         <?php if ($this->isCanShowEmailAddress()): ?>
         <div class="aw-pq-form__field aw-pq-form__field_position_right required | cs-form__field cs-form__field--full | cs-input">
-            <label for="answer_author_email_<?php echo (int)$this->getQuestionId(); ?>" class="aw-pq-form__label | cs-input__label">
-                    <span><?php echo $this->escapeHtml(__('Email Address')); ?></span>
+            <label for="answer_author_email_<?= (int)$this->getQuestionId(); ?>" class="aw-pq-form__label | cs-input__label">
+                    <span><?= $this->escapeHtml(__('Email Address')); ?></span>
                 </label>
                 <div class="aw-pq-form__input-box | cs-input__control">
-                    <input class="aw-pq-form__input input-text required-entry validate-email | input-text | cs-input__input" type="text" id="answer_author_email_<?php echo (int)$this->getQuestionId(); ?>" name="author_email" value="" title="<?php echo $this->escapeHtml(__('Email Address')); ?>" maxlength="255">
+                    <input class="aw-pq-form__input input-text required-entry validate-email | input-text | cs-input__input" type="text" id="answer_author_email_<?= (int)$this->getQuestionId(); ?>" name="author_email" value="" title="<?= $this->escapeHtml(__('Email Address')); ?>" maxlength="255">
                 </div>
             </div>
             <?php endif; ?>
             <div class="aw-pq-form__field aw-pq-form__field_position_right required | cs-form__field cs-form__field--full | cs-input">
-                <label for="answer_content_<?php echo (int)$this->getQuestionId(); ?>" class="aw-pq-form__label | cs-input__label">
-                    <span><?php echo $this->escapeHtml(__('Answer')); ?></span>
+                <label for="answer_content_<?= (int)$this->getQuestionId(); ?>" class="aw-pq-form__label | cs-input__label">
+                    <span><?= $this->escapeHtml(__('Answer')); ?></span>
                 </label>
                 <div class="aw-pq-form__input-box | cs-input__control">
-                    <textarea class="aw-pq-form__textarea input-text required-entry | cs-input__textarea cs-input__textarea--qa" name="content" id="answer_content_<?php echo (int)$this->getQuestionId(); ?>" title="<?php echo $this->escapeHtml(__('Answer Content')); ?>"></textarea>
+                    <textarea class="aw-pq-form__textarea input-text required-entry | cs-input__textarea cs-input__textarea--qa" name="content" id="answer_content_<?= (int)$this->getQuestionId(); ?>" title="<?= $this->escapeHtml(__('Answer Content')); ?>"></textarea>
                 </div>
         </div>
     </div>
     <div class="aw-pq-form__button-set">
-        <button type="submit" class="button aw-pq-form__send-answer-button" title="<?php echo $this->escapeHtml(__('Send Answer')); ?>">
-            <span class="aw-pq-form__send-answer-button-span"><?php echo $this->escapeHtml(__('Send Answer')); ?></span>
+        <button type="submit" class="button aw-pq-form__send-answer-button" title="<?= $this->escapeHtml(__('Send Answer')); ?>">
+            <span class="aw-pq-form__send-answer-button-span"><?= $this->escapeHtml(__('Send Answer')); ?></span>
             <?= $block->getChildHtml('aw_pq_ask_question_form.send-answer.button.icon'); ?>
 
             <?= $this->getChildHtml('aw_pq_ask_question_form.send-answer.button.icon'); ?>
         </button>
         <div class="aw-pq-form__note-wrapper">
             <?php foreach ($this->getAllInfoMessages() as $message):?>
-                <p class="aw-pq-form__button-note aw-pq-form__button-note_size_small"><?php echo $this->escapeHtml($message);?></p>
+                <p class="aw-pq-form__button-note aw-pq-form__button-note_size_small"><?= $this->escapeHtml($message);?></p>
             <?php endforeach;?>
         </div>
         <div class="aw-pq-form__field-clear"></div>
     </div>
-    <input type="hidden" name="question_id" value="<?php echo (int)$this->getQuestionId(); ?>" />
-    <input type="hidden" name="product_id" value="<?php echo (int)$this->getProductId(); ?>" />
+    <input type="hidden" name="question_id" value="<?= (int)$this->getQuestionId(); ?>" />
+    <input type="hidden" name="product_id" value="<?= (int)$this->getProductId(); ?>" />
     <?php if ($this->getPointsForAnswer() > 0) :?>
         <div class="aw-pq-form__points">
-            <?php echo $this->escapeHtml(__('You will be rewarded with %1 point(s) for your answer.', $this->getPointsForAnswer()));?>
+            <?= $this->escapeHtml(__('You will be rewarded with %1 point(s) for your answer.', $this->getPointsForAnswer()));?>
         </div>
     <?php endif;?>
 </form>
@@ -60,12 +60,12 @@
         var formKeyElement = new Element('input');
         formKeyElement.setAttribute('type', 'hidden');
         formKeyElement.setAttribute('name', 'form_key');
-        formKeyElement.setAttribute('value', '<?php /* @noEscape */ echo $this->getSessionFormKey(); ?>');
-        $('aw-pq-answer-form-<?php echo (int)$this->getQuestionId(); ?>').appendChild(formKeyElement);
+        formKeyElement.setAttribute('value', '<?php /* @noEscape */ $this->getSessionFormKey(); ?>');
+        $('aw-pq-answer-form-<?= (int)$this->getQuestionId(); ?>').appendChild(formKeyElement);
     });
 </script>
 <script type="text/javascript">
     require(["jquery","mage/mage"],function($){
-        $('#aw-pq-answer-form-<?php echo (int)$this->getQuestionId(); ?>').mage('validation');
+        $('#aw-pq-answer-form-<?= (int)$this->getQuestionId(); ?>').mage('validation');
     });
 </script>
