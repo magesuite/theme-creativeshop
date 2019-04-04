@@ -4,6 +4,9 @@
 @import 'components/button/mixin';
 @import 'components/field/mixin';
 
+$pq-spacing: 2.3rem !default;
+$pq-button-min-width: 20rem !default;
+
 $pq-subscription-label-font-weight: 300 !default;
 $pq-subscription-label-font-size: 1.4rem !default;
 
@@ -25,8 +28,11 @@ $pq-answer-date_color: $color_text-500 !default;
 $pq-button-align: flex-start !default;
 $pq-button-align-desktop: center !default;
 
-$pq-button_type: $button_default-type !default;
-$pq-button_icon-pos: $button_default-icon-pos !default;
+$pq-button-primary-action_type: $button_default-type !default;
+$pq-button_primary-action_icon-pos: $button_default-icon-pos !default;
+
+$pq-button-secondary-action_type: 'secondary' !default;
+$pq-button-secondary-action_icon-pos: $button_default-icon-pos !default;
 
 $pq-thumb-up_color: $color_primary-500 !default;
 $pq-thumb-down_color: $color_primary-500 !default;
@@ -45,9 +51,15 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
     $root: &;
 
     &-form {
+        margin-top: 1rem;
+
         @include media('>=laptop') {
             background: $pq-form-background-desktop;
             padding: $pq-form-padding-desktop;
+        }
+
+        #{$root}-answer-form & {
+            padding: 0;
         }
 
         &__headline {
@@ -80,6 +92,10 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
         }
 
+        &__textarea {
+            resize: vertical;
+        }
+
         &__note-wrapper {
             margin: 1rem 0 0 0;
         }
@@ -106,8 +122,8 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
         &__button-question {
             @include button(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
 
             @include media('<=phoneLg') {
@@ -117,36 +133,39 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
         &__button-question-span {
             @include button_span(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__button-question-icon {
             @include button_icon(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__send-answer-button {
             @include button(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
+
+            margin-top: 1rem;
+            min-width: $pq-button-min-width;
         }
 
         &__send-answer-button-span {
             @include button_span(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__send-answer-button-icon {
             @include button_icon(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
@@ -165,8 +184,21 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
     &-question {
         &__question {
+            display: flex;
+            flex-flow: row wrap;
+            margin: 0.5rem 0 2.5rem 0;
+            padding: $pq-spacing 0 0;
+            justify-content: $pq-button-align;
+            border-top: $pq-separator_border;
+
             @include media('>=tablet') {
+                justify-content: $pq-button-align-desktop;
+                margin: 0;
                 margin-bottom: 3rem;
+            }
+
+            @include media('<phoneLg') {
+                width: 100%;
             }
         }
 
@@ -223,6 +255,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
             &__sortby {
                 margin-bottom: 0;
+
                 @include media('>=tablet') {
                     width: auto !important;
                     min-width: 20rem;
@@ -233,7 +266,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &-form {
             &__wrapper {
                 flex: 1 1 100%;
-                margin-top: 2rem;
                 padding: 0;
 
                 @include media('>=tablet') {
@@ -256,58 +288,49 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
         &__next-question-button {
             @include button(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-secondary-action_type,
+                $icon_pos: $pq-button-secondary-action_icon-pos
             );
-        }
 
-        &__next-question-button-span {
-            @include button_span(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
-
-        &__next-question-button-icon {
-            @include button_icon(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
-
-        &__next-question-button {
-            @include button(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
-
-        &__next-question-button-span {
-            @include button_span(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
-
-        &__next-question-button-icon {
-            @include button_icon(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
-            );
-        }
-
-        &__next-question {
-            display: inline-block;
-
-            a {
-                width: auto !important;
+            @include media('<phoneLg') {
+                width: 100%;
             }
+        }
+
+        &__next-question-button-span {
+            @include button_span(
+                $type: $pq-button-secondary-action_type,
+                $icon_pos: $pq-button-secondary-action_icon-pos
+            );
+        }
+
+        &__next-question-button-icon {
+            @include button_icon(
+                $type: $pq-button-secondary-action_type,
+                $icon_pos: $pq-button-secondary-action_icon-pos
+            );
         }
 
         &__next-answer-button {
             @include button(
-                $type: $pq-button-type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-secondary-action_type,
+                $icon_pos: $pq-button-secondary-action_icon-pos
+            );
+
+
+        }
+
+        &__next-answer-button-span {
+            @include button-span(
+                $type: $pq-button-secondary-action_type,
+                $icon_pos: $pq-button-secondary-action_icon-pos
+            );
+        }
+
+        &__next-answer-button-icon {
+            @include button-icon(
+                $type: $pq-button-secondary-action_type,
+                $icon_pos: $pq-button-secondary-action_icon-pos
             );
         }
 
@@ -342,7 +365,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         }
 
         &__question {
-            margin-bottom: 2.3rem;
+            margin-bottom: $pq-spacing;
 
             &-info {
                 font-weight: 300;
@@ -380,7 +403,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 font-weight: 700;
 
                 @include media('>=tablet') {
-                    line-height: 2.3rem;
+                    line-height: $pq-spacing;
                 }
             }
 
@@ -391,7 +414,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 font-weight: 700;
 
                 @include media('>=tablet') {
-                    line-height: 2.3rem;
+                    line-height: $pq-spacing;
                 }
             }
         }
@@ -420,7 +443,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-item {
-                margin-top: 2.3rem;
+                margin-top: $pq-spacing;
             }
 
             &-content {
@@ -447,6 +470,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-action-bar {
+                margin-top: 1.5rem;
                 padding: 0;
                 display: flex;
                 flex-wrap: wrap;
@@ -471,73 +495,50 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
         }
 
-        &__next-answer,
-        &__add-answer-button,
-        &__next-question {
-            margin: 1rem 1rem 0 0;
+        &__next-answer {
+            display: block !important; // REMOVEEEEJDSAHUIHDIHY@&*!^@^#&*^@#*@&*^#&
+            margin-bottom: 1rem;
+            width: 100%;
         }
 
-        &__add-question-button-wrapper {
-            display: flex;
-            margin: 0.5rem 0 2.5rem 0;
-            justify-content: $pq-button-align;
-
-            @include media('>tablet') {
-                justify-content: $pq-button-align-desktop;
-                margin: 0;
-            }
-
-            @include media('<phoneLg') {
-                width: 100%;
-            }
+        &__next-answer-button,
+        &__add-answer-button {
+            min-width: $pq-button-min-width;
         }
 
-        &__add-question-button-wrapper {
-            display: flex;
-            justify-content: $pq-button-align;
-
-            @include media('>=laptop') {
-                margin: 0;
-                justify-content: $pq-button-align-desktop;
-            }
-
-            @include media('<phoneLg') {
+        &__next-question-button,
+        &__add-question-button {
+            @include media('<tablet') {
                 width: 100%;
             }
         }
 
         &__add-question-button {
             @include button(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
-
-            @include media('<phoneLg') {
-                width: 100%;
-            }
         }
 
         &__add-question-button-span {
             @include button_span(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__add-question-button-icon {
             @include button_icon(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__add-answer-button {
             @include button(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
-
-            margin: 0 0 1.5rem 0;
 
             @include media('>=tablet') {
                 margin: 0;
@@ -546,30 +547,26 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
         &__add-answer-button-span {
             @include button_span(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__add-answer-button-icon {
             @include button_icon(
-                $type: $pq-button_type,
-                $icon_pos: $pq-button_icon-pos
+                $type: $pq-button-primary-action_type,
+                $icon_pos: $pq-button-primary-action_icon-pos
             );
         }
 
         &__next-question {
-            margin-bottom: 0 0 1.5rem;
-            width: 100%;
-
             @include media('>=tablet') {
-                margin-bottom: 0;
+                margin-right: 1rem;
             }
-        }
 
-        &__next-answer {
-            @include media('>=tablet') {
-                margin-left: $pq-list_item-tablet-indent;
+            @include media('<tablet') {
+                width: 100%;
+                margin-bottom: 1rem;
             }
         }
 
@@ -701,6 +698,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         }
 
         &__action-bar {
+            margin-top: 1.5rem;
             border-top: $pq-separator_border;
             display: flex;
             flex-wrap: wrap;

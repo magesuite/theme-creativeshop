@@ -1,45 +1,31 @@
 @import 'config/variables';
-@import 'components/button/mixin';
+@import 'components/field/mixin';
 @import 'vendors/include-media';
 
 $reviews-border: 1px solid $color_border-500 !default;
 $reviews-spacing: 2.5rem !default;
 
 // Reviews form styling
-$reviews_form-two-columns-desktop: true !default;
-$reviews_form-background-desktop: $color_background-500 !default;
 $reviews_form-padding-desktop: 3rem !default;
+$reviews_form-two-columns-desktop: true !default;
+$reviews_form-two-columns-spacing: $reviews_form-padding-desktop !default;
+$reviews_form-background-desktop: $color_background-500 !default;
+
 $reviews_form-button-align: flex-start !default;
 $reviews_form-button-align-desktop: center !default;
 $reviews_form-headline-font-size: $font-size_headline-3 !default;
 $reviews_form-product-name-font-weight: 200 !default;
-$reviews_form-rating-control-padding: $button_padding !default;
+$reviews_form-rating-control-padding: $field_input-padding !default;
+$reviews_form-rating-control-content-height: $field_input-line-height !default;
+$reviews_form-rating-control-border: $field_input-border !default;
 $reviews_form-fedback-text-color: $color_text-400 !default;
 $reviews_form-fedback-font-size: 0.85em !default;
 
-.cs-container--page-pdp-details-reviews .cs-product-details__content {
-    display: flex;
-    flex-flow: row wrap;
-
-    .cs-reviews {
-        flex: 1 0 auto;
-
-        @include media('<laptop') {
-            border-bottom: $reviews-border;
-        }
-
-        .cs-pagination__content {
-            justify-content: center;
-            margin: $reviews-spacing 0;
-        }
-    }
-}
-
 .cs-reviews {
-    flex: 1 0 100%;
+    flex: 1 1 0;
 
-    @include media('>=laptop') {
-        flex: 1 0 auto;
+    @include media('<laptop') {
+        border-bottom: $reviews-border;
     }
 
     &__title {
@@ -75,6 +61,7 @@ $reviews_form-fedback-font-size: 0.85em !default;
     }
 
     &__form {
+        width: 100%;
         display: flex;
         flex-flow: row wrap;
         margin: $reviews-spacing 0;
@@ -100,11 +87,12 @@ $reviews_form-fedback-font-size: 0.85em !default;
         width: 100%;
         box-sizing: border-box;
         margin-bottom: 1.5em;
+        font-size: $field_font-size;
 
         @if ($reviews_form-two-columns-desktop) {
             @include media('>=laptop') {
                 width: 50%;
-                padding-right: $reviews_form-padding-desktop;
+                padding-right: $reviews_form-two-columns-spacing;
                 border-right: $reviews-border;
             }
         }
@@ -119,7 +107,7 @@ $reviews_form-fedback-font-size: 0.85em !default;
         @if ($reviews_form-two-columns-desktop) {
             @include media('>=laptop') {
                 width: 50%;
-                padding-left: $reviews_form-padding-desktop;
+                padding-left: $reviews_form-two-columns-spacing;
             }
         }
     }
@@ -141,15 +129,18 @@ $reviews_form-fedback-font-size: 0.85em !default;
     }
 
     &__rating-control {
+        box-sizing: content-box;
         border: 1px solid $color_border-500;
         border-radius: $border-radius_base;
-        padding: $button_padding;
+        padding: $reviews_form-rating-control-padding;
+        height: $reviews_form-rating-control-content-height;
         margin: 0 0 0.2em;
         display: flex;
         align-items: center;
     }
 
     &__rate-stars {
+        box-sizing: border-box;
         order: 0
     }
 
@@ -166,5 +157,11 @@ $reviews_form-fedback-font-size: 0.85em !default;
 
     &__review-field {
         min-height: 10rem;
+        resize: none;
+    }
+
+    .cs-pagination__content {
+        justify-content: center;
+        margin: $reviews-spacing 0;
     }
 }
