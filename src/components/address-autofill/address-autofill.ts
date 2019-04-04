@@ -47,7 +47,7 @@ export default class AddressAutofill {
      */
     protected _initStreetField(): void {
         let typeTimer: number;
-        const typeInterval: number = 500;
+        const typeInterval: number = 200;
         let currentValue: string = this.options.streetField.val() as string;
 
         this.options.streetField.on(
@@ -68,12 +68,17 @@ export default class AddressAutofill {
     }
 
     /**
-     * Triggers google autosuggest based on street field value.
+     * Triggers google autosuggest based on street field value and zip/city if exist.
      */
     protected _triggerAutosuggest(): void {
-        const query: string = this.options.streetField.val() as string;
+        const zip: string = (this.options.zipField.val() ? this.options.zipField.val() + ' ' : '') as string;
+        const city: string = (this.options.cityField.val() ? this.options.cityField.val() + ' ' : '') as string;
+        const street: string = this.options.streetField.val() as string;
 
-        if (!query || query.length < 4) {
+        const query: string = zip + city + street as string;
+
+        if (!query || street.length < 3) {
+            console.log('return');
             return;
         }
 
