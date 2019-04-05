@@ -61,7 +61,9 @@ export default class Offcanvas {
      * Toggles offcanvas visibility depending on its current state.
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas ends toggling.
      */
-    public toggle(): Promise<Offcanvas> {
+    public toggle(e: Event): Promise<Offcanvas> {
+        e.preventDefault();
+        
         if (
             this._$trigger.hasClass(`${this._options.triggerClassName}--active`)
         ) {
@@ -162,7 +164,7 @@ export default class Offcanvas {
      * Attaches event listeners.
      */
     protected _addEventListeners(): void {
-        this._eventListeners.triggerClick = () => this.toggle();
+        this._eventListeners.triggerClick = (e: Event) => this.toggle(e);
         this._$trigger.on('click', this._eventListeners.triggerClick);
 
         if (this._options.closeOnBlur) {
