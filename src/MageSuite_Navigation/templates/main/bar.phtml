@@ -26,11 +26,12 @@ $cacheGenerationTime = time();
             $itemLabel = $item->getLabel();
             $itemHasCustomUrl = $item->hasCustomUrl();
             $itemHasSubItems = $item->hasSubItems();
+            $hasFlyout = $itemHasSubItems || $item->hasFeaturedProducts() || $item->hasImageTeaser();
             $itemCategoryIcon = $showCategoryIconRoot ? $item->getCategoryIcon() : '';
             $itemNumberOfProducts = $showProductsAmountRoot ? $item->getNumberOfProducts() : 0;
         ?>
             <li
-                class="cs-navigation__item cs-navigation__item--level_<?= $level; ?><?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : ''; ?><?= $itemHasSubItems ? ' cs-navigation__item--with-flyout' : ''; ?>"
+                class="cs-navigation__item cs-navigation__item--level_<?= $level; ?><?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : ''; ?><?= $hasFlyout ? ' cs-navigation__item--with-flyout' : ''; ?>"
                 data-category-id="<?= $itemId; ?>"
                 data-category-identifier="<?= $itemIdentifier ?>"
             >
@@ -49,7 +50,7 @@ $cacheGenerationTime = time();
                     <?php endif; ?>
                 </a>
                 <?php
-                    if ($itemHasSubItems || $item->hasFeaturedProducts() || $item->hasImageTeaser()) {
+                    if ($hasFlyout) {
                         echo $this->getLayout()
                             ->createBlock(Magento\Framework\View\Element\Template::class)
                             ->setTemplate("MageSuite_Navigation::main/flyout.phtml")
