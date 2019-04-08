@@ -10,6 +10,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
     <div class="cs-reviews__content" id="customer-reviews">
         <ol class="cs-reviews__list">
             <?php
+
             foreach ($items as $review): ?>
 
                 <?php
@@ -24,10 +25,22 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                     }, iterator_to_array($ratingVotes));
 
                     $averagePercentageRating = array_sum($percentageRatingsList)/$ratingCategoriesCount;
-                    $starScore = round($averagePercentageRating/20);
+                    $overallScore = round($averagePercentageRating/20);
 
                 } else {
-                    $starScore = null;
+                    $overallScore = null;
+                }
+
+                if ($ratingCategoriesCount > 1) {
+                    $compoundRatings = []; 
+                    foreach ($ratingVotes as $rating) {
+                        array_push($compoundRatings, [
+                            'ratingCode' => $rating->getRatingCode(),
+                            'score' => ($rating->getPercent()/20)
+                            ]);
+                    }
+                } else {
+                    $compoundRatings = null;
                 }
                 ?>
 
@@ -38,7 +51,8 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                              ->setTitle($block->escapeHtml($review->getTitle()))
                              ->setRatingData([
                                 "maxStars" => 5,
-                                "activeStars" => $starScore
+                                "overallScore" => $overallScore,
+                                "compoundRatings" => $compoundRatings
                              ])
                              ->setAuthor($block->escapeHtml($review->getNickname()))
                              ->setDate($block->formatDate($createdAt, $format))

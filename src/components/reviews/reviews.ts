@@ -45,27 +45,32 @@ export default class Reviews {
     protected _attachEvents(): void {
         const _this: any = this;
         let msg: string = this._$feedbackEl.data('default-message');
-        const $radios: any = _this._$wrapper.find('input[type="radio"]');
-        const $icons: any = _this._$wrapper.find('label svg');
+        let $radios: any = [];
+        let $icons: any = [];
 
-        for (let i: number = 0; i < $radios.length; i++) {
-            $radios[i].addEventListener('change', function(): void {
-                if (
-                    _this._$wrapper.find('input[type="radio"]:checked').length
-                ) {
-                    $icons.each((index: number, element: JQuery) => {
-                        $(element).toggleClass("cs-star-rating__form-star--active", index <= i)
-                    });
+        
+        for (let ratingIndex: number = 0; ratingIndex < _this._$wrapper.length; ratingIndex++){
+            $radios[ratingIndex] = _this._$wrapper.eq(ratingIndex).find('input[type="radio"]');
+            $icons[ratingIndex] = _this._$wrapper.eq(ratingIndex).find('label svg');
+            for (let starIndex: number = 0; starIndex < $radios[ratingIndex].length; starIndex++) {
+                $radios[ratingIndex][starIndex].addEventListener('change', function(): void {
+                    if (
+                       $( this ).is(":checked")
+                    ) {
+                        $icons[ratingIndex].each((index: number, element: JQuery) => {
+                            $(element).toggleClass("cs-star-rating__form-star--active", index <= starIndex)
+                        });
+    
+                        msg = _this._$wrapper.eq(ratingIndex)
+                            .find('input[type="radio"]:checked')
+                            .data('feedback-message');
+                    } else {
+                        msg = _this._$wrapper.eq(ratingIndex).data('default-message');
+                    }
+                    _this._$feedbackEl.eq(ratingIndex).text(msg);
+                });
+            }
 
-                    msg = _this._$wrapper
-                        .find('input[type="radio"]:checked')
-                        .data('feedback-message');
-                } else {
-                    msg = _this._$wrapper.data('default-message');
-                }
-
-                _this._$feedbackEl.text(msg);
-            });
-        }
+        } 
     }
 }

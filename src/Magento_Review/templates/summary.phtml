@@ -8,7 +8,6 @@ $allVotes = array_sum($votes);
 ?>
 
 <?php if($allVotes > 0): ?>
-
 <div class="cs-reviews-summary">
     <div class="cs-reviews-summary__stars">
         <div class="cs-reviews-summary__note">
@@ -27,7 +26,7 @@ $allVotes = array_sum($votes);
                  ->toHtml();
         ?>
     </div>
-
+   
     <ul class="cs-reviews-summary__bars">
         <?php for ($ratingIndex = count($votes), $ratingSteps = 1; $ratingIndex >= $ratingSteps; $ratingIndex--):
             $ratingLabel = $ratingIndex;
@@ -44,6 +43,24 @@ $allVotes = array_sum($votes);
             </li>
         <?php endfor; ?>
     </ul>
+    <?php if(count($ratingData["ratings"]) > 1): ?>
+    <ul class="cs-reviews-summary__ratings-averages">
+        <?php foreach($ratingData["ratings"] as $subRating): ?>
+            <li class="cs-reviews-summary__ratings-averages-item">
+                <span class="cs-star-rating__label cs-star-rating__label"><?= $subRating['label'] ?></span>
+                <?= $this->getLayout()
+                         ->createBlock(\Magento\Framework\View\Element\Template::class)
+                         ->setMaxStars($ratingData['maxStars'])
+                         ->setActiveStars($subRating['starsAmount'])
+                         ->setHideReviewsCount(true)
+                         ->setAdditionalClasses('cs-star-rating--ratings-averages')
+                         ->setTemplate('Magento_Review::rating-stars.phtml')
+                         ->toHtml();
+                ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
+    <?php endif; ?>
     <div class="cs-reviews-summary__button-wrapper">
         <button class="cs-reviews-summary__button">
             <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */ __('Add Review') ?></span>
