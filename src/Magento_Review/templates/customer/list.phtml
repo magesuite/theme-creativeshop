@@ -38,8 +38,8 @@
                                 <?= $this->getLayout()
                                     ->createBlock(\Magento\Framework\View\Element\Template::class)
                                     ->setMaxStars(5)
-                                    ->setActiveStars($review->getSum()/20)
-                                    ->setReviewsCount($review->getSum()/20)
+                                    ->setActiveStars(round($review->getSum()/($review->getCount()*20)))
+                                    ->setReviewsCount(round($review->getSum()/($review->getCount()*20)))
                                     ->setHideReviewsCount(true)
                                     ->setTemplate('Magento_Review::rating-stars.phtml')
                                     ->toHtml();

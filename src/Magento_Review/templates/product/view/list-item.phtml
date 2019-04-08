@@ -2,26 +2,55 @@
 // @codingStandardsIgnoreFile
 $ratingData = $block->getRatingData();
 ?>
-
 <div class="cs-review">
     <div class="cs-review__title" ><?= $block->getTitle(); ?></div>
-
-    <div class="cs-review__rating">
-        <?= $this->getLayout()
-                 ->createBlock(\Magento\Framework\View\Element\Template::class)
-                 ->setMaxStars($ratingData['maxStars'])
-                 ->setActiveStars($ratingData['activeStars'])
-                 ->setHideReviewsCount(true)
-                 ->setAdditionalClasses('cs-star-rating--review')
-                 ->setTemplate('Magento_Review::rating-stars.phtml')
-                 ->toHtml();
-        ?>
-    </div>
     <div class="cs-review__meta">
         <span class="cs-review__author cs-review__meta-item"><?= $block->getAuthor(); ?></span>
         <time class="cs-review__date cs-review__meta-item" datetime="<?= $block->getDate(); ?>">
             <?= $block->getDate(); ?>
         </time>
     </div>
+    <?php if(count($ratingData['compoundRatings'])): ?>
+    <ul class="cs-review__ratings">
+        <li class="cs-review__compound-rating cs-review__overall-rating">
+            <span class="cs-star-rating__label"><?= /* @noEscape */ __('Overall rating'); ?></span>
+            <?= $this->getLayout()
+                    ->createBlock(\Magento\Framework\View\Element\Template::class)
+                    ->setMaxStars($ratingData['maxStars'])
+                    ->setActiveStars($ratingData['overallScore'])
+                    ->setHideReviewsCount(true)
+                    ->setAdditionalClasses('cs-star-rating--review')
+                    ->setTemplate('Magento_Review::rating-stars.phtml')
+                    ->toHtml();
+            ?>
+        </li>
+        <?php foreach($ratingData['compoundRatings'] as $compoundRating): ?>
+            <li class="cs-review__compound-rating">
+                <span class="cs-star-rating__label"><?= $compoundRating['ratingCode'] ?></span>
+                <?= $this->getLayout()
+                        ->createBlock(\Magento\Framework\View\Element\Template::class)
+                        ->setMaxStars($ratingData['maxStars'])
+                        ->setActiveStars($compoundRating['score'])
+                        ->setHideReviewsCount(true)
+                        ->setAdditionalClasses('cs-star-rating--review')
+                        ->setTemplate('Magento_Review::rating-stars.phtml')
+                        ->toHtml();
+                ?>
+            </li>
+        <?php endforeach ?>
+    </ul>
+    <?php else: ?>
+    <div class="cs-review__rating">
+        <?= $this->getLayout()
+                 ->createBlock(\Magento\Framework\View\Element\Template::class)
+                 ->setMaxStars($ratingData['maxStars'])
+                 ->setActiveStars($ratingData['overallScore'])
+                 ->setHideReviewsCount(true)
+                 ->setAdditionalClasses('cs-star-rating--review')
+                 ->setTemplate('Magento_Review::rating-stars.phtml')
+                 ->toHtml();
+        ?>
+    </div>
+    <?php endif; ?>
     <p class="cs-review__content"><?= $block->getContent(); ?></p>
 </div>

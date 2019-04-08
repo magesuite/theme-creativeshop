@@ -8,6 +8,7 @@ $review_content-color: $color_text-400 !default;
 $review_date-color: $color_text-400 !default;
 $review_meta-item-font-size: 0.9em !default;
 $review_meta-item-border: 1px solid $color_border-500 !default;
+$review_hide-compound-ratings: false !default;
 
 .#{$ns}review {
     font-size: $review_font-size;
@@ -18,8 +19,37 @@ $review_meta-item-border: 1px solid $color_border-500 !default;
         color: $review_title-color;
     }
 
-    &__rating {
-        margin: 0 0 0.7rem;
+    &__rating,
+    &__ratings {
+        margin: 0 0 2rem;
+        padding: 0;
+    }
+
+    &__compound-rating {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        max-width: 20rem;
+        margin-bottom: 0.3em;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    @if ($review_hide-compound-ratings) {
+        
+        &__compound-rating {
+            display: none;
+
+            & .cs-star-rating__label {
+                display: none;
+            }
+        }
+
+        &__overall-rating {
+            display: flex;
+        }
     }
 
     &__meta {

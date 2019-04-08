@@ -19,11 +19,15 @@ $reviews-summary_bar-margin-bottom: 1rem !default;
 $reviews-summary_progress-bar-min-width: 9rem !default;
 $reviews-summary_progress-bar-height: 0.9em !default;
 $reviews-summary_progress-bar-background: $color_background-500 !default;
-$reviews-summary_progress-bar-fill-background: $color_review-active !default;
+$reviews-summary_progress-bar-fill-background: $color_review-bar-active !default;
 
 $reviews-summary_note-font-size: 4rem !default;
 $reviews-summary_note-left-color: $color_text-800 !default;
 $reviews-summary_note-right-color: $color_text-500 !default;
+
+$reviews-ratings-averages_hide: false !default;
+$reviews-summary_averages_max-width: 40rem !default;
+$reviews-summary_averages_max-width-mobile: 25rem !default;
 
 .cs-reviews-summary {
     $root: &;
@@ -113,10 +117,16 @@ $reviews-summary_note-right-color: $color_text-500 !default;
         font-size: $reviews-summary_bars-font-size;
         list-style: none inside none;
         padding: 0;
-        margin: 0;
+        margin: $reviews-summary_spacing 0 0;
         flex-grow: $reviews-summary_bars-flex-grow;
         color: $reviews-summary_bars-color;
         max-width: $reviews-summary_bar-max-width;
+        width: 100%;
+
+        @include media('>=phone') {
+            margin-top: 0;
+            width: auto;
+        }
 
         @include media('>=tablet') {
             margin-top: $reviews-summary_spacing;
@@ -139,8 +149,8 @@ $reviews-summary_note-right-color: $color_text-500 !default;
         }
 
         &-count {
-            width: 2em;
-            text-align: left;
+            width: 1.5em;
+            text-align: right;
         }
 
         &-progress {
@@ -158,6 +168,38 @@ $reviews-summary_note-right-color: $color_text-500 !default;
                 top: 0;
                 height: inherit;
                 background: $reviews-summary_progress-bar-fill-background;
+            }
+        }
+    }
+
+    &__ratings-averages {
+        list-style-type: none;
+        width: 100%;
+        margin: $reviews-summary_spacing 0 0;
+        padding: $reviews-summary_spacing 0 0;
+        border-top: $reviews-summary_border;
+        @if ($reviews-ratings-averages_hide) {
+            display: none;
+        }
+        line-height: 1.43;
+
+        &-item {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 0.3em;
+
+            @include media('>=phone'){
+                max-width: $reviews-summary_averages_max-width-mobile;
+            }
+
+            @include media('>=tablet'){
+                max-width: $reviews-summary_averages_max-width;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
             }
         }
     }
