@@ -86,15 +86,19 @@ export default class Navigation {
     protected _$content: JQuery;
     protected _$overlay: JQuery;
     protected _eventListeners: {
-        resizeListener?: (event: JQuery.Event) => void;
-        itemFocusInListener?: (event: JQuery.Event) => void;
-        flyoutFocusInListener?: (event: JQuery.Event) => void;
-        focusOutListener?: (event: JQuery.Event) => void;
-        itemTouchStartListener?: (event: JQuery.Event) => void;
-        windowTouchStartListener?: (event: JQuery.Event) => void;
-        itemMouseenterListener?: (event: JQuery.Event) => void;
-        itemMouseleaveListener?: (event: JQuery.Event) => void;
-        navigationMouseleaveListener?: (event: JQuery.Event) => void;
+        resizeListener?: (event: JQuery.ResizeEvent) => void;
+        itemFocusInListener?: (event: JQuery.FocusInEvent) => void;
+        flyoutFocusInListener?: (event: JQuery.FocusInEvent) => void;
+        focusOutListener?: (event: JQuery.FocusOutEvent) => void;
+        itemTouchStartListener?: (event: JQuery.TouchStartEvent) => void;
+        windowTouchStartListener?: (event: JQuery.TouchStartEvent) => void;
+        itemMouseenterListener?: (
+            event: JQuery.MouseEnterEvent | JQuery.ClickEvent
+        ) => void;
+        itemMouseleaveListener?: (
+            event: JQuery.MouseLeaveEvent | JQuery.ClickEvent
+        ) => void;
+        navigationMouseleaveListener?: (event: JQuery.MouseLeaveEvent) => void;
     } = {};
     protected _resizeTimeout: any;
     protected _showTimeout: any;
@@ -502,7 +506,7 @@ export default class Navigation {
         };
 
         this._eventListeners.itemFocusInListener = (
-            event: JQuery.Event
+            event: JQuery.FocusInEvent
         ): void => {
             const $targetFlyout: JQuery = $(event.target as HTMLElement)
                 .parent()
@@ -511,12 +515,14 @@ export default class Navigation {
         };
         // Don't let focus events propagate from flyouts to items.
         this._eventListeners.flyoutFocusInListener = (
-            event: JQuery.Event
+            event: JQuery.FocusInEvent
         ): void => {
             event.stopPropagation();
         };
 
-        this._eventListeners.focusOutListener = (event: JQuery.Event): void => {
+        this._eventListeners.focusOutListener = (
+            event: JQuery.FocusOutEvent
+        ): void => {
             this._hideFlyout(
                 $(event.target as HTMLElement)
                     .closest(`.${this._options.itemClassName}--level_0`)
@@ -525,7 +531,7 @@ export default class Navigation {
         };
 
         this._eventListeners.itemMouseenterListener = (
-            event: JQuery.Event
+            event: JQuery.MouseEnterEvent
         ): void => {
             const $rootItem: JQuery = $(event.target as HTMLElement)
                 .closest(`.${this._options.itemClassName}--level_0`)
@@ -539,7 +545,7 @@ export default class Navigation {
         };
 
         this._eventListeners.itemTouchStartListener = (
-            event: JQuery.Event
+            event: JQuery.TouchStartEvent
         ): void => {
             const $target: JQuery = $(event.target as HTMLElement);
             const $rootItem: JQuery = $target.closest(
@@ -573,7 +579,7 @@ export default class Navigation {
         };
 
         this._eventListeners.windowTouchStartListener = (
-            event: JQuery.Event
+            event: JQuery.TouchStartEvent
         ): void => {
             const $target: JQuery = $(event.target as HTMLElement);
             const $rootItem: JQuery = $target.closest(
@@ -589,7 +595,7 @@ export default class Navigation {
         };
 
         this._eventListeners.itemMouseleaveListener = (
-            event: JQuery.Event
+            event: JQuery.MouseLeaveEvent
         ): void => {
             clearTimeout(this._showTimeout);
             this._hideFlyout(
@@ -600,7 +606,7 @@ export default class Navigation {
         };
 
         this._eventListeners.navigationMouseleaveListener = (
-            event: JQuery.Event
+            event: JQuery.MouseLeaveEvent
         ): void => {
             this._hideOverlay();
         };
