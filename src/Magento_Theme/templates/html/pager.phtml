@@ -167,7 +167,16 @@
 
     <?php if ($block->isShowPerPage()): ?>
         <div class="cs-toolbar__item cs-toolbar__item--limiter">
-            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')); ?>
+        <strong class="limiter-label"><?= /* @escapeNotVerified */ __('Show') ?></strong>
+            <select id="limiter" data-mage-init='{"redirectUrl": {"event":"change"}}' class="limiter-options">
+                <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
+                    <option value="<?= /* @escapeNotVerified */ $block->getLimitUrl($_key) ?>"<?php if ($block->isLimitCurrent($_key)): ?>
+                        selected="selected"<?php endif ?>>
+                        <?= /* @escapeNotVerified */ $_limit ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <span class="limiter-text"><?= /* @escapeNotVerified */ __('per page') ?></span>
         </div>
     <?php endif ?>
 <?php endif ?>
