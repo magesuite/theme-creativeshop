@@ -5,7 +5,7 @@
 @import 'components/field/mixin';
 
 $pq-spacing: 2.3rem !default;
-$pq-button-min-width: 20rem !default;
+$pq-button-min-width: 18rem !default;
 
 $pq-subscription-label-font-weight: 300 !default;
 $pq-subscription-label-font-size: 1.4rem !default;
@@ -272,6 +272,10 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                     margin-top: 0;
                 }
             }
+
+            &__textarea {
+                resize: vertical;
+            }
         }
     }
 
@@ -476,7 +480,10 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 flex-wrap: wrap;
 
                 @include media('>=tablet') {
-                    padding-left: $pq-list_item-tablet-indent;
+                    margin-left: $pq-list_item-tablet-indent;
+                    margin-top: 3rem;
+                    padding: 3rem 0 0;
+                    border-top: $pq-separator_border;
                 }
             }
 
@@ -496,9 +503,11 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         }
 
         &__next-answer {
-            display: block !important; // REMOVEEEEJDSAHUIHDIHY@&*!^@^#&*^@#*@&*^#&
-            margin-bottom: 1rem;
             width: 100%;
+
+            @include media('>=tablet') {
+                width: auto;
+            }
         }
 
         &__next-answer-button,
@@ -540,8 +549,10 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 $icon_pos: $pq-button-primary-action_icon-pos
             );
 
+            margin: 0 0 1rem;
+
             @include media('>=tablet') {
-                margin: 0;
+                margin: 0 1rem 0 0;
             }
         }
 
@@ -672,7 +683,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
                 @include media('>=tablet') {
                     flex-direction: column;
-                    margin-top: 0.5rem;
+                    margin-top: 1rem;
                     margin-right: 0;
                 }
 
