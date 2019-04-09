@@ -114,15 +114,9 @@
                             <?php endif; ?>
                         <?php endif; ?>
                         <div class="aw-pq-list__answer-action-bar">
-                            <div class="aw-pq-list__next-answer" style="display:none">
-                                <button class="aw-pq-list__next-answer-button">
-                                    <span class="aw-pq-list__next-answer-button-span"><?= $this->escapeHtml(__('Next Answer')); ?></span>
-                                    <?= $block->getChildHtml('aw_pq_question_list.next-answer.button.icon'); ?>
-                                </button>
-                            </div>
                             <?php if ($this->canAnswerQuestion() || true) : ?>
-                                <button type="button" class="aw_pq__add-answer-button aw-pq-list__add-answer-button" title="<?= $this->escapeHtml(__('Add Answer')); ?>">
-                                    <span class="aw_pq__add-answer-button-span aw-pq-list__add-answer-button-span">
+                                <button type="button" class="aw-pq-list__add-answer-button" title="<?= $this->escapeHtml(__('Add Answer')); ?>">
+                                    <span class="aw-pq-list__add-answer-button-span">
                                         <?= $this->escapeHtml(__('Add Answer')); ?>
                                     </span>
                                     <?= $block->getChildHtml('aw_pq_question_list.add-answer.button.icon'); ?>
@@ -130,6 +124,12 @@
                             <?php else : ?>
                                 <?= /* @noEscape */ $this->getAnswerMessage(); ?>
                             <?php endif; ?>
+                            <div class="aw-pq-list__next-answer" style="display:none">
+                                <button class="aw-pq-list__next-answer-button">
+                                    <span class="aw-pq-list__next-answer-button-span"><?= $this->escapeHtml(__('Next Answers')); ?></span>
+                                    <?= $block->getChildHtml('aw_pq_question_list.next-answer.button.icon'); ?>
+                                </button>
+                            </div>
                             <div class="aw-pq-question-form__wrapper aw-pq-answer-form" style="display: none;">
                                 <?= /* @noEscape */ $this->getChildBlock('aw_pq_add_answer_form')->setQuestionId($question->getId())->toHtml(); ?>
                             </div>
@@ -164,13 +164,13 @@
                     'questionPageSize': <?= /* @noEscape */ $this->getQuestionPageSize();?>,
                     'answerItemHiddenClass': 'aw-pq-list__answer-item_hidden',
                     'answerListContainerSelector': '.aw-pq-list__answer-list',
-                    'addAnswerButtonSelector': '.aw_pq__add-answer-button',
-                    'addAnswerButtonTextContainerSelector': 'span span',
+                    'addAnswerButtonSelector': '.aw-pq-list__add-answer-button',
+                    'addAnswerButtonTextContainerSelector': '.aw-pq-list__add-answer-button-span',
                     'addAnswerButtonText': {
                         'inactive': <?= /* @noEscape */ \Zend_Json::encode(__('Add Answer'));?>,
                         'active': <?= /* @noEscape */ \Zend_Json::encode(__('Hide Answer Form'));?>
                     },
-                    'nextAnswersSelector': '.aw-pq-list__next-answer',
+                    'nextAnswersSelector': '.aw-pq-list__next-answer-button',
                     'answerFormSelector': '.aw-pq-answer-form',
                     'answerPageSize': <?= /* @noEscape */ $this->getAnswerPageSize();?>
                 };
