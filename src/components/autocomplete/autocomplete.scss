@@ -30,7 +30,7 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
     box-sizing: border-box;
     background-color: $autocomplete_list-background;
     border: $autocomplete_list-border;
-    border-radius: 0 0 $autocomplete_list-border-radius $autocomplete_list-border-radius;
+    border-radius: $autocomplete_list-border-radius;
     box-shadow: $autocomplete_list-box-shadow;
     z-index: 200;
     margin-top: -1px;
@@ -118,6 +118,10 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
     &__badge {
         @include badge();
 
+        & + & {
+            margin-top: 0.5em;
+        }
+
         &--popular {
             @include badge_type('popular');
 
@@ -137,6 +141,8 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
 
     &__badge-text {
         @include badge_span();
+
+        white-space: nowrap;
     }
 }
 
@@ -179,14 +185,14 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
     letter-spacing: 1px;
     margin: 0;
 
+    &:hover,
+    &.selected {
+        background-color: transparent;
+    }
+
     &:not(:empty) {
         &:first-child {
             border-top: transparent;
         }
-    }
-
-    &:hover,
-    &.selected {
-        background-color: transparent;
     }
 }

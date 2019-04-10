@@ -30,10 +30,14 @@ define(['jquery'], function($) {
                     this.autoComplete.css({
                         minWidth:
                             parseInt(this.autoComplete.css('width'), 10) + 30,
-                        width: 'auto',
+                        width: '',
                     });
                 }
-                this.searchForm.toggleClass('active-popup', !all);
+
+                this.searchForm.toggleClass(
+                    'active-popup',
+                    Boolean(!all && this.responseList.indexList.length)
+                );
             },
         });
 

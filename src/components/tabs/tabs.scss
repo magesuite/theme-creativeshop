@@ -17,26 +17,24 @@ $tabs_content-padding: 2rem !default;
 $tabs_height: 5.5rem !default;
 $tabs_height-mobile: 4rem !default;
 
+$tabs--bar_margin: 0 0 0 -#{$page_edge-gutter} !default;
+$tabs--bar_padding: 0 $page_edge-gutter 0 #{$page_edge-gutter * 2} !default;
 $tabs--bar_tab-title-color: $color_text-800 !default;
 $tabs--bar_tab-title-font-weight: 300 !default;
 $tabs--bar_tab-title-font-size: 1.2rem !default;
-
 
 .#{$ns}tabs {
     $root: &;
     box-shadow: $tabs_box-shadow;
 
     &--bar {
-        margin: 0 -1.5rem;
-        padding: 0 1.5rem;
+        margin: $tabs--bar_margin;
+        padding: $tabs--bar_padding;
         border-bottom: $tabs_border;
-        box-shadow: $tabs_inset-box-shadow;
+        box-shadow: none;
 
         @include media('>=tablet') {
-            margin: 0 -3rem;
-            padding: 0 3rem;
-            box-sizing: border-box;
-            width: calc(100% + 3rem);
+            width: 100%;
         }
     }
 
@@ -44,6 +42,10 @@ $tabs--bar_tab-title-font-size: 1.2rem !default;
         display: flex;
         overflow: hidden;
         justify-content: space-between;
+
+        #{$root}--bar & {
+            justify-content: flex-start;
+        }
     }
 
     &__title {
@@ -86,8 +88,8 @@ $tabs--bar_tab-title-font-size: 1.2rem !default;
                     }
                 }
 
-                &:visited, 
-                &:hover, 
+                &:visited,
+                &:hover,
                 &:active {
                     color: $tabs_tab-active-title-color;
 
@@ -164,7 +166,6 @@ $tabs--bar_tab-title-font-size: 1.2rem !default;
             font-size: $tabs--bar_tab-title-font-size;
             padding: 0.6rem 0.5rem;
             font-weight: $tabs--bar_tab-title-font-weight;
-            box-shadow: $tabs_inset-box-shadow;
             white-space: nowrap;
 
             @include media('>=phoneLg') {
