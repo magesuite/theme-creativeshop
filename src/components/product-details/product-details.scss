@@ -3,9 +3,16 @@
 @import 'components/pseudoicon/mixin';
 @import 'utils/visually-hidden';
 
-$product-description_item-background: transparent !important !default;
-$product-description_item-background--odd: $color_background-500
+$product-description_item-background-mobile: $color_background-200 !default;
+$product-description_item-background-desktop: linear-gradient(
+    to bottom,
+    #f8f8f8 0%,
+    #ffffff 50%
+) !default;
+$product-description_item-main-background: $color_background-500
     url('../images/background.png') !default;
+
+$product-description_item-separator-border: 1px solid $color_border-500 !default;
 
 $product-description_headline-title-font-size: $font-size_headline-2 !default;
 $product-description_headline-title-counter-visible: true !default;
@@ -14,14 +21,39 @@ $product-description_headline-title-counter-visible: true !default;
     $root: &;
 
     &__item {
-        &:nth-child(2n - 1) {
-            background: $product-description_item-background--odd;
+        background: $product-description_item-background-mobile;
+
+        @include media('>=tablet') {
+            background: $product-description_item-background-desktop;
+        }
+
+        &:not(:first-child) {
+            @include media('<tablet') {
+                border-top: $product-description_item-separator-border;
+            }
+        }
+
+        &:last-child {
+            @include media('<tablet') {
+                border-bottom: $product-description_item-separator-border;
+            }
+        }
+
+        &--main {
+            background: $product-description_item-main-background;
+        }
+
+        &--reviews {
+            #{$root}__content {
+                display: flex;
+                flex-flow: row wrap;
+            }
         }
 
         &--related,
         &--upsell,
         &--content-constructor {
-            background: $product-description_item-background;
+            background: transparent;
         }
 
         &--content-constructor {
