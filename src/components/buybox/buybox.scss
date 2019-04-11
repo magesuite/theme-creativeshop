@@ -82,7 +82,11 @@ $buybox_downloadable-hide-duplicated-price-box: true !default;
 
 // Update button
 $buybox_update-button-type: $button_default-type !default;
-$buybox_update-button-icon-pos: $button_default-icon-pos 'no-icon';
+$buybox_update-button-icon-pos: $button_default-icon-pos !default;
+
+// Customize button
+$buybox_customize-button-type: $button_default-type !default;
+$buybox_customize-button-icon-pos: 'no-icon' !default;
 
 .#{$ns}buybox {
     height: 100%;
@@ -470,11 +474,17 @@ $buybox_update-button-icon-pos: $button_default-icon-pos 'no-icon';
     }
 
     .customize {
-        @include button();
+        @include button(
+            $type: $buybox_customize-button-type,
+            $icon_pos: $buybox_customize-button-icon-pos
+        );
         margin-bottom: 2 * $buybox_section-elements-gutter;
 
         span {
-            @include button_span();
+            @include button_span(
+                $type: $buybox_customize-button-type,
+                $icon_pos: $buybox_customize-button-icon-pos
+            );
         }
     }
 }
