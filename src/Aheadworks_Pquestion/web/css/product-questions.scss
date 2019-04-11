@@ -58,10 +58,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             padding: $pq-form-padding-desktop;
         }
 
-        #{$root}-answer-form & {
-            padding: 0;
-        }
-
         &__headline {
             margin: 0 0 1.4em;
             font-size: $pq-form_headline-font-size;
@@ -241,7 +237,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &__sortby-label {
-                width:100%;
+                width: 100%;
                 font-size: 1.1rem;
                 margin-bottom: 0.2rem;
                 text-transform: uppercase;
@@ -320,8 +316,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 $type: $pq-button-secondary-action_type,
                 $icon_pos: $pq-button-secondary-action_icon-pos
             );
-
-
         }
 
         &__next-answer-button-span {
@@ -423,6 +417,121 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
         }
 
+        &__helpfulness {
+            padding-top: 0.5rem;
+
+            &-layout {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-right: 2rem;
+
+                @include media('>=tablet') {
+                    flex-direction: column;
+                    margin-top: 1rem;
+                    margin-right: 0;
+                }
+
+                .aw-pq-list__answer & {
+                    @include media('<tablet') {
+                        flex-direction: row;
+                        align-items: flex-start;
+                        margin-right: 0;
+                    }
+                }
+
+                &-unit_position_center {
+                    text-align: center;
+                    height: 2.5rem;
+                    line-height: 2.5rem;
+                    padding: 0 1rem;
+
+                    @include media('>=tablet') {
+                        margin-bottom: 0.5rem;
+                    }
+                }
+            }
+
+            &--answer {
+                @include media('<tablet') {
+                    padding-left: 0;
+                    margin-top: 0.5rem;
+                }
+
+                .aw-pq-list__helpfulness-layout {
+                    flex-direction: row;
+                    border-radius: 3px;
+                    padding: 0.3rem 0.5rem 0;
+                    background: $pq-helpfullnes_background-color;
+                    display: inline-flex;
+                }
+
+                .aw-pq-list__helpfulness-layout-unit {
+                    &:nth-child(1) {
+                        transform: scale(0.65) translateY(-0.2rem);
+                    }
+
+                    &:nth-child(3) {
+                        transform: scale(0.65) translateY(0.1rem);
+                    }
+                }
+            }
+
+            &-wrapper {
+                padding-bottom: 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding-right: 1rem;
+
+                @include media('>=tablet') {
+                    padding-right: 0;
+                    flex: 0 0 10rem;
+                    align-items: center;
+                }
+
+                @include media('>=laptop') {
+                    flex: 0 0 14rem;
+                }
+            }
+
+            &-thumb {
+                width: $pq-thumb_size;
+                height: $pq-thumb_size;
+
+                #thumb-up-svg-icon__fill,
+                #thumb-down-svg-icon__fill {
+                    transition: fill 0.25s linear;
+                }
+
+                &--up {
+                    #thumb-up-svg-icon__shape {
+                        fill: $pq-thumb-up_color;
+                    }
+
+                    &:hover,
+                    #{$root}-list__helpfulness-icon_like_voted & {
+                        #thumb-up-svg-icon__fill {
+                            fill: $pq-thumb-up_color;
+                        }
+                    }
+                }
+
+                &--down {
+                    #thumb-down-svg-icon__shape {
+                        fill: $pq-thumb-down_color;
+                    }
+
+                    &:hover,
+                    #{$root}-list__helpfulness-icon_dislike_voted & {
+                        #thumb-down-svg-icon__fill {
+                            fill: $pq-thumb-up_color;
+                        }
+                    }
+                }
+            }
+        }
+
         &__answer {
             &-label {
                 .aw-pq-list__helpfulness {
@@ -491,14 +600,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 .ie11 & {
                     flex-basis: 100%;
                 }
-            }
-        }
-
-        &__helpfulness-wrapper {
-            padding-right: 1rem;
-
-            @include media('>=tablet') {
-                padding-right: 0;
             }
         }
 
@@ -593,119 +694,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
         &__no-questions {
             margin: 1rem 0;
-        }
-
-        &__helpfulness {
-            padding-top: 0.5rem;
-
-            &--answer {
-                @include media('<tablet') {
-                    padding-left: 0;
-                    margin-top: 0.5rem;
-                }
-
-                .aw-pq-list__helpfulness-layout {
-                    flex-direction: row;
-                    border-radius: 3px;
-                    padding: 0.3rem 0.5rem 0;
-                    background: $pq-helpfullnes_background-color;
-                    display: inline-flex;
-                }
-
-                .aw-pq-list__helpfulness-layout-unit {
-                    &:nth-child(1) {
-                        transform: scale(0.65) translateY(-0.2rem);
-                    }
-
-                    &:nth-child(3) {
-                        transform: scale(0.65) translateY(0.1rem);
-                    }
-                }
-            }
-
-            &-wrapper {
-                padding-bottom: 2rem;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-
-                @include media('>=tablet') {
-                    flex: 0 0 10rem;
-                    align-items: center;
-                }
-
-                @include media('>=laptop') {
-                    flex: 0 0 14rem;
-                }
-            }
-
-            &-thumb {
-                width: $pq-thumb_size;
-                height: $pq-thumb_size;
-
-                #thumb-up-svg-icon__fill,
-                #thumb-down-svg-icon__fill {
-                    transition: fill 0.25s linear;
-                }
-
-                &--up {
-                    #thumb-up-svg-icon__shape {
-                        fill: $pq-thumb-up_color;
-                    }
-
-                    &:hover,
-                    #{$root}-list__helpfulness-icon_like_voted & {
-                        #thumb-up-svg-icon__fill {
-                            fill: $pq-thumb-up_color;
-                        }
-                    }
-                }
-
-                &--down {
-                    #thumb-down-svg-icon__shape {
-                        fill: $pq-thumb-down_color;
-                    }
-
-                    &:hover,
-                    #{$root}-list__helpfulness-icon_dislike_voted & {
-                        #thumb-down-svg-icon__fill {
-                            fill: $pq-thumb-up_color;
-                        }
-                    }
-                }
-            }
-
-            &-layout {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                margin-right: 2rem;
-
-                @include media('>=tablet') {
-                    flex-direction: column;
-                    margin-top: 1rem;
-                    margin-right: 0;
-                }
-
-                .aw-pq-list__answer & {
-                    @include media('<tablet') {
-                        flex-direction: row;
-                        align-items: flex-start;
-                        margin-right: 0;
-                    }
-                }
-
-                &-unit_position_center {
-                    text-align: center;
-                    height: 2.5rem;
-                    line-height: 2.5rem;
-                    padding: 0 1rem;
-
-                    @include media('>=tablet') {
-                        margin-bottom: 0.5rem;
-                    }
-                }
-            }
         }
 
         &__action-bar {
