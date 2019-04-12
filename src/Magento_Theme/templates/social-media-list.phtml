@@ -4,22 +4,22 @@ $collection = $block->getItems();
 if (!empty($collection)): ?>
     <ul class="cs-social-media-list">
         <?php foreach ($collection as $item):
-            if (!empty($item['url'])): ?>
-                <li class="cs-social-media-list__item <?= $item['additional_css_classes'] ?>">
+            if (!empty($item) && isset($item['url']) && !empty($item['url'])): ?>
+                <li class="cs-social-media-list__item <?= isset($item['additional_css_classes']) ? $item['additional_css_classes'] : '' ?>">
                     <a href="<?= $item['url'] ?>" class="cs-social-media-list__link">
-                        <?php if(!empty($item['icon'])): ?>
+                        <?php if(isset($item['icon']) && !empty($item['icon'])): ?>
                             <?= $this->getLayout()
                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
                                    ->setIconUrl($item['icon'])
                                    ->setCssClass('cs-social-media-list__icon')
-                                   ->setAltText($item['icon_alt_text'])
+                                   ->setAltText(isset($item['icon_alt_text']) ? $item['icon_alt_text'] : '')
                                    ->setInlined(true)
                                    ->setLazyLoaded(true)
                                    ->toHtml();
                             ?>
                         <?php endif ?>
 
-                        <?php if(!empty($item['label'])): ?>
+                        <?php if(isset($item['label']) && !empty($item['label'])): ?>
                             <span class="cs-social-media-list__label<?= $item['hide_label'] ? ' cs-visually-hidden' : '' ?>"><?= $item['label'] ?></span>
                         <?php endif; ?>
                     </a>
