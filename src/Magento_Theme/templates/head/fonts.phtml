@@ -4,19 +4,22 @@ $webFonts = $block->getWebFonts();
 $localFonts = $block->getLocalFonts();
 
 if (!empty($webFonts)):
-    /** 
+    /**
      * Loop through all web fonts defined in XML
      */
     foreach ($webFonts as $url):
         if (!empty($url)): ?>
-            <link rel="preload" href="<?= $url ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+            <link rel="preload" href="<?= $url ?>" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
             <noscript><link rel="stylesheet" href="<?= $url ?>"></noscript>
-        <?php endif;
-    endforeach; 
+            <?php if (strpos($url, 'fonts.googleapis') !== false): ?>
+                <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+            <?php endif;
+        endif;
+    endforeach;
 endif;
 
 if (!empty($localFonts)):
-    /** 
+    /**
      * Loop through all local fonts defined in XML
      */
     foreach ($localFonts as $url):
@@ -25,7 +28,7 @@ if (!empty($localFonts)):
             <link rel="preload" href="<?= $localFontUrl ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
             <noscript><link rel="stylesheet" href="<?= $localFontUrl ?>"></noscript>
         <?php endif;
-    endforeach; 
+    endforeach;
 endif;
 
 if (!empty($webFonts) || !empty($localFonts)): ?>
