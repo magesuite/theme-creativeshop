@@ -54,7 +54,7 @@ import './customizations/reviews/reviews';
 import './customizations/item-cloner/item-cloner';
 import './customizations/grid-layout/grid-layout';
 import './customizations/product-finder/product-finder';
-import './customizations/indicators/fast-shipping-init';
+import './customizations/indicators/fast-shipping';
 import './customizations/dailydeal/dailydeal';
 import './customizations/daily-deal-teaser/daily-deal-teaser';
 import './customizations/plugincompany-contactforms/plugincompany-contactforms';
