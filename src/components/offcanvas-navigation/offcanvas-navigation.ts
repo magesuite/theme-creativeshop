@@ -62,7 +62,7 @@ export default class OffcanvasNavigation {
                 showProductsCount: false,
                 localStorageKey: 'mgs-offcanvas-navigation',
                 cacheTTL: 60 * 60,
-                endpointPath: '/navigation/mobile/index',
+                endpointPath: 'navigation/mobile/index',
                 currencySwitcherSelector: '.switcher-currency',
                 languageSwitcherSelector: '.switcher-language',
                 authorizationLinkSelector: '.authorization-link',
@@ -84,8 +84,11 @@ export default class OffcanvasNavigation {
     protected _initWhenIdle(): void {
         this._idleDeferred = idleDeferred();
         this._idleDeferred
-            .then(() => requireAsync(['mage/url']))
-            .then(([mageUrl]) => mageUrl.build(this._options.endpointPath))
+            .then(() =>
+                requireAsync(['mage/url']).then(([mageUrl]) =>
+                    mageUrl.build(this._options.endpointPath)
+                )
+            )
             .then(url => this._getHtml(url))
             .then(html => this._initHtml(html));
     }
@@ -204,13 +207,14 @@ export default class OffcanvasNavigation {
     }
 
     protected _loadCache(): OffcanvasNavigationCache {
-        let cache = {};
+        const cache = {};
         try {
             $.extend(
                 cache,
                 JSON.parse(localStorage.getItem(this._options.localStorageKey))
             );
         } catch (error) {
+            // tslint:disable-next-line
             console.error(error);
             // Cache may be corrupted from previous implementation.
             localStorage.removeItem(this._options.localStorageKey);
@@ -232,6 +236,7 @@ export default class OffcanvasNavigation {
                 JSON.stringify(cache)
             );
         } catch (error) {
+            // tslint:disable-next-line
             console.error(error);
         }
     }
