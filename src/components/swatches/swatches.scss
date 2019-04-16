@@ -10,6 +10,11 @@ $swatches_label-gutter: 1.5rem !default;
 $swatches_label-font-size: 1.1em !default;
 // Keep in sync width quantity wrapper in buybox end.
 
+// Scenario with swatches below label, which is 100% wide
+// Width thos variable set tp true $swatches_label-width
+// and $swatches_label-width-laptop-up will be overriden - always 100% width
+$swatches_full-width-label: false !default;
+
 $swatches_disable-show-more: true !default;
 $swatches_swatch-gutter: 0.4em !default;
 $swatches_swatch-height: 2.8em !default;
@@ -82,10 +87,18 @@ $swatches--filters_font-size: 0.8em !default;
         width: 100%;
         margin-left: calc(#{$swatches_label-width} + #{$swatches_label-gutter});
 
+        @if ($swatches_full-width-label == true) {
+            margin-left: 0;
+        }
+
         @include media('>=laptop') {
             margin-left: calc(
                 #{$swatches_label-width-laptop-up} + #{$swatches_label-gutter}
             );
+
+            @if ($swatches_full-width-label == true) {
+                margin-left: 0;
+            }
         }
     }
 }
@@ -117,8 +130,16 @@ $swatches--filters_font-size: 0.8em !default;
     width: $swatches_label-width;
     margin-right: $swatches_label-gutter;
 
+    @if ($swatches_full-width-label == true) {
+        width: 100%;
+    }
+
     @include media('>=laptop') {
         width: $swatches_label-width-laptop-up;
+
+        @if ($swatches_full-width-label == true) {
+            width: 100%;
+        }
     }
 
     &:after {
@@ -149,10 +170,18 @@ $swatches--filters_font-size: 0.8em !default;
             100% - #{$swatches_label-gutter} - #{$swatches_label-width}
         );
 
+        @if ($swatches_full-width-label == true) {
+            max-width: 100%;
+        }
+
         @include media('>=laptop') {
             max-width: calc(
                 100% - #{$swatches_label-gutter} - #{$swatches_label-width-laptop-up}
             );
+
+            @if ($swatches_full-width-label == true) {
+                max-width: 100%;
+            }
         }
     }
 }
