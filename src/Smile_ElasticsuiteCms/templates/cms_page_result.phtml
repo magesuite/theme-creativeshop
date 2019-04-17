@@ -1,9 +1,15 @@
-<ul class="cs-searchresults-switcher__list">
+<ul class="cs-search-results__cms cs-search-results-cms">
     <?php foreach ($block->getPageCollection() as $currentPage) : ?>
-        <li class="cs-searchresults-switcher__list-item">
-            <a class="cs-searchresults-switcher__list-item-link" href="<?php echo $block->getPageUrl($currentPage->getId())?>">
-                <svg class="cs-searchresults-switcher__list-item-icon"><use xlink:href="#article"></use></svg>
-                <?php echo $currentPage->getTitle(); ?>
+        <li class="cs-search-results-cms__item">
+            <a class="cs-search-results-cms__link" href="<?= $block->getPageUrl($currentPage->getId())?>">
+                <?= $this->getLayout()
+                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                    ->setIconUrl('images/icon/cms/article.svg')
+                    ->setCssClass('cs-search-results-cms__icon')
+                    ->setInlined(true)
+                    ->toHtml();
+                ?>
+                <span class="cs-search-results-cms__title"><?= $currentPage->getTitle(); ?></span>
             </a>
         </li>
     <?php endforeach; ?>

@@ -7,14 +7,14 @@ interface ISearchresultsSwitcher {
     /**
      * Component's class
      * @type {string}
-     * @default 'cs-searchresults-switcher'
+     * @default 'cs-search-results-switcher'
      */
     componentClass?: string;
 
     /**
      * Class of single trigger (tab link)
      * @type {string}
-     * @default 'cs-searchresults-switcher__trigger'
+     * @default 'cs-search-results-switcher__trigger'
      */
     triggersClass?: string;
 
@@ -28,7 +28,7 @@ interface ISearchresultsSwitcher {
     /**
      * Class of the single tab's content
      * @type {string}
-     * @default 'cs-searchresults-switcher__content'
+     * @default 'cs-search-results-switcher__content'
      */
     contentsClass?: string;
 
@@ -85,10 +85,10 @@ export default class SearchresultsSwitcher {
     public constructor(options?: ISearchresultsSwitcher) {
         this._options = $.extend(
             {
-                componentClass: 'cs-searchresults-switcher',
-                triggersClass: 'cs-searchresults-switcher__trigger',
+                componentClass: 'cs-search-results-switcher',
+                triggersClass: 'cs-search-results-switcher__trigger',
                 activeTriggerClass: 'cs-tabs__title--active',
-                contentsClass: 'cs-searchresults-switcher__content',
+                contentsClass: 'cs-search-results-switcher__content',
                 showAllAnchor: '#all',
                 cmsResultsSelector: '#tab-content-cmspages',
                 productsResultsSelector: '#tab-content-products',
@@ -267,9 +267,7 @@ export default class SearchresultsSwitcher {
         let productsCount: number = 0;
 
         if ($cmsResults.length) {
-            const rawCmsCount: string = $cmsResults.find(
-                'h2 span'
-            ).length
+            const rawCmsCount: string = $cmsResults.find('h2 span').length
                 ? $cmsResults.find('h2 span').text()
                 : '';
             if (rawCmsCount.length) {
@@ -278,9 +276,8 @@ export default class SearchresultsSwitcher {
         }
 
         if ($productsResults.length) {
-            const rawProductsCount: string = $productsResults.find(
-                'h2 span'
-            ).length
+            const rawProductsCount: string = $productsResults.find('h2 span')
+                .length
                 ? $productsResults.find('h2 span').text()
                 : '';
             if (rawProductsCount.length) {
