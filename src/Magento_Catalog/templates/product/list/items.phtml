@@ -179,23 +179,23 @@ switch ($type = $block->getType()) {
     <?php endif; ?>
 
     <?php
-    $skus = [];
+    $productIds = [];
 
     foreach ($items as $item) {
-        $skus[] = $item->getSku();
+        $productIds[] = $item->getEntityId();
     }
-
 
     echo $this->getLayout()->createBlock(
         \MageSuite\ContentConstructorFrontend\Block\Component::class, '', [
             'data' => [
                 'type' => 'product-carousel',
                 'data' => [
-                    'skus' => implode(',', $skus)
+                    'product_ids' => $productIds
                 ]
             ]
         ]
     )->toHtml();
+
     ?>
     </div>
 <?php endif;?>
