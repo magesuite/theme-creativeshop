@@ -23,6 +23,7 @@ var config = {
         'js/checkout': ['js/commons'],
         'js/customer': ['js/commons'],
         'js/styleguide': ['js/commons'],
+        'js/contact': ['js/commons'],
     },
     config: {
         mixins: {
