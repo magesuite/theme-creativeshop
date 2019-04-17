@@ -1,16 +1,23 @@
 <?php if ($block->canShowBlock()): ?>
-    <div class="cs-tabs__content cs-searchresults-switcher__content" id="tab-content-cmspages" data-role="content">
-        <h2><?php echo __('Pages results')?> <span><?php echo $block->getResultCount(); ?></span></h2>
-
-        <ul class="cs-searchresults-switcher__list">
-            <?php foreach ($block->getPageCollection() as $currentPage) : ?>
-                <li class="cs-searchresults-switcher__list-item">
-                    <a class="cs-searchresults-switcher__list-item-link" href="<?php echo $block->getPageUrl($currentPage->getId())?>">
-                        <svg class="cs-searchresults-switcher__list-item-icon"><use xlink:href="#article"></use></svg>
-                        <?php echo $currentPage->getTitle(); ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
+    <div class="cs-tabs__content cs-search-results-switcher__content" id="tab-content-cmspages" data-role="content">
+        <h2 class="cs-search-results-switcher__headline">
+            <?= __('Pages results')?> <span class="cs-search-results-switcher__count"><?= $block->getResultCount(); ?></span>
+        </h2>
+        <ul class="cs-search-results-cms">
+        <?php foreach ($block->getPageCollection() as $currentPage) : ?>
+            <li class="cs-search-results-cms__item">
+                <a class="cs-search-results-cms__link" href="<?= $block->getPageUrl($currentPage->getId())?>">
+                    <?= $this->getLayout()
+                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                        ->setIconUrl('images/icons/cms/article.svg')
+                        ->setCssClass('cs-search-results-cms__icon')
+                        ->setInlined(true)
+                        ->toHtml();
+                    ?>
+                    <span class="cs-search-results-cms__title"><?= $currentPage->getTitle(); ?></span>
+                </a>
+            </li>
+        <?php endforeach; ?>
         </ul>
     </div>
 <?php endif; ?>

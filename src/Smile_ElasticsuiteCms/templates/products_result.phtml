@@ -2,33 +2,35 @@
 // @codingStandardsIgnoreFile
 ?>
 <?php if ($block->getResultCount()): ?>
-    <div class="cs-tabs__content cs-searchresults-switcher__content" id="tab-content-products" data-role="content">
-        <h2><?php echo __('Products results')?> <span><?php echo $block->getResultCount(); ?></span></h2>
-        <?php echo $block->getChildHtml('tagged_product_list_rss_link'); ?>
+    <div class="cs-tabs__content cs-search-results-switcher__content" id="tab-content-products" data-role="content">
+        <h2 class="cs-search-results-switcher__headline">
+            <?= __('Products results')?> <span class="cs-search-results-switcher__count"><?= $block->getResultCount(); ?></span>
+        </h2>
+        <?= $block->getChildHtml('tagged_product_list_rss_link'); ?>
         <?php if ($messages = $block->getNoteMessages()):?>
             <div class="cs-messages__message cs-messages__message--notice">
                 <?php foreach ($messages as $message):?>
                     <div class="cs-messages__text">
-                        <?php /* @escapeNotVerified */ echo $message?><br />
+                        <?= /* @escapeNotVerified */ $message?><br />
                     </div>
                 <?php endforeach;?>
             </div>
         <?php endif; ?>
-        <?php echo $block->getProductListHtml() ?>
+        <?= $block->getProductListHtml() ?>
     </div>
 <?php else: ?>
-    <div class="cs-messages cs-searchresults-switcher__messages">
+    <div class="cs-messages cs-search-results-switcher__messages">
         <div class="cs-messages__message cs-messages__message--notice">
             <?php
             $getNoResultText = $block->getNoResultText();
-            /* @escapeNotVerified */ echo($getNoResultText) ? $getNoResultText : __('Your search returned no results.')
+            /* @escapeNotVerified */ echo ($getNoResultText) ? $getNoResultText : __('Your search returned no results.')
             ?>
             <?php if ($messages = $block->getNoteMessages()):?>
                 <?php foreach ($messages as $message):?>
-                    <br /><?php /* @escapeNotVerified */ echo $message?>
+                    <br /><?= /* @escapeNotVerified */ $message?>
                 <?php endforeach;?>
             <?php endif; ?>
         </div>
     </div>
-    <?php echo $block->getAdditionalHtml() ?>
+    <?= $block->getAdditionalHtml() ?>
 <?php endif; ?>

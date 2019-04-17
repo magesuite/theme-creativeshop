@@ -16,7 +16,7 @@ import 'bundle.scss';
 // Base components
 import 'components/authorization-link';
 import 'components/addtocart';
-import 'components/autocomplete'; //consider moving to ElasticSuite?
+import 'components/autocomplete'; // Consider moving to ElasticSuite?
 import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
@@ -74,10 +74,11 @@ import 'pages/category';
 import 'components/aftersearch-nav';
 import 'components/toolbar';
 import 'components/tabs';
+import 'components/search-results-switcher';
+import 'components/search-results-cms';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
-import 'customizations/searchresults-switcher/searchresults-switcher';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';

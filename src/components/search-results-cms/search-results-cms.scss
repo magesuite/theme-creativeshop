@@ -1,0 +1,38 @@
+@import 'config/variables';
+@import 'utils/reset-list-style';
+
+$search-results-cms_item-gutter: $page_edge-gutter !default;
+$search-results-cms_item-font-size: 1.5rem !default;
+$search-results-cms_icon-fill: $color_text-400 !default;
+$search-results-cms_title-color: $color_primary-500 !default;
+$search-results-cms_title-gutter: $page_edge-gutter !default;
+
+.cs-search-results-cms {
+    $root: &;
+    @include reset-list-style();
+
+    &__item {
+        margin-bottom: 0 !important;
+
+        & + & {
+            margin-top: $search-results-cms_item-gutter;
+        }
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        font-size: $search-results-cms_item-font-size;
+    }
+
+    &__icon {
+        fill: $search-results-cms_icon-fill;
+        width: 2em;
+        height: 2em;
+    }
+
+    &__title {
+        color: $search-results-cms_title-color;
+        margin-left: $search-results-cms_title-gutter;
+    }
+}

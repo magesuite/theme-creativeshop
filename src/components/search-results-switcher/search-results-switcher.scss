@@ -1,0 +1,57 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/typography/mixin';
+
+$search-results-switcher_headline-level: $font-size_headline-3 !default;
+$search-results-switcher_count-color: $color-text-300 !default;
+$search-results-switcher_content--active-border: 1px solid $color_alto !default;
+
+.cs-search-results-switcher {
+    $root: &;
+
+    display: none;
+
+    &__triggers {
+        overflow: visible !important;
+    }
+
+    &__content {
+        padding: 2rem 0 !important;
+
+        &:not(&--active) {
+            display: none;
+        }
+
+        @include media('>=desktop') {
+            padding: 3rem 0 !important;
+        }
+
+        &--active + &--active {
+            border-top: $search-results-switcher_content--active-border;
+        }
+    }
+
+    &__messages:not(&__messages--visible) {
+        display: none;
+    }
+
+    &__headline {
+        @include headline($level: $search-results-switcher_headline-level);
+    }
+
+    &__count,
+    &__overall-count {
+        &:not(:empty) {
+            font-weight: 300;
+            color: $search-results-switcher_count-color;
+
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
+        }
+    }
+}
