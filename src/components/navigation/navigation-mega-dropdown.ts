@@ -28,13 +28,17 @@ export default class NavigationMegaDropdown extends Navigation {
      */
     protected _adjustFlyout($flyout: JQuery): void {
         const $parentItem: JQuery = $flyout.closest(
-            `.${this._options.itemClassName}--level_0`
+            `.${this._options.itemClassName}--main, .${
+                this._options.itemClassName
+            }--all-categories`
         );
 
         if ($parentItem.is(this._$allCategoriesItem)) {
             this._adjustFlyoutExtras($flyout);
             const $flyoutColumns: JQuery = $flyout.find(
-                `.${this._options.flyoutColumnsClassName}`
+                `.${
+                    this._options.flyoutColumnsClassName
+                }, .cs-navigation__list--all-categories`
             );
             this._setColumnCount($flyoutColumns, 1);
 
@@ -141,6 +145,39 @@ export default class NavigationMegaDropdown extends Navigation {
         this._activeParentId = 0;
     }
 
+    protected _highlightActiveCategory() {
+        super._highlightActiveCategory();
+
+        const $activeCategoryIndicator: JQuery = $('#active-category-id');
+        if (!$activeCategoryIndicator.length) {
+            return;
+        }
+
+        const activeCategoryId: number = $activeCategoryIndicator.data(
+            'active-category-id'
+        );
+        if (activeCategoryId) {
+            const $activeCategoryEl: JQuery = this._$container.find(
+                `[data-category-id="${activeCategoryId}"]`
+            );
+
+            if ($activeCategoryEl.length) {
+                const parentCategoryId = $activeCategoryEl
+                    .closest('.cs-navigation__list--level_1')
+                    .data('parent-item-id');
+                const $parentCategory = this._$container.find(
+                    `[data-category-id="${parentCategoryId}"]`
+                );
+                $parentCategory
+                    .addClass(this._options.activeCategoryClassName)
+                    .data(
+                        'active-class',
+                        this._options.activeCategoryClassName
+                    );
+            }
+        }
+    }
+
     protected _attachEvents(): void {
         super._attachEvents();
 
@@ -148,13 +185,13 @@ export default class NavigationMegaDropdown extends Navigation {
             '.cs-navigation__list--all-categories'
         );
         const $allCategoriesItems: JQuery = $allCategoriesList.find(
-            `.${this._options.itemClassName}--level_1`
+            `.${this._options.itemClassName}--all-categories`
         );
 
-        let previousXPositions: number[] = [];
+        const previousXPositions: number[] = [];
         let submenuShowTimeout;
 
-        $allCategoriesList.on('mousemove', (event: JQuery.Event) => {
+        $allCategoriesList.on('mousemove', (event: JQuery.MouseMoveEvent) => {
             previousXPositions.push(event.pageX);
 
             if (previousXPositions.length > 3) {
@@ -192,19 +229,22 @@ export default class NavigationMegaDropdown extends Navigation {
             }
         });
 
-        $allCategoriesItems.on('touchstart', (event: JQuery.Event) => {
-            const targetParentId = $(event.target)
-                .closest($allCategoriesItems)
-                .data('category-id');
-            const $categoryChildren = this._$allCategoriesFlyout.find(
-                `[data-parent-item-id="${targetParentId}"]`
-            );
+        $allCategoriesItems.on(
+            'touchstart',
+            (event: JQuery.TouchStartEvent) => {
+                const targetParentId = $(event.target)
+                    .closest($allCategoriesItems)
+                    .data('category-id');
+                const $categoryChildren = this._$allCategoriesFlyout.find(
+                    `[data-parent-item-id="${targetParentId}"]`
+                );
 
-            if ($categoryChildren.length) {
-                event.preventDefault();
-                this._hideCategoryChildren(this._activeParentId);
-                this._showCategoryChildren(targetParentId);
+                if ($categoryChildren.length) {
+                    event.preventDefault();
+                    this._hideCategoryChildren(this._activeParentId);
+                    this._showCategoryChildren(targetParentId);
+                }
             }
-        });
+        );
     }
 }

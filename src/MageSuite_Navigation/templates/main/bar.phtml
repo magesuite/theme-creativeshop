@@ -17,7 +17,7 @@ $cacheGenerationTime = time();
 
 ?>
 <nav class="cs-navigation" data-cache-key="<?= $cacheKey; ?>" data-cache-generation-time="<?= $cacheGenerationTime; ?>">
-    <ul class="cs-navigation__list cs-navigation__list--level_<?= $level; ?>">
+    <ul class="cs-navigation__list cs-navigation__list--main">
         <?php foreach($block->getItems() as $item):
             $itemId = $item->getId();
             $itemIdentifier = $item->getIdentifier();
@@ -31,13 +31,13 @@ $cacheGenerationTime = time();
             $itemNumberOfProducts = $showProductsAmountRoot ? $item->getNumberOfProducts() : 0;
         ?>
             <li
-                class="cs-navigation__item cs-navigation__item--level_<?= $level; ?><?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : ''; ?><?= $hasFlyout ? ' cs-navigation__item--with-flyout' : ''; ?>"
+                class="cs-navigation__item cs-navigation__item--main<?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : ''; ?><?= $hasFlyout ? ' cs-navigation__item--with-flyout' : ''; ?>"
                 data-category-id="<?= $itemId; ?>"
                 data-category-identifier="<?= $itemIdentifier ?>"
             >
                 <a
                     href="<?= $itemUrl; ?>"
-                    class="cs-navigation__link cs-navigation__link--level_<?= $level; ?><?= $itemCategoryIcon ? ' cs-navigation__link--with-icon' : ''; ?>"
+                    class="cs-navigation__link cs-navigation__link--main<?= $itemCategoryIcon ? ' cs-navigation__link--with-icon' : ''; ?>"
                 >
                     <?php if ($itemCategoryIcon): ?>
                         <span class="cs-navigation__link-icon-wrapper cs-navigation__link-icon-wrapper--root">
