@@ -104,7 +104,7 @@ export default class Navigation {
     protected _showTimeout: any;
 
     protected _options: NavigationOptions = {
-        containerClassName: 'cs-navigation__list--level_0',
+        containerClassName: 'cs-navigation__list--main',
         itemClassName: 'cs-navigation__item',
         flyoutClassName: 'cs-navigation__flyout',
         flyoutColumnsClassName: 'cs-navigation__list--level_1',
@@ -165,9 +165,7 @@ export default class Navigation {
             return;
         }
 
-        const $rootItems: JQuery = $(
-            `.${this._options.itemClassName}--level_0`
-        );
+        const $rootItems: JQuery = $(`.${this._options.itemClassName}--main`);
         $rootItems.each((index: number, element: HTMLElement) => {
             if (element.matches(':hover')) {
                 $(element).trigger('mouseenter');
@@ -226,14 +224,13 @@ export default class Navigation {
         this._adjustFlyoutColumns($flyout);
 
         let alignTo: string = this._options.flyoutAlignTo;
-        const itemsLength: number = $(
-            `.${this._options.itemClassName}--level_0`
-        ).length;
+        const itemsLength: number = $(`.${this._options.itemClassName}--main`)
+            .length;
         const alignSwitch = this._options.flyoutAlignSwitch;
         const switchAt =
             alignSwitch > 0 ? alignSwitch : alignSwitch + itemsLength;
         const flyoutIndex = $flyout
-            .closest(`.${this._options.itemClassName}--level_0`)
+            .closest(`.${this._options.itemClassName}--main`)
             .index();
         if (
             flyoutIndex === switchAt &&
@@ -446,7 +443,7 @@ export default class Navigation {
         this._hideFlyout($activeFlyout);
 
         $flyout
-            .parent(`.${this._options.itemClassName}--level_0`)
+            .parent(`.${this._options.itemClassName}--main`)
             .addClass(`${this._options.itemClassName}--active`);
         $flyout.addClass(`${this._options.flyoutClassName}--visible`);
         this._adjustFlyout($flyout);
@@ -477,7 +474,7 @@ export default class Navigation {
      */
     protected _hideFlyout($flyout: JQuery): void {
         $flyout
-            .parent(`.${this._options.itemClassName}--level_0`)
+            .parent(`.${this._options.itemClassName}--main`)
             .removeClass(`${this._options.itemClassName}--active`);
         $flyout.removeClass(`${this._options.flyoutClassName}--visible`);
     }
@@ -525,7 +522,7 @@ export default class Navigation {
         ): void => {
             this._hideFlyout(
                 $(event.target as HTMLElement)
-                    .closest(`.${this._options.itemClassName}--level_0`)
+                    .closest(`.${this._options.itemClassName}--main`)
                     .find(this._$flyouts)
             );
         };
@@ -534,7 +531,7 @@ export default class Navigation {
             event: JQuery.MouseEnterEvent
         ): void => {
             const $rootItem: JQuery = $(event.target as HTMLElement)
-                .closest(`.${this._options.itemClassName}--level_0`)
+                .closest(`.${this._options.itemClassName}--main`)
                 .find(this._$flyouts);
 
             this._showFlyoutDelay($rootItem);
@@ -549,7 +546,7 @@ export default class Navigation {
         ): void => {
             const $target: JQuery = $(event.target as HTMLElement);
             const $rootItem: JQuery = $target.closest(
-                `.${this._options.itemClassName}--level_0`
+                `.${this._options.itemClassName}--main`
             );
             const $targetFlyout: JQuery = $rootItem.find(this._$flyouts);
             // Checks if item has no flyout or that touch was triggered inside it.
@@ -583,7 +580,7 @@ export default class Navigation {
         ): void => {
             const $target: JQuery = $(event.target as HTMLElement);
             const $rootItem: JQuery = $target.closest(
-                `.${this._options.itemClassName}--level_0`
+                `.${this._options.itemClassName}--main`
             );
             // Checks if clicked outside of the navigation.
             if (!$rootItem.length) {
@@ -600,7 +597,7 @@ export default class Navigation {
             clearTimeout(this._showTimeout);
             this._hideFlyout(
                 $(event.target as HTMLElement)
-                    .closest(`.${this._options.itemClassName}--level_0`)
+                    .closest(`.${this._options.itemClassName}--main`)
                     .find(this._$flyouts)
             );
         };
@@ -620,9 +617,7 @@ export default class Navigation {
             this._eventListeners.windowTouchStartListener
         );
 
-        const $rootItems: JQuery = $(
-            `.${this._options.itemClassName}--level_0`
-        );
+        const $rootItems: JQuery = $(`.${this._options.itemClassName}--main`);
         $rootItems.on('focusin', this._eventListeners.itemFocusInListener);
         $rootItems.on(
             'touchstart',
@@ -663,9 +658,7 @@ export default class Navigation {
             this._eventListeners.windowTouchStartListener
         );
 
-        const $rootItems: JQuery = $(
-            `.${this._options.itemClassName}--level_0`
-        );
+        const $rootItems: JQuery = $(`.${this._options.itemClassName}--main`);
         $rootItems.off(
             'mouseenter',
             this._eventListeners.itemMouseenterListener
