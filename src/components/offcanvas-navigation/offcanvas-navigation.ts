@@ -129,43 +129,28 @@ export default class OffcanvasNavigation {
         const $offcanvasLanguageSwitcher: JQuery = this._$drawer.find(
             this._options.languageSwitcherSelector
         );
-        const $mainLanguageSwitcher: JQuery = $('body')
-            .find(this._options.languageSwitcherSelector)
-            .not($offcanvasLanguageSwitcher);
-        this._fixSwitcherLinks(
-            $mainLanguageSwitcher,
-            $offcanvasLanguageSwitcher
-        );
+        this._fixSwitcherLinks($offcanvasLanguageSwitcher);
 
         const $offcanvasCurrencySwitcher: JQuery = this._$drawer.find(
             this._options.currencySwitcherSelector
         );
-        const $mainCurrencySwitcher: JQuery = $('body')
-            .find(this._options.currencySwitcherSelector)
-            .not($offcanvasCurrencySwitcher);
-        this._fixSwitcherLinks(
-            $mainCurrencySwitcher,
-            $offcanvasCurrencySwitcher
-        );
+
+        this._fixSwitcherLinks($offcanvasCurrencySwitcher);
 
         requireAsync(['mage/apply/main']).then(([mage]) => mage.apply());
     }
 
     /**
-     * Fixes links in given switchers caused by they being generated under async URL.
-     * @param $mainSwitcher Reference to switcher outside of offcanvas.
+     * Fixes links in given switchers caused by them being generated under async URL.
      * @param $offcanvasSwitcher Reference to switcher inside offcanvas.
      */
-    protected _fixSwitcherLinks(
-        $mainSwitcher: JQuery,
-        $offcanvasSwitcher: JQuery
-    ) {
-        const $mainSwitcherLinks = $mainSwitcher.find('a');
-        const $offcanvasSwitcherLinks = $offcanvasSwitcher.find('a');
-        $mainSwitcherLinks.each((index: number, element: HTMLElement) => {
-            $offcanvasSwitcherLinks
-                .eq(index)
-                .data('post', $(element).data('post'));
+    protected _fixSwitcherLinks($offcanvasSwitcher: JQuery) {
+        const uenc = btoa(window.location.href);
+        $offcanvasSwitcher.find('a').each((index, element) => {
+            const $switcherLink = $(element);
+            const postData = $switcherLink.data('post');
+            postData.data.uenc = uenc;
+            $switcherLink.attr('data-post', JSON.stringify(postData));
         });
     }
 
@@ -173,13 +158,18 @@ export default class OffcanvasNavigation {
      * Fixes login link URL caused by using AJAX endpoint and invalid referer.
      */
     protected _fixLoginLinks() {
-        const $mainLoginLink = $(this._options.authorizationLinkSelector).find(
-            'a'
-        );
         const $offcanvasLoginLink = this._$drawer.find(
             '.cs-offcanvas-navigation__link--sign-in'
         );
-        $offcanvasLoginLink.attr('href', $mainLoginLink.attr('href'));
+        $offcanvasLoginLink.attr(
+            'href',
+            $offcanvasLoginLink
+                .attr('href')
+                .replace(
+                    /referer\/[^\/]+\//,
+                    `referer/${btoa(window.location.href)}/`
+                )
+        );
     }
 
     /**
