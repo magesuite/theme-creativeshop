@@ -62,7 +62,7 @@ export default class OffcanvasNavigation {
                 showProductsCount: false,
                 localStorageKey: 'mgs-offcanvas-navigation',
                 cacheTTL: 60 * 60,
-                endpointPath: 'navigation/mobile/index',
+                endpointPath: '/navigation/mobile/index',
                 currencySwitcherSelector: '.switcher-currency',
                 languageSwitcherSelector: '.switcher-language',
                 authorizationLinkSelector: '.authorization-link',
