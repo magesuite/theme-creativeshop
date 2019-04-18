@@ -76,6 +76,7 @@ import 'components/toolbar';
 import 'components/tabs';
 import 'components/search-results-switcher';
 import 'components/search-results-cms';
+import 'components/side-nav';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
