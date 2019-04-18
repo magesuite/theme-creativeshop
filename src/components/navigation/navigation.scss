@@ -14,6 +14,7 @@ $navigation_link-color: $color_text-600 !default;
 $navigation_link-color-hover: $color_primary-500 !default;
 // Bottom border configuration for flyout category links.
 $navigation_link-border: 1px solid $color_border-500 !default;
+$navigation_lists-mark-parent-on-hover: true !default;
 
 .#{$ns}navigation {
     $root: &;
@@ -26,14 +27,21 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         padding: 0;
         margin: 0;
 
-        &--level {
-            &_0 {
-                position: relative;
-                display: flex;
-                flex-wrap: nowrap;
-                justify-content: space-between;
-            }
+        &--main {
+            position: relative;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
 
+        &--all-categories {
+            width: 100%;
+            columns: auto 1;
+            column-gap: 0;
+            flex: 1 0 auto;
+        }
+
+        &--level {
             &_1 {
                 width: 100%;
                 columns: auto 1;
@@ -56,32 +64,56 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         margin: 0;
         width: 100%;
 
-        &:hover,
-        &.active,
-        &--active {
-            > #{$root}__link {
-                color: $navigation_link-color-hover !important;
+        @if ($navigation_lists-mark-parent-on-hover) {
+            &--active,
+            &.active,
+            &:hover {
+                &:not([data-category-identifier='all-categories']) {
+                    > #{$root}__link {
+                        color: $navigation_link-color-hover;
+                    }
+                }
+            }
+        } @else {
+            &--main {
+                &:hover,
+                &.active,
+                &#{$root}__item--active {
+                    &:not([data-category-identifier='all-categories']) {
+                        > #{$root}__link {
+                            color: $navigation_link-color-hover;
+                        }
+                    }
+                }
             }
         }
 
-        &--level {
-            &_0 {
-                width: auto;
-                font-size: 1.4em;
+        &--main {
+            width: auto;
+            font-size: 1.4em;
 
-                &:first-of-type {
-                    > #{$root}__link {
-                        padding-left: 0;
-                    }
-                }
-
-                &:last-of-type {
-                    > #{$root}__link {
-                        padding-right: 0;
-                    }
+            &:first-of-type {
+                > #{$root}__link {
+                    padding-left: 0;
                 }
             }
 
+            &:last-of-type {
+                > #{$root}__link {
+                    padding-right: 0;
+                }
+            }
+        }
+
+        &--all-categories {
+            padding: 1rem;
+            // Prevents element breaking because of column layout.
+            page-break-inside: avoid; /* Theoretically FF 20+ */
+            break-inside: avoid-column; /* IE 11 */
+            display: table;
+        }
+
+        &--level {
             &_1 {
                 padding: 1rem;
                 // Prevents element breaking because of column layout.
@@ -112,11 +144,18 @@ $navigation_link-border: 1px solid $color_border-500 !default;
             color: $navigation_link-color-hover;
         }
 
-        &--level {
-            &_0 {
-                font-weight: 700;
-            }
+        &--main {
+            font-weight: 700;
+        }
 
+        &--all-categories {
+            font-weight: 700;
+            margin: 0;
+            border-bottom: $navigation_link-border;
+            padding-bottom: 1.55em;
+        }
+
+        &--level {
             &_1 {
                 font-weight: 700;
                 margin: 0;
@@ -133,6 +172,36 @@ $navigation_link-border: 1px solid $color_border-500 !default;
         &--with-icon {
             position: relative;
             padding-left: 2.8rem;
+        }
+
+        &-icon-wrapper {
+            position: absolute;
+            width: 2rem;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        &-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            max-height: 1.8rem;
+
+            #{$root}__link--category & {
+                margin-top: -0.5rem;
+            }
+        }
+
+        &-products-qty {
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
         }
     }
 
@@ -171,38 +240,6 @@ $navigation_link-border: 1px solid $color_border-500 !default;
 
         &--hidden {
             display: none;
-        }
-    }
-
-    &__link {
-        &-icon-wrapper {
-            position: absolute;
-            width: 2rem;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-        }
-
-        &-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate3d(-50%, -50%, 0);
-            max-height: 1.8rem;
-
-            #{$root}__link--category & {
-                margin-top: -0.5rem;
-            }
-        }
-
-        &-products-qty {
-            &:before {
-                content: '(';
-            }
-
-            &:after {
-                content: ')';
-            }
         }
     }
 

@@ -4,16 +4,24 @@
 
 $item = $block->getItem();
 $itemId = $item->getId();
-$isAllCategories = $item->getIdentifier() === 'all-categories';
+$additionalCssClasses = $block->getAdditionalCssClasses() ?? '';
 $level = $block->getLevel();
+$isAllCategories = $item->getIdentifier() === 'all-categories';
+if ($isAllCategories) {
+    $additionalCssClasses .= ' cs-navigation__flyout--all-categories';
+}
 
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
 
 $thirdLevelLimit = $block->getThirdLevelLimit();
+$itemHasTeaser = $item->hasImageTeaser();
+if ($itemHasTeaser) {
+    $additionalCssClasses .= ' cs-navigation__flyout--with-teaser';
+}
 ?>
 <div
-    class="cs-navigation__flyout <?= $block->getAdditionalCssClasses() ?>"
+    class="cs-navigation__flyout <?= $additionalCssClasses ?>"
     data-category-identifier="<?= $item->getCategoryIdentifier() ?>"
     data-parent-item-id="<?= $itemId; ?>"
 >
