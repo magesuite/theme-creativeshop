@@ -14,6 +14,9 @@ $product-description_item-main-background: $color_background-500
 
 $product-description_item-separator-border: 1px solid $color_border-500 !default;
 
+$product-description--mobile_headline-font-size: 0.6rem !default;
+$product-description_headline-font-size: 1rem !default;
+$product-description--mobile_headline-title-font-size: $font-size_headline-3 !default;
 $product-description_headline-title-font-size: $font-size_headline-2 !default;
 $product-description_headline-title-counter-visible: true !default;
 
@@ -30,12 +33,6 @@ $product-description_headline-title-counter-visible: true !default;
         &:not(:first-child) {
             @include media('<tablet') {
                 border-top: $product-description_item-separator-border;
-            }
-        }
-
-        &:last-child {
-            @include media('<tablet') {
-                border-bottom: $product-description_item-separator-border;
             }
         }
 
@@ -66,7 +63,12 @@ $product-description_headline-title-counter-visible: true !default;
     &__headline {
         @include headline();
 
+        font-size: $product-description--mobile_headline-font-size;
         position: relative;
+
+        @include media('>=tablet') {
+            font-size: $product-description_headline-font-size;
+        }
 
         // This attribute is added when element is collapsible.
         &[tabindex] {
@@ -76,12 +78,14 @@ $product-description_headline-title-counter-visible: true !default;
 
     &__headline-title {
         @include headline-title(
-            $font-size: $product-description_headline-title-font-size
+            $font-size: $product-description--mobile_headline-title-font-size
         );
-
         text-align: left;
 
         @include media('>=tablet') {
+            @include headline-title(
+                $font-size: $product-description_headline-title-font-size
+            );
             text-align: center;
         }
 

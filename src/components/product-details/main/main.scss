@@ -6,15 +6,19 @@
 $product-details-main_item-gutter: 2em !default;
 $product-details-main_column-breakpoint: '>=tablet' !default;
 $product-details-main_left-column-flex: 0 0 65% !default;
-$product-details-main_right-column-flex: 0 0 calc(35% - #{$product-details-main_item-gutter}) !default;
+$product-details-main_right-column-flex: 0 0
+    calc(35% - #{$product-details-main_item-gutter}) !default;
+
+$product-details-main--mobile_headline-level: $font-size_headline-4 !default;
+$product-details-main_headline-level: $font-size_headline-3 !default;
 
 .cs-product-details-main {
     $root: &;
-    
+
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-bottom: ($product-details-main_item-gutter * 2);
+    padding-bottom: $product-details-main_item-gutter;
 
     &--column {
         flex-direction: column;
@@ -41,14 +45,18 @@ $product-details-main_right-column-flex: 0 0 calc(35% - #{$product-details-main_
 
     &__headline {
         position: relative;
-        
+
         &[tabindex] {
             @include pseudoicon();
         }
     }
 
     &__headline-title {
-        @include headline($level: $font-size_headline-3);
+        @include headline($level: $product-details-main--mobile_headline-level);
+
+        @include media('>=tablet') {
+            @include headline($level: $product-details-main_headline-level);
+        }
     }
 
     &__item {
