@@ -57,7 +57,7 @@ $badge--items-left-color: $color_text-200 !default;
     font-weight: $badge_font-weight;
     min-height: $badge_height;
     text-transform: $badge_text-transform;
-    
+
     &:before {
         content: '';
         width: 1rem;
@@ -97,12 +97,12 @@ $badge--items-left-color: $color_text-200 !default;
         background-color: $badge--free-shipping-background;
         color: $badge--free-shipping-color;
     }
-    
+
     @if ($type == 'popular') {
         background-color: $badge--popular-background;
         color: $badge--popular-color;
     }
-    
+
     @if ($type == 'discount') {
         background-color: $badge--discount-background;
         color: $badge--discount-color;
@@ -128,6 +128,10 @@ $badge--items-left-color: $color_text-200 !default;
 
 @mixin badge_span($type: 'default') {
     transform: $badge_span-transform;
+
+    & + & {
+        margin-left: 0.5rem;
+    }
 
     @include badge_span-hook($type);
 }

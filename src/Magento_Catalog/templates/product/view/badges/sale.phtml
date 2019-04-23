@@ -1,11 +1,14 @@
 <?php
     /** @var \Magento\Catalog\Block\Product\View\Description $block */
-    $isOnSale = $this->helper('MageSuite\Frontend\Helper\Product')->isOnSale($block->getProduct());
+    $helper = $this->helper('MageSuite\Frontend\Helper\Product');
+    $isOnSale = $helper->isOnSale($block->getProduct());
+    $badgeValue = $helper->getSalePercentage($block->getProduct());
 ?>
 
 <?php if($isOnSale): ?>
     <?php 
         $label = $block->getLabel();
+        $value = $block->getValueDisplay();
 
         $wrapperTag = $block->getWrapperTag() ?? 'li';
 
@@ -17,10 +20,18 @@
 
         $badgeTextClass = $block->getTextCssClass();
         $badgeTextClass = $badgeTextClass ? sprintf('class="%s"', $badgeTextClass) : '';
+
+        $valuePrefix = $block->getValuePrefix();
+        $valueSuffix = $block->getValueSuffix();
     ?>
     <<?= $wrapperTag ?> <?= $wrapperClass ?>>
         <span <?= $cssClass ?>>
+        <?php if ($label): ?>
             <span <?= $badgeTextClass ?>><?= $label ?></span>
+        <?php endif; ?>
+        <?php if ($value): ?>
+            <span <?= $badgeTextClass ?>><?= $valuePrefix ?><?= $badgeValue ?><?= $valueSuffix ?></span>
+        <?php endif; ?>
         </span>
     </<?= $wrapperTag ?>>
 <?php endif; ?>
