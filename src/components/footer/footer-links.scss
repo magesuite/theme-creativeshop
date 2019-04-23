@@ -8,7 +8,8 @@ $footer-links_link-font-size: inherit !default;
 $footer-links_link-color: $color_background-200 !default;
 $footer-links_link-hover-color: $footer-links_link-color !default;
 $footer-links_link-hover-decoration: underline !default;
-$footer-links_link-padding: 0.5em 0 !default;
+$footer-links_link-padding-mobile: 0.5em 0 !default;
+$footer-links_link-padding-desktop: 0.35em 0 !default;
 
 .#{$ns}footer-links {
     $root: &;
@@ -19,9 +20,10 @@ $footer-links_link-padding: 0.5em 0 !default;
         margin: $footer-links_list-item-margin;
     }
 
-    a {
+    a,
+    a:visited {
         display: block;
-        padding: 0.5em 0;
+        padding: $footer-links_link-padding-mobile;
         font-size: $footer-links_link-font-size;
         color: $footer-links_link-color;
 
@@ -31,7 +33,7 @@ $footer-links_link-padding: 0.5em 0 !default;
         }
 
         @include media('>=tablet') {
-            padding: 0.35em 0;
+            padding: $footer-links_link-padding-desktop;
             display: inline-block;
         }
     }
