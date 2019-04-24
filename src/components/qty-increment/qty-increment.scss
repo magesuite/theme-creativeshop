@@ -1,6 +1,9 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/field/mixin';
+@import 'utils/visually-hidden';
+
+$qty-increment--in-wishlist_hide: true !default;
 
 $qty-increment_input-font-size: inherit !default;
 $qty-increment_input-text-align: center !default;
@@ -31,10 +34,14 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
     display: flex;
     flex-wrap: wrap;
 
+    @if $qty-increment--in-wishlist_hide {
+        &--wishlist {
+            @include visually-hidden();
+        }
+    }
+
     &__input {
         @include field-input();
-        padding-left: $qty-increment_button-width;
-        padding-right: $qty-increment_button-width;
         font-size: $qty-increment_input-font-size;
         text-align: $qty-increment_input-text-align;
         margin: 0;
@@ -68,7 +75,9 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
     }
 
     &__button {
-        transition: background-color $qty-increment_button-animation-time, border-color $qty-increment_button-animation-time, fill $qty-increment_button-animation-time;
+        transition: background-color $qty-increment_button-animation-time,
+            border-color $qty-increment_button-animation-time,
+            fill $qty-increment_button-animation-time;
         will-change: transform, background-color, border-color, fill;
         max-width: $qty-increment_button-width;
         background-color: $qty-increment_button-background;
@@ -77,18 +86,18 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
         padding-left: 0.5em;
         padding-right: 0.5em;
         border-radius: $qty-increment_button-border-radius;
-        
+
         &,
         &:visited,
         &:focus {
             background-color: $qty-increment_button-background;
             border: $qty-increment_button-border;
-            
+
             * {
                 fill: $qty-increment_icon-fill;
             }
         }
-        
+
         &:hover,
         &:active {
             background-color: $qty-increment_button--hover-background;

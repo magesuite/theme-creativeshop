@@ -26,13 +26,13 @@ define(['jquery'], function($) {
             _resetResponseList: function(all) {
                 this._super(all);
 
-                if (!all) {
-                    this.autoComplete.css({
-                        minWidth:
-                            parseInt(this.autoComplete.css('width'), 10) + 30,
-                        width: '',
-                    });
-                }
+                const minWidth = all
+                    ? ''
+                    : parseInt(this.element.outerWidth()) + 30;
+                this.autoComplete.css({
+                    minWidth: minWidth,
+                    width: '',
+                });
 
                 this.searchForm.toggleClass(
                     'active-popup',
