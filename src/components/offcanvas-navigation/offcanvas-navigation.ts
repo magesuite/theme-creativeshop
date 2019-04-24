@@ -188,7 +188,7 @@ export default class OffcanvasNavigation {
             return deferred.resolve(cache.html);
         }
 
-        $.get(url).then((html: string) => {
+        $.get(url, { cache_key: cacheInfo.key }).then((html: string) => {
             this._setCache(cacheInfo.key, html);
             deferred.resolve(html);
         });
