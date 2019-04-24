@@ -5,6 +5,7 @@
 @import 'vendors/include-media';
 @import 'utils/aspect-ratio';
 @import 'utils/reset-list-style';
+@import 'utils/visually-hidden';
 
 $inherit-hover-effects: true !default;
 
@@ -52,8 +53,7 @@ $product-tile_addon-padding: $product-tile_addon-padding-factor 0 !default;
 $product-tile_in-stock-color: $color_apple !default;
 $product-tile_out-of-stock-color: $color_crimson !default;
 
-$product-tile_wishlist-comment-margin: 0 0
-    $product-tile_content-elements-gutter-factor !default;
+$product-tile_wishlist-comment-visible: false !default;
 $product-tile_wishlist-comment-textarea-height: 5rem !default;
 $product-tile_wishlist-actions-margin: #{$product-tile_content-elements-gutter-factor /
     2} 0 0 !default;
@@ -365,13 +365,9 @@ $product-tile_show-addons-for-static-tile: false !default;
     }
 
     &__wishlist-comment {
-        margin: $product-tile_wishlist-comment-margin;
-    }
-
-    &__wishlist-comment-textarea {
-        display: block;
-        width: 100%;
-        height: $product-tile_wishlist-comment-textarea-height;
+        @if not $product-tile_wishlist-comment-visible {
+            @include visually-hidden();
+        }
     }
 
     &__wishlist-actions {
