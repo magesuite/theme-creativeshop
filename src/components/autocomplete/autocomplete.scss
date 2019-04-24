@@ -4,17 +4,24 @@
 @import 'components/badge/mixin';
 
 $autocomplete_list-background: $color_text-200 !default;
+$autocomplete_list-padding: 0.5rem 1rem !default;
+$autocomplete_list-margin: 0 !default;
 $autocomplete_list-border-radius: 3px !default;
 $autocomplete_list-border: 1px solid $color_border-500 !default;
 $autocomplete_list-box-shadow: 0 0 10px 0 rgba($color_text-900, 0.17) !default;
 
+$autocomplete_title-padding: 1.2rem 3rem 1rem 1rem !default;
+$autocomplete_title-margin: 0 !default;
+$autocomplete_title-border: none !default;
 $autocomplete_title-color: $color_text-400 !default;
 $autocomplete_title-font-size: 1.29rem !default;
+$autocomplete_title-font-weight: 700 !default;
 
 $autocomplete_item-background-hover: $color_background-500 !default;
 $autocomplete_item-thumbnail-width: 4.5rem !default;
 $autocomplete_item-thumbnail-height: 4.5rem !default;
 $autocomplete_item-font-size: 1.29rem !default;
+$autocomplete_item-font-weight: 700 !default;
 $autocomplete_item-name-color: $color_text-900 !default;
 $autocomplete_item-price-color: $color_primary-500 !default;
 $autocomplete_item-quantity-color: $color_text-400 !default;
@@ -37,8 +44,8 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
 
     .autocomplete-list dd,
     &__item {
-        padding: 0.5rem 1rem;
-        margin-bottom: 0;
+        padding: $autocomplete_list-padding;
+        margin: $autocomplete_list-margin;
         border-bottom: $autocomplete_list-border;
         display: flex;
         align-items: center;
@@ -89,7 +96,7 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
 
                 .price {
                     font-size: $autocomplete_item-font-size;
-                    font-weight: 700;
+                    font-weight: $autocomplete_item-font-weight;
                 }
             }
 
@@ -111,7 +118,7 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
         &-name {
             font-size: $autocomplete_item-font-size;
             color: $autocomplete_item-name-color;
-            font-weight: 700;
+            font-weight: $autocomplete_item-font-weight;
         }
     }
 
@@ -161,6 +168,7 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
     .amount {
         color: $autocomplete_item-quantity-color;
         font-size: $autocomplete_item-font-size;
+        font-weight: $autocomplete_item-font-weight;
         margin-left: 0.5rem;
 
         &:not(:empty) {
@@ -176,14 +184,14 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
 }
 
 .autocomplete-list-title {
-    padding: 1.2rem 3rem 1rem 1rem;
-    border: none;
+    padding: $autocomplete_title-padding;
+    border-bottom: $autocomplete_title-border;
     color: $autocomplete_title-color;
-    font-weight: 700;
+    font-weight: $autocomplete_title-font-weight;
     text-transform: uppercase;
     font-size: $autocomplete_title-font-size;
     letter-spacing: 1px;
-    margin: 0;
+    margin: $autocomplete_title-margin;
 
     &:hover,
     &.selected {
