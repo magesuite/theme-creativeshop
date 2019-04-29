@@ -26,7 +26,8 @@ $page-product_badges-gutter: 1.5rem !default;
 $page-product--bundle-options-wrapper-border: $page-product_top-2col-mobile-border-separator !default;
 $page-product--bundle-container-box-shadow: $box-shadow_base !default;
 $page-product--bundle-container-background: $color_background-200 !default;
-$page-product--bundle-container-border: $page_edge-gutter solid $color_border-200 !default;
+$page-product--bundle-container-border: $page_edge-gutter solid
+    $color_border-200 !default;
 
 $page-product--bundle-show-top-arrow-on-container: true !default;
 $page-product--bundle-show-top-arrow-size: 2rem !default;
@@ -34,7 +35,7 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
 
 .#{$ns}page-product {
     $root: &;
-    
+
     &__top {
         @include media(#{$page-product_top-2col-breakpoint}) {
             display: flex;
@@ -97,11 +98,11 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
             }
         }
 
-        &--sale {
-            @include badge_type('sale');
+        &--discount {
+            @include badge_type('discount');
 
             #{$root}__badge-text {
-                @include badge_span('sale');
+                @include badge_span('discount');
             }
         }
 
@@ -153,11 +154,23 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
             top: 1px;
             left: 50%;
             border: $page-product--bundle-show-top-arrow-size solid transparent;
-            border-color: $page-product--bundle-container-background $page-product--bundle-container-background transparent transparent;
+            border-color: $page-product--bundle-container-background
+                $page-product--bundle-container-background
+                transparent
+                transparent;
             transform-origin: 0 0;
-            transform: rotate(-45deg) translate3d(-#{$page-product--bundle-show-top-arrow-size}, -#{$page-product--bundle-show-top-arrow-size}, 0);
+            transform: rotate(-45deg)
+                translate3d(
+                    -#{$page-product--bundle-show-top-arrow-size},
+                    -#{$page-product--bundle-show-top-arrow-size},
+                    0
+                );
 
-            @if $page-product--bundle-container-box-shadow != none and $page-product--bundle-show-top-arrow-shadow != none {
+            @if $page-product--bundle-container-box-shadow !=
+                none and
+                $page-product--bundle-show-top-arrow-shadow !=
+                none
+            {
                 box-shadow: $page-product--bundle-show-top-arrow-shadow;
             }
         }

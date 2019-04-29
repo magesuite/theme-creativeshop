@@ -73,12 +73,10 @@ $header-search_autocomplete-background: $color_background-200 !default;
         }
 
         @if ($global_header-searchbox-as-layer-breakpoint) {
-            @include media($global_header-searchbox-as-layer-breakpoint) {
-                .active-popup & {
-                    &:before,
-                    &:after {
-                        opacity: 1;
-                    }
+            .active-popup & {
+                &:before,
+                &:after {
+                    opacity: 1;
                 }
             }
         }
@@ -221,6 +219,10 @@ $header-search_autocomplete-background: $color_background-200 !default;
     }
 
     &__autocomplete {
+        width: calc(100% - 1rem);
+        left: 0.5rem;
+        right: 0.5rem;
+
         @if ($global_header-searchbox-as-layer-breakpoint) {
             @include media($global_header-searchbox-as-layer-breakpoint) {
                 margin-top: 0.5rem;
@@ -228,7 +230,7 @@ $header-search_autocomplete-background: $color_background-200 !default;
                 transform: translateX(-50%);
                 box-shadow: $header-search_autocomplete-box-shadow;
                 border: 0;
-                width: auto;
+                width: 100%;
             }
         }
     }

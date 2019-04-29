@@ -18,9 +18,6 @@ $badge--default-color: $color_text-200 !default;
 $badge--new-background: $color_secondary-500 !default;
 $badge--new-color: $color_text-900 !default;
 
-$badge--sale-background: $color_error-500 !default;
-$badge--sale-color: $color_text-200 !default;
-
 $badge--discount-background: $color_error-500 !default;
 $badge--discount-color: $color_text-200 !default;
 
@@ -36,11 +33,8 @@ $badge--popular-color: $color_text-200 !default;
 $badge--recently-bought-background: $color_success-500 !default;
 $badge--recently-bought-color: $color_text-200 !default;
 
-$badge--limited-offer-background: $color_error-500 !default;
-$badge--limited-offer-color: $color_text-200 !default;
-
-$badge--items-left-background: $color_background-700 !default;
-$badge--items-left-color: $color_text-200 !default;
+$badge--daily-deal-background: $color_primary-500 !default;
+$badge--daily-deal-color: $color_text-200 !default;
 
 @mixin badge($type: 'default') {
     display: inline-flex;
@@ -83,11 +77,6 @@ $badge--items-left-color: $color_text-200 !default;
         color: $badge--new-color;
     }
 
-    @if ($type == 'sale') {
-        background-color: $badge--sale-background;
-        color: $badge--sale-color;
-    }
-
     @if ($type == 'free') {
         background-color: $badge--free-background;
         color: $badge--free-color;
@@ -113,14 +102,9 @@ $badge--items-left-color: $color_text-200 !default;
         color: $badge--recently-bought-color;
     }
 
-    @if ($type == 'limited-offer') {
-        background-color: $badge--limited-offer-background;
-        color: $badge--limited-offer-color;
-    }
-
-    @if ($type == 'items-left') {
-        background-color: $badge--items-left-background;
-        color: $badge--items-left-color;
+    @if ($type == 'daily-deal') {
+        background-color: $badge--daily-deal-background;
+        color: $badge--daily-deal-color;
     }
 
     @include badge_type-hook($type);
