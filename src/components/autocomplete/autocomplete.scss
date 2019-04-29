@@ -38,7 +38,6 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
     left: 0;
     box-sizing: border-box;
     background-color: $autocomplete_list-background;
-    border: $autocomplete_list-border;
     border-radius: $autocomplete_list-border-radius;
     box-shadow: $autocomplete_list-box-shadow;
     z-index: 200;
@@ -83,7 +82,7 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
         }
 
         &-details {
-            width: 100%;
+            flex: 1 1 100%;
             margin: 0;
 
             img {
@@ -132,11 +131,26 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
         }
     }
 
+    &__badges {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-left: 1rem;
+    }
+
     &__badge {
         @include badge();
 
+        .ie11 & {
+            &:after {
+                content: '';
+                min-height: inherit;
+                font-size: 0;
+            }
+        }
+
         & + & {
-            margin-top: 0.5em;
+            margin-top: 0.5rem;
         }
 
         &--popular {
@@ -159,7 +173,9 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
     &__badge-text {
         @include badge_span();
 
-        white-space: nowrap;
+        @include media('>=phone') {
+            white-space: nowrap;
+        }
     }
 }
 
