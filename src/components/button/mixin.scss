@@ -95,7 +95,9 @@ $button_icon-offset: 0.1em !default;
     @if ($type != 'link') {
         padding: $button_padding;
         box-sizing: border-box;
-        transition: background-color $button_animation-time, border-color $button_animation-time, fill $button_animation-time, color $button_animation-time;
+        transition: background-color $button_animation-time,
+            border-color $button_animation-time, fill $button_animation-time,
+            color $button_animation-time;
         vertical-align: middle;
         z-index: 5;
         will-change: transform, background-color, border-color, fill, color;
@@ -128,7 +130,8 @@ $button_icon-offset: 0.1em !default;
         will-change: fill, color;
 
         * {
-            transition: color $button_animation-time, fill $button_animation-time;
+            transition: color $button_animation-time,
+                fill $button_animation-time;
             will-change: fill, color;
         }
     }
@@ -314,13 +317,57 @@ $button_icon-offset: 0.1em !default;
         @if ($type == 'link') {
             padding-right: $button_link-icon-padding;
         } @else {
-            padding-right: calc(#{$button_padding-when-icon} + #{get-value-from-list($variable: $button_padding, $side: $icon_pos)});
+            @if (
+                unit($button_padding-when-icon) ==
+                    unit(
+                        get-value-from-list(
+                            $variable: $button_padding,
+                            $side: $icon_pos
+                        )
+                    )
+            ) {
+                padding-right: $button_padding-when-icon +
+                    get-value-from-list(
+                        $variable: $button_padding,
+                        $side: $icon_pos
+                    );
+            } @else {
+                padding-right: calc(
+                    #{$button_padding-when-icon} +
+                        #{get-value-from-list(
+                            $variable: $button_padding,
+                            $side: $icon_pos
+                        )}
+                );
+            }
         }
     } @else if ($icon_pos == 'left') {
         @if ($type == 'link') {
             padding-left: $button_link-icon-padding;
         } @else {
-            padding-left: calc(#{$button_padding-when-icon} + #{get-value-from-list($variable: $button_padding, $side: $icon_pos)});
+            @if (
+                unit($button_padding-when-icon) ==
+                    unit(
+                        get-value-from-list(
+                            $variable: $button_padding,
+                            $side: $icon_pos
+                        )
+                    )
+            ) {
+                padding-left: $button_padding-when-icon +
+                    get-value-from-list(
+                        $variable: $button_padding,
+                        $side: $icon_pos
+                    );
+            } @else {
+                padding-left: calc(
+                    #{$button_padding-when-icon} +
+                        #{get-value-from-list(
+                            $variable: $button_padding,
+                            $side: $icon_pos
+                        )}
+                );
+            }
         }
     } @else if ($icon_pos == 'only-icon') {
         display: none;
@@ -344,7 +391,7 @@ $button_icon-offset: 0.1em !default;
         top: 50%;
         transform: translate3d(0, -50%, 0);
     }
-    
+
     @if ($icon_pos == 'only-icon') {
         position: relative;
         top: $button_icon-offset;
@@ -368,7 +415,10 @@ $button_icon-offset: 0.1em !default;
             left: 0;
         } @else {
             margin-left: 0;
-            left: get-value-from-list($variable: $button_padding, $side: $icon_pos);
+            left: get-value-from-list(
+                $variable: $button_padding,
+                $side: $icon_pos
+            );
         }
     } @else {
         display: none;
