@@ -22,6 +22,8 @@ $pagination-item_border: $pagination-item-border-width solid
     $pagination-item-border-color !default;
 $pagination-item_round-edges: true !default;
 $pagination-item_round-edges-radius: $border-radius_base !default;
+$pagination-item_as-circle: false !default;
+
 @mixin pagination-item {
     margin: $pagination-item_margin;
     padding: $pagination-item_padding;
@@ -50,6 +52,11 @@ $pagination-item_round-edges-radius: $border-radius_base !default;
             border-top-right-radius: $pagination-item_round-edges-radius;
             border-bottom-right-radius: $pagination-item_round-edges-radius;
         }
+    }
+
+    @if $pagination-item_as-circle {
+        border-radius: 50%;
+        overflow: hidden;
     }
 }
 
