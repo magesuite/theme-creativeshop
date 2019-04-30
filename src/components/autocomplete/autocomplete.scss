@@ -4,8 +4,6 @@
 @import 'components/badge/mixin';
 
 $autocomplete_list-background: $color_text-200 !default;
-$autocomplete_list-padding: 0.5rem 1rem !default;
-$autocomplete_list-margin: 0 !default;
 $autocomplete_list-border-radius: 3px !default;
 $autocomplete_list-border: 1px solid $color_border-500 !default;
 $autocomplete_list-box-shadow: 0 0 10px 0 rgba($color_text-900, 0.17) !default;
@@ -17,6 +15,10 @@ $autocomplete_title-color: $color_text-400 !default;
 $autocomplete_title-font-size: 1.29rem !default;
 $autocomplete_title-font-weight: 700 !default;
 
+$autocomplete_item-padding: 0.5rem 1rem !default;
+$autocomplete_item-margin: 0 !default;
+$autocomplete_item-border: 1px solid $color_border-500 !default;
+$autocomplete_item-background: $autocomplete_list-background !default;
 $autocomplete_item-background-hover: $color_background-500 !default;
 $autocomplete_item-thumbnail-width: 4.5rem !default;
 $autocomplete_item-thumbnail-height: 4.5rem !default;
@@ -45,9 +47,10 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
 
     .autocomplete-list dd,
     &__item {
-        padding: $autocomplete_list-padding;
-        margin: $autocomplete_list-margin;
-        border-bottom: $autocomplete_list-border;
+        background: $autocomplete_item-background;
+        padding: $autocomplete_item-padding;
+        margin: $autocomplete_item-margin;
+        border-bottom: $autocomplete_item-border;
         display: flex;
         align-items: center;
         transition: background-color 0.15s linear;
@@ -88,46 +91,46 @@ $autocomplete_item-special-price-color: $color_error-500 !default;
             img {
                 display: block;
             }
-
-            .price-box {
-                display: flex;
-                flex-direction: row-reverse;
-                justify-content: flex-end;
-                margin: 0.3rem 0 0;
-
-                .normal-price,
-                .regular-price,
-                .old-price,
-                .special-price {
-                    .price {
-                        font-size: $autocomplete_item-font-size;
-                        font-weight: $autocomplete_item-price-font-weight;
-                    }
-                }
-
-                .regular-price .price,
-                .normal-price .price {
-                    color: $autocomplete_item-price-color;
-                }
-
-                .old-price .price {
-                    margin: 0;
-                    text-decoration: line-through;
-                    color: $autocomplete_item-old-price-color;
-                }
-
-                .special-price .price {
-                    margin: 0;
-                    margin-left: 0.5rem;
-                    color: $autocomplete_item-special-price-color;
-                }
-            }
         }
 
         &-name {
             font-size: $autocomplete_item-font-size;
             color: $autocomplete_item-name-color;
             font-weight: $autocomplete_item-font-weight;
+        }
+    }
+
+    .price-box {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        margin: 0.3rem 0 0;
+
+        .normal-price,
+        .regular-price,
+        .old-price,
+        .special-price {
+            .price {
+                font-size: $autocomplete_item-font-size;
+                font-weight: $autocomplete_item-price-font-weight;
+            }
+        }
+
+        .regular-price .price,
+        .normal-price .price {
+            color: $autocomplete_item-price-color;
+        }
+
+        .old-price .price {
+            margin: 0;
+            text-decoration: line-through;
+            color: $autocomplete_item-old-price-color;
+        }
+
+        .special-price .price {
+            margin: 0;
+            margin-left: 0.5rem;
+            color: $autocomplete_item-special-price-color;
         }
     }
 
