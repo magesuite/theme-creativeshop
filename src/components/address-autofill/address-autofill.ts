@@ -71,11 +71,15 @@ export default class AddressAutofill {
      * Triggers google autosuggest based on street field value and zip/city if exist.
      */
     protected _triggerAutosuggest(): void {
-        const zip: string = (this.options.zipField.val() ? this.options.zipField.val() + ' ' : '') as string;
-        const city: string = (this.options.cityField.val() ? this.options.cityField.val() + ' ' : '') as string;
+        const zip: string = (this.options.zipField.val()
+            ? this.options.zipField.val() + ' '
+            : '') as string;
+        const city: string = (this.options.cityField.val()
+            ? this.options.cityField.val() + ' '
+            : '') as string;
         const street: string = this.options.streetField.val() as string;
 
-        const query: string = zip + city + street as string;
+        const query: string = (zip + city + street) as string;
 
         if (!query || street.length < 3) {
             console.log('return');
