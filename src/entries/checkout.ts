@@ -3,7 +3,7 @@
 // It imports all the components required by Checkout
 // Each page type has own entry point containing required components.
 // It allows optimizing bundles in webpack - which gathers common imports in separate package.
-// It is a job of every component to initilize itself.
+// It is a job of every component to initialize itself.
 
 import 'config/base.scss';
 // TODO: Remove this file when possible
@@ -84,6 +84,8 @@ import 'components/table';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'Repertus_Packstation';
+
+import 'MageSuite_LoginOrGuestCheckoutStep';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';
