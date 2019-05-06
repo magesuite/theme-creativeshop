@@ -43,8 +43,8 @@ $checkout_place-order-button-icon-pos: $button_default-icon-pos !default;
 // Move next button to the separate box
 $checkout_next-button-outside: false !default;
 
-$checkout_repertus-button-type: 'secondary' !default;
-$checkout_repertus-button-icon-pos: 'no-icon' !default;
+$checkout_show-cart-button-type: 'secondary' !default;
+$checkout_show-cart-button-icon-pos: 'no-icon' !default;
 $checkout_login-button-type: $button_default-type !default;
 $checkout_login-button-icon-pos: 'no-icon' !default;
 $checkout_estimation-button-type: 'secondary' !default;
@@ -139,25 +139,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         width: 100%;
     }
 
-    &__sidebar {
-        .action-close {
-            @include media('>=tablet') {
-                display: none;
-            }
-        }
-    }
-
-    // Container for next step button
-    &__sidebar-bottom {
-        display: flex;
-        justify-content: flex-end;
-        padding: $checkout_base-space 0;
-
-        @include media('>=tablet') {
-            padding: $checkout_base-space;
-        }
-    }
-
     &__mobile-summary {
         @include media('>=tablet') {
             display: none;
@@ -191,6 +172,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
 
         @include media('<tablet') {
+            width: 100%;
+        }
+
+        @if ($checkout_next-button-outside == true) {
             width: 100%;
         }
     }
@@ -370,6 +355,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             background: transparent;
             margin: 0;
         }
+
+        .action-close {
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
     }
 
     &__sidebar-inner {
@@ -383,7 +374,16 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    // Container for next step button
     &__sidebar-bottom {
+        display: flex;
+        justify-content: flex-end;
+        padding: $checkout_base-space 0;
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space;
+        }
+
         @if ($checkout_next-button-outside == true) {
             margin: 0 0 $checkout_steps-space;
             background: $checkout_boxes-background;
@@ -397,14 +397,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
-    &__sidebar-button {
-        @if ($checkout_next-button-outside == true) {
-            width: 100%;
-        }
-    }
-
     // Authentication
-
     .form-login,
     .block-authentication {
         .primary .action {
@@ -514,19 +507,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         display: flex;
         justify-content: space-between;
         font-weight: 600;
+        padding: $checkout_base-space $checkout_base-space 0;
 
         button.action.action-edit {
             cursor: pointer;
-        }
-    }
-
-    .shipping-address-items {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-
-        @include media('>=tablet', '<laptop') {
-            flex-direction: column;
         }
     }
 
@@ -553,6 +537,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .shipping-address-items {
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
 
         @include media('>=tablet', '<laptop') {
             flex-direction: column;
@@ -577,14 +562,13 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .shipping-address-item {
         font-size: $checkout_texts-font-size;
         border: $checkout_elements-border;
-        padding: 1.5rem;
         width: 100%;
         box-sizing: border-box;
         margin: 0 0 1.5rem;
         padding: 1rem;
 
         @include media('>=laptop') {
-            width: calc(50% - (#{$checkout_base-space}/ 2));
+            width: calc(50% - (#{$checkout_base-space} / 2));
             margin: 0 0 $checkout_base-space;
         }
 
@@ -615,14 +599,14 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
         .action.showcart {
             @include button(
-                $type: $checkout_repertus-button-type,
-                $icon_pos: $checkout_repertus-button-icon-pos
+                $type: $checkout_show-cart-button-type,
+                $icon_pos: $checkout_show-cart-button-icon-pos
             );
 
             span:first-child {
                 @include button-span(
-                    $type: $checkout_repertus-button-type,
-                    $icon_pos: $checkout_repertus-button-icon-pos
+                    $type: $checkout_show-cart-button-type,
+                    $icon_pos: $checkout_show-cart-button-icon-pos
                 );
             }
 
@@ -863,10 +847,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
                 font-size: 1.5rem;
             }
         }
-    }
-
-    .shipping-information-title {
-        padding: $checkout_base-space $checkout_base-space 0;
     }
 
     .action-edit,
@@ -1263,70 +1243,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .control:not(.select-field) {
         float: none !important;
         width: 100% !important;
-    }
-}
-
-// Repertus packstation
-
-.fieldset-wrapper-repertus {
-    .fieldset-wrapper-content {
-        @include media('<tablet') {
-            width: 100%;
-        }
-    }
-}
-
-.repertus_address_type_fieldset {
-    width: 100%;
-}
-
-.repertus_address_type_field {
-    width: 100%;
-
-    .label {
-        margin-bottom: 0.3rem;
-        display: inline-block;
-    }
-}
-
-.repertus_address_type_fieldset {
-    width: 100%;
-}
-
-.repertus_address_type_field {
-    width: 100%;
-
-    @include media('>=phoneLg', '<tablet') {
-        width: 51%;
-        padding: 0 1rem 0 0;
-        display: inline-block;
-    }
-
-    @include media('>=laptop') {
-        width: 51%;
-        padding: 0 1rem 0 0;
-        display: inline-block;
-    }
-}
-
-.repertus_packstation_search_button {
-    widows: 100%;
-
-    button {
-        @include button(
-            $type: $checkout_repertus-button-type,
-            $icon_pos: $checkout_repertus-button-icon-pos
-        );
-        width: 100%;
-        margin-top: 0.5rem;
-    }
-}
-
-.checkout-payment-method .payment-methods {
-    @include media('<tablet') {
-        max-width: 100vw;
-        padding-right: 0.5rem;
-        box-sizing: border-box;
     }
 }
 

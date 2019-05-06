@@ -1,0 +1,102 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+
+$repertus_find-packstation-button-type: 'primary' !default;
+$repertus_find-packstation-icon-pos: 'no-icon' !default;
+$repertus_checkout-button-type: 'secondary' !default;
+$repertus_checkout-button-icon-pos: 'no-icon' !default;
+$repertus_dashboard-button-type: 'secondary' !default;
+$repertus_dashboard-icon-pos: 'no-icon' !default;
+
+#repertus_find_packstation_button_execute {
+    @include button(
+        $type: $repertus_find-packstation-button-type,
+        $icon_pos: $repertus_find-packstation-icon-pos
+    );
+}
+.#{$ns}dashboard {
+    .repertus_packstation--search-button {
+        width: 100%;
+
+        @include button(
+            $type: $repertus_dashboard-button-type,
+            $icon_pos: $repertus_dashboard-icon-pos
+        );
+    }
+}
+
+.fieldset-wrapper-repertus {
+    .fieldset-wrapper-content {
+        @include media('<tablet') {
+            width: 100%;
+        }
+    }
+}
+
+.repertus_address_type_fieldset {
+    width: 100%;
+}
+
+.repertus_address_type_field {
+    width: 100%;
+
+    .label {
+        margin-bottom: 0.3rem;
+        display: inline-block;
+    }
+
+    @include media('>=phoneLg', '<tablet') {
+        width: 51%;
+        padding: 0 1rem 0 0;
+        display: inline-block;
+    }
+
+    @include media('>=laptop') {
+        width: 51%;
+        padding: 0 1rem 0 0;
+        display: inline-block;
+    }
+}
+
+.repertus_packstation_search_button {
+    widows: 100%;
+
+    button {
+        @include button(
+            $type: $repertus_checkout-button-type,
+            $icon_pos: $repertus_checkout-button-icon-pos
+        );
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+.checkout-payment-method .payment-methods {
+    @include media('<tablet') {
+        max-width: 100vw;
+        padding-right: 0.5rem;
+        box-sizing: border-box;
+    }
+}
+
+.paypal.checkout {
+    text-align: center;
+
+    &.after,
+    &.before {
+        &:before {
+            content: attr(data-label);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 1rem 0.5rem 0.2rem;
+        }
+    }
+
+    input {
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
