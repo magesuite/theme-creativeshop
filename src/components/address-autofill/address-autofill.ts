@@ -26,12 +26,12 @@ export default class AddressAutofill {
         this.options = options;
 
         const countrySelectValue = this.options.countrySelect
-            ? <string>this.options.countrySelect.val()
+            ? (this.options.countrySelect.val() as string)
             : '';
         options.region = countrySelectValue || 'DE';
         options.language =
             countrySelectValue ||
-            window.navigator['userLanguage'] ||
+            window.navigator.userLanguage ||
             window.navigator.language;
 
         this.googleAddressDetector = new GoogleAddressDetector(options);
@@ -48,13 +48,13 @@ export default class AddressAutofill {
     protected _initStreetField(): void {
         let typeTimer: any;
         const typeInterval: number = 500;
-        let currentValue: string = <string>this.options.streetField.val();
+        let currentValue: string = this.options.streetField.val() as string;
 
         this.options.streetField.on(
             'keyup',
             (e: JQuery.Event): void => {
                 clearTimeout(typeTimer);
-                const newValue = <string>this.options.streetField.val();
+                const newValue = this.options.streetField.val() as string;
 
                 if (currentValue.length < newValue.length) {
                     typeTimer = setTimeout(
@@ -73,7 +73,7 @@ export default class AddressAutofill {
      * Triggers google autosuggest based on street field value.
      */
     protected _triggerAutosuggest(): void {
-        const query: string = <string>this.options.streetField.val();
+        const query: string = this.options.streetField.val() as string;
 
         if (!query || query.length < 4) {
             return;
@@ -89,7 +89,7 @@ export default class AddressAutofill {
      * Automatically fills all fields based on ZIP field value.
      */
     protected _fillFieldsBasedOnZip(): void {
-        const query: string = <string>this.options.zipField.val();
+        const query: string = this.options.zipField.val() as string;
 
         if (!query || query.length < 3) {
             return;
@@ -150,7 +150,7 @@ export default class AddressAutofill {
 
             this.options.streetField
                 .parents('.cs-input')
-                .find('.cs-input__warning')
+                .find('.note')
                 .remove();
         }, 300);
     }
@@ -358,8 +358,8 @@ export default class AddressAutofill {
      */
     protected _initCountrySelector(): void {
         this.options.countrySelect.on('change', () => {
-            this.options.region = <string>this.options.countrySelect.val();
-            this.options.language = <string>this.options.countrySelect.val();
+            this.options.region = this.options.countrySelect.val() as string;
+            this.options.language = this.options.countrySelect.val() as string;
 
             this.googleAddressDetector = new GoogleAddressDetector(
                 this.options

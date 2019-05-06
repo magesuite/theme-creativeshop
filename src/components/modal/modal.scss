@@ -19,10 +19,11 @@ $modal_primary-button-icon-pos: 'no-icon' !default;
 $modal_secondary-button-type: 'secondary' !default;
 $modal_secondary-button-icon-pos: 'no-icon' !default;
 
+/* stylelint-disable no-descending-specificity */
+
 .modal-slide,
 .modal-popup,
 .modal-custom {
-
     &.confirm {
         .modal-inner-wrap {
             max-width: 50rem;
@@ -47,50 +48,6 @@ $modal_secondary-button-icon-pos: 'no-icon' !default;
         margin: 0;
     }
 
-    .modal-footer {
-        padding: 2rem;
-        border-top: $modal_inside-borders;
-        display: flex;
-        justify-content: space-between;
-
-        .action-primary,
-        .primary {
-            @include button($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
-            min-width: 12rem;
-
-            span {
-                @include button-span($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
-            }
-        }
-
-        .action-secondary,
-        .secondary {
-            @include button($type: $modal_secondary-button-type, $icon_pos: $modal_secondary-button-icon-pos);
-            min-width: 12rem;
-
-            span {
-                @include button-span($type: $modal_secondary-button-type, $icon_pos: $modal_secondary-button-icon-pos);
-            }
-        }
-
-        button:only-child {
-            @include button($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
-            min-width: 12rem;
-
-            span {
-                @include button-span($type: $modal_primary-button-type, $icon_pos: $modal_primary-button-icon-pos);
-            }
-
-        }
-    }
-
-    .modal-title {
-        @include headline($level: $modal_title-font-size);
-        padding: 2rem;
-        border-bottom: $modal_inside-borders;
-        margin: 0;
-    }
-
     .action-close {
         background: none;
         border: none;
@@ -108,9 +65,84 @@ $modal_secondary-button-icon-pos: 'no-icon' !default;
         span {
             @include visually-hidden();
         }
-
     }
 
+    .modal-footer {
+        padding: 2rem;
+        border-top: $modal_inside-borders;
+        display: flex;
+        justify-content: space-between;
+
+        .action-primary,
+        .primary {
+            @include button(
+                $type: $modal_primary-button-type,
+                $icon_pos: $modal_primary-button-icon-pos
+            );
+            min-width: 12rem;
+
+            span {
+                @include button-span(
+                    $type: $modal_primary-button-type,
+                    $icon_pos: $modal_primary-button-icon-pos
+                );
+            }
+        }
+
+        .action-secondary,
+        .secondary {
+            @include button(
+                $type: $modal_secondary-button-type,
+                $icon_pos: $modal_secondary-button-icon-pos
+            );
+            min-width: 12rem;
+
+            span {
+                @include button-span(
+                    $type: $modal_secondary-button-type,
+                    $icon_pos: $modal_secondary-button-icon-pos
+                );
+            }
+
+            // Style for checkout modals have very high specificity in magento
+            body.checkout-index-index & {
+                @include button(
+                    $type: $modal_secondary-button-type,
+                    $icon_pos: $modal_secondary-button-icon-pos
+                );
+                min-width: 12rem;
+
+                span {
+                    @include button-span(
+                        $type: $modal_secondary-button-type,
+                        $icon_pos: $modal_secondary-button-icon-pos
+                    );
+                }
+            }
+        }
+
+        button:only-child {
+            @include button(
+                $type: $modal_primary-button-type,
+                $icon_pos: $modal_primary-button-icon-pos
+            );
+            min-width: 12rem;
+
+            span {
+                @include button-span(
+                    $type: $modal_primary-button-type,
+                    $icon_pos: $modal_primary-button-icon-pos
+                );
+            }
+        }
+    }
+
+    .modal-title {
+        @include headline($level: $modal_title-font-size);
+        padding: 2rem;
+        border-bottom: $modal_inside-borders;
+        margin: 0;
+    }
 }
 
 .modal-popup.modal-slide {
@@ -121,13 +153,35 @@ $modal_secondary-button-icon-pos: 'no-icon' !default;
     }
 }
 
+.modal-slide {
+    .modal-footer {
+        @include media('<phoneLg') {
+            flex-wrap: wrap;
+        }
 
-.ie11
-    .modal-popup:not(.cs-video-player__modal)
-    .modal-content {
+        .action-primary,
+        .primary {
+            @include media('<phoneLg') {
+                width: 100%;
+            }
+        }
+
+        .action-secondary,
+        .secondary {
+            @include media('<phoneLg') {
+                width: 100%;
+                margin-bottom: 1.5rem !important;
+            }
+        }
+    }
+}
+
+.ie11 .modal-popup:not(.cs-video-player__modal) .modal-content {
     max-height: calc(100vh - 33rem);
 }
 
 .page-layout-checkout .modal-popup {
     pointer-events: auto;
 }
+
+/* stylelint-enable */
