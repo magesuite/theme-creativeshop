@@ -1,0 +1,90 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+
+$login-or-guest_guest-button-type: 'primary' !default;
+$login-or-guest_guest-button-icon-pos: 'no-icon' !default;
+
+$login-or-guest_login-button-type: 'primary' !default;
+$login-or-guest_login-button-icon-pos: 'no-icon' !default;
+
+.cs-login-or-guest {
+    $root: &;
+
+    .cs-checkout {
+        &__step-tabs {
+            .cs-tabs {
+                &__triggers {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &--active {
+        // Make main column fill the space left by sidebar.
+        .opc-wrapper {
+            width: 100%;
+        }
+
+        .login-container {
+            .fieldset {
+                // Make sure inputs are not to narrow.
+                > .field {
+                    > .control {
+                        width: 100%;
+                    }
+                }
+                // Hide required fields info to align with normal login form.
+                &:after {
+                    display: none;
+                }
+            }
+
+            .actions-toolbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                .action {
+                    &.continue {
+                        @include button(
+                            $type: $login-or-guest_guest-button-type,
+                            $icon-pos: $login-or-guest_guest-button-icon-pos
+                        );
+
+                        display: block;
+
+                        span {
+                            @include button-span(
+                                $type: $login-or-guest_guest-button-type,
+                                $icon-pos: $login-or-guest_guest-button-icon-pos
+                            );
+                        }
+                    }
+
+                    &.action-login {
+                        @include button(
+                            $type: $login-or-guest_login-button-type,
+                            $icon-pos: $login-or-guest_login-button-icon-pos
+                        );
+
+                        margin-top: 1rem;
+
+                        span {
+                            @include button-span(
+                                $type: $login-or-guest_login-button-type,
+                                $icon-pos: $login-or-guest_login-button-icon-pos
+                            );
+                        }
+                    }
+
+                    &.action-remind {
+                        display: inline-block;
+                        font-size: inherit;
+                        margin-top: 1rem;
+                    }
+                }
+            }
+        }
+    }
+}
