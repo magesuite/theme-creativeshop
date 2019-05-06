@@ -74,6 +74,7 @@ import 'components/table';
 import 'components/toolbar';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
+import 'Repertus_Packstation';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';

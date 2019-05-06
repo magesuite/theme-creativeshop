@@ -16,7 +16,7 @@ import 'bundle.scss';
 // Base components
 import 'components/authorization-link';
 import 'components/addtocart';
-import 'components/autocomplete'; //consider moving to ElasticSuite?
+import 'components/autocomplete'; // consider moving to ElasticSuite?
 import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
@@ -83,6 +83,7 @@ import 'components/sticky-block';
 import 'components/table';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
+import 'Repertus_Packstation';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';
