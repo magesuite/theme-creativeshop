@@ -1,5 +1,20 @@
 import * as $ from 'jquery';
 
+interface ExpectedDeliveryDateOptions {
+    /**
+     * Selector for the text that should be displayed if delivery will happen today.
+     */
+    deliverySameDaySelector?: string;
+    /**
+     * Selector for the text that should be displayed if delivery will happen next working day
+     */
+    deliveryNextDaySelector?: string;
+    /**
+     * Name of the attribute that contains timestamp for cut-off point between today/next working day delovery.
+     */
+    maxTimeAttribute?: string;
+}
+
 /**
  * Expected delivery date component
  */
@@ -22,7 +37,7 @@ export default class ExpectedDeliveryDate {
         }
 
         this._$element = $element;
-        this._options = Object.assign({}, this._options, options);
+        this._options = $.extend({}, this._options, options);
         this.showExpectedDeliveryDate();
     }
 
@@ -35,14 +50,16 @@ export default class ExpectedDeliveryDate {
         const currentTime: number = Math.floor(Date.now() / 1000);
         // Expected delivery component
         const $expectedDeliveryComponent = this._$element;
-        //cutoff time
-        const maxTime = this._$element.attr(this._options.maxTimeAttribute);
-        //Default delivery day - order placed before cutoff time
+        // Cutoff time
+        const maxTime = Number(
+            this._$element.attr(this._options.maxTimeAttribute)
+        );
+        // Default delivery day - order placed before cutoff time
         let defaultDeliveryDay = $expectedDeliveryComponent.find(
             this._options.deliverySameDaySelector
         );
 
-        //if order is placed after cutoff switch default to delivery day +1
+        // If order is placed after cutoff switch default to delivery day +1
         if (currentTime > maxTime) {
             defaultDeliveryDay = $expectedDeliveryComponent.find(
                 this._options.deliveryNextDaySelector
