@@ -42,6 +42,7 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
         will-change: z-index, height, position;
         background-color: $header_background;
         position: relative;
+        max-width: 100vw;
 
         @if ($header_is-sticky-on-mobile) {
             @include media('<laptop') {
@@ -146,12 +147,16 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
             @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 display: flex;
             } @else {
-                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                @include media(
+                    $global_header-hide-search-item-trigger-breakpoint
+                ) {
                     display: flex;
                 }
 
                 @if ($global_header-searchbox-as-layer-breakpoint) {
-                    @include media($global_header-searchbox-as-layer-breakpoint) {
+                    @include media(
+                        $global_header-searchbox-as-layer-breakpoint
+                    ) {
                         position: relative;
                         padding: 0;
                         top: initial;
@@ -160,13 +165,19 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
             }
         }
 
-        @if ($global_header-hide-search-item-trigger-breakpoint and $header_searchbox-justify-content == 'flex-end') {
+        @if (
+            $global_header-hide-search-item-trigger-breakpoint and
+                $header_searchbox-justify-content ==
+                'flex-end'
+        ) {
             @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 margin: 0;
             } @else {
                 margin-right: $header_searchbox-margin-to-cover-search-item;
 
-                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                @include media(
+                    $global_header-hide-search-item-trigger-breakpoint
+                ) {
                     margin: 0;
                 }
             }
@@ -186,7 +197,9 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
             @if ($global_header-hide-search-item-trigger-breakpoint == true) {
                 flex: 0 1 25%;
             } @else {
-                @include media($global_header-hide-search-item-trigger-breakpoint) {
+                @include media(
+                    $global_header-hide-search-item-trigger-breakpoint
+                ) {
                     flex: 0 1 25%;
                 }
             }
