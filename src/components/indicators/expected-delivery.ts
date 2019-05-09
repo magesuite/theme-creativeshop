@@ -10,9 +10,13 @@ interface ExpectedDeliveryDateOptions {
      */
     deliveryNextDaySelector?: string;
     /**
-     * Name of the attribute that contains timestamp for cut-off point between today/next working day delovery.
+     * Name of the attribute that contains timestamp for cut-off point between today/next working day delivery.
      */
     maxTimeAttribute?: string;
+    /**
+     * Placeholder before actual delivery date is loaded
+     */
+    placeholderSelector?: string;
 }
 
 /**
@@ -26,6 +30,7 @@ export default class ExpectedDeliveryDate {
         deliverySameDaySelector: '.cs-indicator-exp-delivery__text--same-day',
         deliveryNextDaySelector: '.cs-indicator-exp-delivery__text--next-day',
         maxTimeAttribute: 'data-max-time-today',
+        placeholderSelector: '.cs-indicator-exp-delivery__placeholder',
     };
 
     public constructor(
@@ -58,6 +63,10 @@ export default class ExpectedDeliveryDate {
         let defaultDeliveryDay = $expectedDeliveryComponent.find(
             this._options.deliverySameDaySelector
         );
+        // Placeholder
+        const placeholder = $expectedDeliveryComponent.find(
+            this._options.placeholderSelector
+        );
 
         // If order is placed after cutoff switch default to delivery day +1
         if (currentTime > maxTime) {
@@ -68,6 +77,10 @@ export default class ExpectedDeliveryDate {
 
         $(defaultDeliveryDay).addClass(
             'cs-indicator-exp-delivery__text--visible'
+        );
+
+        $(placeholder).addClass(
+            'cs-indicator-exp-delivery__placeholder--hidden'
         );
     }
 }
