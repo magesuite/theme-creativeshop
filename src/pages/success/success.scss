@@ -2,6 +2,7 @@
 @import 'vendors/include-media';
 @import 'components/typography/mixin';
 @import 'components/button/mixin';
+@import 'components/dashboard/dashboard';
 
 $page-success_separator: 2px solid $color_border-200 !default;
 $page-success_sections-separator: 1px solid $color_border-500 !default;
@@ -10,6 +11,21 @@ $page-success_continue-button-type: 'secondary' !default;
 $page-success_continue-button-icon-pos: $button_default-icon-pos !default;
 $page-success_register-button-type: $button_default-type !default;
 $page-success_register-button-icon-pos: 'no-icon' !default;
+
+$page-success_headline-border: $dashboard_headline-border !default;
+$page-success_headline-margin-bottom: $dashboard_headline-margin-bottom !default;
+$page-success_headline-padding-bottom: $dashboard_headline-padding-bottom !default;
+$page-success_headline-font-weight: $dashboard_headline-font-weight !default;
+$page-success_headline-font-size: $dashboard_headline-font-size !default;
+
+$page-success_hide-titles-separators: $dashboard_hide-titles-separators !default;
+
+$page-success_links-font-weight: $dashboard_links-font-weight !default;
+$page-success_links-font-size: $dashboard_links-font-size !default;
+
+$page-success_hide-personal-section: false !default;
+$page-success_hide-email: false !default;
+$page-success_hide-password-strength: false !default;
 
 .#{$ns}page-success {
     $root: &;
@@ -77,21 +93,111 @@ $page-success_register-button-icon-pos: 'no-icon' !default;
 
     // Continue shopping button
     &__button {
-        @include button($type: $page-success_continue-button-type, $icon_pos: $page-success_continue-button-icon-pos);
+        @include button(
+            $type: $page-success_continue-button-type,
+            $icon_pos: $page-success_continue-button-icon-pos
+        );
         margin-top: 1rem;
 
         &-span {
-            @include button_span($type: $page-success_continue-button-type, $icon_pos: $page-success_continue-button-icon-pos);
+            @include button_span(
+                $type: $page-success_continue-button-type,
+                $icon_pos: $page-success_continue-button-icon-pos
+            );
         }
 
         &-icon {
-            @include button_icon($type: $page-success_continue-button-type, $icon_pos: $page-success_continue-button-icon-pos);
+            @include button_icon(
+                $type: $page-success_continue-button-type,
+                $icon_pos: $page-success_continue-button-icon-pos
+            );
         }
     }
 
-    // Register form
-    input.primary {
-        @include button($type: $page-success_register-button-type, $icon_pos: $page-success_register-button-icon-pos);
-        margin-top: 2rem;
+    .form-create-account {
+        br {
+            display: none;
+        }
+
+        .fieldset {
+            margin-bottom: 2rem;
+
+            @if $page-success_hide-personal-section {
+                &.info {
+                    display: none;
+                }
+            }
+
+            &.account {
+                @if $page-success_hide-email {
+                    // Sadly, there is no better way of targeting whole email field.
+                    .field:first-of-type {
+                        display: none;
+                    }
+
+                    .password {
+                        margin-top: 0;
+                    }
+                }
+
+                @if $page-success_hide-password-strength {
+                    #password-strength-meter-container {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        .legend {
+            border-bottom: $page-success_headline-border;
+            margin-bottom: $page-success_headline-margin-bottom;
+            padding-bottom: $page-success_headline-padding-bottom;
+            font-weight: $page-success_headline-font-weight;
+            font-size: $page-success_headline-font-size;
+            width: 100%;
+
+            @if ($page-success_hide-titles-separators) {
+                border-bottom: none;
+            }
+
+            strong {
+                font-weight: $page-success_headline-font-weight;
+                margin-right: 1rem;
+            }
+        }
+
+        .choice {
+            .label {
+                width: auto;
+                font-weight: $page-success_links-font-weight;
+                font-size: $page-success_links-font-size;
+            }
+        }
+
+        .primary {
+            > button,
+            .create {
+                @include button(
+                    $type: $page-success_register-button-type,
+                    $icon_pos: $page-success_register-button-icon-pos
+                );
+                min-width: 12rem;
+
+                span {
+                    @include button_span(
+                        $type: $page-success_register-button-type,
+                        $icon_pos: $page-success_register-button-icon-pos
+                    );
+                }
+            }
+
+            > button.action.update {
+                display: none;
+            }
+        }
+
+        .secondary {
+            display: none;
+        }
     }
 }
