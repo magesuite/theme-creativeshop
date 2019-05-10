@@ -4,12 +4,18 @@
 
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'components/badge/mixin';
 
 $additional-attributes_th-font-weight: 700 !default;
 $additional-attributes_tr-border: 1px solid $color_border-500 !default;
 $additional-attributes_cell-padding: 1em 1.5em 1em 0 !important !default;
 
+$additional-attributes_badge-margin: 0 0 0 0.9em !default;
+$additional-attributes_top-align: -0.01em !default;
+
 .additional-attributes {
+    $root: &;
+
     &-wrapper {
         margin-bottom: 0;
     }
@@ -34,6 +40,21 @@ $additional-attributes_cell-padding: 1em 1.5em 1em 0 !important !default;
 
             > td {
                 padding: $additional-attributes_cell-padding;
+            }
+        }
+    }
+
+    &__badge {
+        @include badge();
+
+        margin: $additional-attributes_badge-margin;
+        top: $additional-attributes_top-align;
+
+        &--top {
+            @include badge_type('top');
+
+            #{$root}__badge-text {
+                @include badge_span('top');
             }
         }
     }
