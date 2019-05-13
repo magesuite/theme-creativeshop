@@ -3,7 +3,6 @@
  * @var $block \Smile\ElasticsuiteCatalog\Block\Navigation
  */
 ?>
-
 <?php if ($block->canShowBlock()):
     $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
     $isFiltersLayoutHorizontal = $pageLayout == '1column' && !$block->getForceSidebarFiltersStyle() || $block->getForceHorizontalFiltersStyle();
@@ -36,13 +35,17 @@
                 <?php foreach ($filters as $filter):
                     $filterIsChecked = in_array($filter->getRequestVar(), $selectedRequestVars);
                     $filterDisplaySearchbox = true;
+                    $filterAttributeClass = '';
                     if ($filter->hasAttributeModel()) {
+                        $filterAttributeClass = 'filter-attribute-' . $filter->getAttributeModel()->getAttributeCode();
                         $filterDisplaySearchbox = $filter->getAttributeModel()->getDisplaySearchbox() ?? true;
+                    } else {
+                        $filterAttributeClass = 'filter-attribute-' . $filter->getRequestVar();  
                     }
                 ?>
                     <li
                         data-role="collapsible"
-                        class="cs-aftersearch-nav__filter<?= $filterIsChecked ? ' cs-aftersearch-nav__filter--checked' : '' ?><?= !$filterDisplaySearchbox ? ' cs-aftersearch-nav__filter--hide-searchbox' : ''; ?> filter-options-item"
+                        class="cs-aftersearch-nav__filter<?= $filterIsChecked ? ' cs-aftersearch-nav__filter--checked' : '' ?><?= !$filterDisplaySearchbox ? ' cs-aftersearch-nav__filter--hide-searchbox' : ''; ?> <?= $filterAttributeClass ?> filter-options-item"
                     >
                         <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title">
                             <span class="cs-aftersearch-nav__filter-title-text">
