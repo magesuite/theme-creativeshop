@@ -26,7 +26,6 @@ $stack-nav_indicator-enabled: true !default;
 $stack-nav_delimiter-border: 1px solid $color_border-500 !default;
 $stack-nav_delimiter-disabled: false !default;
 
-
 .#{$ns}stack-nav {
     $root: &;
 
@@ -50,10 +49,10 @@ $stack-nav_delimiter-disabled: false !default;
             height: 10px;
             fill: #888;
             transform: rotate(90deg);
-            transition: transform .3s;
+            transition: transform 0.3s;
         }
 
-        &[aria-expanded=true] #{$root}__trigger-icon {
+        &[aria-expanded='true'] #{$root}__trigger-icon {
             transform: rotate(270deg);
         }
     }
@@ -74,7 +73,7 @@ $stack-nav_delimiter-disabled: false !default;
     &__list {
         @include reset-list-style();
 
-        > svg, 
+        > svg,
         > img {
             display: none;
         }
@@ -134,7 +133,6 @@ $stack-nav_delimiter-disabled: false !default;
             }
 
             @if $stack-nav_indicator-enabled {
-
                 &:before {
                     position: absolute;
                     left: 0;
@@ -161,7 +159,9 @@ $stack-nav_delimiter-disabled: false !default;
                         height: 0;
                         border-left: 10px solid transparent;
                         border-right: 10px solid transparent;
-                        border-top: 35px solid $stack-nav_current-indicator-background;
+                        border-top: 35px
+                            solid
+                            $stack-nav_current-indicator-background;
 
                         @include media('>=tablet') {
                             border-top-width: 28px;
