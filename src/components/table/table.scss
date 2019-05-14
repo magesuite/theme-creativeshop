@@ -9,7 +9,6 @@
 @import 'components/typography/mixin';
 @import 'components/table/mixin';
 
-
 $table_background: transparent !default;
 $table_border-bottom: 1px solid $color_border-500 !default;
 
@@ -25,18 +24,21 @@ $table_head-text-transform: uppercase !default;
 $table_item-color: $color_text-800 !default;
 $table_item-font-size: $font-size_paragraph !default;
 $table_item-font-weight: 300 !default;
+$table_item-line-height: 155%;
 $table_item-padding: 0.8rem 1rem !default;
 $table_actions-links-separator: 2px solid $color_border-500 !default;
 
-.table-wrapper {
-   margin-bottom: 2rem;
+/* stylelint-disable no-descending-specificity */
 
-   @include media('<tablet') {
+.table-wrapper {
+    margin-bottom: 2rem;
+
+    @include media('<tablet') {
         border: none;
         display: block;
     }
 
-   &.cart {
+    &.cart {
         @include media('>=tablet') {
             .table-wrapper.cart & {
                 border-top: none;
@@ -44,7 +46,7 @@ $table_actions-links-separator: 2px solid $color_border-500 !default;
         }
     }
 
-   &.grouped {
+    &.grouped {
         tbody:last-child {
             td {
                 border-bottom: none;
@@ -71,14 +73,14 @@ $table_actions-links-separator: 2px solid $color_border-500 !default;
             padding: $table_item-padding;
         }
 
-       thead {
-           border-bottom: $table_head-border-bottom;
+        thead {
+            border-bottom: $table_head-border-bottom;
 
-           th {
-               font-size: $table_head-font-size;
-               text-transform: $table_head-text-transform;
-               color: $table_head-color;
-           }
+            th {
+                font-size: $table_head-font-size;
+                text-transform: $table_head-text-transform;
+                color: $table_head-color;
+            }
         }
 
         tbody {
@@ -125,35 +127,42 @@ $table_actions-links-separator: 2px solid $color_border-500 !default;
             }
         }
 
-       tfoot {
-           font-size: 1.4rem;
-           @include media('<tablet') {
-               background: $color_gallery;
-           }
+        tfoot {
+            font-size: $table_item-font-size;
 
-           .mark {
-               text-align: right;
-           }
+            @include media('<tablet') {
+                background: $color_gallery;
+            }
 
-           @include media('<tablet') {
-               .amount {
-                   text-align: right;
-               }
-           }
-       }
+            .mark {
+                text-align: right;
+            }
 
+            @include media('<tablet') {
+                .amount {
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    .price-excluding-tax,
+    .price-including-tax,
+    .items-qty,
+    .product-item-name {
+        font-size: $table_item-font-size;
+        line-height: $table_item-line-height;
     }
 }
 
-
 //  Mobile layout
 @include media('<tablet') {
-   .table-wrapper {
+    .table-wrapper {
         @include table-wrapper-mobile-layout();
 
-       .table {
-           &:not(.comparison) {
-               &:not(.totals):not(.table-totals) {
+        .table {
+            &:not(.comparison) {
+                &:not(.totals):not(.table-totals) {
                     @include table-mobile-layout();
 
                     &.additional-attributes {
@@ -173,24 +182,24 @@ $table_actions-links-separator: 2px solid $color_border-500 !default;
                 }
             }
         }
-   }
+    }
 
-   .data-table-definition-list {
-       thead {
-           display: none;
-       }
+    .data-table-definition-list {
+        thead {
+            display: none;
+        }
 
-       tbody th {
-           padding-bottom: 0;
-       }
+        tbody th {
+            padding-bottom: 0;
+        }
 
-       tbody th,
-       tbody td {
-           display: block;
-           padding-left: 0;
-           padding-right: 0;
-       }
-   }
+        tbody th,
+        tbody td {
+            display: block;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
 }
 
 // Some tables display mobile layout also on tablet resolution
@@ -204,3 +213,5 @@ $table_actions-links-separator: 2px solid $color_border-500 !default;
         }
     }
 }
+
+/* stylelint-enable */
