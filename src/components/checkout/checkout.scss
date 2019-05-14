@@ -57,6 +57,12 @@ $checkout_addresses-button-type: 'secondary' !default;
 $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
 .checkout-index-index {
+    .column.main {
+        @include media('<tablet') {
+            padding-top: 0;
+        }
+    }
+
     .page-title-wrapper {
         @include visually-hidden();
     }
@@ -120,17 +126,18 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         list-style: none;
         max-width: 100%;
         padding: 0;
-        margin-bottom: 0;
+        margin-bottom: 2rem;
         box-sizing: border-box;
 
         @include media('>=tablet') {
             position: absolute;
             right: 0;
-            top: -7rem;
+            top: -11rem;
             z-index: 2;
+            margin-bottom: 0;
 
             .ie11 & {
-                top: -6.5rem;
+                top: -10.5rem;
             }
         }
     }
@@ -249,7 +256,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         .field[name*='postcode'] {
             @include media('>=tablet') {
                 width: 25%;
-                display: inline-flex;
+                float: left;
 
                 .error,
                 .warning {
@@ -263,7 +270,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
 
         .field[name*='city'] {
             @include media('>=tablet') {
-                width: calc(75% - 1.5rem);
+                width: 75%;
                 padding-left: 1.5rem;
                 display: inline-flex;
                 box-sizing: border-box;

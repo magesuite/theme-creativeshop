@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'components/button/mixin';
+@import 'vendors/include-media';
 
 $login-or-guest_guest-button-type: 'primary' !default;
 $login-or-guest_guest-button-icon-pos: 'no-icon' !default;
@@ -13,6 +14,16 @@ $login-or-guest_login-button-icon-pos: 'no-icon' !default;
     .cs-checkout {
         &__step-tabs {
             .cs-tabs {
+                @include media('<tablet') {
+                    margin: 3.5rem 0 0;
+                    box-shadow: none;
+
+                    &__content {
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
+
                 &__triggers {
                     display: none;
                 }
@@ -33,6 +44,14 @@ $login-or-guest_login-button-icon-pos: 'no-icon' !default;
         }
 
         .login-container {
+            .block-customer-login {
+                margin-top: 4rem;
+
+                @include media('>=tablet') {
+                    margin-top: 0;
+                }
+            }
+
             .fieldset {
                 // Make sure inputs are not to narrow.
                 > .field {
@@ -91,6 +110,10 @@ $login-or-guest_login-button-icon-pos: 'no-icon' !default;
                     }
                 }
             }
+        }
+
+        .opc-estimated-wrapper {
+            display: none;
         }
     }
 }
