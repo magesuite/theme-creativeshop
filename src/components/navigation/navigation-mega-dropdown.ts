@@ -70,7 +70,7 @@ export default class NavigationMegaDropdown extends Navigation {
         this._setColumnCount($megaSubmenu, 1);
 
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
-        const submenuMaxColumns = this._options.flyoutMaxColumnCount - 1;
+        const submenuMaxColumns = this._getColumnsForViewport() - 1;
 
         let flyoutHeight: number = $flyout.height();
         let prevFlyoutHeight: number = 0;

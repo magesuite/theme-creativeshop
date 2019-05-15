@@ -28,8 +28,9 @@ export interface NavigationOptions {
     flyoutMaxHeight?: number;
     /**
      * Maximum number of columns with categories that flyout can have.
+     * This value can be an object with different values per breakpoint or a number.
      */
-    flyoutMaxColumnCount?: number;
+    flyoutMaxColumnCount?: { [minWidth: number]: number } | number;
     /**
      * Tells how flyout should be aligned in relation to navigation item.
      * Possible values are:
@@ -79,7 +80,8 @@ export interface NavigationOptions {
  */
 export default class Navigation {
     protected _$element: JQuery;
-    protected _$window: JQuery<Window> = $(window);
+    protected _$window: JQuery<Window>;
+    protected _viewportWidth: number;
     protected _$container: JQuery;
     protected _containerClientRect: ClientRect;
     protected _$flyouts: JQuery;
@@ -109,7 +111,10 @@ export default class Navigation {
         flyoutClassName: 'cs-navigation__flyout',
         flyoutColumnsClassName: 'cs-navigation__list--level_1',
         flyoutMaxHeight: 400,
-        flyoutMaxColumnCount: 5,
+        flyoutMaxColumnCount: {
+            1023: 4,
+            1279: 5,
+        },
         resizeDebounce: 100,
         flyoutShowDelay: 200,
         flyoutAlignTo: 'center',
@@ -132,6 +137,8 @@ export default class Navigation {
             return;
         }
         this._$element = $element;
+        this._$window = $(window);
+        this._viewportWidth = this._$window.width();
         this._options = $.extend(this._options, options);
         this._$content = $(this._options.contentSelector);
         this._$flyouts = $element.find(`.${this._options.flyoutClassName}`);
@@ -246,12 +253,13 @@ export default class Navigation {
      * @param $flyout jQuery flyout element.
      */
     protected _adjustFlyoutExtras($flyout: JQuery) {
+        const flyoutMaxColumnCount = this._getColumnsForViewport();
         const $flyoutExtras: JQuery = $flyout.children(
             `:not(.${this._options.flyoutColumnsClassName})`
         );
         $flyoutExtras.css({
             'max-width': `${(this._containerClientRect.width /
-                this._options.flyoutMaxColumnCount) *
+                flyoutMaxColumnCount) *
                 2}px`,
         });
     }
@@ -259,7 +267,7 @@ export default class Navigation {
     /**
      * Adjusts the number of flyout columns.
      * The goal is to have as few columns as possible when keeping flyout's height bellow given max height.
-     * @param {JQuery} $flyout [description]
+     * @param {JQuery} $flyout jQuery collection for flyout element.
      */
     protected _adjustFlyoutColumns($flyout: JQuery): void {
         const $flyoutColumns: JQuery = $flyout.find(
@@ -268,7 +276,7 @@ export default class Navigation {
         this._setColumnCount($flyoutColumns, 1);
 
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
-        const flyoutMaxColumns = this._options.flyoutMaxColumnCount;
+        const flyoutMaxColumns: number = this._getColumnsForViewport();
 
         let flyoutHeight: number = $flyout.height();
         let prevFlyoutHeight: number = 0;
@@ -301,9 +309,6 @@ export default class Navigation {
         $flyout: JQuery,
         alignTo: string = 'center'
     ): void {
-        const $flyoutColumns: JQuery = $flyout.find(
-            `.${this._options.flyoutColumnsClassName}`
-        );
         const flyoutClientRect: ClientRect = $flyout
             .get(0)
             .getBoundingClientRect();
@@ -367,10 +372,11 @@ export default class Navigation {
      * @param  {number} columnCount Number of columns to set.
      */
     protected _setColumnCount($element: JQuery, columnCount: number): void {
+        const flyoutMaxColumnCount = this._getColumnsForViewport();
+
         $element.css({
             'column-count': columnCount,
-            width: `${(this._containerClientRect.width /
-                this._options.flyoutMaxColumnCount) *
+            width: `${(this._containerClientRect.width / flyoutMaxColumnCount) *
                 columnCount}px`,
         });
         this._triggerColumnsReflow($element);
@@ -499,6 +505,7 @@ export default class Navigation {
                 this._containerClientRect = this._$container
                     .get(0)
                     .getBoundingClientRect();
+                this._viewportWidth = this._$window.width();
             }, this._options.resizeDebounce);
         };
 
@@ -643,6 +650,26 @@ export default class Navigation {
         $rootItems
             .find('a:last')
             .on('focusout', this._eventListeners.focusOutListener);
+    }
+
+    protected _getColumnsForViewport() {
+        const maxColumnCount = this._options.flyoutMaxColumnCount;
+        if (typeof maxColumnCount === 'number') {
+            return maxColumnCount;
+        }
+
+        const viewportWidth = this._viewportWidth;
+        const breakpoints = Object.keys(maxColumnCount);
+        let columns = maxColumnCount[breakpoints[0]];
+        breakpoints.some(breakpoint => {
+            if (viewportWidth <= Number(breakpoint)) {
+                return true;
+            }
+
+            columns = maxColumnCount[breakpoint];
+        });
+
+        return columns;
     }
 
     /**
