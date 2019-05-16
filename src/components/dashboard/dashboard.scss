@@ -497,16 +497,24 @@ $dashboard_price-font-color: $color_text-500 !default;
         justify-content: space-between;
         flex-wrap: wrap;
 
+        @include media('<tablet') {
+            align-items: center;
+        }
+
+        @include media('<laptop') {
+            flex-direction: column;
+        }
+
         &::after,
         &::before {
             display: none;
         }
 
         .#{$ns}toolbar__item {
-            @include media('<tablet') {
-                width: 100%;
+            @include media('<laptop') {
                 display: flex;
                 justify-content: center;
+                margin: auto;
 
                 p {
                     margin-bottom: 1rem;
@@ -515,7 +523,6 @@ $dashboard_price-font-color: $color_text-500 !default;
 
             &--amount {
                 @include media('<laptop') {
-                    width: 100%;
                     margin-bottom: 1.5rem;
                 }
 
@@ -529,7 +536,7 @@ $dashboard_price-font-color: $color_text-500 !default;
             }
 
             &--limiter {
-                @include media('<tablet') {
+                @include media('<laptop') {
                     margin-top: 2.5rem;
                 }
             }
