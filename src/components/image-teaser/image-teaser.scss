@@ -65,7 +65,6 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
     }
 
     &__carousel {
-        overflow: hidden;
         position: relative;
     }
 
@@ -198,6 +197,18 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
 
         #{$root}__wrapper--content-over & {
             padding: $image-teaser_content-gutter-base * 2;
+
+            #{$root}--items-in-row-3 & {
+                @include media('>=tablet') {
+                    padding: $image-teaser_content-gutter-base * 3;
+                }
+            }
+
+            #{$root}--items-in-row-4 & {
+                @include media('>=laptop') {
+                    padding: $image-teaser_content-gutter-base * 4;
+                }
+            }
         }
 
         &--content-align-x {
@@ -219,20 +230,6 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
 
             &-3 {
                 align-items: flex-end;
-            }
-        }
-
-        #{$root}__wrapper--content-over & {
-            #{$root}--items-in-row-3 & {
-                @include media('>=tablet') {
-                    padding: $image-teaser_content-gutter-base * 3;
-                }
-            }
-
-            #{$root}--items-in-row-4 & {
-                @include media('>=laptop') {
-                    padding: $image-teaser_content-gutter-base * 4;
-                }
             }
         }
 
@@ -388,7 +385,7 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
 
     &__image {
         // Hides alt text so it doesn't show before image is loaded.
-        font: 0/0 a;
+        font: 0/0 a; // stylelint-disable-line
         text-shadow: none;
         color: transparent;
 

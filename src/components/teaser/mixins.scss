@@ -65,6 +65,14 @@
         cursor: pointer;
         outline: none;
 
+        @media (pointer: fine) {
+            opacity: 0;
+
+            #{$root}:hover & {
+                opacity: 1;
+            }
+        }
+
         &--hidden {
             display: none;
         }
@@ -84,6 +92,7 @@
                         #{$teaser_nav-button-horizontal-offset-breakpoint}
                     ) {
                         left: $teaser_nav-button-horizontal-offset-desktop;
+                        opacity: 1;
                     }
                 }
             }
@@ -98,8 +107,15 @@
                         #{$teaser_nav-button-horizontal-offset-breakpoint}
                     ) {
                         right: $teaser_nav-button-horizontal-offset-desktop;
+                        opacity: 1;
                     }
                 }
+            }
+        }
+
+        &:not(&--disabled) {
+            #{$root}--ready & {
+                display: block;
             }
         }
 
@@ -109,18 +125,11 @@
             background: $teaser_nav-button--hover-background;
             border: $teaser_nav-button--hover-border;
             box-shadow: $teaser_nav-button--hover-box-shadow;
-        }
 
-        &:not(&--disabled) {
-            #{$root}--ready & {
-                display: block;
-            }
-
-            &:hover,
-            &:active,
-            &:focus {
-                @if $teaser_nav-button--hover-additional-transform != '' {
-                    transform: $teaser_nav-button-transform $teaser_nav-button--hover-additional-transform;
+            @if $teaser_nav-button--hover-additional-transform != '' {
+                &:not(&--disabled) {
+                    transform: $teaser_nav-button-transform
+                        $teaser_nav-button--hover-additional-transform;
                 }
             }
         }
