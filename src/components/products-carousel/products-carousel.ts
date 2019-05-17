@@ -47,17 +47,17 @@ interface ProductsCarouselOptions {
          * Callbacks to fire on carousel events
          * @type {function}
          */
-        onInit?: (swiperInstance: any) => void,
-        onTransitionStart?: (swiperInstance: any) => void,
-        onTransitionEnd?: (swiperInstance: any) => void,
-        onResize?: (swiperInstance: any) => void
+        onInit?: (swiperInstance: any) => void;
+        onTransitionStart?: (swiperInstance: any) => void;
+        onTransitionEnd?: (swiperInstance: any) => void;
+        onResize?: (swiperInstance: any) => void;
     };
 }
 
 export default class ProductsCarousel {
     protected _$element: JQuery<HTMLElement>;
     protected _teaserInstance: any;
-     /**
+    /**
      * Holds all settings that will be passed to csTeaser
      */
     protected _settings: any;
@@ -67,10 +67,14 @@ export default class ProductsCarousel {
      * @param {$element} Optional, element to be initialized as ProductsPromo component
      * @param {options}  Optional settings object.
      */
-    public constructor($element?: JQuery<HTMLElement>, options?: ProductsCarouselOptions) {
+    public constructor(
+        $element?: JQuery<HTMLElement>,
+        options?: ProductsCarouselOptions
+    ) {
         const _this = this;
         this._$element = $element || $(`.${this._settings.teaserName}`);
-        this._settings = $.extend(true,
+        this._settings = $.extend(
+            true,
             {
                 teaserName: 'cs-products-carousel',
                 slidesPerView: 'auto',
@@ -90,25 +94,31 @@ export default class ProductsCarousel {
                     },
                     init: function() {
                         const swiper = this;
-                        _this._onInit(swiper)
+                        _this._onInit(swiper);
                         _this._fireCallback('onInit', swiper);
                     },
                     transitionStart: function() {
                         const swiper = this;
-                        _this._onTransitionStart(swiper)
-                        _this._fireCallback('onSlideChangeTransitionStart', swiper);
+                        _this._onTransitionStart(swiper);
+                        _this._fireCallback(
+                            'onSlideChangeTransitionStart',
+                            swiper
+                        );
                     },
                     transitionEnd: function() {
                         const swiper = this;
-                        _this._onTransitionEnd(swiper)
-                        _this._fireCallback('onSlideChangeTransitionEnd', swiper);
+                        _this._onTransitionEnd(swiper);
+                        _this._fireCallback(
+                            'onSlideChangeTransitionEnd',
+                            swiper
+                        );
                     },
                     resize: function() {
                         const swiper = this;
-                        _this._onResize(swiper)
+                        _this._onResize(swiper);
                         _this._fireCallback('onResize', swiper);
-                    }
-                }
+                    },
+                },
             },
             options
         );
@@ -121,7 +131,7 @@ export default class ProductsCarousel {
         if (
             callbacks &&
             callbacks[callbackName] &&
-            typeof(callbacks[callbackName]) === 'function'
+            typeof callbacks[callbackName] === 'function'
         ) {
             callbacks[callbackName](swiper);
         }
@@ -153,8 +163,13 @@ export default class ProductsCarousel {
      */
     protected _handleOverflow(swiper: any): void {
         const itemsPerView: number = swiper.params.slidesPerView;
-        const activeIndex: number = swiper.isEnd ? swiper.slides.length - itemsPerView : swiper.activeIndex;
-        const $itemsToShow: JQuery<HTMLUListElement> = $(swiper.slides).slice(activeIndex, activeIndex + itemsPerView);
+        const activeIndex: number = swiper.isEnd
+            ? Math.max(swiper.slides.length - itemsPerView, 0)
+            : swiper.activeIndex;
+        const $itemsToShow: JQuery<HTMLUListElement> = $(swiper.slides).slice(
+            activeIndex,
+            activeIndex + itemsPerView
+        );
         swiper.slides.removeClass(`${swiper.params.slideClass}--in-viewport`);
         $itemsToShow.addClass(`${swiper.params.slideClass}--in-viewport`);
     }
