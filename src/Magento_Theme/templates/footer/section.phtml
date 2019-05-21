@@ -1,6 +1,7 @@
 <?php
 $collapseOptions = $block->getCollapsibleWidgetOptions();
 $isMediaQueryScopeSet = $collapseOptions['mediaQueryScope'];
+$headline = $block->getHeadline();
 ?>
 <div
     class="cs-footer__section <?= $block->getAdditionalCssClasses() ?>"
@@ -8,5 +9,10 @@ $isMediaQueryScopeSet = $collapseOptions['mediaQueryScope'];
          data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
     <?php endif; ?>
 >
+    <?php if ($headline): ?>
+        <h4 class="cs-footer__section-title">
+            <?= $headline; ?>
+        </h4>
+    <?php endif; ?>
     <?= $block->getChildHtml(); ?>
 </div>
