@@ -76,6 +76,12 @@ $pagination-action--disabled_icon-fill: $color_alto !default;
     &__number {
         @include pagination-number();
 
+        .ie11 & {
+            // Bug: Setting min-height breaks align-items: center in ie11.
+            // Setting height to a value less then min-height fixes the align-items: center issue in IE11, but the container still sets its size based on min-height
+            height: 1px;
+        }
+
         #{$root}__item--current & {
             @include pagination-number--current();
         }
@@ -95,6 +101,12 @@ $pagination-action--disabled_icon-fill: $color_alto !default;
         min-height: $pagination-number_min-height; // var inherited from ./mixins
         align-items: center;
         justify-content: center;
+
+        .ie11 & {
+            // Bug: Setting min-height breaks align-items: center in ie11.
+            // Setting height to a value less then min-height fixes the align-items: center issue in IE11, but the container still sets its size based on min-height
+            height: 1px;
+        }
     }
 
     &__action-icon {

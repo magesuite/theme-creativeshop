@@ -49,6 +49,12 @@ $sorter_select-min-height: $toolbar_select-min-height !default;
     &__pagination-number {
         @include pagination-number();
 
+        .ie11 & {
+            // Bug: Setting min-height breaks align-items: center in ie11.
+            // Setting height to a value less then min-height fixes the align-items: center issue in IE11, but the container still sets its size based on min-height
+            height: 1px;
+        }
+
         #{$root}__pagination-item--current & {
             @include pagination-number--current();
         }

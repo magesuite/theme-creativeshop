@@ -6,6 +6,7 @@
 @import 'components/qty-counter/mixin';
 @import 'components/typography/mixin';
 @import 'components/field/mixin';
+@import 'components/pseudoicon/mixin';
 
 $checkout_page-max-width: 93rem !default;
 
@@ -360,6 +361,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     &__after-payments {
         @include media('<tablet') {
             margin-bottom: 0;
+        }
+    }
+
+    &__after-payments {
+        > .payment-option:nth-child(n + 2) {
+            margin-top: $checkout_base-space;
         }
     }
 
@@ -888,11 +895,15 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         text-transform: capitalize;
         background-image: url('../images/icons/edit_color.svg');
         background-repeat: no-repeat;
-        background-position: right center;
-        background-size: 1.8rem;
+        background-position: 99% center;
+        background-size: 1.7rem;
         padding-right: 2.5rem;
         font-size: $checkout_texts-font-size;
         display: inline-block;
+
+        .ie11 & {
+            background-size: 2.5rem 76%;
+        }
 
         span {
             font-family: $font_family-primary;
@@ -1221,28 +1232,18 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     .opc-payment-additional {
         .action-toggle {
             font-size: $checkout_texts-font-size;
+            padding-right: 2.5rem;
+            line-height: 1;
 
-            &:after {
-                content: '';
-                display: inline-block;
-                margin-left: 0.8rem;
-                height: 0.6rem;
-                width: 1.3rem;
-                box-sizing: border-box;
-                transition: transform 0.3s;
-                background-image: url('../images/icons/arrow_down.svg');
-                background-repeat: no-repeat;
-                background-size: contain;
-                transform: translateY(-2px);
-            }
-        }
-
-        &._active {
-            .action-toggle {
-                &:after {
-                    transform: rotate(-180deg);
-                }
-            }
+            @include pseudoicon(
+                $type: 'arrow',
+                $arrow-default: 'down',
+                $arrow-active: 'up',
+                $width: 0.7rem,
+                $height: 1px,
+                $arrow-offset: 0.5rem,
+                $position-side-offset: 0
+            );
         }
     }
 
