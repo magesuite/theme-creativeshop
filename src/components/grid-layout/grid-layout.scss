@@ -35,14 +35,14 @@ $grid-layout_teaser-headline-font-size-min: 1.8rem !default;
 $grid-layout_teaser-headline-font-size-max: 2.8rem !default;
 $grid-layout_teaser-headline-font-map: (
     $page_min-width: $grid-layout_teaser-headline-font-size-min,
-    $page_max-width: $grid-layout_teaser-headline-font-size-max
+    $page_max-width: $grid-layout_teaser-headline-font-size-max,
 ) !default;
 $grid-layout_teaser-x2-headline-bottom-margin: $grid-layout_teaser-headline-bottom-margin !default;
 $grid-layout_teaser-x2-headline-font-size-min: $grid-layout_teaser-headline-font-size-min !default;
 $grid-layout_teaser-x2-headline-font-size-max: 4rem !default;
 $grid-layout_teaser-x2-headline-font-map: (
     $page_min-width: $grid-layout_teaser-x2-headline-font-size-min,
-    $page_max-width: $grid-layout_teaser-x2-headline-font-size-max
+    $page_max-width: $grid-layout_teaser-x2-headline-font-size-max,
 ) !default;
 
 $grid-layout_teaser-subheadline-bottom-margin: 0.6em !default;
@@ -52,14 +52,14 @@ $grid-layout_teaser-subheadline-font-size-min: 1.6rem !default;
 $grid-layout_teaser-subheadline-font-size-max: 1.8rem !default;
 $grid-layout_teaser-subheadline-font-map: (
     $page_min-width: $grid-layout_teaser-subheadline-font-size-min,
-    $page_max-width: $grid-layout_teaser-subheadline-font-size-max
+    $page_max-width: $grid-layout_teaser-subheadline-font-size-max,
 ) !default;
 $grid-layout_teaser-x2-subheadline-bottom-margin: $grid-layout_teaser-subheadline-bottom-margin !default;
 $grid-layout_teaser-x2-subheadline-font-size-min: $grid-layout_teaser-subheadline-font-size-min !default;
 $grid-layout_teaser-x2-subheadline-font-size-max: 2.5rem !default;
 $grid-layout_teaser-x2-subheadline-font-map: (
     $page_min-width: $grid-layout_teaser-x2-subheadline-font-size-min,
-    $page_max-width: $grid-layout_teaser-x2-subheadline-font-size-max
+    $page_max-width: $grid-layout_teaser-x2-subheadline-font-size-max,
 ) !default;
 
 $grid-layout_teaser-paragraph-bottom-margin: 1em !default;
@@ -69,26 +69,37 @@ $grid-layout_teaser-paragraph-font-size-min: 1.3rem !default;
 $grid-layout_teaser-paragraph-font-size-max: 1.4rem !default;
 $grid-layout_teaser-paragraph-font-map: (
     $page_min-width: $grid-layout_teaser-paragraph-font-size-min,
-    $page_max-width: $grid-layout_teaser-paragraph-font-size-max
+    $page_max-width: $grid-layout_teaser-paragraph-font-size-max,
 ) !default;
 $grid-layout_teaser-x2-paragraph-bottom-margin: $grid-layout_teaser-paragraph-bottom-margin !default;
 $grid-layout_teaser-x2-paragraph-font-size-min: $grid-layout_teaser-paragraph-font-size-min !default;
 $grid-layout_teaser-x2-paragraph-font-size-max: 1.6rem !default;
 $grid-layout_teaser-x2-paragraph-font-map: (
     $page_min-width: $grid-layout_teaser-x2-paragraph-font-size-min,
-    $page_max-width: $grid-layout_teaser-x2-paragraph-font-size-max
+    $page_max-width: $grid-layout_teaser-x2-paragraph-font-size-max,
 ) !default;
 
 $grid-layout_teaser-cta-button-type: $button_default-type !default;
 $grid-layout_teaser-cta-button-icon-pos: $button_default-icon-pos !default;
 
-
 // values: false / breakpoint name - the same as for @media mixin;
 // Use false if you don't want to hide button at all
 $grid-layout_teaser-button-visible-from: '>=tablet';
 
-$grid-layout_bricks-per-row: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, one-column) !default;
-$grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_ContentConstructor, columns, multiple-columns) !default;
+$grid-layout_bricks-per-row: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructor,
+    columns,
+    one-column
+) !default;
+$grid-layout_bricks-per-row--with-sidebar: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructor,
+    columns,
+    multiple-columns
+) !default;
 
 .#{$ns}grid-layout {
     $root: &;
@@ -138,6 +149,8 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
             position: absolute;
             width: 100%;
             height: 100%;
+            top: 0;
+            left: 0;
             display: flex;
             flex-direction: column;
             padding: $grid-layout_teaser-content-padding;
@@ -172,11 +185,17 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
             color: $grid-layout_teaser-dark-scheme-color;
             font-weight: $grid-layout_teaser-headline-font-weight;
             text-transform: $grid-layout_teaser-headline-text-transform;
-            @include poly-fluid-sizing('font-size', $grid-layout_teaser-headline-font-map);
+            @include poly-fluid-sizing(
+                'font-size',
+                $grid-layout_teaser-headline-font-map
+            );
 
             #{$root}__brick--x2 & {
                 margin: 0 0 $grid-layout_teaser-x2-headline-bottom-margin;
-                @include poly-fluid-sizing('font-size', $grid-layout_teaser-x2-headline-font-map);
+                @include poly-fluid-sizing(
+                    'font-size',
+                    $grid-layout_teaser-x2-headline-font-map
+                );
             }
 
             #{$root}__teaser--scheme-light & {
@@ -190,11 +209,17 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
             color: $grid-layout_teaser-dark-scheme-color;
             font-weight: $grid-layout_teaser-subheadline-font-weight;
             text-transform: $grid-layout_teaser-subheadline-text-transform;
-            @include poly-fluid-sizing('font-size', $grid-layout_teaser-subheadline-font-map);
+            @include poly-fluid-sizing(
+                'font-size',
+                $grid-layout_teaser-subheadline-font-map
+            );
 
             #{$root}__brick--x2 & {
                 margin: 0 0 $grid-layout_teaser-x2-subheadline-bottom-margin;
-                @include poly-fluid-sizing('font-size', $grid-layout_teaser-x2-subheadline-font-map);
+                @include poly-fluid-sizing(
+                    'font-size',
+                    $grid-layout_teaser-x2-subheadline-font-map
+                );
             }
 
             #{$root}__teaser--scheme-light & {
@@ -207,11 +232,17 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
             color: $grid-layout_teaser-dark-scheme-color;
             font-weight: $grid-layout_teaser-paragraph-font-weight;
             text-transform: $grid-layout_teaser-paragraph-text-transform;
-            @include poly-fluid-sizing('font-size', $grid-layout_teaser-paragraph-font-map);
+            @include poly-fluid-sizing(
+                'font-size',
+                $grid-layout_teaser-paragraph-font-map
+            );
 
             #{$root}__brick--x2 & {
                 margin: 0 0 $grid-layout_teaser-x2-paragraph-bottom-margin;
-                @include poly-fluid-sizing('font-size', $grid-layout_teaser-x2-paragraph-font-map);
+                @include poly-fluid-sizing(
+                    'font-size',
+                    $grid-layout_teaser-x2-paragraph-font-map
+                );
             }
 
             #{$root}__teaser--scheme-light & {
@@ -221,17 +252,25 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
 
         &-cta {
             &-button {
-                @include button($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
+                @include button(
+                    $type: $grid-layout_teaser-cta-button-type,
+                    $icon_pos: $grid-layout_teaser-cta-button-icon-pos
+                );
 
                 &-span {
-                    @include button_span($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
+                    @include button_span(
+                        $type: $grid-layout_teaser-cta-button-type,
+                        $icon_pos: $grid-layout_teaser-cta-button-icon-pos
+                    );
                 }
 
                 &-icon {
-                    @include button_icon($type: $grid-layout_teaser-cta-button-type, $icon_pos: $grid-layout_teaser-cta-button-icon-pos);
+                    @include button_icon(
+                        $type: $grid-layout_teaser-cta-button-type,
+                        $icon_pos: $grid-layout_teaser-cta-button-icon-pos
+                    );
                 }
             }
-
         }
     }
 
@@ -298,7 +337,9 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
     }
 
     &--with-sidebar {
-        @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar {
+        @each $breakpoint,
+            $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
+        {
             #{$root}__brick {
                 @include media('>=#{$breakpoint}') {
                     width: calc(100% / #{$itemsPerRow});
@@ -349,7 +390,9 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get($view-xml, vars, MageSuite_C
             }
 
             #{$root}--with-sidebar & {
-                @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar {
+                @each $breakpoint,
+                    $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
+                {
                     @include media('>=#{$breakpoint}') {
                         grid-template-columns: repeat(#{$itemsPerRow}, 1fr);
                     }

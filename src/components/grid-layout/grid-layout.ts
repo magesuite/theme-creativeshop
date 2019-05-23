@@ -2,7 +2,7 @@
 import * as $ from 'jquery';
 
 import breakpoint from 'utils/breakpoint/breakpoint';
-import * as viewXml from 'etc/view.json'
+import * as viewXml from 'etc/view.json';
 import deepGet from 'utils/deep-get/deep-get';
 
 interface IGridLayoutSettings {
@@ -15,7 +15,7 @@ interface IGridLayoutSettings {
      */
     dataSourceInputSelector: string;
 
-     /**
+    /**
      * Defines class component (wrapper)
      * @default {cs-grid-layout}
      * @type {String}
@@ -43,7 +43,7 @@ interface IGridLayoutSettings {
      * @default {false}
      * @type {Boolean}
      */
-    forceFloatingTeasersSupport?: Boolean;
+    forceFloatingTeasersSupport?: boolean;
 }
 
 /**
@@ -51,13 +51,6 @@ interface IGridLayoutSettings {
  * Clone resides on the bottom of the DOM tree and is positioned absolutely with height z-index ( defined in options )
  */
 export default class GridLayout {
-    private $wrapper: JQuery;
-    private $grid: JQuery;
-    private $productsGrid: JQuery;
-    private $bricks: JQuery;
-    private settings?: IGridLayoutSettings;
-    private columnsCfg: any;
-    private teasersCfg: any;
     public isCssGrid: boolean;
     public isProductsGrid: boolean;
     public productsGridRowsLimits: any;
@@ -65,6 +58,13 @@ export default class GridLayout {
     public teasers: any;
     public currentColsInRow: number;
     public currentRowsCount: number;
+    private $wrapper: JQuery;
+    private $grid: JQuery;
+    private $productsGrid: JQuery;
+    private $bricks: JQuery;
+    private settings?: IGridLayoutSettings;
+    private columnsCfg: any;
+    private teasersCfg: any;
 
     /**
      * Creates and initiates new GridLayout component with given settings.
@@ -92,7 +92,7 @@ export default class GridLayout {
         this.isCssGrid = this._getIsCssGridSupported();
         this.$productsGrid = this.$wrapper.parent('.cs-products-grid');
         this.isProductsGrid = this.$productsGrid.length > 0;
-        
+
         this.productsGridRowsLimits = this.isProductsGrid
             ? {
                   mobile: this.$productsGrid.data('rows-mobile'),
@@ -171,10 +171,19 @@ export default class GridLayout {
      * @return {any}
      */
     protected _getColumnsConfiguration(): any {
-        const columnsCfg: any = deepGet(viewXml, 'vars.MageSuite_ContentConstructor.columns');
-        const currentColumnsCfg: any = !this.$wrapper.hasClass(`${this.settings.componentClass}--with-sidebar`) ? columnsCfg['one-column'] : columnsCfg['multiple-columns'];
+        const columnsCfg: any = deepGet(
+            viewXml,
+            'vars.MageSuite_ContentConstructor.columns'
+        );
+        const currentColumnsCfg: any = !this.$wrapper.hasClass(
+            `${this.settings.componentClass}--with-sidebar`
+        )
+            ? columnsCfg['one-column']
+            : columnsCfg['multiple-columns'];
 
-        return (typeof currentColumnsCfg !== 'undefined') ? currentColumnsCfg : columnsCfg.default_layout;
+        return typeof currentColumnsCfg !== 'undefined'
+            ? currentColumnsCfg
+            : columnsCfg.default_layout;
     }
 
     /**
@@ -183,14 +192,20 @@ export default class GridLayout {
      */
     protected _getTeasersData(): any {
         let result: any = '';
-        const $dataEl: JQuery<HTMLElement> = this.$wrapper.find(this.settings.dataSourceInputSelector);
+        const $dataEl: JQuery<HTMLElement> = this.$wrapper.find(
+            this.settings.dataSourceInputSelector
+        );
 
         if ($dataEl.length) {
             try {
                 result = JSON.parse($dataEl.val() as string);
             } catch (err) {
-                console.warn(`Could not parse teasers data from given element: ${err}`);
-            };
+                /* tslint:disable */
+                console.warn(
+                    `Could not parse teasers data from given element: ${err}`
+                );
+                /* tslint:enable */
+            }
         }
 
         return result;
@@ -298,11 +313,14 @@ export default class GridLayout {
             sizeY = 1;
         }
 
-        if (teaserData.gridPosition.x === 'right' && teaserData.gridPosition.y > this.currentColsInRow) {
+        if (
+            teaserData.gridPosition.x === 'right' &&
+            teaserData.gridPosition.y > this.currentColsInRow
+        ) {
             itemIndex = itemIndex + (this.currentColsInRow - sizeX);
         } else if (teaserData.gridPosition.x === 'center' && sizeY < 2) {
             itemIndex = Math.floor(
-                itemIndex + ((this.currentColsInRow / 2) - (sizeX / 2))
+                itemIndex + (this.currentColsInRow / 2 - sizeX / 2)
             );
         }
 
@@ -334,7 +352,7 @@ export default class GridLayout {
 
         if (
             (this.currentRowsCount > 1 && this.currentRowsCount < sizeY) ||
-            (this.currentColsInRow < 2 && sizeX > 1) || 
+            (this.currentColsInRow < 2 && sizeX > 1) ||
             this.$bricks.length < idx + sizeX * sizeY
         ) {
             return false;
@@ -349,7 +367,7 @@ export default class GridLayout {
      */
     protected _getIsVisibleOnMobiles(value: any): boolean {
         if (typeof value === 'string') {
-            return Boolean(parseInt(value));
+            return Boolean(parseInt(value, 10));
         } else if (typeof value === 'number') {
             return Boolean(value);
         }
@@ -394,11 +412,13 @@ export default class GridLayout {
             } else {
                 idx =
                     idx - this.teasersCfg[i].size.x * this.teasersCfg[i].size.y;
+                /* tslint:disable */
                 console.warn(
                     `cs-grid-layout: Teaser was declared but not found in DOM (data-teaser-id: ${
                         this.teasersCfg[i].id
                     })`
                 );
+                /* tslint:enable */
             }
         }
     }
@@ -429,21 +449,26 @@ export default class GridLayout {
      */
     protected _getTeaserPositionInGrid(teaserData: any): any {
         let xPos: any = 1;
-        let yPos: any = teaserData.gridPosition.y;
+        let yPos: any = parseInt(teaserData.gridPosition.y, 10);
 
-        if (yPos >= this.currentRowsCount && teaserData.size.y > 1) {
+        if (Number.isNaN(yPos)) {
+            yPos = 1;
+        } else if (yPos >= this.currentRowsCount && teaserData.size.y > 1) {
             yPos = this.currentRowsCount - 1;
         }
 
         if (teaserData.gridPosition.x === 'right') {
             xPos = this.currentColsInRow - teaserData.size.x + 1;
         } else if (teaserData.gridPosition.x === 'center') {
-            xPos = (this.currentColsInRow % 2) === 1 ? Math.ceil(this.currentColsInRow / 2) : Math.floor(this.currentColsInRow / 2);
+            xPos =
+                this.currentColsInRow % 2 === 1
+                    ? Math.ceil(this.currentColsInRow / 2)
+                    : Math.floor(this.currentColsInRow / 2);
         }
 
         return {
             x: xPos,
-            y: parseInt(yPos),
+            y: yPos,
         };
     }
 
@@ -474,7 +499,7 @@ export default class GridLayout {
                 ) {
                     $teaser.addClass(`${this.settings.brickClass}--hidden`);
                 } else {
-                    let pos: any = this._getTeaserPositionInGrid(
+                    const pos: any = this._getTeaserPositionInGrid(
                         this.teasersCfg[i]
                     );
 
@@ -496,12 +521,17 @@ export default class GridLayout {
                     // check if teasers don't cover each other, if yes, put the last covering to the next free row
                     for (let n: number = 0; n < this.teasersCfg.length; n++) {
                         if (i > n) {
-                            let teaserPos: any = this._getTeaserPositionInGrid(
+                            const teaserPos: any = this._getTeaserPositionInGrid(
                                 this.teasersCfg[n]
                             );
 
-                            if (teaserPos.y === pos.y && teaserPos.x === pos.x) {
-                                pos.y = pos.y + parseInt(this.teasersCfg[n].size.y);
+                            if (
+                                teaserPos.y === pos.y &&
+                                teaserPos.x === pos.x
+                            ) {
+                                pos.y =
+                                    pos.y +
+                                    parseInt(this.teasersCfg[n].size.y, 10);
                                 teaser.style.gridRowStart = pos.y;
                             }
                         }
@@ -514,11 +544,13 @@ export default class GridLayout {
 
                 this.teasers.push(teaser);
             } else {
+                /* tslint:disable */
                 console.warn(
                     `cs-grid-layout: Teaser was declared but not found in DOM (Teaser ID: ${
                         this.teasersCfg[i].id
                     })`
                 );
+                /* tslint:enable */
             }
         }
     }
@@ -541,7 +573,7 @@ export default class GridLayout {
      * Recalculation is triggered only if number of columns was changed
      */
     protected _resizeHandler(): void {
-        let _this: any = this;
+        const _this: any = this;
         let throttler: any;
 
         if (this.isProductsGrid) {
@@ -621,8 +653,11 @@ export default class GridLayout {
         let itemsToShow: number =
             this.currentColsInRow * this.productsGridRowsLimits[breakpoint];
         const teasers: any = this._getTeaserItems();
-        let teaserSize: any = {
-            x: this.currentRowsCount < 2 ? 1 : parseInt(this.teasersCfg[0].size.x, 10),
+        const teaserSize: any = {
+            x:
+                this.currentRowsCount < 2
+                    ? 1
+                    : parseInt(this.teasersCfg[0].size.x, 10),
             y: parseInt(this.teasersCfg[0].size.y, 10),
         };
 
