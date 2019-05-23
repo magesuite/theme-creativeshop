@@ -44,8 +44,11 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                         <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                             <?php foreach ($_options as $_option) : ?>
                             <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                            <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
-                            <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>" class="cs-cart-item__option-link">
+                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                                <a class="cs-cart-item__option-link"
+                                    href="<?php /* @escapeNotVerified */ echo $this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]);?>"
+                                    title="<?php echo $block->escapeHtml(__('Edit item parameter')); ?>"
+                                >
                             <?php endif; ?>
                                 <dl class="cs-cart-item__options-group item-options">
                                     <dt class="cs-cart-item__options-label">
@@ -62,7 +65,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                                         <?php endif; ?>
                                     </dd>
                                 </dl>
-                            <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
+                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
                             </a>
                             <?php endif; ?>
                             <?php endforeach; ?>
