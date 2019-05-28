@@ -15,19 +15,19 @@ interface ImageTeaserModalHandlers {
      * Used to prepare modal if it's done via JS
      * @type {function}
      */
-    renderModal?: Function;
+    renderModal?: () => void;
 
     /**
      * Handler of modal behavior: opening.
      * @type {function}
      */
-    openModal?: Function;
+    openModal?: () => void;
 
     /**
      * Handler of modal behavior: closing.
      * @type {function}
      */
-    closeModal?: Function;
+    closeModal?: () => void;
 }
 
 /**
@@ -168,6 +168,12 @@ interface ImageTeaserOptions {
      * @type {Object}
      */
     modalHandlers?: ImageTeaserModalHandlers;
+
+    /**
+     * Defines if ProportionalScaler shall be initialized.
+     * @type {boolean}
+     */
+    scaleFontsDynamically?: boolean;
 }
 
 export default class ImageTeaser {
@@ -276,7 +282,9 @@ export default class ImageTeaser {
             }
         }
 
-        this._initializeProportionalSlideScaling();
+        if (this._options.scaleFontsDynamically) {
+            this._initializeProportionalSlideScaling();
+        }
     }
 
     public getInstance(): any {
@@ -342,9 +350,11 @@ export default class ImageTeaser {
             try {
                 result = JSON.parse(JSON.stringify(dataAttrCfg));
             } catch (err) {
+                /* tslint:disable */
                 console.warn(
                     `Could not parse settings from data-attribute: ${err}`
                 );
+                /* tslint:enable */
             }
         }
 
