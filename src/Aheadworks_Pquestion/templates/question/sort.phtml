@@ -2,6 +2,8 @@
 
 // @codingStandardsIgnoreFile
 
+// File overvritten to make sorting direction options a part of the select options.
+
 /** @var \Aheadworks\Pquestion\Block\Question\Sort $this */
 ?>
 <div class="aw-pq-question-sort-block field">
@@ -11,16 +13,21 @@
     <select class="select aw-pq-question-sort__sortby">
         <?php foreach ($this->getOptions() as $value => $label): ?>
             <option
-                value="<?php echo $this->escapeHtml($value); ?>"
-                <?php if ($this->getCurrentOrder() == $value): ?> selected<?php endif ?>
+                value="<?php echo $this->escapeHtml($value); ?>/ASC"
+                <?php if ($this->getCurrentOrder() == $value && $this->getCurrentDir() == "ASC"): ?> selected<?php endif ?>
             >
-                <?php echo $this->escapeHtml($label); ?>
+                <?php echo $this->escapeHtml($label); ?> - <?= __('Ascending'); ?>
+            </option>
+
+            <option
+                value="<?php echo $this->escapeHtml($value); ?>/DESC"
+                <?php if ($this->getCurrentOrder() == $value && $this->getCurrentDir() == "DESC"): ?> selected<?php endif ?>
+            >
+                <?php echo $this->escapeHtml($label); ?> - <?= __('Descending'); ?>
             </option>
         <?php endforeach ?>
     </select>
-    <a href="javascript:void(0)" class="aw-pq-question-sort__dir">
-
-    </a>
+    <div class="aw-pq-question-sort__dir"></div>
 </div>
 <script type="text/javascript">
     require([
@@ -42,12 +49,23 @@
             'product': <?php /* @noEscape */ echo $this->getProduct(); ?>,
             'formKey': '<?php /* @noEscape */ echo $this->getSessionFormKey(); ?>'
         };
-        new AWPqSorter(config);
-        window.AWPqSorter.prototype._hideOverlay = function() {
-            if (this.overlay) {
-                this.overlay.remove();
-            }
-        };
 
+        window.AWPqSorter.prototype.initObservers = function () {
+            var me = this;
+
+            Event.observe(this.sortby, 'change', function (e) {
+                const splitValue = me.sortby.value.split('/');
+                const sortBy = splitValue[0];
+                const sortDir = splitValue[1];
+
+                if (!me.disabled) {
+                    me.sortByValue = sortBy;
+                    me.sortDirValue = sortDir;
+                    me._dispatch();
+                }
+            });
+        }
+
+        new AWPqSorter(config);
     });
 </script>
