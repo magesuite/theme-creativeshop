@@ -15,19 +15,19 @@ interface ImageTeaserModalHandlers {
      * Used to prepare modal if it's done via JS
      * @type {function}
      */
-    renderModal?: () => void;
+    renderModal?: (ImageTeaser: ImageTeaser) => false;
 
     /**
      * Handler of modal behavior: opening.
      * @type {function}
      */
-    openModal?: () => void;
+    openModal?: (ImageTeaser: ImageTeaser) => false;
 
     /**
      * Handler of modal behavior: closing.
      * @type {function}
      */
-    closeModal?: () => void;
+    closeModal?: (ImageTeaser: ImageTeaser) => false;
 }
 
 /**
@@ -201,6 +201,7 @@ export default class ImageTeaser {
             videoPlayerWidth: '1200',
             videoPlayerHeight: '675',
             openVideoInFullscreenMobile: true,
+            scaleFontsDynamically: true,
             modalHandlers: {
                 renderModal: (ImageTeaser: ImageTeaser) => false,
                 openModal: (ImageTeaser: ImageTeaser) => false,
