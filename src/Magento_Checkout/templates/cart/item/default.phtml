@@ -44,6 +44,12 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                         <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                             <?php foreach ($_options as $_option) : ?>
                             <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                                <a class="cs-cart-item__option-link"
+                                    href="<?php /* @escapeNotVerified */ echo $this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]);?>"
+                                    title="<?php echo $block->escapeHtml(__('Edit item parameter')); ?>"
+                                >
+                            <?php endif; ?>
                                 <dl class="cs-cart-item__options-group item-options">
                                     <dt class="cs-cart-item__options-label">
                                         <?= $block->escapeHtml($_option['label']) ?>
@@ -54,8 +60,14 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                                         <?php else: ?>
                                             <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
                                         <?php endif; ?>
+                                        <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
+                                            <?= $block->getChildHtml('checkout.cart.item.renderers.default.option.edit'); ?>
+                                        <?php endif; ?>
                                     </dd>
                                 </dl>
+                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                            </a>
+                            <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif;?>

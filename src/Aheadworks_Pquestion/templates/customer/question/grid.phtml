@@ -1,0 +1,57 @@
+<?php
+/**
+ * Copyright 2019 aheadWorks. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+// This file was overwritten to add data-th attributes to table cells,
+// to display labels correctly on mobiles
+
+/** @var \Aheadworks\Pquestion\Block\Customer\Question\Grid $this */
+?>
+<h4><?php echo $this->escapeHtml(__('Your Questions'));?></h4>
+<?php $questionCollection = $this->getCollection(); ?>
+<?php if ($questionCollection->getSize()) : ?>
+<div class="table-wrapper">
+    <table class="data-table table" id="aw-pq-customer-questions-table">
+        <col width="150" />
+        <col />
+        <col width="1" />
+        <col width="130" />
+        <thead>
+        <tr>
+            <th><span class="nobr"><?php echo $this->escapeHtml(__('Product')); ?></span></th>
+            <th><span class="nobr"><?php echo $this->escapeHtml(__('Question')); ?></span></th>
+            <th><span class="nobr"><?php echo $this->escapeHtml(__('Status')); ?></span></th>
+            <th><span class="nobr"><?php echo $this->escapeHtml(__('Is Answered?')); ?></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($questionCollection as $question) : ?>
+            <tr>
+                <td data-th="<?php echo $this->escapeHtml(__('Product')); ?>">
+                    <a href="<?php echo $this->escapeUrl($this->getProductUrlByQuestion($question));?>" title="<?php echo $this->escapeHtml($this->getProductNameByQuestion($question));?>">
+                        <?php echo $this->escapeHtml($this->getProductNameByQuestion($question));?>
+                    </a>
+                </td>
+                <td data-th="<?php echo $this->escapeHtml(__('Question')); ?>"
+                    title="<?php echo $this->escapeHtml($this->escapeHtml($question->getContent()));?>">
+                    <?php echo $this->escapeHtml($this->truncateString($this->escapeHtml($question->getContent()), 300));?>
+                </td>
+                <td data-th="<?php echo $this->escapeHtml(__('Status')); ?>">
+                    <?php echo $this->escapeHtml($this->getStatusLabelByQuestion($question)); ?>
+                </td>
+                <td data-th="<?php echo $this->escapeHtml(__('Is Answered')); ?>">
+                    <span class="nobr"><?php echo $this->escapeHtml($this->getIsAnsweredLabelForQuestion($question)); ?></span>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<?php else: ?>
+    <p><?php echo $this->escapeHtml(__('There are no questions yet.')); ?></p>
+<?php endif ?>
+<br />

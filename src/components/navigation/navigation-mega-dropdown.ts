@@ -14,6 +14,10 @@ export default class NavigationMegaDropdown extends Navigation {
     public constructor($element: JQuery, options?: NavigationOptions) {
         super($element, options);
 
+        if (!$element.length) {
+            return;
+        }
+
         this._$allCategoriesItem = this._$element.find(
             this._allCategoriesItemSelector
         );

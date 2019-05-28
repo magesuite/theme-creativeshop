@@ -130,43 +130,29 @@
         var cache = {};
         var queued = {};
 
-        var parseAndReplace = function(text, svg) {
-            // Setup a parser to convert the response to text/xml in order for it
-            // to be manipulated and changed
-            var parser = new DOMParser(),
-                result = parser.parseFromString(text, 'text/xml'),
-                inlinedSVG = result.getElementsByTagName('svg')[0],
-                attributes = svg.attributes;
-
-            // Remove some of the attributes that aren't needed
-            inlinedSVG.removeAttribute('xmlns:a');
-            inlinedSVG.removeAttribute('width');
-            inlinedSVG.removeAttribute('height');
-            inlinedSVG.removeAttribute('x');
-            inlinedSVG.removeAttribute('y');
-            inlinedSVG.removeAttribute('enable-background');
-            inlinedSVG.removeAttribute('xmlns:xlink');
-            inlinedSVG.removeAttribute('xml:space');
-            inlinedSVG.removeAttribute('version');
+        var parseAndReplace = function(svg, img) {
+            var attributes = img.attributes;
 
             // Add in the attributes from the original <img> except `src` or
             // `alt`, we don't need either
-            Array.prototype.slice.call(attributes).forEach(function(attribute) {
-                if (attribute.name !== 'src' && attribute.name !== 'alt') {
-                    inlinedSVG.setAttribute(attribute.name, attribute.value);
+            for (var i = attributes.length - 1; i >= 0; i--) {
+                var attributeName = attributes[i].name;
+
+                if (attributeName !== 'src' && attributeName !== 'alt') {
+                    svg.setAttribute(attributeName, attributes[i].value);
                 }
-            });
+            }
 
             // Add an additional class to the inlined SVG to imply it was
             // infact inlined, might be useful to know
-            if (inlinedSVG.classList) {
-                inlinedSVG.classList.add('inlined-svg');
+            if (svg.classList) {
+                svg.classList.add('inlined-svg');
             } else {
-                inlinedSVG.className += ' ' + 'inlined-svg';
+                svg.className += ' ' + 'inlined-svg';
             }
 
             // Add in some accessibility quick wins
-            inlinedSVG.setAttribute('role', 'img');
+            svg.setAttribute('role', 'img');
 
             // Use the `longdesc` attribute if one exists
             if (attributes.longdesc) {
@@ -179,12 +165,12 @@
                     );
 
                 description.appendChild(descriptionText);
-                inlinedSVG.insertBefore(description, inlinedSVG.firstChild);
+                svg.insertBefore(description, svg.firstChild);
             }
 
             // Use the `alt` attribute if one exists
             if (attributes.alt) {
-                inlinedSVG.setAttribute('aria-labelledby', 'title');
+                svg.setAttribute('aria-labelledby', 'title');
 
                 var title = document.createElementNS(
                         'http://www.w3.org/2000/svg',
@@ -193,21 +179,21 @@
                     titleText = document.createTextNode(attributes.alt.value);
 
                 title.appendChild(titleText);
-                inlinedSVG.insertBefore(title, inlinedSVG.firstChild);
+                svg.insertBefore(title, svg.firstChild);
             }
 
             // Replace the image with the SVG
-            if (svg.parentNode) {
-                svg.parentNode.replaceChild(inlinedSVG, svg);
+            if (img.parentNode) {
+                img.parentNode.replaceChild(svg, img);
             }
         };
 
-        var resolveQueue = function(text, src) {
+        var resolveQueue = function(svg, src) {
             queued[src] = queued[src] || [];
 
-            var svg;
-            while ((svg = queued[src].shift())) {
-                parseAndReplace(text, svg);
+            var img;
+            while ((img = queued[src].shift())) {
+                parseAndReplace(svg.cloneNode(true), img);
             }
         };
 
@@ -216,7 +202,8 @@
          * @public
          */
         var inliner = function(cb) {
-            var svgs = getAll();
+            var svgs = getAll(),
+                parser = new DOMParser();
 
             Array.prototype.forEach.call(svgs, function(svg, i) {
                 // Store some attributes of the image
@@ -229,7 +216,7 @@
                 }
 
                 if (cache[src]) {
-                    parseAndReplace(cache[src], svg);
+                    parseAndReplace(cache[src].cloneNode(true), svg);
                     return;
                 }
 
@@ -246,8 +233,25 @@
 
                 request.onload = function() {
                     if (request.status >= 200 && request.status < 400) {
-                        cache[src] = request.responseText;
-                        resolveQueue(request.responseText, src);
+                        var xml = parser.parseFromString(
+                            request.responseText,
+                            'text/xml'
+                        );
+                        var svg = xml.getElementsByTagName('svg')[0];
+
+                        // Remove some of the attributes that aren't needed
+                        svg.removeAttribute('xmlns:a');
+                        svg.removeAttribute('width');
+                        svg.removeAttribute('height');
+                        svg.removeAttribute('x');
+                        svg.removeAttribute('y');
+                        svg.removeAttribute('enable-background');
+                        svg.removeAttribute('xmlns:xlink');
+                        svg.removeAttribute('xml:space');
+                        svg.removeAttribute('version');
+
+                        cache[src] = svg;
+                        resolveQueue(svg, src);
                     } else {
                         console.error(
                             'There was an error retrieving the source of the SVG.'
@@ -271,7 +275,9 @@
          */
         inlineSVG.init = function(options, callback) {
             // Test for support
-            if (!supports) { return; }
+            if (!supports) {
+                return;
+            }
 
             // Merge users option with defaults
             settings = extend(defaults, options || {});

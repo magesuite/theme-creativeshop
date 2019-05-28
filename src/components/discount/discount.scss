@@ -8,7 +8,7 @@ $discount_border-top: 1px solid $color_alto !default;
 $discount_title-icon-color: $color_gray !default;
 
 $discount_button-type: 'secondary' !default;
-$discount_button-icon-pos: $button_default-icon-pos !default;
+$discount_button-icon-pos: 'no-icon' !default;
 
 .#{$ns}discount {
     $root: &;
@@ -56,7 +56,7 @@ $discount_button-icon-pos: $button_default-icon-pos !default;
             margin-bottom: 2rem;
         }
 
-        #{$root}[data-collapsible="true"] & {
+        #{$root}[data-collapsible='true'] & {
             cursor: pointer;
         }
 
@@ -73,11 +73,14 @@ $discount_button-icon-pos: $button_default-icon-pos !default;
 
     &__trigger-icon {
         margin-left: 0.8rem;
-        width: auto;
         height: 6px;
         width: 1.2rem;
-        transition: transform .3s;
+        transition: transform 0.3s;
         display: none;
+
+        .ie11 & {
+            margin-bottom: 0.2rem;
+        }
 
         path {
             fill: $discount_title-icon-color;
@@ -89,7 +92,7 @@ $discount_button-icon-pos: $button_default-icon-pos !default;
             }
         }
 
-        #{$root}[data-collapsible="true"] & {
+        #{$root}[data-collapsible='true'] & {
             display: inline;
         }
     }
