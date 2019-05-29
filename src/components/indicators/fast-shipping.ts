@@ -1,7 +1,5 @@
 import * as $ from 'jquery';
 
-import requireAsync from 'utils/require-async';
-
 /**
  * This component is part of Indicators, but works standalone.
  * Please remember that it supports caching, but logic needs to be provided separately
@@ -18,16 +16,6 @@ interface FastShippingOptions {
      */
     namespace?: string;
     /**
-     * Defines URL which should be called to check for shipping time/options or whatever is returned.
-     * @type {string}
-     */
-    requestUrl?: string;
-    /**
-     * Defines parameters for AJAX request (jQuery AJAX)
-     * @type {object}
-     */
-    ajaxParameters?: object;
-    /**
      * Class name of single variant. All are hidden, the correct one will get modifier class
      * @type {string}
      */
@@ -43,12 +31,6 @@ interface FastShippingOptions {
      * @type {string}
      */
     deliveryDaySelector?: string;
-    /**
-     * Selector of labels element.
-     * By default there's a hidden input in every instance which holds them all as JSON
-     * @type {string}
-     */
-    labelsObjectSelector?: string;
     /**
      * Decides if time should be displayed in countdown form or time when option ends
      * Example of countdown:       'Free shipping if you order within 3h 12min'
@@ -69,106 +51,64 @@ interface FastShippingOptions {
      * Defines countdown template in case there is an countdown chosen as display type
      * Stick to the format:
      * %d% - days left
-     * %dl% - days label 
+     * %dl% - days label
      * %h% - hours left
-     * %hl% - hours label 
-     * %m% - minutes left 
+     * %hl% - hours label
+     * %m% - minutes left
      * %ml%' - minutes label
      * @type {string}
      * @default '%d%%dl% %h%%hl% %m%%ml%'
      */
     countdownTemplate?: string;
     /**
-     * Tells if countdown should be updated dynamically every XX seconds
-     * @type {boolean}
-     * @default false
-     */
-    updateCountdown?: boolean;
-    /**
-     * If `updateCountdown` option is turned on, it defines refresh rate of countdown itself (in seconds)
+     * Defines refresh rate of component (in seconds)
      * @type {number}
      * @default 30
      */
-    countdownUpdateInterval?: number;
-    /**
-     * Tells if countdown should be displayed also for tomorrow's delivery 
-     * @type {number}
-     * @default false
-     */
-    showCountdownForTomorrow?: boolean;
-    /**
-     * Tells for how long received ajax request shall be cached (in minutes)
-     * This setting is valid only when it's possible to ship today, means scenario == 'today'.
-     * @type {number}
-     * @default 5
-     */
-    cachingTime?: number;
-    /**
-     * Tells for how long received ajax request shall be cached for scenarios when it's no longer possible to send order 'today', means for any other scenario. (in minutes)
-     * @type {number}
-     * @default 60
-     */
-    extendedCachingTime?: number;
-};
+    updateInterval?: number;
+}
 
 /**
- * Interface of data returned by AJAX request
+ * Interface of data object with all info from BE
  */
-interface IAjaxData {
+interface IDeliveryData {
     /**
-     * Informs if delivery is possible today
-     * it should return one of following values: 'today' / 'tomorrow' / 'other'
-     * @type {string}
-     */
-    day?: string;
-    /**
-     * If delivery is possible today (IAjaxData.day === 'today')
-     * It informs until what time order must happen to make it possible
+     * Informs until what time order must happen to make it possible to send order today
      * @type {number} Unix-time
      */
-    time?: number;
+    time: number;
     /**
-     * If delivery is not possible either today nor tomorrow (IAjaxData.day !== 'today' && 'IAjaxData.day !== 'tomorrow')
+     * Informs until what time order must happen to make it possible to send order next possible day
+     * @type {number} Unix-time
+     */
+    nextDayTime: number;
+    /**
+     * If delivery is not possible neither today nor tomorrow
      * It returns day of the week when delivery is expected.
      * Returned string should be already translated and ready to be pasted into template.
      * @type {string}
      */
-    deliveryDay?: string;
-    /**
-     * Keeps information about the time of latest save to cache
-     * @type {number}
-     */
-    lastSave?: number;
-    /**
-     * Keeps timestamp of the nearest next midnight
-     * @type {number}
-     */
-    nextMidnight?: number;
-};
+    deliveryDay: string;
+}
 
 /**
  * Dropdown navigation that supports 3 category level links.
  */
 export default class FastShipping {
     protected _$element: JQuery;
+    protected _$timerPlaceholder: JQuery;
+    protected _deliveryData: IDeliveryData;
     protected _translations: any;
     protected _countdownInterval: any;
 
     protected _options: FastShippingOptions = {
         namespace: 'cs-',
-        requestUrl: typeof location.origin === 'undefined' ? `${location.protocol}//${location.host}/indicators/fastshipping/index` : `${location.origin}/indicators/fastshipping/index`,
         variantClassName: 'cs-indicator-fast-shipping__element',
         timerSelector: '.cs-indicator-fast-shipping__text-placeholder-today',
-        deliveryDaySelector: '.cs-indicator-fast-shipping__text-placeholder-other',
-        labelsObjectSelector: '.cs-indicator-fast-shipping__labels',
         timerVariant: 'time',
         timeNotation: '24h',
         countdownTemplate: '%d% %dl% %h% %hl% %m% %ml%',
-        updateCountdown: false,
-        countdownUpdateInterval: 30,
-        showCountdownForTomorrow: false,
-        cachingTime: 5,
-        extendedCachingTime: 60,
+        updateInterval: 30,
     };
 
     /**
@@ -185,144 +125,118 @@ export default class FastShipping {
         this._$element = $element;
         this._options = $.extend(this._options, options);
         this._translations = this._getTranslationsJSON();
-        this._countdownInterval = '';
+        this._countdownInterval = null;
+        this._$timerPlaceholder = this._$element.find(
+            this._options.timerSelector
+        );
 
-        this._isUpdateRequired().then(isUpdateRequired => {
-            if(isUpdateRequired) {
-                this._updateFromServer();
-            } else {
-                this._updateFromCache();
-            }
-        });
+        this._deliveryData = {
+            time: parseInt(
+                this._$element
+                    .find(
+                        `.${
+                            this._options.namespace
+                        }indicator-fast-shipping__data-time`
+                    )
+                    .val() as string,
+                10
+            ),
+            nextDayTime: parseInt(
+                this._$element
+                    .find(
+                        `.${
+                            this._options.namespace
+                        }indicator-fast-shipping__data-time-next`
+                    )
+                    .val() as string,
+                10
+            ),
+            deliveryDay: this._$element
+                .find(
+                    `.${
+                        this._options.namespace
+                    }indicator-fast-shipping__data-delivery-day`
+                )
+                .val()
+                .toString(),
+        };
+
+        this.updateTemplate();
+
+        this._$element.removeClass('cs-visually-hidden');
     }
 
     /**
      * Updates information about time to end of possibility of shipping order today
      * It will either update it with 'countdown' type or 'time' option
-     * @param {number} deadline - unix time (when possibility of shipping today expires)
      */
-    public updateTimer(deadline: number): void {
-        const timeRemaining: any = this._getTimeRemaining(deadline);
-        const $deadlinePlaceholder: JQuery = this._$element.find(this._options.timerSelector);
+    public updateTimer(): void {
+        const timeRemaining: any = this._getTimeRemaining();
 
-        if(timeRemaining.total > 0) {
-            if(this._options.timerVariant === 'countdown') {
-                $deadlinePlaceholder.html(this._getFormattedTimeLeft(timeRemaining));
+        if (timeRemaining.total > 0) {
+            if (this._options.timerVariant === 'countdown') {
+                this._$timerPlaceholder.html(
+                    this._getFormattedTimeLeft(timeRemaining)
+                );
             } else {
-                $deadlinePlaceholder.html(this._getFormattedTimeTo(deadline));
+                this._$timerPlaceholder.html(
+                    this._getFormattedTimeTo(timeRemaining.total)
+                );
             }
         } else {
-            console.warn('force update from server !!!!!!!!!!!!!!!!!!!!!!!!');
-            this._updateFromServer(true);
-        }
-    }
-
-    /**
-     * If shipping cannot be delivered today, it will update template informing
-     * when order can be delivered
-     * @param {string} dayName - day of the week when shipping is expected
-     */
-    public updateShippingDate(dayName: string): void {
-        const $dayPlaceholder = this._$element.find(this._options.deliveryDaySelector);
-
-        if($dayPlaceholder.length) {
-            $dayPlaceholder.text(dayName);
+            this.showVariant(timeRemaining);
         }
     }
 
     /**
      * Phisically show one of variants based on what server returns (or caches holds).
      * It will target element by data-attribute
-     * @param {string} variant - variant that should be shown. 'today' / 'tomorrow' / 'other'
+     * @param {object} timeRemaining - time object to calculate variant ('today' / 'next')
      */
-    public showVariant(variant: string): void {
-        const $allVariants = this._$element.find(`.${this._options.variantClassName}`);
-        const $variant = this._$element.find(`.${this._options.variantClassName}[data-fs-scenario="${variant}"]`);
+    public showVariant(timeRemaining): void {
+        const variant: string = timeRemaining.total > 0 ? 'today' : 'next';
+        const $allVariants = this._$element.find(
+            `.${this._options.variantClassName}`
+        );
+        const $variant = this._$element.find(
+            `.${this._options.variantClassName}[data-fs-scenario="${variant}"]`
+        );
 
-        if($variant.length) {
-            $allVariants.removeClass(`${this._options.variantClassName}--visible`);
+        if ($variant.length) {
+            $allVariants.removeClass(
+                `${this._options.variantClassName}--visible`
+            );
             $variant.addClass(`${this._options.variantClassName}--visible`);
         } else {
-            console.warn(`Fast Shipping: Could not find target element: ${variant}`);
+            /* tslint:disable */
+            console.warn(
+                `Fast Shipping: Could not find target element: ${variant}`
+            );
+            /* tslint:enable */
         }
     }
 
     /**
      * Initializes set of methods to update all areas that has to be updated
-     * @param {IAjaxData} data - data returned from server
      */
-    public updateTemplate(data: IAjaxData): void {
-        if(data.day === 'today' || (this._options.showCountdownForTomorrow && data.day === 'tomorrow')) {
-            this.updateTimer(data.time);
-            clearInterval(this._countdownInterval);
-            this.setCountdownUpdateInterval(data.time);
-        } else if(data.day === 'other' && data.deliveryDay !== '') {
-            this.updateShippingDate(data.deliveryDay);
+    public updateTemplate(): void {
+        const timeRemaining: any = this._getTimeRemaining();
+
+        if (timeRemaining.total > 0) {
+            this.updateTimer();
+            this.setCountdownUpdateInterval();
         }
 
-        this.showVariant(data.day);
-    }
-
-    /** Updates countdown every XX (specified in this._options.countdownUpdateInterval) seconds. 
-     * If this._options.updateCountdown option is enabled.
-     * @param {number} deadline - unix time (when possibility of shipping today expires)
-     */
-    public setCountdownUpdateInterval(deadline: number): void {
-        if(this._options.timerVariant === 'countdown' && this._options.updateCountdown) {
-            this._countdownInterval = setInterval((): void => {
-                this.updateTimer(deadline);
-            }, this._options.countdownUpdateInterval * 1000);
-        }
+        this.showVariant(timeRemaining);
     }
 
     /**
-     * Fetches local storage data about fastShipping
+     * Updates countdown every XX (specified in this._options.countdownUpdateInterval) seconds.
      */
-    protected _getStorageData(): any {
-        return requireAsync(['Magento_Ui/js/lib/core/storage/local']).then(([storage]) => storage.get('fastShipping'));
-    }
-
-    /**
-     * Checks if update from server is required. By defulat it is. 
-     * In creativeshop we extend this functionality checking Magento's storage
-     * @return {boolean}
-     */
-    protected _isUpdateRequired(): JQueryDeferred<boolean> {
-        return this._getStorageData().then(storageData => {
-            const now: number = Math.floor(Date.now() / 1000);
-
-            if (typeof storageData !== 'undefined') {
-                if (storageData.day === 'today') {
-                    if (storageData.lastSave + this._options.cachingTime * 60 >= now) {
-                        return false;
-                    }
-                    return true;
-                } else {
-                    if (
-                        storageData.lastSave + this._options.extendedCachingTime * 60 > now 
-                        && storageData.nextMidnight > now
-                    ) {
-                        return false;
-                    }
-                    return true;
-                }
-            } 
-
-            return true;
-        });
-    }
-
-    /**
-     * Saves data provided by server to localStorage (MAGENTO WAY)
-     * @param {IAjaxData} data - data returned from server
-     */
-    protected _saveToCache(data: IAjaxData): any {
-        requireAsync(['Magento_Ui/js/lib/core/storage/local']).then(([storage]) => {
-            const fullDate: Date = new Date();
-            data.nextMidnight = Math.floor(fullDate.setHours(24, 0, 0, 0) / 1000);
-            data.lastSave = Math.floor(Date.now() / 1000);
-            storage.set('fastShipping', data);
-        });
+    public setCountdownUpdateInterval(): void {
+        this._countdownInterval = setInterval((): void => {
+            this.updateTimer();
+        }, this._options.updateInterval * 1000);
     }
 
     /**
@@ -331,90 +245,51 @@ export default class FastShipping {
      * @return {number} deadline - unix time (when possibility of shipping today expires)
      */
     protected _getTranslationsJSON(): any {
-        const $labelsInput: JQuery<HTMLElement> = this._$element.find(this._options.labelsObjectSelector);
-        return $labelsInput.length && $labelsInput.val() !== '' ? JSON.parse($labelsInput.val() as string) : {};
-    }
+        const $labelsInput: any = this._$element.find(
+            `.${this._options.namespace}indicator-fast-shipping__labels`
+        );
 
-    /**
-     * Calculates deadline date taking in count local timezones
-     * @param {number} unixTime - unix time w/o miliseconds (when possibility of shipping today expires)
-     * @return {string} Date - Expire in local timezone
-     */
-    protected _getAdjustedDeadlineTime(unixTime: number): any {
-        const localTimeOffsetInSecs: number = new Date().getTimezoneOffset() * 60;
-        const serverTimeOffsetInSecs: number = new Date(unixTime * 1000).getTimezoneOffset() * 60;
-        const adjustedUnixTime: number = unixTime + (serverTimeOffsetInSecs - localTimeOffsetInSecs);
-
-        return new Date(adjustedUnixTime * 1000);
-    }
-
-    /**
-     * Setups AJAX request based on default options and the ones passed in options
-     * @param clearCache {boolean} informs server that cache shall be cleared before returning data
-     * @return {any} AJAX request
-     */
-    protected _AjaxRequest(clearCache: boolean): any {
-        const defaultParams: object = {
-            method: 'POST',
-            url: clearCache ? `${this._options.requestUrl}/clear/cache` : this._options.requestUrl,
-            dataType: 'json',
-        };
-        const params: object = $.extend({}, defaultParams, this._options.ajaxParameters);
-
-        return $.ajax(params);
-    }
-
-    /**
-     * Runs AJAX request. As result initializes template update and saving data to cache
-     * Additionally checks if Response is not empty which means something crashed
-     * or FastShipping is turned off
-     * @param clearCache {boolean} informs server that cache shall be cleared before returning data
-     * @return {any} AJAX request
-     */
-    protected _updateFromServer(clearCache = false): any {
-        return this._AjaxRequest(clearCache).then((response: any) => {
-            if(!$.isEmptyObject(response)) {
-                this.updateTemplate(response);
-                this._saveToCache(response);
-            }
-        });
-    }
-
-    /**
-     * Runs template update from cache. By default it just forces update from server.
-     * in Creativeshop we cover cache usage and then update template directly based on cached data
-     */
-    protected _updateFromCache(): void {
-        this._getStorageData().then(storage => {
-            this.updateTemplate(storage);
-        });
+        return $labelsInput.length && $labelsInput.val() !== ''
+            ? JSON.parse($labelsInput.val())
+            : {};
     }
 
     /**
      * Returns formatted time left until shipping is possible today as object
-     * @param {number} deadline - unix time (when possibility of shipping today expires)
      * @return {object} - formatted deadline object
      */
-    protected _getTimeRemaining(deadline: number): object {
-        const timeRemaining: number = deadline - Math.floor(Date.now() / 1000);
+    protected _getTimeRemaining(): object {
+        const timeRemaining: number =
+            this._deliveryData.time -
+            (Math.floor(Date.now() / 1000) -
+                new Date().getTimezoneOffset() * 60);
 
         return {
             total: timeRemaining,
             days: Math.floor(timeRemaining / (60 * 60 * 24)),
             hours: Math.floor((timeRemaining / (60 * 60)) % 24),
-            minutes: (timeRemaining < 59 && timeRemaining > 0) ? 1 : Math.floor((timeRemaining / 60) % 60),
+            minutes:
+                timeRemaining < 59 && timeRemaining > 0
+                    ? 1
+                    : Math.floor((timeRemaining / 60) % 60),
+            totalNextDay:
+                this._deliveryData.nextDayTime -
+                (Math.floor(Date.now() / 1000) -
+                    new Date().getTimezoneOffset() * 60),
         };
     }
 
     /**
-     * Returns label for corresponding position in countdown 
+     * Returns label for corresponding position in countdown
      * based on this._translations object
      * @param n {number} number (must know if n > 1 to get correct label)
      * @param timePart {string} 'days' / 'hours' / 'minutes' to taget the correct key in deadline object
      * @return {string} label from this._labels object
      */
     protected _getTimeLabel(n: number, timePart: string): string {
-        return n === 1 ? `${this._translations[timePart]}` : `${this._translations[timePart + 's']}`;
+        return n === 1
+            ? `${this._translations[timePart]}`
+            : `${this._translations[timePart + 's']}`;
     }
 
     /**
@@ -426,25 +301,34 @@ export default class FastShipping {
         let template = this._options.countdownTemplate;
 
         // Replaces all dynamic characters
-        if(deadline.days > 0) {
+        if (deadline.days > 0) {
             template = template.replace('%d%', deadline.days);
-            template = template.replace('%dl%', this._getTimeLabel(deadline.days, 'day'));
+            template = template.replace(
+                '%dl%',
+                this._getTimeLabel(deadline.days, 'day')
+            );
         } else {
             template = template.replace('%d%', '');
             template = template.replace('%dl%', '');
         }
 
-        if(deadline.hours > 0) {
+        if (deadline.hours > 0) {
             template = template.replace('%h%', deadline.hours);
-            template = template.replace('%hl%', this._getTimeLabel(deadline.hours, 'hour'));
+            template = template.replace(
+                '%hl%',
+                this._getTimeLabel(deadline.hours, 'hour')
+            );
         } else {
             template = template.replace('%h%', '');
             template = template.replace('%hl%', '');
         }
 
-        if(deadline.minutes > 0) {
+        if (deadline.minutes > 0) {
             template = template.replace('%m%', deadline.minutes);
-            template = template.replace('%ml%', this._getTimeLabel(deadline.minutes, 'minute'));
+            template = template.replace(
+                '%ml%',
+                this._getTimeLabel(deadline.minutes, 'minute')
+            );
         } else {
             template = template.replace('%m%', '');
             template = template.replace('%ml%', '');
@@ -455,18 +339,21 @@ export default class FastShipping {
 
     /**
      * Returns deadline time as an object, splitted to days, hours and minutes
-     * @param {object} deadline - result of this._getTimeRemaining method
+     * @param {object} unixTime - result of this._getTimeRemaining method
      * @return {string} - formatted time left
      */
     protected _getFormattedTimeTo(unixTime: number): string {
-        const adjustedTime: any = this._getAdjustedDeadlineTime(unixTime);
+        const deadlineTimestamp: any = new Date(
+            (this._deliveryData.time + new Date().getTimezoneOffset() * 60) *
+                1000
+        );
 
-        const h: number = adjustedTime.getHours();
-        const m: number = adjustedTime.getMinutes();
+        const h: number = deadlineTimestamp.getHours();
+        const m: number = deadlineTimestamp.getMinutes();
 
-        if(this._options.timeNotation === '12h') {
-            const wording12hClock: string = (h >= 12) ? 'PM' : 'AM';
-            if(m > 0) {
+        if (this._options.timeNotation === '12h') {
+            const wording12hClock: string = h >= 12 ? 'PM' : 'AM';
+            if (m > 0) {
                 return `${(h + 24) % 12 || 12}.${m} ${wording12hClock}`;
             } else {
                 return `${(h + 24) % 12 || 12} ${wording12hClock}`;
