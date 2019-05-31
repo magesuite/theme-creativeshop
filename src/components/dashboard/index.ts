@@ -1,4 +1,6 @@
 import 'components/dashboard/dashboard.scss';
-// import Sticky from 'components/sticky/sticky';
+import makeSticky from 'components/sticky/sticky';
+import breakpoint from 'utils/breakpoint/breakpoint';
 
-// console.log(Sticky);
+const target = document.querySelectorAll('.cs-sticky-block--no-mobile');
+makeSticky(target, { greaterThan: breakpoint.tablet, lessThan: 1200 });

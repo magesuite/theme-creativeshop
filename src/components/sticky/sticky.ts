@@ -1,71 +1,98 @@
+import { SingleOrMany } from 'stickyfilljs';
+
 /**
  * Position: sticky detection and polyfill component
  */
 
-import breakpoint from 'utils/breakpoint/breakpoint';
-import SingleOrMany from 'stickyfilljs';
-
-export default class Sticky {
-    public static getInstance(): Sticky {
-        return Sticky._instance;
-    }
-    private static _instance: Sticky = new Sticky();
-    private _isSupported: boolean;
-
-    private constructor() {
-        if (Sticky._instance) {
-            throw new Error(
-                'Error: Instantiation failed: Use Sticky.getInstance() instead of new.'
-            );
-        }
-        const el: HTMLElement = document.createElement('a');
-        el.style.cssText =
-            'position:sticky; position:-webkit-sticky; position:-ms-sticky;';
-        this._isSupported = !!(el.style.position.indexOf('sticky') !== -1);
-        Sticky._instance = this;
-    }
-
-    public isSupported(): boolean {
-        return this._isSupported;
-    }
-
-    // TODO
-    public makeSticky(): void {
-        // console.log('wywolano');
-        if (this._isSupported) {
-            import('stickyfilljs')
-                .then(Stickyfill => {
-                    const stickyElements = Array.prototype.slice.call(
-                        document.querySelectorAll('.cs-sticky-block--no-mobile')
-                    );
-
-                    if (stickyElements.length > 0) {
-                        if (window.innerWidth > breakpoint.tablet) {
-                            Stickyfill.add(stickyElements);
-                        }
-
-                        // Handling resolution change
-                        let isMobile: boolean;
-                        let isSticky: boolean;
-                        window.onresize = () => {
-                            isMobile = !!(
-                                window.innerWidth <= breakpoint.tablet
-                            );
-                            isSticky = !!(Stickyfill.stickies.length > 0);
-                            if (!isMobile && !isSticky) {
-                                Stickyfill.add(stickyElements);
-                            } else if (isMobile && isSticky) {
-                                Stickyfill.remove(stickyElements);
-                            }
-                        };
-                    }
-                })
-                .catch(err => {
-                    // tslint:disable-next-line: no-console
-                    console.error(
-                        "Error: couldn't load 'position: sticky' polyfill."
-                    );
-                });
-        }
-    }
+interface breakpoint {
+    greaterThan?: number;
+    lessThan?: number;
 }
+
+const isSupported: boolean = (() => {
+    const el: HTMLElement = document.createElement('a');
+    el.style.cssText =
+        'position:sticky; position:-webkit-sticky; position:-ms-sticky;';
+    return !!(el.style.position.indexOf('sticky') !== -1);
+})();
+
+const makeSticky = (elements: NodeList, breakpoint?: breakpoint): void => {
+    if (!isSupported) {
+        import('stickyfilljs')
+            .then(Stickyfill => {
+                const elementsArray = Array.prototype.slice.call(elements);
+                if (elementsArray.length > 0) {
+                    if (breakpoint) {
+                        handleStickyWithBreakpoints(
+                            Stickyfill,
+                            elementsArray,
+                            breakpoint,
+                            1000
+                        );
+                    } else {
+                        Stickyfill.add(elementsArray);
+                    }
+                }
+            })
+            .catch(err => {
+                // tslint:disable-next-line: no-console
+                console.error(
+                    "Error: couldn't load 'position: sticky' polyfill."
+                );
+            });
+    }
+};
+
+const handleStickyWithBreakpoints = (
+    Stickyfill: any,
+    elementsArray: SingleOrMany<HTMLElement>,
+    breakpoint: breakpoint,
+    throttling?: number
+) => {
+    let isThrottled = false;
+    const throttleTime = throttling > 0 ? throttling : 0;
+    let isSticky: boolean = false;
+    let isAboveThreshold: boolean = false;
+    let isBelowThreshold: boolean = false;
+
+    const resizeHandler = (): void => {
+        if (!isThrottled) {
+            if (breakpoint.greaterThan) {
+                isBelowThreshold = !!(
+                    window.innerWidth <= breakpoint.greaterThan
+                );
+
+                if (isSticky && isBelowThreshold) {
+                    Stickyfill.remove(elementsArray);
+                    isSticky = false;
+                }
+            }
+
+            if (breakpoint.lessThan) {
+                isAboveThreshold = !!(window.innerWidth >= breakpoint.lessThan);
+
+                if (isSticky && isAboveThreshold) {
+                    Stickyfill.remove(elementsArray);
+                    isSticky = false;
+                }
+            }
+
+            if (!(isSticky || isAboveThreshold || isBelowThreshold)) {
+                Stickyfill.add(elementsArray);
+                isSticky = true;
+            }
+
+            if (throttleTime > 0) {
+                isThrottled = true;
+                setTimeout(() => {
+                    isThrottled = false;
+                }, throttleTime);
+            }
+        }
+    };
+
+    resizeHandler();
+    window.addEventListener('resize', resizeHandler);
+};
+
+export default makeSticky;
