@@ -5,8 +5,22 @@
 @import 'components/field/mixin';
 
 $faq_main-title-font-size: $font-size_headline-1 !default;
+$faq_title-color: $color_text-800 !default;
+$faq_text-color: $color_text-500 !default;
+
 $faq_search-button-type: $button_default-type !default;
 $faq_search-button-icon-pos: 'only-icon' !default;
+
+$faq_list-item-background-hover: $color_background-500 !default;
+$faq_list-item-color: $color_text-500 !default;
+$faq_list-item-color-hover: $color_primary-800 !default;
+$faq_list-item-border: 1px solid $color_border-200 !default;
+
+$faq_vote-icon-fill: $color_background-600 !default;
+$faq_vote-icon-positive-fill: $color_success-500 !default;
+$faq_vote-icon-negative-fill: $color_error-500 !default;
+
+$faq_vote-separator-color: $color_background-600 !default;
 
 .#{$ns}faq-index {
     $root: &;
@@ -21,7 +35,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
         margin-bottom: 2rem;
 
         &--bordered {
-            border-bottom: 1px solid $color_gallery;
+            border-bottom: $faq_list-item-border;
         }
     }
 
@@ -33,20 +47,21 @@ $faq_search-button-icon-pos: 'only-icon' !default;
         list-style: none;
         padding: 0;
         margin-bottom: 0;
+        border-bottom: $faq_list-item-border;
 
         &-item {
             display: flex;
             align-items: center;
-            color: $color_dove-gray;
+            color: $faq_list-item-color;
             margin-bottom: 0;
-            border-bottom: 1px solid $color_gallery;
+            border-bottom: $faq_list-item-border;
             transition: color 0.15s, background 0.15s;
             position: relative;
 
             &-icon {
                 width: 1.3rem;
                 height: 1.3rem;
-                fill: $color_cerulean-blue;
+                fill: $faq_list-item-color;
                 position: absolute;
                 right: 1rem;
                 top: calc(2rem + (1.3rem / 5));
@@ -56,7 +71,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
             a {
                 transition: color 0.15s;
                 padding: 2rem 3rem 2rem 1rem;
-                color: $color_dove-gray;
+                color: $faq_list-item-color;
                 width: calc(100% - 4.5rem);
                 display: inline-block;
             }
@@ -68,27 +83,31 @@ $faq_search-button-icon-pos: 'only-icon' !default;
                 width: 0.4rem;
                 transition: background 0.15s;
                 border-radius: 100%;
-                background: $color_dove-gray;
+                background: $faq_list-item-color;
                 margin-right: 1rem;
                 margin-left: 1rem;
                 margin-bottom: 0.3rem;
             }
 
-            &:last-child {
-                border-bottom: 2px solid $color_gallery;
+            &:first-child {
+                border-top: $faq_list-item-border;
             }
 
             &:hover {
-                background: $color_gallery;
-                color: $color_torea-bay;
+                background: $faq_list-item-background-hover;
+                color: $faq_list-item-color-hover;
 
                 a {
-                    color: $color_torea-bay;
+                    color: $faq_list-item-color-hover;
                 }
 
                 &:before {
-                    background: $color_torea-bay;
+                    background: $faq_list-item-color-hover;
                 }
+            }
+
+            &:hover &-icon {
+                fill: $faq_list-item-color-hover;
             }
         }
 
@@ -102,7 +121,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
             &:last-child {
                 #{$root}__list-item {
                     &:last-child {
-                        border-bottom: 1px solid $color_gallery;
+                        border-bottom: $faq_list-item-border;
                     }
                 }
             }
@@ -110,7 +129,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
     }
 
     &__text {
-        color: $color_dove-gray;
+        color: $faq_text-color;
         font-size: 1.4rem;
         font-weight: 700;
     }
@@ -124,7 +143,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
         margin: 0;
         line-height: 1.1;
         font-weight: 400;
-        color: $color_mineshaft;
+        color: $faq_title-color;
         font-size: 2rem;
         padding: 2rem 0;
 
@@ -133,7 +152,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
         }
 
         a {
-            color: $color_mineshaft;
+            color: $faq_title-color;
         }
 
         .faq-category-index &,
@@ -144,7 +163,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
     }
 
     &__category-name {
-        border-bottom: 2px solid $color_gallery;
+        border-bottom: $faq_list-item-border;
 
         @include media('<tablet') {
             &:before,
@@ -215,7 +234,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
             width: 1px;
             height: 2rem;
             margin: 0 0.5rem;
-            background: $color_alto;
+            background: $faq_vote-separator-color;
             @include media('>=tablet') {
                 height: 3rem;
             }
@@ -237,7 +256,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
     }
 
     &__icon {
-        fill: $color_alto;
+        fill: $faq_vote-icon-fill;
         transition: fill 0.15s;
         height: 100%;
         width: 100%;
@@ -246,7 +265,7 @@ $faq_search-button-icon-pos: 'only-icon' !default;
     #like {
         &:hover {
             #{$root}__icon {
-                fill: $color_apple;
+                fill: $faq_vote-icon-positive-fill;
             }
         }
     }
@@ -254,20 +273,20 @@ $faq_search-button-icon-pos: 'only-icon' !default;
     #dislike {
         &:hover {
             #{$root}__icon {
-                fill: $color_crimson;
+                fill: $faq_vote-icon-negative-fill;
             }
         }
     }
 
     #aw__helpfulness-vote-no {
         #{$root}__icon--checked {
-            fill: $color_crimson;
+            fill: $faq_vote-icon-negative-fill;
         }
     }
 
     #aw__helpfulness-vote-yes {
         #{$root}__icon--checked {
-            fill: $color_apple;
+            fill: $faq_vote-icon-positive-fill;
         }
     }
 
