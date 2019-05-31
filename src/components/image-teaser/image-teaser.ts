@@ -285,6 +285,8 @@ export default class ImageTeaser {
 
         if (this._options.scaleFontsDynamically) {
             this._initializeProportionalSlideScaling();
+        } else {
+            this._onImageReady();
         }
     }
 
@@ -473,6 +475,25 @@ export default class ImageTeaser {
             .find(`.${this._options.teaserName}__slide`)
             .each(function(): void {
                 new ProportionalScaler($(this));
+            });
+    }
+
+    protected _onImageReady(): void {
+        this._$container
+            .find(`.${this._options.teaserName}__slide`)
+            .each(function(): void {
+                const $slide: JQuery<HTMLElement> = $(this);
+
+                if ($slide.hasClass('.lazyload')) {
+                    $slide.on(
+                        'lazyloaded',
+                        (): void => {
+                            $slide.addClass('ready');
+                        }
+                    );
+                } else {
+                    $slide.addClass('ready');
+                }
             });
     }
 }
