@@ -51,8 +51,12 @@ import 'components/star-rating';
 import 'components/swatches';
 import 'components/topbar';
 import 'components/typography';
+import 'components/usps';
 import 'components/select';
+// Content Constructor (used only for usps component)
+import 'components/image-teaser';
 // Contact page specific
+import 'components/dashboard';
 import 'components/captcha';
 import 'components/form';
 
