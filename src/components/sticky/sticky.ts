@@ -1,4 +1,4 @@
-import { SingleOrMany } from 'stickyfilljs';
+import requireAsync from 'utils/require-async';
 
 /**
  * Position: sticky detection and polyfill component
@@ -18,8 +18,8 @@ const isSupported: boolean = (() => {
 
 const makeSticky = (elements: NodeList, breakpoint?: breakpoint): void => {
     if (!isSupported) {
-        import('stickyfilljs')
-            .then(Stickyfill => {
+        requireAsync(['Stickyfill'])
+            .then(([Stickyfill]) => {
                 const elementsArray = Array.prototype.slice.call(elements);
                 if (elementsArray.length > 0) {
                     if (breakpoint) {
@@ -45,7 +45,7 @@ const makeSticky = (elements: NodeList, breakpoint?: breakpoint): void => {
 
 const handleStickyWithBreakpoints = (
     Stickyfill: any,
-    elementsArray: SingleOrMany<HTMLElement>,
+    elementsArray: HTMLElement | HTMLElement[],
     breakpoint: breakpoint,
     throttling?: number
 ) => {
