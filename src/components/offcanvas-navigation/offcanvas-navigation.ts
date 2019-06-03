@@ -161,15 +161,18 @@ export default class OffcanvasNavigation {
         const $offcanvasLoginLink = this._$drawer.find(
             '.cs-offcanvas-navigation__link--sign-in'
         );
-        $offcanvasLoginLink.attr(
-            'href',
-            $offcanvasLoginLink
-                .attr('href')
-                .replace(
-                    /referer\/[^\/]+\//,
-                    `referer/${btoa(window.location.href)}/`
-                )
-        );
+
+        if ($offcanvasLoginLink.length) {
+            $offcanvasLoginLink.attr(
+                'href',
+                $offcanvasLoginLink
+                    .attr('href')
+                    .replace(
+                        /referer\/[^\/]+\//,
+                        `referer/${btoa(window.location.href)}/`
+                    )
+            );
+        }
     }
 
     /**
