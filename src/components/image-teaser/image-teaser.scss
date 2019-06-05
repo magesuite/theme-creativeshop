@@ -43,6 +43,11 @@ $image-teaser_container-background--dark: $color_background-200 !default;
 $image-teaser_gradient-color--light: $color_background-700 !default;
 $image-teaser_gradient-color--dark: $color_background-200 !default;
 
+$image-teaser_label-color: $color_text-200 !default;
+$image-teaser_label-background: $color_primary-500 !default;
+$image-teaser_label-font-size: 1em !default;
+$image-teaser_label-border-radius: 50% !default;
+
 .#{$ns}image-teaser {
     $root: &;
 
@@ -333,6 +338,58 @@ $image-teaser_gradient-color--dark: $color_background-200 !default;
             $type: $image-teaser_cta-button-type,
             $icon_pos: $image-teaser_cta-button-icon-pos
         );
+    }
+
+    // Label
+    &__label {
+        $label: &;
+
+        position: absolute;
+        top: 0.7em;
+        left: 0.7em;
+        color: $image-teaser_label-color;
+        background: $image-teaser_label-background;
+        border-radius: $image-teaser_label-border-radius;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 5.5em;
+        min-width: 5.5em;
+        padding: 0.9em;
+
+        &--align-x {
+            &-2 {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            &-3 {
+                left: auto;
+                right: 0.7em;
+            }
+        }
+
+        &--align-y {
+            &-2 {
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            &-3 {
+                top: auto;
+                bottom: 0.7em;
+            }
+
+            &#{$label}--align-x-2 {
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    &__label-span {
+        text-align: center;
+        line-height: 130%;
+        font-size: $image-teaser_label-font-size;
     }
 
     // Contrast Optimizers
