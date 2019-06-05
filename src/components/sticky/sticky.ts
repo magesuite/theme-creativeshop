@@ -10,42 +10,34 @@ interface breakpoint {
 }
 
 const isSupported: boolean = (() => {
-    const el: HTMLElement = document.createElement('a');
+    const el: Element = document.createElement('a');
     el.style.cssText =
         'position:sticky; position:-webkit-sticky; position:-ms-sticky;';
     return !!(el.style.position.indexOf('sticky') !== -1);
 })();
 
-const makeSticky = (elements: NodeList, breakpoint?: breakpoint): void => {
+const makeSticky = (element: Element, breakpoint?: breakpoint): void => {
     if (!isSupported) {
-        requireAsync(['Stickyfill'])
-            .then(([Stickyfill]) => {
-                const elementsArray = Array.prototype.slice.call(elements);
-                if (elementsArray.length > 0) {
-                    if (breakpoint) {
-                        handleStickyWithBreakpoints(
-                            Stickyfill,
-                            elementsArray,
-                            breakpoint,
-                            1000
-                        );
-                    } else {
-                        Stickyfill.add(elementsArray);
-                    }
+        requireAsync(['Stickyfill']).then(([Stickyfill]) => {
+            if (element) {
+                if (breakpoint) {
+                    handleStickyWithBreakpoints(
+                        Stickyfill,
+                        element,
+                        breakpoint,
+                        1000
+                    );
+                } else {
+                    Stickyfill.add(element);
                 }
-            })
-            .catch(err => {
-                // tslint:disable-next-line: no-console
-                console.error(
-                    "Error: couldn't load 'position: sticky' polyfill."
-                );
-            });
+            }
+        });
     }
 };
 
 const handleStickyWithBreakpoints = (
     Stickyfill: any,
-    elementsArray: HTMLElement | HTMLElement[],
+    element: Element,
     breakpoint: breakpoint,
     throttling?: number
 ) => {
@@ -63,7 +55,7 @@ const handleStickyWithBreakpoints = (
                 );
 
                 if (isSticky && isBelowThreshold) {
-                    Stickyfill.remove(elementsArray);
+                    Stickyfill.remove(element);
                     isSticky = false;
                 }
             }
@@ -72,13 +64,13 @@ const handleStickyWithBreakpoints = (
                 isAboveThreshold = !!(window.innerWidth >= breakpoint.lessThan);
 
                 if (isSticky && isAboveThreshold) {
-                    Stickyfill.remove(elementsArray);
+                    Stickyfill.remove(element);
                     isSticky = false;
                 }
             }
 
             if (!(isSticky || isAboveThreshold || isBelowThreshold)) {
-                Stickyfill.add(elementsArray);
+                Stickyfill.add(element);
                 isSticky = true;
             }
 
