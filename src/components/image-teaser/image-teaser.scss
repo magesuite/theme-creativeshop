@@ -43,10 +43,9 @@ $image-teaser_container-background--dark: $color_background-200 !default;
 $image-teaser_gradient-color--light: $color_background-700 !default;
 $image-teaser_gradient-color--dark: $color_background-200 !default;
 
-$image-teaser_label-color: $color_text-200 !default;
-$image-teaser_label-background: $color_primary-500 !default;
-$image-teaser_label-font-size: 1em !default;
-$image-teaser_label-border-radius: 50% !default;
+$image-teaser_badge-color: $color_text-200 !default;
+$image-teaser_badge-background: $color_primary-500 !default;
+$image-teaser_badge-font-size: 1.1em !default;
 
 .#{$ns}image-teaser {
     $root: &;
@@ -340,22 +339,21 @@ $image-teaser_label-border-radius: 50% !default;
         );
     }
 
-    // Label
-    &__label {
-        $label: &;
+    // Badge
+    &__badge {
+        $badge: &;
 
+        font-size: $image-teaser_badge-font-size;
         position: absolute;
         top: 0.7em;
         left: 0.7em;
-        color: $image-teaser_label-color;
-        background: $image-teaser_label-background;
-        border-radius: $image-teaser_label-border-radius;
+        color: $image-teaser_badge-color;
+        background: $image-teaser_badge-background;
+        border-radius: 50%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         line-height: 1;
-        min-height: 5.5em;
-        min-width: 5.5em;
         padding: 0.9em;
         text-align: center;
 
@@ -391,16 +389,15 @@ $image-teaser_label-border-radius: 50% !default;
                 bottom: 0.7em;
             }
 
-            &#{$label}--align-x-2 {
+            &#{$badge}--align-x-2 {
                 transform: translate(-50%, -50%);
             }
         }
     }
 
-    &__label-span {
+    &__badge-span {
         text-align: center;
         line-height: 130%;
-        font-size: $image-teaser_label-font-size;
     }
 
     // Contrast Optimizers

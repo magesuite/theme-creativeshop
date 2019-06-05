@@ -478,7 +478,7 @@ export default class ImageTeaser {
                     scalableElementSelector: '.cs-image-teaser__text-content',
                 });
                 new ProportionalScaler($(this), {
-                    scalableElementSelector: '.cs-image-teaser__label',
+                    scalableElementSelector: '.cs-image-teaser__badge',
                 });
             });
     }
