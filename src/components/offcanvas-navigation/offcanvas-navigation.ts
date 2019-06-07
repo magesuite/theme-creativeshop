@@ -17,6 +17,10 @@ export interface OffcanvasNavigationOptions {
     localStorageKey?: string;
     endpointPath?: string;
     authorizationLinkSelector?: string;
+    showActiveCategoryLevel?: boolean;
+    highlightActiveCategory?: boolean;
+    activeCategoryHighlightClass?: string;
+    onNavigationRender?: () => void; // Callback to fire when navigation is rendered
 }
 
 interface OffcanvasNavigationCache {
@@ -40,6 +44,7 @@ export default class OffcanvasNavigation {
     protected _$parentLink: JQuery;
     protected _$returnLink: JQuery;
     protected _idleDeferred: IdleDeferred;
+    protected _activeCategoryPath: string[];
 
     protected _eventListeners: {
         offcanvasShow?: (event: JQuery.Event) => void;
@@ -66,6 +71,9 @@ export default class OffcanvasNavigation {
                 currencySwitcherSelector: '.switcher-currency',
                 languageSwitcherSelector: '.switcher-language',
                 authorizationLinkSelector: '.authorization-link',
+                showActiveCategoryLevel: true,
+                highlightActiveCategory: false,
+                activeCategoryHighlightClass: `active`,
             },
             options
         );
@@ -74,6 +82,12 @@ export default class OffcanvasNavigation {
         if (!this._$drawer.length) {
             return;
         }
+
+        // Read active category path from a special tag.
+        // Template literal used to always get data attribute as a string
+        this._activeCategoryPath = `${$('#active-category-path').data(
+            'activeCategoryPath'
+        )}`.split('/');
 
         this._initWhenIdle();
     }
@@ -90,7 +104,20 @@ export default class OffcanvasNavigation {
                 )
             )
             .then(url => this._getHtml(url))
-            .then(html => this._initHtml(html));
+            .then(html => this._initHtml(html))
+            .then(() => {
+                if (this._options.showActiveCategoryLevel) {
+                    this._showActiveCategoryLevel();
+                }
+
+                if (this._options.highlightActiveCategory) {
+                    this._highlightActiveCategoryItem();
+                }
+
+                if (this._options.onNavigationRender) {
+                    this._options.onNavigationRender();
+                }
+            });
     }
 
     /**
@@ -159,7 +186,7 @@ export default class OffcanvasNavigation {
      */
     protected _fixLoginLinks() {
         const $offcanvasLoginLink = this._$drawer.find(
-            '.cs-offcanvas-navigation__link--sign-in'
+            `.${this._options.className}__link--sign-in`
         );
 
         if ($offcanvasLoginLink.length) {
@@ -244,38 +271,68 @@ export default class OffcanvasNavigation {
     }
 
     /**
-     * Shows next navigation level based on clicked parent link.
+     * Handles parent link click
      * @param {Event} event [description]
      */
-    protected _showLevel(event: Event): void {
+    protected _handleParentLinkClick(event: Event): void {
         event.preventDefault();
-        const $levelToShow = $(event.target).hasClass(
+
+        const categoryToShow = $(event.target).hasClass(
             `${this._options.className}__link--parent`
         )
-            ? $(event.target).next()
+            ? $(event.target).data('category-id')
             : $(event.target)
                   .parents(`.${this._options.className}__link--parent`)
                   .first()
-                  .next();
+                  .data('category-id');
+
+        this._showCategoryLevel(categoryToShow);
+    }
+
+    /**
+     * Shows navigation level list.
+     * @param {jQuery} $levelToShow ${this._options.className}__list element which should be shown.
+     */
+    protected _showCategoryLevel(categoryId: string): void {
         const $currentLevel = $(`.${this._options.className}__list--current`);
 
+        const $listToShow = $(`
+            .${this._options.className}__link[data-category-id="${categoryId}"]
+        `).next();
+
         if ($currentLevel.length > 0) {
-            $currentLevel.animate({ scrollTop: 0 }, 'medium', () => {
+            $currentLevel.animate({ scrollTop: 0 }, 'fast', () => {
                 $currentLevel.removeClass(
                     `${this._options.className}__list--current`
                 );
-                $levelToShow.addClass(
-                    `${this._options.className}__list--active ${
-                        this._options.className
-                    }__list--current`
-                );
+                $listToShow
+                    .addClass(
+                        `
+                        ${this._options.className}__list--active
+                        ${this._options.className}__list--current
+                    `
+                    )
+                    .parents(`.${this._options.className}__list`)
+                    .each((i, parent) => {
+                        $(parent).addClass(
+                            `${this._options.className}__list--active`
+                        );
+                    });
             });
         } else {
-            $levelToShow.addClass(
-                `${this._options.className}__list--active ${
-                    this._options.className
-                }__list--current`
-            );
+            $listToShow
+                .addClass(
+                    `
+                    ${this._options.className}__list--active
+                    ${this._options.className}__list--current
+                `
+                )
+                .parents(`.${this._options.className}__list`)
+                .each((i, parent) => {
+                    $(parent).addClass(
+                        `${this._options.className}__list--active`
+                    );
+                });
         }
     }
 
@@ -288,12 +345,13 @@ export default class OffcanvasNavigation {
         const $levelToHide = $(event.target).closest(
             `.${this._options.className}__list`
         );
-        $levelToHide.removeClass(
-            `${this._options.className}__list--active ${
-                this._options.className
-            }__list--current`
-        );
         $levelToHide
+            .removeClass(
+                `
+                ${this._options.className}__list--active
+                ${this._options.className}__list--current
+            `
+            )
             .parent()
             .closest(`.${this._options.className}__list`)
             .addClass(`${this._options.className}__list--current`);
@@ -311,10 +369,15 @@ export default class OffcanvasNavigation {
                 this._options.className
             }__list--current`
         );
-        // Set root level to current.
-        $levelsToHide
-            .eq(0)
-            .addClass(`${this._options.className}__list--current`);
+
+        if (this._options.showActiveCategoryLevel) {
+            this._showActiveCategoryLevel();
+        } else {
+            // Set root level to current.
+            $levelsToHide
+                .eq(0)
+                .addClass(`${this._options.className}__list--current`);
+        }
     }
     /**
      * Sets up event listeners for a component.
@@ -326,7 +389,9 @@ export default class OffcanvasNavigation {
         this._eventListeners.offcanvasHide = this._resetLevels.bind(this);
         $(document).on('offcanvas-hide', this._eventListeners.offcanvasHide);
 
-        this._eventListeners.parentLinkClick = this._showLevel.bind(this);
+        this._eventListeners.parentLinkClick = this._handleParentLinkClick.bind(
+            this
+        );
         this._$parentLink.on('click', this._eventListeners.parentLinkClick);
 
         this._eventListeners.returnLinkClick = this._hideLevel.bind(this);
@@ -340,5 +405,74 @@ export default class OffcanvasNavigation {
         $(document).off('offcanvas-hide', this._eventListeners.offcanvasHide);
         this._$parentLink.off('click', this._eventListeners.parentLinkClick);
         this._$returnLink.off('click', this._eventListeners.returnLinkClick);
+    }
+    /**
+     * Shows current category level in navigation (or parent category level if there is no nested category).
+     */
+    protected _showActiveCategoryLevel(): void {
+        if (this._activeCategoryPath.length <= 1) {
+            return;
+        }
+
+        const activeCategoryId = this._activeCategoryPath[
+            this._activeCategoryPath.length - 1
+        ];
+        const $activeCategoryLink = $(
+            `.${
+                this._options.className
+            }__link[data-category-id="${activeCategoryId}"]`
+        );
+
+        if (
+            $activeCategoryLink.hasClass(
+                `${this._options.className}__link--parent`
+            )
+        ) {
+            this._showCategoryLevel(activeCategoryId);
+        } else {
+            const parentCategoryId = this._activeCategoryPath[
+                this._activeCategoryPath.length - 2
+            ];
+            this._showCategoryLevel(parentCategoryId);
+        }
+    }
+    /**
+     * Adds highlight classname to active category list item
+     */
+    protected _highlightActiveCategoryItem(): void {
+        if (this._activeCategoryPath.length) {
+            const activeCategoryId = this._activeCategoryPath[
+                this._activeCategoryPath.length - 1
+            ];
+            const $activeCategoryItem = $(
+                `.${
+                    this._options.className
+                }__link[data-category-id="${activeCategoryId}"]`
+            )
+                .parent()
+                .addClass(this._options.activeCategoryHighlightClass);
+        }
+
+        const activeCategoryId = this._activeCategoryPath[
+            this._activeCategoryPath.length - 1
+        ];
+        const $activeCategoryLink = $(
+            `.${
+                this._options.className
+            }__link[data-category-id="${activeCategoryId}"]`
+        );
+
+        if (
+            $activeCategoryLink.hasClass(
+                `${this._options.className}__link--parent`
+            )
+        ) {
+            this._showCategoryLevel(activeCategoryId);
+        } else {
+            const parentCategoryId = this._activeCategoryPath[
+                this._activeCategoryPath.length - 2
+            ];
+            this._showCategoryLevel(parentCategoryId);
+        }
     }
 }

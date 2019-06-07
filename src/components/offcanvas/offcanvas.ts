@@ -63,7 +63,7 @@ export default class Offcanvas {
      */
     public toggle(e: Event): Promise<Offcanvas> {
         e.preventDefault();
-        
+
         if (
             this._$trigger.hasClass(`${this._options.triggerClassName}--active`)
         ) {
