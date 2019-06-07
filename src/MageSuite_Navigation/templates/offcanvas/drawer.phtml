@@ -9,6 +9,7 @@ $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
     <ul class="cs-offcanvas-navigation__list cs-offcanvas-navigation__list--current cs-offcanvas-navigation__list--level_<?= $level; ?>">
     <?php foreach($block->getItems() as $item):
         $itemUrl = $item->getUrl();
+        $itemId = $item->getId();
         $itemLabel = $item->getLabel();
         $itemHasSubitems = $item->hasSubItems();
     ?>
@@ -16,6 +17,7 @@ $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
             <a
                 class="cs-offcanvas-navigation__link<?= $itemHasSubitems ? ' cs-offcanvas-navigation__link--parent' : ''; ?>"
                 href="<?= $itemUrl; ?>"
+                data-category-id="<?= $itemId ?>"
             >
             <?php if ($itemHasSubitems): ?>
                 <?= $nextIcon ?>

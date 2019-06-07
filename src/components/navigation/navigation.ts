@@ -187,14 +187,20 @@ export default class Navigation {
      * class either to only last level category or whole category tree depending on component's settings.
      */
     protected _highlightActiveCategory(): void {
-        const $activeCategoryIndicator: JQuery = $('#active-category-id');
+        const $activeCategoryIndicator: JQuery = $('#active-category-path');
         if (!$activeCategoryIndicator.length) {
             return;
         }
 
-        const activeCategoryId: number = $activeCategoryIndicator.data(
-            'active-category-id'
-        );
+        const activeCategoryPath: string[] = `${$activeCategoryIndicator.data(
+            'active-category-path'
+        )}`.split('/');
+
+        const activeCategoryId: string =
+            activeCategoryPath && activeCategoryPath.length
+                ? activeCategoryPath[activeCategoryPath.length - 1]
+                : null;
+
         if (activeCategoryId) {
             const $activeCategoryEl: JQuery = this._$container.find(
                 `[data-category-id="${activeCategoryId}"]`

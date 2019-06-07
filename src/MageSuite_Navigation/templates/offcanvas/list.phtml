@@ -24,6 +24,7 @@ $itemLabel = $item->getLabel();
 <?php
 foreach($item->getSubItems() as $subItem):
     $subItem = $subItem;
+    $subItemId = $subItem->getId();
     $subItemUrl = $subItem->getUrl();
     $subItemLabel = $subItem->getLabel();
     $subItemHasSubItems = $subItem->hasSubItems();
@@ -32,6 +33,7 @@ foreach($item->getSubItems() as $subItem):
         <a
             class="cs-offcanvas-navigation__link<?= $subItemHasSubItems ? ' cs-offcanvas-navigation__link--parent' : ''; ?>"
             href="<?= $subItemUrl; ?>"
+            data-category-id="<?= $subItemId ?>"
         >
         <?php if ($subItemHasSubItems) {
             echo $nextIcon;
