@@ -474,7 +474,12 @@ export default class ImageTeaser {
         this._$container
             .find(`.${this._options.teaserName}__slide`)
             .each(function(): void {
-                new ProportionalScaler($(this));
+                new ProportionalScaler($(this), {
+                    scalableElementSelector: '.cs-image-teaser__text-content',
+                });
+                new ProportionalScaler($(this), {
+                    scalableElementSelector: '.cs-image-teaser__badge',
+                });
             });
     }
 
