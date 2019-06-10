@@ -5,17 +5,20 @@
 @import 'utils/link';
 
 $cookie-message_background-color: $color_background-200 !default;
-$cookie-message_text-color: $color_text-900 !default;
+$cookie-message_font-size: 85% !default;
+$cookie-message_font-color: $color_text-900 !default;
 $cookie-message_link-color: $color_primary-500 !default;
 $cookie-message_link-color--hover: $color_primary-800 !default;
 
 $cookie-message_button-type: $button_default-type !default;
 $cookie-message_icon-pos: $button_default-icon-pos !default;
 
-$cookie-message_button-pos-breakpoint: 'tablet';
-$cookie-message_button-pos-align: flex-start;
+$cookie-message_button-pos-breakpoint: 'tablet' !default;
+$cookie-message_button-pos-align: flex-start !default;
 
 .cs-cookie-message {
+    $root: &;
+
     position: fixed;
     bottom: 0;
     left: 0;
@@ -24,13 +27,13 @@ $cookie-message_button-pos-align: flex-start;
     box-sizing: border-box;
     padding: 1.2rem;
     background-color: $cookie-message_background-color;
-    color: $cookie-message_text-color;
-    box-shadow: 0 -.3rem .5rem 0 rgba(0, 0, 0 , .15);
-    font-size: 85%;
+    color: $cookie-message_font-color;
+    box-shadow: 0 -0.3rem 0.5rem 0 rgba(0, 0, 0, 0.15);
+    font-size: $cookie-message_font-size;
     z-index: 90;
     transform: translate3d(0, 110%, 0);
     opacity: 0;
-    transition: transform .25s ease-out, opacity .18s linear;
+    transition: transform 0.25s ease-out, opacity 0.18s linear;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,7 +76,10 @@ $cookie-message_button-pos-align: flex-start;
         }
 
         a {
-            @include link($cookie-message_link-color, $cookie-message_link-color--hover);
+            @include link(
+                $cookie-message_link-color,
+                $cookie-message_link-color--hover
+            );
         }
     }
 
