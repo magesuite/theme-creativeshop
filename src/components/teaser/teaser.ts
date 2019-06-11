@@ -6,7 +6,7 @@
 import * as $ from 'jquery';
 import * as Swiper from 'Swiper';
 
- /**
+/**
  * Creates new teaser object on given element with provided settings.
  * @param  {jQuery} $element jQuery element that contains complete outline for teaser.
  * Provided element should contain ".{teaserName}__wrapper" element.
@@ -52,7 +52,7 @@ const csTeaser: any = function($element: any, settings: any): void {
      * value, e.g. when settings.slidesPerView = 1 teaser will always show only one slide.
      * @type {Boolean}
      */
-    let dynamicNumOfSlides: any =
+    const dynamicNumOfSlides: any =
         !settings.slidesPerView || settings.slidesPerView === 'auto';
 
     /**
@@ -66,8 +66,8 @@ const csTeaser: any = function($element: any, settings: any): void {
      */
     const defaultSettings: any = {
         /**
-        * Swiper API options (http://idangero.us/swiper/api/)
-        */
+         * Swiper API options (http://idangero.us/swiper/api/)
+         */
         slideClass: `${teaserName}__slide`,
         slideActiveClass: `${teaserName}__slide--active`,
         slideVisibleClass: `${teaserName}__slide--visible`,
@@ -84,12 +84,16 @@ const csTeaser: any = function($element: any, settings: any): void {
         },
         pagination: {
             el: $element.find(`.${paginationName}`),
-            renderBullet: (index: number, className: string): Object => `
+            renderBullet: (index: number, className: string): {} => `
                 <li class="${className}">
-                    <button class="${paginationName}-button">${index +1}</button>
+                    <button class="${paginationName}-button">${index +
+                1}</button>
                 </li>
             `,
-            renderFraction: (currentClassName: string, totalClassName: string): Object => `
+            renderFraction: (
+                currentClassName: string,
+                totalClassName: string
+            ): {} => `
                 <span class="${teaserName}__number ${currentClassName}"></span>
                 ${fractionPaginationSeparator}
                 <span class="${teaserName}__number ${totalClassName}"></span>
@@ -101,19 +105,19 @@ const csTeaser: any = function($element: any, settings: any): void {
             clickable: true,
         },
         /**
-        * Teaser custom default options
-        */
-       onlyBulletPagination: false,
-       slideMinWidth: 200,
-       calculateSlides: true,
-       maxSlidesPerView: null,
-       /**
-        * Maximum number of groups that will be still visible as dots.
-        * If you want pagination to always be dots you can either don't add
-        * .${teaserName}__numbers element in HTML or set this to something big.
-        * @type {number}
-        */
-       paginationBreakpoint: 5,
+         * Teaser custom default options
+         */
+        onlyBulletPagination: false,
+        slideMinWidth: 200,
+        calculateSlides: true,
+        maxSlidesPerView: null,
+        /**
+         * Maximum number of groups that will be still visible as dots.
+         * If you want pagination to always be dots you can either don't add
+         * .${teaserName}__numbers element in HTML or set this to something big.
+         * @type {number}
+         */
+        paginationBreakpoint: 5,
     };
 
     currentSettings = $.extend(true, {}, defaultSettings, settings);
@@ -176,13 +180,11 @@ const csTeaser: any = function($element: any, settings: any): void {
                 totalSlidesNumber / swiperInstance.params.slidesPerGroup
             );
 
-            if (totalGroupNumber > swiperInstance.params.paginationBreakpoint) {
-                swiperInstance.params.pagination.type = 'fraction';
-            } else {
-                swiperInstance.params.pagination.type = 'bullets';
-            }
-            swiperInstance.pagination.render()
-            swiperInstance.pagination.update()
+            totalGroupNumber > swiperInstance.params.paginationBreakpoint
+                ? (swiperInstance.params.pagination.type = 'fraction')
+                : (swiperInstance.params.pagination.type = 'bullets');
+            swiperInstance.pagination.render();
+            swiperInstance.pagination.update();
         }
     };
 
@@ -190,23 +192,24 @@ const csTeaser: any = function($element: any, settings: any): void {
         $element.find(`${teaserClass}__wrapper`),
         currentSettings
     );
+
     destroyed = false;
     postInit();
     swiperInstance.update();
 
     let currentWindowWidth = $(window).width();
-    $(window).on('resize', (): void => {
-        const newWindowWidth = $(window).width();
-        if (
-            !destroyed
-            && newWindowWidth !== currentWindowWidth
-        ) {
-            updateSliderSizing();
-            postInit();
-            swiperInstance.update();
-            currentWindowWidth = newWindowWidth;
+    $(window).on(
+        'resize',
+        (): void => {
+            const newWindowWidth = $(window).width();
+            if (!destroyed && newWindowWidth !== currentWindowWidth) {
+                updateSliderSizing();
+                postInit();
+                swiperInstance.update();
+                currentWindowWidth = newWindowWidth;
+            }
         }
-    });
+    );
 
     /**
      * Returns Swiper object.
