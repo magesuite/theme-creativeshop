@@ -92,6 +92,7 @@ export default class ProportionalScaler {
         const $scalableEl = $element.find(
             `${this._options.scalableElementSelector}`
         );
+
         if (!$scalableEl.length || !this._layoutSpecificOptions.enabled) {
             $element.addClass('ready');
             return;
@@ -117,16 +118,17 @@ export default class ProportionalScaler {
         }
     }
 
-    _scale(): any {
+    public _scale(): any {
         this._isScaleScheduled = false;
         this._scalableElement.style.fontSize = `${parseInt(
-            this._scalableElelementFontSize
+            this._scalableElelementFontSize,
+            10
         ) *
             this._element.offsetWidth *
             this._ratio}px`;
     }
 
-    _setEvents(): void {
+    public _setEvents(): void {
         window.addEventListener(
             'resize',
             (): any => {
