@@ -1,231 +1,232 @@
-@import 'config/variables';
-@import 'vendors/include-media';
-@import 'components/container/mixin';
+@import "config/variables";
+@import "vendors/include-media";
+@import "components/container/mixin";
 
 $container_background-top-bar: $color_background-500 !default;
 
 .#{$ns}container {
-    $root: &;
+  $root: &;
 
-    @include container();
-    margin: 0 auto;
-    width: 100%;
-    box-sizing: border-box;
+  @include container();
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 
-    &__inner {
-        @include container-wrapper();
-        position: relative;
+  &__inner {
+    @include container-wrapper();
+    position: relative;
 
-        &:before,
-        &:after {
-            content: '';
-            display: table;
-            clear: both;
-        }
-
-        &--flex {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-
-            @include media('>=tablet') {
-                flex-wrap: nowrap;
-            }
-
-            &:after {
-                display: none;
-            }
-        }
+    &:before,
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
     }
 
-    &__aside {
-        @include media('>=tablet') {
-            width: 40%;
-            position: absolute;
-            top: 0;
-            height: 100%;
-            right: 0;
-        }
+    &--flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
 
-        @include media('>=laptop') {
-            width: 32%;
-        }
+      @include media(">=tablet") {
+        flex-wrap: nowrap;
+      }
 
-        @include media('>=desktop') {
-            right: 0;
-            width: 30%;
-        }
+      &:after {
+        display: none;
+      }
+    }
+  }
+
+  &__aside {
+    @include media(">=tablet") {
+      width: 40%;
+      position: absolute;
+      top: 0;
+      height: 100%;
+      right: 0;
     }
 
-    &__main-column {
-        width: 56%;
-        position: relative;
-
-        @include media('>=laptop') {
-            width: 65%;
-        }
-
-        @include media('>=desktop') {
-            width: 67%;
-        }
-
-        @include media('<tablet') {
-            max-width: 100% !important;
-            width: 100% !important;
-            //min-height: 30rem;
-        }
-
-        // Bundle products do not have sticky buybox and should have another layout.
-        // On tablet gallery covered buybox and as a result it was impossible to click at anything there.
-        // Code below should be reviewed during refactoring containers and pdp (PDP 2.0)
-        .page-product-bundle & {
-            @include media('>=tablet', '<laptop') {
-                width: 100%;
-                margin-right: 0;
-            }
-        }
-
-        &--space-top {
-            @include media('>=laptop') {
-                padding-top: 3rem;
-            }
-        }
+    @include media(">=laptop") {
+      width: 32%;
     }
 
-    &__reviews {
-        @extend .#{$ns}container__inner;
+    @include media(">=desktop") {
+      right: 0;
+      width: 30%;
+    }
+  }
 
-        @include media('>=tablet') {
-            background: $color_white;
-            margin-top: 3rem;
-            padding: 0 2rem;
-        }
+  &__main-column {
+    width: 56%;
+    position: relative;
 
-        @include media('>=desktop') {
-            padding: 2rem 0 0;
-        }
-
-        &:after {
-            content: '';
-            display: table;
-            clear: both;
-        }
-        padding-bottom: 2rem;
+    @include media(">=laptop") {
+      width: 65%;
     }
 
-    &__cart-coupons {
-        display: flex;
-        flex-wrap: wrap;
-
-        @include media('>=laptop') {
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
+    @include media(">=desktop") {
+      width: 67%;
     }
 
-    &--contrast {
-        background-color: $color_gallery;
-
-        @include media('>=laptop') {
-            background-image: url('../images/background.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
+    @include media("<tablet") {
+      max-width: 100% !important;
+      width: 100% !important;
+      //min-height: 30rem;
     }
 
-    &--top-bar {
-        background-color: $container_background-top-bar;
-        max-width: none;
+    // Bundle products do not have sticky buybox and should have another layout.
+    // On tablet gallery covered buybox and as a result it was impossible to click at anything there.
+    // Code below should be reviewed during refactoring containers and pdp (PDP 2.0)
+    .page-product-bundle & {
+      @include media(">=tablet", "<laptop") {
+        width: 100%;
+        margin-right: 0;
+      }
     }
 
-    &--spacious {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
+    &--space-top {
+      @include media(">=laptop") {
+        padding-top: 3rem;
+      }
+    }
+  }
 
-        @include media('>=laptop') {
-            padding-top: 3rem;
-            padding-bottom: 3rem;
-        }
+  &__reviews {
+    @extend .#{$ns}container__inner;
 
-        .catalog-category-view &,
-        .catalogsearch-result-index & {
-            @include media('>=tablet') {
-                padding-top: 0;
-            }
-        }
+    @include media(">=tablet") {
+      background: $color_white;
+      margin-top: 3rem;
+      padding: 0 2rem;
     }
 
-    &--hero {
-        #{$root}__inner {
-            max-width: 100%;
-            overflow: hidden;
-        }
+    @include media(">=desktop") {
+      padding: 2rem 0 0;
     }
 
-    &--brand-carousel {
-        #{$root}__inner {
-            overflow: hidden;
-        }
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    padding-bottom: 2rem;
+  }
+
+  &__cart-coupons {
+    display: flex;
+    flex-wrap: wrap;
+
+    @include media(">=laptop") {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+    }
+  }
+
+  &--contrast {
+    background-color: $color_gallery;
+
+    @include media(">=laptop") {
+      background-image: url("../images/background.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  }
+
+  &--top-bar {
+    background-color: $container_background-top-bar;
+    max-width: none;
+  }
+
+  &--spacious {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+
+    @include media(">=laptop") {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
     }
 
-    &--image-teaser-window-width {
-        padding-left: 0;
-        padding-right: 0;
+    .catalog-category-view &,
+    .catalogsearch-result-index & {
+      @include media(">=tablet") {
+        padding-top: 0;
+      }
     }
+  }
 
-    &--grid-teaser {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-
-        @include media('<phoneLg') {
-            position: relative;
-        }
+  &--hero {
+    #{$root}__inner {
+      max-width: 100%;
+      overflow: hidden;
     }
+  }
 
-    &--noscroll {
-        overflow: hidden;
+  &--brand-carousel {
+    #{$root}__inner {
+      overflow: hidden;
     }
+  }
 
-    &--pdp {
-        @include media('>=laptop') {
-            padding-top: 0;
-        }
+  &--image-teaser-window-width,
+  &--store-locator {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &--grid-teaser {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    @include media("<phoneLg") {
+      position: relative;
     }
+  }
 
-    &--usps {
-        #{$root}--headline {
-            padding: 0;
-        }
+  &--noscroll {
+    overflow: hidden;
+  }
+
+  &--pdp {
+    @include media(">=laptop") {
+      padding-top: 0;
     }
+  }
 
-    &--create-account-page,
-    &--login-page,
-    &--success-page {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-
-        @include media('>=laptop') {
-            padding-top: 3rem;
-            padding-bottom: 5rem;
-        }
+  &--usps {
+    #{$root}--headline {
+      padding: 0;
     }
+  }
 
-    &--my-account-page {
-        @include media('>=tablet', '<laptop') {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-    }
+  &--create-account-page,
+  &--login-page,
+  &--success-page {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 
-    &--ontop {
-        z-index: 301;
+    @include media(">=laptop") {
+      padding-top: 3rem;
+      padding-bottom: 5rem;
     }
+  }
 
-    &--viewport-width {
-        max-width: none;
+  &--my-account-page {
+    @include media(">=tablet", "<laptop") {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
+  }
+
+  &--ontop {
+    z-index: 301;
+  }
+
+  &--viewport-width {
+    max-width: none;
+  }
 }

@@ -25,6 +25,7 @@ var config = {
         'js/customer': ['js/commons'],
         'js/styleguide': ['js/commons'],
         'js/contact': ['js/commons'],
+        'js/magesuite-store-locator': ['js/commons'],
     },
     config: {
         mixins: {
