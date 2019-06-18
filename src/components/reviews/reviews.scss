@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'components/field/mixin';
+@import 'components/button/mixin';
 @import 'vendors/include-media';
 
 $reviews-border: 1px solid $color_border-500 !default;
@@ -21,6 +22,9 @@ $reviews_form-rating-control-border: $field_input-border !default;
 $reviews_form-rating-control-background: transparent !default;
 $reviews_form-fedback-text-color: $color_text-400 !default;
 $reviews_form-fedback-font-size: 0.85em !default;
+
+$reviews_form-submit-button-type: $button_default-type !default;
+$reviews_form-submit-button-icon-pos: 'no-icon' !default;
 
 .cs-reviews {
     flex: 1 1 0;
@@ -128,6 +132,11 @@ $reviews_form-fedback-font-size: 0.85em !default;
     }
 
     &__submit-button {
+        @include button(
+            $type: $reviews_form-submit-button-type,
+            $icon_pos: $reviews_form-submit-button-icon-pos
+        );
+
         @include media('<=phoneLg') {
             width: 100%;
         }
