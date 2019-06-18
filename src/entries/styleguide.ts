@@ -53,6 +53,19 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
 import 'components/select';
+// Content Constructor
+import 'components/brand-carousel';
+import 'components/category-links';
+import 'components/daily-deal-teaser';
+import 'components/dailydeal';
+import 'components/hero';
+import 'components/image-teaser';
+import 'components/image-teaser-legacy';
+import 'components/paragraph';
+import 'components/products-carousel';
+import 'components/products-grid';
+import 'components/product-finder';
+import 'components/separator';
 // Others
 import 'components/bundle-box';
 import 'components/buybox';
