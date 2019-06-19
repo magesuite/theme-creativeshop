@@ -129,6 +129,25 @@ $aftersearch-nav--horizontal_rows: (
             padding-bottom: 0;
             border-bottom: $aftersearch-nav_filter-border;
         }
+
+        &--checked {
+            &:not(.active) {
+                > #{$root}__filter-title {
+                    &:after {
+                        opacity: 0;
+                    }
+                }
+            }
+
+            > #{$root}__filter-title {
+                &:before {
+                    background: center no-repeat
+                        url('../images/icons/aftersearch-nav/check.svg');
+                    height: 1.3rem;
+                    width: 1.3rem;
+                }
+            }
+        }
     }
 
     &__filters-trigger {
@@ -185,7 +204,8 @@ $aftersearch-nav--horizontal_rows: (
             $height: $aftersearch-nav_filter-title-pseudoicon-height,
             $color: $aftersearch-nav_filter-title-pseudoicon-color,
             $color-hover: $aftersearch-nav_filter--hover-title-pseudoicon-color,
-            $color-expanded: $aftersearch-nav_filter--expanded-title-pseudoicon-color
+            $color-expanded:
+                $aftersearch-nav_filter--expanded-title-pseudoicon-color
         );
 
         font-size: 1.2rem;
@@ -435,11 +455,16 @@ $aftersearch-nav--horizontal_rows: (
                 );
 
                 @include pseudoicon(
-                    $width: $aftersearch-nav--horizontal_toggle-button-pseudoicon-width,
-                    $height: $aftersearch-nav--horizontal_toggle-button-pseudoicon-height,
-                    $color: $aftersearch-nav--horizontal_toggle-button-pseudoicon-color,
-                    $color-hover: $aftersearch-nav--horizontal_toggle-button--hover-pseudoicon-color,
-                    $color-expanded: $aftersearch-nav--horizontal_toggle-button--expanded-pseudoicon-color
+                    $width:
+                        $aftersearch-nav--horizontal_toggle-button-pseudoicon-width,
+                    $height:
+                        $aftersearch-nav--horizontal_toggle-button-pseudoicon-height,
+                    $color:
+                        $aftersearch-nav--horizontal_toggle-button-pseudoicon-color,
+                    $color-hover:
+                        $aftersearch-nav--horizontal_toggle-button--hover-pseudoicon-color,
+                    $color-expanded:
+                        $aftersearch-nav--horizontal_toggle-button--expanded-pseudoicon-color
                 );
 
                 width: 100%;
