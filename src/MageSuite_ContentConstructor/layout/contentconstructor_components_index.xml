@@ -1,5 +1,16 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd" layout="1column">
+    <head>
+        <!-- Attach css bundle for this page type -->
+        <css src="css/styleguide.css" />
+    </head>
     <body>
+        <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">styleguide</argument>
+            </arguments>
+        </referenceBlock>
+
         <!-- Revert containers to allow Content Constructor elements -->
         <move element="columns.top" destination="main.content" after="-"/>
         <move element="columns" destination="main.content" after="-"/>
