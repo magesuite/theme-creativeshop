@@ -7,6 +7,21 @@ define(['jquery'], function($) {
     'use strict';
     return function(quickSearch) {
         $.widget('smileEs.quickSearch', quickSearch, {
+            _create() {
+                var self = this;
+                this._super();
+                $('body').on(
+                    'click',
+                    function(event) {
+                        if (
+                            !$(event.target).closest(this.autoComplete).length
+                        ) {
+                            self._resetResponseList(true);
+                            self.autoComplete.hide();
+                        }
+                    }
+                );
+            },
             /**
              * Validate selection of an element (eg : when ENTER is pressed)
              *
