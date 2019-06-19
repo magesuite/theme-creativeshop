@@ -1,4 +1,4 @@
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <css src="css/category.css"/>
     </head>
@@ -9,12 +9,8 @@
                 <argument name="bundle_name" xsi:type="string">category</argument>
             </arguments>
         </referenceBlock>
-        <!-- Revert containers to allow Content Constructor elements -->
-        <move element="columns.top" destination="main.content" after="-"/>
-        <move element="columns" destination="main.content" after="-"/>
-        <referenceContainer name="main.content" htmlClass="" />
-        <referenceContainer name="page.main.container.inner" display="false" />
 
+        <!-- Style search result list as a grid -->
         <referenceBlock name="search_result_list">
             <arguments>
                 <argument name="grid_component_class" xsi:type="string">cs-grid-layout</argument>
@@ -43,11 +39,37 @@
 
         <referenceBlock name="product_list_toolbar">
             <arguments>
-                <argument translate="true" name="descending_direction_label" xsi:type="string">Set Descending Direction</argument>
-                <argument name="descending_direction_icon" xsi:type="string">#arrow_down</argument>
-                <argument translate="true" name="ascending_direction_label" xsi:type="string">Set Ascending Direction</argument>
-                <argument name="ascending_direction_icon" xsi:type="string">#arrow_up</argument>
+                <argument name="additional_css_classes" xsi:type="string">cs-page-category__toolbar</argument>
             </arguments>
         </referenceBlock>
+
+        <!-- Add inner column container -->
+        <referenceContainer name="main.content" htmlClass="cs-page-category">
+            <referenceContainer name="columns" htmlClass="columns cs-container cs-container--page-category">
+                <container name="columns.container.inner" htmlTag="div" htmlClass="cs-page-category__columns cs-container__inner" />
+            </referenceContainer>
+        </referenceContainer>
+
+        <!-- Revert containers to allow Content Constructor elements -->
+        <move element="columns.top" destination="main.content" beore="-"/>
+        <move element="columns" destination="main.content" after="-"/>
+        <referenceContainer name="page.main.container.inner" display="false" />
+
+        <!-- Move grid into main column-->
+        <referenceContainer name="main" htmlClass="cs-page-category__main" />
+        <move element="main" destination="columns.container.inner" />
+        <move element="page.main.title" destination="content.top" />
+
+        <!-- Move filters/sidebar into sidebar column-->
+        <referenceContainer name="div.sidebar.main" htmlClass="cs-page-category__sidebar" />
+        <move element="div.sidebar.main" destination="columns.container.inner" after="-" />
+        
+        <!-- Move sidebar additional to sidebar -->
+        <referenceContainer name="div.sidebar.additional" htmlClass="cs-page-category__sidebar-extras" display="true" />
+        <!-- <move element="div.sidebar.additional" destination="div.sidebar.main" after="-" /> -->
+
+        <!--Move messages to inner container-->
+        <referenceContainer name="page.messages" htmlClass="page messages cs-page-category__messages" />
+        <move element="page.messages" destination="columns.container.inner" before="-" />
     </body>
 </page>
