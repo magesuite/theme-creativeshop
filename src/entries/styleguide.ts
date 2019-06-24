@@ -44,6 +44,7 @@ import 'components/page-title';
 import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
+import 'components/qty-increment';
 import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
@@ -67,7 +68,6 @@ import 'components/discount';
 import 'components/progress-bar';
 import 'components/toolbar';
 import 'components/tabs';
-import 'components/qty-increment';
 import 'components/form';
 import 'components/table';
 

@@ -3,15 +3,20 @@
 
 @import 'components/button/mixin';
 
-$minicart_padding: 2rem !default;
+$minicart_padding: 2rem 0 !default;
+
+$minicart_close-button-color: $color_text-200 !default;
 
 $minicart_item-border: 1px solid $color_border-500 !default;
 $minicart_item-headline-color: $color_text-800 !default;
+$minicart_item-padding: 1.5rem !default;
 
-$minicart_background: $color_background-200 !default;
+$minicart_background: $color_background-500 !default;
 $minicart_box-shadow: 0 0 21px 0 rgba($color_background-800, 0.27) !default;
 
-$minicart_width: 29.5rem !default;
+$minicart_width: 40rem !default;
+
+$minicart_content-background: $color_background-200 !default;
 
 $minicart_button-checkout-type: $button_default-type !default;
 $minicart_button-checkout-icon-pos: $button_default-icon-pos !default;
@@ -36,10 +41,11 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
         font-weight: 400;
         position: absolute;
         right: 0;
-        width: 4rem;
-        height: 4rem;
+        width: 5rem;
+        height: 3rem;
         top: 50%;
         transform: translateY(-50%);
+        cursor: pointer;
 
         &:focus,
         &:active,
@@ -52,8 +58,8 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
         &:before {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            font-size: 32px;
-            line-height: 32px;
+            font-size: 5rem;
+            line-height: 3rem;
             color: inherit;
             content: '\e616';
             /* stylelint-disable-next-line */
@@ -81,23 +87,24 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
 
     &__title-wrapper {
         position: relative;
-    }
-
-    &__title {
-        border-bottom: $minicart_item-border;
         padding: $minicart_padding;
-        padding-right: $minicart_padding + 4rem;
         display: flex;
-        justify-content: space-between;
         color: $minicart_item-headline-color;
         font-weight: 700;
         font-size: 1.8rem;
         margin: 0;
     }
 
-    &__title-qty {
-        color: $minicart_item-headline-color;
-        font-size: 1.4rem;
+    &__items-total {
+        margin-left: 0.5rem;
+
+        &:before {
+            content: '(';
+        }
+
+        &:after {
+            content: ')';
+        }
     }
 
     &__edit-link {
@@ -110,6 +117,12 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
 
     &__content {
         height: auto !important;
+        background-color: $minicart_content-background;
+        position: relative;
+
+        .load.indicator:before {
+            height: unset;
+        }
     }
 
     &__list {
@@ -133,7 +146,7 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
     }
 
     &__list-item {
-        padding: #{$minicart_padding / 2} $minicart_padding;
+        padding: $minicart_item-padding;
         border-bottom: $minicart_item-border;
         margin-bottom: 0;
 
@@ -144,8 +157,24 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
 
     &__actions-wrapper {
         padding: $minicart_padding;
-        border-top: $minicart_item-border;
-        box-shadow: 0 -5px 5px -5px rgba($color_background-800, 0.27);
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 -5px 5px -5px rgba($color_background-800, 0.27);
+            z-index: 1;
+        }
+
+        &.empty {
+            &:after {
+                display: none;
+            }
+        }
     }
 
     &__actions {
@@ -157,7 +186,7 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
     }
 
     &__empty {
-        padding: $minicart_padding 0;
+        padding: $minicart_padding;
         display: inline-block;
         font-size: 1.4rem;
         text-align: center;
@@ -259,10 +288,10 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
         background: $minicart_background;
         box-shadow: $minicart_box-shadow;
         border: none;
-        width: 27rem;
+        width: 31rem;
         right: 0;
         margin: 0;
-        padding: 0;
+        padding: 0 2rem;
         position: relative;
 
         @include media('>=phoneLg') {
