@@ -1,4 +1,4 @@
-define(['jquery', 'ko'], function($, ko) {
+define(['jquery'], function($) {
     'use strict';
 
     return function(config) {
@@ -10,6 +10,8 @@ define(['jquery', 'ko'], function($, ko) {
                 },
                 useDefaultQty: null,
                 delay: 1500,
+                step: 1,
+                minValue: 1,
             },
             _initContent: function() {
                 this._super();
@@ -41,19 +43,13 @@ define(['jquery', 'ko'], function($, ko) {
                 var itemId = $(event.currentTarget).data('cart-item');
                 var qtyElement = $('#cart-item-' + itemId + '-qty');
                 var qtyValue = parseInt(qtyElement.val(), 10);
-
-                switch (action) {
-                    case 'qtyDecrease':
-                        qtyValue = qtyValue - 1;
-                        if (qtyValue <= 0) {
-                            qtyValue = 1;
-                        }
-                        break;
-                    case 'qtyIncrease':
-                        qtyValue = qtyValue + 1;
-                        break;
-                }
-
+                qtyValue =
+                    action === 'qtyDecrease'
+                        ? Math.max(
+                              qtyValue - this.options.step,
+                              this.options.minValue
+                          )
+                        : qtyValue + this.options.step;
                 qtyElement.val(qtyValue).trigger('keyup');
             },
             _showItemButton: function(elem) {
