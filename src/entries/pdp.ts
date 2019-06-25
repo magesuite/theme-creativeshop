@@ -45,6 +45,7 @@ import 'components/page-title';
 import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
+import 'components/qty-increment';
 import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
@@ -70,8 +71,6 @@ import 'components/product-finder';
 import 'components/separator';
 // PDP specific
 import 'pages/product';
-
-import 'components/authorization-link';
 import 'components/bundle-box';
 import 'components/buybox';
 import 'components/form';
@@ -84,17 +83,8 @@ import 'components/reviews-summary';
 import 'components/tabs';
 import 'components/table';
 import 'components/toolbar';
-import 'components/qty-increment';
 import 'components/sticky-block';
-import 'components/visually-hidden';
-import 'components/star-rating';
-import 'components/dropdown-switcher';
-import 'components/display-controller';
 import 'components/captcha';
-import 'components/lazyload';
-import 'components/typography';
-import 'components/dropdown-switcher';
-
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'customizations/video-player/video-player';
 

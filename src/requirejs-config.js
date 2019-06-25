@@ -52,6 +52,9 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
+            'Magento_Checkout/js/sidebar': {
+                'Magento_Checkout/js/sidebar-ext': true,
+            },
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
