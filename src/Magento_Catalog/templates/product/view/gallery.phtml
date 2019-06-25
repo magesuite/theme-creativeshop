@@ -29,11 +29,34 @@
     $imageWidth = $block->getImageAttribute('product_page_image_medium', 'width');
     $imageHeight = $block->getImageAttribute('product_page_image_medium', 'height');
     $loaderPadding = ($imageHeight / $imageWidth) * 100 . '%';
+
+    // Webp support
+    $imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
+    $isWebpSupported = $imageTypeHelper->supportsWebp($mainImageUrl);
+    $imageMimeType = $imageTypeHelper->getMimeType($mainImageUrl);
 ?>
 <div class="gallery-placeholder _block-content-loading cs-product-gallery" data-gallery-role="gallery-placeholder">
     <div data-role="loader" class="loading-mask cs-product-gallery__loading-mask">
         <div class="loader cs-product-gallery__loader" style="padding-bottom: <?= $loaderPadding ?>">
-            <img class="cs-product-gallery__placeholder-image" itemprop="image" src="<?= $mainImageUrl ?>" alt="<?= $mainImageAlt ?>">
+            <picture class="cs-product-gallery__placeholder-image">
+                <?php if ($isWebpSupported): ?>
+                    <source
+                        type="image/webp"
+                        srcset="<?= $mainImageUrl ?>.webp"
+                        alt="<?= $mainImageAlt ?>"
+                    >
+                <?php endif; ?>
+                <source
+                    type="<?= $imageMimeType ?>"
+                    src="<?= $mainImageUrl ?>"
+                    alt="<?= $mainImageAlt ?>"
+                >
+                <img
+                    type="<?= $imageMimeType ?>"
+                    src="<?= $mainImageUrl ?>"
+                    alt="<?= $mainImageAlt ?>"
+                >
+            </picture>
         </div>
     </div>
 </div>
