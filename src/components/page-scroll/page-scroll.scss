@@ -1,0 +1,61 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$pagescroll_button-width: 3rem !default;
+$pagescroll_button-height: $pagescroll_button-width !default;
+$pagescroll_button-position: 'right' !default;
+$pagescroll_button-vertical-offset: 1rem !default;
+$pagescroll_button-horizontal-offset: $pagescroll_button-vertical-offset !default;
+$pagescroll_button-border-radius: 50% !default;
+$pagescroll_button-background-color: $color_primary-500 !default;
+$pagescroll_button-shadow: none !default;
+$pagescroll_button-zindex: 99 !default;
+
+$pagescroll_icon-width: 1.25rem !default;
+$pagescroll_icon-height: $pagescroll_icon-width !default;
+$pagescroll_icon-background-color: $color_background-200 !default;
+
+.#{$ns}page-scroll {
+    $root: &;
+    display: none;
+
+    @include media('>=tablet') {
+        display: block;
+    }
+
+    &__button {
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $pagescroll_button-width;
+        height: $pagescroll_button-height;
+        box-sizing: border-box;
+        background: $pagescroll_button-background-color;
+        border-radius: $pagescroll_button-border-radius;
+        box-shadow: $pagescroll_button-shadow;
+        transition: opacity 0.3s ease-in;
+        z-index: $pagescroll_button-zindex;
+        position: fixed;
+        bottom: $pagescroll_button-vertical-offset;
+
+        @if ($pagescroll_button-position == 'right') {
+            right: $pagescroll_button-horizontal-offset;
+        }
+
+        @if ($pagescroll_button-position == 'left') {
+            left: $pagescroll_button-horizontal-offset;
+        }
+
+        &--visible {
+            opacity: 1;
+        }
+    }
+
+    &__icon {
+        display: block;
+        width: $pagescroll_icon-width;
+        height: $pagescroll_icon-height;
+        fill: $pagescroll_icon-background-color;
+    }
+}
