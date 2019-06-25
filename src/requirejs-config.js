@@ -76,6 +76,9 @@ var config = {
             'Magento_CheckoutAgreements/js/model/agreements-assigner': {
                 'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
             },
+            'Magento_Swatches/js/swatch-renderer': {
+                'Magento_Swatches/js/swatch-renderer-ext': true,
+            },
         },
     },
     map: {
