@@ -139,6 +139,24 @@ $image-teaser_badge-font-size: 1.1em !default;
             width: 50%;
         }
 
+        #{$root}--teaser-and-text & {
+            order: 2;
+        }
+
+        &--image-uploaded {
+            #{$root}__slides--mobile-text-image & {
+                @include media('<tablet') {
+                    order: 3;
+                }
+            }
+
+            #{$root}__slides--mobile-image-text & {
+                @include media('<tablet') {
+                    order: 1;
+                }
+            }
+        }
+
         @for $i from 2 through 8 {
             #{$root}--items-in-row-#{$i} & {
                 @include media('>=tablet') {
@@ -212,6 +230,13 @@ $image-teaser_badge-font-size: 1.1em !default;
                 @include media('>=laptop') {
                     padding: $image-teaser_content-gutter-base * 4;
                 }
+            }
+        }
+
+        #{$root}--teaser-and-text & {
+            @include media('<tablet') {
+                position: static;
+                height: auto;
             }
         }
 
@@ -356,7 +381,7 @@ $image-teaser_badge-font-size: 1.1em !default;
         line-height: 1;
         padding: 0.9em;
         text-align: center;
-        z-index: 2;
+        z-index: 3;
 
         &:before {
             content: '';
