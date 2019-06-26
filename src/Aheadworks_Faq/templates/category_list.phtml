@@ -1,7 +1,5 @@
 <?php
-
 // @codingStandardsIgnoreFile
-
 /** @var \Aheadworks\Faq\Block\Category\CategoryList $block */
 ?>
 
@@ -17,7 +15,7 @@
     }
     ?>
     <div class="cs-faq-index__category">
-        <section class="cs-faq-index__category-section" data-mage-init='{"mediaQueryScope": "(max-width: 767px)" } }'>
+        <section class="cs-faq-index__category-section">
             <h2 class="cs-faq-index__title cs-faq-index__category-name" data-role="title">
                 <?php if ($block->getCategoryIconUrl($category)) :?>
                     <img class="cs-faq-index__list-img" src="<?php echo $block->escapeUrl($block->getCategoryIconUrl($category)); ?>" alt="<?php echo $block->escapeHtml($category->getName()); ?>" />
@@ -31,9 +29,7 @@
                             <?php $article = $categoryArticles[$allowedArticlesNumber-1]; ?>
                             <li <?php /* @noEscape */ echo $articleListIcon ?> >
                                 <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?>
-                                    <svg class="cs-faq-index__list-item-icon">
-                                        <use xlink:href="#icon_arrow-right"></use>
-                                    </svg>
+                                    <?= $block->getChildHtml('aw_faq.category_list.icon'); ?>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -43,9 +39,7 @@
                     <?php foreach ($categoryArticles as $article): ?>
                         <li <?php /* @noEscape */ echo $articleListIcon ?> >
                             <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?>
-                                <svg class="cs-faq-index__list-item-icon">
-                                    <use xlink:href="#icon_arrow-right"></use>
-                                </svg>
+                                <?= $block->getChildHtml('aw_faq.category_list.icon'); ?>
                             </a>
                         </li>
                     <?php endforeach; ?>
