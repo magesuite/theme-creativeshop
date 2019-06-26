@@ -18,10 +18,11 @@ $minicart-product_options-font-size: 1.2rem !default;
 $minicart-product_options-label-color: $color_text-400 !default;
 $minicart-product_options-value-color: $color_text-400 !default;
 $minicart-product_options_toggle-padding: 1.2rem !default;
+$minicart-product-options_toggle-disable: false !default;
 
 $minicart-product_price-color: $color_text-800 !default;
 
-$minicart-product_qty-enable: true !default;
+$minicart-product_qty-enable: false !default;
 $minicart-product_qty-height: 3rem !default;
 $minicart-product_qty-font-size: 1.2rem !default;
 $minicart-product_qty-button-type: $button_default-type !default;
@@ -60,13 +61,15 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
 
     &__name-wrapper {
         text-align: left;
+        margin-right: 2rem;
+        font-size: $minicart-product_overview-font-size;
     }
 
     &__name {
         width: 100%;
         padding: 0;
         margin-top: 0;
-        font-size: $minicart-product_overview-font-size;
+        font-size: inherit;
         text-decoration: none;
         color: $minicart-product_name-color;
 
@@ -91,14 +94,18 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
     }
 
     &__options-title {
-        font-size: $minicart-product_options-font-size;
-        color: $minicart-product-options-title-color;
-        cursor: pointer;
+        @if ($minicart-product-options_toggle-disable) {
+            display: none;
+        } @else {
+            font-size: $minicart-product_options-font-size;
+            color: $minicart-product-options-title-color;
+            cursor: pointer;
 
-        &[aria-expanded='true'] {
-            > #{$root}__options-title-svg {
-                transform: rotate(180deg);
-                vertical-align: initial;
+            &[aria-expanded='true'] {
+                > #{$root}__options-title-svg {
+                    transform: rotate(180deg);
+                    vertical-align: initial;
+                }
             }
         }
     }
@@ -131,6 +138,12 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
             #{$root}__options-wrapper + & {
                 margin-top: 1.5rem;
             }
+        }
+    }
+
+    @if ($minicart-product-options_toggle-disable) {
+        &__options-content {
+            display: block !important;
         }
     }
 
@@ -216,7 +229,8 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
             );
         }
     } @else {
-        &__qty {
+        &__qty,
+        .cs-qty-increment {
             display: none;
         }
     }
