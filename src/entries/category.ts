@@ -67,6 +67,7 @@ import 'components/image-teaser-legacy';
 import 'components/paragraph';
 import 'components/products-carousel';
 import 'components/products-grid';
+import 'components/products-list';
 import 'components/product-finder';
 import 'components/separator';
 // Category page

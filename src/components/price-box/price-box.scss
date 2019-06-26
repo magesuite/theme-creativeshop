@@ -3,9 +3,14 @@
 @import 'utils/visually-hidden';
 
 $price-box_price-color: $price_color !default;
+$price-box_price-font-size: 1.5rem !default;
 $price-box_special-price-color: $price_special-color !default;
+$price-box_special-price-font-size: $price-box_price-font-size !default;
 $price-box_old-price-color: $price_old-color !default;
-
+$price-box_old-price-font-size: $price-box_price-font-size !default;
+$price-box_label-color: $price_color !default;
+$price-box_label-font-size: 1.1rem !default;
+$price-box_space-between-prices: 1rem !default;
 
 .price-box {
     $root: &;
@@ -13,11 +18,12 @@ $price-box_old-price-color: $price_old-color !default;
 
     .price {
         color: $price-box_price-color;
-        font-size: 1.51rem;
+        font-size: $price-box_price-font-size;
 
         &-label {
+            color: $price-box_label-color;
             display: none;
-            font-size: 1.15;
+            font-size: $price-box_label-font-size;
             font-weight: 700;
             text-transform: uppercase;
             padding-bottom: 0.3rem;
@@ -25,8 +31,8 @@ $price-box_old-price-color: $price_old-color !default;
             body:not(.page-product-bundle, .page-product-grouped)
                 p:not(.price-from, .price-to)
                 & {
-                    @include visually-hidden();
-                }
+                @include visually-hidden();
+            }
         }
     }
 
@@ -44,9 +50,9 @@ $price-box_old-price-color: $price_old-color !default;
         text-decoration: none;
 
         .price {
-            font-size: 1rem;
+            font-size: $price-box_old-price-font-size;
             color: $price-box_old-price-color;
-            margin-right: 0.7rem;
+            margin-right: $price-box_space-between-prices;
         }
     }
 
@@ -54,6 +60,7 @@ $price-box_old-price-color: $price_old-color !default;
         .price {
             padding-left: 0;
             color: $price-box_special-price-color;
+            font-size: $price-box_special-price-font-size;
         }
 
         &.active {
@@ -68,16 +75,9 @@ $price-box_old-price-color: $price_old-color !default;
         margin-right: 1.5rem;
     }
 
-    .#{$ns}product-tile__price--dailydeal-countdown &,
     .#{$ns}price--pdp_dailydeal-countdown & {
         &:not(.price-final_price_without_daily_deal) {
             display: none;
-        }
-    }
-
-    .#{$ns}product-tile__price--dailydeal-countdown & {
-        &#{$root}--visible {
-            display: inline-block !important;
         }
     }
 
@@ -108,5 +108,3 @@ $price-box_old-price-color: $price_old-color !default;
         position: absolute;
     }
 }
-
-

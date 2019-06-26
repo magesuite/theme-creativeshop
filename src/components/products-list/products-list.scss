@@ -1,0 +1,41 @@
+@import 'config/variables';
+@import 'utils/reset-list-style';
+@import 'vendors/include-media';
+
+$product_list-item-border-bottom: 1px solid $color_border-200;
+$product_list-item-padding: 0;
+$product_list-carousel-breakpoint: '>=tablet';
+
+.cs-products-list {
+    $root: &;
+
+    @include reset-list-style();
+
+    &__item {
+        margin: 0;
+    }
+
+    &:not(#{$root}--carousel) {
+        #{$root}__item {
+            border-bottom: $product_list-item-border-bottom;
+            padding: $product_list-item-padding;
+
+            &:last-child {
+                border-bottom: 0;
+            }
+        }
+    }
+
+    &--carousel {
+        @include media($product_list-carousel-breakpoint) {
+            #{$root}__item {
+                border-bottom: $product_list-item-border-bottom;
+                padding: $product_list-item-padding;
+
+                &:last-child {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+}

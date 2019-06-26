@@ -28,6 +28,7 @@
         if ($block->getMode() == 'grid') {
             $viewMode = 'grid';
             $viewModeClass = $block->getGridComponentClass();
+            $viewModeAdditionalClass = $block->hasAdditionalGridComponentClass() ? ' ' .$block->getAdditionalGridComponentClass() : '';
             $viewModeListClass = $block->getGridComponentListClass();
             $viewModeListItemClass = $block->getGridComponentListItemClass();
             $image = 'category_page_grid';
@@ -35,6 +36,7 @@
         } else {
             $viewMode = 'list';
             $viewModeClass = $block->getListComponentClass();
+            $viewModeAdditionalClass = $block->hasAdditionalListComponentClass() ? ' ' .$block->getAdditionalListComponentClass() : '';
             $viewModeListClass = $block->getListComponentListClass();
             $viewModeListItemClass = $block->getListComponentListItemClass();
             $image = 'category_page_list';
@@ -50,7 +52,7 @@
 
     <div class="products wrapper <?= $viewMode ?> products-<?= $viewMode ?> cs-page-category__products-wrapper">
 
-        <div class="<?= $viewModeClass ?> <?= $block->getAdditionalGridComponentClass() ?>">
+        <div class="<?= $viewModeClass . $viewModeAdditionalClass ?> ">
 
             <?= $block->getChildHtml('hotspot.before.list') ?>
 
@@ -60,7 +62,7 @@
                     <li class="<?= $viewModeListItemClass ?>">
                         <?= $this->getLayout()
                             ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
-                            ->setType($viewMode)
+                            ->setViewMode($viewMode)
                             ->setIterator($iterator)
                             ->setSection('category')
                             ->render($product);

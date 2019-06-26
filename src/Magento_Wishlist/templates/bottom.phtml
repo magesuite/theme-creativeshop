@@ -23,12 +23,13 @@ $items = $wishlistHelper->getWishlistItemCollection()->getItems();
             <?php if(empty($items)): ?>
                 <p><?php /* @escapeNotVerified */ echo __('You have no items in your wish list.') ?></p>
             <?php else: ?>
-                <ul class="cs-dashboard__bottom-wishlist" id="wishlist-sidebar">
+                <ul class="<?= $block->getWishlistBottomClass(); ?>" id="wishlist-sidebar">
                     <?php foreach($items as $item): ?>
-                        <li class="cs-dashboard__bottom-wishlist-item">
+                        <li class="<?= $block->getWishlistBottomItemClass(); ?>">
                             <?= $this->getLayout()
                                 ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
                                 ->setAreas(['wishlist'])
+                                ->setViewMode($block->getViewMode())
                                 ->setWishlistItem($item)
                                 ->render($item->getProduct());
                             ?>

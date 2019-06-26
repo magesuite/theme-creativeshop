@@ -59,6 +59,9 @@ import 'components/select';
 // Content Constructor (used only for usps component)
 import 'components/image-teaser';
 import 'components/image-teaser-legacy';
+import 'components/products-grid';
+import 'components/products-list';
+import 'components/dailydeal';
 // Customer Area specific
 import 'components/calendar';
 import 'components/captcha';
