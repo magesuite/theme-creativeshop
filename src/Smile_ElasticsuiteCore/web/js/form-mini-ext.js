@@ -7,7 +7,7 @@ define(['jquery'], function($) {
     'use strict';
     return function(quickSearch) {
         $.widget('smileEs.quickSearch', quickSearch, {
-            _create() {
+            _create: function() {
                 var self = this;
                 this._super();
                 $('body').on(
