@@ -17,10 +17,12 @@ $product-tile-grid_hover-animation: true !default;
 $product-tile-grid_hover-animation-breakpoint: '>=laptop' !default;
 $product-tile-grid_hover-box-shadow: $box-shadow_base !default;
 $product-tile-grid_padding: $product-tile_general-tile-gutter !default;
+$product-tile-grid_alignment: center !default; // left | center | right
 $product-tile-list_hover-effects: false !default;
 $product-tile-list_hover-effects-breakpoint: '>=laptop' !default;
 $product-tile-list_hover-box-shadow: $box-shadow_base !default;
 $product-tile-list_padding: $product-tile_general-tile-gutter 0 !default;
+$product-tile-list_alignment: left !default; // left | center | right
 $product-tile-list_one-column-breakpoint: 'tablet' !default;
 $product-tile-list_one-column-when-sidebar-breakpoint: 'laptop' !default;
 
@@ -33,35 +35,35 @@ $product-tile_product-name-link-color: $color_mineshaft !default;
 $product-tile_product-name-link-color-visited: $product-tile_product-name-link-color !default;
 $product-tile_product-name-link-color-hover: $link-color_base-hover !default;
 $product-tile_product-name-link-text-decoration-hover: none !default;
-$product-tile-list_product-name-margin: 0 0 #{$product-tile_general-elements-gutter /
-    2} !default;
 $product-tile-grid_product-name-margin: 0 0 #{$product-tile_general-elements-gutter /
     2} !default;
+$product-tile-grid_product-name-alignment: $product-tile-grid_alignment !default;
+$product-tile-list_product-name-margin: 0 0 #{$product-tile_general-elements-gutter /
+    2} !default;
+$product-tile-list_product-name-alignment: $product-tile-list_alignment !default;
 
 // Badges
 $product-tile_badges-z-index: 2 !default;
-$product-tile-grid_badges-direction: vertical !default; // vertical or horizontal
+$product-tile-grid_badges-direction: 'vertical' !default; // vertical or horizontal
 $product-tile-grid_badges-y-asis-position-prop: top !default;
 $product-tile-grid_badges-x-asis-position-prop: left !default;
 $product-tile-grid_badges-y-asis-position-value: 0 !default;
 $product-tile-grid_badges-x-asis-position-value: 0 !default;
 $product-tile-grid_badges-item-margin: 0 0 #{$product-tile_general-elements-gutter /
     4} !default;
-$product-tile-list_badges-direction: horizontal !default; // vertical or horizontal
+$product-tile-list_badges-direction: 'horizontal' !default; // vertical or horizontal
 $product-tile-list_badges-x-asis-position-prop: left !default;
 $product-tile-list_badges-margin: 0 0 0 0.3rem !default;
 $product-tile-list_badges-item-margin: 0 #{$product-tile_general-elements-gutter /
     2} 0.3rem 0 !default;
 
-// Details
-$product-tile-grid_details-text-alignment: center !default;
-$product-tile-list_details-text-alignment: left !default;
-
 // Swatches
 $product-tile-grid_swatches-container-min-height: 2.6rem !default;
 $product-tile-grid_swatches-margin: #{$product-tile_general-elements-gutter / 2}
     0 0 !default;
+$product-tile-grid_swatches-alignment: $product-tile-grid_alignment !default;
 $product-tile-list_swatches-margin: 0 !default;
+$product-tile-list_swatches-alignment: $product-tile-list_alignment !default;
 
 // Addons
 $product-tile_addons-background: $product-tile_general-background !default;
@@ -75,7 +77,8 @@ $product-tile-list_addons-one-column-margin: #{$product-tile_general-elements-gu
     2} 0 0 !default;
 
 // Additional section
-$prduct-tile-list_additional-margin: auto 0 0 0 !default;
+$product-tile-list_additional-margin: auto 0 0 0 !default;
+$product-tile-list_additional-alignment: $product-tile-list_alignment !default;
 
 // Review
 $product-tile-grid_review-margin: #{$product-tile_general-elements-gutter / 2} 0
@@ -119,6 +122,7 @@ $product-tile_description-font-size: $product-tile_general-font-size !default;
 $product-tile_description-color: $color_black !default;
 $product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter /
     2} !default;
+$product-tile-list_description-text-align: $product-tile-list_alignment !default;
 
 // Thumbnail
 $product-tile_list-thumbnail-box-width: 10rem !default;
@@ -126,18 +130,19 @@ $product-tile_list-thumbnail-box-width-mobile: #{$product-tile_list-thumbnail-bo
     2} !default;
 
 // Prices
+$product-tile-grid_prices-direction: 'vertical' !default; // vertical or horizontal
+$product-tile-grid_prices-margin: 0 !default;
+$product-tile-grid_display-old-price-first: false !default;
+$product-tile-grid_prices-alignment: $product-tile-grid_alignment !default;
 $product-tile-list_prices-direction: 'vertical' !default; // vertical or horizontal
 $product-tile-list_prices-margin: 0 !default;
-$product-tile-grid_prices-direction: 'horizontal' !default; // vertical or horizontal
-$product-tile-grid_prices-margin: 0 !default;
+$product-tile-list_display-old-price-first: true !default;
 
 // Helpers (don't edit)
 $_product-tile-list_full-column-breakpoint-min: '>=#{$product-tile-list_one-column-breakpoint}' !default;
 $_product-tile-list_full-column-breakpoint-max: '<#{$product-tile-list_one-column-breakpoint}' !default;
 $_product-tile-list_sidebar-column-breakpoint-min: '>=#{$product-tile-list_one-column-when-sidebar-breakpoint}' !default;
 $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-column-when-sidebar-breakpoint}' !default;
-// $_product-tile_data: deep-get($view-xml, vars, MageSuite_ProductTile) !default;
-// $_product-tile_as-link: #{map-get($_product-tile_data, entire_tile_as_link)} !default;
 
 .#{$ns}product-tile {
     $root: &;
@@ -201,10 +206,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         #{$root}--list & {
             display: flex;
             width: 100%;
-
-            // @if ($_product-tile_as-link == 'true') {
-            //     padding: $product-tile-list_padding;
-            // }
         }
 
         #{$root}--grid & {
@@ -552,7 +553,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__addons-right {
         padding-left: $product-tile_addons-horizontal-padding;
-        flex: 0 0 50%;
+        flex: 1 1 50%;
         display: flex;
         justify-content: flex-end;
         flex-direction: column;
@@ -597,7 +598,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__addons-left {
         padding-right: $product-tile_addons-horizontal-padding;
-        flex: 0 0 50%;
+        flex: 1 1 50%;
         display: flex;
         justify-content: flex-end;
         flex-direction: column;
@@ -764,30 +765,42 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     &__details {
         flex-shrink: 0;
 
-        #{$root}--grid & {
-            text-align: $product-tile-grid_details-text-alignment;
-        }
-
         #{$root}--list & {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             flex: 1;
-            text-align: $product-tile-list_details-text-alignment;
             padding: 0;
         }
     }
 
     &__swatches {
-        display: block;
+        display: flex;
 
         #{$root}--grid & {
             margin: $product-tile-grid_swatches-margin;
             min-height: $product-tile-grid_swatches-container-min-height;
+
+            @if ($product-tile-grid_swatches-alignment == 'left') {
+                justify-content: flex-start;
+            } @else if ($product-tile-grid_swatches-alignment == 'right') {
+                justify-content: flex-end;
+            } @else {
+                justify-content: center;
+            }
         }
 
         #{$root}--list & {
+            width: 100%;
             margin: $product-tile-list_swatches-margin;
+
+            @if ($product-tile-list_swatches-alignment == 'left') {
+                justify-content: flex-start;
+            } @else if ($product-tile-list_swatches-alignment == 'right') {
+                justify-content: flex-end;
+            } @else {
+                justify-content: center;
+            }
         }
 
         &--list {
@@ -804,6 +817,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         font-weight: $product-tile_product-name-font-weight;
         font-size: $product-tile_product-name-font-size;
         overflow: hidden;
+        width: 100%;
 
         @if ($product-tile_product-name-max-lines-display == 1) {
             white-space: nowrap;
@@ -812,10 +826,12 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
         #{$root}--grid & {
             margin: $product-tile-grid_product-name-margin;
+            text-align: $product-tile-grid_product-name-alignment;
         }
 
         #{$root}--list & {
             margin: $product-tile-list_product-name-margin;
+            text-align: $product-tile-list_product-name-alignment;
             order: -1;
         }
     }
@@ -866,6 +882,11 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             display: none;
         }
 
+        #{$root}--list & {
+            width: 100%;
+            text-align: $product-tile-list_description-text-align;
+        }
+
         &:empty {
             margin: 0 !important;
         }
@@ -873,11 +894,20 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__additional {
         &--list {
-            margin: $prduct-tile-list_additional-margin;
+            margin: $product-tile-list_additional-margin;
             display: flex;
-            justify-content: space-between;
             align-items: center;
             width: 100%;
+
+            @if ($product-tile-list_additional-alignment == 'left') {
+                justify-content: flex-start;
+            } @else if ($product-tile-list_additional-alignment == 'right') {
+                justify-content: flex-end;
+            } @else if ($product-tile-list_additional-alignment == 'center') {
+                justify-content: center;
+            } @else {
+                justify-content: space-between;
+            }
         }
     }
 
@@ -968,18 +998,43 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             display: flex;
 
             #{$root}--grid & {
-                justify-content: center;
                 margin: $product-tile-grid_prices-margin;
 
                 @if ($product-tile-grid_prices-direction == 'vertical') {
                     flex-direction: column;
 
-                    .price {
-                        margin-right: 0;
+                    @if ($product-tile-grid_display-old-price-first) {
+                        flex-direction: column-reverse;
+                    }
+
+                    @if ($product-tile-grid_prices-alignment == 'left') {
+                        align-items: flex-start;
+
+                        .price {
+                            margin-left: 0;
+                        }
+                    } @else if ($product-tile-grid_prices-alignment == 'right')
+                    {
+                        align-items: flex-end;
+
+                        .price {
+                            margin-right: 0;
+                        }
+                    } @else {
+                        align-items: center;
                     }
                 } @else {
-                    .old-price {
-                        order: -1;
+                    @if ($product-tile-grid_display-old-price-first) {
+                        flex-direction: row-reverse;
+                    }
+
+                    @if ($product-tile-grid_prices-alignment == 'left') {
+                        justify-content: flex-start;
+                    } @else if ($product-tile-grid_prices-alignment == 'right')
+                    {
+                        justify-content: flex-end;
+                    } @else {
+                        justify-content: center;
                     }
                 }
             }
@@ -989,15 +1044,40 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                 margin: $product-tile-list_prices-margin;
                 text-align: right;
 
-                @if ($product-tile-list_prices-direction == 'vertical') {
-                    flex-direction: column;
-
+                .normal-price {
                     .price {
                         margin-right: 0;
                     }
+                }
+
+                @if ($product-tile-list_display-old-price-first) {
+                    flex-direction: row-reverse;
+
+                    .special-price {
+                        .price {
+                            margin-right: 0;
+                        }
+                    }
                 } @else {
                     .old-price {
-                        order: -1;
+                        .price {
+                            margin-right: 0;
+                        }
+                    }
+                }
+
+                @if ($product-tile-list_prices-direction == 'vertical') {
+                    flex-direction: column;
+
+                    @if ($product-tile-list_display-old-price-first) {
+                        flex-direction: column-reverse;
+                    }
+
+                    .old-price,
+                    .special-price {
+                        .price {
+                            margin-right: 0;
+                        }
                     }
                 }
             }
@@ -1013,8 +1093,4 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             }
         }
     }
-}
-
-.body {
-    background-color: red;
 }
