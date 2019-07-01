@@ -30,6 +30,10 @@ const csTeaser: any = function($element: any, settings: any): void {
     const fractionPaginationSeparator: string = settings.fractionPaginationSeparator
         ? settings.fractionPaginationSeparator
         : '/';
+    const scrollbarName: string = settings.scrollbarName
+        ? settings.scrollbarName
+        : `${teaserName}__scrollbar`;
+
     /**
      * Holds current Swiper instance.
      */
@@ -103,6 +107,11 @@ const csTeaser: any = function($element: any, settings: any): void {
             currentClass: `${teaserName}__number--current`,
             totalClass: `${teaserName}__number--total`,
             clickable: true,
+        },
+        scrollbar: {
+            el: $element.find(`.${scrollbarName}`),
+            dragClass: `${scrollbarName}--drag`,
+            hide: true,
         },
         /**
          * Teaser custom default options
