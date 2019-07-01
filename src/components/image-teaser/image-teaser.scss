@@ -98,6 +98,7 @@ $image-teaser_badge-font-size: 1.1em !default;
                 flex-direction: column;
                 height: 100%;
                 overflow: initial;
+                box-sizing: border-box;
             }
 
             #{$root}__content-wrapper {
@@ -160,7 +161,10 @@ $image-teaser_badge-font-size: 1.1em !default;
         @for $i from 2 through 8 {
             #{$root}--items-in-row-#{$i} & {
                 @include media('>=tablet') {
-                    width: calc(100% / #{$i});
+                    box-sizing: content-box;
+                    width: calc(
+                        (100% / #{$i}) - #{$image-teaser_slides-gutter}
+                    );
                 }
             }
         }
