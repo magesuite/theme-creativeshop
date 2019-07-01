@@ -12,10 +12,17 @@ $product-gallery_base-image-data: deep-get(
     image,
     product_page_image_medium_no_frame
 ) !default;
-$product-gallery_scene-max-height: #{map-get(
+$product-gallery_data: deep-get(
+    $view-xml,
+    vars,
+    Magento_Catalog,
+    gallery
+) !default;
+$product-gallery_scene-max-height: #{map-get($product-gallery_data, maxheight)} !default;
+$product-gallery_image-max-height: #{map-get(
         $product-gallery_base-image-data,
-        height
-    )}px !default;
+        maxheight
+    )} !default;
 
 $product-gallery_nav-arrows-show: true !default;
 $product-gallery_nav-arrow-wrapper-background-color: transparent !default;
@@ -27,11 +34,7 @@ $product-gallery_nav-arrow-wrapper-height: 2 * $product-gallery_nav-arrow-height
 $product-gallery_nav-arrow--prev-url: '../images/icons/fotorama/fotorama-arrow-prev.svg' !default;
 $product-gallery_nav-arrow--next-url: '../images/icons/fotorama/fotorama-arrow-next.svg' !default;
 
-$product-gallery_show-image-caption: false !default;
-
 // Thumbnails
-$product-gallery_thumb-width: 7.8rem !default;
-$product-gallery_thumb-height: $product-gallery_thumb-width !default;
 $product-gallery_thumbs-gutter: 0.8rem !default; // use rem/px as font-size is set to 0 by fotorama. Don't exceed 200% of $page-gutter value or horizontal scrollbar will appear.
 $product-gallery_thumb-border: 1px solid $color_border-500 !default;
 $product-gallery_thumb-border-radius: $border-radius_base !default;
@@ -69,22 +72,22 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
             height: $product-gallery_scene-max-height;
             padding-bottom: 0 !important; // overrides inline style
         }
-    }
-}
-// Exiting from component to apply styling also for fullscreen mode
 
-.fotorama {
-    @if $product-gallery_show-image-caption == false {
-        .fotorama__caption {
-            display: none;
+        // Center placeholder image
+        img {
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            max-height: $product-gallery_image-max-height;
         }
     }
+}
 
-    &:not(.fotorama--fullscreen) .fotorama__stage {
-        max-height: $product-gallery_scene-max-height; // Limit height of the stage via CSS because Fotorama's JS option doesn't seem to work
-    }
-
+// Exiting from component to apply styling also for fullscreen mode
+.fotorama {
     .fotorama__stage {
+        padding-bottom: $product-gallery_thumbs-gutter / 2;
+
         // Fotorama provides shadow bounds indicators while swiping gallery left/right. We customize colors a bit
         &.fotorama__shadows--left:before {
             @include gradient-shadow(0, 50%);
@@ -149,11 +152,6 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
         text-align: center; // align everything to center
     }
 
-    &--fullscreen .fotorama__nav {
-        padding-left: calc(#{$product-gallery_thumbs-gutter} / 2 + 2px);
-        padding-right: calc(#{$product-gallery_thumbs-gutter} / 2 + 2px);
-    }
-
     // Thumbnails/Dots wrapper
     &:not(.fotorama--fullscreen) {
         .fotorama__nav-wrap {
@@ -179,13 +177,6 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
                 cursor: default;
             }
         }
-
-        // Hides thumbnails arrows (by default it's a slider but we want to display all of them)
-        @if $product-gallery_show-thumb-arrows == false {
-            .fotorama__thumb__arr {
-                display: none !important; // overrides inline style
-            }
-        }
     }
 
     // Single thumbnail wrapper
@@ -198,8 +189,6 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
     }
 
     .fotorama__nav__frame--thumb {
-        width: $product-gallery_thumb-width !important; // override inline style;
-        height: $product-gallery_thumb-height !important; // override deep cascade;
         padding: $product-gallery_thumb-padding !important; // overrides deep cascade
         border: $product-gallery_thumb-border;
         border-radius: $product-gallery_thumb-border-radius;
@@ -249,6 +238,7 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
     /**
      * Thumbnails slider
      */
+
     // Arrow's wrapper
     .fotorama__thumb__arr {
         width: $product-gallery_thumb-arrow-wrapper-width;
@@ -269,10 +259,8 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
         &--disabled {
             display: none !important; // hide arrows when not needed, overrides inline style
         }
-    }
 
-    // Arrow
-    .fotorama__thumb__arr {
+        // Arrow
         .fotorama__thumb--icon {
             padding: 0;
             width: $product-gallery_thumb-arrow-width !important; // overrides deep cascade
@@ -331,3 +319,25 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
         border-radius: $product-gallery_spinner-border-radius;
     }
 }
+
+/*
+* Styles only for fullscreeen
+*/
+/* stylelint-disable */
+.fotorama.fotorama--fullscreen {
+    .fotorama__stage {
+        padding-bottom: $product-gallery_thumbs-gutter;
+    }
+
+    .fotorama__nav__frame--thumb {
+        @if $product-gallery_thumbs-gutter != 0 {
+            margin: 0 $product-gallery_thumbs-gutter / 2;
+        }
+    }
+
+    .fotorama__nav {
+        padding-left: calc(#{$product-gallery_thumbs-gutter} / 2 + 2px);
+        padding-right: calc(#{$product-gallery_thumbs-gutter} / 2 + 2px);
+    }
+}
+/* stylelint-enable */
