@@ -3,7 +3,7 @@
 
 @import 'components/badge/mixin';
 
-$cart-item_border-top: 1px solid $color_border-500 !default;
+$cart-item_border: 1px solid $color_border-500 !default;
 
 $cart-item_icon-color: $color_primary-500 !default;
 $cart-item_icon-color--hover: $color_primary-800 !default;
@@ -21,7 +21,7 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
 .#{$ns}cart-item {
     $root: &;
 
-    border-top: $cart-item_border-top;
+    border-top: $cart-item_border;
     position: relative;
     padding-bottom: 5rem;
 
@@ -33,6 +33,11 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
 
     tbody:nth-child(3) & {
         border-top: none;
+        border-bottom: $cart-item_border;
+
+        @include media('>=laptop') {
+            border-bottom: none;
+        }
     }
 
     &--no-icons {
