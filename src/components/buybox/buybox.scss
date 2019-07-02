@@ -3,6 +3,7 @@
 @import 'utils/reset-list-style.scss';
 @import 'components/indicators/mixins.scss';
 @import 'components/button/mixin.scss';
+@import 'components/price-box/variables.scss';
 
 // Some globals
 $buybox_font-size: 1.2rem !default;
@@ -23,9 +24,14 @@ $buybox_product-name-font-size: 2.4rem !default;
 $buybox_product-name-font-weight: 700 !default;
 $buybox_product-name-line-height: 1.15 !default;
 
-$buybox_price-flex-flow: column-reverse nowrap !default; // when 2 prices are displayed, they're using flex for arrangement
-$buybox_price-final-price-font-size: 150% !default;
-$buybox_price-old-price-font-size: 100% !default; // relative to $buybox_price-final-price-font-size
+$buybox_price-flex-direction: column-reverse !default; // when 2 prices are displayed, they're using flex for arrangement
+$buybox_price-flex-wrap: nowrap !default;
+$buybox_price-normal-price-font-size: 1.8rem !default;
+$buybox_price-normal-price-color: $price-box_normal-price-color !default;
+$buybox_price-old-price-font-size: 1.8rem !default;
+$buybox_price-old-price-color: $price-box_old-price-color !default;
+$buybox_price-special-price-font-size: 1.8rem !default;
+$buybox_price-special-price-color: $price-box_special-price-color !default;
 
 $buybox_product-variants-select-height: 4em !default;
 
@@ -157,12 +163,64 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
 
         .price-box {
             display: flex;
-            flex-flow: $buybox_price-flex-flow;
-            font-size: $buybox_price-final-price-font-size;
+            flex-direction: $buybox_price-flex-direction;
+            flex-wrap: $buybox_price-flex-wrap;
             vertical-align: initial;
 
+            .regular-price,
+            .normal-price {
+                .price {
+                    color: $buybox_price-normal-price-color;
+                    font-size: $buybox_price-normal-price-font-size;
+                }
+            }
+
             .old-price {
-                font-size: $buybox_price-old-price-font-size;
+                .price {
+                    color: $buybox_price-old-price-color;
+                    font-size: $buybox_price-old-price-font-size;
+                }
+            }
+
+            .special-price {
+                .price {
+                    color: $buybox_price-special-price-color;
+                    font-size: $buybox_price-special-price-font-size;
+                }
+            }
+
+            @if ($buybox_price-flex-direction == 'row') {
+                .regular-price,
+                .normal-price,
+                .special-price {
+                    .price {
+                        margin-left: 0;
+                    }
+                }
+            } @else if ($buybox_price-flex-direction == 'row-reverse') {
+                .regular-price,
+                .normal-price,
+                .special-price {
+                    .price {
+                        margin-right: 0;
+                    }
+                }
+            } @else if
+                (
+                    $buybox_price-flex-direction ==
+                        'column' or
+                        $buybox_price-flex-direction ==
+                        'column-reverse'
+                )
+            {
+                .regular-price,
+                .normal-price,
+                .special-price,
+                .old-price {
+                    .price {
+                        margin-left: 0;
+                    }
+                }
             }
 
             .price {

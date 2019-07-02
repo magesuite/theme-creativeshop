@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/badge/mixin';
+@import 'components/price-box/variables.scss';
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 @import 'utils/aspect-ratio';
@@ -130,6 +131,13 @@ $product-tile_list-thumbnail-box-width-mobile: #{$product-tile_list-thumbnail-bo
     2} !default;
 
 // Prices
+$product-tile_normal-price-font-size: $price-box_normal-price-font-size !default;
+$product-tile_normal-price-color: $price-box_normal-price-font-size !default;
+$product-tile_special-price-font-size: $price-box_special-price-font-size !default;
+$product-tile_special-price-color: $price-box_special-price-color !default;
+$product-tile_old-price-font-size: $price-box_old-price-font-size !default;
+$product-tile_old-price-color: $price-box_old-price-color !default;
+
 $product-tile-grid_prices-direction: 'vertical' !default; // vertical or horizontal
 $product-tile-grid_prices-margin: 0 !default;
 $product-tile-grid_display-old-price-first: false !default;
@@ -997,6 +1005,28 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         .price-box {
             display: flex;
 
+            .regular-price,
+            .normal-price {
+                .price {
+                    font-size: $product-tile_normal-price-font-size;
+                    color: $product-tile_normal-price-color;
+                }
+            }
+
+            .old-price {
+                .price {
+                    font-size: $product-tile_old-price-font-size;
+                    color: $product-tile_old-price-color;
+                }
+            }
+
+            .special-price {
+                .price {
+                    font-size: $product-tile_special-price-font-size;
+                    color: $product-tile_special-price-color;
+                }
+            }
+
             #{$root}--grid & {
                 margin: $product-tile-grid_prices-margin;
 
@@ -1030,9 +1060,25 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
                     @if ($product-tile-grid_prices-alignment == 'left') {
                         justify-content: flex-start;
+
+                        .regular-price,
+                        .normal-price,
+                        .special-price {
+                            .price {
+                                margin-left: 0;
+                            }
+                        }
                     } @else if ($product-tile-grid_prices-alignment == 'right')
                     {
                         justify-content: flex-end;
+
+                        .regular-price,
+                        .normal-price,
+                        .old-price {
+                            .price {
+                                margin-right: 0;
+                            }
+                        }
                     } @else {
                         justify-content: center;
                     }
@@ -1044,6 +1090,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                 margin: $product-tile-list_prices-margin;
                 text-align: right;
 
+                .regular-price,
                 .normal-price {
                     .price {
                         margin-right: 0;
