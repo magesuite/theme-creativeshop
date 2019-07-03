@@ -126,8 +126,9 @@ $product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter /
 $product-tile-list_description-text-align: $product-tile-list_alignment !default;
 
 // Thumbnail
-$product-tile_list-thumbnail-box-width: 10rem !default;
-$product-tile_list-thumbnail-box-width-mobile: #{$product-tile_list-thumbnail-box-width /
+$product-tile-grid_thumbnail-center-on-tile: false !default;
+$product-tile-list_thumbnail-box-width: 10rem !default;
+$product-tile-list_thumbnail-box-width-mobile: #{$product-tile-list_thumbnail-box-width /
     2} !default;
 
 // Prices
@@ -138,7 +139,7 @@ $product-tile_special-price-color: $price-box_special-price-color !default;
 $product-tile_old-price-font-size: $price-box_old-price-font-size !default;
 $product-tile_old-price-color: $price-box_old-price-color !default;
 
-$product-tile-grid_prices-direction: 'vertical' !default; // vertical or horizontal
+$product-tile-grid_prices-direction: 'horizontal' !default; // vertical or horizontal
 $product-tile-grid_prices-margin: 0 !default;
 $product-tile-grid_display-old-price-first: false !default;
 $product-tile-grid_prices-alignment: $product-tile-grid_alignment !default;
@@ -210,6 +211,20 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         }
     }
 
+    &__container {
+        display: flex;
+        height: 100%;
+        width: 100%;
+
+        #{$root}--grid & {
+            flex-direction: column;
+        }
+
+        #{$root}--list & {
+            flex-direction: row;
+        }
+    }
+
     &__link {
         #{$root}--list & {
             display: flex;
@@ -224,14 +239,19 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__thumbnail {
         padding: 0;
+
+        #{$root}--grid & {
+            flex: 1;
+        }
     }
 
-    &__figure-wrapper {
+    &__thumbnail-link {
         display: block;
         position: relative;
 
         #{$root}--grid & {
-            flex-grow: 10;
+            width: 100%;
+            height: 100%;
         }
 
         #{$root}--list & {
@@ -267,25 +287,27 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &__figure {
-        position: absolute;
+        @include aspect-ratio(1px, 1px, #{$ns}product-tile__image);
+
         margin: 0;
         padding: 0;
         height: 100%;
-        display: flex;
+        overflow: hidden; // IE11 - prevents from excessive transition effect
 
         #{$root}--grid & {
+            position: absolute;
             width: 100%;
             justify-content: flex-start; // IE11 do not respect center value until parent has flex-direction set to column.
             align-items: center;
         }
 
         #{$root}--list & {
-            width: $product-tile_list-thumbnail-box-width;
+            width: $product-tile-list_thumbnail-box-width;
             justify-content: center; // IE11 do not respect center value until parent has flex-direction set to column.
             align-items: flex-start;
 
             @include media('<phoneLg') {
-                width: $product-tile_list-thumbnail-box-width-mobile;
+                width: $product-tile-list_thumbnail-box-width-mobile;
             }
 
             &:before {
@@ -300,6 +322,14 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         max-width: 100%;
         max-height: 100%;
         margin: auto;
+
+        #{$root}--grid & {
+            position: absolute;
+
+            @if not($product-tile-grid_thumbnail-center-on-tile) {
+                bottom: unset;
+            }
+        }
 
         #{$root}--list & {
             position: relative !important;
@@ -425,7 +455,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         }
     }
 
-    &__wrapper {
+    &__content {
         padding: 0;
         display: flex;
         align-items: stretch;
@@ -523,6 +553,17 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                 )} $product-tile_general-tile-gutter $product-tile_general-tile-gutter;
             box-shadow: $product-tile-grid_hover-box-shadow;
 
+            @each $key, $values in $tile_aspect-ratio-map {
+                @include media(#{$key}) {
+                    & {
+                        padding: #{get-aspect-ratio-padding-value(
+                                nth(map-get($tile_aspect-ratio-map, $key), 1),
+                                nth(map-get($tile_aspect-ratio-map, $key), 2)
+                            )} $product-tile_general-tile-gutter $product-tile_general-tile-gutter;
+                    }
+                }
+            }
+
             @if ($product-tile-grid_hover-animation) {
                 transform: translate3d(0, -3rem, 0);
             }
@@ -561,7 +602,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__addons-right {
         padding-left: $product-tile_addons-horizontal-padding;
-        flex: 1 1 50%;
+        flex: 1 1 auto;
         display: flex;
         justify-content: flex-end;
         flex-direction: column;
@@ -606,7 +647,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__addons-left {
         padding-right: $product-tile_addons-horizontal-padding;
-        flex: 1 1 50%;
+        flex: 1 1 auto;
         display: flex;
         justify-content: flex-end;
         flex-direction: column;

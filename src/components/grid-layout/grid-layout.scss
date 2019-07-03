@@ -290,6 +290,17 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
             $autoposition: true
         );
 
+        @each $key, $values in $tile_aspect-ratio-map {
+            @include media(#{$key}) {
+                @include aspect-ratio(
+                    $width: nth(map-get($tile_aspect-ratio-map, $key), 1),
+                    $height: nth(map-get($tile_aspect-ratio-map, $key), 2),
+                    $childClass: #{$ns}product-tile,
+                    $autoposition: true
+                );
+            }
+        }
+
         @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
             @include media('>=#{$breakpoint}') {
                 width: calc(100% / #{$itemsPerRow});
@@ -307,6 +318,20 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
                 $width: $grid-layout_brick-ratio-width * 2,
                 $height: $grid-layout_brick-ratio-height
             );
+
+            @each $key, $values in $tile_aspect-ratio-map {
+                @include media(#{$key}) {
+                    & {
+                        @include aspect-ratio-override(
+                            $width:
+                                nth(map-get($tile_aspect-ratio-map, $key), 1) *
+                                2,
+                            $height:
+                                nth(map-get($tile_aspect-ratio-map, $key), 2)
+                        );
+                    }
+                }
+            }
         }
 
         &--y2 {
@@ -320,6 +345,25 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
                     $width: $grid-layout_brick-ratio-width,
                     $height: $grid-layout_brick-ratio-height * 2
                 );
+
+                @each $key, $values in $tile_aspect-ratio-map {
+                    @include media(#{$key}) {
+                        & {
+                            @include aspect-ratio-override(
+                                $width:
+                                    nth(
+                                        map-get($tile_aspect-ratio-map, $key),
+                                        1
+                                    ),
+                                $height:
+                                    nth(
+                                        map-get($tile_aspect-ratio-map, $key),
+                                        2
+                                    ) * 2
+                            );
+                        }
+                    }
+                }
             }
         }
 
