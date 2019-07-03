@@ -1,8 +1,15 @@
 // In this mixin you can define your custom animation for buttons
 // You can check examples of animations in http://ianlunn.github.io/Hover/ library
 
-@mixin button_animation($type: $button_default-type, $color_start: $button_primary-background, $color_end: $button_primary--hover-background, $icon_pos: $button_default-icon-pos) {
-    @if ($type == 'primary') and (($icon_pos == 'right') or ($icon_pos == 'left')) {
+@mixin button_animation(
+    $type: $button_default-type,
+    $color_start: $button_primary-background,
+    $color_end: $button_primary--hover-background,
+    $icon_pos: $button_default-icon-pos
+) {
+    @if ($type == 'primary') and
+        (($icon_pos == 'right') or ($icon_pos == 'left'))
+    {
         &:hover,
         &:focus,
         &:active {
@@ -36,11 +43,23 @@
         }
 
         @if ($icon_pos == 'right') {
-            background: linear-gradient(100deg, transparent 0%, transparent 15%, $color_end 15%, $color_end 100%);
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                transparent 15%,
+                $color_end 15%,
+                $color_end 100%
+            );
         }
 
         @if ($icon_pos == 'left') {
-            background: linear-gradient(80deg, $color_end 0%, $color_end 85%, transparent 85%, transparent 100%);
+            background: linear-gradient(
+                80deg,
+                $color_end 0%,
+                $color_end 85%,
+                transparent 85%,
+                transparent 100%
+            );
         }
     }
 
