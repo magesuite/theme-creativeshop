@@ -223,7 +223,12 @@ export default class ImageTeaser {
             isSliderMobile:
                 Boolean(this._$container.data('mobile-is-slider')) || false,
             carouselBreakpoint: breakpoint.tablet,
-            loop: true,
+            loop:
+                parseInt(this._$container.data('items-per-view'), 10) >=
+                this._$container.find(`.${this._options.teaserName}__slide`)
+                    .length
+                    ? false
+                    : true,
             centeredSlides: false,
             calculateSlides: false,
             breakpoints: {
