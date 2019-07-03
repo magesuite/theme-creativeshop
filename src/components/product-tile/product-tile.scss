@@ -90,7 +90,7 @@ $product-tile-list_review-margin: 0 0 #{$product-tile_general-elements-gutter /
 // Addto
 $produdct-tile_addto-font-size: 1.3rem !default;
 $product-tile-grid_addto-margin: #{$product-tile_general-elements-gutter / 2} 0 0 !default;
-$product-tile-list_addto-margin: 0 !default;
+$product-tile-list_addto-margin: #{$product-tile_general-elements-gutter / 2} 0 0 !default;
 
 // Addtocart
 $product-tile-grid_addtocart-margin: #{$product-tile_general-elements-gutter / 2}
@@ -103,12 +103,14 @@ $product-tile_stock-font-size: 1.3rem !default;
 $product-tile_stock-in-color: $color_apple !default;
 $product-tile_stock-out-of-color: $color_crimson !default;
 
-$product-tile-list_stock-margin: 0 !default;
 $product-tile-grid_stock-margin: 0 !default;
+$product-tile-list_stock-margin: 0 #{$product-tile_general-elements-gutter / 2} 0
+    0 !default;
 
 // Daily Deal
 $product-tile-grid_dailydeal-margin: 0 !default;
-$product-tile-list_dailydeal-margin: 0 !default;
+$product-tile-list_dailydeal-margin: #{$product-tile_general-elements-gutter / 2}
+    0 0 0 !default;
 
 // Wishlist
 $product-tile_wishlist-comment-visible: false !default;
@@ -119,10 +121,14 @@ $product-tile_wishlist-actions-display: flex !default;
 $product-tile_wishlist-actions-justify-content: space-between !default;
 
 // Description
-$product-tile_description-font-size: $product-tile_general-font-size !default;
-$product-tile_description-color: $color_black !default;
+$product-tile_description-font-size: 1.3rem !default;
+$product-tile_description-font-weight: 400 !default;
+$product-tile_description-line-height: 1.3 !default;
+
+$product-tile_description-color: $color_dove-gray !default;
 $product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter /
     2} !default;
+
 $product-tile-list_description-text-align: $product-tile-list_alignment !default;
 
 // Thumbnail
@@ -133,7 +139,7 @@ $product-tile-list_thumbnail-box-width-mobile: #{$product-tile-list_thumbnail-bo
 
 // Prices
 $product-tile_normal-price-font-size: $price-box_normal-price-font-size !default;
-$product-tile_normal-price-color: $price-box_normal-price-font-size !default;
+$product-tile_normal-price-color: $price-box_normal-price-color !default;
 $product-tile_special-price-font-size: $price-box_special-price-font-size !default;
 $product-tile_special-price-color: $price-box_special-price-color !default;
 $product-tile_old-price-font-size: $price-box_old-price-font-size !default;
@@ -141,7 +147,7 @@ $product-tile_old-price-color: $price-box_old-price-color !default;
 
 $product-tile-grid_prices-direction: 'horizontal' !default; // vertical or horizontal
 $product-tile-grid_prices-margin: 0 !default;
-$product-tile-grid_display-old-price-first: false !default;
+$product-tile-grid_display-old-price-first: true !default;
 $product-tile-grid_prices-alignment: $product-tile-grid_alignment !default;
 $product-tile-list_prices-direction: 'vertical' !default; // vertical or horizontal
 $product-tile-list_prices-margin: 0 !default;
@@ -341,6 +347,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         @include reset-list-style();
 
         display: flex;
+        flex-wrap: wrap;
 
         &--grid {
             #{$root}--list & {
@@ -597,6 +604,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__addons-sides {
         display: flex;
+        flex-wrap: wrap;
         width: 100%;
     }
 
@@ -725,6 +733,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__stock {
         display: inline-block;
+        white-space: nowrap;
         font-size: $product-tile_stock-font-size;
 
         &--in {
@@ -924,6 +933,8 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__description {
         font-size: $product-tile_description-font-size;
+        font-weight: $product-tile_description-font-weight;
+        line-height: $product-tile_description-line-height;
         color: $product-tile_description-color;
         margin: $product-tile_description-margin;
 
@@ -945,17 +956,32 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         &--list {
             margin: $product-tile-list_additional-margin;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
             width: 100%;
 
-            @if ($product-tile-list_additional-alignment == 'left') {
-                justify-content: flex-start;
-            } @else if ($product-tile-list_additional-alignment == 'right') {
-                justify-content: flex-end;
-            } @else if ($product-tile-list_additional-alignment == 'center') {
-                justify-content: center;
-            } @else {
+            @include media($_product-tile-list_full-column-breakpoint-min) {
+                flex-direction: row;
+                align-items: center;
                 justify-content: space-between;
+            }
+
+            @if (
+                $product-tile-list_one-column-breakpoint !=
+                    $product-tile-list_one-column-when-sidebar-breakpoint
+            ) {
+                .cs-products-list--with-sidebar & {
+                    flex-direction: column;
+                    align-items: flex-start;
+
+                    @include media(
+                        $_product-tile-list_sidebar-column-breakpoint-min
+                    ) {
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+                }
             }
         }
     }
@@ -1046,12 +1072,9 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         .price-box {
             display: flex;
 
-            .regular-price,
-            .normal-price {
-                .price {
-                    font-size: $product-tile_normal-price-font-size;
-                    color: $product-tile_normal-price-color;
-                }
+            .price {
+                font-size: $product-tile_normal-price-font-size;
+                color: $product-tile_normal-price-color;
             }
 
             .old-price {
@@ -1071,55 +1094,47 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             #{$root}--grid & {
                 margin: $product-tile-grid_prices-margin;
 
+                @if ($product-tile-grid_display-old-price-first) {
+                    .old-price {
+                        order: -1;
+                    }
+                }
+
                 @if ($product-tile-grid_prices-direction == 'vertical') {
                     flex-direction: column;
 
-                    @if ($product-tile-grid_display-old-price-first) {
-                        flex-direction: column-reverse;
+                    .price-from {
+                        margin-right: 0;
                     }
 
                     @if ($product-tile-grid_prices-alignment == 'left') {
                         align-items: flex-start;
-
-                        .price {
-                            margin-left: 0;
-                        }
                     } @else if ($product-tile-grid_prices-alignment == 'right')
                     {
                         align-items: flex-end;
-
-                        .price {
-                            margin-right: 0;
-                        }
                     } @else {
                         align-items: center;
                     }
                 } @else {
                     @if ($product-tile-grid_display-old-price-first) {
-                        flex-direction: row-reverse;
+                        .old-price {
+                            .price {
+                                margin-right: $price-box_space-between-prices;
+                            }
+                        }
+                    } @else {
+                        .special-price {
+                            .price {
+                                margin-right: $price-box_space-between-prices;
+                            }
+                        }
                     }
 
                     @if ($product-tile-grid_prices-alignment == 'left') {
                         justify-content: flex-start;
-
-                        .regular-price,
-                        .normal-price,
-                        .special-price {
-                            .price {
-                                margin-left: 0;
-                            }
-                        }
                     } @else if ($product-tile-grid_prices-alignment == 'right')
                     {
                         justify-content: flex-end;
-
-                        .regular-price,
-                        .normal-price,
-                        .old-price {
-                            .price {
-                                margin-right: 0;
-                            }
-                        }
                     } @else {
                         justify-content: center;
                     }
@@ -1131,39 +1146,42 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                 margin: $product-tile-list_prices-margin;
                 text-align: right;
 
-                .regular-price,
-                .normal-price {
-                    .price {
-                        margin-right: 0;
-                    }
-                }
-
                 @if ($product-tile-list_display-old-price-first) {
-                    flex-direction: row-reverse;
-
-                    .special-price {
-                        .price {
-                            margin-right: 0;
-                        }
-                    }
-                } @else {
                     .old-price {
-                        .price {
-                            margin-right: 0;
-                        }
+                        order: -1;
                     }
                 }
 
                 @if ($product-tile-list_prices-direction == 'vertical') {
                     flex-direction: column;
 
+                    .price-from {
+                        margin-right: 0;
+                    }
+                } @else {
                     @if ($product-tile-list_display-old-price-first) {
-                        flex-direction: column-reverse;
+                        .old-price {
+                            .price {
+                                margin-right: $price-box_space-between-prices;
+                            }
+                        }
+                    } @else {
+                        .special-price {
+                            .price {
+                                margin-right: $price-box_space-between-prices;
+                            }
+                        }
                     }
 
-                    .old-price,
-                    .special-price {
-                        .price {
+                    .price-from,
+                    .price-to {
+                        .price-container {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                        }
+
+                        .price-label {
                             margin-right: 0;
                         }
                     }
