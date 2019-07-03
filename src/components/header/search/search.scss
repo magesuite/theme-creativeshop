@@ -223,6 +223,14 @@ $header-search_autocomplete-background: $color_background-200 !default;
         left: 0.5rem;
         right: 0.5rem;
 
+        @include media('<tablet') {
+            max-height: calc(
+                100vh - #{$global_header-height-mobile} - #{$field_select-line-height} -
+                    7rem
+            );
+            overflow-y: auto;
+        }
+
         @if ($global_header-searchbox-as-layer-breakpoint) {
             @include media($global_header-searchbox-as-layer-breakpoint) {
                 margin-top: 0.5rem;
