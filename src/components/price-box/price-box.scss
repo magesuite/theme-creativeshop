@@ -10,8 +10,7 @@
     .price {
         color: $price-box_normal-price-color;
         font-size: $price-box_normal-price-font-size;
-        margin-right: $price-box_space-between-prices;
-        margin-left: $price-box_space-between-prices;
+        margin: 0;
 
         &-label {
             color: $price-box_label-color;
@@ -20,6 +19,13 @@
             font-weight: 700;
             text-transform: uppercase;
             padding-bottom: 0.3rem;
+            margin-right: $price-box_label-margin-right;
+
+            @if ($price-box_label-display-colon) {
+                &:after {
+                    content: ':';
+                }
+            }
 
             body:not(.page-product-bundle, .page-product-grouped)
                 p:not(.price-from, .price-to)
@@ -32,10 +38,13 @@
     .price-from,
     .price-to {
         display: inline-block;
+        margin: 0;
+        padding: 0;
 
         .price-label {
             display: inline-block;
-            margin-right: $price-box_space-between-prices;
+            font-size: $price-box_normal-price-label-font-size;
+            padding: 0;
         }
     }
 
@@ -64,7 +73,7 @@
     }
 
     .price-from {
-        margin-right: 1.5rem;
+        margin-right: $price-box_space-between-prices;
     }
 
     .#{$ns}price--pdp_dailydeal-countdown & {
