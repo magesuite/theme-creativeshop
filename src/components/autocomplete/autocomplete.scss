@@ -33,11 +33,15 @@ $autocomplete_item-quantity-color: $color_text-400 !default;
 
 $autocomplete_item_display-old-price-first: true !default;
 $autocomplete_item-normal-price-color: $price-box_normal-price-color !default;
-$autocomplete_item-normal-price-font-size: $autocomplete_item-font-size !default;
+$autocomplete_item-normal-price-font-size: $price-box_normal-price-font-size !default;
+$autocomplete_item-normal-price-font-weight: $price-box_normal-price-font-weight !default;
 $autocomplete_item-old-price-color: $price-box_old-price-color !default;
-$autocomplete_item-old-price-font-size: $autocomplete_item-font-size !default;
+$autocomplete_item-old-price-font-size: $price-box_old-price-font-size !default;
+$autocomplete_item-old-price-font-weight: $price-box_old-price-font-weight !default;
+$autocomplete_item-old-price-text-decoration: $price-box_old-price-text-decoration !default;
 $autocomplete_item-special-price-color: $price-box_special-price-color !default;
-$autocomplete_item-special-price-font-size: $autocomplete_item-font-size !default;
+$autocomplete_item-special-price-font-size: $price-box_special-price-font-size !default;
+$autocomplete_item-special-price-font-weight: $price-box_special-price-font-weight !default;
 
 .#{$ns}autocomplete {
     $root: &;
@@ -111,31 +115,28 @@ $autocomplete_item-special-price-font-size: $autocomplete_item-font-size !defaul
         display: flex;
         margin: 0.3rem 0 0;
 
-        .price {
-            font-weight: $autocomplete_item-price-font-weight;
+        > .price {
             color: $autocomplete_item-normal-price-color;
             font-size: $autocomplete_item-normal-price-font-size;
+            font-weight: $autocomplete_item-price-font-weight;
             margin-right: 0;
         }
 
         .old-price {
-            .price {
-                text-decoration: line-through;
+            > .price {
+                text-decoration: $autocomplete_item-old-price-text-decoration;
                 color: $autocomplete_item-old-price-color;
                 font-size: $autocomplete_item-old-price-font-size;
+                font-weight: $autocomplete_item-old-price-font-weight;
             }
         }
 
         .special-price {
-            .price {
+            > .price {
                 color: $autocomplete_item-special-price-color;
                 font-size: $autocomplete_item-special-price-font-size;
+                font-weight: $autocomplete_item-special-price-font-weight;
             }
-        }
-
-        .price-from,
-        .price-to {
-            margin-right: 0;
         }
 
         @if ($autocomplete_item_display-old-price-first) {
