@@ -63,7 +63,8 @@ $product-tile-grid_swatches-container-min-height: 2.6rem !default;
 $product-tile-grid_swatches-margin: #{$product-tile_general-elements-gutter / 2}
     0 0 !default;
 $product-tile-grid_swatches-alignment: $product-tile-grid_alignment !default;
-$product-tile-list_swatches-margin: 0 !default;
+$product-tile-list_swatches-margin: 0 0 #{$product-tile_general-elements-gutter /
+    2} !default;
 $product-tile-list_swatches-alignment: $product-tile-list_alignment !default;
 
 // Addons
@@ -162,7 +163,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 .#{$ns}product-tile {
     $root: &;
 
-    text-align: center;
     width: 100%;
     position: relative;
     border-radius: $product-tile_general-border-radius;
@@ -188,9 +188,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &--list {
-        display: flex;
-        padding: $product-tile-list_padding;
-
         @if ($product-tile-list_hover-effects) {
             @include media($product-tile-list_hover-effects-breakpoint) {
                 &:hover {
@@ -206,8 +203,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &--grid {
-        padding: $product-tile-grid_padding;
-
         @if ($product-tile-grid_addons-show-for-static-tile == false) {
             &#{$root}--static {
                 #{$root}__addons {
@@ -224,10 +219,12 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
         #{$root}--grid & {
             flex-direction: column;
+            padding: $product-tile-grid_padding;
         }
 
         #{$root}--list & {
             flex-direction: row;
+            padding: $product-tile-list_padding;
         }
     }
 
@@ -604,7 +601,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
     &__addons-sides {
         display: flex;
-        flex-wrap: wrap;
         width: 100%;
     }
 
@@ -1091,6 +1087,11 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                 }
             }
 
+            .minimal-price {
+                margin: 0;
+                display: flex;
+            }
+
             #{$root}--grid & {
                 margin: $product-tile-grid_prices-margin;
 
@@ -1105,6 +1106,10 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
                     .price-from {
                         margin-right: 0;
+                    }
+
+                    .minimal-price {
+                        flex-direction: column;
                     }
 
                     @if ($product-tile-grid_prices-alignment == 'left') {
@@ -1123,6 +1128,13 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                             }
                         }
                     } @else {
+                        .minimal-price {
+                            > .price-container {
+                                .price {
+                                    margin-right: $price-box_space-between-prices;
+                                }
+                            }
+                        }
                         .special-price {
                             .price {
                                 margin-right: $price-box_space-between-prices;
@@ -1158,6 +1170,10 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     .price-from {
                         margin-right: 0;
                     }
+
+                    .minimal-price {
+                        flex-direction: column;
+                    }
                 } @else {
                     @if ($product-tile-list_display-old-price-first) {
                         .old-price {
@@ -1165,10 +1181,38 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                                 margin-right: $price-box_space-between-prices;
                             }
                         }
+
+                        .minimal-price {
+                            .old-price {
+                                .price {
+                                    margin-right: $price-box_space-between-prices;
+                                }
+                            }
+
+                            > .price-container {
+                                .price {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
                     } @else {
                         .special-price {
                             .price {
                                 margin-right: $price-box_space-between-prices;
+                            }
+                        }
+
+                        .minimal-price {
+                            .price-container {
+                                .price {
+                                    margin-right: $price-box_space-between-prices;
+                                }
+                            }
+
+                            .old-price {
+                                .price {
+                                    margin-right: 0;
+                                }
                             }
                         }
                     }
@@ -1178,7 +1222,10 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                         .price-container {
                             display: flex;
                             flex-direction: column;
-                            align-items: flex-start;
+
+                            .price {
+                                margin-right: 0;
+                            }
                         }
 
                         .price-label {
