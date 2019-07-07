@@ -4,7 +4,7 @@
  */
 
 import * as $ from 'jquery';
-import * as Swiper from 'Swiper';
+import requireAsync from 'utils/require-async';
 
 /**
  * Creates new teaser object on given element with provided settings.
@@ -197,28 +197,30 @@ const csTeaser: any = function($element: any, settings: any): void {
         }
     };
 
-    swiperInstance = new Swiper(
-        $element.find(`${teaserClass}__wrapper`),
-        currentSettings
-    );
+    requireAsync(['Swiper']).then(([Swiper]) => {
+        swiperInstance = new Swiper(
+            $element.find(`${teaserClass}__wrapper`),
+            currentSettings
+        );
 
-    destroyed = false;
-    postInit();
-    swiperInstance.update();
+        destroyed = false;
+        postInit();
+        swiperInstance.update();
 
-    let currentWindowWidth = $(window).width();
-    $(window).on(
-        'resize',
-        (): void => {
-            const newWindowWidth = $(window).width();
-            if (!destroyed && newWindowWidth !== currentWindowWidth) {
-                updateSliderSizing();
-                postInit();
-                swiperInstance.update();
-                currentWindowWidth = newWindowWidth;
+        let currentWindowWidth = $(window).width();
+        $(window).on(
+            'resize',
+            (): void => {
+                const newWindowWidth = $(window).width();
+                if (!destroyed && newWindowWidth !== currentWindowWidth) {
+                    updateSliderSizing();
+                    postInit();
+                    swiperInstance.update();
+                    currentWindowWidth = newWindowWidth;
+                }
             }
-        }
-    );
+        );
+    });
 
     /**
      * Returns Swiper object.
