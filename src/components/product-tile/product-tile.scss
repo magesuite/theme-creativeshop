@@ -134,6 +134,8 @@ $product-tile-list_description-text-align: $product-tile-list_alignment !default
 
 // Thumbnail
 $product-tile-grid_thumbnail-center-on-tile: false !default;
+$product-tile-grid_thumbnail-cover-width: false !default;
+
 $product-tile-list_thumbnail-box-width: 10rem !default;
 $product-tile-list_thumbnail-box-width-mobile: #{$product-tile-list_thumbnail-box-width /
     2} !default;
@@ -332,6 +334,10 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
         #{$root}--grid & {
             position: absolute;
+
+            @if ($product-tile-grid_thumbnail-cover-width) {
+                width: 100%;
+            }
 
             @if not($product-tile-grid_thumbnail-center-on-tile) {
                 bottom: unset;
