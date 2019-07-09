@@ -3,6 +3,18 @@
 /* @var \Magento\Wishlist\Helper\Data $wishlistHelper */
 $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
 $items = $wishlistHelper->getWishlistItemCollection()->getItems();
+
+$viewMode = $block->getViewMode();
+$viewModeClass = $block->getGridComponentClass();
+$viewModeAdditionalClass = $block->hasAdditionalGridComponentClass() ? ' ' .$block->getAdditionalGridComponentClass() : '';
+$viewModeListClass = $block->getGridComponentListClass();
+$viewModeListItemClass = $block->getGridComponentListItemClass();
+
+$pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
+if ($pageLayout != '1column') {
+    $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
+}
+
 ?>
 <?php if ($wishlistHelper->isAllow()) : ?>
     <div class="block block-wishlist" data-bind="scope: 'wishlist'">
@@ -23,19 +35,21 @@ $items = $wishlistHelper->getWishlistItemCollection()->getItems();
             <?php if(empty($items)): ?>
                 <p><?php /* @escapeNotVerified */ echo __('You have no items in your wish list.') ?></p>
             <?php else: ?>
-                <ul class="<?= $block->getWishlistBottomClass(); ?>" id="wishlist-sidebar">
-                    <?php foreach($items as $item): ?>
-                        <li class="<?= $block->getWishlistBottomItemClass(); ?>">
-                            <?= $this->getLayout()
-                                ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
-                                ->setAreas(['wishlist'])
-                                ->setViewMode($block->getViewMode())
-                                ->setWishlistItem($item)
-                                ->render($item->getProduct());
-                            ?>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>">
+                    <ol class="<?= $viewModeListClass ?>" id="wishlist-sidebar">
+                        <?php foreach($items as $item): ?>
+                            <li class="<?= $viewModeListItemClass ?>">
+                                <?= $this->getLayout()
+                                    ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
+                                    ->setAreas(['wishlist'])
+                                    ->setViewMode($vieMode)
+                                    ->setWishlistItem($item)
+                                    ->render($item->getProduct());
+                                ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ol>
+                </div>
             <?php endif; ?>
         </div>
     </div>
