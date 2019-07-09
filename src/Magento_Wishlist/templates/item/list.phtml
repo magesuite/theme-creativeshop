@@ -2,26 +2,30 @@
 // @codingStandardsIgnoreFile
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
 $columns = $block->getColumns();
-$gridLayoutComponentClass = $block->getGridLayoutComponentClass();
+
+$viewMode = $block->getViewMode();
+$viewModeClass = $block->getGridComponentClass();
+$viewModeAdditionalClass = $block->hasAdditionalGridComponentClass() ? ' ' .$block->getAdditionalGridComponentClass() : '';
+$viewModeListClass = $block->getGridComponentListClass();
+$viewModeListItemClass = $block->getGridComponentListItemClass();
+
 $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
 if ($pageLayout != '1column') {
-    $gridLayoutComponentClass .= ' ' . $gridLayoutComponentClass . '--with-sidebar';
+    $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
 }
-$gridLayoutComponentClass .= ' ' . $gridLayoutComponentClass . '--wishlist';
 ?>
 
-<div class="<?= $gridLayoutComponentClass ?> cs-dashboard__wishlist-products-grid">
+<div class="<?= $viewModeClass . $viewModeAdditionalClass ?>">
     <?php $iterator = 1; ?>
     <?php if (count($block->getItems())): ?>
-        <?php $brickClass = $block->getGridLayoutComponentBrickClass() ?>
-        <ol class="<?= $block->getGridLayoutComponentGridClass() ?> cs-dashboard__wishlist-grid">
+        <ol class="<?= $viewModeListClass ?>">
             <?php foreach ($block->getItems() as $item): ?>
-                <li class="<?= $brickClass ?> cs-dashboard__wishlist-brick" id="item_<?= $item->getId() ?>">
+                <li class="<?= $viewModeListItemClass ?>" id="item_<?= $item->getId() ?>">
                     <?= $this->getLayout()
                         ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
                         ->setIterator($iterator)
                         ->setAreas(['wishlist'])
-                        ->setViewMode($block->getViewMode())
+                        ->setViewMode($viewMode)
                         ->setWishlistItem($item)
                         ->render($item->getProduct());
                     ?>
