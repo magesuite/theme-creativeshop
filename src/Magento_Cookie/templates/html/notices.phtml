@@ -16,7 +16,6 @@
         $storeHelper = $this->helper('MageSuite\Frontend\Helper\Store');
         $currentStoreId = $storeHelper->getCurrentStoreId();
         $cookieNoticeBlockId = $block->getNoticeCmsBlockId();
-        $cookieIcon = $block->getCookieIcon();
         $cookieNoticeCmsBlock = $this->getLayout()
             ->createBlock('Magento\Cms\Block\Block')
             ->setCacheKey($cookieNoticeBlockId.'_'.$currentStoreId)
@@ -26,9 +25,7 @@
     ?>
     <div class="cs-cookie-message cs-cookie-message--shown" id="notice-cookie-block" style="display: none">
         <div class="cs-cookie-message__inner">
-            <?php if($cookieIcon && $cookieIcon != ''): ?>
-                <?= $block->getChildHtml('cookie_notices.block.icon'); ?>
-            <?php endif; ?>
+            <?= $block->getChildHtml('cookie_notices.block.icon'); ?>
             <div class="cs-cookie-message__text">
                 <?php if($cookieNoticeCmsBlock && $cookieNoticeCmsBlock != ''): 
                     echo $cookieNoticeCmsBlock;
