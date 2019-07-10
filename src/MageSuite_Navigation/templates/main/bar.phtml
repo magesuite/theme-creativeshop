@@ -1,4 +1,5 @@
 <?php
+
 // @codingStandardsIgnoreFile
 /** @var \MageSuite\Navigation\Block\Navigation $block */
 
@@ -13,6 +14,8 @@ $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
 $thirdLevelLimit = intval($block->getThirdLevelLimit());
 $cacheKey = md5(implode('|', $block->getCacheKeyInfo()));
 $cacheGenerationTime = time();
+
+$imageTeaserConfig = $block->getData('imageTeaserConfig');
 
 ?>
 <nav class="cs-navigation" data-cache-key="<?= $cacheKey; ?>" data-cache-generation-time="<?= $cacheGenerationTime; ?>">
@@ -58,6 +61,7 @@ $cacheGenerationTime = time();
                             ->setShowProductsAmountSubcats($showProductsAmountSubcats)
                             ->setThirdLevelLimit($thirdLevelLimit)
                             ->setLevel($level + 1)
+                            ->setImageTeaserConfig($imageTeaserConfig)
                             ->toHtml();
                     }
                 ?>
