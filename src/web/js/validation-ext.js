@@ -12,12 +12,23 @@ define(['jquery'], function($) {
                 return this;
             }
 
-            return this.bind(type, function(event) {
-                var target = $(event.target);
-                if (target.is(delegate)) {
-                    return handler.apply(target, arguments);
-                }
-            });
+            return this.on(
+                type,
+                $.proxy(function(event) {
+                    var target = $(event.target);
+                    var form = target[0].form || target[0];
+
+                    if (
+                        form &&
+                        $(form).is(this) &&
+                        $.data(form, 'validator') &&
+                        target.is(delegate) &&
+                        !target.is('.swatch-input')
+                    ) {
+                        return handler.apply(target, arguments);
+                    }
+                }, this)
+            );
         };
 
         $.widget('mage.validation', mageValidation, {
@@ -34,5 +45,7 @@ define(['jquery'], function($) {
                 },
             },
         });
+
+        return $.mage.validation;
     };
 });
