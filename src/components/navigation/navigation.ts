@@ -256,18 +256,25 @@ export default class Navigation {
 
     /**
      * Makes sure that all extra elements (image teaser, product promo) have proper width.
-     * @param $flyout jQuery flyout element.
+     * @param {JQuery} $flyout jQuery flyout element.
      */
     protected _adjustFlyoutExtras($flyout: JQuery) {
         const flyoutMaxColumnCount = this._getColumnsForViewport();
         const $flyoutExtras: JQuery = $flyout.children(
             `:not(.${this._options.flyoutColumnsClassName})`
         );
-        $flyoutExtras.css({
-            'max-width': `${(this._containerClientRect.width /
-                flyoutMaxColumnCount) *
-                2}px`,
-        });
+        const hasImageTeaser = $flyoutExtras.children(
+            'cs-container--image-teaser'
+        );
+        const propertyToChange = hasImageTeaser ? 'width' : 'max-width';
+        const widthFactor = hasImageTeaser ? 1.2 : 2;
+        $flyoutExtras
+            .css({
+                [propertyToChange]: `${(this._containerClientRect.width /
+                    flyoutMaxColumnCount) *
+                    widthFactor}px`,
+            })
+            .addClass('cs-navigation__extras');
     }
 
     /**

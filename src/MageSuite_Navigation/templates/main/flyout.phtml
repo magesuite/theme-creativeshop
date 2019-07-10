@@ -13,23 +13,34 @@ if ($isAllCategories) {
 
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 $showProductsAmountSubcats = $block->getShowProductsAmountSubcats();
-
 $thirdLevelLimit = $block->getThirdLevelLimit();
-$itemHasTeaser = $item->hasImageTeaser();
-if ($itemHasTeaser) {
+$itemHasImageTeaser = $item->hasImageTeaser();
+$itemHasFeaturedProducts = $item->hasFeaturedProducts();
+
+if ($itemHasImageTeaser) {
     $additionalCssClasses .= ' cs-navigation__flyout--with-teaser';
+    // Fill image teaser fixed config data with data fetched dynamically
+    $imageTeaserData = $item->getImageTeaser()->getItems()['0'];
+    $imageTeaserConfig = $block->getImageTeaserConfig();
+    $imageTeaserConfigItems = &$imageTeaserConfig['items']['0'];
+    $imageTeaserConfigItems['image']['raw'] = $imageTeaserData['image']['raw'];
+    $imageTeaserConfigItems['image']['decoded'] = $imageTeaserData['image']['decoded'];
+    $imageTeaserConfigItems['slogan'] = $imageTeaserData['slogan'];
+    $imageTeaserConfigItems['description'] = $imageTeaserData['description'];
+    $imageTeaserConfigItems['cta'] = $imageTeaserData['cta'];
 }
 
-$itemHasFeaturedProducts = $item->hasFeaturedProducts();
 if ($itemHasFeaturedProducts) {
     $additionalCssClasses .= ' cs-navigation__flyout--with-product';
 }
 ?>
+
 <div
     class="cs-navigation__flyout <?= $additionalCssClasses ?>"
     data-category-identifier="<?= $item->getCategoryIdentifier() ?>"
     data-parent-item-id="<?= $itemId; ?>"
 >
+
 <?php
 if ($item->hasSubItems()) {
     echo $this->getLayout()
@@ -59,19 +70,28 @@ if ($item->hasSubItems()) {
             }
 
             if ($subItem->hasImageTeaser()) {
+                // Fill image teaser fixed config data with data fetched dynamically
+                $subImageTeaserData = $subItem->getImageTeaser()->getItems()['0'];
+                $subImageTeaserConfig = $block->getImageTeaserConfig;
+                $subImageTeaserConfigItems = &$subImageTeaserConfig['items']['0'];
+                $subImageTeaserConfigItems['image']['raw'] = $subImageTeaserData['image']['raw'];
+                $subImageTeaserConfigItems['image']['decoded'] = $subImageTeaserData['image']['decoded'];
+                $subImageTeaserConfigItems['slogan'] = $subImageTeaserData['slogan'];
+                $subImageTeaserConfigItems['description'] = $subImageTeaserData['description'];
+                $subImageTeaserConfigItems['cta'] = $subImageTeaserData['cta'];
+
                 echo $this->getLayout()
-                    ->createBlock(Magento\Framework\View\Element\Template::class)
-                    ->setTemplate("MageSuite_Navigation::main/image-teaser-legacy.phtml")
+                    ->createBlock('MageSuite\ContentConstructorFrontend\Block\Component\ImageTeaser')
                     ->setItem($subItem)
-                    ->setButtonIcon($block->getImageTeaserButtonIcon())
-                    ->setAdditionalCssClasses('cs-navigation__teaser cs-navigation__teaser--hidden')
+                    ->setData($subImageTeaserConfig)
+                    ->setMix('cs-navigation__teaser')
                     ->toHtml();
             }
         }
     }
 }
 
-if ($item->hasFeaturedProducts()) {
+if ($itemHasFeaturedProducts) {
     echo $this->getLayout()
         ->createBlock(Magento\Framework\View\Element\Template::class)
         ->setTemplate("MageSuite_Navigation::main/featured-products.phtml")
@@ -79,14 +99,14 @@ if ($item->hasFeaturedProducts()) {
         ->toHtml();
 }
 
-if ($item->hasImageTeaser()) {
+if ($itemHasImageTeaser) {
     echo $this->getLayout()
-        ->createBlock(Magento\Framework\View\Element\Template::class)
-        ->setTemplate("MageSuite_Navigation::main/image-teaser-legacy.phtml")
+        ->createBlock('MageSuite\ContentConstructorFrontend\Block\Component\ImageTeaser')
         ->setItem($item)
-        ->setButtonIcon($block->getImageTeaserButtonIcon())
-        ->setAdditionalCssClasses('cs-navigation__teaser')
+        ->setData($imageTeaserConfig)
+        ->setMix('cs-navigation__teaser')
         ->toHtml();
 }
 ?>
+
 </div>
