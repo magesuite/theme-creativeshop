@@ -64,6 +64,18 @@ $swatches--tile_min-height: calc(
 $swatches--pdp_font-size: 0.9em !default;
 $swatches--filters_font-size: 0.8em !default;
 
+// Tooltips for swatches
+$swatches_tooltip-background: $color_primary-500 !default;
+$swatches_tooltip-border-radius: 0.2rem !default;
+$swatches_tooltip-color: $color_white !default;
+$swatches_tooltip-font-size: 1.2rem !default;
+$swatches_tooltip-font-weight: 400 !default;
+$swatches_tooltip-margin: 1.2rem 0 0 !default;
+$swatches_tooltip-padding: 0.2rem 0.4rem !default;
+$swatches_tooltip-arrow-show: false !default;
+$swatches_tooltip-arrow-size: 0.5rem !default;
+$swatches_tooltip-arrow-x-asis-left: 0.2rem !default;
+
 // Container selector for swatches in tile and daily deal teaser.
 [class^='swatch-opt-'] {
     pointer-events: none;
@@ -297,6 +309,44 @@ $swatches--filters_font-size: 0.8em !default;
 
 .swatch-more {
     @if $swatches_disable-show-more {
+        display: none;
+    }
+}
+
+.swatch-option-tooltip {
+    position: absolute;
+    margin: $swatches_tooltip-margin;
+
+    .title {
+        background: $swatches_tooltip-background;
+        border-radius: $swatches_tooltip-border-radius;
+        color: $swatches_tooltip-color;
+        font-size: $swatches_tooltip-font-size;
+        font-weight: $swatches_tooltip-font-weight;
+        padding: $swatches_tooltip-padding;
+
+        @if ($swatches_tooltip-arrow-show) {
+            position: relative;
+
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 100%;
+                left: $swatches_tooltip-arrow-x-asis-left;
+                width: 0;
+                height: 0;
+                border-left: $swatches_tooltip-arrow-size solid transparent;
+                border-right: $swatches_tooltip-arrow-size solid transparent;
+                border-top: $swatches_tooltip-arrow-size
+                    solid
+                    $swatches_tooltip-background;
+            }
+        }
+    }
+
+    .image,
+    .corner {
         display: none;
     }
 }
