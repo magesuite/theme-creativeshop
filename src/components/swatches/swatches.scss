@@ -65,16 +65,18 @@ $swatches--pdp_font-size: 0.9em !default;
 $swatches--filters_font-size: 0.8em !default;
 
 // Tooltips for swatches
-$swatches_tooltip-background: $color_primary-500 !default;
-$swatches_tooltip-border-radius: 0.2rem !default;
-$swatches_tooltip-color: $color_white !default;
-$swatches_tooltip-font-size: 1.2rem !default;
+$swatches_tooltip-background: $color_white !default;
+$swatches_tooltip-border-radius: 0.5rem !default;
+$swatches_tooltip-border-size: 0.1rem !default;
+$swatches_tooltip-border-color: $color_border-500 !default;
+$swatches_tooltip-color: $color_text-400 !default;
+$swatches_tooltip-font-size: 1.3rem !default;
 $swatches_tooltip-font-weight: 400 !default;
-$swatches_tooltip-margin: 1.2rem 0 0 !default;
-$swatches_tooltip-padding: 0.2rem 0.4rem !default;
-$swatches_tooltip-arrow-show: false !default;
-$swatches_tooltip-arrow-size: 0.5rem !default;
-$swatches_tooltip-arrow-x-asis-left: 0.2rem !default;
+$swatches_tooltip-margin: 1.5rem 0 0 0.7rem !default;
+$swatches_tooltip-padding: 0.4rem 0.6rem !default;
+$swatches_tooltip-arrow-show: true !default;
+$swatches_tooltip-arrow-size: 1rem !default;
+$swatches_tooltip-arrow-offset-x: 50% !default;
 
 // Container selector for swatches in tile and daily deal teaser.
 [class^='swatch-opt-'] {
@@ -326,6 +328,17 @@ $swatches_tooltip-arrow-x-asis-left: 0.2rem !default;
         font-weight: $swatches_tooltip-font-weight;
         padding: $swatches_tooltip-padding;
 
+        @if (
+            $swatches_tooltip-border-size !=
+                0 and
+                $swatches_tooltip-border-size !=
+                'none'
+        ) {
+            border: $swatches_tooltip-border-size
+                solid
+                $swatches_tooltip-border-color;
+        }
+
         @if ($swatches_tooltip-arrow-show) {
             position: relative;
 
@@ -334,14 +347,37 @@ $swatches_tooltip-arrow-x-asis-left: 0.2rem !default;
                 display: block;
                 position: absolute;
                 top: 100%;
-                left: $swatches_tooltip-arrow-x-asis-left;
-                width: 0;
-                height: 0;
-                border-left: $swatches_tooltip-arrow-size solid transparent;
-                border-right: $swatches_tooltip-arrow-size solid transparent;
-                border-top: $swatches_tooltip-arrow-size
-                    solid
-                    $swatches_tooltip-background;
+                left: $swatches_tooltip-arrow-offset-x;
+                @if (unit($swatches_tooltip-arrow-offset-x) == '%') {
+                    transform: translateX(-#{$swatches_tooltip-arrow-offset-x})
+                        rotate(45deg);
+                } @else {
+                    transform: rotate(45deg);
+                }
+                background-color: $swatches_tooltip-background;
+                width: $swatches_tooltip-arrow-size;
+                height: $swatches_tooltip-arrow-size;
+
+                @if (
+                    $swatches_tooltip-border-size !=
+                        0 and
+                        $swatches_tooltip-border-size !=
+                        'none'
+                ) {
+                    border-bottom: $swatches_tooltip-border-size
+                        solid
+                        $swatches_tooltip-border-color;
+                    border-right: $swatches_tooltip-border-size
+                        solid
+                        $swatches_tooltip-border-color;
+                    margin-top: calc(
+                        -#{$swatches_tooltip-arrow-size /
+                            2} +
+                            #{$swatches_tooltip-border-size}
+                    );
+                } @else {
+                    margin-top: -#{$swatches_tooltip-arrow-size / 2};
+                }
             }
         }
     }
