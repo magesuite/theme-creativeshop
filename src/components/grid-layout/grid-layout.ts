@@ -392,7 +392,7 @@ export default class GridLayout {
 
             if ($teaser.length) {
                 if (
-                    (windowWidth < breakpoint.tablet &&
+                    (windowWidth < breakpoint.phoneLg &&
                         !this._getIsVisibleOnMobiles(
                             this.teasersCfg[i].mobile
                         )) ||
@@ -491,9 +491,9 @@ export default class GridLayout {
 
             if ($teaser.length) {
                 if (
-                    (windowWidth < breakpoint.tablet &&
+                    (windowWidth < breakpoint.phoneLg &&
                         !this._getIsVisibleOnMobiles(
-                            Boolean(this.teasersCfg[i].mobile)
+                            this.teasersCfg[i].mobile
                         )) ||
                     !this._getDoesTeaserFitIntoGrid(this.teasersCfg[i], idx)
                 ) {
