@@ -1,6 +1,8 @@
 @import 'config/variables';
 @import 'utils/visually-hidden';
 @import 'vendors/include-media';
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
 @import 'components/button/mixin';
 
 // Keep in sync with quantity wrapper in buybox.
@@ -72,11 +74,30 @@ $swatches_tooltip-border-color: $color_border-500 !default;
 $swatches_tooltip-color: $color_text-400 !default;
 $swatches_tooltip-font-size: 1.3rem !default;
 $swatches_tooltip-font-weight: 400 !default;
-$swatches_tooltip-margin: 1.5rem 0 0 0.7rem !default;
-$swatches_tooltip-padding: 0.4rem 0.6rem !default;
+$swatches_tooltip-margin: 0 !default;
+$swatches_tooltip-padding: 0.5rem !default;
+$swatches_tooltip-min-width: 2rem !default;
 $swatches_tooltip-arrow-show: true !default;
 $swatches_tooltip-arrow-size: 1rem !default;
 $swatches_tooltip-arrow-offset-x: 50% !default;
+$swatches_tooltip-text-align: center !default;
+
+$swatches_tooltip-thumbnail-data: deep-get(
+    $view-xml,
+    media,
+    images,
+    image,
+    swatch_thumb
+) !default;
+
+$swatches_tooltip-thumbnail-width: #{map-get(
+        $swatches_tooltip-thumbnail-data,
+        width
+    )} !default;
+$swatches_tooltip-thumbnail-height: #{map-get(
+        $swatches_tooltip-thumbnail-data,
+        height
+    )} !default;
 
 // Container selector for swatches in tile and daily deal teaser.
 [class^='swatch-opt-'] {
@@ -315,38 +336,49 @@ $swatches_tooltip-arrow-offset-x: 50% !default;
     }
 }
 
-.swatch-option-tooltip {
+.swatch-option-tooltip,
+.swatch-option-tooltip-layered {
+    display: none;
     position: absolute;
     margin: $swatches_tooltip-margin;
-    z-index: 5;
+    z-index: 999;
+    background: $swatches_tooltip-background;
+    border-radius: $swatches_tooltip-border-radius;
+    color: $swatches_tooltip-color;
+    font-size: $swatches_tooltip-font-size;
+    font-weight: $swatches_tooltip-font-weight;
+    padding: $swatches_tooltip-padding;
+    text-align: $swatches_tooltip-text-align;
+    min-width: $swatches_tooltip-min-width;
 
-    .title {
-        background: $swatches_tooltip-background;
-        border-radius: $swatches_tooltip-border-radius;
-        color: $swatches_tooltip-color;
-        font-size: $swatches_tooltip-font-size;
-        font-weight: $swatches_tooltip-font-weight;
-        padding: $swatches_tooltip-padding;
-
-        @if (
+    @if (
+        $swatches_tooltip-border-size !=
+            0 and
             $swatches_tooltip-border-size !=
-                0 and
-                $swatches_tooltip-border-size !=
-                'none'
-        ) {
-            border: $swatches_tooltip-border-size
-                solid
-                $swatches_tooltip-border-color;
-        }
+            'none'
+    ) {
+        border: $swatches_tooltip-border-size
+            solid
+            $swatches_tooltip-border-color;
+    }
 
+    .image {
+        display: block;
+        margin: 0 auto;
+        width: $swatches_tooltip-thumbnail-width + 'px';
+        height: $swatches_tooltip-thumbnail-height + 'px';
+    }
+
+    .corner {
         @if ($swatches_tooltip-arrow-show) {
-            position: relative;
-
             &:after {
                 content: '';
-                display: block;
                 position: absolute;
                 top: 100%;
+                display: block;
+                width: $swatches_tooltip-arrow-size;
+                height: $swatches_tooltip-arrow-size;
+                background-color: $swatches_tooltip-background;
                 left: $swatches_tooltip-arrow-offset-x;
                 @if (unit($swatches_tooltip-arrow-offset-x) == '%') {
                     transform: translateX(-#{$swatches_tooltip-arrow-offset-x})
@@ -354,9 +386,6 @@ $swatches_tooltip-arrow-offset-x: 50% !default;
                 } @else {
                     transform: rotate(45deg);
                 }
-                background-color: $swatches_tooltip-background;
-                width: $swatches_tooltip-arrow-size;
-                height: $swatches_tooltip-arrow-size;
 
                 @if (
                     $swatches_tooltip-border-size !=
@@ -379,11 +408,8 @@ $swatches_tooltip-arrow-offset-x: 50% !default;
                     margin-top: -#{$swatches_tooltip-arrow-size / 2};
                 }
             }
+        } @else {
+            display: none !important;
         }
-    }
-
-    .image,
-    .corner {
-        display: none;
     }
 }
