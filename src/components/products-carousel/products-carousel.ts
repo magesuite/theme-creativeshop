@@ -7,7 +7,7 @@ import csTeaser from 'components/teaser/teaser';
  * Component options interface.
  * Please refer to swiper documentation and teaser component for more options and callbacks
  */
-interface ProductsCarouselOptions {
+export interface ProductsCarouselOptions {
     /**
      * HTML Class of the component
      * @type {string}
