@@ -127,7 +127,9 @@ class NostoProducts {
 }
 
 // Initializes carousels for nosto products recommendation on nosto postrender event
-export default function initializeNostoProducts(config?: NostoProductsOptions) {
+export default function initializeNostoProductsRenderer(
+    config?: NostoProductsOptions
+) {
     if (typeof nostojs !== 'undefined') {
         const options = $.extend(
             {
