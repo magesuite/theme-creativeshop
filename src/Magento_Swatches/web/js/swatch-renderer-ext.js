@@ -3,7 +3,9 @@
  * Modification type: extend
  * Reason:
  * To add selecting swatches based on selected filters (by referrer url).
- * Swatches can be selected only after gallery is loaded, to keep correct gallery behaviour
+ * Swatches can be selected only after:
+ * - gallery is loaded, to keep correct gallery behaviour
+ * - attributes config is prepared by widget logic
  */
 define(['jquery'], function($) {
     'use strict';
@@ -12,11 +14,45 @@ define(['jquery'], function($) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
             _onGalleryLoaded: function(gallery) {
                 this._super(gallery);
+
+                // Add gallery loaded flag for selecting swatches reference
+                this._isGalleryLoaded = true;
+            },
+            _RenderControls: function() {
+                this._super();
+                var _this = this;
+                var gallery = $(
+                    '[data-gallery-role=gallery-placeholder]',
+                    '.column.main'
+                );
+
+                // If gallery is already loaded, select swatches
+                // otherwise wait for 'gallery:loaded' event
+                if (_this._isGalleryLoaded === true) {
+                    _this._SelectSwatchesBasedOnReferrer();
+                }
+
+                $(gallery).on('gallery:loaded', function() {
+                    _this._SelectSwatchesBasedOnReferrer();
+                });
+            },
+            _SelectSwatchesBasedOnReferrer: function() {
                 var _this = this;
 
                 var referrerQueryString = document.referrer.substring(
                     document.referrer.indexOf('?') + 1
                 );
+
+                // Do nothing if there is no query string or configred attributes
+                if (
+                    !(
+                        referrerQueryString.length &&
+                        $.isArray(_this.options.jsonConfig.attributes)
+                    )
+                ) {
+                    return;
+                }
+
                 var searchParams = {};
 
                 $.each(referrerQueryString.split('&'), function(index, item) {
