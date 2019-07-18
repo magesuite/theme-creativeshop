@@ -139,7 +139,7 @@ export default class Dailydeal {
         namespace: 'cs-',
         get countdownTemplate() {
             return `<span class="${this.namespace}dailydeal__countdown-element ${this.namespace}dailydeal__countdown-element--special">
-                    <svg class="${this.namespace}dailydeal__countdown-icon"><use xlink:href="#clock"></use></svg>
+                    <img class="inline-svg ${this.namespace}dailydeal__countdown-icon" data-bind="attr: { src: require.toUrl('images/icons/clock.svg') }" alt="">
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
                     <span class="${this.namespace}dailydeal__countdown-value">%d%</span>
@@ -232,7 +232,7 @@ export default class Dailydeal {
             // If cron hasn't refreshed it yet and page has been refreshed,
             // dailydeal should be hidden.
             this._hideDailydeal(true);
-            
+
             if (this._options.expiredHandler && typeof(this._options.expiredHandler) === 'function') {
                 this._options.expiredHandler(this);
             }
