@@ -70,9 +70,9 @@ import 'components/products-grid';
 import 'components/products-list';
 import 'components/product-finder';
 import 'components/separator';
+import 'components/video-player';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'customizations/video-player/video-player';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';

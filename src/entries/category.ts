@@ -82,7 +82,7 @@ import 'components/search-results-cms';
 import 'components/side-nav';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'customizations/video-player/video-player';
+import 'components/video-player';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';

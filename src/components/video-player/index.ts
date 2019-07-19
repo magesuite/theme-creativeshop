@@ -1,5 +1,6 @@
-import VideoPlayer from 'components/video-player/video-player';
 import * as $ from 'jquery';
+import VideoPlayer from 'components/video-player/video-player';
+import 'components/video-player/video-player.scss';
 
 new VideoPlayer({
     modalHandlers: {
