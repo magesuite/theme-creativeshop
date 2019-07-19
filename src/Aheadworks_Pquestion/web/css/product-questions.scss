@@ -5,6 +5,8 @@
 @import 'components/field/mixin';
 
 $pq-spacing: 2.3rem !default;
+$pq-padding: 1.15rem !default;
+
 $pq-button-min-width: 18rem !default;
 
 $pq-subscription-label-font-weight: 300 !default;
@@ -13,7 +15,7 @@ $pq-subscription-label-font-size: 1.4rem !default;
 $pq-note_font-size: 1.2rem !default;
 $pq-note_font-color: $color_text-500 !default;
 
-$pq-separator_border: 1px solid $color_border-500 !default;
+$pq-separator_border: 1px solid $color_border-200 !default;
 $pq-question_list-mobile-background: none !default;
 $pq-question_list-desktop-background: none !default;
 
@@ -29,19 +31,20 @@ $pq-button-align: flex-start !default;
 $pq-button-align-desktop: center !default;
 
 $pq-button-primary-action_type: $button_default-type !default;
-$pq-button_primary-action_icon-pos: $button_default-icon-pos !default;
+$pq-button_primary-action_icon-pos: 'only-icon' !default;
 
 $pq-button-secondary-action_type: 'secondary' !default;
-$pq-button-secondary-action_icon-pos: $button_default-icon-pos !default;
+$pq-button-secondary-action_icon-pos: 'only-icon' !default;
 
 $pq-thumb-up_color: $color_primary-500 !default;
 $pq-thumb-down_color: $color_primary-500 !default;
 $pq-thumb_size: 2.4rem !default;
 
-$pq-list_item-tablet-indent: 14rem !default;
+$pq-list_item-tablet-indent: 10rem !default;
+$pq-list_item-desktop-indent: 14rem !default;
 
-$pq-form-background-desktop: $color_background-500 !default;
-$pq-form-padding-desktop: 3rem !default;
+$pq-form-background: $color_background-500 !default;
+$pq-form-padding: 3rem !default;
 $pq-form_headline-font-size: $font-size_headline-3 !default;
 $pq-form_product-name-font-weight: 200 !default;
 
@@ -52,11 +55,8 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
     &-form {
         margin-top: 1rem;
-
-        @include media('>=laptop') {
-            background: $pq-form-background-desktop;
-            padding: $pq-form-padding-desktop;
-        }
+        background: $pq-form-background;
+        padding: $pq-form-padding;
 
         &__headline {
             margin: 0 0 1.4em;
@@ -130,14 +130,14 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__button-question-span {
             @include button_span(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
         &__button-question-icon {
             @include button_icon(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
@@ -149,19 +149,23 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
             margin-top: 1rem;
             min-width: $pq-button-min-width;
+
+            @include media('<tablet') {
+                width: 100%;
+            }
         }
 
         &__send-answer-button-span {
             @include button_span(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
         &__send-answer-button-icon {
             @include button_icon(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
@@ -300,14 +304,14 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__next-question-button-span {
             @include button_span(
                 $type: $pq-button-secondary-action_type,
-                $icon_pos: $pq-button-secondary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
         &__next-question-button-icon {
             @include button_icon(
                 $type: $pq-button-secondary-action_type,
-                $icon_pos: $pq-button-secondary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
@@ -321,14 +325,14 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__next-answer-button-span {
             @include button-span(
                 $type: $pq-button-secondary-action_type,
-                $icon_pos: $pq-button-secondary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
         &__next-answer-button-icon {
             @include button-icon(
                 $type: $pq-button-secondary-action_type,
-                $icon_pos: $pq-button-secondary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
@@ -348,24 +352,35 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 line-height: 1.2rem;
                 text-transform: uppercase;
                 box-sizing: border-box;
+                padding: $pq-spacing;
 
                 @include media('>=tablet') {
-                    flex: 0 0 $pq-list_item-tablet-indent;
-                    padding: 0 2rem 0 4rem;
+                    flex: 0 0 $pq-list_item-desktop-indent;
                     line-height: 2.5rem;
                     word-break: break-all;
+                    text-align: right;
+                    padding-right: $pq-padding;
+                    border-left: $pq-separator_border;
                 }
             }
 
             &-item_hidden {
                 display: none !important;
             }
+
+            &-wrapper {
+                padding: 0 $pq-spacing;
+
+                @include media('>=tablet') {
+                    padding-top: $pq-spacing;
+                    padding-bottom: $pq-spacing;
+                }
+            }
         }
 
         &__question {
-            margin-bottom: $pq-spacing;
-
             &-info {
+                margin-top: 0.5rem;
                 font-weight: 300;
                 font-size: 1.25rem;
                 color: $pq-question-info_color;
@@ -399,9 +414,25 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 font-size: 1.1rem;
                 line-height: 1.4rem;
                 font-weight: 700;
+                background: $pq-helpfullnes_background-color;
+                padding: 0;
 
                 @include media('>=tablet') {
                     line-height: $pq-spacing;
+                    order: 1;
+                }
+
+                @include media('>=laptop') {
+                    background-clip: content-box;
+                    padding-left: 2rem;
+                }
+            }
+
+            &-caption {
+                padding: $pq-spacing $pq-spacing $pq-padding;
+
+                @include media('>=tablet') {
+                    padding-right: $pq-padding;
                 }
             }
 
@@ -413,6 +444,14 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
                 @include media('>=tablet') {
                     line-height: $pq-spacing;
+                }
+            }
+
+            &-wrapper {
+                background: $pq-helpfullnes_background-color;
+
+                @include media('>=tablet') {
+                    order: 2;
                 }
             }
         }
@@ -478,16 +517,19 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-wrapper {
-                padding-bottom: 2rem;
+                padding: $pq-spacing;
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
-                padding-right: 1rem;
+
+                @include media('<tablet') {
+                    background: $pq-helpfullnes_background-color;
+                }
 
                 @include media('>=tablet') {
-                    padding-right: 0;
                     flex: 0 0 10rem;
                     align-items: center;
+                    order: 0;
                 }
 
                 @include media('>=laptop') {
@@ -533,7 +575,15 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         }
 
         &__answer {
+            @include media('<tablet') {
+                padding-top: $pq-padding;
+            }
+
             &-label {
+                @include media('<tablet') {
+                    padding-bottom: $pq-padding;
+                }
+
                 .aw-pq-list__helpfulness {
                     @include media('>=tablet') {
                         display: inline-block;
@@ -556,7 +606,13 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-item {
-                margin-top: $pq-spacing;
+                @include media('>=tablet') {
+                    margin-left: $pq-list_item-tablet-indent;
+                }
+
+                @include media('>=laptop') {
+                    margin-left: $pq-list_item-desktop-indent;
+                }
             }
 
             &-content {
@@ -568,6 +624,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-date {
+                margin-top: 0.5rem;
                 font-weight: 300;
                 font-size: 1.2rem;
                 color: $pq-answer-date_color;
@@ -576,27 +633,36 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             &-list {
                 display: block !important;
                 flex: 1 1 auto;
-
-                @include media('>=tablet') {
-                    border-left: $pq-separator_border;
-                }
             }
 
             &-action-bar {
-                margin-top: 1.5rem;
-                padding: 0;
                 display: flex;
                 flex-wrap: wrap;
+                padding: $pq-spacing $pq-spacing 0 $pq-spacing;
 
                 @include media('>=tablet') {
+                    border-left: $pq-separator_border;
                     margin-left: $pq-list_item-tablet-indent;
-                    margin-top: 3rem;
-                    padding: 3rem 0 0;
-                    border-top: $pq-separator_border;
+                    padding: $pq-spacing 0 0
+                        calc(#{$pq-list_item-desktop-indent} + 2rem);
+                }
+
+                @include media('>=laptop') {
+                    margin-left: $pq-list_item-desktop-indent;
                 }
             }
 
+            &-action-wrapper {
+                border-top: $pq-separator_border;
+                width: 100%;
+                padding-top: $pq-spacing;
+            }
+
             &-wrapper {
+                @include media('>=tablet') {
+                    padding-bottom: 0;
+                }
+
                 .ie11 & {
                     flex-basis: 100%;
                 }
@@ -614,6 +680,10 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__next-answer-button,
         &__add-answer-button {
             min-width: $pq-button-min-width;
+
+            @include media('<tablet') {
+                width: 100%;
+            }
         }
 
         &__next-question-button,
@@ -633,14 +703,14 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__add-question-button-span {
             @include button_span(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
         &__add-question-button-icon {
             @include button_icon(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
@@ -660,14 +730,14 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__add-answer-button-span {
             @include button_span(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
         &__add-answer-button-icon {
             @include button_icon(
                 $type: $pq-button-primary-action_type,
-                $icon_pos: $pq-button-primary-action_icon-pos
+                $icon_pos: $button_default-icon-pos
             );
         }
 
@@ -687,18 +757,31 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             font-size: 1.5rem;
             color: $pq-answer-label_color;
 
+            @include media('<tablet') {
+                padding: $pq-spacing $pq-spacing 0;
+            }
+
             @include media('>=tablet') {
-                padding-left: $pq-list_item-tablet-indent;
+                padding: $pq-padding 0 $pq-padding
+                    calc(#{$pq-list_item-desktop-indent} + 2rem);
+                margin-left: $pq-list_item-tablet-indent;
+                border-left: $pq-separator_border;
+            }
+
+            @include media('>=desktop') {
+                margin-left: $pq-list_item-desktop-indent;
+                padding-top: $pq-spacing;
+                padding-bottom: 0;
             }
         }
 
         &__no-questions {
             margin: 1rem 0;
+            text-align: center;
         }
 
         &__action-bar {
             margin-top: 1.5rem;
-            border-top: $pq-separator_border;
             display: flex;
             flex-wrap: wrap;
             padding: 0 0 2.5rem 0;
