@@ -200,7 +200,7 @@ export default class PageScroll {
 
         if (this._$component.length) {
             this._$component.removeClass(
-                `.${this._options.componentHiddenClass}`
+                `${this._options.componentHiddenClass}`
             );
             this._$button = this._$component.find(
                 $(`.${this._options.componentButtonClass}`)
