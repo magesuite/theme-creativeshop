@@ -87,7 +87,7 @@ import 'components/toolbar';
 import 'components/sticky-block';
 import 'components/captcha';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'customizations/video-player/video-player';
+import 'components/video-player';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';

@@ -35,7 +35,7 @@ interface IVideoPlayer {
      * It tells where to look for links pointing to the youtube videos
      * Use to pass selector(s)
      * @type {string}
-     * @default '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser'
+     * @default '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser, .cs-image-teaser, .cs-hero, cs-products-grid--with-hero'
      */
     scope?: string;
 
@@ -101,7 +101,7 @@ export default class VideoPlayer {
     public constructor(options?: IVideoPlayer) {
         const defaultOptions: any = {
             scope:
-                '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser',
+                '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser, .cs-image-teaser, .cs-hero, cs-products-grid--with-hero',
             useModal: true,
             videoAutoplay: true,
             videoPlayerId: 'yt-player',
