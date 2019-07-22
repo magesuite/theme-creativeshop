@@ -74,10 +74,17 @@ $page-category_products-wrapper-margin: 0 !default;
                 justify-content: center;
 
                 &__item {
-                    &--sorter,
-                    &--limiter,
-                    &--viewmode-switcher &--amount {
-                        display: none;
+                    @include media('<tablet') {
+                        &--sorter,
+                        &--viewmode-switcher &--amount {
+                            display: none;
+                        }
+                    }
+
+                    @include media('<laptop') {
+                        &--limiter {
+                            display: none;
+                        }
                     }
 
                     &--pagination {
