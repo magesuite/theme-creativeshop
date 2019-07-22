@@ -50,7 +50,7 @@ new VideoPlayer({
          * Closes Magento's modal
          */
         closeModal(videoPlayer: VideoPlayer): void {
-            videoPlayer._ytModal.openModal();
+            videoPlayer._ytModal.closeModal();
         },
     },
 });
