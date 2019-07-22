@@ -5,12 +5,13 @@
 $toolbar_display: flex !default;
 $toolbar_flex-align-items: center !default;
 $toolbar_flex-justify-content: flex-start !default;
+$toolbar_flex-wrap: wrap !default;
 $toolbar_font-size: 1.2rem !default;
 $toolbar_font-weight: inherit !default;
 $toolbar_text-transform: uppercase !default;
 
-$toolbar_elements-padding-mobile: 0 0 1rem !default;
 $toolbar_elements-padding-tablet-up: 0 0 0 0 !default;
+$toolbar_elements-margin: 0 0 1.5rem !default;
 
 $toolbar_select-min-height: 3.5rem !default;
 $toolbar_input-max-height: $toolbar_select-min-height !default;
@@ -44,11 +45,12 @@ $toolbar_pagination-align: right !default;
         @if $toolbar_display == flex {
             align-items: $toolbar_flex-align-items;
             justify-content: $toolbar_flex-justify-content;
+            flex-wrap: $toolbar_flex-wrap !important;
         }
     }
 
     &__item {
-        padding: $toolbar_elements-padding-mobile;
+        margin: $toolbar_elements-margin;
 
         @include media('>=tablet') {
             padding: $toolbar_elements-padding-tablet-up;
@@ -65,7 +67,7 @@ $toolbar_pagination-align: right !default;
         @each $modifier, $value in $toolbar_components-alignment {
             @if $value == right {
                 &--#{$modifier} {
-                    @include media('>=tablet') {
+                    @include media('>=laptop') {
                         @if $toolbar_display == flex {
                             margin-left: auto;
                         } @else {
