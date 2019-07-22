@@ -254,6 +254,12 @@ export default class ImageTeaser {
                 loadPrevNext: true,
                 loadOnTransitionStart: true,
             },
+            on: {
+                paginationRender: function() {
+                    const pagination = this.pagination;
+                    $(pagination.el).toggle(pagination.bullets.length > 1);
+                },
+            },
         };
 
         this._options = $.extend(this._swiperDefaults, this._options);
