@@ -618,6 +618,11 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &__addons-right {
+        // Limit width to prevent overlapping problems in IE
+        .ie11 & {
+            width: 30%;
+        }
+
         padding-left: $product-tile_addons-horizontal-padding;
         flex: 1 1 auto;
         display: flex;
@@ -663,6 +668,11 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &__addons-left {
+        // Limit width to prevent overlapping problems in IE
+        .ie11 & {
+            width: 70%;
+        }
+
         padding-right: $product-tile_addons-horizontal-padding;
         flex: 1 1 auto;
         display: flex;
@@ -1007,6 +1017,11 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &__addto {
+        // IE needs to have width set explicitly
+        .ie11 & {
+            width: 100%;
+        }
+
         &--grid {
             #{$root}--list & {
                 display: none;
@@ -1038,6 +1053,21 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
         &:empty {
             margin: 0 !important;
+        }
+
+        // IE needs to have width set explicitly
+        .cs-links-block-addto {
+            &__item--wishlist {
+                .ie11 & {
+                    width: 100%;
+                }
+            }
+
+            &--grid {
+                .ie11 & {
+                    width: 100%;
+                }
+            }
         }
     }
 
