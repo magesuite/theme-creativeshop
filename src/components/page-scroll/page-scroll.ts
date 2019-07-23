@@ -63,6 +63,7 @@ interface IPageScrollSettings {
 export default class PageScroll {
     private _$component: JQuery<HTMLElement>;
     private _$button: JQuery<HTMLElement>;
+    private _$target: JQuery<HTMLElement>;
     private _$window: JQuery<Window>;
     private _$isButtonVisible: boolean;
     private _options?: IPageScrollSettings;
@@ -89,6 +90,7 @@ export default class PageScroll {
 
         this._$component = null;
         this._$button = null;
+        this._$target = null;
         this._$isButtonVisible = false;
         this._$window = $(window);
 
@@ -123,11 +125,7 @@ export default class PageScroll {
      * Sets scroll button visibility
      */
     protected _setButtonVisibility(): void {
-        const $targetElement: JQuery<HTMLElement> = $(
-            this._options.targetElementSelector
-        );
-
-        if (!this._isElementInViewport($targetElement)) {
+        if (!this._isElementInViewport(this._$target)) {
             if (!this._$isButtonVisible) {
                 this._showButton();
             }
@@ -166,20 +164,15 @@ export default class PageScroll {
      */
     protected _scrollPage(e: JQuery.Event): void {
         e.preventDefault();
-        const $targetElement: JQuery<HTMLElement> = $(
-            this._options.targetElementSelector
-        );
 
-        if ($targetElement.length) {
-            $('html, body').animate(
-                {
-                    scrollTop:
-                        $targetElement.offset().top -
-                        this._options.targetElementOffset,
-                },
-                this._options.scrollingDuration
-            );
-        }
+        $('html, body').animate(
+            {
+                scrollTop:
+                    this._$target.offset().top -
+                    this._options.targetElementOffset,
+            },
+            this._options.scrollingDuration
+        );
     }
 
     /**
@@ -193,21 +186,24 @@ export default class PageScroll {
     }
 
     /**
-     * Initiates componet.
+     * Initiates component.
      */
     protected _init(): void {
         this._$component = $(`.${this._options.componentClass}`);
+        this._$target = $(this._options.targetElementSelector);
 
-        if (this._$component.length) {
-            this._$component.removeClass(
-                `${this._options.componentHiddenClass}`
-            );
-            this._$button = this._$component.find(
-                $(`.${this._options.componentButtonClass}`)
-            );
+        // Stop execution in case there is no component object
+        // or element to scroll
+        if (!this._$component.length || !this._$target.length) {
+            return;
         }
 
-        if (this._$component.length && this._$button.length) {
+        this._$component.removeClass(`${this._options.componentHiddenClass}`);
+        this._$button = this._$component.find(
+            $(`.${this._options.componentButtonClass}`)
+        );
+
+        if (this._$button.length) {
             this._bindScrollEvent();
             this._setEvent();
         }
