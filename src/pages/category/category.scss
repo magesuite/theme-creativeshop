@@ -39,6 +39,25 @@ $page-category_products-wrapper-margin: 0 !default;
     &__toolbar-wrapper {
         padding: $page-category_toolbar-wrapper-margin;
 
+        // Fix IE not supporting auto margin for pagination item
+        .#{$ns}toolbar__item {
+            &--pagination {
+                .ie11 & {
+                    @include media('>=tablet') {
+                        margin-left: 0;
+                        flex-grow: 1;
+                        justify-content: flex-end;
+                    }
+
+                    .#{$ns}pagination__content {
+                        @include media('>=tablet') {
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+
         &--top {
             border-bottom: $page-category_toolbar-wrapper--top-border-bottom;
 
