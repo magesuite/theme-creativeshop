@@ -83,5 +83,6 @@ import 'components/toolbar';
 import 'components/tabs';
 import 'components/form';
 import 'components/table';
+import 'components/styleguide';
 
 export { Select } from 'components/select';
