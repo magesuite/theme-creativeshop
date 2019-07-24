@@ -1,0 +1,208 @@
+@import 'config/variables';
+@import 'utils/component-spacing';
+@import 'components/typography/mixin';
+
+$styleguide_color-primary-500: $color_primary-500 !default;
+$styleguide_color-primary-800: $color_primary-800 !default;
+
+$styleguide_color-secondary-200: $color_secondary-200 !default;
+$styleguide_color-secondary-500: $color_secondary-500 !default;
+
+$styleguide_color-background-200: $color_background-200 !default;
+$styleguide_color-background-500: $color_background-500 !default;
+$styleguide_color-background-600: $color_background-600 !default;
+$styleguide_color-background-700: $color_background-700 !default;
+$styleguide_color-background-800: $color_background-800 !default;
+
+$styleguide_color-border-100: $color_border-100 !default;
+$styleguide_color-border-200: $color_border-200 !default;
+$styleguide_color-border-500: $color_border-500 !default;
+$styleguide_color-border-700: $color_border-700 !default;
+
+$styleguide_color-error-200: $color_error-200 !default;
+$styleguide_color-error-500: $color_error-500 !default;
+$styleguide_color-error-600: $color_error-600 !default;
+
+$styleguide_color-warning-200: $color_warning-200 !default;
+$styleguide_color-warning-500: $color_warning-500 !default;
+$styleguide_color-warning-600: $color_warning-600 !default;
+$styleguide_color-warning-700: $color_warning-700 !default;
+
+$styleguide_color-success-200: $color_success-200 !default;
+$styleguide_color-success-500: $color_success-500 !default;
+$styleguide_color-success-600: $color_success-600 !default;
+$styleguide_color-success-700: $color_success-700 !default;
+
+$styleguide_color-review-active: $color_review-active !default;
+$styleguide_color-review-bar-active: $color_review-bar-active !default;
+$styleguide_color-review-inactive: $color_review-inactive !default;
+$styleguide_color-review-control-inactive: $color_review-control-inactive !default;
+
+$styleguide_border-color: $color_alto !default;
+
+$styleguide_font-size-headline-1: $font-size_headline-1 !default;
+$styleguide_font-size-headline-2: $font-size_headline-2 !default;
+
+.#{$ns}styleguide {
+    $root: &;
+
+    &__main-title {
+        @include headline($level: $styleguide_font-size-headline-1);
+    }
+
+    &__title {
+        @include headline($level: $styleguide_font-size-headline-2);
+    }
+
+    &__box-group {
+        &--colors {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__section {
+        @include component-spacing();
+    }
+
+    &__box-wrapper {
+        width: calc(100%/2);
+
+        @include media('>phone', '<tablet') {
+            width: calc(100%/3);
+        }
+
+        @include media('>=tablet') {
+            width: calc(100%/4);
+        }
+
+        @include media('>=laptop') {
+            width: calc(100%/5);
+        }
+    }
+
+    &__box-text {
+        font-size: 1rem;
+        margin-top: 1rem;
+        font-weight: 600;
+    }
+
+    &__box-color {
+        width: 9rem;
+        height: 9rem;
+
+        &--primary-500 {
+            background-color: $styleguide_color-primary-500;
+        }
+
+        &--primary-800 {
+            background-color: $styleguide_color-primary-800;
+        }
+
+        &--secondary-200 {
+            background-color: $styleguide_color-secondary-200;
+        }
+
+        &--secondary-500 {
+            background-color: $styleguide_color-secondary-500;
+        }
+
+        &--background-200 {
+            background-color: $styleguide_color-background-200;
+            border: 1px solid $styleguide_border-color;
+        }
+
+        &--background-500 {
+            background-color: $styleguide_color-background-500;
+        }
+
+        &--background-600 {
+            background-color: $styleguide_color-background-600;
+        }
+
+        &--background-700 {
+            background-color: $styleguide_color-background-700;
+        }
+
+        &--background-800 {
+            background-color: $styleguide_color-background-800;
+        }
+
+        &--border-100 {
+            border: 1px solid $styleguide_color-border-100;
+        }
+
+        &--border-200 {
+            border: 1px solid $styleguide_color-border-200;
+        }
+
+        &--border-500 {
+            border: 1px solid $styleguide_color-border-500;
+        }
+
+        &--border-700 {
+            border: 1px solid $styleguide_color-border-700;
+        }
+
+        &--error-200 {
+            background-color: $styleguide_color-error-200;
+        }
+
+        &--error-500 {
+            background-color: $styleguide_color-error-500;
+        }
+
+        &--error-600 {
+            background-color: $styleguide_color-error-600;
+        }
+
+        &--warning-200 {
+            background-color: $styleguide_color-warning-200;
+        }
+
+        &--warning-500 {
+            background-color: $styleguide_color-warning-500;
+        }
+
+        &--warning-600 {
+            background-color: $styleguide_color-warning-600;
+        }
+
+        &--warning-700 {
+            background-color: $styleguide_color-warning-700;
+        }
+
+        &--success-200 {
+            background-color: $styleguide_color-success-200;
+        }
+
+        &--success-500 {
+            background-color: $styleguide_color-success-500;
+        }
+
+        &--success-600 {
+            background-color: $styleguide_color-success-600;
+        }
+
+        &--success-700 {
+            background-color: $styleguide_color-success-700;
+        }
+
+        &--review-active {
+            background-color: $styleguide_color-review-active;
+        }
+
+        &--review-bar-active {
+            background-color: $styleguide_color-review-bar-active;
+        }
+
+        &--review-inactive {
+            background-color: $styleguide_color-review-inactive;
+        }
+
+        &--review-control-inactive {
+            background-color: $styleguide_color-review-control-inactive;
+        }
+    }
+}
