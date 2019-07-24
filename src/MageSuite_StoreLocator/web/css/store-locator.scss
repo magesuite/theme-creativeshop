@@ -1,0 +1,699 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/typography/mixin';
+@import 'utils/visually-hidden';
+
+@import 'components/field/mixin';
+@import 'components/button/mixin';
+@import 'components/pseudoicon/mixin';
+
+$store-locator_sidebar-background: $color_background-200 !default;
+$store-locator_sidebar-toggle-background: $color_background-200 !default;
+$store-locator_title-font-size: $font-size_headline-1 !default;
+$store-locator_suggestions-form-border: 1px solid $color_border-500 !default;
+$store-locator_sidebar-box-shadow: $box-shadow_base !default;
+$store-locator_item-hover-background: $color_background-500 !default;
+$store-locator_item-active-background: $color_background-600 !default;
+$store-locator_item-font-size: 1.4rem !default;
+$store-locator_item-color: $color_text-800 !default;
+
+$store-locator_height: 2.875em !default;
+$store-locator_font-size: 1.4rem !default;
+
+$store-locator_close-color: $color_text-400 !default;
+
+$store-locator_button-type: $button_default-type !default;
+$store-locator_button-width: 5rem !default;
+$store-locator_button-border-radius: 0 !important !default;
+$store-locator_button-transform: $transform_skew-400 translateX(0.7rem) !default;
+
+$store-locator_icon-search-color: $color_text-200 !default;
+$store-locator_icon-search-color-hover: $color_text-200 !default;
+$store-locator_icon-loader-color: $color_text-200 !default;
+$store-locator_icon-transform: $transform_skew-400-revert translateX(-0.3rem) !default;
+
+$store-locator_button-container-transition: transform 0.5s
+        $transition-easing_slowdown-900,
+    opacity 0.15s linear !default;
+
+$store-locator_autocomplete-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.17) !default;
+$store-locator_autocomplete-background: $color_background-200 !default;
+
+.storelocator-index-index {
+    .column.main {
+        padding-top: 0;
+    }
+}
+
+.#{$ns}store-locator {
+    $root: &;
+
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 5rem);
+
+    @include media('>=laptop') {
+        height: calc(100vh - 18rem);
+    }
+
+    &__sidebar {
+        z-index: 1;
+        background: $store-locator_sidebar-background;
+        box-shadow: $store-locator_sidebar-box-shadow;
+
+        @include media('>=laptop') {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 3rem;
+            left: 3rem;
+            width: 38rem;
+            transition: transform 0.125s ease-out;
+            background: $store-locator_sidebar-background;
+            margin-bottom: 3rem;
+            max-height: calc(100% - 6rem);
+        }
+
+        &--closed {
+            transform: translateX(-41rem);
+        }
+
+        &--mobile-open {
+            flex: 1;
+        }
+
+        .ie11 & {
+            height: calc(100% - 6rem);
+        }
+    }
+
+    &__sidebar-toggler {
+        display: none;
+        position: absolute;
+        top: 1.5rem;
+        left: 100%;
+        width: 2.4rem;
+        height: 4rem;
+        background: $store-locator_sidebar-toggle-background;
+        box-shadow: inset 4px 0 5px -5px rgba(0, 0, 0, 0.9),
+            3px 0 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+
+        @include media('>=laptop') {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    &__sidebar-toggler-icon {
+        display: block;
+        width: 1.2rem;
+        height: 1.2rem;
+        transform: rotateZ(90deg);
+
+        &--closed {
+            transform: rotateZ(-90deg);
+        }
+    }
+
+    &__title {
+        @include headline($level: $store-locator_title-font-size);
+        padding: 2rem;
+        margin: 0;
+
+        @include media('<laptop') {
+            margin-top: 0.5rem;
+            font-size: 2rem;
+        }
+    }
+
+    &__search {
+        width: 100%;
+        border-bottom: $store-locator_suggestions-form-border;
+    }
+
+    &__search-form {
+        margin: 0 2rem 2rem;
+        position: relative;
+        display: flex;
+    }
+
+    &__search-input {
+        @include field-input();
+
+        font-size: $store-locator_font-size;
+        position: relative;
+        z-index: 210;
+        margin: 0;
+        -webkit-appearance: none;
+        width: calc(100% - 4rem);
+
+        &:focus {
+            + #{$root}__action {
+                .ajax-loading & {
+                    #{$root}__button-container--search {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+
+                    #{$root}__button-container--loader {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+
+    &__search-action {
+        position: absolute;
+        top: 0;
+        right: 5rem;
+        bottom: 0;
+        z-index: 220;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top-right-radius: $border-radius_base;
+        border-bottom-right-radius: $border-radius_base;
+    }
+
+    &__search-close-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 1rem;
+        display: none;
+        opacity: 0.6;
+        transition: opacity 0.3s linear;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        path {
+            fill: $store-locator_close-color;
+        }
+    }
+
+    &__search-close-label {
+        @include visually-hidden();
+    }
+
+    &__search-button-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        transition: $store-locator_button-container-transition;
+
+        &--search {
+            transform: translateX(0);
+        }
+
+        &--loader {
+            transform: translateX(100%);
+        }
+    }
+
+    &__search-button {
+        @include button(
+            $type: $store-locator_button-type,
+            $icon_pos: 'only-icon'
+        );
+
+        width: $store-locator_button-width;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: $store-locator_button-border-radius;
+        backface-visibility: hidden;
+        transform: $store-locator_button-transform;
+
+        &[disabled] {
+            opacity: 1;
+        }
+    }
+
+    &__search-button-icon {
+        transform: $store-locator_icon-transform;
+
+        &--search {
+            width: 2rem;
+            height: 2rem;
+
+            path {
+                fill: $store-locator_icon-search-color;
+            }
+        }
+
+        &--loader {
+            stroke: $store-locator_icon-loader-color;
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+    }
+
+    &__search-button-label {
+        @include visually-hidden();
+    }
+
+    &__search-autocomplete {
+        width: 32rem;
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &__search-list {
+        background: $store-locator_autocomplete-background;
+        box-shadow: $store-locator_autocomplete-box-shadow;
+        padding: 0;
+    }
+
+    &__search-item {
+        list-style: none inside none;
+        padding: 0.7rem 1.5rem;
+        font-size: 1.4rem;
+        border-top: 1px solid $color_border-500;
+        margin: 0;
+        cursor: pointer;
+
+        &.selected {
+            background: $color_background-500;
+        }
+    }
+
+    &__location-button {
+        @include button($type: 'secondary', $icon_pos: 'only-icon');
+
+        padding: 0.3em 0.75em;
+        margin-left: 1rem;
+    }
+
+    &__location-button-icon {
+        @include button-icon($type: 'secondary', $icon_pos: 'only-icon');
+        max-width: 1.3em;
+        max-height: 1.8rem;
+    }
+
+    &__search-icon {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+
+        @include media('>=laptop') {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    &__map-container {
+        width: 100%;
+        flex: 1;
+
+        &--mobile-hidden {
+            flex: 0;
+        }
+    }
+
+    &__map {
+        width: 100%;
+        height: 100%;
+    }
+
+    &__popup {
+        width: 100%;
+        height: 100%;
+        max-width: 40rem;
+        padding: 3rem;
+
+        .ie11 & {
+            width: 34rem;
+        }
+    }
+
+    &__stores-list {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        list-style-type: none;
+        display: none;
+        flex: 1;
+        overflow-y: auto;
+        background: $color_background-200;
+        height: calc(100vh - 15rem);
+
+        @include media('>=laptop') {
+            display: block;
+            height: calc(100vh - 28rem);
+        }
+
+        &--mobile-open {
+            display: block;
+        }
+    }
+
+    &__store-details {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: $store-locator_sidebar-background;
+        z-index: 250;
+
+        @include media('>=laptop') {
+            display: none;
+        }
+
+        &--mobile {
+            min-height: 12rem;
+            padding-top: 2.5rem;
+        }
+    }
+
+    &__store-details-close {
+        background: 0 0;
+        border: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 1.5rem;
+        background-image: url('../images/icons/close.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 1rem;
+        width: 3rem;
+        height: 3rem;
+
+        @include media('>=laptop') {
+            display: none;
+        }
+    }
+
+    &__stores-list-item {
+        box-shadow: 0 21px 0 -20px $color_border-500;
+
+        @include media('>=laptop') {
+            box-shadow: 0 41px 0 -40px $color_border-500;
+        }
+    }
+
+    &__empty-message {
+        background: $store-locator_sidebar-background;
+        padding: 2rem;
+        display: none;
+
+        &--nolocation {
+            border-bottom: 1px solid $color_border-500;
+        }
+    }
+
+    &__item {
+        overflow: hidden;
+        padding: 2rem 2rem 1rem;
+        height: 100%;
+        cursor: pointer;
+        position: relative;
+
+        @include media('>=laptop') {
+            padding: 2rem;
+        }
+
+        &:after {
+            @include media('>=laptop') {
+                content: '';
+                display: inline-block;
+                position: absolute;
+                bottom: 0;
+                left: 2rem;
+                width: calc(100% - 4rem);
+                height: 1px;
+                background: $color_border-500;
+            }
+
+            #{$root}__map & {
+                display: none;
+            }
+        }
+
+        @include media('>=laptop') {
+            #{$root}__map & {
+                padding: 1.5rem 2rem 1rem 2rem;
+            }
+        }
+
+        &:hover {
+            background: $store-locator_item-hover-background;
+
+            #{$root}__map & {
+                background: transparent;
+            }
+        }
+
+        &--active {
+            background: $store-locator_item-active-background;
+        }
+    }
+
+    &__item-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+
+        @include media('>=laptop') {
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__item-name,
+    &__item-route,
+    &__item-address,
+    &__item-phone,
+    &__item-distance,
+    &__item-email {
+        @include font-family($font_family-primary);
+        font-weight: 400;
+        color: $store-locator_item-color;
+        margin: 0;
+        font-size: 1.5rem;
+
+        @include media('>=laptop') {
+            font-size: $store-locator_item-font-size;
+        }
+    }
+
+    &__item-name {
+        font-weight: 700;
+        text-transform: none;
+        flex: 1;
+        display: inline-block;
+        transition: color 0.3s linear, border-bottom-color 0.3s linear;
+        padding-right: 1rem;
+    }
+
+    &__item-route {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        display: none; //hidden for now, should be flex;
+        align-items: center;
+        padding-left: 2rem;
+        background-image: url('../images/icons/route.svg');
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 1.4rem 1.4rem;
+
+        #{$root}__map & {
+            display: none;
+        }
+    }
+
+    &__item-route-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-right: 0.5rem;
+        transition: fill 0.3s linear;
+    }
+
+    &__item-phone {
+        text-decoration: none;
+        border-bottom: 1px solid $color_border-500;
+    }
+
+    &__item-footer {
+        display: flex;
+        justify-content: space-between;
+
+        &--right {
+            justify-content: flex-end;
+        }
+    }
+
+    &__item-distance {
+        display: inline-block;
+        font-style: italic;
+
+        @include media('>=laptop') {
+            margin-top: 1rem;
+        }
+    }
+
+    &__item-email {
+        text-decoration: none;
+        border-bottom: 1px solid $color_border-500;
+        color: $store-locator_item-color;
+
+        @include media('>=laptop') {
+            margin-top: 1rem;
+        }
+    }
+
+    &__item-hours-wrapper {
+        padding: 0.5rem 0;
+        @include font-family($font_family-primary);
+        font-size: 1.3rem;
+        font-weight: 400;
+
+        @include media('>=laptop') {
+            padding: 1rem 0;
+            font-size: 1.4rem;
+        }
+    }
+
+    &__item-hours-today {
+        @include font-family($font_family-primary);
+        font-size: 1.3rem;
+        font-weight: 400;
+
+        @include media('>=laptop') {
+            font-size: 1.4rem;
+        }
+    }
+
+    &__item-hours {
+        margin-top: 1rem;
+        margin-bottom: 0;
+        list-style: none inside none;
+        padding-left: 0;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 32rem;
+        font-size: 1.2rem;
+
+        span {
+            &:first-child {
+                padding-right: 1rem;
+                display: inline-block;
+                width: 45%;
+            }
+        }
+
+        li {
+            padding: 0;
+            margin: 0;
+            width: 50%;
+            line-height: 140%;
+        }
+    }
+
+    &__item-hours-trigger {
+        display: inline;
+        padding-right: 2rem;
+
+        @include pseudoicon(
+            $width: 0.7rem,
+            $height: 1px,
+            $color: $color_text-900,
+            $arrow-default: 'down',
+            $type: 'arrow'
+        );
+
+        &:before {
+            right: 0.5rem;
+        }
+
+        &:after {
+            right: 0;
+        }
+    }
+}
+
+.gm-ui-hover-effect {
+    top: 0 !important;
+    right: 0 !important;
+}
+
+// Google maps info-window styles
+.gm-style-iw-c {
+    border-radius: 0 !important;
+    padding: 0 !important;
+    max-width: 400px !important;
+}
+
+.gm-style-iw-t::after {
+    top: -1px !important;
+
+    @include media('<laptop') {
+        display: none !important;
+    }
+}
+
+.gm-style-iw-d {
+    overflow: auto !important;
+
+    @include media('<laptop') {
+        display: none !important;
+    }
+}
+
+// Styles for zoom buttons on map
+.gm-bundled-control-on-bottom {
+    right: 28px !important;
+
+    @include media('<laptop') {
+        margin: 0 !important;
+        top: 10px !important;
+        left: 10px !important;
+        right: auto !important;
+        bottom: auto !important;
+    }
+}
+
+.gm-bundled-control-on-bottom .gmnoprint > div {
+    width: 28px !important;
+    height: 57px !important;
+
+    & > div {
+        margin: 0 !important;
+    }
+
+    & > button {
+        width: 28px !important;
+        height: 28px !important;
+
+        img {
+            width: 14px !important;
+            height: 14px !important;
+        }
+    }
+}
+
+.cs-container--breadcrumbs,
+.cs-notice-bar {
+    display: none;
+}
+
+.page-wrapper {
+    padding-top: 0 !important;
+}
