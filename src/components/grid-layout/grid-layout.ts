@@ -241,15 +241,11 @@ export default class GridLayout {
                 teasers.x2.length + (teasers.x4.length * 4 - teasers.x4.length);
         }
 
-        if ($(window).width() >= breakpoint.tablet) {
-            virtualLength += teasers.heros.length * 4 - teasers.heros.length;
-        }
-
         return virtualLength;
     }
 
     /**
-     * Returns all teasers and heros that are placed in the grid
+     * Returns all teasers that are placed in the grid
      * @param {number} untilIndex - optional parameter to limit bricks if further filtering is not needed
      * @return {object} object with items sorted by type or size
      */
@@ -267,9 +263,7 @@ export default class GridLayout {
         }
 
         $x4items = $bricks.filter(
-            `.${this.settings.brickClass}--x2.${
-                this.settings.brickClass
-            }--y2:not(.${this.settings.brickClass}--hero)`
+            `.${this.settings.brickClass}--x2.${this.settings.brickClass}--y2`
         );
         $x2items = $bricks
             .filter(
@@ -288,7 +282,6 @@ export default class GridLayout {
         return {
             x2: $x2items,
             x4: $x4items,
-            heros: $(`.${this.settings.brickClass}--hero`),
         };
     }
 
@@ -331,8 +324,7 @@ export default class GridLayout {
         }
 
         if (windowWidth >= breakpoint.tablet) {
-            itemIndex =
-                itemIndex - teasers.x4.length * 3 - teasers.heros.length * 3;
+            itemIndex = itemIndex - teasers.x4.length * 3;
         }
 
         return itemIndex;
