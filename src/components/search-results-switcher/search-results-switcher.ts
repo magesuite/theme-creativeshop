@@ -104,9 +104,14 @@ export default class SearchresultsSwitcher {
         if (this._$triggers.length && this._$contents.length > 1) {
             this._init();
         } else if (this._$contents.length === 0) {
+            $('.cs-page-category__main').addClass(
+                'cs-page-category__main--search-no-result'
+            );
+
             const $msgs: JQuery = $(
                 `.${this._options.componentClass}__messages`
             );
+
             if ($msgs.length) {
                 $msgs.addClass(
                     `${this._options.componentClass}__messages--visible`
