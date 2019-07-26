@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'utils/component-spacing';
 @import 'components/typography/mixin';
+@import 'components/button/mixin';
 
 $styleguide_color-primary-500: $color_primary-500 !default;
 $styleguide_color-primary-800: $color_primary-800 !default;
@@ -56,6 +57,19 @@ $styleguide_font-size-headline-5: $font-size_headline-5 !default;
 $styleguide_font-size-headline-6: $font-size_headline-6 !default;
 $styleguide_font-size-paragraph: $font-size_paragraph !default;
 
+$styleguide_button-type-primary: 'primary';
+$styleguide_button-type-secondary: 'secondary';
+$styleguide_button-type-link: 'link';
+$styleguide_button-type-success: 'success';
+$styleguide_button-type-error: 'error';
+
+$styleguide_button-no-icon: 'no-icon';
+$styleguide_button-has-icon: 'right';
+$styleguide_button-icon-left: 'left';
+$styleguide_button-only-icon: 'only-icon';
+
+$styleguide_button-animation: 'true';
+
 .#{$ns}styleguide {
     $root: &;
 
@@ -70,11 +84,13 @@ $styleguide_font-size-paragraph: $font-size_paragraph !default;
     }
 
     &__box-group {
-        &--colors {
+        &--colors,
+        &--buttons {
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 2rem;
             width: 100%;
+            justify-content: space-between;
         }
     }
 
@@ -308,6 +324,179 @@ $styleguide_font-size-paragraph: $font-size_paragraph !default;
             @include media('>=tablet') {
                 flex-direction: row;
             }
+        }
+    }
+
+    &__button {
+        margin-bottom: 2rem !important;
+
+        &--primary {
+            @include button(
+                $type: $styleguide_button-type-primary,
+                $icon-pos: $styleguide_button-no-icon
+            );
+        }
+
+        &--primary-has-icon {
+            @include button(
+                $type: $styleguide_button-type-primary,
+                $icon-pos: $styleguide_button-has-icon
+            );
+        }
+
+        &--primary-icon-left {
+            @include button(
+                $type: $styleguide_button-type-primary,
+                $icon-pos: $styleguide_button-icon-left
+            );
+        }
+
+        &--primary-only-icon {
+            @include button(
+                $type: $styleguide_button-type-primary,
+                $icon-pos: $styleguide_button-only-icon
+            );
+        }
+
+        &--secondary {
+            @include button(
+                $type: $styleguide_button-type-secondary,
+                $icon-pos: $styleguide_button-no-icon
+                    $styleguide_button-animation
+            );
+        }
+
+        &--secondary-has-icon {
+            @include button(
+                $type: $styleguide_button-type-secondary,
+                $icon-pos: $styleguide_button-has-icon
+            );
+        }
+
+        &--secondary-icon-left {
+            @include button(
+                $type: $styleguide_button-type-secondary,
+                $icon-pos: $styleguide_button-icon-left
+            );
+        }
+
+        &--secondary-only-icon {
+            @include button(
+                $type: $styleguide_button-type-secondary,
+                $icon-pos: $styleguide_button-only-icon
+            );
+        }
+
+        &--link {
+            @include button(
+                $type: $styleguide_button-type-link,
+                $icon-pos: $styleguide_button-no-icon
+            );
+        }
+
+        &--link-has-icon {
+            @include button(
+                $type: $styleguide_button-type-link,
+                $icon-pos: $styleguide_button-has-icon
+            );
+        }
+
+        &--link-icon-left {
+            @include button(
+                $type: $styleguide_button-type-link,
+                $icon-pos: $styleguide_button-icon-left
+            );
+        }
+
+        &--link-only-icon {
+            @include button(
+                $type: $styleguide_button-type-link,
+                $icon-pos: $styleguide_button-only-icon
+            );
+        }
+
+        &--success {
+            @include button(
+                $type: $styleguide_button-type-success,
+                $icon-pos: $styleguide_button-no-icon
+            );
+        }
+
+        &--success-has-icon {
+            @include button(
+                $type: $styleguide_button-type-success,
+                $icon-pos: $styleguide_button-has-icon
+            );
+        }
+
+        &--success-icon-left {
+            @include button(
+                $type: $styleguide_button-type-success,
+                $icon-pos: $styleguide_button-icon-left
+            );
+        }
+
+        &--success-only-icon {
+            @include button(
+                $type: $styleguide_button-type-success,
+                $icon-pos: $styleguide_button-only-icon
+            );
+        }
+
+        &--error {
+            @include button(
+                $type: $styleguide_button-type-error,
+                $icon-pos: $styleguide_button-no-icon
+            );
+        }
+
+        &--error-has-icon {
+            @include button(
+                $type: $styleguide_button-type-error,
+                $icon-pos: $styleguide_button-has-icon
+            );
+        }
+
+        &--error-icon-left {
+            @include button(
+                $type: $styleguide_button-type-error,
+                $icon-pos: $styleguide_button-icon-left
+            );
+        }
+
+        &--error-only-icon {
+            @include button(
+                $type: $styleguide_button-type-error,
+                $icon-pos: $styleguide_button-only-icon
+            );
+        }
+    }
+
+    &__button-span {
+        &--has-icon {
+            @include button_span($icon-pos: $styleguide_button-has-icon);
+        }
+
+        &--no-icon {
+            @include button_span($icon-pos: $styleguide_button-no-icon);
+        }
+
+        &--icon-left {
+            @include button_span($icon-pos: $styleguide_button-icon-left);
+        }
+
+        &--only-icon {
+            @include button_span($icon-pos: $styleguide_button-only-icon);
+        }
+    }
+
+    &__button-icon {
+        &--left {
+            @include button_icon($icon-pos: $styleguide_button-icon-left);
+        }
+
+        &--only-icon {
+            @include button_icon($icon-pos: $styleguide_button-only-icon);
         }
     }
 }
