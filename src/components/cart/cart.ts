@@ -49,12 +49,24 @@ export default class Cart {
         }
 
         this._updateTimeout = setTimeout((): void => {
-            $(`${this._options.cartUpdateButtonSelector}`)
-                .trigger('click')
-                .prop('disabled', true);
-            $(`${this._options.loadingIndicatorSelector}`).removeClass(
-                'cs-no-display'
+            const $updateCartButton = $(
+                `${this._options.cartUpdateButtonSelector}`
             );
+            $updateCartButton.trigger('click');
+
+            const $qtyInput = $(`${this._options.qtyIncrementInputSelector}`);
+
+            if (
+                !(
+                    $qtyInput.attr('aria-invalid') ||
+                    $qtyInput.attr('aria-invalid') === 'true'
+                )
+            ) {
+                $updateCartButton.prop('disabled', true);
+                $(`${this._options.loadingIndicatorSelector}`).removeClass(
+                    'cs-no-display'
+                );
+            }
         }, delay);
     }
 
