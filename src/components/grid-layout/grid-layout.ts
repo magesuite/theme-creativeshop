@@ -104,6 +104,23 @@ export default class GridLayout {
         this.columnsCfg = this._getColumnsConfiguration();
         this.teasersCfg = this._getTeasersData();
 
+        if (!this.teasersCfg.length) {
+            this.teasersCfg = [
+                {
+                    gridPosition: {
+                        x: '',
+                        y: '0',
+                    },
+                    id: '0',
+                    mobile: 0,
+                    size: {
+                        x: '0',
+                        y: '0',
+                    },
+                },
+            ];
+        }
+
         if (this.columnsCfg && this.teasersCfg) {
             this.currentColsInRow = this.columnsCfg[
                 this._getCurrentBreakpointName()
@@ -604,6 +621,7 @@ export default class GridLayout {
             this.virtualBricksLength /
                 this.columnsCfg[this._getCurrentBreakpointName()]
         );
+
         const rowsToSet: number =
             this.productsGridRowsLimits[breakpoint] >= maxRowsOccupied
                 ? maxRowsOccupied
@@ -652,25 +670,36 @@ export default class GridLayout {
                     : parseInt(this.teasersCfg[0].size.x, 10),
             y: parseInt(this.teasersCfg[0].size.y, 10),
         };
+        const teaserMobile: any = this.teasersCfg[0].mobile;
+        const teaserRowPosition: any = this.teasersCfg[0].gridPosition.y;
 
         // if teasers are hidden for mobile - adjust items to show by decreasing with teaser size
         if (
             breakpoint !== 'mobile' ||
             (breakpoint === 'mobile' &&
-                this._getIsVisibleOnMobiles(this.teasersCfg[0].mobile))
+                this._getIsVisibleOnMobiles(teaserMobile))
         ) {
             itemsToShow -=
                 teasers.x2.length + (teasers.x4.length * 4 - teasers.x4.length);
         } else {
-            itemsToShow += teasers.x2.length + teasers.x4.length;
+            itemsToShow -= teasers.x2.length + teasers.x4.length;
+
+            if (this._getCurrentBreakpointName()[0] === 'phone') {
+                itemsToShow += teaserSize.x * teaserSize.y;
+            }
         }
 
         // if teaser height is higher than rows to show, decrease by teaser size minus X-bricks-taking size
-        if (
-            this.teasers.length &&
-            this.productsGridRowsLimits[breakpoint] < teaserSize.y
-        ) {
-            itemsToShow += teaserSize.x * teaserSize.y - teaserSize.x;
+        if (this.productsGridRowsLimits[breakpoint] < teaserRowPosition) {
+            itemsToShow += teaserSize.x * teaserSize.y;
+
+            this.$grid
+                .find(
+                    `.${this.settings.brickClass}[data-teaser-id="${
+                        this.teasersCfg[0].id
+                    }"]`
+                )
+                .addClass(`${this.settings.brickClass}--hidden`);
         }
 
         if (itemsToShow < 1) {
