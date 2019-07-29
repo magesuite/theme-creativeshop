@@ -531,7 +531,7 @@ export default class StoreLocator {
      */
     public getGeolocation(): Promise<object> {
         return new Promise((resolve, reject) => {
-            if ('ggeolocation' in navigator) {
+            if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
                         resolve({
