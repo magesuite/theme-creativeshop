@@ -679,8 +679,15 @@ export default class GridLayout {
             (breakpoint === 'mobile' &&
                 this._getIsVisibleOnMobiles(teaserMobile))
         ) {
-            itemsToShow -=
-                teasers.x2.length + (teasers.x4.length * 4 - teasers.x4.length);
+            if (this._getCurrentBreakpointName()[0] === 'phone') {
+                itemsToShow +=
+                    teasers.x2.length +
+                    (teasers.x4.length * 4 - teasers.x4.length);
+            } else {
+                itemsToShow -=
+                    teasers.x2.length +
+                    (teasers.x4.length * 4 - teasers.x4.length);
+            }
         } else {
             itemsToShow -= teasers.x2.length + teasers.x4.length;
 
