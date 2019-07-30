@@ -194,7 +194,7 @@ export default class FastShipping {
      * @param {object} timeRemaining - time object to calculate variant ('today' / 'next')
      */
     public showVariant(timeRemaining): void {
-        const variant: string = timeRemaining.total > 0 ? 'today' : 'next';
+        const variant: string = timeRemaining.total > 0 ? 'today' : 'tomorrow';
         const $allVariants = this._$element.find(
             `.${this._options.variantClassName}`
         );
