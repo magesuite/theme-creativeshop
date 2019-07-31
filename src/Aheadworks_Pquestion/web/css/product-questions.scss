@@ -5,7 +5,6 @@
 @import 'components/field/mixin';
 
 $pq-spacing: 2.3rem !default;
-$pq-padding: 1.15rem !default;
 
 $pq-button-min-width: 18rem !default;
 
@@ -41,7 +40,7 @@ $pq-thumb-down_color: $color_primary-500 !default;
 $pq-thumb_size: 2.4rem !default;
 
 $pq-list_item-tablet-indent: 10rem !default;
-$pq-list_item-desktop-indent: 14rem !default;
+$pq-list_item-laptop-indent: 14rem !default;
 
 $pq-form-background: $color_background-500 !default;
 $pq-form-padding: 3rem !default;
@@ -191,6 +190,11 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             justify-content: $pq-button-align;
             border-top: $pq-separator_border;
 
+            @include media('<tablet') {
+                margin-left: 1.5rem;
+                margin-right: 1.5rem;
+            }
+
             @include media('>=tablet') {
                 justify-content: $pq-button-align-desktop;
                 margin: 0;
@@ -241,25 +245,16 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &__sortby-label {
-                width: 100%;
+                width: auto;
                 font-size: 1.1rem;
-                margin-bottom: 0.2rem;
+                margin-right: 1rem;
                 text-transform: uppercase;
-
-                @include media('>=tablet') {
-                    width: auto;
-                    margin-bottom: 0;
-                    margin-right: 1rem;
-                }
             }
 
             &__sortby {
                 margin-bottom: 0;
-
-                @include media('>=tablet') {
-                    width: auto !important;
-                    min-width: 20rem;
-                }
+                width: auto !important;
+                min-width: 20rem;
             }
         }
 
@@ -320,6 +315,10 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 $type: $pq-button-secondary-action_type,
                 $icon_pos: $pq-button-secondary-action_icon-pos
             );
+
+            @include media('<tablet') {
+                margin-top: 1.5rem;
+            }
         }
 
         &__next-answer-button-span {
@@ -342,7 +341,12 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             flex-direction: column;
 
             @include media('>=tablet') {
+                border-left: $pq-separator_border;
+            }
+
+            @include media('>=laptop') {
                 flex-direction: row;
+                border-left: none;
             }
 
             &-label {
@@ -352,15 +356,34 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 line-height: 1.2rem;
                 text-transform: uppercase;
                 box-sizing: border-box;
-                padding: $pq-spacing;
+                padding: $pq-spacing 1.5rem;
 
                 @include media('>=tablet') {
-                    flex: 0 0 $pq-list_item-desktop-indent;
+                    padding: $pq-spacing;
+                }
+
+                @include media('>=laptop') {
+                    flex: 0 0 $pq-list_item-laptop-indent;
                     line-height: 2.5rem;
                     word-break: break-all;
-                    text-align: right;
-                    padding-right: $pq-padding;
+                    text-align: left;
+                    padding-right: 0;
                     border-left: $pq-separator_border;
+                }
+
+                &-text {
+                    @include media('>=laptop') {
+                        text-indent: 5.4rem;
+                    }
+                }
+            }
+
+            &-item {
+                // 1 Fix zero height IE bug
+                .ie11 & {
+                    @include media('<laptop') {
+                        display: block;
+                    }
                 }
             }
 
@@ -369,17 +392,40 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-wrapper {
-                padding: 0 $pq-spacing;
+                padding: 0 1.5rem;
                 flex-grow: 1;
 
                 @include media('>=tablet') {
+                    padding: 0 $pq-spacing $pq-spacing;
+                }
+
+                @include media('>=laptop') {
                     padding-top: $pq-spacing;
-                    padding-bottom: $pq-spacing;
+                }
+
+                // Fix not wrapping text IE bug
+                .ie11 & {
+                    flex-basis: 100%;
+                }
+            }
+
+            // Fix zero height IE bug
+            .ie11 & {
+                @include media('<laptop') {
+                    display: block;
                 }
             }
         }
 
         &__question {
+            @include media('>=tablet') {
+                margin-left: $pq-list_item-tablet-indent;
+            }
+
+            @include media('>=laptop') {
+                margin-left: $pq-list_item-laptop-indent;
+            }
+
             &-info {
                 margin-top: 0.5rem;
                 font-weight: 300;
@@ -419,21 +465,32 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 padding: 0;
 
                 @include media('>=tablet') {
-                    line-height: $pq-spacing;
+                    line-height: 2.3rem;
                     order: 1;
                 }
 
+                // 1 Left transparent area to the container's left
+                // 2 Fix Chrome transparent line in background bug
                 @include media('>=laptop') {
-                    background-clip: content-box;
-                    padding-left: 2rem;
+                    background-clip: content-box; // 1
+                    padding-left: 2rem; // 1
+                    transform: translateX(1px); // 2
                 }
             }
 
             &-caption {
-                padding: $pq-spacing $pq-spacing $pq-padding;
+                padding: calc(#{$pq-spacing} - 0.3rem) 1.5rem 0.5rem;
 
                 @include media('>=tablet') {
-                    padding-right: $pq-padding;
+                    padding-left: $pq-spacing;
+                    padding-right: $pq-spacing;
+                }
+
+                @include media('>=laptop') {
+                    padding-top: 2.3rem;
+                    padding-right: 0;
+                    padding-bottom: 0;
+                    text-indent: 2.6rem;
                 }
             }
 
@@ -444,7 +501,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 font-weight: 700;
 
                 @include media('>=tablet') {
-                    line-height: $pq-spacing;
+                    line-height: 2.3rem;
                 }
             }
 
@@ -518,7 +575,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             }
 
             &-wrapper {
-                padding: $pq-spacing;
+                padding: $pq-spacing 1.5rem;
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
@@ -528,13 +585,30 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 }
 
                 @include media('>=tablet') {
+                    padding: $pq-spacing;
+                    position: absolute;
+                    left: 0;
                     flex: 0 0 10rem;
                     align-items: center;
                     order: 0;
+                    width: $pq-list_item-tablet-indent;
                 }
 
                 @include media('>=laptop') {
-                    flex: 0 0 14rem;
+                    width: $pq-list_item-laptop-indent;
+
+                    // IE needs to have flex-basis set explicitly
+                    .ie11 & {
+                        flex-basis: $pq-list_item-laptop-indent;
+                    }
+                }
+
+                // Fix positioning in IE
+                .ie11 & {
+                    @include media('<laptop') {
+                        top: 0;
+                        left: 0;
+                    }
                 }
             }
 
@@ -576,13 +650,11 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         }
 
         &__answer {
-            @include media('<tablet') {
-                padding-top: $pq-padding;
-            }
-
             &-label {
-                @include media('<tablet') {
-                    padding-bottom: $pq-padding;
+                padding-bottom: 0.5rem;
+
+                @include media('>=laptop') {
+                    padding-bottom: 0;
                 }
 
                 .aw-pq-list__helpfulness {
@@ -612,7 +684,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 }
 
                 @include media('>=laptop') {
-                    margin-left: $pq-list_item-desktop-indent;
+                    margin-left: $pq-list_item-laptop-indent;
                 }
             }
 
@@ -634,22 +706,38 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             &-list {
                 display: block !important;
                 flex: 1 1 auto;
+
+                // 1 Fix zero height IE Flexbox bug
+                // 2 Enable positioning of helpfulness-wrapper in IE
+                .ie11 & {
+                    @include media('<laptop') {
+                        flex: 1; // 1
+                        position: relative; // 2
+                    }
+                }
             }
 
             &-action-bar {
                 display: flex;
                 flex-wrap: wrap;
-                padding: $pq-spacing $pq-spacing 0 $pq-spacing;
+                padding: $pq-spacing 1.5rem 0;
 
                 @include media('>=tablet') {
                     border-left: $pq-separator_border;
                     margin-left: $pq-list_item-tablet-indent;
-                    padding: $pq-spacing 0 0
-                        calc(#{$pq-list_item-desktop-indent} + 2rem);
+                    padding: $pq-spacing 0 0 2rem;
                 }
 
                 @include media('>=laptop') {
-                    margin-left: $pq-list_item-desktop-indent;
+                    margin-left: $pq-list_item-laptop-indent;
+                    padding-left: calc(#{$pq-list_item-laptop-indent} + 2rem);
+                }
+
+                // Fix zero height IE bug
+                .ie11 & {
+                    @include media('<laptop') {
+                        display: block;
+                    }
                 }
             }
 
@@ -721,8 +809,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 $icon_pos: $pq-button-primary-action_icon-pos
             );
 
-            margin: 0 0 1rem;
-
             @include media('>=tablet') {
                 margin: 0 1rem 0 0;
             }
@@ -764,14 +850,17 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
             @include media('>=tablet') {
                 padding-top: $pq-spacing;
-                padding-bottom: 0;
-                padding-left: 16rem;
+                padding-left: 2rem;
                 margin-left: $pq-list_item-tablet-indent;
                 border-left: $pq-separator_border;
             }
 
             @include media('>=laptop') {
-                margin-left: $pq-list_item-desktop-indent;
+                padding-left: calc(#{$pq-list_item-laptop-indent} + 2rem);
+            }
+
+            @include media('>=laptop') {
+                margin-left: $pq-list_item-laptop-indent;
             }
         }
 
