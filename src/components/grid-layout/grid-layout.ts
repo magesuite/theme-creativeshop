@@ -662,7 +662,6 @@ export default class GridLayout {
     protected _showProductsGrid(breakpoint: string): void {
         let itemsToShow: number =
             this.currentColsInRow * this.productsGridRowsLimits[breakpoint];
-        const teasers: any = this._getTeaserItems();
         const teaserSize: any = {
             x:
                 this.currentRowsCount < 2
@@ -670,6 +669,7 @@ export default class GridLayout {
                     : parseInt(this.teasersCfg[0].size.x, 10),
             y: parseInt(this.teasersCfg[0].size.y, 10),
         };
+        const teaserVirtualLength: any = teaserSize.x * teaserSize.y;
         const teaserMobile: any = this.teasersCfg[0].mobile;
         const teaserRowPosition: any = this.teasersCfg[0].gridPosition.y;
 
@@ -679,26 +679,18 @@ export default class GridLayout {
             (breakpoint === 'mobile' &&
                 this._getIsVisibleOnMobiles(teaserMobile))
         ) {
-            if (this._getCurrentBreakpointName()[0] === 'phone') {
-                itemsToShow +=
-                    teasers.x2.length +
-                    (teasers.x4.length * 4 - teasers.x4.length);
-            } else {
-                itemsToShow -=
-                    teasers.x2.length +
-                    (teasers.x4.length * 4 - teasers.x4.length);
-            }
+            itemsToShow -= teaserVirtualLength;
         } else {
-            itemsToShow -= teasers.x2.length + teasers.x4.length;
-
-            if (this._getCurrentBreakpointName()[0] === 'phone') {
-                itemsToShow += teaserSize.x * teaserSize.y;
+            if (this._getCurrentBreakpointName()[0] !== 'phone') {
+                itemsToShow -= teaserVirtualLength;
             }
         }
 
         // if teaser height is higher than rows to show, decrease by teaser size minus X-bricks-taking size
         if (this.productsGridRowsLimits[breakpoint] < teaserRowPosition) {
-            itemsToShow += teaserSize.x * teaserSize.y;
+            if (this._getCurrentBreakpointName()[0] !== 'phone') {
+                itemsToShow += teaserVirtualLength;
+            }
 
             this.$grid
                 .find(
@@ -718,7 +710,7 @@ export default class GridLayout {
         this.$grid.children().hide();
         this.$grid
             .children()
-            .eq(itemsToShow - 1)
+            .eq(itemsToShow)
             .prevAll()
             .addBack()
             .show();
