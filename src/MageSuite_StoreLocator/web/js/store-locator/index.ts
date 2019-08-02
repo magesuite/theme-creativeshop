@@ -220,7 +220,7 @@ export default class StoreLocator {
                         .remove();
                 }, 5000);
             }
-            // this._$searchForm.addClass('ajax-loading');
+            this._$searchForm.removeClass('ajax-loading');
         });
     }
 
@@ -805,8 +805,8 @@ export default class StoreLocator {
                     icon: this._options.markerIcons.userLocation,
                 });
 
-                // this.map.panTo(coordinates);
-                // this.map.setZoom(this._options.basicZoom);
+                this.map.panTo(coordinates);
+                this.map.setZoom(this._options.basicZoom);
 
                 const initialListener = google.maps.event.addListener(
                     this.map,
