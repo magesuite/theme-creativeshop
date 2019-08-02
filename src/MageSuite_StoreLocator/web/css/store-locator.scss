@@ -27,6 +27,9 @@ $store-locator_button-width: 5rem !default;
 $store-locator_button-border-radius: 0 !important !default;
 $store-locator_button-transform: $transform_skew-400 translateX(0.7rem) !default;
 
+$store-locator_location-button-type: 'secondary' !default;
+$store-locator_location-button-icon: 'only-icon' !default;
+
 $store-locator_icon-search-color: $color_text-200 !default;
 $store-locator_icon-search-color-hover: $color_text-200 !default;
 $store-locator_icon-loader-color: $color_text-200 !default;
@@ -38,12 +41,6 @@ $store-locator_button-container-transition: transform 0.5s
 
 $store-locator_autocomplete-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.17) !default;
 $store-locator_autocomplete-background: $color_background-200 !default;
-
-.storelocator-index-index {
-    .column.main {
-        padding-top: 0;
-    }
-}
 
 .#{$ns}store-locator {
     $root: &;
@@ -150,6 +147,7 @@ $store-locator_autocomplete-background: $color_background-200 !default;
         margin: 0;
         -webkit-appearance: none;
         width: calc(100% - 4rem);
+        border-right: none;
 
         &:focus {
             + #{$root}__action {
@@ -294,16 +292,22 @@ $store-locator_autocomplete-background: $color_background-200 !default;
     }
 
     &__location-button {
-        @include button($type: 'secondary', $icon_pos: 'only-icon');
-
-        padding: 0.3em 0.75em;
+        @include button(
+            $type: $store-locator_location-button-type,
+            $icon_pos: $store-locator_location-button-icon
+        );
         margin-left: 1rem;
+        min-width: 4.5rem;
+        padding: 1rem 0.9rem 0.9rem;
     }
 
     &__location-button-icon {
-        @include button-icon($type: 'secondary', $icon_pos: 'only-icon');
-        max-width: 1.3em;
-        max-height: 1.8rem;
+        @include button-icon(
+            $type: $store-locator_location-button-type,
+            $icon_pos: $store-locator_location-button-icon
+        );
+        max-width: 1.9rem;
+        max-height: 1.9rem;
     }
 
     &__search-icon {
@@ -351,11 +355,11 @@ $store-locator_autocomplete-background: $color_background-200 !default;
         flex: 1;
         overflow-y: auto;
         background: $color_background-200;
-        height: calc(100vh - 15rem);
+        max-height: calc(100vh - 15rem);
 
         @include media('>=laptop') {
             display: block;
-            height: calc(100vh - 28rem);
+            max-height: calc(100vh - 28rem);
         }
 
         &--mobile-open {
@@ -446,9 +450,15 @@ $store-locator_autocomplete-background: $color_background-200 !default;
             }
         }
 
+        &:nth-last-child(2) {
+            &:after {
+                display: none;
+            }
+        }
+
         @include media('>=laptop') {
             #{$root}__map & {
-                padding: 1.5rem 2rem 1rem 2rem;
+                padding: 1.5rem 2rem 1.3rem;
             }
         }
 
@@ -670,9 +680,10 @@ $store-locator_autocomplete-background: $color_background-200 !default;
     }
 }
 
-.gm-bundled-control-on-bottom .gmnoprint > div {
+.gm-bundled-control .gmnoprint > div {
     width: 28px !important;
     height: 57px !important;
+    margin-top: 1rem !important;
 
     & > div {
         margin: 0 !important;
@@ -689,11 +700,12 @@ $store-locator_autocomplete-background: $color_background-200 !default;
     }
 }
 
-.cs-container--breadcrumbs,
-.cs-notice-bar {
-    display: none;
-}
+.storelocator-index-index {
+    .cs-container--breadcrumbs {
+        display: none;
+    }
 
-.page-wrapper {
-    padding-top: 0 !important;
+    .column.main {
+        padding-top: 0;
+    }
 }

@@ -9,8 +9,7 @@ import breakpoint from 'utils/breakpoint/breakpoint';
  * Store locator component options interface.
  */
 interface StoreLocatorOptions {
-    mapStartPoint?: object;
-    initialZoom?: number;
+    mapOptions?: any;
     basicZoom?: number;
     useDefaultMapStyles: boolean;
     markerIcons?: object;
@@ -34,12 +33,14 @@ export default class StoreLocator {
     protected _numberOfStores: number;
 
     protected _options: StoreLocatorOptions = {
-        mapStartPoint: {
-            lat: 52,
-            lng: 9,
+        mapOptions: {
+            zoom: 7,
+            center: { lat: 51, lng: 9 },
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
         },
         basicZoom: 14,
-        initialZoom: 7,
         useDefaultMapStyles: false,
         markerIcons: {
             pin: {
@@ -107,7 +108,7 @@ export default class StoreLocator {
      */
     public constructor($element: JQuery, options?: StoreLocatorOptions) {
         this._$element = $element || $('.cs-store-locator');
-        this._options = $.extend(this._options, options);
+        this._options = $.extend(true, this._options, options);
 
         this._$sidebarToggler = this._$element.find(
             '.cs-store-locator__sidebar-toggler'
@@ -154,7 +155,9 @@ export default class StoreLocator {
             }),
             contentType: 'application/json',
         }).done(response => {
-            this.stores = response.data.storePickupLocations.items;
+            if (response.data) {
+                this.stores = response.data.storePickupLocations.items;
+            }
             this._initMap();
         });
 
@@ -217,7 +220,7 @@ export default class StoreLocator {
                         .remove();
                 }, 5000);
             }
-            // this._$searchForm.addClass('ajax-loading');
+            this._$searchForm.removeClass('ajax-loading');
         });
     }
 
@@ -773,20 +776,13 @@ export default class StoreLocator {
      * Init Map
      */
     protected _initMap(): void {
-        const mapOptions = {
-            zoom: this._options.initialZoom,
-            center: this._options.mapStartPoint,
-            mapTypeControl: false,
-            streetViewControl: false,
-        };
-
         if (!this._options.useDefaultMapStyles) {
-            mapOptions.styles = mapStyles;
+            this._options.mapOptions.styles = mapStyles;
         }
 
         this.map = new google.maps.Map(
             document.getElementById('store-locator-map'),
-            mapOptions
+            this._options.mapOptions
         );
 
         this._setMarkerIcons();
@@ -826,6 +822,7 @@ export default class StoreLocator {
                         }
 
                         google.maps.event.removeListener(initialListener);
+                        this.mapChangeHandler();
                     }
                 );
             })
