@@ -139,9 +139,12 @@ export default class TileGallery {
      * So that we're not loading them if it's not necessary
      */
     protected _loadThumbnails(): void {
-        this._$galleryItems.find('img').each(function(): void {
-            $(this).attr('src', $(this).data('src'));
-            $(this).attr('srcset', $(this).data('srcset'));
+        this._$galleryItems.find('img, source').each(function(): void {
+            const $this = $(this);
+            $this.attr('srcset', $this.data('srcset'));
+            if ($this[0].tagName === 'IMG') {
+                $this.attr('src', $this.data('src'));
+            }
         });
     }
 

@@ -8,6 +8,7 @@ $tile-gallery_postion-right: auto !default;
 $tile-gallery_postion-top: auto !default;
 $tile-gallery_postion-bottom: 1rem !default;
 $tile-gallery_zindex: 4 !default;
+$tile-gallery_transition: opacity 0.15s linear !default;
 
 $tile-gallery_item-border-color: $color_border-700 !default;
 $tile-gallery_item--active-border-color: $color_primary-800 !default;
@@ -36,6 +37,12 @@ $tile-gallery_main-image-transition: transform 0.5s
     right: $tile-gallery_postion-right;
     top: $tile-gallery_postion-top;
     bottom: $tile-gallery_postion-bottom;
+    opacity: 0;
+    transition: $tile-gallery_transition;
+
+    @include media('>=laptop') {
+        display: flex;
+    }
 
     .touch-device & {
         display: none !important;
@@ -44,7 +51,7 @@ $tile-gallery_main-image-transition: transform 0.5s
     &.active {
         .#{$ns}product-tile:hover & {
             @include media('>=laptop') {
-                display: flex;
+                opacity: 1;
             }
         }
     }
@@ -52,23 +59,19 @@ $tile-gallery_main-image-transition: transform 0.5s
     &__item {
         margin: 0 0.3rem 0 0;
         padding: 0;
-        border: $tile-gallery_item-border;
-        transition: $tile-gallery_item-transition;
         cursor: pointer;
-
-        &--active {
-            border-color: $tile-gallery_item--active-border-color;
-        }
     }
 
     &__thumbnail {
         display: block;
         width: $tile-gallery_thumbnail-width;
         height: $tile-gallery_thumbnail-height;
+        border: $tile-gallery_item-border;
+        transition: $tile-gallery_item-transition;
+        overflow: hidden; // Fix source elements overflowing picture element's border
 
-        & img {
-            width: inherit;
-            height: inherit;
+        #{$root}__item--active & {
+            border-color: $tile-gallery_item--active-border-color;
         }
     }
 }
