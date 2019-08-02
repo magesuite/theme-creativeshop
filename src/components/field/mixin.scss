@@ -74,7 +74,7 @@ $field_radio-background-color-active: transparent !default;
 $field_radio-background-color-checked: transparent !default;
 $field_radio-icon-fill: $color_primary-500 !default;
 $field_radio-background-image-checked: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle fill='#{uri-friendly-hex($field_radio-icon-fill)}' r='4' cy='7' cx='7'/%3e%3c/svg%3e") !default;
-$field_radio-background-image-checked-ie11: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle fill='#{uri-friendly-hex($field_radio-icon-fill)}' r='4' cy='6.75' cx='6.6'/%3e%3c/svg%3e") !default;
+$field_radio-background-image-checked-ie11: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle fill='#{uri-friendly-hex($field_radio-icon-fill)}' r='4' cy='6.5' cx='6.5'/%3e%3c/svg%3e") !default;
 
 $field_radio-border: 1px solid $color_border-500 !default;
 $field_radio-border-active: 1px solid $color-primary-800 !default;
@@ -313,10 +313,6 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
         background-color: $field_radio-background-color-checked;
     }
 
-    &:checked::-ms-check {
-        background-image: $field_radio-background-image-checked-ie11;
-    }
-
     &:-moz-focusring,
     &::-moz-focus-inner {
         color: transparent !important;
@@ -334,6 +330,10 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
 
     &:checked {
         background-image: $field_radio-background-image-checked;
+
+        &::-ms-check {
+            background-image: $field_radio-background-image-checked-ie11;
+        }
 
         &,
         &:hover,
@@ -369,14 +369,14 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
         color: transparent;
         border-radius: $field_checkbox-border-radius;
         background-size: $field_checkbox-background-size;
-
-        &:checked {
-            background-image: $field_checkbox-background-image-checked;
-        }
     }
 
     &:checked {
         background-image: $field_checkbox-background-image-checked;
+
+        &::-ms-check {
+            background-image: $field_checkbox-background-image-checked;
+        }
     }
 
     @include field-checkbox-hook();
