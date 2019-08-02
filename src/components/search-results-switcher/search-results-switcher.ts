@@ -68,6 +68,14 @@ interface ISearchresultsSwitcher {
      * @default '.cs-aftersearch-nav__state'
      */
     filtersStateSelector?: string;
+
+    /**
+     * Selector of Search Results Page
+     * Needed for detecting if it is Search Results page or Category Page
+     * @type {string}
+     * @default '.catalogsearch-result-index'
+     */
+    searchResultPageClass?: string;
 }
 
 export default class SearchresultsSwitcher {
@@ -76,6 +84,7 @@ export default class SearchresultsSwitcher {
     protected _$triggers: JQuery;
     protected _$tabs: JQuery;
     protected _$contents: JQuery;
+    protected _$searchResultsPage: JQuery;
 
     /**
      * Creates new ProductsPromo component with optional settings.
@@ -94,16 +103,21 @@ export default class SearchresultsSwitcher {
                 productsResultsSelector: '#tab-content-products',
                 saveStateInSession: true,
                 filtersStateSelector: '.cs-aftersearch-nav__state',
+                searchResultPageClass: 'catalogsearch-result-index',
             },
             options
         );
 
         this._$triggers = $(`.${this._options.triggersClass}`);
         this._$contents = $(`.${this._options.contentsClass}`);
+        this._$searchResultsPage = $(`.${this._options.searchResultPageClass}`);
 
         if (this._$triggers.length && this._$contents.length > 1) {
             this._init();
-        } else if (this._$contents.length === 0) {
+        } else if (
+            this._$contents.length === 0 &&
+            this._$searchResultsPage.length
+        ) {
             $('.cs-page-category__main').addClass(
                 'cs-page-category__main--search-no-result'
             );
