@@ -40,8 +40,8 @@ export default class StoreLocator {
             streetViewControl: false,
             fullscreenControl: false,
         },
-        basicZoom: 7,
-        useDefaultMapStyles: true,
+        basicZoom: 14,
+        useDefaultMapStyles: false,
         markerIcons: {
             pin: {
                 sizes: {
