@@ -40,8 +40,8 @@ export default class StoreLocator {
             streetViewControl: false,
             fullscreenControl: false,
         },
-        basicZoom: 14,
-        useDefaultMapStyles: false,
+        basicZoom: 7,
+        useDefaultMapStyles: true,
         markerIcons: {
             pin: {
                 sizes: {
@@ -772,6 +772,14 @@ export default class StoreLocator {
         return Number((R * c).toFixed(2));
     }
 
+    public isIE() {
+        const ua = window.navigator.userAgent; // Check the userAgent property of the window.navigator object
+        const msie = ua.indexOf('MSIE '); // IE 10 or older
+        const trident = ua.indexOf('Trident/'); // IE 11
+
+        return msie > 0 || trident > 0;
+    }
+
     /**
      * Init Map
      */
@@ -866,6 +874,7 @@ export default class StoreLocator {
                 },
                 map: this.map,
                 icon: this._options.markerIcons.pin,
+                optimized: this.isIE() ? false : true,
             });
 
             marker.addListener('click', () => {
