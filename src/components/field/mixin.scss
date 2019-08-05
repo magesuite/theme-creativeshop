@@ -42,14 +42,21 @@ $field_select-color: $color_text-800 !default;
 
 $field_select-background-position: right 0.8em top 52%, 0 0 !default;
 $field_select-background-size: 0.7em auto, 100%;
+// IE doesn't understand keyword auto in background-size
+$field_select-background-size--ie: 0.7em 0.7em, 100%;
+
 // Note that select background needs to be defined as background-image to prevent
 // option elements from inheriting it on some browsers.
 $field_select-icon-fill: $color_border-500 !default;
+$field_select-icon-fill-active: $color_primary-500 !default;
 $field_select-background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e"),
     linear-gradient(0, transparent 0%, transparent 100%) !default;
-$field_select-icon-fill-active: $color_primary-500 !default;
+// IE doesn't support linear-gradient() used in this context
+$field_select-background-image--ie: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e") !default;
 $field_select-background-active: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill-active)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e"),
     linear-gradient(0, transparent 0%, transparent 100%) !default;
+// IE doesn't support linear-gradient() used in this context
+$field_select-background-active--ie: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill-active)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e") !default;
 
 $field_select-border: 1px solid $color_border-500 !default;
 $field_select-border-active: 1px solid $color_primary-500 !default;
@@ -254,6 +261,11 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
             border: $field_select-border-active;
             box-shadow: $field_select-box-shadow-active;
             background-image: $field_select-background-active;
+
+            // Use different set of properties that will work in IE
+            .ie11 & {
+                background-image: $field_select-background-active--ie;
+            }
         }
     }
 
@@ -265,6 +277,12 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
         font-weight: 500;
         padding: 0;
         color: initial;
+    }
+
+    // Use different set of properties that will work in IE
+    .ie11 & {
+        background-image: $field_select-background-image--ie;
+        background-size: $field_select-background-size--ie;
     }
 
     @include field-select-hook();

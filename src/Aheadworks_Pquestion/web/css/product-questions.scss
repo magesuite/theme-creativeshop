@@ -76,6 +76,11 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__field-name {
             @include media('>=laptop') {
                 flex: 1 1 49%;
+
+                // Set flex-basis explicitly to prevent overlapping in IE
+                .ie11 & {
+                    flex-basis: 49%;
+                }
             }
         }
 
@@ -84,6 +89,11 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 flex: 1 1 50%;
                 margin-top: 0 !important;
                 padding: 0 0 0 2rem;
+
+                // Set flex-basis explicitly and to lower than 50% to prevent overlappig in IE
+                .ie11 & {
+                    flex-basis: 49%;
+                }
             }
         }
 
@@ -199,10 +209,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 justify-content: $pq-button-align-desktop;
                 margin: 0;
                 margin-bottom: 3rem;
-            }
-
-            @include media('<phoneLg') {
-                width: 100%;
             }
         }
 
@@ -685,6 +691,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
                 @include media('>=laptop') {
                     margin-left: $pq-list_item-laptop-indent;
+                    transform: translateX(1px); // Fix Chrome transparent line in background bug
                 }
             }
 
@@ -731,6 +738,7 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 @include media('>=laptop') {
                     margin-left: $pq-list_item-laptop-indent;
                     padding-left: calc(#{$pq-list_item-laptop-indent} + 2rem);
+                    transform: translateX(1px); // Fix Chrome transparent line in background bug
                 }
 
                 // Fix zero height IE bug
@@ -857,10 +865,8 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
             @include media('>=laptop') {
                 padding-left: calc(#{$pq-list_item-laptop-indent} + 2rem);
-            }
-
-            @include media('>=laptop') {
                 margin-left: $pq-list_item-laptop-indent;
+                transform: translateX(1px); // Fix Chrome transparent line in background bug
             }
         }
 
