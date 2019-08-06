@@ -142,14 +142,13 @@ define(['jquery', 'underscore'], function($, _) {
                     _.findKey(this.options.jsonConfig.index, options)
                 ];
 
-                if (
+                var $discounted =
                     typeof result !== 'undefined' &&
-                    result.oldPrice.amount !== result.finalPrice.amount
-                ) {
-                    $(
-                        '.normal-price .price-final_price .price-wrapper .price'
-                    ).addClass('discounted-price');
-                }
+                    result.oldPrice.amount !== result.finalPrice.amount;
+
+                $(
+                    '.normal-price .price-final_price .price-wrapper .price'
+                ).toggleClass('discounted-price', $discounted);
             },
         });
 
