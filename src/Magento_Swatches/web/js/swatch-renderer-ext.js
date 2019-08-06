@@ -7,7 +7,7 @@
  * - gallery is loaded, to keep correct gallery behaviour
  * - attributes config is prepared by widget logic
  */
-define(['jquery'], function($) {
+define(['jquery', 'underscore'], function($, _) {
     'use strict';
 
     return function(swatchRenderer) {
@@ -121,6 +121,34 @@ define(['jquery'], function($) {
                         }
                     }
                 });
+            },
+            _UpdatePrice: function() {
+                this._super();
+                var options = _.object(_.keys(this.optionsMap), {});
+
+                this.element
+                    .find(
+                        '.' +
+                            this.options.classes.attributeClass +
+                            '[option-selected]'
+                    )
+                    .each(function() {
+                        var attributeId = $(this).attr('attribute-id');
+
+                        options[attributeId] = $(this).attr('option-selected');
+                    });
+
+                var result = this.options.jsonConfig.optionPrices[
+                    _.findKey(this.options.jsonConfig.index, options)
+                ];
+
+                var $discounted =
+                    typeof result !== 'undefined' &&
+                    result.oldPrice.amount !== result.finalPrice.amount;
+
+                $(
+                    '.normal-price .price-final_price .price-wrapper .price'
+                ).toggleClass('discounted-price', $discounted);
             },
         });
 
