@@ -104,6 +104,7 @@ export default class GridLayout {
         this.columnsCfg = this._getColumnsConfiguration();
         this.teasersCfg = this._getTeasersData();
 
+        // set rows for grids without teasers
         if (!this.teasersCfg.length) {
             this.teasersCfg = [
                 {
@@ -270,6 +271,7 @@ export default class GridLayout {
         let $bricks = this.$grid.children();
         let $x4items: any;
         let $x2items: any;
+        let $x1items: any;
 
         if (untilIndex > 0) {
             $bricks = $bricks.filter(
@@ -295,10 +297,16 @@ export default class GridLayout {
                     }--x2)`
                 )
             );
+        $x1items = $bricks.filter(
+            `.${this.settings.brickClass}--teaser:not(.${
+                this.settings.brickClass
+            }--y2):not(.${this.settings.brickClass}--x2)`
+        );
 
         return {
             x2: $x2items,
             x4: $x4items,
+            x1: $x1items,
         };
     }
 
@@ -662,34 +670,36 @@ export default class GridLayout {
     protected _showProductsGrid(breakpoint: string): void {
         let itemsToShow: number =
             this.currentColsInRow * this.productsGridRowsLimits[breakpoint];
-        const teaserSize: any = {
-            x:
-                this.currentRowsCount < 2
-                    ? 1
-                    : parseInt(this.teasersCfg[0].size.x, 10),
-            y: parseInt(this.teasersCfg[0].size.y, 10),
-        };
-        const teaserVirtualLength: any = teaserSize.x * teaserSize.y;
+
+        const teasers: any = this._getTeaserItems();
+
         const teaserMobile: any = this.teasersCfg[0].mobile;
         const teaserRowPosition: any = this.teasersCfg[0].gridPosition.y;
+        const teaserSize: any = {
+            x: parseInt(this.teasersCfg[0].size.x, 10),
+            y: parseInt(this.teasersCfg[0].size.y, 10),
+        };
+        const wideTeaser: any = teaserSize.x === 2;
 
-        // if teasers are hidden for mobile - adjust items to show by decreasing with teaser size
+        // if teasers are hidden for mobile or are wide (use 2 columns) - adjust items to show by increasing with teaser size
         if (
-            breakpoint !== 'mobile' ||
-            (breakpoint === 'mobile' &&
-                this._getIsVisibleOnMobiles(teaserMobile))
+            this._getCurrentBreakpointName()[0] !== 'phone' ||
+            (teaserMobile && !wideTeaser)
         ) {
-            itemsToShow -= teaserVirtualLength;
+            itemsToShow -=
+                teasers.x2.length + (teasers.x4.length * 4 - teasers.x4.length);
         } else {
-            if (this._getCurrentBreakpointName()[0] !== 'phone') {
-                itemsToShow -= teaserVirtualLength;
-            }
+            itemsToShow +=
+                teasers.x1.length + teasers.x2.length + teasers.x4.length;
         }
 
-        // if teaser height is higher than rows to show, decrease by teaser size minus X-bricks-taking size
-        if (this.productsGridRowsLimits[breakpoint] < teaserRowPosition) {
+        // if teaser height is higher than rows to show - decrease by teaser size minus X-bricks-taking size
+        if (
+            this.teasers.length &&
+            this.productsGridRowsLimits[breakpoint] < teaserRowPosition
+        ) {
             if (this._getCurrentBreakpointName()[0] !== 'phone') {
-                itemsToShow += teaserVirtualLength;
+                itemsToShow += teaserSize.x * teaserSize.y;
             }
 
             this.$grid
@@ -710,7 +720,7 @@ export default class GridLayout {
         this.$grid.children().hide();
         this.$grid
             .children()
-            .eq(itemsToShow)
+            .eq(itemsToShow - 1)
             .prevAll()
             .addBack()
             .show();
