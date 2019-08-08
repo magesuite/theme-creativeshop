@@ -109,7 +109,7 @@ define(['jquery', 'underscore'], function($, _) {
                         return;
                     }
 
-                    this._checkOption(key, optionId);
+                    _this._checkOption(key, optionId);
                 });
             },
             _checkOption: function(key, optionId) {
