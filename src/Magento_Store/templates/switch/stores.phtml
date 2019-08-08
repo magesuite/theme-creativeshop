@@ -1,0 +1,69 @@
+<?php
+/** @var \Magento\Store\Block\Switcher $block */
+?>
+<?php if (count($block->getGroups())>1): ?>
+<?php
+    $showFlags = $block->getShowFlags();
+    $showLabels = $block->getShowLabels();
+?>
+<div class="switcher store switcher-store cs-dropdown-switcher cs-dropdown-switcher--stores" id="switcher-store">
+    <strong class="cs-visually-hidden label switcher-label"><span><?= $block->escapeHtml(__('Select Store')) ?></span></strong>
+    <div class="actions dropdown options switcher-options">
+        <?php foreach ($block->getGroups() as $group): ?>
+        <?php if ($group->getId() == $block->getCurrentGroupId()): ?>
+        <?php $name = $block->escapeHtml($group->getName()); ?>
+            <div class="action toggle switcher-trigger cs-dropdown-switcher__trigger"
+                 role="button"
+                 id="switcher-store-trigger"
+            >
+                <span class="cs-dropdown-switcher__trigger-span">
+                    <?php if ($showFlags): ?>
+                        <?= $this->getLayout()
+                            ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
+                            ->setIconUrl('images/icons/flag_'.strtolower($group->getCode().'.svg'))
+                            ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--active')
+                            ->setAltText(__($name))
+                            ->toHtml(); ?>
+                    <?php endif ?>
+                    <?php if ($showLabels): ?>
+                        <?= __($name) ?>
+                    <?php endif ?>
+                    <?= $block->getChildHtml('store_switcher.trigger-icon'); ?>                
+                </span>
+            </div>
+        <?php endif; ?>
+        <?php endforeach; ?>
+        <div class="cs-dropdown-switcher__list dropdown switcher-dropdown" 
+            data-mage-init='{"dropdownDialog":{
+                "appendTo":"#switcher-store > .options",
+                "triggerTarget":"#switcher-store-trigger",
+                "closeOnMouseLeave": false,
+                "triggerClass":"active",
+                "parentClass":"active",
+                "buttons":null}}'>
+            <ul class="cs-dropdown-switcher__list-inner">
+                <?php foreach ($block->getGroups() as $group): ?>
+                <?php if (!($group->getId() == $block->getCurrentGroupId())): ?>
+                <?php $name = $block->escapeHtml($group->getName()); ?>
+                    <li class=" cs-dropdown-switcher__list-item switcher-option">
+                        <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @noEscape */ $block->getTargetStorePostData($group->getDefaultStore()) ?>'>
+                            <?php if ($showFlags): ?>
+                                <?= $this->getLayout()
+                                    ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
+                                    ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($group->getCode())).'.svg')
+                                    ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($group->getCode()))
+                                    ->setAltText(__($name))
+                                    ->toHtml(); ?>
+                            <?php endif ?>
+                            <?php if ($showLabels): ?>
+                                <?= __($name) ?>
+                            <?php endif ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
