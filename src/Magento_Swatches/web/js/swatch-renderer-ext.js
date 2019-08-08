@@ -2,14 +2,10 @@
  * Origin: Magento swatch renderer
  * Modification type: extend
  * Reason:
- * 1) To add selecting swatches based on selected filters (by referrer url).
+ * To add selecting swatches based on selected filters (by referrer url).
  * Swatches can be selected only after:
  * - gallery is loaded, to keep correct gallery behaviour
  * - attributes config is prepared by widget logic
- * 2) For configurable products after choosing a swatch there is no class indicating that price is special
- * - add class 'discounted-price' to special price if necessary after swatch changes
- * 3) If there is only one swatch for attribute it is not selected and user has to click on it
- * - check if there is only one swatch available and checked it for user
  */
 define(['jquery', 'underscore'], function($, _) {
     'use strict';
@@ -30,25 +26,33 @@ define(['jquery', 'underscore'], function($, _) {
                     '.column.main'
                 );
 
-                // If gallery is already loaded, select swatches
+                // If gallery is already loaded, select swatches bases on referrer or select single swatch
                 // otherwise wait for 'gallery:loaded' event
                 if (_this._isGalleryLoaded === true) {
                     _this._SelectSwatchesBasedOnReferrer();
+
+                    $.each(_this.options.jsonConfig.attributes, function(
+                        index,
+                        item
+                    ) {
+                        if (item.options.length === 1) {
+                            _this._checkOption(item.code, item.options[0].id);
+                        }
+                    });
                 }
 
                 $(gallery).on('gallery:loaded', function() {
                     _this._SelectSwatchesBasedOnReferrer();
-                });
 
-                // Check if there is only one swatch available and execute _OnClick method on it
-                this.element
-                    .find('.' + this.options.classes.attributeClass)
-                    .each(function() {
-                        var $options = $(this).find('.swatch-option');
-                        if ($options.length === 1) {
-                            _this._OnClick($options, _this);
+                    $.each(_this.options.jsonConfig.attributes, function(
+                        index,
+                        item
+                    ) {
+                        if (item.options.length === 1) {
+                            _this._checkOption(item.code, item.options[0].id);
                         }
                     });
+                });
             },
             _SelectSwatchesBasedOnReferrer: function() {
                 var _this = this;
@@ -105,43 +109,42 @@ define(['jquery', 'underscore'], function($, _) {
                         return;
                     }
 
-                    // Select swatches based on attributeCode and optionId
-                    var $option = _this.element.find(
-                        '.' +
-                            _this.options.classes.attributeClass +
-                            '[attribute-code="' +
-                            key +
-                            '"] [option-id="' +
-                            optionId +
-                            '"]'
-                    );
-
-                    if ($option.length) {
-                        var $parentInput = $option.parent();
-
-                        if ($option.hasClass('selected')) {
-                            return;
-                        }
-
-                        if (
-                            $parentInput.hasClass(
-                                _this.options.classes.selectClass
-                            )
-                        ) {
-                            $parentInput.val(optionId);
-                            $parentInput.trigger('change');
-                        } else {
-                            $option.trigger('click');
-                        }
-                    }
+                    this._checkOption(key, optionId);
                 });
+            },
+            _checkOption: function(key, optionId) {
+                var _this = this;
+
+                // Select swatches based on attributeCode and optionId
+                var $option = _this.element.find(
+                    '.' +
+                        _this.options.classes.attributeClass +
+                        '[attribute-code="' +
+                        key +
+                        '"] [option-id="' +
+                        optionId +
+                        '"]'
+                );
+
+                if ($option.length) {
+                    var $parentInput = $option.parent();
+
+                    if ($option.hasClass('selected')) {
+                        return;
+                    }
+
+                    if (
+                        $parentInput.hasClass(_this.options.classes.selectClass)
+                    ) {
+                        $parentInput.val(optionId);
+                        $parentInput.trigger('change');
+                    } else {
+                        $option.trigger('click');
+                    }
+                }
             },
             _UpdatePrice: function() {
                 this._super();
-
-                // After original method is executed check if oldPrice is not equal to finalPrice
-                // and add class 'discounted-price' to special price if necessary
-
                 var options = _.object(_.keys(this.optionsMap), {});
 
                 this.element
