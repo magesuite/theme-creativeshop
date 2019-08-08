@@ -2,10 +2,14 @@
  * Origin: Magento swatch renderer
  * Modification type: extend
  * Reason:
- * To add selecting swatches based on selected filters (by referrer url).
+ * 1) To add selecting swatches based on selected filters (by referrer url).
  * Swatches can be selected only after:
  * - gallery is loaded, to keep correct gallery behaviour
  * - attributes config is prepared by widget logic
+ * 2) For configurable products after choosing a swatch there is no class indicating that price is special
+ * - add class 'discounted-price' to special price if necessary after swatch changes
+ * 3) If there is only one swatch for attribute it is not selected and user has to click on it
+ * - check if there is only one swatch available and checked it for user
  */
 define(['jquery', 'underscore'], function($, _) {
     'use strict';
@@ -35,6 +39,16 @@ define(['jquery', 'underscore'], function($, _) {
                 $(gallery).on('gallery:loaded', function() {
                     _this._SelectSwatchesBasedOnReferrer();
                 });
+
+                // Check if there is only one swatch available and execute _OnClick method on it
+                this.element
+                    .find('.' + this.options.classes.attributeClass)
+                    .each(function() {
+                        var $options = $(this).find('.swatch-option');
+                        if ($options.length === 1) {
+                            _this._OnClick($options, _this);
+                        }
+                    });
             },
             _SelectSwatchesBasedOnReferrer: function() {
                 var _this = this;
@@ -124,6 +138,10 @@ define(['jquery', 'underscore'], function($, _) {
             },
             _UpdatePrice: function() {
                 this._super();
+
+                // After original method is executed check if oldPrice is not equal to finalPrice
+                // and add class 'discounted-price' to special price if necessary
+
                 var options = _.object(_.keys(this.optionsMap), {});
 
                 this.element
