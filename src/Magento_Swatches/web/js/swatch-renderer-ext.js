@@ -26,14 +26,32 @@ define(['jquery', 'underscore'], function($, _) {
                     '.column.main'
                 );
 
-                // If gallery is already loaded, select swatches
+                // If gallery is already loaded, select swatches bases on referrer or select single swatch
                 // otherwise wait for 'gallery:loaded' event
                 if (_this._isGalleryLoaded === true) {
                     _this._SelectSwatchesBasedOnReferrer();
+
+                    $.each(_this.options.jsonConfig.attributes, function(
+                        index,
+                        item
+                    ) {
+                        if (item.options.length === 1) {
+                            _this._checkOption(item.code, item.options[0].id);
+                        }
+                    });
                 }
 
                 $(gallery).on('gallery:loaded', function() {
                     _this._SelectSwatchesBasedOnReferrer();
+
+                    $.each(_this.options.jsonConfig.attributes, function(
+                        index,
+                        item
+                    ) {
+                        if (item.options.length === 1) {
+                            _this._checkOption(item.code, item.options[0].id);
+                        }
+                    });
                 });
             },
             _SelectSwatchesBasedOnReferrer: function() {
@@ -91,36 +109,39 @@ define(['jquery', 'underscore'], function($, _) {
                         return;
                     }
 
-                    // Select swatches based on attributeCode and optionId
-                    var $option = _this.element.find(
-                        '.' +
-                            _this.options.classes.attributeClass +
-                            '[attribute-code="' +
-                            key +
-                            '"] [option-id="' +
-                            optionId +
-                            '"]'
-                    );
-
-                    if ($option.length) {
-                        var $parentInput = $option.parent();
-
-                        if ($option.hasClass('selected')) {
-                            return;
-                        }
-
-                        if (
-                            $parentInput.hasClass(
-                                _this.options.classes.selectClass
-                            )
-                        ) {
-                            $parentInput.val(optionId);
-                            $parentInput.trigger('change');
-                        } else {
-                            $option.trigger('click');
-                        }
-                    }
+                    _this._checkOption(key, optionId);
                 });
+            },
+            _checkOption: function(key, optionId) {
+                var _this = this;
+
+                // Select swatches based on attributeCode and optionId
+                var $option = _this.element.find(
+                    '.' +
+                        _this.options.classes.attributeClass +
+                        '[attribute-code="' +
+                        key +
+                        '"] [option-id="' +
+                        optionId +
+                        '"]'
+                );
+
+                if ($option.length) {
+                    var $parentInput = $option.parent();
+
+                    if ($option.hasClass('selected')) {
+                        return;
+                    }
+
+                    if (
+                        $parentInput.hasClass(_this.options.classes.selectClass)
+                    ) {
+                        $parentInput.val(optionId);
+                        $parentInput.trigger('change');
+                    } else {
+                        $option.trigger('click');
+                    }
+                }
             },
             _UpdatePrice: function() {
                 this._super();
