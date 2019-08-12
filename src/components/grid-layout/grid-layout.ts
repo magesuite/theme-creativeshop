@@ -80,7 +80,7 @@ export default class GridLayout {
                 componentClass: 'cs-grid-layout',
                 gridClass: 'cs-grid-layout__grid',
                 brickClass: 'cs-grid-layout__brick',
-                forceFloatingTeasersSupport: true,
+                forceFloatingTeasersSupport: false,
             },
             settings
         );
