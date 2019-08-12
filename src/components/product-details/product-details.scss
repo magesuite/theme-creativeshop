@@ -44,6 +44,10 @@ $product-description_headline-title-counter-visible: true !default;
             #{$root}__content {
                 display: flex;
                 flex-flow: row wrap;
+
+                @include media('<tablet') {
+                    margin-top: 2.5rem;
+                }
             }
         }
 
@@ -89,6 +93,13 @@ $product-description_headline-title-counter-visible: true !default;
         // This attribute is added when element is collapsible.
         &[tabindex] {
             @include pseudoicon();
+        }
+
+        @include media('<tablet') {
+            background: $color_gallery;
+            // Extend "background" beyond padding and margin through box-shadow
+            box-shadow: 0 2em 0 $color_gallery, 0 -2em 0 $color_gallery,
+                1.5em 0 0 2em $color_gallery, -1.5em 0 0 2em $color_gallery;
         }
     }
 
