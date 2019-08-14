@@ -92,7 +92,7 @@ define([
 
             if (value.length >= parseInt(this.options.minSearchLength, 10)) {
                 $.post({
-                    url: '/graphql',
+                    url: this.options.url,
                     data: JSON.stringify({
                         query: `{addressAutocomplete(query: "${value}", ) {items {description}}}`,
                     }),

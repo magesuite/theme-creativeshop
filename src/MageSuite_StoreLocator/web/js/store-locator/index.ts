@@ -87,6 +87,8 @@ export default class StoreLocator {
 
     protected _allItemsRendered: boolean = false;
 
+    protected _basePath: string;
+
     protected map: any;
     protected mapBounds: any;
     protected markers: any;
@@ -134,8 +136,10 @@ export default class StoreLocator {
             '.cs-store-locator__stores-list-inner'
         );
 
+        this._basePath = this._$element.attr('data-base-path');
+
         $.post({
-            url: '/graphql',
+            url: this._basePath + 'graphql',
             data: JSON.stringify({
                 query: `{
                     storePickupLocations {
@@ -628,7 +632,7 @@ export default class StoreLocator {
      */
     public getCoordinatesFromQuery(query: string): any {
         return $.post({
-            url: '/graphql',
+            url: this._basePath + 'graphql',
             data: JSON.stringify({
                 query: `{
                     addressLocation (
