@@ -1,0 +1,749 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+@import 'components/button/mixin';
+@import 'components/field/mixin';
+@import 'components/typography/mixin';
+@import 'components/messages/messages';
+
+$plugincompany-form_submit-button-type: 'primary' !default;
+$plugincompany-form_submit-button-icon-pos: 'no-icon' !default;
+$plugincompany-form_datepicker-button-type: 'secondary' !default;
+$plugincompany-form_datepicker-button-icon-pos: 'only-icon' !default;
+
+$plugincompany-form_align: left !default;
+$plugincompany-form_separator: 1px solid $color_border-500 !default;
+
+.pccf {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    max-width: 45rem !important;
+
+    @if ($plugincompany-form_align == 'center') {
+        margin: 0 auto;
+    }
+
+    // Form
+    fieldset {
+        min-width: 0;
+        padding: 0;
+        margin: 0;
+        border: 0;
+
+        @include media('>=laptop') {
+            padding: 1rem;
+        }
+    }
+
+    // Field
+    .form-group {
+        @include field();
+        margin-bottom: 2rem;
+    }
+
+    .form-control {
+        @include field-control();
+    }
+
+    // Labels
+    .control-label {
+        @include field-label();
+    }
+
+    .required-control .control-label:after {
+        @include field-label-required();
+    }
+
+    // Text input
+    input[type='text'] {
+        @include field-input();
+    }
+
+    // Checkbox
+    input[type='checkbox'] {
+        @include field-checkbox();
+    }
+
+    .checkbox {
+        margin-top: 0.5rem;
+    }
+
+    div.newsletter-checkbox input[type='checkbox'] {
+        display: inline-block;
+    }
+
+    // Radio
+    input[type='radio'] {
+        @include field-radio();
+    }
+
+    .radio {
+        margin-top: 0.5rem;
+    }
+
+    // Select
+    select::-ms-expand {
+        display: none !important;
+    }
+
+    select:not([multiple]).form-control {
+        @include field-select();
+    }
+
+    select[multiple] {
+        height: auto;
+    }
+
+    // Textarea
+    textarea {
+        @include field-input();
+        overflow: auto;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    textarea.form-control {
+        height: auto;
+        padding-top: 0.9rem;
+        padding-bottom: 0.9rem;
+    }
+
+    // Notes
+    .help-block {
+        @include field-note();
+    }
+
+    div.newsletter-checkbox p.help-block.not-visible {
+        display: none !important;
+    }
+
+    // Inline
+    .checkbox-inline,
+    .radio-inline {
+        margin-top: 0.5rem;
+
+        @include media('>=phoneLg') {
+            width: auto;
+            display: inline-block;
+            padding: 0 0 0 2.5rem;
+
+            &:first-child {
+                padding-left: 0;
+            }
+        }
+    }
+
+    .checkbox-inline + .checkbox-inline,
+    .radio-inline + .radio-inline {
+        @include media('>=phoneLg') {
+            margin-right: 1rem;
+        }
+    }
+
+    // Buttons
+    button {
+        overflow: visible;
+        -webkit-appearance: button;
+        cursor: pointer;
+    }
+
+    .btn,
+    button.pccf-popup-btn.action.primary {
+        @include button(
+            $type: $plugincompany-form_submit-button-type,
+            $icon_pos: $plugincompany-form_submit-button-icon-pos
+        );
+    }
+
+    // Typography
+    h1 {
+        @include headline($level: $font-size_headline-1);
+    }
+
+    h2 {
+        @include headline($level: $font-size_headline-2);
+    }
+
+    h3 {
+        @include headline($level: $font-size_headline-3);
+    }
+
+    h4 {
+        @include headline($level: $font-size_headline-4);
+    }
+
+    h5 {
+        @include headline($level: $font-size_headline-5);
+    }
+
+    h6 {
+        @include headline($level: $font-size_headline-6);
+    }
+
+    .pccf.default .text-center {
+        text-align: $plugincompany-form_align;
+    }
+
+    legend {
+        @include headline($level: $font-size_headline-1);
+        display: block;
+        padding: 0 0 0.5rem;
+        border-bottom: $plugincompany-form_separator;
+        text-align: $plugincompany-form_align !important;
+    }
+
+    // Browser specific adjustments
+    button::-moz-focus-inner,
+    input::-moz-focus-inner {
+        padding: 0;
+        border: 0;
+    }
+
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        height: auto;
+    }
+
+    input[type='search']::-webkit-search-cancel-button,
+    input[type='search']::-webkit-search-decoration {
+        -webkit-appearance: none;
+    }
+
+    .form-control::-moz-placeholder {
+        opacity: 1;
+    }
+
+    // Layout
+    .col-lg-6,
+    .col-lg-8,
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-6,
+    .col-md-8 {
+        width: 100%;
+        float: none;
+        position: relative;
+        min-height: 1px;
+        padding: 0;
+        margin: 0;
+
+        .ajs-dialog * {
+            width: 100% !important;
+        }
+    }
+
+    .form-horizontal .form-group:after,
+    .form-horizontal .form-group:before,
+    .row:after,
+    .row:before,
+    .navbuttons:after,
+    .navbuttons:before {
+        display: table;
+        content: ' ';
+    }
+
+    .form-horizontal .form-group:after,
+    .row:after,
+    .navbuttons:after {
+        clear: both;
+    }
+
+    // Input groups and addons
+    .input-group {
+        position: relative;
+        display: table;
+        border-collapse: separate;
+    }
+
+    .input-group .form-control {
+        position: relative;
+        z-index: 2;
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .input-group .form-control,
+    .input-group-addon {
+        display: table-cell;
+    }
+
+    .input-group-addon {
+        width: 1%;
+        white-space: nowrap;
+        vertical-align: middle;
+        height: 4rem;
+        padding: 0.6rem 1rem;
+        font-size: 1.2rem;
+        font-weight: 400;
+        line-height: 1;
+        color: $color_text-500;
+        text-align: center;
+        background-color: $color_background-500;
+        border: $plugincompany-form_separator;
+        border-radius: $border-radius_base;
+    }
+
+    .input-group .form-control:first-child,
+    .input-group-addon:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .input-group-addon:first-child {
+        border-right: 0;
+    }
+
+    .input-group .form-control:last-child,
+    .input-group-addon:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .input-group-addon:last-child {
+        border-left: 0;
+    }
+
+    &.rtl .input-group-addon:last-child {
+        border-right: 0;
+        border-left: 1px solid $color_border-500;
+    }
+
+    &.rtl .input-group-addon:first-child {
+        border-left: 0;
+        border-right: 1px solid $color_border-500;
+    }
+
+    // Navigation
+    .navbuttons {
+        border-top: 1px solid $color_border-500;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    .navbuttons > div {
+        margin: 0 !important;
+        float: none !important;
+
+        @include media('>=phoneLg') {
+            margin-left: 1rem !important;
+            float: right !important;
+        }
+    }
+
+    .btn.prev,
+    .btn.next {
+        min-width: 100%;
+        margin-bottom: 1.5rem;
+        color: $color_primary-500;
+        background-image: url('../images/icons/arrow_down.svg');
+        background-size: 0.6rem 1rem;
+        background-color: $color_background-200;
+
+        @include media('>=phoneLg') {
+            min-width: 6rem;
+        }
+    }
+
+    .btn.prev {
+        padding-left: 2.5rem;
+        padding-right: 1.5rem;
+        background-image: none;
+
+        @include media('>=phoneLg') {
+            padding-left: 3.5rem;
+            padding-right: 2.5rem;
+        }
+    }
+
+    .btn.prev:before {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%) rotate(180deg);
+        width: 0.6rem;
+        height: 1rem;
+        background-image: url('../images/icons/arrow_next.svg');
+        background-size: 0.6rem 1rem;
+        background-position: center;
+        background-repeat: no-repeat;
+        fill: $color_background-200;
+    }
+
+    .btn.prev:hover:before,
+    .btn.next:hover {
+        background-image: url('../images/icons/arrow_next.svg');
+    }
+
+    /* Bootstrap datetime picker */
+
+    .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
+        @include media('>=tablet') {
+            width: 23em;
+        }
+
+        @include media('>=laptop') {
+            width: 19em;
+        }
+    }
+
+    .bootstrap-datetimepicker-widget .list-unstyled {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .bootstrap-datetimepicker-widget .list-unstyled li {
+        padding: 0 !important;
+    }
+
+    .bootstrap-datetimepicker-widget .list-unstyled li:before {
+        display: none !important;
+    }
+
+    .bootstrap-datetimepicker-widget a.btn,
+    .bootstrap-datetimepicker-widget button.btn {
+        padding: 0.5rem !important;
+        min-height: auto !important;
+        min-width: auto !important;
+    }
+
+    .bootstrap-datetimepicker-widget a.btn {
+        @include button(
+            $type: $plugincompany-form_datepicker-button-type,
+            $icon_pos: $plugincompany-form_datepicker-button-icon-pos
+        );
+        display: inline-block !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        height: 3rem;
+        width: 4rem;
+
+        span {
+            @include button-icon(
+                $type: $plugincompany-form_datepicker-button-type,
+                $icon_pos: $plugincompany-form_datepicker-button-icon-pos
+            );
+            top: 0.3rem;
+            left: 0;
+            width: 4rem;
+            height: 3rem;
+        }
+    }
+
+    .bootstrap-datetimepicker-widget button.btn-primary {
+        @include button($type: 'primary', $icon_pos: 'no-icon');
+    }
+
+    // Messages
+    .messages {
+        padding: 0;
+    }
+
+    .alert {
+        margin: 1rem 0;
+        padding: $messages_padding;
+        border-radius: $messages_border-radius;
+        background-repeat: no-repeat;
+        background-position: 1.2rem center;
+        background-size: $message_icon-width $message_icon-height;
+        padding-left: 4.3rem;
+    }
+
+    .alert-success {
+        background-color: $messages_success-background-color;
+        background-image: url('../images/icons/messages/icon-success.svg');
+        border: $messages_success-border;
+    }
+
+    .alert-info {
+        background-color: $messages_info-background-color;
+        background-image: url('../images/icons/messages/icon-info.svg');
+        border: $messages_info-border;
+    }
+
+    .alert-warning {
+        background-color: $messages_notice-background-color;
+        background-image: url('../images/icons/messages/icon-warning.svg');
+        border: $messages_notice-border;
+    }
+
+    .alert-danger {
+        background-color: $messages_error-background-color;
+        background-image: url('../images/icons/messages/icon-error.svg');
+        border: $messages_error-border;
+    }
+
+    // Panels
+    .panel {
+        margin-bottom: 2rem;
+        background-color: $color_background-200;
+        border: 1px solid transparent;
+        border-radius: 0px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .panel-heading {
+        padding: 1rem 3rem;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+
+        .catalog-product-view & {
+            padding: 2.5rem 1.5rem;
+
+            @include media('>=phoneLg') {
+                padding: 1rem 3rem;
+            }
+        }
+    }
+
+    .panel-body {
+        padding: 1.5rem 1.5rem 0;
+
+        @include media('>=phoneLg') {
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+
+        .catalog-product-view & {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+
+            @include media('>=phoneLg') {
+                padding-left: 3rem;
+                padding-right: 3rem;
+            }
+        }
+    }
+
+    .panel-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        color: inherit;
+
+        .catalog-product-view & {
+            text-align: left;
+            font-size: 1.4rem;
+
+            @include media('>=phoneLg') {
+                text-align: center;
+                font-size: 1.5rem;
+            }
+        }
+    }
+
+    .panel-default {
+        border-color: $color_border-500;
+    }
+
+    .panel-default > .panel-heading {
+        color: $color_text-500;
+        background-color: $color_background-500;
+        border-color: $color_border-500;
+    }
+
+    .panel-primary {
+        border-color: $color_primary-500;
+    }
+
+    .panel-primary > .panel-heading {
+        color: $color_text-200;
+        background-color: $color_primary-500;
+        border-color: $color_primary-500;
+    }
+
+    .panel-success {
+        border-color: $color_success-500;
+    }
+
+    .panel-success > .panel-heading {
+        color: $color_text-500;
+        background-color: $color_success-200;
+        border-color: $color_success-500;
+    }
+
+    .panel-info {
+        border-color: $color_warning-500;
+    }
+
+    .panel-info > .panel-heading {
+        color: $color_text-500;
+        background-color: $color_warning-200;
+        border-color: $color_warning-500;
+    }
+
+    .panel-warning {
+        border-color: $color_warning-500;
+    }
+
+    .panel-warning > .panel-heading {
+        color: $color_text-500;
+        background-color: $color_warning-200;
+        border-color: $color_warning-500;
+    }
+
+    .well {
+        min-height: 2rem;
+        padding: 0;
+        margin-bottom: 1.5rem;
+        border: none;
+        box-shadow: none;
+    }
+
+    // Sections
+    .column_1_wrap {
+        float: none;
+        padding: 0;
+    }
+    .pcform-section {
+        float: none;
+        width: auto;
+    }
+    .pcform-section .sectiontitle {
+        margin-top: 1rem;
+
+        @include media('>=laptop') {
+            width: 86%;
+        }
+    }
+
+    .pcform-section .sectiontitle h4 {
+        @include headline($level: $font-size_headline-4);
+    }
+
+    .pcform-section .sectioncontents {
+        float: none;
+        padding: 0;
+    }
+
+    .pcform-section.columns_2 .sectioncontents {
+        @include media('>=tablet') {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+        }
+
+        @include media('>=laptop') {
+            justify-content: flex-start;
+        }
+    }
+
+    .pcform-section.columns_2 .sectioncontents > .col-md-6 {
+        @include media('>=laptop') {
+            flex: 0 1 47%;
+            box-sizing: content-box;
+        }
+    }
+
+    .pcform-section.columns_2 .sectioncontents > .col-md-6:first-child {
+        padding-right: 3rem;
+    }
+
+    .pccf.default .pcform-section.columns_2 .sectioncontents > .col-md-6 {
+        @include media('>=laptop') {
+            flex-basis: 43%;
+        }
+    }
+
+    &[id].default .pcform-section.column_1 .sectioncontents {
+        padding: 0;
+        width: 100%;
+
+        @include media('>=tablet') {
+            width: 47%;
+        }
+
+        @include media('>=laptop') {
+            width: 43%;
+        }
+    }
+
+    &[id].default .pcform-section.column_1 {
+        width: auto;
+    }
+
+    &[id].default .pcform-section.column_1 .col-md-6.datepicker {
+        width: 100% !important;
+    }
+}
+
+/* Slide out */
+.pccf_slideoutlink.iconmail:hover {
+    padding: 0.4rem 0.7rem;
+}
+
+// Print
+@media print {
+    .pccf.default * {
+        color: $color_text-800;
+        text-shadow: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .pccf.default h2,
+    .pccf.default h3,
+    .pccf.default p {
+        orphans: 3;
+        widows: 3;
+    }
+
+    .pccf.default h2,
+    .pccf.default h3 {
+        page-break-after: avoid;
+    }
+
+    .pccf.default select {
+        background: $color_background-200;
+    }
+}
+
+@-webkit-keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+    to {
+        background-position: 0 0;
+    }
+}
+
+@-o-keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+    to {
+        background-position: 0 0;
+    }
+}
+
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 40px 0;
+    }
+    to {
+        background-position: 0 0;
+    }
+}
+
+/* visualCaptcha */
+.visualCaptcha-possibilities img,
+.visualCaptcha-refresh-button img,
+.visualCaptcha-accessibility-button img {
+    margin: 0 !important;
+}
+
+.vcaptcha p.visualCaptcha-explanation {
+    margin: 0.6rem 0 !important;
+}
+
+@-ms-viewport {
+    width: device-width;
+}
