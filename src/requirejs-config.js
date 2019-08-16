@@ -80,6 +80,9 @@ var config = {
             'Magento_Swatches/js/swatch-renderer': {
                 'Magento_Swatches/js/swatch-renderer-ext': true,
             },
+            'PluginCompany_ContactForms/js/form': {
+                'PluginCompany_ContactForms/js/form-ext': true,
+            },
         },
     },
     map: {
