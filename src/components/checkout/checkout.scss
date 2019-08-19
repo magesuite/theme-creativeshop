@@ -64,6 +64,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    #maincontent {
+        .ie11 & {
+            min-height: calc(100vh - 25rem);
+        }
+    }
+
     .page-title-wrapper {
         @include visually-hidden();
     }
@@ -361,6 +367,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    &__shipping-method {
+        @include media('<tablet') {
+            margin-bottom: $checkout_base-space;
+        }
+    }
+
     &__shipping-method-wrapper,
     &__shipping-method,
     &__payments,
@@ -428,7 +440,7 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     &__sidebar-bottom {
         display: flex;
         justify-content: flex-end;
-        padding: $checkout_base-space 0;
+        padding: 0;
 
         @include media('>=tablet') {
             padding: $checkout_base-space;
@@ -641,13 +653,14 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
     }
 
     .opc-estimated-wrapper {
-        padding: $checkout_base-space 0;
+        padding: 0 0 $checkout_base-space;
         z-index: 2;
         width: 100%;
         margin: 0;
 
         @include media('>=tablet') {
             display: none;
+            padding: $checkout_base-space 0;
         }
 
         .action.showcart {
@@ -857,6 +870,12 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             top: calc(#{$checkout_base-space} - 2px);
             right: $checkout_base-space;
         }
+
+        .title strong {
+            @include media('>=tablet', '<laptop') {
+                padding-right: 10rem; //Make space for the edit link for tablet resolution
+            }
+        }
     }
 
     .minicart-items-wrapper {
@@ -920,10 +939,6 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         padding-right: 2.5rem;
         font-size: $checkout_texts-font-size;
         display: inline-block;
-
-        .ie11 & {
-            background-size: 2.5rem 76%;
-        }
 
         span {
             font-family: $font_family-primary;
@@ -1215,6 +1230,10 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
             }
         }
 
+        &:not(:last-child) .payment-method-billing-address {
+            padding-bottom: $checkout_base-space;
+        }
+
         .billing-address-details {
             padding: 0 0 0 3rem;
             line-height: 1.6;
@@ -1248,7 +1267,11 @@ $checkout_addresses-button-icon-pos: 'no-icon' !default;
         }
 
         p {
-            margin-top: $checkout_base-space;
+            margin-bottom: 0;
+
+            &:not(:empty) {
+                margin-top: $checkout_base-space;
+            }
         }
 
         .number {
