@@ -10,7 +10,7 @@
     <text args="_.values(currentBillingAddress().street).join(', ')"/><br/>
     <text args="currentBillingAddress().city "/>, <span text="currentBillingAddress().region"></span> <text args="currentBillingAddress().postcode"/><br/>
     <text args="getCountryName(currentBillingAddress().countryId)"/><br/>
-    <a if="currentBillingAddress().telephone" attr="'href': 'tel:' + currentBillingAddress().telephone" text="currentBillingAddress().telephone"></a><br/>
+    <a if="currentBillingAddress().telephone" attr="'href': 'tel:' + currentBillingAddress().telephone" text="currentBillingAddress().telephone"></a><br if="currentBillingAddress().telephone" />
 
     <each args="data: currentBillingAddress().customAttributes, as: 'element'">
         <each args="data: Object.keys(element), as: 'attribute'">
@@ -25,8 +25,8 @@
                 </ifnot>
             </if>
             <if args="typeof element[attribute] === 'string'">
-                <text args="element[attribute]"/>
-            </if><br/>
+                <text args="element[attribute]"/><br/>
+            </if>
         </each>
     </each>
 
