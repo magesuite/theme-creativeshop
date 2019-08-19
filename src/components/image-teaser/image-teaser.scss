@@ -50,6 +50,9 @@ $image-teaser_badge-font-size: 1.1em !default;
 $image-teaser_no-image-light-scheme-background: $color_background-700 !default;
 $image-teaser_no-image-dark-scheme-background: $color_background-200 !default;
 
+$image-teaser_cms-pages-height: 200px !default;
+$image-teaser_cms-pages-background: $color_gallery !default;
+
 .#{$ns}image-teaser {
     $root: &;
 
@@ -184,6 +187,14 @@ $image-teaser_no-image-dark-scheme-background: $color_background-200 !default;
         #{$root}--grid-teaser & {
             height: 100%;
             padding: 0;
+        }
+
+        #{$root}--cms-teaser & {
+            min-height: $image-teaser_cms-pages-height;
+
+            &:not(#{$root}__slide--image-uploaded) > #{$root}__slide-wrapper {
+                background-color: $image-teaser_cms-pages-background;
+            }
         }
 
         &:not(.ready) {
