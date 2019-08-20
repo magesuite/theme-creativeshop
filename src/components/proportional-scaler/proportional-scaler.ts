@@ -111,13 +111,13 @@ export default class ProportionalScaler {
             this._element.addEventListener('lazyloaded', () => {
                 this._scale();
                 requestAnimationFrame(() => {
-                    this._element.classList.add('ready');
+                    this._scalableElement.classList.add('ready');
                 });
             });
         } else {
             this._scale();
             requestAnimationFrame(() => {
-                this._element.classList.add('ready');
+                this._scalableElement.classList.add('ready');
             });
         }
     }
