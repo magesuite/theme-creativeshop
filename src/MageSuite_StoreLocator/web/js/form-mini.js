@@ -38,7 +38,7 @@ define([
             );
             completedString = completedString.replace(
                 regex,
-                `<b>${originalTextFoundByRegex}</b>`
+                '<b>' + originalTextFoundByRegex + '</b>'
             );
         });
         return completedString;
@@ -48,19 +48,21 @@ define([
         _create: function() {
             this._super();
 
-            this.element.on('blur', () => {
-                setTimeout(() => {
-                    this._resetResponseList(true);
-                    this.autoComplete.hide();
+            var _this = this;
+
+            this.element.on('blur', function() {
+                setTimeout(function() {
+                    _this._resetResponseList(true);
+                    _this.autoComplete.hide();
                 }, 500);
             });
 
-            this.element.on('keydown', e => {
+            this.element.on('keydown', function(e) {
                 var keyCode = e.keyCode || e.which;
 
                 if (keyCode === $.ui.keyCode.ENTER) {
-                    this._resetResponseList(true);
-                    this.autoComplete.hide();
+                    _this._resetResponseList(true);
+                    _this.autoComplete.hide();
                 }
             });
         },
@@ -77,6 +79,7 @@ define([
          * @private
          */
         _onPropertyChange: function() {
+            var _this = this;
             var searchField = this.element;
             var clonePosition = {
                 top: searchField.outerHeight(),
@@ -94,18 +97,13 @@ define([
                 $.post({
                     url: this.options.url,
                     data: JSON.stringify({
-                        query: `{addressAutocomplete(query: "${value}", ) {items {description}}}`,
+                        query:
+                            '{addressAutocomplete(query: "' +
+                            value +
+                            '", ) {items {description}}}',
                     }),
                     contentType: 'application/json',
-                }).done(response => {
-                    if (!response.data.addressAutocomplete) {
-                        response.data.addressAutocomplete = {};
-                        response.data.addressAutocomplete.items = [
-                            { description: 'fddfd' },
-                            { description: 'fdfdwewre' },
-                        ];
-                    }
-
+                }).done(function(response) {
                     if (
                         response.data.addressAutocomplete &&
                         response.data.addressAutocomplete.items.length
@@ -117,98 +115,102 @@ define([
 
                             element.index = index;
 
-                            html = `<li class="cs-store-locator__search-item"><span class="qs-option-name">${highlightMatchesInString(
-                                element.description,
-                                [value]
-                            )}</span></li>`;
+                            html =
+                                '<li class="cs-store-locator__search-item"><span class="qs-option-name">' +
+                                highlightMatchesInString(element.description, [
+                                    value,
+                                ]) +
+                                '</span></li>';
                             dropdown.append(html);
                         });
 
-                        this._resetResponseList(true);
+                        _this._resetResponseList(true);
 
-                        this.responseList.indexList = this.autoComplete
+                        _this.responseList.indexList = _this.autoComplete
                             .html(dropdown)
                             .css(clonePosition)
                             .show()
                             .find(
-                                this.options.responseFieldElements + ':visible'
+                                _this.options.responseFieldElements + ':visible'
                             );
 
-                        this.element.removeAttr('aria-activedescendant');
+                        _this.element.removeAttr('aria-activedescendant');
 
-                        if (this.responseList.indexList.length) {
-                            this._updateAriaHasPopup(true);
+                        if (_this.responseList.indexList.length) {
+                            _this._updateAriaHasPopup(true);
                         } else {
-                            this._updateAriaHasPopup(false);
+                            _this._updateAriaHasPopup(false);
                         }
 
-                        this.responseList.indexList
+                        _this.responseList.indexList
                             .on(
                                 'click',
                                 function(e) {
-                                    this.responseList.selected = $(
+                                    _this.responseList.selected = $(
                                         e.currentTarget
                                     );
-                                    this.element.val(
-                                        this.responseList.selected
+                                    _this.element.val(
+                                        _this.responseList.selected
                                             .find('.qs-option-name')
                                             .text()
                                     );
-                                    this.searchForm.trigger('submit');
-                                    this._resetResponseList(true);
-                                    this.autoComplete.hide();
-                                }.bind(this)
+                                    _this.searchForm.trigger('submit');
+                                    _this._resetResponseList(true);
+                                    _this.autoComplete.hide();
+                                }.bind(_this)
                             )
                             .on(
                                 'mouseenter mouseleave',
                                 function(e) {
-                                    if (this.responseList.indexList) {
-                                        this.responseList.indexList.removeClass(
-                                            this.options.selectClass
+                                    if (_this.responseList.indexList) {
+                                        _this.responseList.indexList.removeClass(
+                                            _this.options.selectClass
                                         );
                                         $(e.target).addClass(
-                                            this.options.selectClass
+                                            _this.options.selectClass
                                         );
-                                        this.responseList.selected = $(
+                                        _this.responseList.selected = $(
                                             e.target
                                         );
-                                        this.element.attr(
+                                        _this.element.attr(
                                             'aria-activedescendant',
                                             $(e.target).attr('id')
                                         );
                                     }
-                                }.bind(this)
+                                }.bind(_this)
                             )
                             .on(
                                 'mouseout',
                                 function(e) {
-                                    if (this.responseList.indexList) {
+                                    if (_this.responseList.indexList) {
                                         if (
-                                            !this._getLastElement() &&
-                                            this._getLastElement().hasClass(
-                                                this.options.selectClass
-                                            )
+                                            !_this._getLastElement() &&
+                                            _this
+                                                ._getLastElement()
+                                                .hasClass(
+                                                    _this.options.selectClass
+                                                )
                                         ) {
                                             $(e.target).removeClass(
-                                                this.options.selectClass
+                                                _this.options.selectClass
                                             );
-                                            this._resetResponseList(false);
+                                            _this._resetResponseList(false);
                                         }
                                     }
-                                }.bind(this)
+                                }.bind(_this)
                             );
                     } else {
-                        this._resetResponseList(true);
-                        this.autoComplete.hide();
-                        this._updateAriaHasPopup(false);
-                        this.element.removeAttr('aria-activedescendant');
+                        _this._resetResponseList(true);
+                        _this.autoComplete.hide();
+                        _this._updateAriaHasPopup(false);
+                        _this.element.removeAttr('aria-activedescendant');
                     }
                 });
             } else {
-                this._resetResponseList(true);
-                this.autoComplete.hide();
-                this._updateAriaHasPopup(false);
-                this.element.removeAttr('aria-activedescendant');
+                _this._resetResponseList(true);
+                _this.autoComplete.hide();
+                _this._updateAriaHasPopup(false);
+                _this.element.removeAttr('aria-activedescendant');
             }
         },
     });
