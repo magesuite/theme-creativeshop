@@ -185,6 +185,7 @@ export default class ImageTeaser {
     protected _optionsOverrides: any;
     protected _instance: any;
     protected _$videosTriggers: JQuery;
+    protected _isTeaserInitialised: any = false;
 
     /**
      * Creates new ImageTeaser component with optional settings.
@@ -269,18 +270,22 @@ export default class ImageTeaser {
         }
 
         if (this._options.isSlider) {
-            this._initTeaser(this._$container);
+            if (
+                this._options.isSliderMobile ||
+                $(window).width() >= this._options.carouselBreakpoint
+            ) {
+                this._initTeaser(this._$container);
+                this._isTeaserInitialised = true;
+            }
         }
 
-        if (this._options.isSliderMobile && !this._options.isSlider) {
-            const _this: any = this;
-
-            this._toggleMobileTeaser();
-
-            $(window).on('resize', function(): void {
-                _this._toggleMobileTeaser();
-            });
-        }
+        this._toggleTeaser();
+        $(window).on(
+            'resize',
+            (): void => {
+                this._toggleTeaser();
+            }
+        );
 
         if (this._options.allowVideos) {
             this._$videosTriggers = $(
@@ -379,30 +384,70 @@ export default class ImageTeaser {
      * Initializes teaser
      */
     protected _initTeaser($element: JQuery): void {
+        this._isTeaserInitialised = true;
         this._instance = new csTeaser($element, this._options);
     }
 
     /**
-     * Initializes teaser only for mobiles
+     * Destroys teaser
      */
-    protected _toggleMobileTeaser(): void {
-        if ($(window).width() < this._options.carouselBreakpoint) {
-            if (!this._instance) {
-                this._$container.addClass(
-                    `${this._options.teaserName}--slider`
-                );
-                this._initTeaser(this._$container);
+    protected _destroyTeaser(): void {
+        this._isTeaserInitialised = false;
+        this._instance.destroy();
+        this._instance = undefined;
+    }
+
+    /**
+     * Manipulates teaser's classes and style attributes
+     */
+    protected _toggleTeaserClasses(): void {
+        if (this._isTeaserInitialised) {
+            this._$container
+                .removeClass(`${this._options.teaserName}--slider`)
+                .find(`.${this._options.teaserName}__slides`)
+                .removeAttr('style')
+                .find(`.${this._options.teaserName}__slide`)
+                .removeAttr('style');
+        } else if (!this._isTeaserInitialised) {
+            this._$container.addClass(`${this._options.teaserName}--slider`);
+        }
+    }
+
+    /**
+     * Manipulates the teaser depending on slider setting (mobile or desktop)
+     * and current window width.
+     */
+    protected _toggleTeaser(): void {
+        const isSliderMobileOnly =
+            this._options.isSliderMobile && !this._options.isSlider;
+        const isSliderDesktopOnly =
+            !this._options.isSliderMobile && this._options.isSlider;
+        const isWindowMobile =
+            $(window).width() < this._options.carouselBreakpoint;
+        if (isSliderMobileOnly) {
+            if (isWindowMobile) {
+                if (!this._instance) {
+                    this._toggleTeaserClasses();
+                    this._initTeaser(this._$container);
+                }
+            } else {
+                if (this._instance) {
+                    this._toggleTeaserClasses();
+                    this._instance.destroy();
+                }
             }
-        } else {
-            if (this._instance) {
-                this._instance.destroy();
-                this._$container
-                    .removeClass(`${this._options.teaserName}--slider`)
-                    .find(`.${this._options.teaserName}__slides`)
-                    .removeAttr('style')
-                    .find(`.${this._options.teaserName}__slide`)
-                    .removeAttr('style');
-                this._instance = undefined;
+        }
+        if (isSliderDesktopOnly) {
+            if (isWindowMobile) {
+                if (this._instance) {
+                    this._toggleTeaserClasses();
+                    this._instance.destroy();
+                }
+            } else {
+                if (!this._instance) {
+                    this._toggleTeaserClasses();
+                    this._initTeaser(this._$container);
+                }
             }
         }
     }
