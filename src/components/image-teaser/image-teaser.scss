@@ -50,6 +50,9 @@ $image-teaser_badge-font-size: 1.1em !default;
 $image-teaser_no-image-light-scheme-background: $color_background-700 !default;
 $image-teaser_no-image-dark-scheme-background: $color_background-200 !default;
 
+// If less than 100%, previous and next slides' fragments will fill empty space.
+$image-teaser--hero-slider_slide-width: 77% !default;
+
 $image-teaser_cms-pages-height: 200px !default;
 $image-teaser_cms-pages-background: $color_gallery !default;
 
@@ -621,6 +624,41 @@ $image-teaser_cms-pages-background: $color_gallery !default;
     &--grid-teaser {
         height: 100%;
         margin: 0;
+    }
+
+    &--hero-teaser {
+        @include media('>=tablet') {
+            padding: 0 (100% - $image-teaser--hero-slider_slide-width) / 2;
+        }
+
+        #{$root}__wrapper {
+            @include media('>=tablet') {
+                overflow: visible;
+            }
+        }
+
+        #{$root}__carousel {
+            position: static; // Do not affect image teaser nav positioning
+        }
+
+        &#{$root}--as-list-mobile {
+            @include media('<tablet') {
+                #{$root}__slides {
+                    flex-wrap: wrap;
+                }
+
+                #{$root}__cta,
+                #{$root}__pagination {
+                    display: none;
+                }
+            }
+        }
+
+        &#{$root}--hidden-mobile {
+            @include media('<tablet') {
+                display: none;
+            }
+        }
     }
 }
 

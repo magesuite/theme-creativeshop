@@ -61,7 +61,6 @@ import 'components/brand-carousel';
 import 'components/category-links';
 import 'components/daily-deal-teaser';
 import 'components/dailydeal';
-import 'components/hero';
 import 'components/image-teaser';
 import 'components/image-teaser-legacy';
 import 'components/paragraph';
