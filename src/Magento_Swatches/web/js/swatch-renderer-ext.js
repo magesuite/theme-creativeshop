@@ -44,13 +44,26 @@ define(['jquery', 'underscore'], function($, _) {
                 $(gallery).on('gallery:loaded', function() {
                     _this._SelectSwatchesBasedOnReferrer();
 
-                    $.each(_this.options.jsonConfig.attributes, function(
-                        index,
-                        item
-                    ) {
-                        if (item.options.length === 1) {
-                            _this._checkOption(item.code, item.options[0].id);
+                    var optionsWithoutDisabledProducts = _this.options.jsonConfig.attributes.map(
+                        function(currentValue, index, array) {
+                            currentValue.options = currentValue.options.filter(
+                                function(element, index, array) {
+                                    return element.products.length > 0;
+                                }
+                            );
+
+                            return currentValue;
                         }
+                    );
+
+                    var optionsWithSingleSwatch = optionsWithoutDisabledProducts.filter(
+                        function(element, index, array) {
+                            return element.options.length === 1;
+                        }
+                    );
+
+                    $.each(optionsWithSingleSwatch, function(index, item) {
+                        _this._checkOption(item.code, item.options[0].id);
                     });
                 });
             },
