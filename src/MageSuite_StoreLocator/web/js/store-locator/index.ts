@@ -140,6 +140,16 @@ export default class StoreLocator {
 
         this._basePath = this._$element.attr('data-base-path');
 
+        if (!this._options.useDefaultMapStyles) {
+            this._options.mapOptions.styles = mapStyles;
+        }
+
+        // Mount map and then send request for stores
+        this.map = new google.maps.Map(
+            document.getElementById('store-locator-map'),
+            this._options.mapOptions
+        );
+
         $.post({
             url: this._basePath + 'graphql',
             data: JSON.stringify({
@@ -164,6 +174,7 @@ export default class StoreLocator {
             if (response.data) {
                 this.stores = response.data.storePickupLocations.items;
             }
+
             this._initMap();
         });
 
@@ -854,15 +865,6 @@ export default class StoreLocator {
      * Init Map
      */
     protected _initMap(): void {
-        if (!this._options.useDefaultMapStyles) {
-            this._options.mapOptions.styles = mapStyles;
-        }
-
-        this.map = new google.maps.Map(
-            document.getElementById('store-locator-map'),
-            this._options.mapOptions
-        );
-
         this._setMarkerIcons();
         this._createMarkers();
 
