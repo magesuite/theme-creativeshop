@@ -574,13 +574,13 @@ $store-locator_autocomplete-background: $color_background-200 !default;
     }
 
     &__item-hours-wrapper {
-        padding: 0.5rem 0;
+        padding: 0.5rem 0 0;
         @include font-family($font_family-primary);
         font-size: 1.3rem;
         font-weight: 400;
 
         @include media('>=laptop') {
-            padding: 1rem 0;
+            padding: 1rem 0 0;
             font-size: 1.4rem;
         }
     }
@@ -593,6 +593,18 @@ $store-locator_autocomplete-background: $color_background-200 !default;
         @include media('>=laptop') {
             font-size: 1.4rem;
         }
+
+        span {
+            @include media('>=laptop') {
+                font-size: 1.3rem;
+                padding-left: 1rem;
+            }
+        }
+    }
+
+    &__item-hours-today-space {
+        display: inline-block;
+        width: 1rem;
     }
 
     &__item-hours {
@@ -606,18 +618,26 @@ $store-locator_autocomplete-background: $color_background-200 !default;
         font-size: 1.2rem;
 
         span {
+            float: right;
+
             &:first-child {
                 padding-right: 1rem;
                 display: inline-block;
                 width: 45%;
+                float: left;
             }
         }
 
         li {
-            padding: 0;
+            padding: 0 1.5rem 0 0;
             margin: 0;
-            width: 50%;
+            width: 55%;
             line-height: 140%;
+
+            &:nth-child(2n + 2) {
+                padding-right: 0;
+                width: 45%;
+            }
         }
     }
 
