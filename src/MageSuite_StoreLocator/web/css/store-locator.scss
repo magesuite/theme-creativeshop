@@ -55,6 +55,20 @@ $store-locator_autocomplete-background: $color_background-200 !default;
         height: calc(100vh - 18rem);
     }
 
+    &.loading {
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 1 !important;
+            background: url('../images/ajax-loader.gif') no-repeat center center /
+                30px 30px rgba($color_white, 0.75) !important;
+            z-index: 5;
+        }
+    }
+
     &__sidebar {
         z-index: 1;
         background: $store-locator_sidebar-background;
@@ -151,7 +165,7 @@ $store-locator_autocomplete-background: $color_background-200 !default;
 
         &:focus {
             + #{$root}__action {
-                .ajax-loading & {
+                .loading & {
                     #{$root}__button-container--search {
                         transform: translateX(100%);
                         opacity: 0;

@@ -150,6 +150,8 @@ export default class StoreLocator {
             this._options.mapOptions
         );
 
+        this._$element.addClass('loading');
+
         $.post({
             url: this._basePath + 'graphql',
             data: JSON.stringify({
@@ -175,6 +177,7 @@ export default class StoreLocator {
                 this.stores = response.data.storePickupLocations.items;
             }
 
+            this._$element.removeClass('loading');
             this._initMap();
         });
 
@@ -188,7 +191,7 @@ export default class StoreLocator {
     public searchButtonClickHandler() {
         const query: string = $('.cs-store-locator__search-input').val();
 
-        this._$searchForm.addClass('ajax-loading');
+        this._$searchForm.addClass('loading');
 
         this.getCoordinatesFromQuery(query).then(response => {
             if (
@@ -237,7 +240,7 @@ export default class StoreLocator {
                         .remove();
                 }, 5000);
             }
-            this._$searchForm.removeClass('ajax-loading');
+            this._$searchForm.removeClass('loading');
         });
     }
 
