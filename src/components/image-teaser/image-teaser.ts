@@ -530,11 +530,21 @@ export default class ImageTeaser {
         this._$container
             .find(`.${this._options.teaserName}__slide`)
             .each(function(): void {
-                new ProportionalScaler($(this), {
+                const $slide: JQuery<HTMLElement> = $(this);
+
+                const textScaler = new ProportionalScaler($slide, {
                     scalableElementSelector: '.cs-image-teaser__text-content',
                 });
-                new ProportionalScaler($(this), {
+
+                const badgeScaler = new ProportionalScaler($slide, {
                     scalableElementSelector: '.cs-image-teaser__badge',
+                });
+
+                $.when(
+                    textScaler._initScaling(),
+                    badgeScaler._initScaling()
+                ).done(() => {
+                    $slide.addClass('ready');
                 });
             });
     }
