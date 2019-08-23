@@ -14,6 +14,7 @@ interface StoreLocatorOptions {
     useDefaultMapStyles: boolean;
     markerIcons?: object;
     clusterStyles?: object;
+    showCurrentDayInOpeningHours?: boolean;
 }
 
 interface Coordinates {
@@ -76,6 +77,7 @@ export default class StoreLocator {
             textColor: '#fff',
             backgroundPosition: 'center',
         },
+        showCurrentDayInOpeningHours: false,
     };
 
     protected _sidebarClosed: boolean = false;
@@ -411,6 +413,120 @@ export default class StoreLocator {
         this._infoWindow.open(this.map, this._activeMarker);
     }
 
+    public prepareOpeningHours(openData): string {
+        const today: number = new Date().getDay();
+
+        let openingHours = '';
+        let todayOpen = '';
+
+        const weekDays = {
+            mon: $.mage.__('Monday'),
+            tue: $.mage.__('Tuesday'),
+            wed: $.mage.__('Wednesday'),
+            thu: $.mage.__('Thursday'),
+            fri: $.mage.__('Friday'),
+            sat: $.mage.__('Saturday'),
+            sun: $.mage.__('Sunday'),
+        };
+
+        const weekDaysArray = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+        weekDaysArray.forEach(day => {
+            if (
+                openData[`${day}_from`] &&
+                openData[`${day}_to`] &&
+                (!openData[`${day}_lunch_from`] || !openData[`${day}_lunch_to`])
+            ) {
+                openingHours =
+                    openingHours +
+                    `<li><span>${$.mage.__(weekDays[day])}</span><span>${
+                        openData[`${day}_from`]
+                    } - ${openData[`${day}_to`]}</span></li> `;
+            } else if (
+                openData[`${day}_from`] &&
+                openData[`${day}_to`] &&
+                openData[`${day}_lunch_from`] &&
+                openData[`${day}_lunch_to`]
+            ) {
+                openingHours =
+                    openingHours +
+                    `<li><span>${$.mage.__(weekDays[day])}</span><span>${
+                        openData[`${day}_from`]
+                    } - ${openData[`${day}_lunch_from`]}<br>${
+                        openData[`${day}_lunch_to`]
+                    } - ${openData[`${day}_to`]}</span></li> `;
+            }
+        });
+
+        if (
+            openData[`${weekDaysArray[today - 1]}_from`] &&
+            openData[`${weekDaysArray[today - 1]}_to`] &&
+            (!openData[`${weekDaysArray[today - 1]}_lunch_from`] &&
+                !openData[`${weekDaysArray[today - 1]}_lunch_to`])
+        ) {
+            todayOpen =
+                todayOpen +
+                `<div class="cs-store-locator__item-hours-today">${$.mage.__(
+                    'Today'
+                )} ${
+                    this._options.showCurrentDayInOpeningHours
+                        ? '(' + weekDays[weekDaysArray[today - 1]] + ')'
+                        : ''
+                } ${$.mage.__('open')} 
+                <span>${openData[`${weekDaysArray[today - 1]}_from`]} - ${
+                    openData[`${weekDaysArray[today - 1]}_to`]
+                }</span>
+                </div>`;
+        } else if (
+            openData[`${weekDaysArray[today - 1]}_from`] &&
+            openData[`${weekDaysArray[today - 1]}_to`] &&
+            openData[`${weekDaysArray[today - 1]}_lunch_from`] &&
+            openData[`${weekDaysArray[today - 1]}_lunch_to`]
+        ) {
+            todayOpen =
+                todayOpen +
+                `<div class="cs-store-locator__item-hours-today">${$.mage.__(
+                    'Today'
+                )} ${
+                    this._options.showCurrentDayInOpeningHours
+                        ? '(' + weekDays[weekDaysArray[today - 1]] + ')'
+                        : ''
+                } ${$.mage.__('open')} 
+                <span>${openData[`${weekDaysArray[today - 1]}_from`]} - ${
+                    openData[`${weekDaysArray[today - 1]}_lunch_from`]
+                }<span class="cs-store-locator__item-hours-today-space"></span> ${
+                    openData[`${weekDaysArray[today - 1]}_lunch_to`]
+                } - ${openData[`${weekDaysArray[today - 1]}_to`]}
+                </span>
+                </div>`;
+        }
+
+        if (!todayOpen) {
+            todayOpen =
+                todayOpen +
+                `<div class="cs-store-locator__item-hours-today">${$.mage.__(
+                    'Today'
+                )} ${
+                    this._options.showCurrentDayInOpeningHours
+                        ? '(' + weekDays[weekDaysArray[today - 1]] + ')'
+                        : ''
+                } ${$.mage.__('closed')}
+            </div>`;
+        }
+
+        if (openingHours) {
+            openingHours = `<div class="cs-store-locator__item-hours-wrapper">
+            ${todayOpen}
+            <div class="cs-store-locator__item-hours-trigger">${$.mage.__(
+                'Show all opening hours'
+            )}</div>
+                <ul class="cs-store-locator__item-hours" style="display: none;">${openingHours}</ul>
+            </div>`;
+        }
+
+        return openingHours;
+    }
+
     /**
      * Get store info window html
      * TODO For now there is not contact data, opening hours, descriptio and route link in response
@@ -426,8 +542,8 @@ export default class StoreLocator {
         ${storePostCode} ${storeCity}, ${storeStreet}</p>`
                 : ``;
 
-        // description is not in the response for now
-        const descriptionLine = store.description
+        // store.description contains json for opening hours for now. When there is proper description replace null with store.description
+        const descriptionLine = null
             ? `<p class="cs-store-locator__item-description">
         ${store.description}</p>`
             : ``;
@@ -455,59 +571,9 @@ export default class StoreLocator {
         // Not in the response for now
         const routeLink: string = store.routeLink;
 
-        const today: number = new Date().getDay();
-
-        let openingHours = '';
-
-        const weekDays = {
-            mon: $.mage.__('Monday'),
-            tue: $.mage.__('Tuesday'),
-            wed: $.mage.__('Wednesday'),
-            thu: $.mage.__('Thursday'),
-            fri: $.mage.__('Friday'),
-            sat: $.mage.__('Saturday'),
-            sun: $.mage.__('Sunday'),
-        };
-
-        const weekDaysArray = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-
-        // Opening hours are not in the response for now
-        weekDaysArray.forEach(day => {
-            if (store[`${day}_lunch_from`] && store[`${day}_lunch_to`]) {
-                openingHours =
-                    openingHours +
-                    `<li><span>${$.mage.__(weekDays[day])}</span><span>${
-                        store[`${day}_lunch_from`]
-                    } - ${store[`${day}_lunch_to`]}</span></li> `;
-            }
-        });
-
-        let todayOpen = '';
-
-        if (
-            store[`${weekDaysArray[today - 1]}_lunch_from`] &&
-            store[`${weekDaysArray[today - 1]}_lunch_to`]
-        ) {
-            todayOpen =
-                todayOpen +
-                `<div class="cs-store-locator__item-hours-today">${$.mage.__(
-                    'Today'
-                )} (${weekDays[weekDaysArray[today - 1]]}) open 
-                <span>${store[`${weekDaysArray[today - 1]}_lunch_from`]} - ${
-                    store[`${weekDaysArray[today - 1]}_lunch_to`]
-                }</span>
-                </div>`;
-        }
-
-        if (openingHours) {
-            openingHours = `<div class="cs-store-locator__item-hours-wrapper">
-            ${todayOpen}
-            <div class="cs-store-locator__item-hours-trigger">${$.mage.__(
-                'Show all opening hours'
-            )}</div>
-                <ul class="cs-store-locator__item-hours" style="display: none;">${openingHours}</ul>
-            </div>`;
-        }
+        // Opening hours are kept as json in store.description for now
+        const openData = JSON.parse(store.description);
+        const openingHours = this.prepareOpeningHours(openData);
 
         return `<div class="cs-store-locator__item" 
             data-id="${store.sourceCode}" data-lat="${
