@@ -46,7 +46,7 @@ interface IProportionalScaler {
  * It's responsible for handling Product Details Navigation events to scroll to chosen section
  */
 export default class ProportionalScaler {
-    private _element: HTMLElement;
+    private _$element: JQuery<HTMLElement>;
     private _options: IProportionalScaler;
     private _layoutSpecificOptions: IProportionalScalerTextLayoutScenario;
     private _ratio: number;
@@ -63,6 +63,7 @@ export default class ProportionalScaler {
         $element: JQuery<HTMLElement>,
         options?: IProportionalScaler
     ) {
+        this._$element = $element;
         this._options = $.extend(
             true,
             {},
@@ -79,26 +80,30 @@ export default class ProportionalScaler {
             },
             options
         );
+    }
 
-        if (!$element.length) {
-            return;
+    public _initScaling(): JQueryDeferred<void> {
+        const deferred = $.Deferred();
+
+        if (!this._$element.length) {
+            deferred.resolve();
+            return deferred;
         }
 
         this._layoutSpecificOptions =
-            $element.data('layout') === 'under'
+            this._$element.data('layout') === 'under'
                 ? this._options.textBelowImage
                 : this._options.textOverImage;
 
-        const $scalableEl = $element.find(
+        const $scalableEl = this._$element.find(
             `${this._options.scalableElementSelector}`
         );
 
         if (!$scalableEl.length || !this._layoutSpecificOptions.enabled) {
-            $element.addClass('ready');
-            return;
+            deferred.resolve();
+            return deferred;
         }
 
-        this._element = $element[0];
         this._ratio = this._layoutSpecificOptions.ratioBase / 1000;
         this._scalableElement = $scalableEl[0];
         this._scalableElelementFontSize = getComputedStyle(
@@ -107,19 +112,21 @@ export default class ProportionalScaler {
 
         this._setEvents();
 
-        if (this._element.querySelector('.lazyload')) {
-            this._element.addEventListener('lazyloaded', () => {
+        if (this._$element.find('.lazyload').length) {
+            this._$element.on('lazybeforeunveil', () => {
                 this._scale();
                 requestAnimationFrame(() => {
-                    this._scalableElement.classList.add('ready');
+                    deferred.resolve();
                 });
             });
         } else {
             this._scale();
             requestAnimationFrame(() => {
-                this._scalableElement.classList.add('ready');
+                deferred.resolve();
             });
         }
+
+        return deferred;
     }
 
     public _scale(): any {
@@ -128,7 +135,7 @@ export default class ProportionalScaler {
             this._scalableElelementFontSize,
             10
         ) *
-            this._element.offsetWidth *
+            this._$element.outerWidth() *
             this._ratio}px`;
     }
 
