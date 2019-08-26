@@ -32,49 +32,51 @@ define(['jquery'], function($) {
                 var from = this.element.find(this.options.fromInput).val();
                 var to = this.element.find(this.options.toInput).val();
 
-                if (from != this.from || to != this.to) {
+                if (from !== this.from || to !== this.to) {
                     this.element
                         .find(this.options.fromInput)
                         .val(
                             this._formatLabel(this.from).replace(
-                                /[^\d\.\,]/,
+                                /[^\d\.\,]/g,
                                 ''
                             )
                         );
                     this.element
                         .find(this.options.toInput)
                         .val(
-                            this._formatLabel(this.to).replace(/[^\d\.\,]/, '')
+                            this._formatLabel(this.to).replace(/[^\d\.\,]/g, '')
                         );
                 }
             },
             _prepareInputs: function() {
                 this.element
                     .find(this.options.fromInput)
-                    .on('input blur', this._onInputsChange.bind(this));
+                    .on('keyup blur', this._onInputsChange.bind(this));
 
                 this.element
                     .find(this.options.toInput)
-                    .on('input blur', this._onInputsChange.bind(this));
+                    .on('keyup blur', this._onInputsChange.bind(this));
             },
             /**
-             * Called when inputs change, used to normalize range and update slider.
+             * Called on blur or enter keyup event to normalize range and update the slider.
              */
             _onInputsChange: function(event) {
-                var from = parseFloat(
-                    this.element
-                        .find(this.options.fromInput)
-                        .val()
-                        .replace(/[^\d\.\,]/, '') || 0
-                );
-                var to = parseFloat(
-                    this.element
-                        .find(this.options.toInput)
-                        .val()
-                        .replace(/[^\d\.\,]/, '') || 0
-                );
-                // Make sure range is a valid one on blur.
-                if (event.type === 'blur') {
+                var key = event.key || event.keyCode;
+
+                if (event.type === 'blur' || key === 'Enter' || key === 13) {
+                    var from = parseFloat(
+                        this.element
+                            .find(this.options.fromInput)
+                            .val()
+                            .replace(/[^\d\.\,]/, '') || 0
+                    );
+                    var to = parseFloat(
+                        this.element
+                            .find(this.options.toInput)
+                            .val()
+                            .replace(/[^\d\.\,]/, '') || 0
+                    );
+
                     if (!to) {
                         to = this.maxValue;
                     }
@@ -90,9 +92,9 @@ define(['jquery'], function($) {
                     if (to > this.maxValue) {
                         to = this.maxValue;
                     }
-                }
 
-                this._updateRange(from, to);
+                    this._updateRange(from, to);
+                }
             },
             /**
              * Updates slider widget with new values.
