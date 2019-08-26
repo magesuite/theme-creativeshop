@@ -1,4 +1,5 @@
 import * as $ from 'jquery';
+import { debuglog } from 'util';
 
 /**
  * component options interface.
@@ -21,7 +22,7 @@ interface ReviewsOptions {
 
 export default class Reviews {
     protected _$wrapper: JQuery<HTMLElement>;
-    private _$feedbackEl: JQuery<HTMLElement>
+    private _$feedbackEl: JQuery<HTMLElement>;
     private _options: ReviewsOptions;
 
     /**
@@ -45,32 +46,57 @@ export default class Reviews {
     protected _attachEvents(): void {
         const _this: any = this;
         let msg: string = this._$feedbackEl.data('default-message');
-        let $radios: any = [];
-        let $icons: any = [];
+        const $radios: any = [];
+        const $icons: any = [];
 
-        
-        for (let ratingIndex: number = 0; ratingIndex < _this._$wrapper.length; ratingIndex++){
-            $radios[ratingIndex] = _this._$wrapper.eq(ratingIndex).find('input[type="radio"]');
-            $icons[ratingIndex] = _this._$wrapper.eq(ratingIndex).find('label svg');
-            for (let starIndex: number = 0; starIndex < $radios[ratingIndex].length; starIndex++) {
-                $radios[ratingIndex][starIndex].addEventListener('change', function(): void {
-                    if (
-                       $( this ).is(":checked")
-                    ) {
-                        $icons[ratingIndex].each((index: number, element: JQuery) => {
-                            $(element).toggleClass("cs-star-rating__form-star--active", index <= starIndex)
-                        });
-    
-                        msg = _this._$wrapper.eq(ratingIndex)
-                            .find('input[type="radio"]:checked')
-                            .data('feedback-message');
-                    } else {
-                        msg = _this._$wrapper.eq(ratingIndex).data('default-message');
+        for (
+            let ratingIndex: number = 0;
+            ratingIndex < _this._$wrapper.length;
+            ratingIndex++
+        ) {
+            $radios[ratingIndex] = _this._$wrapper
+                .eq(ratingIndex)
+                .find('input[type="radio"]');
+            $icons[ratingIndex] = _this._$wrapper
+                .eq(ratingIndex)
+                .find('label svg');
+
+            for (
+                let starIndex: number = 0;
+                starIndex < $radios[ratingIndex].length;
+                starIndex++
+            ) {
+                $radios[ratingIndex][starIndex].addEventListener(
+                    'change',
+                    function(): void {
+                        if ($(this).is(':checked')) {
+                            $icons[ratingIndex].each(
+                                (index: number, element: JQuery) => {
+                                    if (index <= starIndex) {
+                                        $(element).addClass(
+                                            'cs-star-rating__form-star--active'
+                                        );
+                                    } else {
+                                        $(element).removeClass(
+                                            'cs-star-rating__form-star--active'
+                                        );
+                                    }
+                                }
+                            );
+
+                            msg = _this._$wrapper
+                                .eq(ratingIndex)
+                                .find('input[type="radio"]:checked')
+                                .data('feedback-message');
+                        } else {
+                            msg = _this._$wrapper
+                                .eq(ratingIndex)
+                                .data('default-message');
+                        }
+                        _this._$feedbackEl.eq(ratingIndex).text(msg);
                     }
-                    _this._$feedbackEl.eq(ratingIndex).text(msg);
-                });
+                );
             }
-
-        } 
+        }
     }
 }
