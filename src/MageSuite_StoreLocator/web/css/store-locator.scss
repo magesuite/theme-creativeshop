@@ -42,6 +42,9 @@ $store-locator_button-container-transition: transform 0.5s
 $store-locator_autocomplete-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.17) !default;
 $store-locator_autocomplete-background: $color_background-200 !default;
 
+$store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
+    center center / 5rem 5rem rgba($color_background-200, 0.75) !default;
+
 .#{$ns}store-locator {
     $root: &;
 
@@ -53,6 +56,19 @@ $store-locator_autocomplete-background: $color_background-200 !default;
 
     @include media('>=laptop') {
         height: calc(100vh - 18rem);
+    }
+
+    &.loading {
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            opacity: 1 !important;
+            background: $store-locator_loading-mask-background !important;
+            z-index: 5;
+        }
     }
 
     &__sidebar {
@@ -151,7 +167,7 @@ $store-locator_autocomplete-background: $color_background-200 !default;
 
         &:focus {
             + #{$root}__action {
-                .ajax-loading & {
+                .loading & {
                     #{$root}__button-container--search {
                         transform: translateX(100%);
                         opacity: 0;
@@ -323,6 +339,7 @@ $store-locator_autocomplete-background: $color_background-200 !default;
 
     &__map-container {
         width: 100%;
+        height: 100%;
         flex: 1;
 
         &--mobile-hidden {
