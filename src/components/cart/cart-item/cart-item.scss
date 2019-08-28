@@ -98,6 +98,13 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
     &__badge {
         @include badge();
 
+        // fix IE issue - text vertical alignment inside flexbox (non-column)
+        &:after {
+            content: '';
+            min-height: inherit;
+            font-size: 0;
+        }
+
         &--free {
             @include badge_type('free');
 
