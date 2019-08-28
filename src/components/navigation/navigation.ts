@@ -263,16 +263,10 @@ export default class Navigation {
         const $flyoutExtras: JQuery = $flyout.children(
             `:not(.${this._options.flyoutColumnsClassName})`
         );
-        const hasImageTeaser = $flyoutExtras.children(
-            'cs-container--image-teaser'
-        );
-        const propertyToChange = hasImageTeaser ? 'width' : 'max-width';
-        const widthFactor = hasImageTeaser ? 1.2 : 2;
         $flyoutExtras
             .css({
-                [propertyToChange]: `${(this._containerClientRect.width /
-                    flyoutMaxColumnCount) *
-                    widthFactor}px`,
+                width: `${this._containerClientRect.width /
+                    flyoutMaxColumnCount}px`,
             })
             .addClass('cs-navigation__extras');
     }
