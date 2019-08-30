@@ -15,6 +15,7 @@ interface StoreLocatorOptions {
     markerIcons?: object;
     clusterStyles?: object;
     showCurrentDayInOpeningHours?: boolean;
+    limitOfShopsInitiallyDisplayed?: number;
 }
 
 interface Coordinates {
@@ -78,6 +79,7 @@ export default class StoreLocator {
             backgroundPosition: 'center',
         },
         showCurrentDayInOpeningHours: false,
+        limitOfShopsInitiallyDisplayed: 50,
     };
 
     protected _sidebarClosed: boolean = false;
@@ -144,13 +146,13 @@ export default class StoreLocator {
             this._options.mapOptions.styles = mapStyles;
         }
 
+        this._$element.addClass('loading');
+
         // Mount map and then send request for stores
         this.map = new google.maps.Map(
             document.getElementById('store-locator-map'),
             this._options.mapOptions
         );
-
-        this._$element.addClass('loading');
 
         $.post({
             url: this._basePath + 'graphql',
@@ -212,7 +214,7 @@ export default class StoreLocator {
                         this.stores,
                         coordinates
                     );
-                    this.renderItems(this.getFilteredStores());
+                    this.renderItems(this.getFilteredStores(), false);
 
                     if (this._locationMarker) {
                         this._locationMarker.setMap(null);
@@ -258,7 +260,7 @@ export default class StoreLocator {
     /**
      * Render stores list on sidebar
      */
-    public renderItems(stores): void {
+    public renderItems(stores, renderAllStores): void {
         if ($(window).width() < breakpoint.laptop || this._allItemsRendered) {
             return;
         }
@@ -266,8 +268,44 @@ export default class StoreLocator {
         this._$itemsList.empty();
 
         stores.map((store, index) => {
-            this._$itemsList.append(this.getInfoWindowContent(store));
+            if (renderAllStores) {
+                this._$itemsList.append(this.getInfoWindowContent(store));
+            } else if (index <= this._options.limitOfShopsInitiallyDisplayed) {
+                this._$itemsList.append(this.getInfoWindowContent(store));
+            }
         });
+
+        if (stores.length <= this._options.limitOfShopsInitiallyDisplayed) {
+            this._$itemsList
+                .find('.cs-store-locator__stores-more-wrapper')
+                .remove();
+        } else {
+            this._$itemsList.append(
+                `<div class="cs-store-locator__stores-more-wrapper"><span class="cs-store-locator__stores-more-text">${$.mage.__(
+                    'Show more stores'
+                )}</span></div>`
+            );
+        }
+
+        this._$itemsList
+            .find('.cs-store-locator__stores-more-wrapper')
+            .on('click', e => {
+                this._$element.addClass('loading');
+
+                // Make sure that loading class is added before all stores start to render
+                setTimeout(() => {
+                    this.renderItems(this.stores, true);
+                }, 100);
+                // When a lot os elements ia added to the DOM browser hangs for a moment. This loader force user to wait a bit.
+                setTimeout(() => {
+                    this._$element.removeClass('loading');
+                    this._$itemsList
+                        .find('.cs-store-locator__stores-more-wrapper')
+                        .remove();
+                    this._allItemsRendered = true;
+                    this.mapChangeHandler();
+                }, 3000);
+            });
 
         this._$element.find('.cs-store-locator__item').on('click', e => {
             if (!$(e.target).hasClass('cs-store-locator__item-hours-trigger')) {
@@ -327,7 +365,7 @@ export default class StoreLocator {
                     coordinates
                 );
 
-                this.renderItems(this.getFilteredStores());
+                this.renderItems(this.getFilteredStores(), false);
 
                 if (this._locationMarker) {
                     this._locationMarker.setMap(null);
@@ -813,15 +851,8 @@ export default class StoreLocator {
     public mapChangeHandler() {
         if (this._allItemsRendered) {
             this.filterItems();
-        } else if (
-            !this._allItemsRendered &&
-            this.getFilteredStores().length >= 100
-        ) {
-            this.renderItems(this.stores);
-            this.filterItems();
-            this._allItemsRendered = true;
         } else {
-            this.renderItems(this.getFilteredStores());
+            this.renderItems(this.getFilteredStores(), false);
             this.filterItems();
         }
     }
@@ -891,39 +922,16 @@ export default class StoreLocator {
                 this.map.panTo(coordinates);
                 this.map.setZoom(this._options.basicZoom);
 
-                const initialListener = google.maps.event.addListener(
-                    this.map,
-                    'idle',
-                    () => {
-                        if (this.stores.length < 100) {
-                            this.renderItems(this.stores);
-                            this._attachMapListeners();
-                            this._allItemsRendered = true;
-                        } else {
-                            this.renderItems(this.getFilteredStores());
-                            this._attachMapListeners();
-                        }
-
-                        google.maps.event.removeListener(initialListener);
-                        this.mapChangeHandler();
-                    }
-                );
+                this.renderItems(this.getFilteredStores(), false);
+                this._attachMapListeners();
+                this.mapChangeHandler();
             })
             .catch(error => {
                 // We don't know users position
                 this.setUserPositionAndPopulateDistance(this.stores, null);
 
-                const initialListener = google.maps.event.addListener(
-                    this.map,
-                    'idle',
-                    () => {
-                        this.renderItems(this.stores);
-                        this._attachMapListeners();
-                        this._allItemsRendered = true;
-
-                        google.maps.event.removeListener(initialListener);
-                    }
-                );
+                this.renderItems(this.stores, false);
+                this._attachMapListeners();
             });
     }
 
