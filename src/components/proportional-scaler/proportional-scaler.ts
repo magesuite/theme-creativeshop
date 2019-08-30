@@ -112,7 +112,12 @@ export default class ProportionalScaler {
 
         this._setEvents();
 
-        if (this._$element.find('.lazyload').length) {
+        if (this._$element.closest('.cs-image-teaser--hero-teaser')) {
+            this._scale();
+            requestAnimationFrame(() => {
+                deferred.resolve();
+            });
+        } else if (this._$element.find('.lazyload').length) {
             this._$element.on('lazybeforeunveil', () => {
                 this._scale();
                 requestAnimationFrame(() => {
