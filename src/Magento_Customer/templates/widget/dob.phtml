@@ -2,7 +2,6 @@
 // @codingStandardsIgnoreFile
 ?>
 <?php
-$subtractYears = 16;
 $fieldCssClass = 'field date field-' . $block->getHtmlId();
 $fieldCssClass .= $block->isRequired() ? ' required' : '';
 ?>
@@ -22,53 +21,3 @@ $fieldCssClass .= $block->isRequired() ? ' required' : '';
         <div class="note"><?php /* @escapeNotVerified */ echo $message; ?></div>
     <?php endif; ?>
 </div>
-
-<script type="text/javascript">
-    require([
-        'jquery', // jquery Library
-        'jquery/ui', // Jquery UI Library
-        'jquery/validate', // Jquery Validation Library
-        'mage/translate' // Magento text translate (Validation message translte as per language)
-    ], function($){
-        $.validator.addMethod(
-            'validate-cs-dob', function (value) {
-                var pat = /([0-9]{1,})$/;
-                var year = value.match( pat )[0];
-                var dateFormat = '<?php echo $block->getDateFormat(); ?>';
-                var dayPosition = 0;
-                var monthPosition = 1;
-                if( dateFormat.charAt( 0 ).toLowerCase() === 'm' ) {
-                    dayPosition = 1;
-                    monthPosition = 0;
-                }
-                var separator = value.replace(/[A-Za-z0-9 ]/gi, '' );
-                separator = separator.charAt( 0 );
-                var insertedDateArray = value.split( separator );
-                insertedDateArray = insertedDateArray.map( function( item ) {
-                    return parseInt( item, 10 );
-                });
-
-                if ( ( year.length !== 4 || isNaN( year ) === true ) && insertedDateArray[ 1 ].length > 2 && insertedDateArray[ 0 ].length > 2 ) {
-                    return false;
-                }
-
-                var minDate = new Date();
-                minDate.setFullYear( minDate.getFullYear() - <?php echo $subtractYears; ?> );
-
-                if ( insertedDateArray[ 2 ] > minDate.getFullYear() ) {
-                    return false;
-                }
-
-                if ( insertedDateArray[ 2 ] === minDate.getFullYear() && ( insertedDateArray[ monthPosition ] - 1  > minDate.getMonth() ) ) {
-                    return false;
-                }
-
-                if ( insertedDateArray[ 2 ] === minDate.getFullYear() && ( insertedDateArray[ monthPosition ] - 1 ) === minDate.getMonth() && insertedDateArray[ dayPosition ] > minDate.getDay() ) {
-                    return false;
-                }
-
-                return true;
-            }, $.mage.__('Enter valid date according to given format'));
-
-    });
-</script>

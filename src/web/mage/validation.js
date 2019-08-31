@@ -13,6 +13,7 @@
     if (typeof define === 'function' && define.amd) {
         define([
             'jquery',
+            'moment',
             'jquery/ui',
             'jquery/validate',
             'mage/translate'
@@ -20,7 +21,7 @@
     } else {
         factory(jQuery);
     }
-}(function ($) {
+}(function ($, moment) {
     'use strict';
 
     var creditCartTypes, rules, showLabel, originValidateDelegate;
@@ -970,13 +971,18 @@
             $.mage.__('Please use only letters (a-z or A-Z) or numbers (0-9) in this field. No spaces or other characters are allowed.') //eslint-disable-line max-len
         ],
         'validate-date': [
-            function (v) {
-                var test = new Date(v);
+            function (value, params, additionalParams) {
+                debugger;
+                var test = moment(value, additionalParams.dateFormat);
+                var regex = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;
 
-                return $.mage.isEmptyNoTrim(v) || !isNaN(test);
+                if ($.mage.isEmpty(value) || !regex.test(value)) {
+                    return false;
+                }
+
+                return $.mage.isEmptyNoTrim(value) || test.isValid();
             },
             $.mage.__('Please enter a valid date.')
-
         ],
         'validate-date-range': [
             function (v, elm) {
