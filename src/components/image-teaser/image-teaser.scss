@@ -152,6 +152,32 @@ $image-teaser_cms-pages-background: $color_gallery !default;
         }
     }
 
+    &__slides {
+        @include media('>=tablet') {
+            &--mosaic-scenario {
+                &-1 {
+                    #{$root}__slide:first-child {
+                        width: calc((100% / 3) * 2);
+                    }
+
+                    #{$root}__slide:last-child {
+                        width: calc(100% / 3);
+                    }
+                }
+
+                &-2 {
+                    #{$root}__slide:first-child {
+                        width: calc(100% / 3);
+                    }
+
+                    #{$root}__slide:last-child {
+                        width: calc((100% / 3) * 2);
+                    }
+                }
+            }
+        }
+    }
+
     &__slide {
         padding: $image-teaser_slides-gutter / 2;
         transition: opacity 0.3s;
