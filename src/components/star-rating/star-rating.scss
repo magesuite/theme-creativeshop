@@ -37,8 +37,7 @@ $star-rating_label-font-size: 0.75em !default;
 $star-rating_label-font-weight: 700 !default;
 $star-rating_label-text-transform: uppercase !default;
 // Determines star svg for ie11 height calculations
-$star-rating_star-aspect-ratio: 1.05 !default; 
-
+$star-rating_star-aspect-ratio: 1.05 !default;
 
 .#{$ns}star-rating {
     $root: &;
@@ -73,7 +72,6 @@ $star-rating_star-aspect-ratio: 1.05 !default;
         }
 
         &--half-active {
-
             .star-left {
                 fill: $star-rating_color-active;
             }
@@ -87,7 +85,9 @@ $star-rating_star-aspect-ratio: 1.05 !default;
             width: $star-rating_star-width-reviews-summary;
 
             .ie11 & {
-                height: calc(#{$star-rating_star-width-reviews-summary}/#{$star-rating_star-aspect-ratio});
+                height: calc(
+                    #{$star-rating_star-width-reviews-summary} / #{$star-rating_star-aspect-ratio}
+                );
             }
         }
 
@@ -95,16 +95,21 @@ $star-rating_star-aspect-ratio: 1.05 !default;
             width: $star-rating_star-width-review;
 
             .ie11 & {
-                height: calc(#{$star-rating_star-width-review}/#{$star-rating_star-aspect-ratio});
+                height: calc(
+                    #{$star-rating_star-width-review} / #{$star-rating_star-aspect-ratio}
+                );
             }
         }
 
         path {
             fill-opacity: 1;
+            fill: inherit;
         }
 
         .ie11 & {
-            height: calc(#{$star-rating_star-width-default}/#{$star-rating_star-aspect-ratio});
+            height: calc(
+                #{$star-rating_star-width-default} / #{$star-rating_star-aspect-ratio}
+            );
         }
     }
 
@@ -129,9 +134,10 @@ $star-rating_star-aspect-ratio: 1.05 !default;
 
         path {
             fill-opacity: 1;
+            fill: inherit;
         }
 
-        &:nth-last-of-type(){
+        &:nth-last-of-type() {
             padding-right: 0;
         }
 
@@ -144,16 +150,18 @@ $star-rating_star-aspect-ratio: 1.05 !default;
         }
 
         .ie11 & {
-            height: calc(#{$star-rating_star-width-review-form}/#{$star-rating_star-aspect-ratio});
+            height: calc(
+                #{$star-rating_star-width-review-form} / #{$star-rating_star-aspect-ratio}
+            );
         }
     }
 
     &__text {
         display: inline-block;
         color: $star-rating_text-color;
-        padding-left: .5em;
+        padding-left: 0.5em;
         line-height: 1;
-        padding-top: calc(#{$star-rating_star-width-default}*0.1);
+        padding-top: calc(#{$star-rating_star-width-default} * 0.1);
 
         @if $star-rating_hide-text-pdp {
             .#{$ns}buybox & {
@@ -190,12 +198,11 @@ $star-rating_star-aspect-ratio: 1.05 !default;
         font-size: $star-rating_label-font-size;
         font-weight: $star-rating_label-font-weight;
         text-transform: $star-rating_label-text-transform;
-        padding-top: calc(#{$star-rating_star-width-default}*0.2);
+        padding-top: calc(#{$star-rating_star-width-default} * 0.2);
     }
 }
 
 .review-control-vote {
-
     @for $i from 1 through 5 {
         .rating-#{$i}:before {
             content: none;
@@ -208,12 +215,14 @@ $star-rating_star-aspect-ratio: 1.05 !default;
 
     label {
         position: static;
-        width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form-mobile;
+        width: $star-rating_star-width-review-form +
+            $star-rating_star-padding-review-form-mobile;
         padding-right: $star-rating_star-padding-review-form-mobile;
         line-height: 0;
 
-        @include media('>=tablet'){
-            width: $star-rating_star-width-review-form + $star-rating_star-padding-review-form;
+        @include media('>=tablet') {
+            width: $star-rating_star-width-review-form +
+                $star-rating_star-padding-review-form;
             padding-right: $star-rating_star-padding-review-form;
         }
 
