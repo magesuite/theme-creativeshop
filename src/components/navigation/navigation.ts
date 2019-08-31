@@ -73,6 +73,15 @@ export interface NavigationOptions {
      * Class name of active category (as addition to original)
      */
     activeCategoryClassName?: string;
+    /**
+     * if markCategoriesWithNoChildren is set to TRUE, categories level_1 with no subcategories of level_2
+     * receive modifier class. Default: false
+     */
+    markCategoriesWithNoChildren?: boolean;
+    /**
+     * Modifier class for categories with no children
+     */
+    categoriesWithNoChildrenClass: string;
 }
 
 /**
@@ -124,6 +133,8 @@ export default class Navigation {
         highlightActiveCategory: true,
         highlightWholeTree: true,
         activeCategoryClassName: 'active',
+        markCategoriesWithNoChildren: true,
+        categoriesWithNoChildrenClass: 'cs-navigation__item--no-children',
     };
 
     /**
@@ -151,6 +162,9 @@ export default class Navigation {
 
         if (this._options.highlightActiveCategory) {
             this._highlightActiveCategory();
+        }
+        if (this._options.markCategoriesWithNoChildren) {
+            this._selectCategoriesWithNoChildren();
         }
         this._attachEvents();
         this._openIfHovered();
@@ -225,6 +239,24 @@ export default class Navigation {
                 }
             }
         }
+    }
+
+    /**
+     * Adds modifier ${this._options.categoriesWithNoChildrenModifier} to item level_1
+     * if it doesn't have children categories of level_2 to enhance styling
+     */
+    protected _selectCategoriesWithNoChildren(): void {
+        const $firstLevelCategories: JQuery = $(
+            `.${this._options.itemClassName}--level_1`
+        );
+
+        $firstLevelCategories.each((index: number, element: HTMLElement) => {
+            if ($(element).children('ul').length === 0) {
+                $(element).addClass(
+                    this._options.categoriesWithNoChildrenClass
+                );
+            }
+        });
     }
 
     /**
