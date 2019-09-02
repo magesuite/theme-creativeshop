@@ -46,8 +46,11 @@ export default class ProductTile {
 
         $(document).on('click', this._options.tileModifier, event => {
             event.stopPropagation();
-            event.preventDefault();
             $target = $(event.target);
+
+            if ($target.closest('a', this._options.tileModifier).length) {
+                return;
+            }
 
             if (!$target.closest(this._options.ignoredSelectors).length) {
                 const $productTile = $target.closest(
