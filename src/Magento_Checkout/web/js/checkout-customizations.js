@@ -11,61 +11,6 @@ define([
     'use strict';
 
     /**
-     * Makes sure our custom next buttons trigger originals properly.
-     */
-
-    function handleCustomNextButtons() {
-        var $customNextButtons = $('.cs-checkout-button-next');
-        // ID of a form that has hidden button
-        var $formWithHiddenNextButton = $('#co-shipping-method-form');
-        if ($customNextButtons.length) {
-            $customNextButtons.on('click', function() {
-                if ($formWithHiddenNextButton.length) {
-                    $formWithHiddenNextButton.submit();
-                } else {
-                    $('#co-shipping-method-form').submit();
-                }
-            });
-        }
-    }
-
-    /**
-     * Makes sure our custom order button gets proper state depending on
-     * selected payment methods and triggers original order buttons properly.
-     */
-    function handleCustomOrderButtons() {
-        var $customPlaceOrderButtons = $('.cs-place-order-button');
-        var $checkoutPaymentMethods = $('#checkout-payment-method-load');
-        /**
-         * Function that toggles place order button disabled state depending
-         * on original button's state.
-         */
-        var togglePlaceOrderButton = function() {
-            var $origPlaceOrderButton = $(
-                '.payment-method._active .action.checkout[type="submit"]'
-            );
-            if ($origPlaceOrderButton.is(':not(disabled):not(".disabled")')) {
-                $customPlaceOrderButtons.prop('disabled', false);
-            } else {
-                $customPlaceOrderButtons.prop('disabled', true);
-            }
-        };
-        // We need to call it on init in case someone got directly to payment step.
-        togglePlaceOrderButton();
-        // And on any payment methods changes.
-        $checkoutPaymentMethods.on('click change', togglePlaceOrderButton);
-
-        $customPlaceOrderButtons.on('click', function() {
-            var $origPlaceOrderButton = $(
-                '.payment-method._active .action.checkout[type="submit"]'
-            );
-            if ($origPlaceOrderButton.is(':not(disabled):not(".disabled")')) {
-                $origPlaceOrderButton.trigger('click');
-            }
-        });
-    }
-
-    /**
      * Initializes inline validation for shipping information form fields
      * including custom logic for street name.
      */
@@ -92,7 +37,7 @@ define([
                 if ($input.validation('isValid') && $input.val() !== '') {
                     $inputComponent.addClass('cs-input--success');
 
-                    if ($input.attr('name') == 'street[0]') {
+                    if ($input.attr('name') === 'street[0]') {
                         if (!/\d/.test($input.val())) {
                             $inputComponent.addClass('cs-input--warning');
                             if (
@@ -130,8 +75,6 @@ define([
         var $shippingAddressForm = $('#co-shipping-form');
 
         initInlineValidation($shippingAddressForm);
-        handleCustomNextButtons();
-        handleCustomOrderButtons();
 
         bundle.AddressAutofill({
             streetField: $shippingAddressForm.find('input[name="street[0]"]'),

@@ -1,9 +1,16 @@
-<div class="cs-checkout__sidebar-bottom" data-bind="css: { 'cs-no-display': isHidden() }">
-    <button data-role="opc-continue" class="cs-checkout__sidebar-button | cs-checkout-button-next"
-        data-bind="attr: { 'disabled': isDisabled() }">
-        <span class="cs-checkout__sidebar-button-span">
-            <!-- ko i18n: 'Next'-->
-            <!-- /ko --></span>
-        <img class="inline-svg cs-checkout__sidebar-button-icon" data-bind="attr: { src: require.toUrl('images/icons/arrow_next.svg') }" alt="">
+<div class="cs-checkout__sidebar-bottom" data-bind="visible: isVisible()">
+    <button
+        data-role="opc-continue"
+        class="cs-checkout__sidebar-button | cs-checkout-button-next"
+        data-bind="click: continueToPayment, attr: { 'disabled': isDisabled() }, enable: !isDisabled()"
+        disabled
+    >
+        <span class="cs-checkout__sidebar-button-span" data-bind="i18n: 'Next'">
+        </span>
+        <img
+            class="inline-svg cs-checkout__sidebar-button-icon"
+            data-bind="attr: { src: require.toUrl('images/icons/arrow_next.svg') }"
+            alt=""
+        />
     </button>
 </div>
