@@ -133,7 +133,7 @@ export default class Navigation {
         highlightActiveCategory: true,
         highlightWholeTree: true,
         activeCategoryClassName: 'active',
-        markCategoriesWithNoChildren: true,
+        markCategoriesWithNoChildren: false,
         categoriesWithNoChildrenClass: 'cs-navigation__item--no-children',
     };
 
