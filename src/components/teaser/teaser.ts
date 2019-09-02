@@ -109,7 +109,9 @@ const csTeaser: any = function($element: any, settings: any): void {
             clickable: true,
         },
         scrollbar: {
-            el: $element.find(`.${scrollbarName}`),
+            el: $element.find(`.${scrollbarName}`).length
+                ? $element.find(`.${scrollbarName}`)
+                : null,
             dragClass: `${scrollbarName}--drag`,
             hide: true,
         },
