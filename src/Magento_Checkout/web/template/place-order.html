@@ -1,8 +1,23 @@
 <!--It is custom creativeshop template. -->
 <!--It places one common place order button for all payment methods on the right side/column-->
-<div class="cs-checkout__place-order" data-bind="css: { 'cs-no-display': isHidden() }">
-    <button class="cs-checkout__place-order-button | cs-place-order-button" disabled>
-            <span class="cs-checkout__place-order-button-span" data-bind="i18n: 'Place order'"></span>
-            <img class="inline-svg cs-checkout__place-order-button-icon" data-bind="attr: { src: require.toUrl('images/icons/arrow_next.svg') }" alt="">
+<div class="cs-checkout__place-order" data-bind="visible: isVisible()">
+    <button
+        class="cs-checkout__place-order-button | cs-place-order-button"
+        data-bind="
+            click: placeOrder,
+            css: { disabled: !isPlaceOrderActionAllowed() },
+            enable: isPlaceOrderActionAllowed()
+        "
+        disabled
+    >
+        <span
+            class="cs-checkout__place-order-button-span"
+            data-bind="i18n: 'Place order'"
+        ></span>
+        <img
+            class="inline-svg cs-checkout__place-order-button-icon"
+            data-bind="attr: { src: require.toUrl('images/icons/arrow_next.svg') }"
+            alt=""
+        />
     </button>
 </div>
