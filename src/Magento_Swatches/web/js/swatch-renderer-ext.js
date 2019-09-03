@@ -70,6 +70,10 @@ define(['jquery', 'underscore'], function($, _) {
             _SelectSwatchesBasedOnReferrer: function() {
                 var _this = this;
 
+                if (!_this.element.parents('.cs-buybox').length) {
+                    return;
+                }
+
                 var referrerQueryString = document.referrer.substring(
                     document.referrer.indexOf('?') + 1
                 );
@@ -127,6 +131,10 @@ define(['jquery', 'underscore'], function($, _) {
             },
             _checkOption: function(key, optionId) {
                 var _this = this;
+
+                if (!_this.element.parents('.cs-buybox').length) {
+                    return;
+                }
 
                 // Select swatches based on attributeCode and optionId
                 var $option = _this.element.find(
