@@ -59,6 +59,9 @@ var config = {
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
+            'Magento_Checkout/js/model/step-navigator': {
+                'Magento_Checkout/js/model/step-navigator-ext': true,
+            },
             'Magento_PageCache/js/page-cache': {
                 'Magento_PageCache/js/submit-button-enabler': true,
             },
