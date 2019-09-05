@@ -83,6 +83,9 @@ var config = {
             'PluginCompany_ContactForms/js/form': {
                 'PluginCompany_ContactForms/js/form-ext': true,
             },
+            'Magento_Catalog/js/related-products': {
+                'Magento_Catalog/js/related-products-ext': true,
+            },
         },
     },
     map: {
