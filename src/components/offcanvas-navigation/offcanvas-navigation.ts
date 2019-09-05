@@ -1,7 +1,10 @@
 import * as $ from 'jquery';
 
 import requireAsync from 'utils/require-async';
-import { default as idleDeferred, IdleDeferred } from 'utils/idle-deffered';
+import idleDeffered, {
+    default as idleDeferred,
+    IdleDeferred,
+} from 'utils/idle-deffered';
 
 /**
  * Component options interface.
@@ -207,6 +210,15 @@ export default class OffcanvasNavigation {
         const cacheInfo = this._getCacheInfo();
         const cache = this._loadCache();
 
+        if (!cacheInfo.url) {
+            /* tslint:disable */
+            console.error(
+                `Main navigation is missing "data-mobile-endpoint-url" attribute, please make sure its template is up to date.`
+            );
+            /* tslint:enable */
+            return deferred.resolve('');
+        }
+
         if (
             cache.key === cacheInfo.key &&
             cache.generationTime >= cacheInfo.generationTime
@@ -263,7 +275,7 @@ export default class OffcanvasNavigation {
         const $navigation = $(`.${this._options.navigationClassName}`);
 
         return {
-            url: $navigation.data('data-mobile-endpoint-url'),
+            url: $navigation.data('mobile-endpoint-url'),
             key: $navigation.data('cache-key'),
             generationTime: $navigation.data('cache-generation-time'),
         };
