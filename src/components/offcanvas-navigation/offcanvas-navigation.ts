@@ -30,6 +30,7 @@ interface OffcanvasNavigationCache {
 }
 
 interface MainNavigationCacheInfo {
+    url: string;
     key: string;
     generationTime: number;
 }
@@ -98,12 +99,7 @@ export default class OffcanvasNavigation {
     protected _initWhenIdle(): void {
         this._idleDeferred = idleDeferred();
         this._idleDeferred
-            .then(() =>
-                requireAsync(['mage/url']).then(([mageUrl]) =>
-                    mageUrl.build(this._options.endpointPath)
-                )
-            )
-            .then(url => this._getHtml(url))
+            .then(() => this._getHtml())
             .then(html => this._initHtml(html))
             .then(() => {
                 if (this._options.showActiveCategoryLevel) {
@@ -206,7 +202,7 @@ export default class OffcanvasNavigation {
      * Fetches navigation HTML from cache or using AJAX from endpoint.
      * @param url AJAX endpoint URL.
      */
-    protected _getHtml(url: string): JQuery.Deferred<string> {
+    protected _getHtml(): JQuery.Deferred<string> {
         const deferred = jQuery.Deferred();
         const cacheInfo = this._getCacheInfo();
         const cache = this._loadCache();
@@ -218,10 +214,12 @@ export default class OffcanvasNavigation {
             return deferred.resolve(cache.html);
         }
 
-        $.get(url, { cache_key: cacheInfo.key }).then((html: string) => {
-            this._setCache(cacheInfo.key, html);
-            deferred.resolve(html);
-        });
+        $.get(cacheInfo.url, { cache_key: cacheInfo.key }).then(
+            (html: string) => {
+                this._setCache(cacheInfo.key, html);
+                deferred.resolve(html);
+            }
+        );
 
         return deferred;
     }
@@ -265,6 +263,7 @@ export default class OffcanvasNavigation {
         const $navigation = $(`.${this._options.navigationClassName}`);
 
         return {
+            url: $navigation.data('data-mobile-endpoint-url'),
             key: $navigation.data('cache-key'),
             generationTime: $navigation.data('cache-generation-time'),
         };
