@@ -10,8 +10,6 @@ export default (options: IAddressAutofillOptions): AddressAutofill => {
         {
             language: 'de',
             region: 'DE',
-            apiKey: 'AIzaSyDwjU7ABFBMRg_i6pU4gYTnGFZvLUS2Y94',
-            dev: false,
         },
         options
     );

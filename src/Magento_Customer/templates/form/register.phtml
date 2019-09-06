@@ -116,7 +116,7 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
 
                     <?php $streetValidationClass = $addressHelper->getAttributeValidationClass('street'); ?>
 
-                    <div class="cs-form__field | cs-input | street required">
+                    <div class="cs-form__field | cs-input | field street required">
                         <label for="street_1" class="cs-input__label"><?= /* @escapeNotVerified */ __('Street Address') ?></label>
 
                         <div class="cs-input__control">
@@ -132,7 +132,7 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
                             <div class="nested">
                                 <?php $streetValidationClass = trim(str_replace('required-entry', '', $streetValidationClass)); ?>
                                 <?php for ($lineNumber = 2, $totalLines = $addressHelper->getStreetLines(); $lineNumber <= $totalLines; $lineNumber++): ?>
-                                    <div class="cs-form__field cs-form__field--space-top | cs-input | additional no-required">
+                                    <div class="cs-form__field cs-form__field--space-top | cs-input | field additional no-required">
                                         <label class="cs-input__label" for="street_<?= /* @escapeNotVerified */ $lineNumber ?>">
                                             <?= /* @escapeNotVerified */ __('Addtional Address Line') ?>
                                         </label>
@@ -367,23 +367,18 @@ $telephone = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Tel
         var ignore = <?= /* @escapeNotVerified */ $dob->isEnabled() ? '\'input[id$="full"]\'' : 'null'; ?>;
 
         dataForm.mage('validation', {
-            <?php if ($dob->isEnabled()): ?>
             errorPlacement: function(error, element) {
-                if (element.prop('id').search('full') !== -1) {
+                if (ignore && element.prop('id').search('full') !== -1) {
                     var dobElement = $(element).parents('.customer-dob'),
                         errorClass = error.prop('class');
                     error.insertAfter(element.parent());
                     dobElement.find('.validate-custom').addClass(errorClass)
                         .after('<div class="' + errorClass + '"></div>');
-                }
-                else {
+                } else {
                     error.appendTo(element.parents('.cs-input'));
                 }
             },
-            ignore: ':hidden:not(' + ignore + ')'
-            <?php else: ?>
             ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
-            <?php endif ?>
         }).find('input:text').attr('autocomplete', 'off');
     });
 </script>

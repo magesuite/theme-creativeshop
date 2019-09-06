@@ -2,6 +2,7 @@ $namespace: 'cs-';
 @import '../../../node_modules/creative-patterns/packages/components/price-box/src/price-box';
 
 .price-box {
+    $root: &;
     @include priceBox();
 
     .price {
@@ -26,6 +27,11 @@ $namespace: 'cs-';
     .price-from,
     .price-to {
         display: inline-block;
+
+        .price-label {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
     }
 
     .old-price {
@@ -55,6 +61,19 @@ $namespace: 'cs-';
     .price-from {
         margin-right: 1.5rem;
     }
+
+    .#{$namespace}grid-product__price--dailydeal-countdown &,
+    .#{$namespace}price--pdp_dailydeal-countdown & {
+        &:not(.price-final_price_without_daily_deal) {
+            display: none;
+        }
+    }
+
+    .#{$namespace}grid-product__price--dailydeal-countdown & {
+        &#{$root}--visible {
+            display: inline-block !important;
+        }
+    }
 }
 
 .#{$namespace}price--pdp {
@@ -63,6 +82,7 @@ $namespace: 'cs-';
     border-bottom: 1px solid $colorAlto;
 
     .page-product-bundle & {
+        margin-bottom: 1.5rem;
         padding-bottom: 0;
         padding-top: 0.5rem;
     }
@@ -71,6 +91,10 @@ $namespace: 'cs-';
         display: flex;
         margin-top: 1.5rem;
         flex-direction: column;
+
+        &.price-box--visible {
+            display: flex !important;
+        }
     }
 
     .price {
@@ -99,6 +123,12 @@ $namespace: 'cs-';
 
     .page-product-grouped & {
         padding-bottom: 0;
+    }
+}
+
+.#{$namespace}bundle-box__add {
+    .price-as-configured {
+        margin: 1rem 0 0;
     }
 }
 

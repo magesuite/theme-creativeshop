@@ -19,10 +19,12 @@
 
     &__menu {
         width: 100%;
+        margin-bottom: 1.5rem;
 
         @include media('>=tablet') {
             width: #{$menuTabletWidth}rem;
             margin-right: #{$menuMarginRight}rem;
+            margin-bottom: 0;
         }
 
         @include media('>=laptop') {
@@ -67,6 +69,14 @@
         @include media('>=phone-lg') {
             margin: 1.5rem 0 0;
         }
+
+        &.reviews {
+            .#{$namespace}table__col.summary {
+                @include media('>=laptop') {
+                    padding-top: 1rem;
+                }
+            }
+        }
     }
 
     &__bottom {
@@ -79,6 +89,51 @@
         @include media('>=tablet') {
             width: 100%;
             padding-top: 4rem;
+        }
+    }
+
+    .table-order-items {
+        @include media('<laptop') {
+            .#{$namespace}table__col:last-child {
+                padding-bottom: 2rem;
+            }
+
+            .price-excluding-tax,
+            .price-including-tax,
+            .items-qty,
+            .product-item-name {
+                display: inline-block;
+                font-weight: 400;
+                margin: 0;
+                color: $colorDoveGray;
+            }
+
+            .#{$namespace}cart-item__options-label {
+                text-transform: none;
+                font-size: 1.4rem;
+                width: auto;
+                margin-right: 1rem;
+
+                &:after {
+                    content: ':';
+                }
+            }
+
+            .#{$namespace}table__col.subtotal {
+                text-align: left;
+            }
+
+            .price-excluding-tax .price {
+                font-weight: 400;
+            }
+        }
+    }
+
+    .page.messages {
+        margin-bottom: 3.5rem;
+
+        @include media('>=tablet') {
+            margin-bottom: 4rem;
         }
     }
 }

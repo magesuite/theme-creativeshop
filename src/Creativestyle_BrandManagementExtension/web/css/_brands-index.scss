@@ -63,6 +63,29 @@ $namespace: 'cs-';
                 padding: 4rem 2rem;
             }
 
+            //There is a problem with scroll while sticky header is present on mobile.brands-index
+            //In that case we do not have to scroll a bit lower than the top edge of this element.
+            //The trick with bigger top padding and minus top margin help to achieve it
+            @include media('<laptop') {
+                padding-top: 10.5rem;
+                margin-top: -6.5rem;
+
+                &:first-child {
+                    padding-top: 4rem;
+                    margin-top: 0;
+                }
+            }
+
+            @include media('<tablet') {
+                padding-top: 7.5rem;
+                margin-top: -5.5rem;
+
+                &:first-child {
+                    padding-top: 2rem;
+                    margin-top: 0;
+                }
+            }
+
             &:last-child {
                 border-bottom: 0;
             }
@@ -129,12 +152,13 @@ $namespace: 'cs-';
     &__letters-wrapper {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
         padding: 0.5rem 1rem;
         border-top: 1px solid $colorGallery;
         border-bottom: 1px solid $colorGallery;
-        @include media('>=tablet') {
+
+        @include media('>=laptop') {
             flex-wrap: nowrap;
+            justify-content: space-between;
         }
     }
 
@@ -143,8 +167,18 @@ $namespace: 'cs-';
         padding: 1rem 1.5rem;
         cursor: pointer;
         color: $colorMineShaft;
+        width: 4.2rem;
+        text-align: center;
+        box-sizing: border-box;
+        flex-shrink: 0;
+
+        @include media('>=phone') {
+            width: 4rem;
+        }
+
         @include media('>=tablet') {
             padding: 1rem 1.25rem;
+            width: auto;
         }
     }
 

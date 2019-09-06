@@ -47,13 +47,16 @@
         <referenceBlock name="page.main.title">
             <arguments>
                 <argument name="css_class" xsi:type="string">cs-product-sale-block__name cs-t-headline--size_2</argument>
-                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
             </arguments>
             <block class="Magento\Framework\View\Element\Template" name="product.info.share" template="Magento_Catalog::product/view/share.phtml"/>
         </referenceBlock>
         <move element="page.main.title" destination="product.info.main" after="product.category.name" />
 
         <referenceContainer name="product.info.price" htmlClass="product-info-price cs-price cs-price--pdp"/>
+
+        <referenceContainer name="product.info.price">
+            <block class="Creativestyle\DailyDealExtension\Block\Product" name="product.info.price.dailydeal" template="Magento_Catalog::product/view/price-dailydeal.phtml" after="product.price.final"/>
+        </referenceContainer>
 
         <move element="product.info.type" destination="product.info.stock"/>
 
@@ -65,12 +68,22 @@
             <action method="setTemplate">
                 <argument name="template" xsi:type="string">Magento_Catalog::product/view/description.phtml</argument>
             </action>
+            <arguments>
+                <argument name="is_collapse_enabled" xsi:type="boolean">true</argument>
+                <argument name="collapse_height" xsi:type="string">100</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceBlock name="product.attributes">
+            <arguments>
+                <argument name="is_collapse_enabled" xsi:type="boolean">true</argument>
+                <argument name="collapse_height" xsi:type="string">100</argument>
+            </arguments>
         </referenceBlock>
 
         <move element="product.info.overview" destination="product.info.details"  />
 
         <referenceBlock name="product.info.details">
-
             <referenceBlock name="product.info.overview">
                 <arguments>
                     <argument name="title" translate="true" xsi:type="string">Highlights</argument>

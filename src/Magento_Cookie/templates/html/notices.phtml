@@ -1,22 +1,43 @@
-<?php
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
-
-// @codingStandardsIgnoreFile
-
-?>
 <?php /** @var \Magento\Cookie\Block\Html\Notices $block */ ?>
+<?php 
+    /** 
+     * Template originally overriden to implement BEM classes
+     * - modification 14.08.2018 =>
+     *      - Removed Magento's copyright notice;
+     *      - Implementation of optional CMS Block for text => fallback left when CMS block is not available;
+     *      - Cookie icon is now defined in XML;
+     *      - "Allow cookie" buttons' text is now defined in XML;
+     */
+?>
+
 <?php if ($this->helper('Magento\Cookie\Helper\Cookie')->isUserNotAllowSaveCookie()): ?>
+    <?php
+        /** @var \Creativestyle\FrontendExtension\Helper\Store $storeHelper */
+        $storeHelper = $this->helper('Creativestyle\FrontendExtension\Helper\Store');
+        $currentStoreId = $storeHelper->getCurrentStoreId();
+        $cookieNoticeBlockId = $block->getNoticeCmsBlockId();
+        $cookieIcon = $block->getCookieIcon();
+        $cookieNoticeCmsBlock = $this->getLayout()
+            ->createBlock('Magento\Cms\Block\Block')
+            ->setCacheKey($cookieNoticeBlockId.'_'.$currentStoreId)
+            ->setCacheLifetime(86400)
+            ->setBlockId($cookieNoticeBlockId)
+            ->toHtml();
+    ?>
     <div class="cs-cookie-message cs-cookie-message--shown" id="notice-cookie-block" style="display: none">
-        <p class="cs-cookie-message__text">
-            <svg class="cs-cookie-message__icon"><use xlink:href="#cookie"></use></svg>
-            <strong><?php /* @escapeNotVerified */ echo __('We use cookies to make your experience better.') ?></strong> <?php /* @escapeNotVerified */ echo __('To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.') ?> <?php /* @escapeNotVerified */ echo __('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()) ?>
-        </p>
+        <div class="cs-cookie-message__text">
+            <?php if($cookieIcon && $cookieIcon != ''): ?>
+                <svg class="cs-cookie-message__icon"><use xlink:href="<?php echo $cookieIcon; ?>"></use></svg>
+            <?php endif; ?>
+            <?php if($cookieNoticeCmsBlock && $cookieNoticeCmsBlock != ''): 
+                echo $cookieNoticeCmsBlock;
+            else: ?>
+                <strong><?php /* @escapeNotVerified */ echo __('We use cookies to make your experience better.') ?></strong> <?php /* @escapeNotVerified */ echo __('To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.') ?> <?php /* @escapeNotVerified */ echo __('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()) ?>
+            <?php endif; ?>
+        </div>
         <div>
             <button type="button" id="btn-cookie-allow" class="cs-button cs-button--look_default cs-button--size_300 | cs-cookie-message__button">
-                <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Allow Cookies');?></span>
+                <span class="cs-button__span"><?php echo $block->getAllowCookiesButtonText();?></span>
             </button>
         </div>
     </div>

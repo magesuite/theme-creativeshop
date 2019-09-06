@@ -1,0 +1,358 @@
+.#{$namespace}daily-deal-teaser {
+    $root: &;
+
+    display: none;
+
+    &--active {
+        display: block;
+
+        @include media('>=tablet') {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        @include media('>=laptop') {
+            flex-wrap: nowrap;
+        }
+    }
+
+    &--expired {
+        display: none;
+    }
+
+    &__image-wrapper {
+        display: block;
+        border-bottom: 1px solid $colorGallery;
+        padding: 1.5rem 0;
+
+        &,
+        &:visited,
+        &:hover {
+            color: inherit;
+            text-decoration: inherit;
+        }
+
+        @include media('>=tablet') {
+            box-sizing: border-box;
+            max-width: 32%;
+            padding: 3rem 3rem 3rem 0;
+        }
+
+        @include media('>=laptop') {
+            flex: 1;
+            border: none;
+            padding: 3rem 3rem 3rem 0;
+            max-width: 25%;
+        }
+    }
+
+    &__figure {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    &__slogan {
+        width: 28.5rem;
+        position: absolute;
+        top: 4rem;
+        left: -8.4rem;
+        transform: rotate(-45deg);
+        padding: 1rem 0;
+        text-align: center;
+        text-transform: uppercase;
+        background: $colorGold;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    &__slogan-icon-wrapper {
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4rem;
+        height: 4rem;
+        padding: 0.7rem;
+        background: $colorGold;
+        border-radius: 2rem;
+    }
+
+    &__slogan-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2.1rem;
+        height: 2.6rem;
+        transform: translate3d(-50%, -50%, 0);
+        margin-top: -1px;
+    }
+
+    &__details {
+        border-bottom: 1px solid $colorGallery;
+        padding: 1.5rem 0;
+
+        @include media('>=tablet') {
+            flex-grow: 5;
+            display: flex;
+            flex-direction: column;
+            max-width: 68%;
+            padding: 3rem 0 3rem 3rem;
+            border-left: 1px solid $colorGallery;
+            box-sizing: border-box;
+        }
+
+        @include media('>=laptop') {
+            flex: 1;
+            flex-grow: 2;
+            padding: 3rem;
+            max-width: 50%;
+            border-bottom: none;
+            border-right: 1px solid $colorGallery;
+        }
+
+        .#{$namespace}swatches {
+            &--mini {
+                .#{$namespace}swatches__attribute {
+                    justify-content: flex-start;
+                }
+
+                .#{$namespace}swatches__swatch {
+                    min-width: 1.6rem;
+                    height: 1.6rem;
+
+                    &.text {
+                        height: 1.8rem;
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+
+            &--color-only .#{$namespace}swatches__attribute:not(.color) {
+                display: block !important;
+            }
+
+            .#{$namespace}swatches__attribute {
+                margin-bottom: 0.8rem;
+
+                &:last-child {
+                    @include media('<tablet') {
+                        margin-bottom: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    &__product-brand {
+        margin: 0;
+        color: $colorGray;
+    }
+
+    &__product-link {
+        &,
+        &:visited,
+        &:hover {
+            color: inherit;
+            text-decoration: inherit;
+        }
+    }
+
+    &__product-name {
+        margin: 0 0 0.5rem;
+        font-size: 2.25rem;
+    }
+
+    &__product-rating {
+        margin: 0.2rem 0 1.5rem;
+    }
+
+    &__dd-details {
+        @include media('>=tablet') {
+            display: flex;
+            margin-top: auto;
+        }
+    }
+
+    &__dd-column {
+        @include media('>=tablet') {
+            flex: 1;
+            margin-top: 0;
+            padding: 0 1.5rem;
+
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+
+    &__dd-column + &__dd-column {
+        @include media('<tablet') {
+            margin-top: 1.5rem;
+        }
+    }
+
+    &__dd-headline {
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    &__progress-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        line-height: 1;
+
+        @include media('>=tablet') {
+            margin-top: 0.5rem;
+            padding: 1.1rem 1rem;
+            background-color: $colorGallery;
+            border-radius: 3px;
+        }
+
+        &-content {
+            width: 100%;
+            background-color: $colorWhite;
+        }
+    }
+
+    &__available {
+        white-space: nowrap;
+        padding-left: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    &__actions {
+        padding: 1.5rem 0;
+
+        @include media('>=tablet') {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3rem 0;
+            box-sizing: border-box;
+        }
+
+        @include media('>=laptop') {
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+            width: auto;
+            max-width: 25%;
+            padding: 3rem 0 3rem 3rem;
+        }
+    }
+
+    &__price-details {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        @include media('>=tablet') {
+            justify-content: flex-start;
+        }
+
+        @include media('>=laptop') {
+            flex-direction: column;
+            height: 55%;
+            justify-content: space-between;
+        }
+    }
+
+    &__price {
+        @include media('>=tablet') {
+            .price-box {
+                .old-price .price {
+                    font-size: 1.4rem;
+                }
+
+                .special-price .price {
+                    font-size: 2.2rem;
+                }
+            }
+        }
+    }
+
+    &__discount {
+        margin-right: 1.5rem;
+
+        @include media('>=tablet') {
+            margin-left: 0.5rem;
+            margin-top: -0.4rem;
+        }
+
+        @include media('>=laptop') {
+            margin-right: 0;
+            text-align: center;
+        }
+    }
+
+    &__discount-badge {
+        margin: 0;
+
+        &:before {
+            @include media('>=tablet') {
+                left: -0.5rem;
+            }
+
+            @include media('>=laptop') {
+                left: -0.6rem;
+            }
+        }
+    }
+
+    &__discount-text {
+        text-transform: uppercase;
+        font-weight: 400;
+
+        @include media('>=tablet') {
+            font-size: 1.7rem;
+        }
+
+        @include media('>=laptop') {
+            font-size: 2rem;
+        }
+    }
+
+    &__addtocart {
+        margin-top: 1.5rem;
+        min-width: 25rem;
+
+        @include media('>=tablet') {
+            margin-top: 0;
+        }
+
+        @include media('>=laptop') {
+            width: 100%;
+            min-width: 21rem;
+        }
+
+        button {
+            @extend .#{$namespace}button;
+            @extend .#{$namespace}button--type_wide;
+            @extend .#{$namespace}button--type_cart;
+
+            &:before {
+                position: absolute;
+                top: 50%;
+                right: 1.3rem;
+                content: '';
+                width: 2.5rem;
+                height: 2.6rem;
+                transform: translate3d(0, -50%, 0);
+                background-image: url('images/cart.svg');
+                background-size: 100%;
+                background-repeat: no-repeat;
+                z-index: 201;
+            }
+        }
+    }
+}

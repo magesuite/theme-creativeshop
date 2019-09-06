@@ -33,6 +33,7 @@ $product = $block->getProductData();
                     <?php /* @escapeNotVerified */ echo __('Your Review'); ?>
                 </h2>
                 <div class="cs-reviews__form-wrapper">
+                    <?php $iterator = 0; ?>
                     <?php foreach ($block->getRating() as $reviewRating): ?>
                         <?php if ($reviewRating->getPercent()): ?>
                             <?php $rating = ceil($reviewRating->getPercent()) ?>
@@ -40,7 +41,7 @@ $product = $block->getProductData();
                                     <?php echo $block->escapeHtml($reviewRating->getRatingCode()) ?>
                                 </h3>
                                 <div class="cs-reviews__content">
-                                <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'my-review-rating-',
+                                <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'my-review-rating-'.$iterator,
                                         ['data' => [
                                             'namespace' => 'cs-',
                                             'maxStars' => 5,
@@ -51,6 +52,7 @@ $product = $block->getProductData();
                                 </div>
 
                         <?php endif; ?>
+                        <?php $iterator++; ?>
                     <?php endforeach; ?>
 
                 </div>

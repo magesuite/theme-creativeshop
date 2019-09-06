@@ -7,16 +7,11 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="head.additional">
-            <block class="Creativestyle\FrontendExtension\Block\Graph\OpenGraph" name="opengraph.category"
-                   template="Magento_Theme::opengraph/category.phtml" before="auto.tel.conversion.prevention" />
-        </referenceBlock>
-
         <referenceContainer name="columns.top">
             <container name="cc-top" htmlTag="div" htmlClass="cs-category-page__cc-top" before="-"/>
         </referenceContainer>
 
-        <referenceContainer name="columns" htmlClass="columns cs-category-page"/>
+        <referenceContainer name="columns" htmlClass="columns cs-category-page" htmlId="cs-category-container" />
 
         <referenceContainer name="main" htmlClass="cs-category-page__main"/>
         <referenceContainer name="div.sidebar.main" htmlClass="sidebar sidebar-main cs-category-page__sidebar-main"/>
@@ -33,6 +28,15 @@
 
             <container name="cc-bottom" htmlTag="div" htmlClass="cs-category-page__cc-bottom" after="-"/>
         </referenceContainer>
+
+        <referenceBlock name="product_list_toolbar">
+            <arguments>
+                <argument translate="true" name="descending_direction_label" xsi:type="string">Set Descending Direction</argument>
+                <argument name="descending_direction_icon" xsi:type="string">#arrow_down</argument>
+                <argument translate="true" name="ascending_direction_label" xsi:type="string">Set Ascending Direction</argument>
+                <argument name="ascending_direction_icon" xsi:type="string">#arrow_up</argument>
+            </arguments>
+        </referenceBlock>
 
         <referenceBlock name="page.main.title" remove="true"/>
     </body>

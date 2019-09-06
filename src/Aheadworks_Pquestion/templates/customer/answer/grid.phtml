@@ -15,7 +15,7 @@
     <div class="cs-info-block__content">
         <?php $answerCollection = $this->getCollection(); ?>
         <?php if ($answerCollection->getSize()) : ?>
-            <div class="table-wrapper cs-table">
+            <div class="table-wrapper cs-table cs-table--tablet-small">
                 <table class="data-table cs-table__body" id="aw-pq-customer-answers-table">
                     <col width="150" />
                     <col width="220" />
@@ -53,6 +53,7 @@
                                 </a>
                             </td>
                             <td
+                                class="cs-table__col"
                                 title="<?php echo $this->escapeHtml($answer->getQuestion()->getContent());?>"
                                 data-th="<?php echo $this->escapeHtml(__('Question')); ?>"
                             >
@@ -60,12 +61,17 @@
                             </td>
                             <td
                                 title="<?php echo $this->escapeHtml($answer->getContent());?>"
-                                data-th=""
+                                data-th="<?php echo $this->escapeHtml(__('Answer')); ?>"
                                 class="cs-table__col"
                                 >
                                 <?php echo $this->escapeHtml($this->truncateString($this->escapeHtml($answer->getContent()), 150));?>
                             </td>
-                            <td><?php echo $this->escapeHtml($this->getStatusLabelByAnswer($answer)); ?></td>
+                            <td
+                                class="cs-table__col"
+                                data-th="<?php echo $this->escapeHtml(__('Status')); ?>"
+                            >
+                                <?php echo $this->escapeHtml($this->getStatusLabelByAnswer($answer)); ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

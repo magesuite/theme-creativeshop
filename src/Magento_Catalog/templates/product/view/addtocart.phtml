@@ -43,7 +43,7 @@
                 <?php if ( $isFreeShipped ) { ?>
                     <div class="cs-indicators__free-shipping">
                         <span class="cs-box-addtocart__label | cs-indicators__free-shipping-label">
-                            <svg class="cs-indicators__free-shipping-icon"><use xlink:href="#truck_moving"></use></svg>
+                            <svg class="cs-indicators__free-shipping-icon"><use xlink:href="#piggybank"></use></svg>
                         </span>
                         <span class="cs-indicators__free-shipping-text">
                             <span class="cs-indicators__free-shipping-important"><?php /* @escapeNotVerified */ echo __('Free Shipping') ?></span> <span class="cs-indicators__free-shipping-note"><?php /* @escapeNotVerified */ echo __('for this item') ?>
@@ -54,14 +54,9 @@
                 <?php if ($block->displayProductStockStatus()): ?>
                     <div class="cs-box-addtocart__stock">
                         <?php if ($product->isAvailable()): ?>
-                            <link id="cs-box-addtocart__availability" itemprop="availability" href="http://schema.org/InStock" />
+                            <link id="cs-box-addtocart__availability" />
                             <?php if($indicatorsHelper->isFastShippingEnabled()):
-                                echo $this->getLayout()->createBlock(
-                                    'Creativestyle\FrontendExtension\Block\Twig',
-                                    'pdp-fast-shipping', [
-                                        'data' => []
-                                    ]
-                                )->setTemplate( "indicators/fast-shipping.twig" )->toHtml();
+                                echo $this->getChildHtml('indicator.free.shipping');
                             else: ?>
                                 <div
                                     class="cs-box-addtocart__label | cs-box-addtocart__stock-text cs-box-addtocart__stock-text--available"
@@ -74,7 +69,7 @@
                                 </div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <link id="cs-box-addtocart__availability" itemprop="availability" href="http://schema.org/OutOfStock" />
+                            <link id="cs-box-addtocart__availability" />
                             <?php if($indicatorsHelper->isFastShippingEnabled()): ?>
                                 <div class="cs-indicators__fast-shipping-element cs-indicators__fast-shipping-element--visible">
                                     <span class="cs-box-addtocart__label | cs-indicators__fast-shipping-label">
@@ -112,7 +107,12 @@
                     <span class="cs-button__span"><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
                 </button>
 
-                <?php echo $block->getChildHtml('', true) ?>
+                <?php // echo $block->getChildHtml('', true) ?>
+                <?php foreach ($block->getChildNames() as $childName) {
+                    if ($childName != 'indicator_free_shipping_block_simple' && $childName != 'indicator_free_shipping_block_configurable') {
+                        echo $block->getChildHtml($childName, true);
+                    }
+                } ?>
             </div>
         </div>
     </div>

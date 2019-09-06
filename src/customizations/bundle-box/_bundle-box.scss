@@ -12,6 +12,7 @@
     .product-add-form form {
         display: flex;
         flex-wrap: wrap;
+        align-items: flex-start;
 
         @include media('>=tablet') {
             flex-wrap: nowrap;
@@ -24,6 +25,7 @@
         @include media('>=tablet') {
             flex-basis: 60%;
             padding-right: 4rem;
+            box-sizing: border-box;
         }
 
         @include media('>=laptop') {
@@ -36,16 +38,19 @@
 
         @include media('>=tablet') {
             flex-basis: 40%;
+            box-sizing: border-box;
         }
 
         @include media('>=laptop') {
             flex-basis: 30%;
+            padding: 1.5rem 2.2rem;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
+            border-radius: 3px;
         }
     }
 
     &__summary-content {
         margin-bottom: 1rem;
-        border-bottom: 1px solid $colorAlto;
     }
 
     &__fieldset {
@@ -92,7 +97,10 @@
     }
 
     &__qty {
-        padding-right: 2rem;
+        .#{$namespace}box-addtocart__label {
+            width: auto;
+        }
+
         @include media('<laptop') {
             flex-basis: 100%;
 
@@ -135,6 +143,7 @@
     }
 
     &__field {
+        padding-bottom: 1.5rem;
         border-top: 1px solid $colorAlto;
 
         &:first-of-type {
@@ -185,5 +194,9 @@
 .page-product-bundle {
     .cs-sticky-block--pdp {
         position: static; //Disable sticky box
+    }
+
+    .product-info-wrapper {
+        height: auto;
     }
 }

@@ -18,6 +18,7 @@
     {% set badges = [] %}
     {% set productMix = 'cs-products-grid__item' %}
     {% set dailyDealHtml = '' %}
+    {% set price = { content: product.price } %}
 
     {% if product.rating.data is not null %}
         {% set ratingContent %}
@@ -84,6 +85,13 @@
         {% endif %}
     {% endif %}
 
+    {% if product.dailyDealOffer is not empty and product.dailyDealOffer.deal and product.dailyDealOffer.displayType == 'badge_counter' %}
+        {% set price = price|merge({
+            mix: 'cs-grid-product__price--dailydeal-countdown',
+            content: product.price ~ product.dailyDealOffer.oldPriceHtmlOnTile
+        }) %}
+    {% endif %}
+
     {% if product.popularIconFlag %}
         {% set badges = badges|merge( [ {
             content: '<span class="cs-badge cs-badge--cut cs-badge--positive"><span class="cs-badge__span">' ~ translate('Popular') ~ '</span></span>'
@@ -108,9 +116,7 @@
                 alt: product.name,
             },
             name: product.name,
-            price: {
-                content: product.price
-            },
+            price: price,
             badges: badges,
             swatches: {
                 mix: 'cs-grid-product__swatches--color-only',
@@ -165,8 +171,7 @@
     } ) %}
 {% endif %}
 
-
-{% include locate( 'components/products-grid/products-grid.twig' ) with { 
+{% include locate( 'components/products-grid/products-grid.twig' ) with {
     namespace: 'cs-',
     items: items,
     hero: hero,

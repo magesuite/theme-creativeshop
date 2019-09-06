@@ -8,49 +8,47 @@ $helper = $this->helper('Magento\Catalog\Helper\Output');
 $product = $block->getProduct();
 $topAttributeHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\TopAttribute');
 ?>
-<?php if ($additional = $block->getAdditionalData()): ?>
-<div
-    class="cs-collapsible-text js-collapsible-text"
-    data-height="100"
-    data-content=".js-collapsible-text-content"
-    data-trigger=".js-collapsible-text-trigger"
->
-    <div class="cs-collapsible-text__content cs-collapsible-text__content--contrast js-collapsible-text-content">
-        <div class="cs-attributes-list">
-            <dl class="cs-attributes-list__list" id="product-attribute-specs-table">
-                <?php foreach ($additional as $data): ?>
-                    <?php if($data['value'] == __('N/A')) { continue; } ?>
-                    
-                    <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($data['label'])) ?>:
-                    </dt>
-                    <dd class="cs-attributes-list__item">
-                        <?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $data['code']) ?>
-                        <?php if ($data['code'] == 'sku') { ?>
-                            <meta
-                                itemprop="sku"
-                                content="<?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $data['code']) ?>"
-                            />
-                        <?php } ?>
-                        <?php if($topAttributeHelper->checkTopAttribute($data['code'], $data['value'])) { ?>
-                            <span class="cs-badge cs-badge--cut cs-badge--amount | cs-indicators__top-attribute">
-                                <span class="cs-badge__span cs-badge__span--no-space | cs-indicators__top-attribute-text"><?php echo __('Top Spec'); ?></span>
-                            </span>
-                        <?php } ?>
-                    </dd>
-                <?php endforeach; ?>
-            </dl>
-        </div>
-    </div>
+<?php if ($additional = $block->getAdditionalData()):
+    if($this->getIsCollapseEnabled()): ?>
+        <div
+            class="cs-collapsible-text js-collapsible-text"
+            data-height="<?php /* @escapeNotVerified */ echo $this->getCollapseHeight() ?>"
+            data-content=".js-collapsible-text-content"
+            data-trigger=".js-collapsible-text-trigger"
+        >
+            <div class="cs-collapsible-text__content cs-collapsible-text__content--contrast js-collapsible-text-content">
+    <?php endif; ?>
+                <div class="cs-attributes-list">
+                    <dl class="cs-attributes-list__list" id="product-attribute-specs-table">
+                        <?php foreach ($additional as $data): ?>
+                            <?php if($data['value'] == __('N/A')) { continue; } ?>
+                            
+                            <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($data['label'])) ?>:
+                            </dt>
+                            <dd class="cs-attributes-list__item">
+                                <?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $data['code']) ?>
+                                <?php if($topAttributeHelper->checkTopAttribute($data['code'], $data['value'])) { ?>
+                                    <span class="cs-badge cs-badge--cut cs-badge--amount | cs-indicators__top-attribute">
+                                        <span class="cs-badge__span cs-badge__span--no-space | cs-indicators__top-attribute-text"><?php echo __('Top Spec'); ?></span>
+                                    </span>
+                                <?php } ?>
+                            </dd>
+                        <?php endforeach; ?>
+                    </dl>
+                </div>
+        <?php if($this->getIsCollapseEnabled()): ?>        
+            </div>
 
-    <button
-        class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger"
-        data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
-        data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
-    >
-         <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
-         <svg class="cs-button__icon">
-            <use xlink:href="#arrow_next"></use>
-         </svg>
-    </button>
-</div>
-<?php endif;?>
+            <button
+                class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger"
+                data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
+                data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
+            >
+                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
+                 <svg class="cs-button__icon">
+                    <use xlink:href="#arrow_next"></use>
+                 </svg>
+            </button>
+        </div>
+    <?php endif;
+endif; ?>

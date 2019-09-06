@@ -69,39 +69,42 @@
                 <div id="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-container"></div>
             <?php endif; ?>
         </div>
-        <div class="cs-bundle-box__qty cs-box-addtocart__qty-wrapper | field qty qty-holder">
-            <label class="cs-label | cs-box-addtocart__label" for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-qty-input">
-                <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
-            </label>
-            <div class="cs-box-addtocart__qty-increment | control">
-                <?php
-                $inputName = 'bundle_option_qty['.$option->getId().']';
-                $disabledClass = !$canChangeQty? ' qty-disabled' : '';
-                $id = 'bundle-option-'.$option->getId().'-qty-input';
-                $disabled = !$canChangeQty? ' disabled="disabled"' : '';
-                ?>
-                <?=$this->getLayout()->createBlock(
-                    'Creativestyle\FrontendExtension\Block\Twig',
-                    'add-to-cart-pdp-'.$option->getId(), [
-                        'data' => [
-                            "namespace" => 'cs-',
-                            "inputMix" => 'qty '.$disabledClass,
-                            "initialValue" => $defaultQty ,
-                            "maxLength" => 12,
-                            "minValue" => 0,
-                            "size" => 2,
-                            "name" => $inputName,
-                            "inputParams" => 'id="'.$id.'" data-selector="bundle_option_qty['.$option->getId().']"
-                                title="'.__('Qty').'" '.$disabled,
-                            "icons" => [
-                                "increment" => '#plus',
-                                "decrement" => '#minus'
+
+        <?php if($canChangeQty): ?>
+            <div class="cs-bundle-box__qty cs-box-addtocart__qty-wrapper | field qty qty-holder">
+                <label class="cs-label | cs-box-addtocart__label" for="bundle-option-<?php /* @escapeNotVerified */ echo $option->getId() ?>-qty-input">
+                    <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
+                </label>
+                <div class="cs-box-addtocart__qty-increment | control">
+                    <?php
+                    $inputName = 'bundle_option_qty['.$option->getId().']';
+                    $disabledClass = !$canChangeQty? ' qty-disabled' : '';
+                    $id = 'bundle-option-'.$option->getId().'-qty-input';
+                    $disabled = !$canChangeQty? ' disabled="disabled"' : '';
+                    ?>
+                    <?=$this->getLayout()->createBlock(
+                        'Creativestyle\FrontendExtension\Block\Twig',
+                        'add-to-cart-pdp-'.$option->getId(), [
+                            'data' => [
+                                "namespace" => 'cs-',
+                                "inputMix" => 'qty '.$disabledClass,
+                                "initialValue" => $defaultQty ,
+                                "maxLength" => 12,
+                                "minValue" => 0,
+                                "size" => 2,
+                                "name" => $inputName,
+                                "inputParams" => 'id="'.$id.'" data-selector="bundle_option_qty['.$option->getId().']"
+                                    title="'.__('Qty').'" '.$disabled,
+                                "icons" => [
+                                    "increment" => '#plus',
+                                    "decrement" => '#minus'
+                                ]
                             ]
                         ]
-                    ]
-                )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
+                    )->setTemplate( "qty-increment/qty-increment.twig" )->toHtml(); ?>
 
+                </div>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>

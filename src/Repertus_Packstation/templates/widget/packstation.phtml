@@ -1,0 +1,107 @@
+<?php
+/**
+ * File has been overwritten in order to customize markup
+ */
+?>
+
+<div class="cs-dashboard__block">
+    <fieldset 
+        class="cs-form__fieldset | repertus_address_type_fieldset" 
+        data-repertus-post-number="<?php echo $this->getPostNumber(); ?>" 
+        data-repertus-station-number="<?php echo $this->getStationNumber(); ?>"
+    >
+        <legend class="cs-title-block cs-title-block--bordered cs-title-block--space-bottom">
+            <span class="cs-title-block__span | cs-t-headline cs-t-headline--size_2 cs-t-headline--look_light">
+                <?php echo __('Address Type'); ?>
+            </span>
+        </legend>
+        <div class="cs-input | cs-form__field cs-form__field--type_packstation | field | repertus_address_type repertus_address_type--add-fields">
+            <div class="cs-input__control">
+                <select 
+                    id="repertus_packstation_type" 
+                    form="form-validate" 
+                    name="repertus_packstation_type" 
+                    title="Address Type"
+                    class="" 
+                    aria-required="true"
+                >
+                    <?php 
+                        foreach ($this->getAddressTypes() as $key => $addressType) {
+                            echo '<option value="'. $key . '" '. ($this->isAddressTypeSelected($key) ? 'selected="selected"' : '') .'>'. __($addressType) . '</option>';
+                        } 
+                    ?>
+                </select>
+                <div class="cs-form__buttons">
+                    <button class="cs-button cs-button--type_long cs-button--type_wide-mobile cs-button--look_default | repertus_packstation--search-button">
+                        <span class="cs-button__span"><?php echo __('Search for Packstation'); ?></span>
+                        <svg class="cs-button__icon">
+                            <use xlink:href="#arrow_next"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </fieldset>
+
+    <div class="repertus_packstation--search-modal" data-modal-title="<?php echo __('Search for Packstation/Post office') . '...'?>" data-modal-search-url="<?php echo $this->getUrlBuilder()->getUrl('repertus_packstation/packstation/search')?>">
+        <div class="cs-form">
+            <div class="tonur_packstation_input">
+                <div class="cs-form__fieldset">
+                    <div class="cs-input | cs-form__field cs-form__field--repertus-zip required">
+                        <label class="cs-input__label" for="packstation_zipcode">
+                            <span><?php echo __('Zipcode')?></span>
+                        </label>
+                        <div class="cs-input__control">
+                            <input 
+                                name="packstation[zipcode]" 
+                                type="text" 
+                                id="packstation_zipcode" 
+                                value="" 
+                                maxlength="5" 
+                                class="cs-input__input required" 
+                            />
+                        </div>
+                    </div>
+
+                    <div class="cs-input | cs-form__field required">
+                        <label class="cs-input__label" for="packstation_city">
+                            <span><?php echo __('City')?></span>
+                        </label>
+                        <div class="cs-input__control">
+                            <input 
+                                name="packstation[city]" 
+                                type="text"  
+                                id="packstation_city" 
+                                value="" 
+                                size="25" 
+                                class="cs-input__input required" 
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cs-form__buttons">
+                    <button 
+                        class="cs-button cs-button--type_long cs-button--type_wide-mobile cs-button--look_default | repertus_packstation--search-button-execute" 
+                        id="repertus_find_packstation_button_execute"
+                    >
+                        <span class="cs-button__span"><?php echo __('Search'); ?></span>
+                        <svg class="cs-button__icon">
+                            <use xlink:href="#arrow_next"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="tonur_packstation_map_frame">
+                <div id="tonur_packstation_map">
+                </div>
+                <div id="tonur_packstation_map_overlay">
+                    <p><?php echo __('Searching for Packstation(s) and Post office(s)') . '...'?></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

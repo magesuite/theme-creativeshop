@@ -200,6 +200,10 @@ switch ($type = $block->getType()) {
                                 $discount = $badgeHelper->getSalePercentage($item);
                                 $badges = [];
                                 $dailyDealHtml = '';
+                                $priceHtmlDefault = $block->getProductPrice($item);
+                                $priceHtmlDeal = $dailyDealData && $dailyDealData['deal'] ? $dailyDealData['oldPriceHtmlOnTile'] : '';
+                                $oldDiscount = $dailyDealData && $dailyDealData['deal'] ? $dailyDealData['oldDiscount'] : '';
+                                $priceHtml = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? $priceHtmlDefault . $priceHtmlDeal : $priceHtmlDefault;
 
                                 if($dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] !== 'none') {
                                     if($dailyDealData['displayType'] === 'badge') {
@@ -251,10 +255,13 @@ switch ($type = $block->getType()) {
                                 }
 
                                 if( $discount ) {
+                                    $oldDiscountHtml = $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? '<span class="cs-badge cs-badge--discount cs-badge--discount_old" style="display: none;">
+                                        <span class="cs-badge__span">'  . $oldDiscount . '%</span>
+                                    </span>' : '';
                                     $badges[] = [
                                         'content' => '<span class="cs-badge cs-badge--discount">
                                             <span class="cs-badge__span">'  . $discount . '%</span>
-                                        </span>'
+                                        </span>' . $oldDiscountHtml
                                     ];
 
                                 }
@@ -277,7 +284,8 @@ switch ($type = $block->getType()) {
                                     ],
                                     'name' => $productName,
                                     'price' => [
-                                        'content' => $block->getProductPrice($item)
+                                        'mix' => $dailyDealData && $dailyDealData['deal'] && $dailyDealData['displayType'] === 'badge_counter' ? 'cs-grid-product__price--dailydeal-countdown' : '',
+                                        'content' => $priceHtml
                                     ],
                                     'badges' => $badges,
                                     'addons' => [
@@ -310,31 +318,36 @@ switch ($type = $block->getType()) {
                                             ]
                                         )->setTemplate("star-rating/star-rating.twig")->toHtml()
                                     ];
-                                endif;
+                                endif; 
+                                $data['addons']['left'][] = [
+                                    'content' => sprintf(
+                                        '<ul class="cs-links-block-addto" data-role="add-to-links">
+                                                                <li class="cs-links-block-addto__item">
+                                                                    <a
+                                                                        href="#"
+                                                                        class="cs-links-block-addto__link towishlist"
+                                                                        title="%s"
+                                                                        aria-label="%s"
+                                                                        data-post=\'%s\'
+                                                                        data-action="add-to-wishlist"
+                                                                        role="button"
+                                                                    >
+                                                                        <svg class="cs-links-block-addto__icon cs-links-block-addto__icon--wishlist">
+                                                                            <use xlink:href="#heart"></use>
+                                                                        </svg>
+                                                                        %s
 
-                                if (!$item->isComposite() && $getIsSaleable && $type == 'related'):
-                                    if (!$item->getRequiredOptions()): ?>
-                                        <?php
-                                        $addToCartText = __('Add to Cart');
-                                        $content = '
-                                            <div class="field choice related |  cs-input--type-checkbox">
-                                                <input
-                                                    type="checkbox"
-                                                    class="checkbox related | cs-input__checkbox"
-                                                    id="related-checkbox'.$getId.'"
-                                                    name="related_products[]"
-                                                    value="'.$getId.'" />
-                                                <label class="cs-input__label" for="related-checkbox'.$getId.'">
-                                                    <span>'.$addToCartText.'</span>
-                                                </label>
-                                            </div>
-                                            ';
+                                                                    </a>
+                                                                </li>
+                                                            </ul>',
+                                        $block->escapeHtml(__('Add to Wish List')),
+                                        $block->escapeHtml(__('Add to Wish List')),
+                                        $block->getAddToWishlistParams($item),
+                                        __('Add to Wishlist')
+                                    )
+                                ];
 
-                                        $data['addons']['left'][] = [
-                                            'content' => $content
-                                        ]; ?>
-                                    <?php endif;
-                                endif; ?>
+                                ?>
 
                                 <?php if ($showCart && $getIsSaleable):
                                     if ($item->getTypeInstance()->hasRequiredOptions($item)):

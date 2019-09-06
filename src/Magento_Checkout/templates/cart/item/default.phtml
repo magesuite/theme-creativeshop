@@ -35,6 +35,12 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
             <?php endif; ?>
 
             <div class="cs-cart-item__details">
+                <?php $isFreeBadge = (float)$item->getPrice() ? false : true;
+                if($item->getIsGift() and $isFreeBadge): ?>
+                    <span class="cs-cart-item__badge | cs-badge cs-badge--cut cs-badge--positive">
+                        <span class="cs-badge__span"><?php echo __('FREE') ?></span>
+                    </span>
+                <?php endif; ?>
                 <span class="cs-cart-item__name">
                     <?php if ($hasProductUrl):?>
                         <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>">
@@ -45,7 +51,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif; ?>
                 </span>
                 <?php if ($options = $block->getOptionList()):?>
-                    <div class="cs-cart-item__options">
+                    <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                         <?php foreach ($options as $option) : ?>
                             <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
                             <dl class="cs-cart-item__options-group">

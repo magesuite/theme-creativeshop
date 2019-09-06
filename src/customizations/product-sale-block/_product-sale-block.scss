@@ -28,6 +28,10 @@
         padding-right: 2.2rem;
     }
 
+    &--static {
+        z-index: 2;
+    }
+
     .ie11 & {
         @include media('>=laptop') {
             margin-top: 0.8rem !important;
@@ -139,12 +143,12 @@
         font-size: 1.2rem;
         color: $colorDoveGray;
 
+        .page-product-bundle & {
+            display: none;
+        }
+
         &--available {
             transform: translateY(-13.6rem);
-
-            .page-product-bundle & {
-                transform: translateY(-12.7rem);
-            }
         }
 
         &--unavailable {
@@ -215,6 +219,26 @@
             .#{$namespace}html-select {
                 display: block !important;
             }
+        }
+    }
+
+    &__giftcard {
+        &-button-wrapper {
+            text-align: right;
+        }
+
+        &-step-number {
+            &::after {
+                content: '.';
+            }
+        }
+
+        &-headline {
+            padding: 2rem 0 1rem;
+        }
+
+        textarea {
+            min-height: 6rem;
         }
     }
 }

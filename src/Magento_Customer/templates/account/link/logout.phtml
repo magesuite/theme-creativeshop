@@ -1,0 +1,26 @@
+<?php
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Customer\Block\Account\AuthorizationLink */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+
+<?php if ($block->isLoggedIn()):?>
+    <li class="nav item">
+        <span class="delimiter"></span>
+    </li>
+    <li class="nav item">
+        <a
+            <?php /* @escapeNotVerified */ echo $block->getLinkAttributes(); ?>
+            <?php /* @escapeNotVerified */ echo $dataPostParam; ?>
+            >
+            <?php echo $block->escapeHtml($block->getLabel()); ?>
+            <svg>
+                <use xlink:href="#sign-out"></use>
+            </svg>
+        </a>
+    </li>
+<?php endif;?>

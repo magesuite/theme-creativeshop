@@ -43,6 +43,10 @@
             border-top: 1px solid $colorAlto;
             padding: 2rem 0 3rem;
             margin-bottom: 3rem;
+
+            @include media('<tablet') {
+                margin-bottom: 0;
+            }
         }
 
         &-list-wrapper {
@@ -119,8 +123,27 @@
     }
 
     &-list {
-        &__button-next {
+        &__helpfulness-progress,
+        &__helpfulness-value {
+            min-width: 1.5rem;
+            display: inline-block;
+        }
+
+        &__please-login-note {
+            margin-top: 1.5rem;
+        }
+
+        &__button-next,
+        &__next-question a {
             @extend .#{$namespace}button--look_default;
+        }
+
+        &__next-question {
+            display: inline-block;
+
+            a {
+                width: auto !important;
+            }
         }
 
         &__next-answer-button {
@@ -142,9 +165,10 @@
                 font-weight: 700;
                 line-height: 1.2rem;
                 text-transform: uppercase;
+                box-sizing: border-box;
 
                 @include media('>=tablet') {
-                    flex: 0 0 9rem;
+                    flex: 0 0 15rem;
                     padding: 0 2rem 0 4rem;
                     line-height: 2.5rem;
                     word-break: break-all;
@@ -203,14 +227,6 @@
                 }
             }
 
-            &-helpfulness-wrapper {
-                @include media('>=tablet') {
-                    display: inline-flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-            }
-
             &-label-text {
                 display: inline-block;
             }
@@ -250,7 +266,7 @@
                 flex-wrap: wrap;
 
                 @include media('>=tablet') {
-                    padding-left: 0;
+                    padding-left: 15rem;
                 }
             }
 
@@ -269,8 +285,7 @@
 
         &__next-answer,
         &__add-answer-button,
-        &__next-question,
-        &__add-question-button {
+        &__next-question {
             margin: 1rem 1rem 0 0;
         }
 
@@ -285,13 +300,17 @@
         &__next-question {
             @include media('<tablet') {
                 width: 100%;
-                margin-bottom: 0.5rem;
                 margin-right: 0;
             }
 
-            a {
+            .#{$namespace}button {
+                margin-bottom: 1.5rem;
                 width: 100%;
-                display: inline-block;
+
+                @include media('>=tablet') {
+                    margin-bottom: 0;
+                    width: auto;
+                }
             }
         }
 
@@ -321,6 +340,31 @@
             @include media('<tablet') {
                 display: inline-block;
                 padding-left: 1rem;
+            }
+
+            &--horizontal {
+                @include media('<tablet') {
+                    padding-left: 0;
+                    margin-top: 1rem;
+                }
+
+                .aw-pq-list__helpfulness-layout {
+                    flex-direction: row;
+                    border-radius: 3px;
+                    padding: 0.3rem 0.5rem 0;
+                    background: lighten($colorGallery, 3%);
+                    display: inline-flex;
+                }
+
+                .aw-pq-list__helpfulness-layout-unit {
+                    &:nth-child(1) {
+                        transform: scale(0.65) translateY(-0.2rem);
+                    }
+
+                    &:nth-child(3) {
+                        transform: scale(0.65) translateY(0.1rem);
+                    }
+                }
             }
 
             &-wrapper {

@@ -1,18 +1,12 @@
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <div class="cs-payment | payment-method" data-bind="css: {'_active': (getCode() == isChecked())}, visible: isAvailable()">
-    <div class="payment-method-title | cs-payment__title | cs-input | choice">
+    <div class="cs-payment__title | cs-input cs-input--type-radio">
         <input type="radio"
                name="payment[method]"
-               class="cs-input__input"
+               class="cs-input__radio"
                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
-        <label data-bind="attr: {'for': getCode()}" class="cs-input__label"><span data-bind="text: getTitle()"></span></label>
+        <label data-bind="attr: {'for': getCode()}" class="cs-input__label cs-input__label--big"><span data-bind="text: getTitle()"></span></label>
     </div>
-    <div class="cs-payment__content | payment-method-content">
+    <div class="cs-payment__content">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->
@@ -26,8 +20,8 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
-        <div class="cs-payment__actions">
-            <button class="cs-button cs-button--look_default cs-button--type_long"
+        <div class="cs-payment__buttons">
+            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
                     type="submit"
                     data-bind="
                     click: placeOrder,

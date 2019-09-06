@@ -8,6 +8,8 @@ $namespace: 'cs-';
 .#{$namespace}html-select {
     $root: &;
 
+    display: block !important;
+
     &__trigger {
         @extend .cs-input__select;
         min-width: 13rem;
@@ -61,8 +63,13 @@ $namespace: 'cs-';
         border-color: $colorCeruleanBlue;
         background-color: #fff;
         font-size: 1.4rem;
-        line-height: 1;
+        line-height: 1.125;
         padding: 0 0 0.5rem;
+
+        #{$root}--autosuggest:not(#{$root}--animate) & {
+            padding: 0;
+            border: none;
+        }
 
         &-item {
             margin: 0;

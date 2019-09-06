@@ -15,6 +15,15 @@ var config = {
     },
     config: {
         mixins: {
+            'Magento_Ui/js/view/messages': {
+                'Magento_Ui/js/view/messages-ext': true,
+            },
+            'Magento_Catalog/js/product/view/provider': {
+                'Magento_Catalog/js/product/view/provider-ext': true,
+            },
+            'Magento_Checkout/js/model/checkout-data-resolver': {
+                'Magento_Checkout/js/model/checkout-data-resolver-ext': true,
+            },
             'Magento_Checkout/js/view/summary/cart-items': {
                 'Magento_Checkout/js/view/summary/cart-items-ext': true,
             },
@@ -24,6 +33,9 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
+            'Magento_Checkout/js/model/new-customer-address': {
+                'Magento_Checkout/js/model/new-customer-address-ext': true,
+            },
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
@@ -32,6 +44,15 @@ var config = {
             },
             'Smile_ElasticsuiteCore/js/form-mini': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
+            },
+            'Magento_CheckoutAgreements/js/view/checkout-agreements': {
+                'Magento_CheckoutAgreements/js/view/checkout-agreements-ext': true,
+            },
+            'Magento_CheckoutAgreements/js/model/agreement-validator': {
+                'Magento_CheckoutAgreements/js/model/agreement-validator-ext': true,
+            },
+            'Magento_CheckoutAgreements/js/model/agreements-assigner': {
+                'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
             },
         },
     },

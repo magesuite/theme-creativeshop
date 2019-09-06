@@ -7,7 +7,7 @@ $bricksPerRow: (
     laptop: 4,
     laptop-lg: 4,
     desktop: 4,
-    tv: 4
+    tv: 4,
 );
 
 $bricksPerRowInColumn: (
@@ -17,7 +17,7 @@ $bricksPerRowInColumn: (
     laptop: 3,
     laptop-lg: 3,
     desktop: 3,
-    tv: 3
+    tv: 3,
 );
 
 $bricksHeight: (
@@ -27,7 +27,7 @@ $bricksHeight: (
     laptop: 406px,
     laptop-lg: 406px,
     desktop: 406px,
-    tv: 406px
+    tv: 406px,
 );
 
 .#{$namespace}grid-layout {
@@ -102,9 +102,13 @@ $bricksHeight: (
 
         &-content {
             position: absolute;
-            width: 85%;
             box-sizing: border-box;
+            width: 100%;
             padding: 2rem;
+
+            @include media('>laptop') {
+                width: 85%;
+            }
 
             &--variant-1 {
                 top: 50%;

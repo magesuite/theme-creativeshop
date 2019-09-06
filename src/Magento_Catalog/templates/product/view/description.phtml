@@ -9,26 +9,30 @@
     $product = $block->getProduct();
     $text = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($product, $product->getDescription(), 'description');
 ?>
-<?php if($text): ?>
-<div
-    class="cs-collapsible-text js-collapsible-text"
-    data-height="100"
-    data-content=".js-collapsible-text-content"
-    data-trigger=".js-collapsible-text-trigger"
->
-    <div class="cs-collapsible-text__content cs-collapsible-text__content--contrast js-collapsible-text-content">
-        <?php /* @escapeNotVerified */ echo $text; ?>
-    </div>
-    <button
-        class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger"
-        data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
-        data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
-    >
-         <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
-         <svg class="cs-button__icon">
-             <use xlink:href="#arrow_next"></use>
-         </svg>
-    </button>
-</div>
-<?php endif;?>
+<?php if($text):
+    if($this->getIsCollapseEnabled()): ?>
+        <div
+            class="cs-collapsible-text js-collapsible-text"
+            data-height="<?php /* @escapeNotVerified */ echo $this->getCollapseHeight() ?>"
+            data-content=".js-collapsible-text-content"
+            data-trigger=".js-collapsible-text-trigger"
+        >
+            <div class="cs-collapsible-text__content cs-collapsible-text__content--contrast js-collapsible-text-content">
+                <?php /* @escapeNotVerified */ echo $text; ?>
+            </div>
+            <button
+                class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger"
+                data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
+                data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
+            >
+                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
+                 <svg class="cs-button__icon">
+                     <use xlink:href="#arrow_next"></use>
+                 </svg>
+            </button>
+        </div>
+    <?php else:
+        /* @escapeNotVerified */ echo $text;
+    endif;
+endif;?>
 

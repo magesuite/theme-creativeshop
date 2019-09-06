@@ -3,7 +3,11 @@
     <body>
 
         <move element="customer_account_navigation" destination="sticky.menu"/>
-        <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml"/>
+        <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml">
+            <!--Add sign out link as the last position in dashboard menu-->
+            <block class="Magento\Customer\Block\Account\AuthorizationLink" name="logout-user-area"
+                       template="Magento_Customer::account/link/logout.phtml" after="-"/>
+        </referenceBlock>
 
         <referenceContainer name="main.content" htmlClass="cs-container cs-container--checkout-type cs-dashboard"/>
 
@@ -79,6 +83,7 @@
         </referenceBlock>
         <referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true"/>
         <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
+
 
     </body>
 </page>

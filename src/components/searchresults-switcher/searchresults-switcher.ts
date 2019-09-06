@@ -72,7 +72,7 @@ interface ISearchresultsSwitcher {
 
 export default class SearchresultsSwitcher {
     protected _$component: JQuery;
-    protected _options: any;
+    protected _options: ISearchresultsSwitcher;
     protected _$triggers: JQuery;
     protected _$tabs: JQuery;
     protected _$contents: JQuery;
@@ -103,6 +103,15 @@ export default class SearchresultsSwitcher {
 
         if (this._$triggers.length && this._$contents.length > 1) {
             this._init();
+        } else if (this._$contents.length === 0) {
+            const $msgs: JQuery = $(
+                `.${this._options.componentClass}__messages`
+            );
+            if ($msgs.length) {
+                $msgs.addClass(
+                    `${this._options.componentClass}__messages--visible`
+                );
+            }
         } else {
             this.showContents();
         }
@@ -236,15 +245,20 @@ export default class SearchresultsSwitcher {
         document.location.search
             .substr(1)
             .split('&')
-            .forEach((pair: string): any => {
-                const [key, value]: any = pair.split('=');
-                params[key] = value;
-            });
+            .forEach(
+                (pair: string): any => {
+                    const [key, value]: any = pair.split('=');
+                    params[key] = value;
+                }
+            );
 
         return params;
     }
 
     protected _setResultsCount(): void {
+        const $overallResultsCountHeadline: JQuery = $(
+            `.${this._options.componentClass}__overall-count`
+        );
         const $cmsResults: JQuery = $(this._options.cmsResultsSelector);
         const $productsResults: JQuery = $(
             this._options.productsResultsSelector
@@ -280,6 +294,11 @@ export default class SearchresultsSwitcher {
 
         if ($('#count-products').length) {
             $('#count-products').html(productsCount);
+        }
+
+        if ($overallResultsCountHeadline.length) {
+            const overallCount: any = cmsCount + productsCount;
+            $overallResultsCountHeadline.html(overallCount);
         }
     }
 
