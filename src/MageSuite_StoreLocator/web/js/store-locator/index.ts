@@ -608,11 +608,19 @@ export default class StoreLocator {
         ${store.phone}</a>`
             : ``;
 
-        const contactLine = store.email
+        let contactLine = store.email
             ? `<a href="mailto:${
                   store.email
               }" class="cs-store-locator__item-email">
         ${store.email}</a>`
+            : ``;
+
+        // Temporary solution for NKD
+        store.phone = 'Our stores are unfortunately not available by phone.';
+        contactLine = store.phone
+            ? `<p class="cs-store-locator__no-contact">
+            ${$.mage.__(store.phone)}
+            </p>`
             : ``;
 
         const storeDistance = store.distance
