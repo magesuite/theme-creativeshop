@@ -7,23 +7,18 @@ define(['mage/utils/wrapper', 'jquery'], function(wrapper, $) {
     'use strict';
 
     return function(StepNavigator) {
-        var next = wrapper.wrap(StepNavigator.next, function(originalAction) {
-            $('html, body').animate({ scrollTop: 0 }, 300);
-
-            return originalAction();
-        });
-
         var navigateTo = wrapper.wrap(StepNavigator.navigateTo, function(
             originalAction,
             code,
             scrollToElementId
         ) {
-            $('html, body').animate({ scrollTop: 0 }, 300);
+            originalAction(code, scrollToElementId);
 
-            return originalAction(code, scrollToElementId);
+            if (!scrollToElementId || !$('#' + scrollToElementId).length) {
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            }
         });
 
-        StepNavigator.next = next;
         StepNavigator.navigateTo = navigateTo;
 
         return StepNavigator;
