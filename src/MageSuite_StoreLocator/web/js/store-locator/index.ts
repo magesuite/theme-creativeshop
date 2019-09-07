@@ -616,12 +616,9 @@ export default class StoreLocator {
             : ``;
 
         // Temporary solution for NKD
-        store.phone = 'Our stores are unfortunately not available by phone.';
-        contactLine = store.phone
-            ? `<p class="cs-store-locator__no-contact">
-            ${$.mage.__(store.phone)}
-            </p>`
-            : ``;
+        contactLine = `<p class="cs-store-locator__no-contact">
+            ${$.mage.__('Our stores are unfortunately not available by phone.')}
+            </p>`;
 
         const storeDistance = store.distance
             ? `<span class="cs-store-locator__item-distance">
