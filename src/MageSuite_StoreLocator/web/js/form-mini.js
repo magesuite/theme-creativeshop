@@ -108,7 +108,7 @@ define([
                         response.data.addressAutocomplete &&
                         response.data.addressAutocomplete.items.length
                     ) {
-                        const data = response.data.addressAutocomplete.items;
+                        var data = response.data.addressAutocomplete.items;
 
                         $.each(data, function(index, element) {
                             var html;
