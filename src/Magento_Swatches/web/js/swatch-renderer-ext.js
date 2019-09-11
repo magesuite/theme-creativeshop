@@ -192,6 +192,13 @@ define(['jquery', 'underscore'], function($, _) {
                     '.normal-price .price-final_price .price-wrapper .price'
                 ).toggleClass('discounted-price', $discounted);
             },
+            _EmulateSelected: function(selectedAttributes) {
+                if (!this.element.closest('.product-info-main').length) {
+                    return;
+                }
+
+                this._super(selectedAttributes);
+            },
         });
 
         return $.mage.SwatchRenderer;
