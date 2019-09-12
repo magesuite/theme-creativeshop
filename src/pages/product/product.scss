@@ -33,6 +33,8 @@ $page-product--bundle-show-top-arrow-on-container: true !default;
 $page-product--bundle-show-top-arrow-size: 2rem !default;
 $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_mineshaft, 0.08) !default;
 
+$page-product--bundle-special-price-color: $price_special-color !default;
+
 .#{$ns}page-product {
     $root: &;
 
@@ -178,6 +180,18 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
     }
 }
 
+// A piece of code to style properly special prices for bundle products
+// Other types of product have different combination of classes - they use .special-price, but not bundles.
+.page-product-bundle {
+    .price-box.price-final_price .price-container.price-final_price {
+        order: 2;
+
+        &:not(:only-child) .price {
+            color: $page-product--bundle-special-price-color;
+        }
+    }
+}
+
 .page-product-bundle:not(.page-product-bundle-simplified) {
     .product-add-form form {
         @include media(#{$page-product_top-2col-breakpoint}) {
@@ -194,7 +208,6 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
             width: calc(100% - #{$page-product_buybox-column-width});
             padding: 0;
             margin: $page-product_top-2col-columns-gutter;
-            margin-left: 0;
             border-bottom: 0;
         }
     }
@@ -221,17 +234,5 @@ $page-product--bundle-show-top-arrow-shadow: 5px -5px 10px 0 rgba($color_minesha
 .page-product-giftcard {
     .product-info-wrapper {
         z-index: 2;
-    }
-}
-
-// Below is a piece of code to style properly special prices for bundle products
-// Other types of product have different combination of classes - they use .special-price, but not bundles.
-.page-product-bundle {
-    .price-box.price-final_price .price-container.price-final_price {
-        order: 2;
-
-        &:not(:only-child) .price {
-            color: $color_crimson;
-        }
     }
 }
