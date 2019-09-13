@@ -19,8 +19,12 @@ $daily-deal-teaser_image-wrapper-max-width-desktop: 25% !default;
 $daily-deal-teaser_slogan-ribbon-horizontal-position-direction: left !default;
 $daily-deal-teaser_slogan-ribbon-width: 28rem !default;
 $daily-deal-teaser_slogan-ribbon-vertical-padding: 1rem !default;
-$daily-deal-teaser_slogan-ribbon-position-y-axis: $daily-deal-teaser_slogan-ribbon-width / 7 !default;
-$daily-deal-teaser_slogan-ribbon-position-x-axis: calc((-#{$daily-deal-teaser_slogan-ribbon-position-y-axis} * 2) - (#{$daily-deal-teaser_slogan-ribbon-vertical-padding} / 2)) !default;
+$daily-deal-teaser_slogan-ribbon-position-y-axis: $daily-deal-teaser_slogan-ribbon-width /
+    7 !default;
+$daily-deal-teaser_slogan-ribbon-position-x-axis: calc(
+    (-#{$daily-deal-teaser_slogan-ribbon-position-y-axis} * 2) -
+        (#{$daily-deal-teaser_slogan-ribbon-vertical-padding} / 2)
+) !default;
 $daily-deal-teaser_slogan-ribbon-text-transform: uppercase !default;
 $daily-deal-teaser_slogan-ribbon-color: inherit !default;
 $daily-deal-teaser_slogan-ribbon-background: $color_gold !default;
@@ -60,11 +64,13 @@ $daily-deal-teaser_product-dd-headline-margin: 0 0 0.5rem !default;
 $daily-deal-teaser_product-dd-headline-font-weight: $daily-deal-teaser_global-bold-font !default;
 $daily-deal-teaser_product-dd-headline-text-transform: uppercase !default;
 
-$daily-deal-teaser_product-dd-progress-bar-margin-tablet: 0.5rem 0 0 !default;
-$daily-deal-teaser_product-dd-progress-bar-padding-tablet: 1.1rem 1rem !default;
-$daily-deal-teaser_product-dd-progress-bar-background-tablet: $color_background-500 !default;
-$daily-deal-teaser_product-dd-progress-bar-border-radius-tablet: $border-radius_base !default;
+$daily-deal-teaser_product-dd-progress-bar-margin: 0.5rem 0 0 !default;
+$daily-deal-teaser_product-dd-progress-bar-padding: 1.1rem 1rem !default;
+$daily-deal-teaser_product-dd-progress-bar-background: $color_background-500 !default;
+$daily-deal-teaser_product-dd-progress-bar-border-radius: $border-radius_base !default;
 $daily-deal-teaser_product-dd-progress-bar-content-background: $color_white !default;
+$daily-deal-teaser_product-dd-progress-bar-progress-background: $color_success-600 !default;
+$daily-deal-teaser_product-dd-progress-bar-height: 10px !default;
 
 $daily-deal-teaser_product-dd-available-font-size: $daily-deal-teaser_global-small-font !default;
 $daily-deal-teaser_product-dd-available-font-weight: $daily-deal-teaser_global-bold-font !default;
@@ -83,8 +89,6 @@ $daily-deal-teaser_addtocart-button-icon-pos: $button_default-icon-pos !default;
 $daily-deal-teaser_addtocart-margin-top: 1.5rem !default;
 $daily-deal-teaser_addtocart-min-width: 25rem !default;
 $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
-
-
 
 .#{$ns}daily-deal-teaser {
     $root: &;
@@ -106,7 +110,9 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
 
         @include media('>=tablet') {
             max-width: $daily-deal-teaser_image-wrapper-max-width-tablet;
-            padding: $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up 0;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up
+                $daily-deal-teaser_sections-gutter-tablet-up
+                $daily-deal-teaser_sections-gutter-tablet-up 0;
         }
 
         @include media('>=laptop') {
@@ -135,7 +141,9 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
         font-size: $daily-deal-teaser_slogan-ribbon-font-size;
         font-weight: $daily-deal-teaser_slogan-ribbon-font-weight;
 
-        @if $daily-deal-teaser_slogan-ribbon-horizontal-position-direction == left {
+        @if $daily-deal-teaser_slogan-ribbon-horizontal-position-direction ==
+            left
+        {
             transform: rotate(-45deg);
         } @else {
             transform: rotate(45deg);
@@ -173,7 +181,9 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
             display: flex;
             flex-direction: column;
             max-width: $daily-deal-teaser_details-max-width-tablet;
-            padding: $daily-deal-teaser_sections-gutter-tablet-up 0 $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up 0
+                $daily-deal-teaser_sections-gutter-tablet-up
+                $daily-deal-teaser_sections-gutter-tablet-up;
             border-left: $daily-deal-teaser_sections-border-separator;
         }
 
@@ -254,16 +264,20 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
         justify-content: space-between;
         line-height: 1;
 
-        @include media('>=tablet') {
-            margin: $daily-deal-teaser_product-dd-progress-bar-margin-tablet;
-            padding: $daily-deal-teaser_product-dd-progress-bar-padding-tablet;
-            background: $daily-deal-teaser_product-dd-progress-bar-background-tablet;
-            border-radius: $daily-deal-teaser_product-dd-progress-bar-border-radius-tablet;
-        }
+        margin: $daily-deal-teaser_product-dd-progress-bar-margin;
+        padding: $daily-deal-teaser_product-dd-progress-bar-padding;
+        background: $daily-deal-teaser_product-dd-progress-bar-background;
+        border-radius: $daily-deal-teaser_product-dd-progress-bar-border-radius;
 
         &-content {
             width: 100%;
+            height: $daily-deal-teaser_product-dd-progress-bar-height;
             background: $daily-deal-teaser_product-dd-progress-bar-content-background;
+        }
+
+        #{$root}__progress {
+            background-color: $daily-deal-teaser_product-dd-progress-bar-progress-background;
+            height: 100%;
         }
     }
 
@@ -290,7 +304,9 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
             flex-direction: column;
             width: auto;
             max-width: $daily-deal-teaser_actions-max-width;
-            padding: $daily-deal-teaser_sections-gutter-tablet-up 0 $daily-deal-teaser_sections-gutter-tablet-up $daily-deal-teaser_sections-gutter-tablet-up;
+            padding: $daily-deal-teaser_sections-gutter-tablet-up 0
+                $daily-deal-teaser_sections-gutter-tablet-up
+                $daily-deal-teaser_sections-gutter-tablet-up;
         }
     }
 
