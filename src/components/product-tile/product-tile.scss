@@ -587,15 +587,18 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         }
 
         #{$root}:hover & {
-            @media (pointer: fine) {
+            @include media($product-tile-grid_hover-animation-breakpoint) {
+                opacity: 1;
+                @if ($product-tile-grid_hover-animation) {
+                    transform: translate3d(0, 0, 0);
+                    transition: opacity 0.1s linear,
+                        transform 0.33s $transition-easing_slowdown-900;
+                }
+
                 //disabling hover effect on ipads
-                @include media($product-tile-grid_hover-animation-breakpoint) {
-                    opacity: 1;
-                    @if ($product-tile-grid_hover-animation) {
-                        transform: translate3d(0, 0, 0);
-                        transition: opacity 0.1s linear,
-                            transform 0.33s $transition-easing_slowdown-900;
-                    }
+                @media (pointer: coarse) {
+                    opacity: 0;
+                    transform: none;
                 }
             }
 
