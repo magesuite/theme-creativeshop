@@ -6,7 +6,6 @@
 @import 'components/typography/mixin';
 @import 'components/headline/mixin';
 
-
 $product-finder_font-size: 1rem !default;
 
 // If switched to yes then there will be a separate back button displayed
@@ -80,7 +79,8 @@ $product-finder_option-border-radius: 0.5rem !default;
 
         &--visible {
             opacity: 1;
-            transform: $product-finder_back-button-horizontal-translation scale(1);
+            transform: $product-finder_back-button-horizontal-translation
+                scale(1);
 
             @if $product-finder_back-button-per-step {
                 display: none;
@@ -120,7 +120,7 @@ $product-finder_option-border-radius: 0.5rem !default;
 
     &__step-header {
         @include headline();
-            width: 100%;
+        width: 100%;
     }
 
     &__step-title {
@@ -254,8 +254,13 @@ $product-finder_option-border-radius: 0.5rem !default;
          */
         display: -ms-grid;
         display: grid;
-        -ms-grid-rows: 1fr auto;
-        grid-template-rows: 1fr auto;
+        -ms-grid-rows: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+
+        .ie11 & {
+            -ms-grid-rows: 1fr auto;
+            grid-template-rows: 1fr auto;
+        }
         -ms-grid-columns: 1fr;
         grid-template-columns: 1fr;
     }
