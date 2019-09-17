@@ -11,16 +11,14 @@
         <div class="cs-header-user-nav__icon-wrapper">
             <?php if ($isLoggedIn): ?>
                 <?= $block->getChildHtml('my-account-link.icon.logged-in'); ?>
-            <?php endif; ?>
-            <?php if (!$isLoggedIn): ?>
+                <?php if (!empty($labelLogIn)): ?>
+                    <span class="cs-header-user-nav__label"><?php echo $labelLogIn ?></span>
+                <?php endif; ?>
+            <?php else: ?>
                 <?= $block->getChildHtml('my-account-link.icon.logged-out'); ?>
-            <?php endif; ?>
-
-            <?php if ($isLoggedIn && !empty($labelLogIn)): ?>
-                <span class="cs-header-user-nav__label"><?php echo $labelLogIn ?></span>
-            <?php endif; ?>
-            <?php if (!$isLoggedIn && !empty($labelLogOut)): ?>
-                <span class="cs-header-user-nav__label"><?php echo $labelLogOut ?></span>
+                <?php if (!empty($labelLogOut)): ?>
+                    <span class="cs-header-user-nav__label"><?php echo $labelLogOut ?></span>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </a>
