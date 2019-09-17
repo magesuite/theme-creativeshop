@@ -1,12 +1,20 @@
 <?php
-    $label = $block->getXmlLabel();
+    $labelLogIn = $block->getLabelLogIn();
+    $labelLogOut = $block->getLabelLogOut();
+
+    $customerHelper = $this->helper('MageSuite\Frontend\Helper\Customer');
+    $isLoggedIn = $customerHelper->isLoggedIn();
 ?>
-<li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>">
+
+<li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?><?php if ($isLoggedIn): ?> cs-header-user-nav__item--logged-in<?php endif; ?>">
     <a href="<?php /* @escapeNotVerified */ echo $block->getHref(); ?>" class="cs-header-user-nav__link">
         <div class="cs-header-user-nav__icon-wrapper">
             <?= $block->getChildHtml('my-account-link.icon'); ?>
-            <?php if (!empty($label)): ?>
-                <span class="cs-header-user-nav__label"><?= __($block->escapeHtml($label)); ?></span>
+            <?php if ($isLoggedIn && !empty($labelLogIn)): ?>
+                <span class="cs-header-user-nav__label"><?php echo $labelLogIn ?></span>
+            <?php endif; ?>
+            <?php if (!$isLoggedIn && !empty($labelLogOut)): ?>
+                <span class="cs-header-user-nav__label"><?php echo $labelLogOut ?></span>
             <?php endif; ?>
         </div>
     </a>
