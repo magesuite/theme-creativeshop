@@ -7,7 +7,7 @@
  * - gallery is loaded, to keep correct gallery behaviour
  * - attributes config is prepared by widget logic
  */
-define(['jquery', 'underscore'], function($, _) {
+define(['jquery', 'underscore', 'mage/translate'], function($, _) {
     'use strict';
 
     return function(swatchRenderer) {
@@ -163,6 +163,22 @@ define(['jquery', 'underscore'], function($, _) {
                         $option.trigger('click');
                     }
                 }
+            },
+            /**
+             * Change required message to more informative
+             */
+            _RenderFormInput: function(config) {
+                var originalHtml = this._super(config);
+                var validationMessage = $.mage
+                    .__('Please select %1')
+                    .replace('%1', config.label);
+
+                return originalHtml.replace(
+                    'data-validate="{required: true}"',
+                    'data-validate="{required: true, messages:{required:\'' +
+                        validationMessage +
+                        '\'}}"'
+                );
             },
             _UpdatePrice: function() {
                 this._super();
