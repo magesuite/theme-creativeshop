@@ -1,7 +1,6 @@
 @import 'utils/get-value-from-list';
 @import 'components/button/animation';
 @import 'components/button/hook';
-@import 'vendors/include-media';
 
 // Define default type for buttons. You can override it individually per button in each component
 // Variants: primary | secondary | link | success | error
@@ -23,8 +22,6 @@ $button_animation-time: 0.5s !default;
 $button_text-transform: none !default;
 $button_text-letter-spacing: normal !default;
 $button_text-align: center !default;
-$button_width-mobile: 100% !default;
-$button_width-tablet-desktop: auto !default;
 
 // Styles for `primary` button type
 $button_primary-border: $button_border-size solid transparent !default;
@@ -95,11 +92,6 @@ $button_icon-offset: 0.1em !default;
     line-height: $button_line-height;
     margin: 0;
     text-transform: $button_text-transform;
-    width: $button_width-mobile;
-
-    @include media('>=phoneLg') {
-        width: $button_width-tablet-desktop;
-    }
 
     @if ($type != 'link') {
         padding: $button_padding;
