@@ -69,8 +69,19 @@ $daily-deal-teaser_product-dd-progress-bar-padding: 1.1rem 1rem !default;
 $daily-deal-teaser_product-dd-progress-bar-background: $color_background-500 !default;
 $daily-deal-teaser_product-dd-progress-bar-border-radius: $border-radius_base !default;
 $daily-deal-teaser_product-dd-progress-bar-content-background: $color_white !default;
-$daily-deal-teaser_product-dd-progress-bar-progress-background: $color_success-600 !default;
+$daily-deal-teaser_product-dd-progress-bar-progress: $color_success-600 !default;
 $daily-deal-teaser_product-dd-progress-bar-height: 10px !default;
+$daily-deal-teaser_product-dd-progress-bar-possible-border: 1px solid
+    $color_background-500 !default;
+$daily-deal-teaser_product-dd-progress-bar-possible-margin: 2px !default;
+$daily-deal-teaser_product-dd-progress-bar-possible-height: 80% !default;
+$daily-deal-teaser_product-dd-progress-bar-possible-background: repeating-linear-gradient(
+    -45deg,
+    $color_border-500,
+    $color_border-500 1px,
+    transparent 1px,
+    transparent 5px
+) !default;
 
 $daily-deal-teaser_product-dd-available-font-size: $daily-deal-teaser_global-small-font !default;
 $daily-deal-teaser_product-dd-available-font-weight: $daily-deal-teaser_global-bold-font !default;
@@ -274,9 +285,24 @@ $daily-deal-teaser_addtocart-min-width-laptop: 21rem !default;
             background: $daily-deal-teaser_product-dd-progress-bar-content-background;
         }
 
-        #{$root}__progress {
-            background-color: $daily-deal-teaser_product-dd-progress-bar-progress-background;
+        #{$root}__progress-bg {
+            background-color: $daily-deal-teaser_product-dd-progress-bar-content-background;
             height: 100%;
+        }
+
+        #{$root}__progress {
+            background-color: $daily-deal-teaser_product-dd-progress-bar-progress;
+            height: 100%;
+            border: 1px solid
+                $daily-deal-teaser_product-dd-progress-bar-progress;
+        }
+
+        #{$root}__progress-possible {
+            height: $daily-deal-teaser_product-dd-progress-bar-possible-height;
+            border: $daily-deal-teaser_product-dd-progress-bar-possible-border;
+            margin: $daily-deal-teaser_product-dd-progress-bar-possible-margin;
+            border-radius: $daily-deal-teaser_product-dd-progress-bar-border-radius;
+            background: $daily-deal-teaser_product-dd-progress-bar-possible-background;
         }
     }
 

@@ -93,13 +93,13 @@ interface DailydealOptions {
      * Callback function that (if defined) is fired after DD clock is rendered
      * @type Function
      */
-    afterRenderCallback?: Function;
+    afterRenderCallback?: () => void;
     /**
      * By default when DD has expired during page reading we do nothing - countdown stops on 00:00:00:00.
      * You can pass handler here and do whatever you want with expired DD
      * @type Function
      */
-    expiredHandler?: Function;
+    expiredHandler?: () => void;
 }
 
 /**
@@ -143,8 +143,14 @@ export default class Dailydeal {
     protected _options: DailydealOptions = {
         namespace: 'cs-',
         get countdownTemplate() {
-            return `<span class="${this.namespace}dailydeal__countdown-element ${this.namespace}dailydeal__countdown-element--special">
-                    <img class="inline-svg ${this.namespace}dailydeal__countdown-icon" data-bind="attr: { src: require.toUrl('images/icons/clock.svg') }" alt="">
+            return `<span class="${
+                this.namespace
+            }dailydeal__countdown-element ${
+                this.namespace
+            }dailydeal__countdown-element--special">
+                    <img class="inline-svg ${
+                        this.namespace
+                    }dailydeal__countdown-icon" data-bind="attr: { src: require.toUrl('./images/icons/clock.svg') }" alt="">
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
                     <span class="${
@@ -277,7 +283,10 @@ export default class Dailydeal {
             // dailydeal should be hidden.
             this._hideDailydeal(true);
 
-            if (this._options.expiredHandler && typeof(this._options.expiredHandler) === 'function') {
+            if (
+                this._options.expiredHandler &&
+                typeof this._options.expiredHandler === 'function'
+            ) {
                 this._options.expiredHandler(this);
             }
             return;
@@ -475,7 +484,7 @@ export default class Dailydeal {
      * @return 'n' {string} formatted number
      */
     protected _getFormattedTimeElement(n: number): string {
-        if (this._options.timeDisplayPrecision == 2) {
+        if (this._options.timeDisplayPrecision === 2) {
             return n > 9 ? `${n}` : `0${n}`;
         } else {
             return `${n}`;
@@ -591,6 +600,7 @@ export default class Dailydeal {
     }
 
     protected _setUniqueIds(): void {
+        /* tslint:disable-next-line */
         const rdm: number = (Math.random() * (999 - 1 + 1)) << 0;
         this._$countdown.addClass(`countdown-${rdm}-${this._endTime}`);
     }
