@@ -576,6 +576,12 @@ export default class Navigation {
         this._eventListeners.itemMouseenterListener = (
             event: JQuery.MouseEnterEvent
         ): void => {
+            // Some iPads can trigger mouseenter event and cancel action on first touch to simulate hover effect
+            // There are special touch events for touch device, so mouseenter can be canceled
+            if ($('body').hasClass('touch-device')) {
+                return;
+            }
+
             const $rootItem: JQuery = $(event.target as HTMLElement)
                 .closest(`.${this._options.itemClassName}--main`)
                 .find(this._$flyouts);
@@ -640,6 +646,12 @@ export default class Navigation {
         this._eventListeners.itemMouseleaveListener = (
             event: JQuery.MouseLeaveEvent
         ): void => {
+            // Some iPads can trigger mouseleave event and cancel action on first touch to simulate hover effect
+            // There are special touch events for touch device, so mouseleave can be canceled
+            if ($('body').hasClass('touch-device')) {
+                return;
+            }
+
             clearTimeout(this._showTimeout);
             this._hideFlyout(
                 $(event.target as HTMLElement)
