@@ -971,16 +971,24 @@
             $.mage.__('Please use only letters (a-z or A-Z) or numbers (0-9) in this field. No spaces or other characters are allowed.') //eslint-disable-line max-len
         ],
         'validate-date': [
-            function (value, params, additionalParams) {
-                debugger;
-                var test = moment(value, additionalParams.dateFormat);
-                var regex = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;
+            function (value, element, parameters) {
+                var day, month, year;
+                var formatElements = parameters.dateFormat.match(/[Mdy]+/g);
+                var dateElements = value.match(/\d+/g);
 
-                if ($.mage.isEmpty(value) || !regex.test(value)) {
-                    return false;
-                }
+                formatElements.map(function(value, index) {
+                    if (value.match(/^d*$/)) {
+                        day = dateElements[index];
+                    } else if (value.match(/^M*$/)) {
+                        month = dateElements[index];
+                    } else if (value.match(/^y*$/)) {
+                        year = dateElements[index];
+                    }
+                });
 
-                return $.mage.isEmptyNoTrim(value) || test.isValid();
+                var dateToValidate = new Date(month + '/' + day + '/' + year);
+
+                return $.mage.isEmptyNoTrim(value) || !isNaN(dateToValidate);
             },
             $.mage.__('Please enter a valid date.')
         ],
