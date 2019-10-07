@@ -1,7 +1,6 @@
 import * as $ from 'jquery';
-
 import * as isMobile from 'isMobile';
-import 'bootstrapSelect';
+import requireAsync from 'utils/require-async';
 
 /**
  * component options interface.
@@ -168,26 +167,31 @@ export default class HtmlSelect {
      */
     protected _render(): void {
         const _this: any = this;
+        if (this._$select.length) {
+            requireAsync(['bootstrapSelect']).then(([bootstrapSelect]) => {
+                this._$select.each(function(): void {
+                    const limit: number = $(this).attr('data-options-limit')
+                        ? parseInt($(this).data('options-limit'), 10)
+                        : 8;
+                    let triggerStyle: string = `cs-html-select__trigger`;
 
-        this._$select.each(function(): void {
-            const limit: number = $(this).attr('data-options-limit')
-                ? parseInt($(this).data('options-limit'), 10)
-                : 8;
-            let triggerStyle: string = `cs-html-select__trigger`;
+                    if ($(this).hasClass(`cs-html-select--big`)) {
+                        triggerStyle = `cs-html-select__trigger cs-html-select__trigger--big`;
+                    } else if ($(this).hasClass(`cs-html-select--light`)) {
+                        triggerStyle = `cs-html-select__trigger cs-html-select__trigger--light`;
+                    } else if (
+                        $(this).hasClass(`cs-html-select--light-reverse`)
+                    ) {
+                        triggerStyle = `cs-html-select__trigger cs-html-select__trigger--light-reverse`;
+                    }
 
-            if ($(this).hasClass(`cs-html-select--big`)) {
-                triggerStyle = `cs-html-select__trigger cs-html-select__trigger--big`;
-            } else if ($(this).hasClass(`cs-html-select--light`)) {
-                triggerStyle = `cs-html-select__trigger cs-html-select__trigger--light`;
-            } else if ($(this).hasClass(`cs-html-select--light-reverse`)) {
-                triggerStyle = `cs-html-select__trigger cs-html-select__trigger--light-reverse`;
-            }
+                    _this._selectpickerOptions.size = limit;
+                    _this._selectpickerOptions.styleBase = triggerStyle;
 
-            _this._selectpickerOptions.size = limit;
-            _this._selectpickerOptions.styleBase = triggerStyle;
-
-            $(this).selectpicker(_this._selectpickerOptions);
-        });
+                    $(this).selectpicker(_this._selectpickerOptions);
+                });
+            });
+        }
     }
 
     /**
