@@ -1,82 +1,90 @@
-import * as $ from 'jquery';
-import Stickyfill from 'Stickyfill';
-
-import breakpoint from 'utils/breakpoint/breakpoint';
+import requireAsync from 'utils/require-async';
 
 /**
- * Navigation component options interface.
+ * Position: sticky detection and polyfill component
  */
-interface StickyBlockOptions {
-    /**
-     * Breakpoint number as a border where above this value stickyBlock will be destroyed
-     * @type {number}
-     */
-    breakpoint?: number;
+
+interface breakpoint {
+    greaterThan?: number;
+    lessThan?: number;
 }
 
-export default class StickyBlock {
-    protected _$element: JQuery;
+const isSupported: boolean = (() => {
+    const el: Element = document.createElement('a');
+    el.style.cssText =
+        'position:sticky; position:-webkit-sticky; position:-ms-sticky;';
+    return !!(el.style.position.indexOf('sticky') !== -1);
+})();
 
-    /**
-     * Creates new StickyBlock component with optional settings.
-     * @param  {StickyBlockOptions} options  Optional settings object.
-     */
-    public constructor($element: JQuery, options?: StickyBlockOptions) {
-        this._$element = $element || $('.cs-sticky-block');
-        this._options = $.extend(this._options, options);
-        this._options.breakpoint = this._options.breakpoint || 1024;
-
-        if (Stickyfill && this._$element.length) {
-            this._initStickyBlock();
-            this._setResizeEvent();
-        }
-    }
-
-    /**
-     * Destroys stickyBlock component's functionality.
-     * @param  {string} afterDestroyCssPosition  Optional CSS position after polyfill is destroyed.
-     */
-    public destroy(afterDestroyCssPosition?: string): void {
-        Stickyfill.remove(this._$element[0]);
-        this._$element.css('position', afterDestroyCssPosition);
-    }
-
-    /**
-     * Rebuilds stickyBlock component.
-     * Call it after layout changes.
-     * Plugin launches it automatically after window resizes or device orientations changes.
-     */
-    public rebuild(): void {
-        Stickyfill.rebuild();
-    }
-
-    /**
-     * Initializes stickyBlock component's functionality.
-     */
-    protected _initStickyBlock(): void {
-        if (breakpoint.current >= this._options.breakpoint) {
-            this._$element.Stickyfill();
-        }
-    }
-
-    /**
-     * Toggles init or destroy based on given breakpoint
-     */
-    protected _setResizeEvent(): void {
-        const _this: any = this;
-
-        $(window).on('resize', function(): void {
-            if (
-                breakpoint.current >= _this._options.breakpoint &&
-                !Stickyfill.stickies.length
-            ) {
-                _this._$element.Stickyfill();
-            } else if (
-                breakpoint.current < _this._options.breakpoint &&
-                Stickyfill.stickies.length
-            ) {
-                _this.destroy();
+const makeSticky = (element: Element, breakpoint?: breakpoint): void => {
+    if (!isSupported) {
+        requireAsync(['Stickyfill']).then(([Stickyfill]) => {
+            if (element) {
+                if (breakpoint) {
+                    handleStickyWithBreakpoints(
+                        Stickyfill,
+                        element,
+                        breakpoint,
+                        1000
+                    );
+                } else {
+                    Stickyfill.add(element);
+                }
             }
         });
     }
-}
+};
+
+const handleStickyWithBreakpoints = (
+    Stickyfill: any,
+    element: Element,
+    breakpoint: breakpoint,
+    throttling?: number
+) => {
+    let isThrottled = false;
+    const throttleTime = throttling > 0 ? throttling : 0;
+    let isSticky: boolean = false;
+    let isAboveThreshold: boolean = false;
+    let isBelowThreshold: boolean = false;
+
+    const resizeHandler = (): void => {
+        if (!isThrottled) {
+            if (breakpoint.greaterThan) {
+                isBelowThreshold = !!(
+                    window.innerWidth <= breakpoint.greaterThan
+                );
+
+                if (isSticky && isBelowThreshold) {
+                    Stickyfill.remove(element);
+                    isSticky = false;
+                }
+            }
+
+            if (breakpoint.lessThan) {
+                isAboveThreshold = !!(window.innerWidth >= breakpoint.lessThan);
+
+                if (isSticky && isAboveThreshold) {
+                    Stickyfill.remove(element);
+                    isSticky = false;
+                }
+            }
+
+            if (!(isSticky || isAboveThreshold || isBelowThreshold)) {
+                Stickyfill.add(element);
+                isSticky = true;
+            }
+
+            if (throttleTime > 0) {
+                isThrottled = true;
+                setTimeout(() => {
+                    isThrottled = false;
+                }, throttleTime);
+            }
+        }
+    };
+
+    resizeHandler();
+    window.addEventListener('resize', resizeHandler);
+};
+
+export default makeSticky;

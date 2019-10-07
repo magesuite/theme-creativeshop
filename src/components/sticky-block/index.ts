@@ -1,14 +1,17 @@
-import * as $ from 'jquery';
-import StickyBlock from 'components/sticky-block/sticky-block';
+import makeSticky from 'components/sticky-block/sticky-block';
+import breakpoint from 'utils/breakpoint/breakpoint';
+
 import 'components/sticky-block/sticky-block.scss';
 
 /**
- * StickyBlock component initialization for template
+ * Refactored Sticky component initialization for template
  */
-new StickyBlock($('.cs-sticky-block'));
 
-$('.cs-product-gallery').on('gallery:loaded', function(): void {
-    if (Stickyfill && Stickyfill.stickies.length) {
-        Stickyfill.rebuild();
-    }
-});
+const target = document.querySelector('.cs-sticky-block--no-mobile');
+const targetWithMobile = document.querySelector('.cs-sticky-block');
+
+if (target) {
+    makeSticky(target, { greaterThan: breakpoint.tablet });
+} else if (targetWithMobile) {
+    makeSticky(target);
+}

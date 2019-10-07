@@ -83,7 +83,6 @@ import 'components/reviews-summary';
 import 'components/tabs';
 import 'components/table';
 import 'components/toolbar';
-import 'components/sticky-block';
 import 'components/captcha';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'components/video-player';
