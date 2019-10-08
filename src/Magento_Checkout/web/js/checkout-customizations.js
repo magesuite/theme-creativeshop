@@ -1,71 +1,45 @@
 /**
  * Mount creativestyle customizations after step shipping of the checkout is loaded
  */
-define([
-    'rjsResolver',
-    'jquery',
-    'mage/validation',
-    'js/checkout',
-    'mage/translate',
-], function(resolver, $, validation, bundle) {
+define(['rjsResolver', 'jquery', 'js/checkout', 'mage/translate'], function(
+    resolver,
+    $,
+    bundle
+) {
     'use strict';
 
     /**
-     * Initializes inline validation for shipping information form fields
-     * including custom logic for street name.
+     * Add warning for missing number in street field
      */
-    function initInlineValidation($shippingForm) {
-        $shippingForm.find('input').each(function() {
-            var $input = $(this);
-            var $inputComponent = $input.closest('.cs-input');
-            if (
-                $inputComponent.hasClass('_required') ||
-                $inputComponent.hasClass('required')
-            ) {
-                if (
-                    $inputComponent.length &&
-                    $input.attr('name') !== 'street[0]'
-                ) {
-                    $input.removeAttr('data-validate');
-                }
-            }
+    function initMissingStreetNumberWarning($shippingForm) {
+        var $streetInput = $shippingForm.find('input[name="street[0]"]');
+        var $streetInputField = $streetInput.closest('.field');
 
-            // Init validation on every checkout field
-            $input.validation();
+        $streetInput.on('blur change', function() {
+            if ($streetInputField.hasClass('_success')) {
+                if (!/\d/.test($streetInput.val())) {
+                    $streetInputField.addClass('_warn');
+                    if (
+                        !$streetInputField.find('.message.warning').length &&
+                        !$(
+                            '.cs-html-select--autosuggest.cs-html-select--animate'
+                        ).length
+                    ) {
+                        var missingStreetMessage =
+                            '<div class="message warning" ><span>' +
+                            $.mage.__('Do not forget about street number') +
+                            '</span></div>';
 
-            $input.on('blur change', function() {
-                if ($input.validation('isValid') && $input.val() !== '') {
-                    $inputComponent.addClass('cs-input--success');
-
-                    if ($input.attr('name') === 'street[0]') {
-                        if (!/\d/.test($input.val())) {
-                            $inputComponent.addClass('cs-input--warning');
-                            if (
-                                !$input.next().hasClass('cs-input__warning') &&
-                                !$('.cs-html-select--autosuggest').length
-                            ) {
-                                var missingStreetMessage =
-                                    '<div class="cs-input__warning" >' +
-                                    $.mage.__(
-                                        'Do not forget about street number'
-                                    ) +
-                                    '</div>';
-
-                                $input.after(missingStreetMessage);
-                            }
-                        } else {
-                            $inputComponent
-                                .removeClass('cs-input--warning')
-                                .find('.cs-input__warning')
-                                .remove();
-                        }
+                        $streetInput.after(missingStreetMessage);
                     }
                 } else {
-                    $inputComponent.removeClass('cs-input--success');
+                    $streetInputField
+                        .removeClass('_warn')
+                        .find('.message.warning')
+                        .remove();
                 }
-            });
+            }
         });
-        $shippingForm.validation();
     }
 
     /**
@@ -74,7 +48,7 @@ define([
     function onCheckoutLoaded() {
         var $shippingAddressForm = $('#co-shipping-form');
 
-        initInlineValidation($shippingAddressForm);
+        initMissingStreetNumberWarning($shippingAddressForm);
 
         bundle.AddressAutofill({
             streetField: $shippingAddressForm.find('input[name="street[0]"]'),

@@ -96,6 +96,11 @@ $field_checkbox-background-size: 1em 1em !default;
 $field_checkbox-icon-fill: $color_primary-500 !default;
 $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='#{uri-friendly-hex($field_checkbox-icon-fill)}' d='M5.313 10.108H5.24a1.064 1.005 0 0 1-.75-.41l-1.947-2.55a1.064 1.005 0 0 1 1.723-1.175L5.463 7.56 9.06 4.19a1.064 1.005 0 0 1 .75-.297h.846a1.064 1.005 0 0 1 0 2.004h-.45L6.064 9.81a1.064 1.005 0 0 1-.75.298z'/%3e%3c/svg%3e") !default;
 
+$field_icon-width: 1.3em !default;
+$field_icon-height: 1.3em !default;
+$field_icon-success-background: url('../images/check-green.svg') no-repeat
+    center center / contain !default;
+
 @mixin field() {
     font-size: $field_font-size;
     display: flex;
@@ -187,15 +192,19 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
     @include field-input-error-hook();
 }
 
-@mixin field-icon() {
+@mixin field-icon($type: '') {
     position: absolute;
-    width: 1.7em;
-    height: 1.7em;
+    width: $field_icon-width;
+    height: $field_icon-height;
     right: 0.8em;
-    top: 1.2em;
+    top: 0.8em;
     display: none;
 
-    @include field-icon-hook();
+    @if ($type == 'success') {
+        background: $field_icon-success-background;
+    }
+
+    @include field-icon-hook($type);
 }
 
 @mixin field-note() {
@@ -357,7 +366,6 @@ $field_checkbox-background-image-checked: url("data:image/svg+xml;charset=UTF-8,
         &:hover,
         &:focus {
             border: $field_radio-border-checked;
-            box-shadow: $field_radio-box-shadow-checked;
             background-color: $field_radio-background-color-checked;
             box-shadow: $field_radio-box-shadow-checked;
         }

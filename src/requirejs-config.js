@@ -89,6 +89,9 @@ var config = {
             'Magento_Catalog/js/related-products': {
                 'Magento_Catalog/js/related-products-ext': true,
             },
+            'Magento_Ui/js/form/element/abstract': {
+                'Magento_Ui/js/form/element/abstract-ext': true,
+            },
         },
     },
     map: {
