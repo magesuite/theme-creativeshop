@@ -1,11 +1,60 @@
-import 'MageSuite_StoreLocator/web/css/store-locator.scss';
+// =============================================================================
+// Storelocator page entry point
+// It imports all the components required by contact page.
+// Each page type has own entry point containing required components.
+// It allows optimizing bundles in webpack - which gathers common imports in separate package.
+// It is a job of every component to initilize itself.
 
-import StoreLocator from 'MageSuite_StoreLocator/web/js/store-locator';
-import * as $ from 'jquery';
+import 'config/base.scss';
+// TODO: Remove this file when possible
+import 'bundle.scss';
 
-/**
- * StoreLocator component initialization for template
- */
-if ($('.cs-store-locator').length) {
-    new StoreLocator($('.cs-store-locator'));
-}
+// =============================================================================
+// Components
+// =============================================================================
+
+// Base components
+import 'components/authorization-link';
+import 'components/addtocart';
+import 'components/autocomplete';
+import 'components/breadcrumbs';
+import 'components/button';
+import 'components/container';
+import 'components/cookie-message';
+import 'components/device-detection';
+import 'components/display-controller';
+import 'components/dropdown-switcher';
+import 'components/field';
+import 'components/footer';
+import 'components/grid-layout';
+import 'components/headline';
+import 'components/header';
+import 'components/lazyload';
+import 'components/links-block-addto';
+import 'components/logo';
+import 'components/messages';
+import 'components/minicart';
+import 'components/minicart-product';
+import 'components/modal';
+import 'components/navigation';
+import 'components/newsletter';
+import 'components/offcanvas-toggle';
+import 'components/offcanvas-navigation';
+import 'components/offcanvas';
+import 'components/page-title';
+import 'components/page-bottom';
+import 'components/price-box';
+import 'components/product-tile';
+import 'components/qty-increment';
+import 'components/slider';
+import 'components/social-media-list';
+import 'components/star-rating';
+import 'components/swatches';
+import 'components/topbar';
+import 'components/typography';
+import 'components/usps';
+import 'components/select';
+// Content Constructor (used only for usps component)
+import 'components/image-teaser';
+// Storelocator page specific
+import 'MageSuite_StoreLocator/web/js/store-locator';

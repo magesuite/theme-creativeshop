@@ -7,43 +7,55 @@
 @import 'components/button/mixin';
 @import 'components/pseudoicon/mixin';
 
+// Basic
+$store-locator_basic-border-color: $color_border-500 !default;
+$store-locator_basic-border: 1px solid $store-locator_basic-border-color !default;
+
+$store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
+    center center / 5rem 5rem rgba($color_background-200, 0.75) !default;
+
+// Sidebar
+$store-locator_title-font-size: $font-size_headline-1 !default;
+$store-locator_sidebar-basic-space-inside: 2rem !default;
+
 $store-locator_sidebar-background: $color_background-200 !default;
 $store-locator_sidebar-toggle-background: $color_background-200 !default;
-$store-locator_title-font-size: $font-size_headline-1 !default;
-$store-locator_suggestions-form-border: 1px solid $color_border-500 !default;
+$store-locator_sidebar-toggle-transition: transform 0.125s ease-out !default;
 $store-locator_sidebar-box-shadow: $box-shadow_base !default;
-$store-locator_item-hover-background: $color_background-500 !default;
-$store-locator_item-active-background: $color_background-600 !default;
-$store-locator_item-font-size: 1.4rem !default;
-$store-locator_item-color: $color_text-800 !default;
 
-$store-locator_height: 2.875em !default;
-$store-locator_font-size: 1.4rem !default;
-
-$store-locator_close-color: $color_text-400 !default;
-
+// Buttons
 $store-locator_button-type: $button_default-type !default;
 $store-locator_button-width: 5rem !default;
 $store-locator_button-border-radius: 0 !important !default;
 $store-locator_button-transform: $transform_skew-400 translateX(0.7rem) !default;
-
+$store-locator_button-container-transition: transform 0.5s
+        $transition-easing_slowdown-900,
+    opacity 0.15s linear !default;
 $store-locator_location-button-type: 'secondary' !default;
 $store-locator_location-button-icon: 'only-icon' !default;
 
+// Search field
+$store-locator_search-field-font-size: 1.4rem !default;
 $store-locator_icon-search-color: $color_text-200 !default;
 $store-locator_icon-search-color-hover: $color_text-200 !default;
 $store-locator_icon-loader-color: $color_text-200 !default;
 $store-locator_icon-transform: $transform_skew-400-revert translateX(-0.3rem) !default;
 
-$store-locator_button-container-transition: transform 0.5s
-        $transition-easing_slowdown-900,
-    opacity 0.15s linear !default;
+$store-locator_stores-list-background: $color_background-200 !default;
 
+// Autocomplete
 $store-locator_autocomplete-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.17) !default;
 $store-locator_autocomplete-background: $color_background-200 !default;
+$store-locator_autocomplete-item-selected-background: $color_background-500 !default;
 
-$store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
-    center center / 5rem 5rem rgba($color_background-200, 0.75) !default;
+// Store item
+$store-locator_item-padding: 2rem !default;
+$store-locator_item-hover-background: $color_background-500 !default;
+$store-locator_item-active-background: $color_background-600 !default;
+$store-locator_item-font-size: 1.4rem !default;
+$store-locator_item-color: $color_text-800 !default;
+$store-locator_item-hours-trigger: $color_text-900 !default;
+$store-locator_close-color: $color_text-400 !default;
 
 .#{$ns}store-locator {
     $root: &;
@@ -83,7 +95,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
             top: 3rem;
             left: 3rem;
             width: 38rem;
-            transition: transform 0.125s ease-out;
+            transition: $store-locator_sidebar-toggle-transition;
             background: $store-locator_sidebar-background;
             margin-bottom: 3rem;
             max-height: calc(100% - 6rem);
@@ -93,7 +105,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
             transform: translateX(-41rem);
         }
 
-        &--mobile-open {
+        #{$root}--mobile-stores-open & {
             flex: 1;
         }
 
@@ -134,7 +146,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
 
     &__title {
         @include headline($level: $store-locator_title-font-size);
-        padding: 2rem;
+        padding: $store-locator_sidebar-basic-space-inside;
         margin: 0;
 
         @include media('<laptop') {
@@ -145,11 +157,12 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
 
     &__search {
         width: 100%;
-        border-bottom: $store-locator_suggestions-form-border;
+        border-bottom: $store-locator_basic-border;
     }
 
     &__search-form {
-        margin: 0 2rem 2rem;
+        margin: 0 $store-locator_sidebar-basic-space-inside
+            $store-locator_sidebar-basic-space-inside;
         position: relative;
         display: flex;
     }
@@ -157,12 +170,12 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
     &__search-input {
         @include field-input();
 
-        font-size: $store-locator_font-size;
+        font-size: $store-locator_search-field-font-size;
         position: relative;
         z-index: 210;
         margin: 0;
         -webkit-appearance: none;
-        width: calc(100% - 4rem);
+        width: calc(100% - (#{$store-locator_sidebar-basic-space-inside} * 2));
         border-right: none;
 
         &:focus {
@@ -298,12 +311,12 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
         list-style: none inside none;
         padding: 0.7rem 1.5rem;
         font-size: 1.4rem;
-        border-top: 1px solid $color_border-500;
+        border-top: $store-locator_basic-border;
         margin: 0;
         cursor: pointer;
 
         &.selected {
-            background: $color_background-500;
+            background: $store-locator_autocomplete-item-selected-background;
         }
     }
 
@@ -345,7 +358,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
             height: 100%;
         }
 
-        &--mobile-hidden {
+        #{$root}--mobile-stores-open & {
             flex: 0;
         }
     }
@@ -374,7 +387,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
         display: none;
         flex: 1;
         overflow-y: auto;
-        background: $color_background-200;
+        background: $store-locator_stores-list-background;
         max-height: calc(100vh - 15rem);
 
         @include media('>=laptop') {
@@ -386,7 +399,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
             }
         }
 
-        &--mobile-open {
+        #{$root}--mobile-stores-open & {
             display: block;
         }
     }
@@ -410,7 +423,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
 
     &__store-details {
         position: absolute;
-        top: 0;
+        top: 5rem;
         left: 0;
         right: 0;
         background: $store-locator_sidebar-background;
@@ -420,9 +433,8 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
             display: none;
         }
 
-        &--mobile {
+        #{$root}--mobile-popup-open & {
             min-height: 12rem;
-            padding-top: 2.5rem;
         }
     }
 
@@ -439,52 +451,44 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
         background-size: 1rem;
         width: 3rem;
         height: 3rem;
+        display: none;
 
-        @include media('>=laptop') {
-            display: none;
-        }
-    }
-
-    &__stores-list-item {
-        box-shadow: 0 21px 0 -20px $color_border-500;
-
-        @include media('>=laptop') {
-            box-shadow: 0 41px 0 -40px $color_border-500;
+        .cs-store-locator__store-details & {
+            display: block;
         }
     }
 
     &__empty-message {
         background: $store-locator_sidebar-background;
-        padding: 2rem;
+        padding: $store-locator_sidebar-basic-space-inside;
         display: none;
 
         &--nolocation {
-            border-bottom: 1px solid $color_border-500;
+            border-bottom: $store-locator_basic-border;
         }
     }
 
     &__item {
         overflow: hidden;
-        padding: 2rem 2rem 1rem;
+        padding: $store-locator_item-padding;
+        padding-bottom: calc(#{$store-locator_item-padding} - 1rem);
         height: 100%;
         cursor: pointer;
         position: relative;
 
         @include media('>=laptop') {
-            padding: 2rem;
+            padding: $store-locator_item-padding;
         }
 
         &:after {
-            @include media('>=laptop') {
-                content: '';
-                display: inline-block;
-                position: absolute;
-                bottom: 0;
-                left: 2rem;
-                width: calc(100% - 4rem);
-                height: 1px;
-                background: $color_border-500;
-            }
+            content: '';
+            display: inline-block;
+            position: absolute;
+            bottom: 0;
+            left: 2rem;
+            width: calc(100% - 4rem);
+            height: 1px;
+            background: $store-locator_basic-border-color;
 
             #{$root}__map & {
                 display: none;
@@ -579,7 +583,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
 
     &__item-phone {
         text-decoration: none;
-        border-bottom: 1px solid $color_border-500;
+        border-bottom: $store-locator_basic-border;
     }
 
     &__item-footer {
@@ -602,7 +606,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
 
     &__item-email {
         text-decoration: none;
-        border-bottom: 1px solid $color_border-500;
+        border-bottom: $store-locator_basic-border;
         color: $store-locator_item-color;
 
         @include media('>=laptop') {
@@ -685,7 +689,7 @@ $store-locator_loading-mask-background: url('../images/spinner.svg') no-repeat
         @include pseudoicon(
             $width: 0.7rem,
             $height: 1px,
-            $color: $color_text-900,
+            $color: $store-locator_item-hours-trigger,
             $arrow-default: 'down',
             $type: 'arrow'
         );
