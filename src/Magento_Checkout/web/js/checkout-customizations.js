@@ -1,54 +1,14 @@
 /**
  * Mount creativestyle customizations after step shipping of the checkout is loaded
  */
-define(['rjsResolver', 'jquery', 'js/checkout', 'mage/translate'], function(
-    resolver,
-    $,
-    bundle
-) {
+define(['rjsResolver', 'jquery', 'js/checkout'], function(resolver, $, bundle) {
     'use strict';
-
-    /**
-     * Add warning for missing number in street field
-     */
-    function initMissingStreetNumberWarning($shippingForm) {
-        var $streetInput = $shippingForm.find('input[name="street[0]"]');
-        var $streetInputField = $streetInput.closest('.field');
-
-        $streetInput.on('blur change', function() {
-            if ($streetInputField.hasClass('_success')) {
-                if (!/\d/.test($streetInput.val())) {
-                    $streetInputField.addClass('_warn');
-                    if (
-                        !$streetInputField.find('.message.warning').length &&
-                        !$(
-                            '.cs-html-select--autosuggest.cs-html-select--animate'
-                        ).length
-                    ) {
-                        var missingStreetMessage =
-                            '<div class="message warning" ><span>' +
-                            $.mage.__('Do not forget about street number') +
-                            '</span></div>';
-
-                        $streetInput.after(missingStreetMessage);
-                    }
-                } else {
-                    $streetInputField
-                        .removeClass('_warn')
-                        .find('.message.warning')
-                        .remove();
-                }
-            }
-        });
-    }
 
     /**
      * Initializes all of our customizations, invoked when checkout is fully loaded.
      */
     function onCheckoutLoaded() {
         var $shippingAddressForm = $('#co-shipping-form');
-
-        initMissingStreetNumberWarning($shippingAddressForm);
 
         bundle.AddressAutofill({
             streetField: $shippingAddressForm.find('input[name="street[0]"]'),

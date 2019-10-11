@@ -1,5 +1,6 @@
 /**
  * Add additional class _success to field element
+ * Success icon visibility for different for can be manipulated by css. By default it is only visible for checkout shipping address form
  */
 define(['ko'], function(ko) {
     'use strict';
