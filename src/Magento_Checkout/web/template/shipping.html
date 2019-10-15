@@ -20,8 +20,8 @@
                            data-toggle="switch"
                            href="#tab-new-user"
                            id="tab-new-user-title"
-                           data-bind="i18n: 'New user', click: enableForm">
-
+                           click="enableForm"
+                           translate="'New user'">
                         </a>
                     </div>
 
@@ -32,8 +32,8 @@
                            data-toggle="switch"
                            href="#tab-new-user"
                            id="tab-customer-title"
-                           data-bind="i18n: 'I have an account', click: disableForm()">
-
+                           click="disableForm"
+                           translate="'I have an account'">
                         </a>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
 
             <each args="getRegion('address-list')" render="" />
             <each args="getRegion('address-list-additional-addresses')" render="" />
-    
+
             <!-- Address form pop up -->
             <if args="!isFormInline">
                 <button type="button"
@@ -77,9 +77,9 @@
                      visible="isFormPopUpVisible()"
                      render="shippingFormTemplate" />
             </if>
-    
+
             <each args="getRegion('before-form')" render="" />
-    
+
             <!-- Inline address form -->
             <render if="isFormInline" args="shippingFormTemplate" />
         </div>
