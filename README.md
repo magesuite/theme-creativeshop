@@ -43,3 +43,49 @@ In case you wonder how the build process looks in detail:
 * SCSS and TypeScript source files are compiled and optimized.
 * Magento frontend caches are cleaned.
 
+## New component creation
+
+New component has to be located in `src/components`, inside your theme directory;
+```
+theme-creativeshop/src/components/<component-name>
+```
+
+It should contain:
+
+* `new-component.ts` - contains the definition of the component
+* `new-component.scss` - contains styling of the component
+* `index.ts` - imports the component styles and initializes it. Below you can find index.ts file from quantity-increment component. Below snippet from `components/qty-increment/index.ts`:
+
+```javascript
+import * as $ from 'jquery';
+ 
+import QtyIncrement from 'components/qty-increment/qty-increment';
+import 'components/qty-increment/qty-increment.scss';
+ 
+$('.cs-qty-increment').each(function(): void {
+    new QtyIncrement($(this));
+});
+```
+
+### Adding a new component to the entries
+
+In theme-creativeshop/src/entries you can find the entry points.
+We use separate entries for the particular page types and modules to take advantage of Webpack's chucks splitting feature, which is described in a [Split entries article.]()
+
+Basically, the most important entries are:
+* cms.ts
+* pdp.ts
+* category.ts
+* checkout.ts
+* customer.ts
+* contact.ts
+
+They are responsible for specific pages across the shop and contain all the components that are required for them.
+If your component is to be used visible on PDP and category, below code has to be added to both entries:
+`components/qty-increment/index.ts`
+```javascript
+import 'components/<component-name>';
+```
+
+
+
