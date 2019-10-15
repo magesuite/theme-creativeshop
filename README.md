@@ -282,7 +282,7 @@ $('.cs-qty-increment').each(function(): void {
 ### Adding a new component to the entries
 
 In theme-creativeshop/src/entries you can find the entry points.
-We use separate entries for the particular page types and modules to take advantage of Webpack's chucks splitting feature, which is described in a [Split entries article.]()
+We use separate entries for the particular page types and modules to take advantage of Webpack's chucks splitting feature, which is described in a [Split entries article.](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#split-entries)
 
 Basically, the most important entries are:
 * cms.ts
