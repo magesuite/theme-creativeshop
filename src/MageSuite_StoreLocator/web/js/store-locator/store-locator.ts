@@ -219,32 +219,7 @@ export default class StoreLocator {
                 );
 
                 if ($(window).width() < breakpoint.laptop) {
-                    this.closeMobileStores();
-
-                    const filteredStores = this.getFilteredStores();
-                    this.openMobileStores();
-
-                    setTimeout(() => {
-                        if (!filteredStores.length) {
-                            this._$itemsList.prepend(
-                                `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">
-                            ${$.mage.__(
-                                'Unfortunately we were not able to find this location.'
-                            )}</div>`
-                            );
-
-                            setTimeout(() => {
-                                $(
-                                    '.cs-store-locator__empty-message--nolocation'
-                                ).hide();
-                            }, 3000);
-                        } else {
-                            this.renderItems(
-                                filteredStores.slice(0, 15),
-                                false
-                            );
-                        }
-                    }, 300);
+                    this.renderMobileStoresList();
                 } else {
                     this.renderItems(this.getFilteredStores(), false);
                 }
@@ -412,7 +387,11 @@ export default class StoreLocator {
                     coordinates
                 );
 
-                this.renderItems(this.getFilteredStores(), false);
+                if ($(window).width() < breakpoint.laptop) {
+                    this.renderMobileStoresList();
+                } else {
+                    this.renderItems(this.getFilteredStores(), false);
+                }
 
                 if (this._locationMarker) {
                     this._locationMarker.setMap(null);
@@ -424,6 +403,38 @@ export default class StoreLocator {
                 });
             }
         });
+    }
+
+    /**
+     * Render stores on mobile
+     */
+    public renderMobileStoresList() {
+        this.closeMobileStores();
+
+        const filteredStores = this.getFilteredStores().slice(0, 9);
+        this.renderItems(this.getFilteredStores().slice(0, 9), false);
+
+        setTimeout(() => {
+            this.openMobileStores();
+
+            this._$itemsList.append(
+                '<div class="cs-store-locator__store-list-close"></div>'
+            );
+            this._$itemsList
+                .find('.cs-store-locator__store-list-close')
+                .on('click', event => {
+                    this.closeMobileStores();
+                });
+            const $emptyMessage = this._$element.find(
+                '.cs-store-locator__empty-message'
+            );
+
+            if (filteredStores.length > 0) {
+                $emptyMessage.hide();
+            } else {
+                $emptyMessage.show();
+            }
+        }, 1000);
     }
 
     /**
@@ -721,63 +732,18 @@ export default class StoreLocator {
         );
 
         this._$element.addClass('cs-store-locator--mobile-popup-open');
-        // this._mobilePopupOpen = true;
-        // $('.cs-store-locator__store-details').addClass(
-        //     'cs-store-locator__store-details--mobile'
-        // );
-
-        // this._sidebarMobileOpen = false;
-        // $('.cs-store-locator__sidebar').removeClass(
-        //     'cs-store-locator__sidebar--mobile-open'
-        // );
-
-        // this._mapMobileHidden = false;
-        // $('.cs-store-locator__map-container').removeClass(
-        //     'cs-store-locator__map-container--mobile-hidden'
-        // );
     }
 
     public closeMobilePopup() {
         $('.cs-store-locator__store-details').html('');
 
         this._$element.removeClass('cs-store-locator--mobile-popup-open');
-
         this._$element.removeClass('cs-store-locator--mobile-stores-open');
-
-        // this._mobilePopupOpen = false;
-        // $('.cs-store-locator__store-details').removeClass(
-        //     'cs-store-locator__store-details--mobile'
-        // );
-
-        // this._sidebarMobileOpen = false;
-        // $('.cs-store-locator__sidebar').removeClass(
-        //     'cs-store-locator__sidebar--mobile-open'
-        // );
-
-        // this._mapMobileHidden = false;
-        // $('.cs-store-locator__map-container').removeClass(
-        //     'cs-store-locator__map-container--mobile-hidden'
-        // );
     }
 
     public openMobileStores() {
         this._$element.addClass('cs-store-locator--mobile-stores-open');
-
         this._$element.removeClass('cs-store-locator--mobile-popup-open');
-        // this._mobilePopupOpen = false;
-        // $('.cs-store-locator__store-details').removeClass(
-        //     'cs-store-locator__store-details--mobile'
-        // );
-
-        // this._sidebarMobileOpen = true;
-        // $('.cs-store-locator__sidebar').addClass(
-        //     'cs-store-locator__sidebar--mobile-open'
-        // );
-
-        // this._mapMobileHidden = true;
-        // $('.cs-store-locator__map-container').addClass(
-        //     'cs-store-locator__map-container--mobile-hidden'
-        // );
     }
 
     public closeMobileStores() {
