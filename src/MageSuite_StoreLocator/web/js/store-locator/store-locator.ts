@@ -240,7 +240,7 @@ export default class StoreLocator {
                             }, 3000);
                         } else {
                             this.renderItems(
-                                filteredStores.slice(1, 15),
+                                filteredStores.slice(0, 15),
                                 false
                             );
                         }
@@ -791,6 +791,10 @@ export default class StoreLocator {
     }
 
     public mapChangeHandler() {
+        if ($(window).width() < breakpoint.laptop) {
+            return;
+        }
+
         if (this._allItemsRendered) {
             this.filterItems();
         } else {
