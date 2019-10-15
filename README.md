@@ -10,21 +10,22 @@ This this is our parent theme for shops based on Magento 2.
 
 
 # Documentation
-* [First steps](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#first-steps)
-    * [Setting up new theme](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#setting-up-new-theme)
-    * [Development](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#development)
-* [SCSS customization](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#scss-customization)
-    * [Customization process](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#customization-process)
-    * [Customization of `<your-theme>/src/config`](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#customization-of-your-themesrcconfig)
-    * [Customizing existing components](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#customizing-existing-components)
-    * [Mixins and hooks](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#mixins-and-hooks)
-* [New component creation](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#new-component-creation)
-    * [Adding a new component to the entries](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#adding-a-new-component-to-the-entries)
-* [Split entries](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#split-entries)
+* [First steps](https://github.com/magesuite/theme-creativeshop#first-steps)
+    * [Building Creativeshop](https://github.com/magesuite/theme-creativeshop#building-creativeshop)
+    * [Setting up new theme](https://github.com/magesuite/theme-creativeshop#setting-up-new-theme)
+    * [Development](https://github.com/magesuite/theme-creativeshop#development)
+* [SCSS customization](https://github.com/magesuite/theme-creativeshop#scss-customization)
+    * [Customization process](https://github.com/magesuite/theme-creativeshop#customization-process)
+    * [Customization of `<your-theme>/src/config`](https://github.com/magesuite/theme-creativeshop#customization-of-your-themesrcconfig)
+    * [Customizing existing components](https://github.com/magesuite/theme-creativeshop#customizing-existing-components)
+    * [Mixins and hooks](https://github.com/magesuite/theme-creativeshop#mixins-and-hooks)
+* [New component creation](https://github.com/magesuite/theme-creativeshop#new-component-creation)
+    * [Adding a new component to the entries](https://github.com/magesuite/theme-creativeshop#adding-a-new-component-to-the-entries)
+* [Split entries](https://github.com/magesuite/theme-creativeshop#split-entries)
 
 
 
-## First steps
+# First steps
 
 [theme-creativeshop](https://github.com/creativestyle/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with `theme-creativeshop`, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
 
@@ -32,14 +33,14 @@ This this is our parent theme for shops based on Magento 2.
 [Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** `theme-creativeshop`, then you can create your own theme on the top of it. 
 MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from `theme-creativeshop`.
 
-### Building Creativeshop
+## Building Creativeshop
 Before you start, make sure you have [nodejs](https://nodejs.org/en/) installed.
 
 1. Navigate to `vendor/creativestyle/theme-creativeshop`
 2. Run `yarn install && yarn build`
 It will install the build artifacts into `app/design` subfolder.
 
-### Setting up new theme
+## Setting up new theme
 Now you can create your new theme and build static assets. 
 
 1. [Install MageSuite Theme Generator](https://www.npmjs.com/package/@creativestyle/magesuite-theme-generator). It's a small NPM package that does for you all the dirty work of creating new creativeshop-based theme in proper framework
@@ -52,7 +53,7 @@ Now you can create your new theme and build static assets.
 
 Now you should have got Magento installation up and running with your new creativeshop-based theme.
 
-### Development
+## Development
 
 `theme-creativeshop` is designed to achieve convenient Magento 2 development environment. After you have created your new theme you can use, modify or add any component you find in parent theme. This whole inheriting procedure is the part of theme build process, which incorporates all the stuff you need to do with your code as a theme developer. Here are commands that you may choose depending on what you would like to achieve:
 
@@ -68,11 +69,11 @@ In case you wonder how the build process looks in detail:
 * SCSS and TypeScript source files are compiled and optimized.
 * Magento frontend caches are cleaned.
 
-## SCSS customization
+# SCSS customization
 
 Styling theme-creativeshop is generally based on SCSS variables. 
 
-### Customization process
+## Customization process
 
 * Assign colors to color name variables in `src/config/colors` - we use Hex color code
 * Assign color name variables to theme variables in `src/config/variables`
@@ -80,7 +81,7 @@ Styling theme-creativeshop is generally based on SCSS variables.
 
 Those dependencies allow us to change whole theme colors set up very fast, by only adjusting variables. 
 
-### Customization of `<your-theme>/src/config`
+## Customization of `<your-theme>/src/config`
 
 #### Colors
 `src/config/colors` - here you should create variables for all the colors used in your theme.
@@ -88,7 +89,7 @@ Those dependencies allow us to change whole theme colors set up very fast, by on
 * Start with the import of colors from theme-creativeshop to be able to use them as well: `@import '~Creativeshop/config/colors';`
 * Use online tools to name colors, eg. [color-name-hue](www.color-blindness.com/color-name-hue) or [name-that-color](chir.ag/projects/name-that-color)
 
-Below snippet from `src/config/colors`
+> Snippet from `src/config/colors`
 ```scss
 @import '~Creativeshop/config/colors';
  
@@ -114,7 +115,7 @@ $color_pumice: #bfc0bf; // color_border-500
 * Theme-creativeshop provides a lot of variables and most of them should be overwritten.
 * Follow the convention: `component_element-modifier` (with one underscore and one hyphen). If modifiers are numbers, they indicate the degree or intensity - 200 is the lightest and 900 is the darkest.
 
-Below snippet from `src/config/variables`
+> Snippet from `src/config/variables`
 ```scss
 @import '~Creativeshop/config/variables';
  
@@ -142,7 +143,7 @@ All the variables in theme-creativeshop are marked as `!default`. This means tha
 
 `$component-name_element-name` - use the underscore only once:
 
-Below snippet from `your-theme/src/components/footer/footer.scss`
+> Snippet from `your-theme/src/components/footer/footer.scss`
 ```scss
 @import 'config/variables';
  
@@ -162,7 +163,7 @@ $footer_logo-width: 13.5em;
 $footer_logo-height: 2.3em;
 ```
 
-### Customizing existing components
+## Customizing existing components
 
 * The styling takes place in component (`<your-theme>/src/components/component`).
 * To customize each component, create a component under the same directory in your theme and import the original component into it.
@@ -182,7 +183,7 @@ If you only want to customize SCSS, create a `.scss` file with the same path as 
 
 Don't forget to import the component from theme-creativeshop to be able ro reuse it's variables and functionalities.
 
-Below snippet from `your-theme/components/container/container.scss`
+> Snippet from `your-theme/components/container/container.scss`
 ```scss
 @import 'config/variables';
 @import 'vendors/include-media';
@@ -211,7 +212,7 @@ Sometimes there are subfolders in the component. During the customization proces
 * Use the hook files to modify mixins - it is always empty in theme-creativeshop and you can overwrite this file by creating it in your theme to modify a specific mixin. 
 * If you want to overwrite the variables declared in the mixin file, do so in the appropriate mixin file in your theme. 
 
-Below snippet from `your-theme/src/components/badge/mixin.scss`
+> Snippet from `your-theme/src/components/badge/mixin.scss`
 ```scss
 @import 'config/variables';
 @import 'components/badge/hook';
@@ -266,7 +267,7 @@ There are additional useful functions here, often imported in components. It is 
 
 
 
-## New component creation
+# New component creation
 
 New component has to be located in `src/components`, inside your theme directory;
 ```
@@ -290,7 +291,7 @@ $('.cs-qty-increment').each(function(): void {
 });
 ```
 
-### Adding a new component to the entries
+## Adding a new component to the entries
 
 In theme-creativeshop/src/entries you can find the entry points.
 We use separate entries for the particular page types and modules to take advantage of Webpack's chucks splitting feature, which is described in a [Split entries article.](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#split-entries)
@@ -310,7 +311,7 @@ If your component is to be used visible on PDP and category, below code has to b
 import 'components/<component-name>';
 ```
 
-### Split entries
+# Split entries
 
 To increase the performance of the pages loading, we decided to use [Webpack's split chunks feature](https://webpack.js.org/plugins/split-chunks-plugin/), which allows dividing bundles into chunks.
 The idea behind was to not load every Magesuite component at once, just to have a commons bundle with components that are always required and the smaller bundles that we can import exactly when we need it.
@@ -323,7 +324,7 @@ Build files you can find in `app/design/frontend/creativestyle/theme-creativesho
 
 In ,theme-creativeshop/src/entries, you can find two types of entry points: **entries for pages** (ex. category.ts) and **entries for modules** (ex. magesuite-brand-management.ts). 
 
-#### Base entries
+### Base entries
 
 They should contain **all components** that are needed for some specific page in the shop.
 Bundles produced from these entries we import on particular pages
