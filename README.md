@@ -10,6 +10,19 @@ This this is our parent theme fo shops based on Magento 2.
 
 
 # Documentation
+* [First steps](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#first-steps)
+    * [Setting up new theme](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#setting-up-new-theme)
+    * [Development](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#development)
+* [SCSS customization](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#scss-customization)
+    * [Customization process](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#customization-process)
+    * [Customization of `<your-theme>/src/config`](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#customization-of-your-themesrcconfig)
+    * [Customizing existing components](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#customizing-existing-components)
+    * [Mixins and hooks](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#mixins-and-hooks)
+* [New component creation](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#new-component-creation)
+    * [Adding a new component to the entries](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#adding-a-new-component-to-the-entries)
+
+
+
 ## First steps
 
 [theme-creativeshop](https://github.com/creativestyle/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with `theme-creativeshop`, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
