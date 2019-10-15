@@ -28,16 +28,27 @@ This this is our parent theme for shops based on Magento 2.
 
 [theme-creativeshop](https://github.com/creativestyle/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with `theme-creativeshop`, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
 
+
+[Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** `theme-creativeshop`, then you can create your own theme on the top of it. 
+MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from `theme-creativeshop`.
+
+### Building Creativeshop
+Before you start, make sure you have [nodejs](https://nodejs.org/en/) installed.
+
+1. Navigate to `vendor/creativestyle/theme-creativeshop`
+2. Run `yarn install && yarn build`
+It will install the build artifacts into `app/design` subfolder.
+
 ### Setting up new theme
+Now you can create your new theme and build static assets. 
 
-[Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to create your new theme and build static assets. MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from theme-creativeshop.
-
-1. [Install MageSuite Theme Generator](https://www.npmjs.com/package/@creativestyle/magesuite-theme-generator). It's a small NPM package that does for you all the dirty work of creating new creativeshop-based theme in proper framework.
-2. Navigate to `vendor/creativestyle` and run `magesuite-theme-generator` command, the generator will ask you couple of questions.
-3. Initiate version control repository in your new theme directory.
-4. Run `yarn install && yarn build` to install dependencies and build static assets. You have to do this both for `theme-creativeshop` and your new theme directory.
-5. Run `bin/magento setup:upgrade` to register your new theme.
-6. Change active Magento theme to your new theme.
+1. [Install MageSuite Theme Generator](https://www.npmjs.com/package/@creativestyle/magesuite-theme-generator). It's a small NPM package that does for you all the dirty work of creating new creativeshop-based theme in proper framework
+2. Navigate to `vendor/creativestyle` and run `magesuite-theme-generator` command, the generator will ask you couple of questions
+3. Navigate to your new theme directory `vendor/creativestyle/your-theme`
+4. Initiate version control repository
+5. Run `yarn install && yarn build` to install dependencies and build static assets. You have to do this both for `theme-creativeshop` and your new theme directory
+6. Run `bin/magento setup:upgrade` to register your new theme
+7. Change active Magento theme to your new theme
 
 Now you should have got Magento installation up and running with your new creativeshop-based theme.
 
