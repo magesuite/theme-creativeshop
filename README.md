@@ -20,6 +20,7 @@ This this is our parent theme fo shops based on Magento 2.
     * [Mixins and hooks](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#mixins-and-hooks)
 * [New component creation](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#new-component-creation)
     * [Adding a new component to the entries](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#adding-a-new-component-to-the-entries)
+* [Split entries](https://gitlab.creativestyle.pl/m2c/theme-creativeshop/tree/next#split-entries)
 
 
 
@@ -298,5 +299,75 @@ If your component is to be used visible on PDP and category, below code has to b
 import 'components/<component-name>';
 ```
 
+### Split entries
 
+To increase the performance of the pages loading, we decided to use [Webpack's split chunks feature](https://webpack.js.org/plugins/split-chunks-plugin/), which allows dividing bundles into chunks.
+The idea behind was to not load every Magesuite component at once, just to have a commons bundle with components that are always required and the smaller bundles that we can import exactly when we need it.
+Webpack takes all the entries and extracts the commons bundles (*commons.js* and *commons.css*) containing components used in most of the entries, then puts the rest in smaller particular bundles.
+Build files you can find in `app/design/frontend/creativestyle/theme-creativeshop/web/js` and `app/design/frontend/creativestyle/theme-creativeshop/web/css`.
+
+> Example:
+> Assume we have 2 entry points: *pdp.ts* and *category.ts*. Each of them imports components/product-tile plus its specific components, like `pages/pdp` and `pages/category`.
+> Based on that, Webpack creates commons.js and commons.css bundles containing the *product-tile* component logic and styling. But it also creates *pdp.js*/*pdp.css* and *category.js*/*category.css* bundles to be used for PDP or category page only.
+
+In ,theme-creativeshop/src/entries, you can find two types of entry points: **entries for pages** (ex. category.ts) and **entries for modules** (ex. magesuite-brand-management.ts). 
+
+#### Base entries
+
+They should contain **all components** that are needed for some specific page in the shop.
+Bundles produced from these entries we import on particular pages
+
+Regarding CSS, we add the commons.css to every page in the shop and add other bundles via xml inside the `<head>` tag in places where we need them.
+
+> Example: `theme-creativeshop/src/Magento_Catalog/layout/catalog_product_view.xml`
+```html
+<head>
+    <css src="css/pdp.css"/>
+</head>
+```
+
+As for the Javascript bundles, they have defined an explicit dependency on the commons.js package (in `theme-creativeshop/src/requirejs-config.js`).
+
+To add the single JS bundle we use the reference to the script block where we can pass the bundle_name argument.
+
+> Example: theme-creativeshop/src/Magento_Catalog/layout/catalog_product_view.xml
+
+```xml
+<referenceBlock name="scripts">
+    <arguments>
+        <argument name="bundle_name" xsi:type="string">pdp</argument>
+    </arguments>
+</referenceBlock>
+```
+
+**Important:** When we use this script block, we replace the js bundle, not adding another one, so you need to be sure that bundle you use contains all the required components.
+
+Basically, the most important entries are:
+* `cms.ts` - cms pages
+* `pdp.ts` - product details page
+* `category.ts` - products overview page (category)
+* `checkout.ts` - checkout, cart pages
+* `customer.ts` - user area pages
+* `contact.ts` - contact page
+
+They are responsible for basic pages across the shop and contain all the components that are required for them.
+
+By default, we use cms.js bundle as the base one.
+
+
+#### Entries for modules
+
+They can contain styles and logic used by the specific module. Bundles generated form them, we use only as an addition to the base bundles. 
+For example, the *magesuite-brand-management.ts* entry imports only styling for the brand list (`MageSuite_BrandManagement/web/css/brands-index.scss`).
+
+Brand page itself relies on category.js and category.css bundles but in addition, we attach magesuite-brand-management.css bundle to it
+
+#### Adding components to entries
+
+To add a new component, you have to import it in every entry where you want it. 
+For example, if you want to add some "special-product-promo" component, which will be used on category page and PDP only, you have to add below code to the pdp.ts and category.ts entries.
+
+```javascript
+import 'components/special-product-promo';
+```
 
