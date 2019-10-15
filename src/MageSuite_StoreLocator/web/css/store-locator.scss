@@ -438,7 +438,8 @@ $store-locator_close-color: $color_text-400 !default;
         }
     }
 
-    &__store-details-close {
+    &__store-details-close,
+    &__store-list-close {
         background: 0 0;
         border: none;
         position: absolute;
@@ -458,10 +459,18 @@ $store-locator_close-color: $color_text-400 !default;
         }
     }
 
+    &__store-list-close {
+        display: block;
+    }
+
     &__empty-message {
         background: $store-locator_sidebar-background;
         padding: $store-locator_sidebar-basic-space-inside;
         display: none;
+
+        @include media('<laptop') {
+            padding-right: 5rem;
+        }
 
         &--nolocation {
             border-bottom: $store-locator_basic-border;
@@ -490,7 +499,8 @@ $store-locator_close-color: $color_text-400 !default;
             height: 1px;
             background: $store-locator_basic-border-color;
 
-            #{$root}__map & {
+            #{$root}__map &,
+            #{$root}--mobile-popup-open & {
                 display: none;
             }
         }
