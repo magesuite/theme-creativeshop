@@ -17,30 +17,25 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                 $createdAt = $review->getCreatedAt();
                 $ratingVotes = $review->getRatingVotes();
                 $ratingCategoriesCount = count($ratingVotes);
+                $compoundRatings = [];
+                $overallScore = null;
 
                 if ($ratingCategoriesCount) {
-
                     $percentageRatingsList = array_map(function ($vote) {
                         return $vote->getPercent();
                     }, iterator_to_array($ratingVotes));
 
                     $averagePercentageRating = array_sum($percentageRatingsList)/$ratingCategoriesCount;
                     $overallScore = round($averagePercentageRating/20);
-
-                } else {
-                    $overallScore = null;
                 }
 
                 if ($ratingCategoriesCount > 1) {
-                    $compoundRatings = []; 
                     foreach ($ratingVotes as $rating) {
                         array_push($compoundRatings, [
                             'ratingCode' => $rating->getRatingCode(),
                             'score' => ($rating->getPercent()/20)
                             ]);
                     }
-                } else {
-                    $compoundRatings = null;
                 }
                 ?>
 
