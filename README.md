@@ -43,6 +43,204 @@ In case you wonder how the build process looks in detail:
 * SCSS and TypeScript source files are compiled and optimized.
 * Magento frontend caches are cleaned.
 
+## SCSS customization
+
+Styling theme-creativeshop is generally based on SCSS variables. 
+
+### Customization process
+
+* Assign colors to color name variables in `src/config/colors` - we use Hex color code
+* Assign color name variables to theme variables in `src/config/variables`
+* Add/modify component variables in `<your-theme>/src/components/component.scss`
+
+Those dependencies allow us to change whole theme colors set up very fast, by only adjusting variables. 
+
+### Customization of `<your-theme>/src/config`
+
+#### Colors
+`src/config/colors` - here you should create variables for all the colors used in your theme.
+
+* Start with the import of colors from theme-creativeshop to be able to use them as well: `@import '~Creativeshop/config/colors';`
+* Use online tools to name colors, eg. [color-name-hue](www.color-blindness.com/color-name-hue) or [name-that-color](chir.ag/projects/name-that-color)
+
+Below snippet from `src/config/colors`
+```sass
+@import '~Creativeshop/config/colors';
+ 
+$color_monza: #da001a;
+$color_monza--hover: #ce0019;
+ 
+$color_lochinvar: #2b827c; //$color_secondary-500, $color_secondary-200
+ 
+$color_desert-storm: #f3f3f2; // $color_background-500, grey backgrounds
+$color_alto: #dcdcdc; // $color_border-200, $color_background-600, light border, teh same as magesuite
+ 
+$color_gray-nurse: #e6e7e5; // $color_background-800
+ 
+$color_dust-gray: #9b9b9b; // $color_text-400, $color_border-500, $color_border-700, light texts, inputs(basic) borders
+$color_pumice: #bfc0bf; // color_border-500
+```
+
+#### Variables
+
+`src/config/variables` - here store all the variables used in the whole theme, such as colors - primary, secondary, background, font-sizes, font-weight, etc.
+
+* Start with the import of variables from theme-creativeshop to be able to use them as well: `@import '~Creativeshop/config/variables';`
+* Theme-creativeshop provides a lot of variables and most of them should be overwritten.
+* Follow the convention: `component_element-modifier` (with one underscore and one hyphen). If modifiers are numbers, they indicate the degree or intensity - 200 is the lightest and 900 is the darkest.
+
+Below snippet from `src/config/variables`
+```sass
+@import '~Creativeshop/config/variables';
+ 
+$color_text-400: $color_dust-gray; //light gray
+$color_text-500: $color_abbey;
+$color_text-600: $color_abbey;
+ 
+$price_color: $color_primary-500;
+$price_special-color: $color_primary-500;
+ 
+$global_header-height-mobile: 5.5rem;
+ 
+$border-radius_base: 5px;
+ 
+$global_header-hide-search-item-trigger-breakpoint: '>=laptop';
+```
+
+All the variables in theme-creativeshop are marked as `!default`. This means that they are taken by default, but if you create a variable with the same name, you will overwrite it and the new variable will be taken into account. 
+
+`src/config/base` - basic styling of basic components, such as body, buttons, etc. 
+
+`src/config/breakpoints` - this is where the breakpoints structure is set; likely, you won't have to make any changes to this file. 
+
+#### Variables naming convention
+
+`$component-name_element-name` - use the underscore only once:
+
+Below snippet from `your-theme/src/components/footer/footer.scss`
+```sass
+@import 'config/variables';
+ 
+$footer_background: $color_background-550;
+ 
+$footer_section-title-color: $color_text-200;
+$footer_section-title-font-size: 1.4em;
+ 
+$footer_section-separator-border: 1px solid $color_border-400;
+ 
+$footer_section-plus-include: false;
+$footer_section-dropdown-width: 1.6rem;
+$footer_section-dropdown-height: 1rem;
+$footer_section-dropdown-color: $color_primary-500;
+ 
+$footer_logo-width: 13.5em;
+$footer_logo-height: 2.3em;
+```
+
+### Customizing existing components
+
+* The styling takes place in component (`<your-theme>/src/components/component`).
+* To customize each component, create a component under the same directory in your theme and import the original component into it.
+* Do not change anything in theme-creativeshop, but make all the changes in your theme, creating the same structure of components. 
+
+Once the configuration folder is ready, you can start customizing the components. A simple component includes: 
+
+* `new-component.ts` - contains the definition of the component
+* `new-component.scss` - contains styling of the component
+* `index.ts` - imports the component styles and initializes it. 
+
+Some of them contain subfolders or additional files.
+
+If you customize a component existing in theme-creativeshop, you do not need to create a `.ts` files in your topic unless you want to expand more `.ts` structure.
+
+If you only want to customize SCSS, create a `.scss` file with the same path as the original one and import the original `.scss` file into it.
+
+Don't forget to import the component from theme-creativeshop to be able ro reuse it's variables and functionalities.
+
+Below snippet from `your-theme/components/container/container.scss`
+```sass
+@import 'config/variables';
+@import 'vendors/include-media';
+ 
+@import '~Creativeshop/components/container/container.scss';
+ 
+.#{$ns}container {
+    $root: &;
+ 
+    &--page-pdp-details-main {
+        @include media('<tablet') {
+            padding: 0;
+        }
+    }
+}
+```
+
+In each component, you start the customization process by overwriting the variables. Add new variables if needed. Below, import the original component, and then start entering your styles into the existing classes.
+
+Sometimes there are subfolders in the component. During the customization process, it is important to have the same folder structure. Only then the gulp merging process will run correctly.
+
+### Mixins and hooks
+
+* We use SASS mixins to make our code reusable and more versatile.
+* You will find mixins files created for components that can have different variants - e.g. buttons, teasers, badges, etc.
+* Use the hook files to modify mixins - it is always empty in theme-creativeshop and you can overwrite this file by creating it in your theme to modify a specific mixin. 
+* If you want to overwrite the variables declared in the mixin file, do so in the appropriate mixin file in your theme. 
+
+Below snippet from `your-theme/src/components/badge/mixin.scss`
+```sass
+@import 'config/variables';
+@import 'components/badge/hook';
+ 
+$badge_height: 2.1rem;
+$badge_padding: 0.5rem 1.2rem;
+$badge_border-radius: 0;
+ 
+$badge--new-background: $color_background-700;
+$badge--new-color: $color_white;
+ 
+$badge--sale-background: $color_primary-500;
+$badge--discount-background: transparent;
+ 
+$badge--free-shipping-background: $color_background-700;
+$badge--popular-background: $color_background-700;
+ 
+@import '~Creativeshop/components/badge/mixin.scss';
+```
+
+Below snippet from `your-theme/src/components/badge/hook.scss`
+```sass
+@import 'utils/get-value-from-list';
+ 
+/* stylelint-disable block-no-empty  */
+@mixin badge_hook($type) {
+    display: flex;
+    flex-direction: column;
+    min-width: 5rem;
+ 
+    &:before {
+        content: none;
+    }
+}
+ 
+@mixin badge_type-hook($type) {
+    @if ($type == 'is_advertised') {
+        background-color: $color_background-900;
+        color: $color_white;
+    }
+ 
+    @if ($type == 'discount') {
+        min-width: 4.8rem;
+        padding: 0 ;
+    }
+}
+```
+
+### Utils
+
+There are additional useful functions here, often imported in components. It is good to familiarize yourself with them to be able to use them.  
+
+
+
 ## New component creation
 
 New component has to be located in `src/components`, inside your theme directory;
