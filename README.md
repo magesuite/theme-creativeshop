@@ -1,5 +1,5 @@
 # Magento 2 Creativeshop theme
-This this is our parent theme fo shops based on Magento 2.
+This this is our parent theme for shops based on Magento 2.
 
 ## Getting started
 ### Requirements
@@ -78,7 +78,7 @@ Those dependencies allow us to change whole theme colors set up very fast, by on
 * Use online tools to name colors, eg. [color-name-hue](www.color-blindness.com/color-name-hue) or [name-that-color](chir.ag/projects/name-that-color)
 
 Below snippet from `src/config/colors`
-```sass
+```scss
 @import '~Creativeshop/config/colors';
  
 $color_monza: #da001a;
@@ -104,7 +104,7 @@ $color_pumice: #bfc0bf; // color_border-500
 * Follow the convention: `component_element-modifier` (with one underscore and one hyphen). If modifiers are numbers, they indicate the degree or intensity - 200 is the lightest and 900 is the darkest.
 
 Below snippet from `src/config/variables`
-```sass
+```scss
 @import '~Creativeshop/config/variables';
  
 $color_text-400: $color_dust-gray; //light gray
@@ -132,7 +132,7 @@ All the variables in theme-creativeshop are marked as `!default`. This means tha
 `$component-name_element-name` - use the underscore only once:
 
 Below snippet from `your-theme/src/components/footer/footer.scss`
-```sass
+```scss
 @import 'config/variables';
  
 $footer_background: $color_background-550;
@@ -172,7 +172,7 @@ If you only want to customize SCSS, create a `.scss` file with the same path as 
 Don't forget to import the component from theme-creativeshop to be able ro reuse it's variables and functionalities.
 
 Below snippet from `your-theme/components/container/container.scss`
-```sass
+```scss
 @import 'config/variables';
 @import 'vendors/include-media';
  
@@ -201,7 +201,7 @@ Sometimes there are subfolders in the component. During the customization proces
 * If you want to overwrite the variables declared in the mixin file, do so in the appropriate mixin file in your theme. 
 
 Below snippet from `your-theme/src/components/badge/mixin.scss`
-```sass
+```scss
 @import 'config/variables';
 @import 'components/badge/hook';
  
@@ -222,7 +222,7 @@ $badge--popular-background: $color_background-700;
 ```
 
 Below snippet from `your-theme/src/components/badge/hook.scss`
-```sass
+```scss
 @import 'utils/get-value-from-list';
  
 /* stylelint-disable block-no-empty  */
