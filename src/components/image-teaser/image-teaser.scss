@@ -4,6 +4,7 @@
 @import 'utils/component-spacing';
 @import 'components/teaser/mixins';
 @import 'components/button/mixin';
+@import 'components/typography/mixin';
 
 $image-teaser_scale-fonts-proportionally: false !default;
 
@@ -14,6 +15,7 @@ $image-teaser_cta-button-type: 'primary' !default;
 $image-teaser_cta-button-icon-pos: 'right' !default;
 
 $image-teaser_text-content-font-size: 1.4rem !default;
+$image-teaser_slogan-level: $font-size_headline-2 !default;
 $image-teaser_slogan-font-size: 2.583em !default;
 $image-teaser_description-font-size: 1.55em !default;
 
@@ -387,6 +389,7 @@ $image-teaser_cms-pages-background: $color_gallery !default;
     }
 
     &__slogan {
+        @include headline($level: $image-teaser_slogan-level);
         margin: 0;
         font-size: $image-teaser_slogan-font-size;
         font-weight: $image-teaser_slogan-font-weight;
@@ -593,7 +596,8 @@ $image-teaser_cms-pages-background: $color_gallery !default;
 
     &__image {
         // Hides alt text so it doesn't show before image is loaded.
-        font: 0/0 a; // stylelint-disable-line
+        /* stylelint-disable-next-line */
+        font: 0/0 a;
         text-shadow: none;
         color: transparent;
 
