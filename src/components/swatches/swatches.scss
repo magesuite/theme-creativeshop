@@ -5,6 +5,14 @@
 @import 'utils/deep-get/deep-get.scss';
 @import 'components/button/mixin';
 
+$swatches--clickable: deep-get(
+    $view-xml,
+    vars,
+    Magento_Catalog,
+    configurable_tile_swatches,
+    enabled
+) !default;
+
 // Keep in sync with quantity wrapper in buybox.
 $swatches_label-width: 10rem !default;
 $swatches_label-width-laptop-up: 11rem !default;
@@ -13,7 +21,7 @@ $swatches_label-font-size: 1.1em !default;
 // Keep in sync width quantity wrapper in buybox end.
 
 // Scenario with swatches below label, which is 100% wide
-// Width thos variable set tp true $swatches_label-width
+// with this variable set to true $swatches_label-width
 // and $swatches_label-width-laptop-up will be overriden - always 100% width
 $swatches_full-width-label: false !default;
 
@@ -101,7 +109,9 @@ $swatches_tooltip-thumbnail-height: #{map-get(
 
 // Container selector for swatches in tile and daily deal teaser.
 [class^='swatch-opt-'] {
-    pointer-events: none;
+    @if not $swatches--clickable {
+        pointer-events: none;
+    }
     font-size: $swatches--tile_font-size;
     min-height: $swatches--tile_min-height;
     opacity: 1;

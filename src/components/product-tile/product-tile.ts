@@ -1,4 +1,6 @@
 import * as $ from 'jquery';
+import * as viewXml from 'etc/view.json';
+import deepGet from 'utils/deep-get/deep-get';
 
 export interface ProductTileOptions {
     /**
@@ -27,13 +29,19 @@ export default class ProductTile {
         $element?: JQuery<HTMLElement>,
         options?: ProductTileOptions
     ) {
+        const areSwatchesConfigurable = deepGet(
+            viewXml,
+            'vars.Magento_Catalog.configurable_tile_swatches.enabled'
+        );
+
         this._$element = $element || $('.cs-product-tile');
         this._options = $.extend(
             {
                 tileModifier: '.cs-product-tile--clickable',
                 tileLinkElement: '.cs-product-tile__thumbnail-link',
-                ignoredSelectors:
-                    '.cs-product-tile__addtocart-button, .cs-product-tile__addto',
+                ignoredSelectors: areSwatchesConfigurable
+                    ? '.cs-product-tile__addtocart-button, .cs-product-tile__addto, .cs-product-tile__swatches'
+                    : '.cs-product-tile__addtocart-button, .cs-product-tile__addto',
             },
             options
         );

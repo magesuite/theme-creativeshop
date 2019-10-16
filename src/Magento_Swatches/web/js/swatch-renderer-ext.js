@@ -12,11 +12,52 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
 
     return function(swatchRenderer) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
+            options: {
+                selectorProductTile: '.cs-product-tile',
+            },
             _onGalleryLoaded: function(gallery) {
                 this._super(gallery);
 
                 // Add gallery loaded flag for selecting swatches reference
                 this._isGalleryLoaded = true;
+            },
+            _determineProductData: function() {
+                // Check if product is in a list of products.
+                var productId,
+                    isInProductView = false;
+
+                // Fixed element extraction for our markup.
+                productId = this.element
+                    .parents(this.options.selectorProductTile)
+                    .find('.price-box.price-final_price')
+                    .attr('data-product-id');
+
+                if (!productId) {
+                    // Check individual product.
+                    productId = $('[name=product]').val();
+                    isInProductView = productId > 0;
+                }
+
+                return {
+                    productId: productId,
+                    isInProductView: isInProductView,
+                };
+            },
+            updateBaseImage: function(images, context, isInProductView) {
+                var justAnImage = images[0];
+
+                if (isInProductView) {
+                    return this._super(images, context, isInProductView);
+                }
+
+                if (justAnImage && justAnImage.img) {
+                    // Fixed element extraction for our markup.
+                    this.element
+                        .parents(this.options.selectorProductTile)
+                        .find('.cs-product-tile__image')
+                        .attr('src', justAnImage.img)
+                        .attr('srcset', justAnImage.img);
+                }
             },
             _RenderControls: function() {
                 this._super();
