@@ -97,9 +97,7 @@ define(['jquery'], function($) {
                         });
                     }
 
-                    if (!firstActive.hasClass('super-attribute-select')) {
-                        firstActive.focus();
-                    }
+                    firstActive.focus();
                 }
             },
         });

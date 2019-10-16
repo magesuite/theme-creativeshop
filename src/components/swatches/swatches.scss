@@ -212,6 +212,10 @@ $swatches_tooltip-thumbnail-height: #{map-get(
     margin-bottom: -#{$swatches_swatch-gutter};
     min-width: 100%;
     justify-content: center;
+    
+    &:focus {
+        box-shadow: none;
+    }
 
     .swatch-attribute-label ~ & {
         min-width: 0;
@@ -343,6 +347,12 @@ $swatches_tooltip-thumbnail-height: #{map-get(
 
 .swatch-input {
     @include visually-hidden();
+
+    // Restore original styles from Magento. 
+    // It prevents keyboard on mobile to be shown after swatch is clicked
+    left: -1000px;
+    position: absolute;
+    visibility: hidden;
 }
 
 .swatch-more {
