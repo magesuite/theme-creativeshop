@@ -210,11 +210,11 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 ).toggleClass('discounted-price', $discounted);
             },
             /**
-             * For now swatches on tiles in Magesuite are not clickable. 
+             * For now swatches on tiles in Magesuite are not clickable.
              * Swatches area on tiles works as a link to PDP.
              * To prevent not indented click on swatches that will lead to PDP we have disallow emulation of swatches select on tile
              * and allo it only on product-info-main area on PDP
-            */
+             */
             _EmulateSelected: function(selectedAttributes) {
                 if (!this.element.closest('.product-info-main').length) {
                     return;
@@ -225,16 +225,17 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
             /**
              * When below swatches there is an error after choosing a swatch it does not disapper
              * triggering validation remove error when swatch input has a value
-            */
-            _OnClick: function ($this, $widget) {
-                var $input = $this.parents('.' + $widget.options.classes.attributeClass).find('.' + $widget.options.classes.attributeInput);
+             */
+            _OnClick: function($this, $widget) {
+                this._super($this, $widget);
 
-                if (!$this.hasClass('disabled') && !$this.hasClass('selected')) {
+                var $input = $this
+                    .parents('.' + $widget.options.classes.attributeClass)
+                    .find('.' + $widget.options.classes.attributeInput);
+                if (!$this.hasClass('disabled')) {
                     $input.valid();
                 }
-
-                this._super($this, $widget);
-            }
+            },
         });
 
         return $.mage.SwatchRenderer;
