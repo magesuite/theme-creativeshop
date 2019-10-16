@@ -53,6 +53,8 @@ Now you can create your new theme and build static assets.
 
 Now you should have got Magento installation up and running with your new creativeshop-based theme.
 
+**Don't forget to set `theme-creativeshop` or `your-theme` as global in Admin Panel → Content → Design → Configuration**, otherwise content constructor will not work properly.
+
 ## Development
 
 `theme-creativeshop` is designed to achieve convenient Magento 2 development environment. After you have created your new theme you can use, modify or add any component you find in parent theme. This whole inheriting procedure is the part of theme build process, which incorporates all the stuff you need to do with your code as a theme developer. Here are commands that you may choose depending on what you would like to achieve:
