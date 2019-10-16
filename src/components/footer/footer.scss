@@ -6,6 +6,7 @@
 @import 'vendors/include-media';
 @import 'utils/visually-hidden';
 @import 'components/pseudoicon/mixin';
+@import 'components/typography/mixin';
 
 $footer_text-color: $color_text-200 !default;
 $footer_background: $color_background-800 !default;
@@ -16,6 +17,7 @@ $footer_section-vertical-offset: 2em !default;
 
 $footer_section-separator-border: 1px solid $color_gray !default;
 
+$footer_section-title-headline-level: $font-size_headline-4 !default;
 $footer_section-title-padding: $footer_section-vertical-offset
     $footer_section-edge-gutter !default;
 $footer_section-title-color: $color_gray !default;
@@ -134,6 +136,9 @@ $footer_logo-height: 2.3em !default;
 
     &__section-title,
     [data-role='title'] {
+        @if $footer_section-title-headline-level != 'none' {
+            @include headline($level: $footer_section-title-headline-level);
+        }
         position: relative;
         margin: 0;
         border-top: $footer_section-separator-border;
