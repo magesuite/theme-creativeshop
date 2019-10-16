@@ -309,17 +309,6 @@ $navigation_lists-mark-parent-on-hover: true !default;
             $childClass: #{$ns}product-tile,
             $autoposition: true
         );
-
-        @each $key, $values in $tile_aspect-ratio-map {
-            @include media(#{$key}) {
-                @include aspect-ratio(
-                    $width: nth(map-get($tile_aspect-ratio-map, $key), 1),
-                    $height: nth(map-get($tile_aspect-ratio-map, $key), 2),
-                    $childClass: #{$ns}product-tile,
-                    $autoposition: true
-                );
-            }
-        }
     }
 
     &__overlay {
@@ -349,6 +338,15 @@ $navigation_lists-mark-parent-on-hover: true !default;
 
     .page-print & {
         display: none;
+    }
+
+    @supports (display: grid) and (grid-auto-flow: row) {
+        &__product {
+            @include aspect-ratio-reset(
+                $childClass: #{$ns}product-tile,
+                $autoposition: true
+            );
+        }
     }
 }
 

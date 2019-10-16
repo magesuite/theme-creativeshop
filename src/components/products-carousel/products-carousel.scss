@@ -81,21 +81,21 @@ $teaser_nav-button-position-top: $products-carousel_nav-button-position-top;
                 $childClass: #{$ns}product-tile,
                 $autoposition: true
             );
-
-            @each $key, $values in $tile_aspect-ratio-map {
-                @include media(#{$key}) {
-                    @include aspect-ratio(
-                        $width: nth(map-get($tile_aspect-ratio-map, $key), 1),
-                        $height: nth(map-get($tile_aspect-ratio-map, $key), 2),
-                        $childClass: #{$ns}product-tile,
-                        $autoposition: true
-                    );
-                }
-            }
         }
     }
 
     &__scrollbar {
         height: 0.5rem;
+    }
+
+    @supports (display: grid) and (grid-auto-flow: row) {
+        &__product-tile {
+            #{$root}:not(.cs-products-carousel--list) & {
+                @include aspect-ratio-reset(
+                    $childClass: #{$ns}product-tile,
+                    $autoposition: true
+                );
+            }
+        }
     }
 }

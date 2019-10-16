@@ -1,5 +1,8 @@
 /***
  * Using psuedo elements to maintain an elements aspect ratio, even as it scales
+ * It's using only for IE11 and Edge (version which doesn't support native CSS grid) browsers
+ * For browsers which support native CSS grid, we are using mixins contain `reset` in mixin name
+ * to override default mixins (progressive enhancement)
  * https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
  * @param {number} $width: width of the element;
  * @param {number} $height: height of the element;
@@ -7,7 +10,7 @@
  * @param {boolean} $autoposition: tells if item shall take 100% of parent size or if it can be wider/higher if needed;
  */
 
- @function get-aspect-ratio-padding-value($width, $height) {
+@function get-aspect-ratio-padding-value($width, $height) {
     @return ($height / $width) * 100%;
 }
 
@@ -33,11 +36,30 @@
     }
 }
 
+@mixin aspect-ratio-reset($childClass, $autoposition: true) {
+    position: relative;
+
+    &:before {
+        content: none;
+    }
+
+    .#{$childClass} {
+        position: relative;
+        top: auto;
+        left: auto;
+
+        @if $autoposition {
+            right: auto;
+            bottom: auto;
+        }
+    }
+}
+
 @mixin aspect-ratio-child-position($autoposition: true) {
     position: absolute;
     top: 0;
     left: 0;
-    
+
     @if $autoposition {
         right: 0;
         bottom: 0;
@@ -47,5 +69,11 @@
 @mixin aspect-ratio-override($width, $height) {
     &:before {
         padding-top: get-aspect-ratio-padding-value($width, $height);
+    }
+}
+
+@mixin aspect-ratio-override-reset() {
+    &:before {
+        padding-top: 0;
     }
 }

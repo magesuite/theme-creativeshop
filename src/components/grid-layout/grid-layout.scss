@@ -121,8 +121,8 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
     }
 
     &__teaser {
-        @include aspect-ratio-child-position();
         overflow: hidden;
+        @include aspect-ratio-child-position();
 
         &-content-wrapper {
             display: flex;
@@ -290,17 +290,6 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
             $autoposition: true
         );
 
-        @each $key, $values in $tile_aspect-ratio-map {
-            @include media(#{$key}) {
-                @include aspect-ratio(
-                    $width: nth(map-get($tile_aspect-ratio-map, $key), 1),
-                    $height: nth(map-get($tile_aspect-ratio-map, $key), 2),
-                    $childClass: #{$ns}product-tile,
-                    $autoposition: true
-                );
-            }
-        }
-
         @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
             @include media('>=#{$breakpoint}') {
                 width: calc(100% / #{$itemsPerRow});
@@ -318,20 +307,6 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
                 $width: $grid-layout_brick-ratio-width * 2,
                 $height: $grid-layout_brick-ratio-height
             );
-
-            @each $key, $values in $tile_aspect-ratio-map {
-                @include media(#{$key}) {
-                    & {
-                        @include aspect-ratio-override(
-                            $width:
-                                nth(map-get($tile_aspect-ratio-map, $key), 1) *
-                                2,
-                            $height:
-                                nth(map-get($tile_aspect-ratio-map, $key), 2)
-                        );
-                    }
-                }
-            }
 
             &#{$root}__brick--teaser {
                 &:before {
@@ -352,25 +327,6 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
                     $width: $grid-layout_brick-ratio-width,
                     $height: $grid-layout_brick-ratio-height * 2
                 );
-
-                @each $key, $values in $tile_aspect-ratio-map {
-                    @include media(#{$key}) {
-                        & {
-                            @include aspect-ratio-override(
-                                $width:
-                                    nth(
-                                        map-get($tile_aspect-ratio-map, $key),
-                                        1
-                                    ),
-                                $height:
-                                    nth(
-                                        map-get($tile_aspect-ratio-map, $key),
-                                        2
-                                    ) * 2
-                            );
-                        }
-                    }
-                }
             }
 
             &#{$root}__brick--teaser {
@@ -474,22 +430,69 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
         }
 
         &__brick {
+            @include aspect-ratio-reset(
+                $childClass: #{$ns}product-tile,
+                $autoposition: true
+            );
+
+            @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
+                @include media('>=#{$breakpoint}') {
+                    @if $itemsPerRow > 1 {
+                        &--x2 {
+                            grid-column-end: span 2;
+                        }
+
+                        &--y2 {
+                            grid-row-end: span 2;
+                        }
+                    }
+                }
+            }
+
+            &--x2:not(#{$root}__brick--y2) {
+                @include aspect-ratio-override-reset();
+            }
+
+            &--y2 {
+                &:not(#{$root}__brick--x2) {
+                    @include aspect-ratio-override-reset();
+                }
+            }
+
             &,
             &--teaser-ready {
                 width: 100% !important;
                 display: block;
             }
 
+            &--teaser-ready {
+                @include media('<phone') {
+                    grid-column-start: 1 !important;
+                }
+            }
+
             &--right {
                 float: none;
             }
+        }
 
-            &--x2 {
-                grid-column-end: span 2;
-            }
+        &--with-sidebar {
+            @each $breakpoint,
+                $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
+            {
+                #{$root}__brick {
+                    @include media('>=#{$breakpoint}') {
+                        @if $itemsPerRow > 1 {
+                            &--x2 {
+                                grid-column-end: span 2;
+                            }
 
-            &--y2 {
-                grid-row-end: span 2;
+                            &--y2 {
+                                grid-row-end: span 2;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
