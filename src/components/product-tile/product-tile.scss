@@ -5,6 +5,7 @@
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 @import 'utils/aspect-ratio';
+@import 'utils/string-to-number';
 @import 'utils/reset-list-style';
 @import 'utils/visually-hidden';
 
@@ -48,7 +49,7 @@ $product-tile-grid_badges-direction: 'vertical' !default; // vertical or horizon
 $product-tile-grid_badges-y-asis-position-prop: top !default;
 $product-tile-grid_badges-x-asis-position-prop: left !default;
 $product-tile-grid_badges-y-asis-position-value: 0 !default;
-$product-tile-grid_badges-x-asis-position-value: 0 !default;
+$product-tile-grid_badges-x-asis-position-value: 0.3rem !default;
 $product-tile-grid_badges-item-margin: 0 0 #{$product-tile_general-elements-gutter /
     4} !default;
 $product-tile-list_badges-direction: 'horizontal' !default; // vertical or horizontal
@@ -71,6 +72,7 @@ $product-tile_addons-border-radius: $product-tile_general-border-radius !default
 $product-tile_addons-horizontal-padding: $product-tile_general-elements-gutter /
     2 !default;
 $product-tile-grid_addons-show-for-static-tile: false !default;
+$product-tile-grid_addons-height-on-hover: 150% !default;
 $product-tile-list_addons-width: 25rem !default;
 $product-tile-list_addons-border-left: 1px solid $color_border-200 !default;
 $product-tile-list_addons-one-column-margin: #{$product-tile_general-elements-gutter /
@@ -131,9 +133,6 @@ $product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter /
 $product-tile-list_description-text-align: $product-tile-list_alignment !default;
 
 // Thumbnail
-$product-tile-grid_thumbnail-center-on-tile: false !default;
-$product-tile-grid_thumbnail-cover-width: false !default;
-
 $product-tile-list_thumbnail-box-width: 10rem !default;
 $product-tile-list_thumbnail-box-width-mobile: #{$product-tile-list_thumbnail-box-width /
     2} !default;
@@ -159,10 +158,24 @@ $product-tile-list_prices-margin: 0 !default;
 $product-tile-list_display-old-price-first: true !default;
 
 // Helpers (don't edit)
-$_product-tile-list_full-column-breakpoint-min: '>=#{$product-tile-list_one-column-breakpoint}' !default;
-$_product-tile-list_full-column-breakpoint-max: '<#{$product-tile-list_one-column-breakpoint}' !default;
-$_product-tile-list_sidebar-column-breakpoint-min: '>=#{$product-tile-list_one-column-when-sidebar-breakpoint}' !default;
-$_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-column-when-sidebar-breakpoint}' !default;
+$product-tile-list_full-column-breakpoint-min: '>=#{$product-tile-list_one-column-breakpoint}';
+$product-tile-list_full-column-breakpoint-max: '<#{$product-tile-list_one-column-breakpoint}';
+$product-tile-list_sidebar-column-breakpoint-min: '>=#{$product-tile-list_one-column-when-sidebar-breakpoint}';
+$product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-column-when-sidebar-breakpoint}';
+
+$product-tile-magento-catalog-image: deep-get(
+    $view-xml,
+    media,
+    images,
+    image,
+    category_page_grid
+);
+$product-tile-magento-catalog-image-width: to-number(
+    #{map-get($product-tile-magento-catalog-image, width)}
+);
+$product-tile-magento-catalog-image-height: to-number(
+    #{map-get($product-tile-magento-catalog-image, height)}
+);
 
 .#{$ns}product-tile {
     $root: &;
@@ -250,7 +263,12 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         display: flex;
 
         #{$root}--grid & {
-            flex: 1 0 0;
+            // Aspect ratio for tile thumbnail is calculated based on image 'category_page_grid' sizes in etc/view.xml
+            @include aspect-ratio(
+                $product-tile-magento-catalog-image-width,
+                $product-tile-magento-catalog-image-height,
+                #{$ns}product-tile__thumbnail-link
+            );
         }
     }
 
@@ -267,7 +285,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             height: 100%;
             flex-grow: initial;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 padding: 0;
             }
 
@@ -279,7 +297,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     padding: 0 $product-tile_general-tile-gutter 0 0;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         padding: 0;
                     }
@@ -295,8 +313,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
     }
 
     &__figure {
-        @include aspect-ratio(1px, 1px, #{$ns}product-tile__image);
-
         margin: 0;
         padding: 0;
         height: 100%;
@@ -307,6 +323,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             width: 100%;
             justify-content: flex-start; // IE11 do not respect center value until parent has flex-direction set to column.
             align-items: center;
+            top: 0;
         }
 
         #{$root}--list & {
@@ -332,16 +349,6 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
         #{$root}--grid & {
             position: absolute;
-
-            @if ($product-tile-grid_thumbnail-cover-width) {
-                width: 100%;
-            } @else {
-                max-height: 100%;
-            }
-
-            @if not($product-tile-grid_thumbnail-center-on-tile) {
-                bottom: unset;
-            }
         }
 
         #{$root}--list & {
@@ -478,6 +485,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
 
         #{$root}--grid & {
             flex-direction: column;
+            flex: 1;
         }
 
         #{$root}--list & {
@@ -485,7 +493,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             flex: 1 1 auto;
             flex-direction: column-reverse;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 flex-direction: row-reverse;
             }
 
@@ -497,7 +505,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     flex-direction: column-reverse;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         flex-direction: row-reverse;
                     }
@@ -527,7 +535,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             transform: none;
             overflow: visible;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 flex: 0 0 $product-tile-list_addons-width;
                 padding: 0 0 0 $product-tile_general-tile-gutter;
                 margin: 0;
@@ -547,7 +555,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     border-left: none;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         padding: 0 0 0 $product-tile_general-tile-gutter;
                         margin: 0;
@@ -563,22 +571,10 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             align-items: flex-end;
             opacity: 0;
             top: 0;
-            padding: #{get-aspect-ratio-padding-value(
-                    $tile_aspect-ratio-width,
-                    $tile_aspect-ratio-height
-                )} $product-tile_general-tile-gutter $product-tile_general-tile-gutter;
+            padding: $product-tile-grid_addons-height-on-hover
+                $product-tile_general-tile-gutter
+                $product-tile_general-tile-gutter;
             box-shadow: $product-tile-grid_hover-box-shadow;
-
-            @each $key, $values in $tile_aspect-ratio-map {
-                @include media(#{$key}) {
-                    & {
-                        padding: #{get-aspect-ratio-padding-value(
-                                nth(map-get($tile_aspect-ratio-map, $key), 1),
-                                nth(map-get($tile_aspect-ratio-map, $key), 2)
-                            )} $product-tile_general-tile-gutter $product-tile_general-tile-gutter;
-                    }
-                }
-            }
 
             @if ($product-tile-grid_hover-animation) {
                 transform: translate3d(0, -3rem, 0);
@@ -650,7 +646,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         #{$root}--list & {
             display: none;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 display: block;
             }
 
@@ -662,7 +658,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     display: none;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         display: block;
                     }
@@ -706,7 +702,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         &--list {
             margin: $product-tile-list_review-margin;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 position: absolute;
                 top: 0;
                 right: $product-tile_general-elements-gutter;
@@ -728,7 +724,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     right: initial;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         position: absolute;
                         top: 0;
@@ -816,13 +812,14 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
         #{$root}--grid & {
             flex-direction: column;
             height: 100%;
+            justify-content: center;
         }
 
         #{$root}--list & {
             flex-direction: row;
             flex: 1 1 100%;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 padding: 0 $product-tile_general-elements-gutter;
             }
 
@@ -834,7 +831,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     padding: 0;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         padding: 0 $product-tile_general-elements-gutter;
                     }
@@ -998,7 +995,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
             align-items: flex-start;
             width: 100%;
 
-            @include media($_product-tile-list_full-column-breakpoint-min) {
+            @include media($product-tile-list_full-column-breakpoint-min) {
                 flex-direction: row;
                 align-items: flex-end;
                 justify-content: space-between;
@@ -1013,7 +1010,7 @@ $_product-tile-list_sidebar-column-breakpoint-max: '<#{$product-tile-list_one-co
                     align-items: flex-start;
 
                     @include media(
-                        $_product-tile-list_sidebar-column-breakpoint-min
+                        $product-tile-list_sidebar-column-breakpoint-min
                     ) {
                         flex-direction: row;
                         align-items: flex-end;
