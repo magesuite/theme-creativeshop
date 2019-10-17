@@ -18,7 +18,14 @@ $cacheGenerationTime = time();
 $imageTeaserConfig = $block->getData('imageTeaserConfig');
 
 ?>
-<nav class="cs-navigation" data-cache-key="<?= $cacheKey; ?>" data-cache-generation-time="<?= $cacheGenerationTime; ?>" data-mobile-endpoint-url="<?= $block->getMobileNavigationEndpointUrl(); ?>">
+<nav
+    class="cs-navigation"
+    data-cache-key="<?= $cacheKey; ?>"
+    data-cache-generation-time="<?= $cacheGenerationTime; ?>"
+    data-mobile-endpoint-url="<?= $block->getMobileNavigationEndpointUrl(); ?>"
+    aria-label="<?= /* @escapeNotVerified */ __('Main Navigation'); ?>"
+    role='navigation'
+>
     <ul class="cs-navigation__list cs-navigation__list--main">
         <?php foreach($block->getItems() as $item):
             $itemId = $item->getId();

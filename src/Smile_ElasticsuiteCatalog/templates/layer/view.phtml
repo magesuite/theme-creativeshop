@@ -17,14 +17,16 @@
     }, $selectedFilters);
 ?>
     <?php if (!empty($filters)): ?>
-        <div
+        <nav
             class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter<?= empty($filters) ? ' filter-no-options' : ''; ?>"
             id="layered-filter-block"
             data-mage-init='{ "collapsible": { "active": false, "collateral": { "openedState": "filter-active", "element": "body" }, "mediaQueryScope": "(max-width: 767px)" } }'
+            title="<?= /* @escapeNotVerified */ __('Filters'); ?>"
+            aria-labelledby="cs-aftersearch-nav__filters-trigger"
         >
-            <h2 class="cs-aftersearch-nav__filters-trigger" data-role="title">
+            <p class="cs-aftersearch-nav__filters-trigger" id="cs-aftersearch-nav__filters-trigger" data-role="title">
                 <?= /* @escapeNotVerified */ __('Filters'); ?>
-            </h2>
+            </p>
             <div class="cs-aftersearch-nav__filters | block-content filter-content" data-role="content">
                 <ul
                     class="cs-aftersearch-nav__filter-options<?= $isFiltersLayoutHorizontal ? ' cs-filter-horizontal ' : ''; ?> | filter-options"
@@ -74,6 +76,6 @@
             <div class="loading-mask | cs-aftersearch-nav__loader" data-role="panel">
                 <img class="cs-aftersearch-nav__loader-icon" src="<?= $this->getViewFileUrl('images/spinner.svg'); ?>" alt="Loading...">
             </div>
-        </div>
+        </nav>
     <?php endif; ?>
 <?php endif; ?>
