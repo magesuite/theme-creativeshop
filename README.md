@@ -24,30 +24,30 @@ This this is our parent theme for shops based on Magento 2.
 
 ## First steps
 
-[theme-creativeshop](https://github.com/creativestyle/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with `theme-creativeshop`, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
+[Creativeshop](https://github.com/creativestyle/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with Creativeshop, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
 
-[Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** `theme-creativeshop` and then create your own child theme. MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from `theme-creativeshop`.
+[Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** `theme-creativeshop` and then create your own child theme. MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from Creativeshop.
 
-### Building `theme-creativeshop`
+### Building Creativeshop
 Before you start, make sure you have [Node.js](https://nodejs.org/en/) installed.
 1. Navigate to `vendor/creativestyle/theme-creativeshop`.
 2. Run `yarn install && yarn build`. It will install dependencies and build artifacts into `app/design` directory.
 
 ### Setting up new theme
-1. [Install MageSuite Theme Generator](https://www.npmjs.com/package/@creativestyle/magesuite-theme-generator). It's a small NPM package that does for you all the dirty work of creating new creativeshop-based theme in proper framework.
+1. [Install MageSuite Theme Generator](https://www.npmjs.com/package/@creativestyle/magesuite-theme-generator). It's a small NPM package that does for you all the dirty work of creating new Creativeshop-based theme in proper framework.
 2. Navigate to `vendor/creativestyle` and run `magesuite-theme-generator` command, the generator will ask you couple of questions.
 3. Navigate to your new theme directory (`vendor/creativestyle/<your-theme>`) and initiate version control repository.
 4. Build your new theme in the same way that you've build `theme-creativeshop`.
 5. Run `bin/magento setup:upgrade`.
 6. Change active Magento theme to your new theme.
 
-Now you should have got Magento installation up and running with your new creativeshop-based theme.
+Now you should have got Magento installation up and running with your new Creativeshop-based theme.
 
 **Don't forget to set `theme-creativeshop` or your new theme as global in Content → Design → Configuration, otherwise the Magesuite's Content Constructor will not work properly**.
 
 ### Development
 
-`theme-creativeshop` is designed to achieve convenient Magento 2 development environment. After you have created your new theme you can use, modify or add any component you find in parent theme. This whole inheriting procedure is the part of theme build process, which incorporates all the stuff you need to do with your code as a theme developer. Here are commands that you may choose depending on what you would like to achieve:
+Creativeshop is designed to achieve convenient Magento 2 development environment. After you have created your new theme you can use, modify or add any component you find in parent theme. This whole inheriting procedure is the part of theme build process, which incorporates all the stuff you need to do with your code as a theme developer. Here are commands that you may choose depending on what you would like to achieve:
 
 * `yarn build`: builds entire theme from `vendor/creativestyle/<your-theme>` into `app/design/frontend/creativestyle/<your-theme>` directory, where Magento is able to find and apply it.
 * `yarn gulp watch`: same as above, but the build is triggered automatically every time any changes are made in the source directory.
@@ -61,13 +61,13 @@ In case you wonder how the build process looks in detail:
 * SCSS and TypeScript source files are compiled and optimized.
 * Magento frontend caches are cleaned.
 
-You have installed and built your first creativeshop-based theme. How about adding some new component to it?
+You have installed and built your first Creativeshop-based theme. How about adding some new component to it?
 
 ## Adding new component
 
-Creating new components is the core of the development process with theme-creativeshop. It's the first thing you should do if you want to customize existing component as well as write your new one from scratch. 
+Creating new components is the core of the development process with Creativeshop. It's the first thing you should do if you want to customize existing component as well as write your new one from scratch. 
 
-theme-creativeshop incorporates something which may be called *component inheritance*. Once you have created your child theme properly, it can inherit all the parent components. You can do whathever you want with those inherited components - modify them to any degree or just use them without any changes. It's a powerful tool for building your theme out of curated ready to use and easily customizable parts.
+Creativeshop incorporates something which may be called *component inheritance*. Once you have created your child theme properly, it can inherit all the parent components. You can do whathever you want with those inherited components - modify them to any degree or just use them without any changes. It's a powerful tool for building your theme out of curated ready to use and easily customizable parts.
 
 What's interesting, this inheritance chain works with any number of themes, so you can have got grandchild, grandgrandchild themes and so on.
 
