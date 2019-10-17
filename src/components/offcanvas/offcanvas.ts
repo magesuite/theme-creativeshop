@@ -78,7 +78,9 @@ export default class Offcanvas {
      */
     public show(): Promise<Offcanvas> {
         $('body, html').addClass('no-scroll');
-        this._$trigger.addClass(`${this._options.triggerClassName}--active`);
+        this._$trigger
+            .addClass(`${this._options.triggerClassName}--active`)
+            .attr('aria-expanded', 'true');
         return Promise.all([this._showOverlay(), this._showDrawer()]).then(
             () => {
                 this._$element.trigger('offcanvas-show', this);
@@ -92,7 +94,9 @@ export default class Offcanvas {
      */
     public hide(): Promise<Offcanvas> {
         $('body, html').removeClass('no-scroll');
-        this._$trigger.removeClass(`${this._options.triggerClassName}--active`);
+        this._$trigger
+            .removeClass(`${this._options.triggerClassName}--active`)
+            .attr('aria-expanded', 'false');
         return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
             () => {
                 this._$element.trigger('offcanvas-hide', this);
