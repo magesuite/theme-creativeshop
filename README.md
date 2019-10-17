@@ -80,7 +80,7 @@ Components are stored in `~Creativeshop/src/components/<component>` directory. W
 - `index.ts`: Entry file. Contains imports of dependencies, TypeScript modules and SCSS files as well as script initializing the component in final website.
 - `<component>.ts`: TypeScript module with the component definition.
 - `<component>.scss`: Component styles.
-- `mixin.scss`: Declarations of mixins used in the componeŚnt styles.
+- `mixin.scss`: Declarations of mixins used in the component styles.
 - `hook.scss`: Hooks for component mixins.
 
 Not all of the files listed above are neccessary. Technically, functional creativeshop component is nothing more than a TypeScript module importing needed files and exporting them for Webpack consume.
