@@ -9,7 +9,7 @@ This this is our parent theme for shops based on Magento 2.
 
 # Documentation
 * [First steps](https://github.com/magesuite/theme-creativeshop#first-steps)
-    * [Building theme-creativeshop](https://github.com/magesuite/theme-creativeshop#building-theme-creativeshop)
+    * [Building Creativeshop](https://github.com/magesuite/theme-creativeshop#building-creativeshop)
     * [Setting up new theme](https://github.com/magesuite/theme-creativeshop#setting-up-new-theme)
     * [Development](https://github.com/magesuite/theme-creativeshop#development)
 * [Adding new component](https://github.com/magesuite/theme-creativeshop#new-component-creation)
@@ -26,7 +26,7 @@ This this is our parent theme for shops based on Magento 2.
 
 [Creativeshop](https://github.com/creativestyle/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with Creativeshop, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
 
-[Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** `theme-creativeshop` and then create your own child theme. MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from Creativeshop.
+[Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** Creativeshop and then create your own child theme. MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from Creativeshop.
 
 ### Building Creativeshop
 Before you start, make sure you have [Node.js](https://nodejs.org/en/) installed.
