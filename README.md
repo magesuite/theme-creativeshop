@@ -8,19 +8,19 @@ This this is our parent theme for shops based on Magento 2.
 - Gulp.
 
 # Documentation
-* [First steps](https://github.com/magesuite/theme-creativeshop#first-steps)
-    * [Building Creativeshop](https://github.com/magesuite/theme-creativeshop#building-creativeshop)
-    * [Setting up new theme](https://github.com/magesuite/theme-creativeshop#setting-up-new-theme)
-    * [Development](https://github.com/magesuite/theme-creativeshop#development)
-* [Adding new component](https://github.com/magesuite/theme-creativeshop#new-component-creation)
-    * [Component structure](https://github.com/magesuite/theme-creativeshop#component-structure)
-    * [Entry file](https://github.com/magesuite/theme-creativeshop#entry-file)
-* [Styles customization](https://github.com/magesuite/theme-creativeshop#styles-customization)
-    * [Customization process](https://github.com/magesuite/theme-creativeshop#customization-process)
-    * [Customization of `<your-theme>/src/config`](https://github.com/magesuite/theme-creativeshop#customization-of-your-themesrcconfig)
-    * [Customizing existing components](https://github.com/magesuite/theme-creativeshop#customizing-existing-components)
-    * [Mixins and hooks](https://github.com/magesuite/theme-creativeshop#mixins-and-hooks)
-* [Split entries](https://github.com/magesuite/theme-creativeshop#split-entries)
+* [First steps](#first-steps)
+    * [Building Creativeshop](#building-creativeshop)
+    * [Setting up new theme](#setting-up-new-theme)
+    * [Development](#development)
+* [Adding new component](#new-component-creation)
+    * [Component structure](#component-structure)
+    * [Entry file](#entry-file)
+* [Styles customization](#styles-customization)
+    * [Customization process](#customization-process)
+    * [Customization of `<your-theme>/src/config`](#customization-of-your-themesrcconfig)
+    * [Customizing existing components](#customizing-existing-components)
+    * [Mixins and hooks](#mixins-and-hooks)
+* [Split entries](#split-entries)
 * [Frequently Asked Questions](#frequently-asked-questions)
 
 ## First steps
@@ -66,11 +66,11 @@ You have installed and built your first Creativeshop-based theme. How about addi
 
 ## Adding new component
 
-Creating new components is the core of the development process with Creativeshop. It's the first thing you should do if you want to customize existing component as well as write your new one from scratch. 
+Creating new components is the core of the development process with Creativeshop. It's the first thing you should do if you want to customize existing component as well as write yours from scratch. 
 
 Creativeshop incorporates something which may be called *component inheritance*. Once you have created your child theme properly, it can inherit all the parent components. You can do whathever you want with those inherited components - modify them to any degree or just use them without any changes. It's a powerful tool for building your theme out of curated ready to use and easily customizable parts.
 
-What's interesting, this inheritance chain works with any number of themes, so you can have got grandchild, grandgrandchild themes and so on.
+It's good to remember one main rule of this inheritance process - **if the file is absent in the child theme, the corresponding file from parent theme is included**. That's why you can safely omit any file, even the entry, and the theme will be still compiled. What's interesting, the inheritance chain works with any number of themes, so you can have got grandchild, grandgrandchild themes and so on.
 
 Let's create new `addtocart` component in our child theme. This component is responsible for displaying the button and product quantity select.
 
@@ -105,11 +105,22 @@ Responsibilities of this file are as follows:
 
 You may notice that many Creativeshop components imports and uses jQuery. You can import any other third party library installed in `node_modules`. It's also frequent to import other Creativeshop components as dependencies.
 
-If your new component serves only the purpose of customizing existing parent component - that's it! You can omit the creation of `index.ts` and proceed straight to [styles customization](https://github.com/magesuite/theme-creativeshop#styles-customization). If you want to add your new custom component instead, add `index.ts` file and please read about [split entries](https://github.com/magesuite/theme-creativeshop#split-entries). 
+If your new component serves only the purpose of customizing existing parent component - that's it! From now on you can insert any file into your component directory, and will it override the coresponding file from parent theme. It's as easy as that. However, bear in mind that **if your component is not just for customizing purposes, additional steps are needed** to make it work. You will learn about it later.
+ 
+You've just learned about inner workings of a Creativeshop component and added your first customization component. How about customizing some styles?
 
 ## Styles customization
 
-Styling theme-creativeshop is generally based on SCSS variables. 
+Styling the storefront is bread and butter of every Magento project. Creativeshop is designed to provide best frontend experience, both for end user and developer - because we should have fun with the development, shouldn't we?
+
+There are two ways to customize Creativeshop component style:
+
+- **Overriding Sass variables**. You can use extensive set of variables to quickly configure certain parts of code, such as paddings, colors, animations, icons and more.
+- **Overriding CSS rulesets**. You can mix your own code with existing codebase and get desired effects. You can do it either by modyfing original styles or by writing them from scratch.
+
+If you have ever used a modern CSS framework such as Bootstrap or Foundation, you are probably familiar with the first approach. It's convenient to some extent - problems begin when you want more control over look and feel of your frontend. Oftentimes only way to cope with it is to copy rulesets from original code and modify them, or to create new ones with higher specitifity. Both are quite mundane tasks, and will eventually make make your codebase a nightmare to maintain.
+
+Creativeshop handles that issue in elegant way by allowing you to directly override particular CSS rulesets in your child theme. During build process, your customized component styles are merged to original ones - exactly like when a web browser calculates final styles. You have full control over output. You can either change a few declarations or write completely new code, and what is the best - you are always precise about selectors and specificity.
 
 ### Customization process
 
@@ -303,6 +314,7 @@ Below snippet from `your-theme/src/components/badge/hook.scss`
 
 There are additional useful functions here, often imported in components. It is good to familiarize yourself with them to be able to use them.  
 
+You've just learned about good style customization practices. It's time to find out how to add your own brand new component!
 
 ## Split entries
 
@@ -375,7 +387,6 @@ For example, if you want to add some "special-product-promo" component, which wi
 ```javascript
 import 'components/special-product-promo';
 ```
-
 
 # Frequently asked questions
 
