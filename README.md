@@ -21,6 +21,7 @@ This this is our parent theme for shops based on Magento 2.
     * [Customizing existing components](https://github.com/magesuite/theme-creativeshop#customizing-existing-components)
     * [Mixins and hooks](https://github.com/magesuite/theme-creativeshop#mixins-and-hooks)
 * [Split entries](https://github.com/magesuite/theme-creativeshop#split-entries)
+* [Frequently Asked Questions](#frequently-asked-questions)
 
 ## First steps
 
@@ -375,3 +376,9 @@ For example, if you want to add some "special-product-promo" component, which wi
 import 'components/special-product-promo';
 ```
 
+
+# Frequently asked questions
+
+* [Unable to add image in Hero Carousel](https://github.com/magesuite/magesuite/issues/25)
+* [Admin - console error `Cannot read property 'defaults' of undefined`](https://github.com/magesuite/magesuite/issues/23)
+* [Component paragraph fails to render in frontend](https://github.com/magesuite/magesuite/issues/22)
