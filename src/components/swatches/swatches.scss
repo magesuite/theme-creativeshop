@@ -109,13 +109,17 @@ $swatches_tooltip-thumbnail-height: #{map-get(
 
 // Container selector for swatches in tile and daily deal teaser.
 [class^='swatch-opt-'] {
-    @if not $swatches--clickable {
-        pointer-events: none;
-    }
     font-size: $swatches--tile_font-size;
     min-height: $swatches--tile_min-height;
     opacity: 1;
     transition: opacity 0.3s;
+    pointer-events: none;
+
+    @if $swatches--clickable {
+        @include media('>tablet') {
+            pointer-events: auto;
+        }
+    }
 
     &:empty {
         opacity: 0;
@@ -212,7 +216,7 @@ $swatches_tooltip-thumbnail-height: #{map-get(
     margin-bottom: -#{$swatches_swatch-gutter};
     min-width: 100%;
     justify-content: center;
-    
+
     &:focus {
         box-shadow: none;
     }
@@ -348,7 +352,7 @@ $swatches_tooltip-thumbnail-height: #{map-get(
 .swatch-input {
     @include visually-hidden();
 
-    // Restore original styles from Magento. 
+    // Restore original styles from Magento.
     // It prevents keyboard on mobile to be shown after swatch is clicked
     left: -1000px;
     position: absolute;
