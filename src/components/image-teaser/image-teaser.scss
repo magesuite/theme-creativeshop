@@ -7,6 +7,7 @@
 @import 'components/typography/mixin';
 
 $image-teaser_scale-fonts-proportionally: false !default;
+$image-teaser--mosaic_equalize-font-sizes: true !default;
 
 $image-teaser_slides-gutter: 0.8rem !default;
 $image-teaser_content-gutter-base: 1.88% !default;
@@ -159,20 +160,66 @@ $image-teaser_cms-pages-background: $color_gallery !default;
                 &-1 {
                     #{$root}__slide:first-child {
                         width: calc((100% / 3) * 2);
+
+                        @if $image-teaser--mosaic_equalize-font-sizes {
+                            #{$root}__slogan {
+                                font-size: $image-teaser_slogan-font-size *
+                                    0.75;
+                            }
+
+                            #{$root}__description {
+                                font-size: $image-teaser_description-font-size *
+                                    0.75;
+                            }
+                        }
                     }
 
                     #{$root}__slide:last-child {
                         width: calc(100% / 3);
+
+                        @if $image-teaser--mosaic_equalize-font-sizes {
+                            #{$root}__slogan {
+                                font-size: $image-teaser_slogan-font-size * 1.5;
+                            }
+
+                            #{$root}__description {
+                                font-size: $image-teaser_description-font-size *
+                                    1.5;
+                            }
+                        }
                     }
                 }
 
                 &-2 {
                     #{$root}__slide:first-child {
                         width: calc(100% / 3);
+
+                        @if $image-teaser--mosaic_equalize-font-sizes {
+                            #{$root}__slogan {
+                                font-size: $image-teaser_slogan-font-size * 1.5;
+                            }
+
+                            #{$root}__description {
+                                font-size: $image-teaser_description-font-size *
+                                    1.5;
+                            }
+                        }
                     }
 
                     #{$root}__slide:last-child {
                         width: calc((100% / 3) * 2);
+
+                        @if $image-teaser--mosaic_equalize-font-sizes {
+                            #{$root}__slogan {
+                                font-size: $image-teaser_slogan-font-size *
+                                    0.75;
+                            }
+
+                            #{$root}__description {
+                                font-size: $image-teaser_description-font-size *
+                                    0.75;
+                            }
+                        }
                     }
                 }
             }
@@ -596,8 +643,9 @@ $image-teaser_cms-pages-background: $color_gallery !default;
 
     &__image {
         // Hides alt text so it doesn't show before image is loaded.
-        /* stylelint-disable-next-line */
+        /* stylelint-disable */
         font: 0/0 a;
+        /* stylelint-enable */
         text-shadow: none;
         color: transparent;
 
