@@ -274,8 +274,11 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     .parents('.' + $widget.options.classes.attributeClass)
                     .find('.' + $widget.options.classes.attributeInput);
 
-                // If swatch has error validate it to check if remove error if not necessary   
-                if (!$this.hasClass('disabled') && $this.hasClass('mage-errorr')) {
+                // If swatch has error validate it to check if remove error if not necessary
+                if (
+                    !$this.hasClass('disabled') &&
+                    $input.hasClass('mage-error')
+                ) {
                     $input.valid();
                 }
             },
