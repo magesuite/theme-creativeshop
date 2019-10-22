@@ -30,16 +30,13 @@
                 <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
                     <div id="input-message-box"></div>
 
-                    <div class="cs-input cs-input--no-margin required">
-                        <label class="cs-input__label">
-                            <span><?php /* @escapeNotVerified */ echo __('Your rating') ?>:</span>
-                        </label>
-                    </div>
-
-                    <div class="cs-input | cs-reviews__rate" id="product-review-table">
+                    <div class="cs-input | cs-reviews__rating" id="product-review-table">
                         <?php foreach ($block->getRatings() as $rating): ?>
-                            <div class="cs-input choice review-field-rating">
-                                <div class="cs-input__control | cs-reviews__rate | review-control-vote">
+                            <div class="cs-input choice review-field-rating required">
+                                <label class="cs-input__label">
+                                    <span><?= /* @escapeNotVerified */ count($block->getRatings()) == 1 ? __("Your rating") : $rating->getRatingCode(); ?>:</span>
+                                </label>
+                                <div class="cs-input__control | cs-reviews__rate | cs-reviews__rating-control | review-control-vote">
                                     <?php
                                         $options = $rating->getOptions();
                                         $msg = __('Click on stars to rate');
