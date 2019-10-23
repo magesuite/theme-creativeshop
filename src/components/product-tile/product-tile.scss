@@ -121,6 +121,11 @@ $product-tile_wishlist-actions-margin: #{$product-tile_general-elements-gutter /
 $product-tile_wishlist-actions-display: flex !default;
 $product-tile_wishlist-actions-justify-content: space-between !default;
 
+$product-tile_wishlist-remove-icon-background: $color_background-200 !default;
+$product-tile_wishlist-remove-icon-size: 1.2rem !default;
+$product-tile_wishlist-remove-icon-fill: $color_border-700 !default;
+$product-tile_wishlist-remove-icon-visibility-breakpoint: $product-tile-grid_hover-animation-breakpoint !default;
+
 // Description
 $product-tile_description-font-size: 1.3rem !default;
 $product-tile_description-font-weight: 400 !default;
@@ -1088,6 +1093,30 @@ $product-tile-magento-catalog-image-height: to-number(
 
     &__addtocart-button {
         width: 100%;
+    }
+
+    &__wishlist-remove-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 3rem;
+        height: 3rem;
+        background: $product-tile_wishlist-remove-icon-background;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__wishlist-remove-icon-image {
+        width: $product-tile_wishlist-remove-icon-size;
+        height: $product-tile_wishlist-remove-icon-size;
+        fill: $product-tile_wishlist-remove-icon-fill;
+
+        @include media(
+            $product-tile_wishlist-remove-icon-visibility-breakpoint
+        ) {
+            display: none;
+        }
     }
 
     &__wishlist-comment {
