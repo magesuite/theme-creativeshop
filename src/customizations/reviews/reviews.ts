@@ -30,7 +30,7 @@ export default class Reviews {
         this._options = $.extend(this._options, options);
         this._options.namespace = this._options.namespace || 'cs-';
 
-        this._$wrapper = $wrapper || $('.cs-reviews__rate');
+        this._$wrapper = $wrapper || $('.cs-reviews__rating-control');
         this._$feedbackEl = this._options.feedbackElementSelector
             ? $(this._options.feedbackElementSelector)
             : $('.cs-reviews__rate-feedback');
@@ -43,22 +43,39 @@ export default class Reviews {
     protected _attachEvents(): void {
         const _this: any = this;
         let msg: string = this._$feedbackEl.data('default-message');
-        const $radios: any = _this._$wrapper.find('input[type="radio"]');
+        const $radios: any = [];
 
-        for (let i: number = 0; i < $radios.length; i++) {
-            $radios[i].addEventListener('change', function(): void {
-                if (
-                    _this._$wrapper.find('input[type="radio"]:checked').length
-                ) {
-                    msg = _this._$wrapper
-                        .find('input[type="radio"]:checked')
-                        .data('feedback-message');
-                } else {
-                    msg = _this._$wrapper.data('default-message');
-                }
+        for (
+            let ratingIndex: number = 0;
+            ratingIndex < _this._$wrapper.length;
+            ratingIndex++
+        ) {
+            $radios[ratingIndex] = _this._$wrapper
+                .eq(ratingIndex)
+                .find('input[type="radio"]');
 
-                _this._$feedbackEl.text(msg);
-            });
+            for (
+                let starIndex: number = 0;
+                starIndex < $radios[ratingIndex].length;
+                starIndex++
+            ) {
+                $radios[ratingIndex][starIndex].addEventListener(
+                    'change',
+                    function(): void {
+                        if ($(this).is(':checked')) {
+                            msg = _this._$wrapper
+                                .eq(ratingIndex)
+                                .find('input[type="radio"]:checked')
+                                .data('feedback-message');
+                        } else {
+                            msg = _this._$wrapper
+                                .eq(ratingIndex)
+                                .data('default-message');
+                        }
+                        _this._$feedbackEl.eq(ratingIndex).text(msg);
+                    }
+                );
+            }
         }
     }
 }
