@@ -4,26 +4,12 @@
     <label class="cs-input__label" data-bind="attr: {for: 'billing-address-same-as-shipping-' + getCode($parent)}"><span data-bind="i18n: 'My billing and shipping address are the same'"></span></label>
 </div>
 
-<!-- ko template: 'Magento_Checkout/billing-address/details' --><!-- /ko -->
+<render args="detailsTemplate"/>
+
 <fieldset class="cs-form__fieldset" data-bind="visible: !isAddressDetailsVisible()">
-    <!-- ko template: 'Magento_Checkout/billing-address/list' --><!-- /ko -->
-    <!-- ko template: 'Magento_Checkout/billing-address/form' --><!-- /ko -->
-    <div class="cs-form__actions">
-        <button class="cs-button cs-button--size_300 cs-button--look_light" type="button" data-bind="click: cancelAddressEdit">
-            <span class="cs-button__wrapper">
-                <span class="cs-button__span" data-bind="i18n: 'Cancel'"></span>
-                <svg class="cs-button__icon">
-                    <use xlink:href="#arrow_next"></use>
-                </svg>
-            </span>
-        </button>
-        <button class="cs-button cs-button--size_300 cs-button--look_default" type="button" data-bind="click: updateAddress">
-            <span class="cs-button__wrapper">
-                <span class="cs-button__span" data-bind="i18n: 'Update'"></span>
-                <svg class="cs-button__icon">
-                    <use xlink:href="#arrow_next"></use>
-                </svg>
-            </span>
-        </button>
-    </div>
+    <each args="getRegion('billing-address-list')" render="" />
+
+    <render args="formTemplate"/>
+
+    <render args="actionsTemplate"/>
 </fieldset>
