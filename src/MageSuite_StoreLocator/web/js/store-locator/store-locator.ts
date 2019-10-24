@@ -11,6 +11,7 @@ import breakpoint from 'utils/breakpoint/breakpoint';
 interface StoreLocatorOptions {
     mapOptions?: any;
     basicZoom?: number;
+    basicZoomSmallDesktop?: number;
     basicZoomMobile?: number;
     useDefaultMapStyles: boolean;
     markerIcons?: object;
@@ -32,6 +33,8 @@ export default class StoreLocator {
     protected _$itemsList: JQuery;
     protected _$searchInput: JQuery;
 
+    protected _sidebarClosed: boolean;
+
     protected _numberOfStores: number;
 
     protected _options: StoreLocatorOptions = {
@@ -42,8 +45,9 @@ export default class StoreLocator {
             streetViewControl: false,
             fullscreenControl: false,
         },
-        basicZoom: 14,
-        basicZoomMobile: 13,
+        basicZoom: 13,
+        basicZoomSmallDesktop: 12,
+        basicZoomMobile: 12,
         useDefaultMapStyles: false,
         markerIcons: {
             pin: {
@@ -203,8 +207,15 @@ export default class StoreLocator {
 
                 this.map.panTo(coordinates);
 
-                if ($(window).width() < breakpoint.laptop) {
-                    this.map.setZoom(10);
+                const windowWidth = $(window).width();
+
+                if (windowWidth < breakpoint.laptop) {
+                    this.map.setZoom(11);
+                } else if (
+                    windowWidth >= breakpoint.laptop &&
+                    windowWidth < breakpoint.laptopLg
+                ) {
+                    this.map.setZoom(this._options.basicZoomSmallDesktop);
                 } else {
                     this.map.setZoom(this._options.basicZoom);
                 }
@@ -325,7 +336,12 @@ export default class StoreLocator {
             });
 
         this._$element.find('.cs-store-locator__item').on('click', e => {
-            if (!$(e.target).hasClass('cs-store-locator__item-hours-trigger')) {
+            if (
+                !$(e.target).hasClass('cs-store-locator__item-hours-trigger') &&
+                !$(e.target).hasClass(
+                    'cs-store-locator__item-hours-trigger-icon'
+                )
+            ) {
                 this.itemClickHandler($(e.currentTarget).attr('data-id'));
             }
         });
@@ -372,8 +388,15 @@ export default class StoreLocator {
 
             this.map.panTo(coordinates);
 
-            if ($(window).width() < breakpoint.laptop) {
+            const windowWidth = $(window).width();
+
+            if (windowWidth < breakpoint.laptop) {
                 this.map.setZoom(this._options.basicZoomMobile);
+            } else if (
+                windowWidth >= breakpoint.laptop &&
+                windowWidth < breakpoint.laptopLg
+            ) {
+                this.map.setZoom(this._options.basicZoomSmallDesktop);
             } else {
                 this.map.setZoom(this._options.basicZoom);
             }
@@ -387,7 +410,7 @@ export default class StoreLocator {
                     coordinates
                 );
 
-                if ($(window).width() < breakpoint.laptop) {
+                if (windowWidth < breakpoint.laptop) {
                     this.renderMobileStoresList();
                 } else {
                     this.renderItems(this.getFilteredStores(), false);
@@ -751,7 +774,7 @@ export default class StoreLocator {
     }
 
     public windowResizeHandler(): void {
-        if ($(window).width() >= breakpoint.laptop && this._mobilePopupOpen) {
+        if ($(window).width() >= breakpoint.laptop) {
             this.closeMobilePopup();
         }
     }
@@ -957,12 +980,23 @@ export default class StoreLocator {
         });
 
         this._$element.on('click', event => {
-            if (
-                $(event.target).hasClass('cs-store-locator__item-hours-trigger')
-            ) {
-                $(event.target)
-                    .next()
-                    .toggle();
+            const $eventTarget = $(event.target);
+            const isTrigger = $eventTarget.hasClass(
+                'cs-store-locator__item-hours-trigger'
+            );
+            const isTriggerIcon = $eventTarget.hasClass(
+                'cs-store-locator__item-hours-trigger-icon'
+            );
+            if (isTrigger || isTriggerIcon) {
+                const $trigger = isTrigger
+                    ? $eventTarget
+                    : $eventTarget.parent(
+                          '.cs-store-locator__item-hours-trigger'
+                      );
+                $trigger.toggleClass(
+                    'cs-store-locator__item-hours-trigger--open'
+                );
+                $trigger.next().toggle();
             }
 
             if (

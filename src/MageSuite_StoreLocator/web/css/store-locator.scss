@@ -693,9 +693,11 @@ $store-locator_close-color: $color_text-400 !default;
     }
 
     &__item-hours-trigger {
-        display: inline;
+        display: inline-block;
         padding-right: 2rem;
+    }
 
+    &__item-hours-trigger-icon {
         @include pseudoicon(
             $width: 0.7rem,
             $height: 1px,
@@ -703,6 +705,8 @@ $store-locator_close-color: $color_text-400 !default;
             $arrow-default: 'down',
             $type: 'arrow'
         );
+        display: inline-block;
+        transform: translate(1.8rem, -0.4rem);
 
         &:before {
             right: 0.5rem;
@@ -710,6 +714,11 @@ $store-locator_close-color: $color_text-400 !default;
 
         &:after {
             right: 0;
+        }
+
+        #{$root}__item-hours-trigger--open & {
+            transform: rotate(180deg) translate(-0.7rem, -0.2rem);
+            top: -0.5rem;
         }
     }
 }
