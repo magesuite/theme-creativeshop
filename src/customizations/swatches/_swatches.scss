@@ -167,14 +167,24 @@
 
 .swatch-option-tooltip .corner,
 .swatch-option-tooltip-layered .corner {
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    background: #fff;
-    bottom: -0.5rem;
-    box-shadow: 3px 3px 6px -2px rgba(0, 0, 0, 0.27);
-    transform: rotate(45deg);
-    margin-left: 0.7rem;
+    bottom: 0.6rem;
+    margin-left: .3rem;
+    z-index: -1;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        background-color: $colorWhite;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        border-bottom: .1rem solid $colorAlto;
+        border-right: .1rem solid $colorAlto;
+        margin-top: -0.4rem;
+    }
 }
 
 .swatch-option-tooltip .image,
@@ -185,6 +195,7 @@
     max-width: 10rem;
     padding-bottom: 100%;
     margin: 0 auto;
+    height: auto;
 }
 
 .swatch-option-tooltip .title {
