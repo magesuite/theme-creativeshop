@@ -9,7 +9,11 @@
 {% endif %}
 
 {% if itemsPerView == 6 %}
-    {% set itemsPerViewMobile = 3 %}
+    {% if currentScenario.mobileLayout.id == 'slider' %}
+        {% set itemsPerViewMobile = 1 %}
+    {% else %}
+        {% set itemsPerViewMobile = 3 %}
+    {% endif %}
     {% if currentScenario.mobileLayout.id == '2-2-2' %}
         {% set itemsPerRowMobile = 2 %}
     {% else %}
