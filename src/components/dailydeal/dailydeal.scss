@@ -63,6 +63,8 @@ $dailydeal_countdown-label-padding: $dailydeal_countdown-value-padding !default;
 
 $dailydeal_countdown-label-display: block !default;
 
+$dailydeal_full-counter-lighter-version-breakpoint: '>=phone', '<600px';
+
 .#{$ns}dailydeal {
     $root: &;
     display: none;
@@ -73,7 +75,11 @@ $dailydeal_countdown-label-display: block !default;
         margin: $dailydeal_header-margin;
         font-size: $dailydeal_header-font-size;
 
-        @if $dailydeal_header-display == flex or $dailydeal_header-display == inline-flex {
+        @if $dailydeal_header-display ==
+            flex or
+            $dailydeal_header-display ==
+            inline-flex
+        {
             justify-content: $dailydeal_header-justify-content;
             align-items: $dailydeal_header-align-items;
         }
@@ -93,7 +99,11 @@ $dailydeal_countdown-label-display: block !default;
         display: $dailydeal_countdown-display;
         margin: $dailydeal_countdown-margin;
 
-        @if $dailydeal_countdown-display == flex or $dailydeal_countdown-display == inline-flex {
+        @if $dailydeal_countdown-display ==
+            flex or
+            $dailydeal_countdown-display ==
+            inline-flex
+        {
             justify-content: $dailydeal_countdown-justify-content;
             align-items: $dailydeal_countdown-align-items;
         }
@@ -114,14 +124,17 @@ $dailydeal_countdown-label-display: block !default;
 
         @if $dailydeal_countdown-element-apply-skews-mixin {
             @include right-side-skew(
-                $right-side-skew-background: $dailydeal_countdown-element-background--skew-mixin,
-                $right-side-skew-gutter: $dailydeal_countdown-element-margin-factor
+                $right-side-skew-background:
+                    $dailydeal_countdown-element-background--skew-mixin,
+                $right-side-skew-gutter:
+                    $dailydeal_countdown-element-margin-factor
             );
         }
 
         &--special {
             width: $dailydeal_countdown-element--special-width;
             background: $dailydeal_countdown-element--special-background;
+            z-index: 5;
 
             @if $dailydeal_countdown-element-apply-skews-mixin {
                 &:first-child {
@@ -135,7 +148,8 @@ $dailydeal_countdown-label-display: block !default;
 
         #{$root}--tile & {
             @include right-side-skew-override(
-                $right-side-skew-gutter: $dailydeal_countdown-element--tile-margin-factor,
+                $right-side-skew-gutter:
+                    $dailydeal_countdown-element--tile-margin-factor,
                 $right-side-skew-gutter-multiplier: 5
             );
         }
@@ -182,9 +196,71 @@ $dailydeal_countdown-label-display: block !default;
 
             @if $dailydeal--tile-availability-apply-skews-mixin {
                 @include right-side-skew(
-                    $right-side-skew-background: $dailydeal--tile-availability-background
+                    $right-side-skew-background:
+                        $dailydeal--tile-availability-background
                 );
             }
+        }
+    }
+
+    // Because there isn't enough space for display full counter on mobile, we can display counter in lighter version
+    @include media($dailydeal_full-counter-lighter-version-breakpoint...) {
+        &__countdown-element {
+            &:last-child {
+                #{$root}__countdown-value {
+                    &:after {
+                        content: none;
+                    }
+                }
+            }
+
+            #{$root}--tile & {
+                margin-left: 0;
+                margin-right: 0;
+
+                &:last-child {
+                    &:not(:only-child) {
+                        margin-left: 0;
+                    }
+                }
+            }
+
+            &--special {
+                width: auto;
+            }
+
+            &:not(.cs-dailydeal__countdown-element--special) {
+                &:before {
+                    transform: none;
+                }
+
+                &:nth-child(2) {
+                    padding-left: 1.5rem;
+                    margin-left: -1rem !important;
+                }
+
+                &:last-child {
+                    padding-right: 0.5rem;
+                    border-radius: 0 $dailydeal_countdown-element-border-radius
+                        $dailydeal_countdown-element-border-radius 0;
+                }
+
+                border-radius: 0;
+                width: auto;
+                padding: 0;
+            }
+        }
+
+        &__countdown-value {
+            font-size: 1.3rem;
+
+            &:after {
+                content: ':';
+            }
+        }
+
+        &__countdown-label {
+            display: none;
         }
     }
 }
