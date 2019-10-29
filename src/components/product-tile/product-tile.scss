@@ -60,8 +60,8 @@ $product-tile-list_badges-item-margin: 0 #{$product-tile_general-elements-gutter
 
 // Swatches
 $product-tile-grid_swatches-container-min-height: 2.6rem !default;
-$product-tile-grid_swatches-margin: #{$product-tile_general-elements-gutter / 2}
-    0 #{$product-tile_general-elements-gutter / 2} !default;
+$product-tile-grid_swatches-margin: 1.5rem 0 #{$product-tile_general-elements-gutter /
+    2} !default;
 $product-tile-grid_swatches-alignment: $product-tile-grid_alignment !default;
 $product-tile-list_swatches-margin: 0 0 0.5rem !default;
 $product-tile-list_swatches-alignment: $product-tile-list_alignment !default;
@@ -69,10 +69,12 @@ $product-tile-list_swatches-alignment: $product-tile-list_alignment !default;
 // Addons
 $product-tile_addons-background: $product-tile_general-background !default;
 $product-tile_addons-border-radius: $product-tile_general-border-radius !default;
+$product-tile_addons-zindex-hover: 5 !default;
 $product-tile_addons-horizontal-padding: $product-tile_general-elements-gutter /
     2 !default;
 $product-tile-grid_addons-show-for-static-tile: false !default;
-$product-tile-grid_addons-height-on-hover: 165% !default;
+$product-tile-grid_addons-height-on-hover: calc(130% + 10rem)
+    $product-tile_general-tile-gutter $product-tile_general-tile-gutter !default;
 $product-tile-list_addons-width: 25rem !default;
 $product-tile-list_addons-border-left: 1px solid $color_border-200 !default;
 $product-tile-list_addons-one-column-margin: #{$product-tile_general-elements-gutter /
@@ -138,6 +140,7 @@ $product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter /
 $product-tile-list_description-text-align: $product-tile-list_alignment !default;
 
 // Thumbnail
+$product-tile-grid_limit-container-to-image-size: false !default;
 $product-tile-list_thumbnail-box-width: 10rem !default;
 $product-tile-list_thumbnail-box-width-mobile: #{$product-tile-list_thumbnail-box-width /
     2} !default;
@@ -186,13 +189,14 @@ $product-tile-magento-catalog-image-height: to-number(
     $root: &;
 
     width: 100%;
+    height: 100%;
     position: relative;
     border-radius: $product-tile_general-border-radius;
     background-color: $product-tile_general-background;
 
     @include media($product-tile-grid_hover-animation-breakpoint) {
         &:hover {
-            z-index: 3;
+            z-index: $product-tile_addons-zindex-hover;
             transition: z-index 0.0001s; // Force z-index re-rendering on Safari
         }
     }
@@ -266,20 +270,12 @@ $product-tile-magento-catalog-image-height: to-number(
     &__thumbnail {
         padding: 0;
         display: flex;
-
-        #{$root}--grid & {
-            // Aspect ratio for tile thumbnail is calculated based on image 'category_page_grid' sizes in etc/view.xml
-            @include aspect-ratio(
-                $product-tile-magento-catalog-image-width,
-                $product-tile-magento-catalog-image-height,
-                #{$ns}product-tile__thumbnail-link
-            );
-        }
     }
 
     &__thumbnail-link {
         display: block;
         position: relative;
+        overflow: hidden;
 
         #{$root}--grid & {
             width: 100%;
@@ -324,11 +320,25 @@ $product-tile-magento-catalog-image-height: to-number(
         overflow: hidden; // IE11 - prevents from excessive transition effect
 
         #{$root}--grid & {
-            position: absolute;
             width: 100%;
             justify-content: flex-start; // IE11 do not respect center value until parent has flex-direction set to column.
             align-items: center;
             top: 0;
+
+            @if ($product-tile-grid_limit-container-to-image-size) {
+                max-width: ($product-tile-magento-catalog-image-width / 10) *
+                    1rem;
+                max-height: ($product-tile-magento-catalog-image-height / 10) *
+                    1rem;
+                margin: 0 auto;
+            }
+
+            // Aspect ratio for tile thumbnail is calculated based on image 'category_page_grid' sizes in etc/view.xml
+            @include aspect-ratio(
+                $product-tile-magento-catalog-image-width,
+                $product-tile-magento-catalog-image-height,
+                #{$ns}product-tile__thumbnail-link
+            );
         }
 
         #{$root}--list & {
@@ -354,6 +364,7 @@ $product-tile-magento-catalog-image-height: to-number(
 
         #{$root}--grid & {
             position: absolute;
+            top: 0;
         }
 
         #{$root}--list & {
@@ -414,6 +425,9 @@ $product-tile-magento-catalog-image-height: to-number(
 
     &__badge {
         @include badge();
+        @include media('>=phone', '<phoneLg') {
+            font-size: 0.9rem;
+        }
 
         &--discount {
             @include badge_type('discount');
@@ -576,9 +590,7 @@ $product-tile-magento-catalog-image-height: to-number(
             align-items: flex-end;
             opacity: 0;
             top: 0;
-            padding: $product-tile-grid_addons-height-on-hover
-                $product-tile_general-tile-gutter
-                $product-tile_general-tile-gutter;
+            padding: $product-tile-grid_addons-height-on-hover;
             box-shadow: $product-tile-grid_hover-box-shadow;
 
             @if ($product-tile-grid_hover-animation) {
@@ -925,6 +937,10 @@ $product-tile-magento-catalog-image-height: to-number(
                 $product-tile_product-name-line-height + 0.2;
             margin: $product-tile-grid_product-name-margin;
             text-align: $product-tile-grid_product-name-alignment;
+        }
+
+        #{$root}--grid #{$root}__details > & {
+            margin-top: $product-tile_general-tile-gutter;
         }
 
         #{$root}--list & {
