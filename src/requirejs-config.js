@@ -4,7 +4,6 @@ var config = {
         dropdown: 'js/vendor/bootstrap-dropdown',
         selectpicker: 'js/vendor/bootstrap-select',
         vendors: 'vendors',
-        Stickyfill: 'js/vendor/stickyfill',
         isMobile: 'js/vendor/ismobile',
         bootstrapDropdown: 'js/vendor/bootstrap-dropdown',
         bootstrapSelect: 'js/vendor/bootstrap-select',
