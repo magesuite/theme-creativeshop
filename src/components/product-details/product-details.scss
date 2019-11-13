@@ -19,6 +19,7 @@ $product-description_headline-font-size: 1rem !default;
 $product-description--mobile_headline-title-font-size: $font-size_headline-3 !default;
 $product-description_headline-title-font-size: $font-size_headline-2 !default;
 $product-description_headline-title-counter-visible: true !default;
+$product-description_headline-background: $color_gallery !default;
 
 .#{$ns}product-details {
     $root: &;
@@ -103,10 +104,13 @@ $product-description_headline-title-counter-visible: true !default;
         }
 
         @include media('<tablet') {
-            background: $color_gallery;
+            background: $product-description_headline-background;
             // Extend "background" beyond padding and margin through box-shadow
-            box-shadow: 0 2em 0 $color_gallery, 0 -2em 0 $color_gallery,
-                1.5em 0 0 2em $color_gallery, -1.5em 0 0 2em $color_gallery;
+            box-shadow: 0 2em 0 $product-description_headline-background,
+                0 -2em 0 $product-description_headline-background,
+                $page_edge-gutter 0 0 2em
+                    $product-description_headline-background,
+                -$page_edge-gutter 0 0 2em $product-description_headline-background;
         }
     }
 
