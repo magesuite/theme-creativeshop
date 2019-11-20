@@ -44,7 +44,7 @@ define(
                 // Update this function add check for Shipping Address
                 if (isAddressPackstationOrPostOffice(quote.shippingAddress())) {
                     messageList.addErrorMessage({
-                        message: $t('A Packstation or Post Office can not be selected as billing address.')
+                        message: $t('Packstation or Post office can not be selected as billing address. Please select a different address.')
                     });
                     // Select first payment method
                     if (!quote.paymentMethod()) {
