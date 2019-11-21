@@ -14,8 +14,5 @@ export default {
         path.join(paths.src, '**/*.js'),
         '!' + path.join(paths.src, 'vendors/**/*.js'),
     ],
-    // Uglify settings.
-    // @see https://www.npmjs.com/package/gulp-uglify#options
-    uglify: {},
     dest: paths.dist,
 };

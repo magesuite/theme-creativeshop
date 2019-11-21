@@ -1,6 +1,3 @@
-import gulpIf from 'gulp-if';
-import uglify from 'gulp-uglify';
-
 import environment from '../../environment';
 import settings from '../../config/copy/vendors';
 
@@ -15,6 +12,5 @@ module.exports = function() {
 
     return this.gulp
         .src(settings.src)
-        .pipe(gulpIf(environment.production, uglify(settings.uglify)))
         .pipe(this.gulp.dest(settings.dest));
 };

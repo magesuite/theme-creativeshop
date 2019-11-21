@@ -2,7 +2,6 @@ import path from 'path';
 import typescript from 'rollup-plugin-typescript';
 import commonjs from 'rollup-plugin-commonjs';
 import globals from 'rollup-plugin-node-globals';
-import uglify from 'rollup-plugin-uglify';
 import util from 'gulp-util';
 
 import environment from '../../environment';
@@ -60,9 +59,5 @@ const settings = {
         sourceMap: !environment.production,
     },
 };
-// Uglify the code if our target is production.
-if (environment.production) {
-    settings.rollup.plugins.push(uglify());
-}
 
 export default settings;

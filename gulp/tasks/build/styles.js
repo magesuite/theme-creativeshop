@@ -2,7 +2,6 @@ import sourcemaps from 'gulp-sourcemaps';
 import sass from 'gulp-sass';
 import postcss from 'gulp-postcss';
 import gulpIf from 'gulp-if';
-import cleanCSS from 'gulp-clean-css';
 import environment from '../../environment';
 import settings from '../../config/build/styles';
 
@@ -29,7 +28,6 @@ module.exports = function() {
                 })
         )
         .pipe(postcss(settings.postcss))
-        .pipe(gulpIf(environment.production, cleanCSS(settings.cleanCSS)))
         .pipe(gulpIf(!environment.production, sourcemaps.write()))
         .pipe(this.gulp.dest(settings.dest));
 };

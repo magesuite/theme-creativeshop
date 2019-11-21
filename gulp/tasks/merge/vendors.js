@@ -1,6 +1,4 @@
 import concat from 'gulp-concat';
-import gulpIf from 'gulp-if';
-import uglify from 'gulp-uglify';
 import environment from '../../environment';
 import settings from '../../config/merge/vendors';
 
@@ -16,6 +14,5 @@ module.exports = function() {
     return this.gulp
         .src(settings.src)
         .pipe(concat(settings.filename))
-        .pipe(gulpIf(environment.production, uglify(settings.uglify)))
         .pipe(this.gulp.dest(settings.dest));
 };
