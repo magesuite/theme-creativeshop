@@ -1,0 +1,111 @@
+<!--
+/**
+ * File has been overwritten in order to add Creativeshop classes
+ */
+-->
+
+<aside role="dialog"
+       class="modal-<%- data.type %> <%- data.modalClass %>
+               <% if(data.responsive){ %><%- data.responsiveClass %><% } %>
+               <% if(data.innerScroll){ %><%- data.innerScrollClass %><% } %>"
+<% if(data.title){ %> aria-labelledby="modal-title-<%- data.id %>"<% } %>
+aria-describedby="modal-content-<%- data.id %>"
+data-role="modal"
+data-type="<%- data.type %>"
+tabindex="0">
+<div data-role="focusable-start" tabindex="0"></div>
+<div class="modal-inner-wrap"
+     data-role="focusable-scope">
+    <header class="modal-header">
+        <% if(data.title || data.subTitle){ %>
+        <h1 id="modal-title-<%- data.id %>" class="modal-title"
+            data-role="title">
+            <% if(data.title){ %>
+            <%= data.title %>
+            <% } %>
+
+            <% if(data.subTitle){ %>
+            <span class="modal-subtitle"
+                  data-role="subtitle">
+                    <%= data.subTitle %>
+                </span>
+            <% } %>
+        </h1>
+        <% } %>
+        <button
+                class="action-close"
+                data-role="closeBtn"
+                type="button">
+            <span><%= data.closeText %></span>
+        </button>
+    </header>
+    <div id="modal-content-<%- data.id %>"
+         class="modal-content"
+         data-role="content">
+         <div class="cs-form">
+            <div role="alert" data-bind="foreach: { data: errorMessages, as: 'message' }" class="messages">
+                <div data-bind="attr: { class: 'message-' + message.type + ' ' + message.type + ' message', 'data-ui-id': 'message-' + message.type}">
+                    <div data-bind="html: message.text"></div>
+                </div>
+            </div>
+            <div class="tonur_packstation_input">
+                <div class="cs-form__fieldset">
+                    <div class="cs-input cs-form__field | postcode">
+                        <label class="cs-input__label" for="packstation_zipcode" data-bind="i18n: 'Zipcode'"></label>
+                        <div class="cs-input__control">
+                            <input
+                                data-bind="value: postCodeValue"
+                                type="text"
+                                id="packstation_zipcode"
+                                maxlength="5"
+                                class="cs-input__input | zipcode text required"
+                            />
+                        </div>
+                    </div>
+                    <div class="cs-input cs-form__field | city">
+                        <label class="cs-input__label" for="packstation_city" data-bind="i18n: 'City'"></label>
+                        <div class="cs-input__control">
+                            <input
+                                data-bind="value: cityValue"
+                                type="text"
+                                id="packstation_city"
+                                class="cs-input__input | city text required"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="cs-form__buttons">
+                    <button id="repertus_find_packstation_button_execute"
+                            class="cs-button cs-button--type_long cs-button--type_wide-mobile cs-button--look_default"
+                            data-bind="attr: { disabled: !canSearch() }"
+                    >
+                        <span class="cs-button__span" data-bind="i18n: 'Search'"></span>
+                        <svg class="cs-button__icon">
+                            <use xlink:href="#arrow_next"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tonur_packstation_map_frame">
+            <div id="tonur_packstation_map">
+            </div>
+            <div id="tonur_packstation_map_overlay">
+                <p data-bind="i18n: 'Searching for Packstation(s) and Post office(s)'"></p>
+            </div>
+        </div>
+    </div>
+    <% if(data.buttons.length > 0){ %>
+    <footer class="modal-footer">
+        <% _.each(data.buttons, function(button) { %>
+        <button
+                class="<%- button.class %>"
+                type="button"
+                data-role="action"><span><%= button.text %></span></button>
+        <% }); %>
+    </footer>
+    <% } %>
+</div>
+<div data-role="focusable-end" tabindex="0"></div>
+</aside>
