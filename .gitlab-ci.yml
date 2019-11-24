@@ -1,0 +1,31 @@
+stages:
+  - lint
+  - build
+
+default:
+  image: node:lts-alpine
+  before_script:
+    - npm i -g yarn
+    - yarn install --frozen-lockfile
+
+prettier:
+  stage: lint
+  script:
+    - yarn stylelint "src/**/*.{css,scss}"
+
+stylelint:
+  stage: lint
+  script:
+    - yarn stylelint "src/**/*.{css,scss}"
+
+tslint:
+  stage: lint
+  script:
+    - yarn tslint -c tslint.js "src/**/*.{ts,js}" -e "src/**/vendor?(s)/**/*"
+
+build:
+  stage: build
+  script:
+    - yarn build
+  after_script:
+    - yarn gulp clean
