@@ -1,3 +1,5 @@
+/* tslint:disable one-variable-per-declaration */
+
 define(['jquery'], function($) {
     'use strict';
 
@@ -26,11 +28,11 @@ define(['jquery'], function($) {
                 agreementIds.push(item.value);
             });
 
-            if (paymentData['extension_attributes'] === undefined) {
-                paymentData['extension_attributes'] = {};
+            if (paymentData.extension_attributes === undefined) {
+                paymentData.extension_attributes = {};
             }
 
-            paymentData['extension_attributes']['agreement_ids'] = agreementIds;
+            paymentData.extension_attributes.agreement_ids = agreementIds;
         };
 
         return agreementsAssigner;

@@ -81,7 +81,7 @@ interface BrandCarouselOptions {
 export default class BrandCarousel {
     protected _$element: JQuery;
     protected _$items: JQuery;
-    protected _breakpointsArray: Array<any>;
+    protected _breakpointsArray: any[];
     protected _teaserInstance: any;
     protected _currentWindowWidth = $(window).width();
     /**

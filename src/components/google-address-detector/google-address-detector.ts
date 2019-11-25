@@ -107,6 +107,7 @@ export default class GoogleAddressDetector {
                     (data): FormattedAddress[] =>
                         data.status === 'OK' ? data.results : [],
                     (error): void => {
+                        // tslint:disable-next-line
                         console.error(error);
                     }
                 );

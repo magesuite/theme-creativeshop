@@ -44,9 +44,9 @@ interface ICookieMessageSettings {
  * CookieMessage displays legal cookie note on the bottom of the page due to EU law.
  */
 export default class CookieMessage {
-    private _settings?: ICookieMessageSettings;
     public $wrapper: JQuery;
     public status: string;
+    private _settings?: ICookieMessageSettings;
 
     /**
      * Creates and initiates new CookieMessage component with given settings.
@@ -148,7 +148,7 @@ export default class CookieMessage {
      * Sets click event for agreement button
      */
     private _setEvents(): void {
-        let _this: any = this;
+        const _this: any = this;
         const $btn: any = this.$wrapper.find('button');
 
         if ($btn.length) {

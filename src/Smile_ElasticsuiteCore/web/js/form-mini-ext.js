@@ -36,7 +36,9 @@ define(['jquery'], function($) {
             _resetResponseList: function(all) {
                 this._super(all);
 
-                const minWidth = all ? '' : parseInt(this.element.outerWidth());
+                const minWidth = all
+                    ? ''
+                    : parseInt(this.element.outerWidth(), 10);
                 this.autoComplete.css({
                     minWidth: minWidth,
                     width: '',

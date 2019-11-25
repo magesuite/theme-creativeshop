@@ -9,21 +9,18 @@ interface IVideoModalHandlers {
     /**
      * Handler of modal render.
      * Used to prepare modal if it's done via JS
-     * @type {function}
      */
-    renderModal?: Function;
+    renderModal?: (ImageTeaserLegacy: IVideoPlayer) => any;
 
     /**
      * Handler of modal behavior: opening.
-     * @type {function}
      */
-    openModal?: Function;
+    openModal?: (ImageTeaserLegacy: IVideoPlayer) => any;
 
     /**
      * Handler of modal behavior: closing.
-     * @type {function}
      */
-    closeModal?: Function;
+    closeModal?: (ImageTeaserLegacy: IVideoPlayer) => any;
 }
 
 /**

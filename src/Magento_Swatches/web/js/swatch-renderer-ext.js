@@ -1,3 +1,5 @@
+/* tslint:disable one-variable-per-declaration */
+
 /**
  * Origin: Magento swatch renderer
  * Modification type: extend

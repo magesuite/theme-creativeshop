@@ -113,14 +113,14 @@ interface IItemClonerSettings {
  * Clone resides on the bottom of the DOM tree and is positioned absolutely with height z-index ( defined in options )
  */
 export default class ItemCloner {
-    private settings?: IItemClonerSettings;
-    private $origins: JQuery;
-    private _animationClassTimeout: any;
-    private _isTouch: boolean;
     public isActive: boolean;
     public $wrapper?: JQuery;
     public $origin?: JQuery;
     public $clone?: any;
+    private settings?: IItemClonerSettings;
+    private $origins: JQuery;
+    private _animationClassTimeout: any;
+    private _isTouch: boolean;
 
     /**
      * Creates and initiates new ItemCloner component with given settings.
@@ -302,7 +302,7 @@ export default class ItemCloner {
      * Setups events
      */
     protected _setEvents(): void {
-        let _this: any = this;
+        const _this: any = this;
         let throttler: any;
         const onEvents: string = this._isTouch ? 'touchstart' : 'mouseenter';
         const offEvents: string = this._isTouch

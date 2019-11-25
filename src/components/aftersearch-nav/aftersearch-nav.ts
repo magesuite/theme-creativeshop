@@ -144,7 +144,9 @@ export class AftersearchNav {
             $collapses.each((_, element) => {
                 $(element).collapsible('deactivate');
             });
-        } catch (error) {} // Discard "collapses not yet initialized" error.
+        } catch (error) {
+            // Discard "collapses not yet initialized" error.
+        }
     }
 
     protected _attachEvents(): void {

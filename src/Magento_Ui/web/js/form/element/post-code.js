@@ -1,7 +1,4 @@
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
+/* tslint:disable one-variable-per-declaration */
 
 define(['underscore', 'uiRegistry', './abstract'], function(
     _,
@@ -26,6 +23,7 @@ define(['underscore', 'uiRegistry', './abstract'], function(
         initObservable: function() {
             this._super();
             this.value.equalityComparer = function(a, b) {
+                // tslint:disable-next-line
                 return (!a && !b) || a == b;
             };
             return this;
@@ -46,14 +44,14 @@ define(['underscore', 'uiRegistry', './abstract'], function(
 
             option = options[value];
 
-            if (option['is_zipcode_optional']) {
+            if (option.is_zipcode_optional) {
                 this.error(false);
                 this.validation = _.omit(this.validation, 'required-entry');
             } else {
                 this.validation['required-entry'] = true;
             }
 
-            this.required(!option['is_zipcode_optional']);
+            this.required(!option.is_zipcode_optional);
         },
     });
 });

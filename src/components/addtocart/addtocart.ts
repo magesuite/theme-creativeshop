@@ -1,5 +1,7 @@
 import * as $ from 'jquery';
 
+type JQueryEvent = JQuery.Event;
+
 interface IAddToCartSettings {
     /**
      * Defines Component's class
@@ -38,15 +40,13 @@ interface IAddToCartSettings {
 
     /**
      * Defines custom handler for processing
-     * @type {Function}
      */
-    onProcessingHandler?: Function;
+    onProcessingHandler?: (AddToCart, JQueryEvent) => any;
 
     /**
      * Defines custom handler for finished
-     * @type {Function}
      */
-    onDoneHandler?: Function;
+    onDoneHandler?: (AddToCart, any, JQueryEvent) => any;
 
     /**
      * Defines if component should animate minicart (make it sticky) after adding product to the cart
@@ -176,13 +176,13 @@ export default class AddToCart {
     }
 
     /**
-      * Fired up when AJAX call is in progress
-      *   - Gets the form and assign DOM element as jQuery object to the component scope
-      *   - Checks if there's a custom handler passed with component options and initializes it instead of default
-      *   - if this._$component exists clears all timeouts used for toggling CSS classes where animations
-            are bind to
-      * @param e {Event} - event emitted by `this._options.processingEvent`
-     **/
+     * Fired up when AJAX call is in progress
+     *   - Gets the form and assign DOM element as jQuery object to the component scope
+     *   - Checks if there's a custom handler passed with component options and initializes it instead of default
+     *   - if this._$component exists clears all timeouts used for toggling CSS classes where animations
+     *     are bind to
+     * @param e - event emitted by `this._options.processingEvent`
+     */
     protected _onProcessing(e: JQuery.Event): any {
         this._$component = $('.atc-ajax-processing').parents(
             `.${this._options.componentClass}`
@@ -211,20 +211,20 @@ export default class AddToCart {
     }
 
     /**
-      * Fired up when AJAX call has finished
-      *   - Defines `actionFailed` const saying if product wasn't added to the cart because of some error
-      *   - Checks if there's a custom handler passed with component options and initializes it instead of default
-      *   - Defines `statusModifier` const setting css-class so we know if we should show error or success feedback
-      *   - removes `--loading` modifier and adds `--success` instead
-      *   - starts `this._startQtyUpdate` method if product was successfully added to the cart
-            and `this._options.animateMinicart` is enabled
-      *   - adds `--animation-done` modifier (in setTimeout()) so we know when to change easing/animation/transition
-      *   - removes all other modifiers except for `--animation-done` that is removed after backward animation
-            is finished, assuming that product was successfully added to the cart
-      *   - initializes cookie message clearing method assuming that product was successfully added to the cart
-      * @param e {JQuery.Event} - event emitted by this._options.processingEvent
-      * @param ajaxRes {any} - AJAX call response delivered by Magento's scripts
-     **/
+     * Fired up when AJAX call has finished
+     *   - Defines `actionFailed` const saying if product wasn't added to the cart because of some error
+     *   - Checks if there's a custom handler passed with component options and initializes it instead of default
+     *   - Defines `statusModifier` const setting css-class so we know if we should show error or success feedback
+     *   - removes `--loading` modifier and adds `--success` instead
+     *   - starts `this._startQtyUpdate` method if product was successfully added to the cart
+     *     and `this._options.animateMinicart` is enabled
+     *   - adds `--animation-done` modifier (in setTimeout()) so we know when to change easing/animation/transition
+     *   - removes all other modifiers except for `--animation-done` that is removed after backward animation
+     *       is finished, assuming that product was successfully added to the cart
+     *   - initializes cookie message clearing method assuming that product was successfully added to the cart
+     * @param e - event emitted by this._options.processingEvent
+     * @param ajaxRes - AJAX call response delivered by Magento's scripts
+     */
     protected _onDone(e: JQuery.Event, ajaxRes: any): void {
         const actionFailed: boolean =
             ajaxRes.response.backUrl || ajaxRes.response.messages;
@@ -292,25 +292,24 @@ export default class AddToCart {
 
     /**
      * Fetches amount of products (including currently added) that are added to the cart at the moment.
-     * @return deferred {JQueryDeferred<any>} resolved promise with number of prodcts in cart
-     **/
+     * @return Resolved promise with number of products in cart
+     */
     protected _getCartData(): any {
         const deferred: JQueryDeferred<any> = jQuery.Deferred();
         requirejs(['Magento_Customer/js/customer-data'], customerData => {
             customerData.get('cart').subscribe((data: any): void => {
-                deferred.resolve(data['summary_count']);
+                deferred.resolve(data.summary_count);
             });
         });
         return deferred;
     }
 
     /**
-      * Initializes animation of moving badge and optionally fly-out of sticky minicart after getting
-        information  from `this._getCartData` method about amount of products that are in cart
-        of the user currently.
-      * @param $component {JQuery<HTMLElement>} `cs-addtocart` component instance.
-        (parent of button that just sent AJAX requst)
-     **/
+     * Initializes animation of moving badge and optionally fly-out of sticky minicart after getting
+     * information  from `this._getCartData` method about amount of products that are in cart
+     * of the user currently.
+     * @param $component - `cs-addtocart` component instance (parent of button that just sent AJAX requst).
+     */
     protected _startQtyUpdate($component: JQuery<HTMLElement>): void {
         this._getCartData().then(newQty => {
             if (!isNaN(newQty) && $(`.${this._options.minicartClass}`).length) {
@@ -325,9 +324,9 @@ export default class AddToCart {
 
     /**
      * Checks if given element is in viewport
-     * @param $el {JQuery<HTMLElement>} element to be checked
-     * @return {boolean} is in current viewport
-     **/
+     * @param $el - element to be checked
+     * @return Is element in current viewport
+     */
     protected _isElementInViewport($el: JQuery<HTMLElement>): boolean {
         const $window: JQuery<Window> = $(window);
         const elementTop: number = $el.offset().top;
@@ -340,16 +339,16 @@ export default class AddToCart {
     }
 
     /**
-      * Animates "stickness" of minicart. If enabled by option (and is out of viewport).
-      *   - Defines $minicart (a wrapper of it)
-      *   - Defines $minicartLink (:visible <a> element <<there are 2, 1 dedicated for mobile+tablet,
-            2nd for desktop>>)
-      *   - Defines minicart flyout wrapper to get information about its status
-      *   - Closes minicart flyout if possible
-      *   - Adds/removes (depending on `direction`) necessary CSS and CSS-Classes to minicart elements to
-            animate them in or out
-      * @param direction {string} - 'up'/'down' to define if it should show & stick minicart or unstick & hide it
-     **/
+     * Animates "stickness" of minicart. If enabled by option (and is out of viewport).
+     *   - Defines $minicart (a wrapper of it)
+     *   - Defines $minicartLink (:visible <a> element <<there are 2, 1 dedicated for mobile+tablet,
+     *     2nd for desktop>>)
+     *   - Defines minicart flyout wrapper to get information about its status
+     *   - Closes minicart flyout if possible
+     *   - Adds/removes (depending on `direction`) necessary CSS and CSS-Classes to minicart elements to
+     *     animate them in or out
+     * @param direction - 'up'/'down' to define if it should show & stick minicart or unstick & hide it
+     */
     protected _animateMinicart(direction: string): void {
         const $minicart: JQuery<HTMLElement> = $(
             `.${this._options.minicartClass}`
@@ -395,17 +394,17 @@ export default class AddToCart {
     }
 
     /**
-      * Inserts (cloned from original) Qty Badge along with custom wrapper to the DOM
-      *   - Defines `$clonedBadge`, removes it, creates wrapper from scratch and reassignes to $clonedBadge.
-            This method is better than clearing already duplicated badge from classes/styles set by scripts
-            in case another product is added to the cart without refresing page after previous action
-      *   - Defines `$startingRelation` - JQuery DOM element of which position should cloned badge appear
-      *   - Clones original Qty Badge from minicart, replaces text content (with new quantity),
-            puts inside newly created wrapper, sets CSS to position cloned badge wrapper according to
-            position of the `$startingRelation` element.
-      *   - Initializes animation of moving (cloned) badge to the minicart (`this._moveBadgeToStickyCart`)
-      * @param direction {string} - 'up'/'down' to define if it should show & stick minicart or unstick & hide it
-     **/
+     * Inserts (cloned from original) Qty Badge along with custom wrapper to the DOM
+     *   - Defines `$clonedBadge`, removes it, creates wrapper from scratch and reassignes to $clonedBadge.
+     *      This method is better than clearing already duplicated badge from classes/styles set by scripts
+     *      in case another product is added to the cart without refresing page after previous action
+     *   - Defines `$startingRelation` - JQuery DOM element of which position should cloned badge appear
+     *   - Clones original Qty Badge from minicart, replaces text content (with new quantity),
+     *      puts inside newly created wrapper, sets CSS to position cloned badge wrapper according to
+     *      position of the `$startingRelation` element.
+     *   - Initializes animation of moving (cloned) badge to the minicart (`this._moveBadgeToStickyCart`)
+     * @param direction {string} - 'up'/'down' to define if it should show & stick minicart or unstick & hide it
+     */
     protected _insertQtyBadge(
         newQty: number,
         $component: JQuery<HTMLElement>
@@ -450,25 +449,25 @@ export default class AddToCart {
 
         $clonedQtyHolder.html(`${newQty}`);
         $clonedBadge.append($clone).css({
-            top: `${Math.round(parseInt(startingPosition.top))}px`,
-            left: `${Math.round(parseInt(startingPosition.left))}px`,
+            top: `${Math.round(parseInt(startingPosition.top, 10))}px`,
+            left: `${Math.round(parseInt(startingPosition.left, 10))}px`,
         });
 
         this._moveBadgeToStickyCart($clonedBadge, $badge);
     }
 
     /**
-      * Animates cloned qty badge from button to the cart. animation of `top` property is based on hardcoded
-        CSS setting. Everybody should know `top` position of minciart for all resolution, event if sometimes it's
-        sticky and sometimes not.
-      *   - sets `transitionend` event to initialize `this._bindScrollEvent` method right after cloned badge
-            transition is finished
-      *   - if minicart is sticky badge gets additional class to set its CSS `position` prop to `fixed`
-      *   - Cloned badge gets `--animating` modifier to start transition and gets `left` cord of
-            original badge. `top` is reseted to be read from CSS file
-      * @param $clonedBadge {JQuery<HTMLElement>} - cloned qty badge
-      * @param $target {JQuery<HTMLElement>} - orignal badge so we can get its x-cord
-     **/
+     * Animates cloned qty badge from button to the cart. animation of `top` property is based on hardcoded
+     *  CSS setting. Everybody should know `top` position of minciart for all resolution, event if sometimes it's
+     *  sticky and sometimes not.
+     *   - sets `transitionend` event to initialize `this._bindScrollEvent` method right after cloned badge
+     *      transition is finished
+     *   - if minicart is sticky badge gets additional class to set its CSS `position` prop to `fixed`
+     *   - Cloned badge gets `--animating` modifier to start transition and gets `left` cord of
+     *      original badge. `top` is reseted to be read from CSS file
+     * @param $clonedBadge - cloned qty badge
+     * @param $target - orignal badge so we can get its x-cord
+     */
     protected _moveBadgeToStickyCart(
         $clonedBadge: JQuery<HTMLElement>,
         $target: JQuery<HTMLElement>
@@ -487,22 +486,22 @@ export default class AddToCart {
             .addClass(`${this._options.clonedQtyBadgeWrapperClass}--animating`)
             .css({
                 top: '',
-                left: `${Math.round(parseInt(cartBadgeRect.left))}px`,
+                left: `${Math.round(parseInt(cartBadgeRect.left, 10))}px`,
             });
     }
 
     /**
-      * As soon as cloned badge finishes transitioning we start monitoring `scroll` event on document.
-        The goal is to hide minicart as soon as user starts scrolling. `this._animateMinicart` method is
-        executed only once and then event is being utilized.
-     **/
+     * As soon as cloned badge finishes transitioning we start monitoring `scroll` event on document.
+     *  The goal is to hide minicart as soon as user starts scrolling. `this._animateMinicart` method is
+     *  executed only once and then event is being utilized.
+     */
     protected _bindScrollEvent(): void {
         $(document).one('scroll', (): void => this._animateMinicart('up'));
     }
 
     /**
      * Starts monitoring for AJAX actions provided by Magento's catalog-add-to-cart.js
-     **/
+     */
     protected _setEvents(): void {
         $('body').on(this._options.processingEvent, (e: JQuery.Event): void =>
             this._onProcessing(e)

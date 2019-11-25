@@ -12,21 +12,18 @@ interface ImageTeaserLegacyModalHandlers {
     /**
      * Handler of modal render.
      * Used to prepare modal if it's done via JS
-     * @type {function}
      */
-    renderModal?: Function;
+    renderModal?: (ImageTeaserLegacy: ImageTeaserLegacy) => any;
 
     /**
      * Handler of modal behavior: opening.
-     * @type {function}
      */
-    openModal?: Function;
+    openModal?: (ImageTeaserLegacy: ImageTeaserLegacy) => any;
 
     /**
      * Handler of modal behavior: closing.
-     * @type {function}
      */
-    closeModal?: Function;
+    closeModal?: (ImageTeaserLegacy: ImageTeaserLegacy) => any;
 }
 
 /**
@@ -180,6 +177,10 @@ interface ImageTeaserLegacyOptions {
 export default class ImageTeaserLegacy {
     public _ytModal: any;
     public _ytPlayer: any;
+    /**
+     * Holds all settings for the image-teaser-legacy, which are be passed to csTeaser
+     */
+    public _settings: any;
     protected _$container: JQuery;
     protected _swiperDefaults: object;
     protected _settingsOverrides: any;
@@ -190,10 +191,6 @@ export default class ImageTeaserLegacy {
      */
     protected _lazyLoadedImages = [];
     protected _lazyImageResizeEventHandlerAdded = false;
-    /**
-     * Holds all settings for the image-teaser-legacy, which are be passed to csTeaser
-     */
-    public _settings: any;
 
     /**
      * Creates new ImageTeaserLegacy component with optional settings.
@@ -377,6 +374,7 @@ export default class ImageTeaserLegacy {
             try {
                 result = JSON.parse(JSON.stringify(dataAttrCfg));
             } catch (err) {
+                // tslint:disable-next-line
                 console.warn(
                     `Could not parse settings from data-attribute: ${err}`
                 );
@@ -451,9 +449,9 @@ export default class ImageTeaserLegacy {
             const setNavButtonsPosition: any = () => {
                 if (
                     $(window).width() >= breakpoint.tablet &&
-                    !!$(swiperInstance.$el).parents(
+                    $(swiperInstance.$el).parents(
                         `.${this._settings.teaserName}--slider`
-                    )
+                    ).length
                 ) {
                     let h: number = 0;
 

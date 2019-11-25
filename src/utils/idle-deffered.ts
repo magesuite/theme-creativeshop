@@ -13,8 +13,8 @@ export interface IdleDeferred extends JQuery.Deferred<void> {
  */
 export default (timeout?: number): IdleDeferred => {
     const deferred = $.Deferred() as IdleDeferred;
-    const idleSetter = window['requestIdleCallback'];
-    const idleCanceller = window['cancelIdleCallback'];
+    const idleSetter = window.requestIdleCallback;
+    const idleCanceller = window.cancelIdleCallback;
 
     deferred.force = () => {
         if (idleCanceller) {

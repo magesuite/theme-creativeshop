@@ -1,3 +1,5 @@
+/* tslint:disable one-variable-per-declaration */
+
 define(['jquery'], function($) {
     'use strict';
 
