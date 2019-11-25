@@ -537,42 +537,78 @@ $aftersearch-nav--horizontal_rows: (
                 margin-bottom: 0;
             }
         }
-        // Calculates layout for elements in horizontal navigation for each breakpoint.
-        @each $breakpoint, $cols in $aftersearch-nav--horizontal_cols {
-            $rows: map-get($aftersearch-nav--horizontal_rows, $breakpoint);
 
-            $elements: $cols * $rows;
+        // Filters visibility setup mixin.
+        @mixin aftersearch-nav_filters-visibility($cols, $range) {
+            #{$root}__filter,
+            #{$root}__toggle-wrapper {
+                flex-basis: calc(
+                    #{100% / $cols} - #{$aftersearch-nav--horizontal_item-gutter}
+                );
+            }
+
+            #{$root}__filter {
+                // Shows first n filters leaving space for "show more" button.
+                &:nth-child(-n + #{$range - 1}) {
+                    display: block;
+                }
+
+                &:nth-child(n + #{$range}) {
+                    display: none;
+                }
+
+                &:nth-child(#{$range}):nth-last-child(2) {
+                    display: block;
+                }
+            }
+
+            #{$root}__toggle-wrapper {
+                &:nth-child(n + #{$range + 2}) {
+                    display: block;
+                }
+            }
+        }
+
+        // Calculates layout for elements in horizontal navigation for each breakpoint.
+        $num-aftersearch-nav--horizontal_cols: length(
+            $aftersearch-nav--horizontal_cols
+        );
+
+        @for $i from 1 through $num-aftersearch-nav--horizontal_cols {
+            $cols-breakpoint: nth($aftersearch-nav--horizontal_cols, $i);
+            $cols-breakpoint_name: nth($cols-breakpoint, 1);
+            $cols-breakpoint_value: nth($cols-breakpoint, 2);
+
+            $rows-breakpoint: nth($aftersearch-nav--horizontal_rows, $i);
+            $rows-breakpoint_value: nth($rows-breakpoint, 2);
+
+            $elements: $cols-breakpoint_value * $rows-breakpoint_value;
             @if $aftersearch-nav--horizontal_toggle-button-bottom {
                 $elements: $elements + 1;
             }
 
-            @include media('>=#{$breakpoint}') {
-                #{$root}__filter,
-                #{$root}__toggle-wrapper {
-                    flex-basis: calc(
-                        #{100% / $cols} - #{$aftersearch-nav--horizontal_item-gutter}
+            @if $i == $num-aftersearch-nav--horizontal_cols {
+                @include media('>=#{$cols-breakpoint_name}') {
+                    @include aftersearch-nav_filters-visibility(
+                        $cols-breakpoint_value,
+                        $elements
                     );
                 }
+            } @else {
+                $cols-breakpoint-next: nth(
+                    $aftersearch-nav--horizontal_cols,
+                    $i + 1
+                );
+                $cols-breakpoint_name-next: nth($cols-breakpoint-next, 1);
 
-                #{$root}__filter {
-                    // Shows first n filters leaving space for "show more" button.
-                    &:nth-child(-n + #{$elements - 1}) {
-                        display: block;
-                    }
-
-                    &:nth-child(n + #{$elements}) {
-                        display: none;
-                    }
-
-                    &:nth-child(#{$elements}):nth-last-child(2) {
-                        display: block;
-                    }
-                }
-
-                #{$root}__toggle-wrapper {
-                    &:nth-child(n + #{$elements + 2}) {
-                        display: block;
-                    }
+                @include media(
+                    '>=#{$cols-breakpoint_name}',
+                    '<#{$cols-breakpoint_name-next}'
+                ) {
+                    @include aftersearch-nav_filters-visibility(
+                        $cols-breakpoint_value,
+                        $elements
+                    );
                 }
             }
         }
