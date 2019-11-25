@@ -13,7 +13,7 @@
 
     // Error if the number of breakpoints is < 2
     @if ($length < 2) {
-        @error "poly-fluid-sizing() $map requires at least values"
+        @error "poly-fluid-sizing() $map requires at least values";
     }
 
     // Sort the map by viewport width (key)
@@ -21,18 +21,23 @@
     $keys: map-keys($map);
 
     // Minimum size
-    #{$property}: map-get($map, nth($keys,1));
+    #{$property}: map-get($map, nth($keys, 1));
 
     // Interpolated size through breakpoints
     @for $i from 1 through ($length - 1) {
-        @media (min-width:nth($keys,$i)) {
-            #{$property}: linear-interpolation((nth($keys,$i): map-get($map, nth($keys,$i)), nth($keys,($i+1)): map-get($map, nth($keys,($i + 1)))));
+        @media (min-width: nth($keys,$i)) {
+            #{$property}: linear-interpolation(
+                (
+                    nth($keys, $i): map-get($map, nth($keys, $i)),
+                    nth($keys, ($i + 1)): map-get($map, nth($keys, ($i + 1))),
+                )
+            );
         }
     }
 
     // Maxmimum size
-    @media (min-width:nth($keys,$length)) {
-        #{$property}: map-get($map, nth($keys,$length));
+    @media (min-width: nth($keys,$length)) {
+        #{$property}: map-get($map, nth($keys, $length));
     }
 }
 
@@ -49,19 +54,20 @@
         @error "linear-interpolation() $map must be exactly 2 values";
     }
     // The slope
-    $m: (map-get($map, nth($keys, 2)) - map-get($map, nth($keys, 1)))/(nth($keys, 2) - nth($keys,1));
+    $m: (map-get($map, nth($keys, 2)) - map-get($map, nth($keys, 1))) /
+        (nth($keys, 2) - nth($keys, 1));
 
     // The y-intercept
     $b: map-get($map, nth($keys, 1)) - $m * nth($keys, 1);
 
     // Determine if the sign should be positive or negative
-    $sign: "+";
+    $sign: '+';
     @if ($b < 0) {
-        $sign: "-";
+        $sign: '-';
         $b: abs($b);
     }
 
-    @return calc(#{$m*100}vw #{$sign} #{$b});
+    @return calc(#{$m * 100}vw #{$sign} #{$b});
 }
 
 /// list-sort
@@ -73,7 +79,7 @@
 @function list-sort($list) {
     $sortedlist: ();
     @while length($list) > 0 {
-        $value: nth($list,1);
+        $value: nth($list, 1);
         @each $item in $list {
             @if $item < $value {
                 $value: $item;
@@ -95,7 +101,12 @@
     $keys: list-sort(map-keys($map));
     $sortedMap: ();
     @each $key in $keys {
-        $sortedMap: map-merge($sortedMap, ($key: map-get($map, $key)));
+        $sortedMap: map-merge(
+            $sortedMap,
+            (
+                $key: map-get($map, $key),
+            )
+        );
     }
     @return $sortedMap;
 }
@@ -110,7 +121,7 @@
     $newList: ();
     @for $i from 1 through length($list) {
         @if $i != $index {
-            $newList: append($newList, nth($list,$i), 'space');
+            $newList: append($newList, nth($list, $i), 'space');
         }
     }
     @return $newList;

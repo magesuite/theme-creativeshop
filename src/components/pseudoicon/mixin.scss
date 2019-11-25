@@ -16,7 +16,10 @@ $pseudoicon-position-side-offset: $page_edge-gutter !default;
 $pseudoicon-arrow-default-direction: 'up' !default;
 $pseudoicon-arrow-active-direction: 'down' !default;
 // In some cases (it depends on $pseudoicon-width/height value), we need to fix offset for left part of icon
-$pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pseudoicon-width} - #{2 * $pseudoicon-height}) !default;
+$pseudoicon-arrow-left-offset: calc(
+    #{$pseudoicon-position-side-offset} + #{$pseudoicon-width} - #{2 *
+        $pseudoicon-height}
+) !default;
 
 @mixin pseudoicon(
     $type: $pseudoicon-type,
@@ -46,16 +49,26 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
 
         @if ($animated) {
             @if ($type == 'arrow') {
-                @if (($arrow-default == 'up') and ($arrow-active == 'down'))
-                or (($arrow-default == 'down') and ($arrow-active == 'up'))
-                or (($arrow-default == 'left') and ($arrow-active == 'right'))
-                or (($arrow-default == 'right') and ($arrow-active == 'left')) {
-                    transition: transform $pseudoicon-animation-time linear, right $pseudoicon-animation-time linear, background-color $pseudoicon-animation-time linear;
+                @if (($arrow-default == 'up') and ($arrow-active == 'down')) or
+                    (($arrow-default == 'down') and ($arrow-active == 'up')) or
+                    (
+                        ($arrow-default == 'left') and
+                            ($arrow-active == 'right')
+                    ) or
+                    (($arrow-default == 'right') and ($arrow-active == 'left'))
+                {
+                    transition: transform $pseudoicon-animation-time linear,
+                        right $pseudoicon-animation-time linear,
+                        background-color $pseudoicon-animation-time linear;
                 } @else {
-                    transition: background-color $pseudoicon-animation-time linear;
+                    transition: background-color
+                        $pseudoicon-animation-time
+                        linear;
                 }
             } @else {
-                transition: transform (2 * $pseudoicon-animation-time) ease-out, opacity $pseudoicon-animation-time ease-out, background-color $pseudoicon-animation-time linear;
+                transition: transform (2 * $pseudoicon-animation-time) ease-out,
+                    opacity $pseudoicon-animation-time ease-out,
+                    background-color $pseudoicon-animation-time linear;
             }
         } @else {
             @if ($color-hover != $color) {
@@ -83,7 +96,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
             }
         }
     }
-    
+
     @if ($type == 'arrow') {
         &:before {
             @if ($arrow-default == 'right') {
@@ -100,7 +113,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
                 right: $arrow-offset;
             }
         }
-            
+
         &:after {
             @if ($arrow-default == 'right') {
                 right: $position-side-offset;
@@ -111,7 +124,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
             } @else if ($arrow-default == 'left') {
                 right: $arrow-offset;
                 transform: rotate(-45deg) translate3d(50%, 0, 0);
-            } @else if ($arrow-default == 'up'){
+            } @else if ($arrow-default == 'up') {
                 transform: rotate(45deg) translate3d(0, 0, 0);
                 right: $position-side-offset;
             }
@@ -145,7 +158,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
                     }
                 }
             }
-            
+
             @if ($arrow-default == 'down') {
                 &:before {
                     @if ($arrow-active == 'right') {
@@ -171,7 +184,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
                     }
                 }
             }
-            
+
             @if ($arrow-default == 'left') {
                 &:before {
                     @if ($arrow-active == 'right') {
@@ -199,7 +212,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
                     }
                 }
             }
-            
+
             @if ($arrow-default == 'up') {
                 &:before {
                     @if ($arrow-active == 'right') {
@@ -249,7 +262,7 @@ $pseudoicon-arrow-left-offset: calc(#{$pseudoicon-position-side-offset} + #{$pse
     }
 
     &:before {
-        @include pseudoicon_before-hook($type);   
+        @include pseudoicon_before-hook($type);
     }
 
     &:after {

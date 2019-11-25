@@ -9,7 +9,13 @@ $cart-bonus_border: 1px solid $color_border-500 !default;
 $cart-bonus_headline-text-color: $color_text-800 !default;
 $cart-bonus_headline-icon-color: $color_text-800 !default;
 
-$cart-bonus_progressbar-background: repeating-linear-gradient(-45deg, $color_border-500, $color_border-500 1px, transparent 1px, transparent 5px) !default;
+$cart-bonus_progressbar-background: repeating-linear-gradient(
+    -45deg,
+    $color_border-500,
+    $color_border-500 1px,
+    transparent 1px,
+    transparent 5px
+) !default;
 $cart-bonus_progressbar-done-background: $color_success-500 !default;
 
 $cart-bonus_tooltip-background-color: $color_success-500 !default;
@@ -151,6 +157,12 @@ $cart-bonus_amount-color: $color_success-500 !default;
                 &--gift {
                     path {
                         fill: $cart-bonus_icon-gift-awarded-color;
+
+                        @if $cart-bonus_progress-animation {
+                            [data-mage-init] & {
+                                fill: $cart-bonus_icon-gift-color;
+                            }
+                        }
                     }
                 }
             }
@@ -164,18 +176,6 @@ $cart-bonus_amount-color: $color_success-500 !default;
                         [data-mage-init] & {
                             visibility: hidden;
                             opacity: 0;
-                        }
-                    }
-                }
-            }
-
-            #{$root}__icon--gift {
-                path {
-                    fill: $cart-bonus_icon-gift-awarded-color;
-
-                    @if $cart-bonus_progress-animation {
-                        [data-mage-init] & {
-                            fill: $cart-bonus_icon-gift-color;
                         }
                     }
                 }
@@ -341,7 +341,8 @@ $cart-bonus_amount-color: $color_success-500 !default;
             height: 0;
             border-style: solid;
             border-width: 0.6rem 0.4rem 0;
-            border-color: $cart-bonus_tooltip-background-color transparent transparent transparent;
+            border-color: $cart-bonus_tooltip-background-color transparent
+                transparent transparent;
         }
 
         &--edge {

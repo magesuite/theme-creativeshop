@@ -48,22 +48,29 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
 
         @if ($global_header-hide-search-item-trigger-breakpoint == true) {
             flex: 1 1 (100% / $header-user-nav_items);
-        } @else if ($global_header-hide-search-item-trigger-breakpoint == false) {
+        } @else if ($global_header-hide-search-item-trigger-breakpoint == false)
+        {
             flex: 1 1 (100% / ($header-user-nav_items + 1));
         } @else {
             flex: 1 1 (100% / ($header-user-nav_items + 1));
-            
-            @include media(#{$global_header-hide-search-item-trigger-breakpoint}) {
+
+            @include media(
+                #{$global_header-hide-search-item-trigger-breakpoint}
+            ) {
                 flex: 1 1 (100% / $header-user-nav_items);
             }
         }
 
         &--search {
             @if ($global_header-hide-search-item-trigger-breakpoint) {
-                @if ($global_header-hide-search-item-trigger-breakpoint == true) {
+                @if (
+                    $global_header-hide-search-item-trigger-breakpoint == true
+                ) {
                     display: none;
                 } @else {
-                    @include media($global_header-hide-search-item-trigger-breakpoint) {
+                    @include media(
+                        $global_header-hide-search-item-trigger-breakpoint
+                    ) {
                         display: none;
                     }
                 }
@@ -114,7 +121,6 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
         path {
             fill: $header-user-nav_icon-color;
         }
-
     }
 
     &__label {
@@ -124,7 +130,7 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
         margin-top: $header-user-nav_label-margin-top;
         color: $header-user-nav_label-color;
         text-decoration: none;
-        
+
         @if ($header-user-nav_label-visible == true) {
             display: block;
         } @else if ($header-user-nav_label-visible == false) {
@@ -146,13 +152,19 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
         top: $header-user-nav_qty-counter-top-offset;
         opacity: 0;
 
-        @if ($header-user-nav_qty-counter-right-offset-mobile != $header-user-nav_qty-counter-right-offset-tablet) {
+        @if (
+            $header-user-nav_qty-counter-right-offset-mobile !=
+                $header-user-nav_qty-counter-right-offset-tablet
+        ) {
             @include media('>=tablet') {
                 right: $header-user-nav_qty-counter-right-offset-tablet;
             }
         }
 
-        @if ($header-user-nav_qty-counter-right-offset-tablet != $header-user-nav_qty-counter-right-offset-desktop) {
+        @if (
+            $header-user-nav_qty-counter-right-offset-tablet !=
+                $header-user-nav_qty-counter-right-offset-desktop
+        ) {
             @include media('>=laptopLg') {
                 right: $header-user-nav_qty-counter-right-offset-desktop;
             }
