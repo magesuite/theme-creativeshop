@@ -14,7 +14,9 @@ const $productTile: JQuery = $(`.${ns}product-tile`);
 
 $productTile.each(function(): void {
     const $tile: JQuery<HTMLElement> = $(this);
-    const $dailyDeal: JQuery<HTMLElement> = $tile.find($(`.${ns}dailydeal--tile`));
+    const $dailyDeal: JQuery<HTMLElement> = $tile.find(
+        $(`.${ns}dailydeal--tile`)
+    );
     const $gallery: JQuery<HTMLElement> = $tile.find($(`.${ns}tile-gallery`));
 
     if ($gallery.length && !$dailyDeal.length) {

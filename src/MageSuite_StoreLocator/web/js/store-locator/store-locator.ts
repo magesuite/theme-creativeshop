@@ -566,16 +566,12 @@ export default class StoreLocator {
 
         // Contact data is not in the response for now
         const phoneLine = store.phone
-            ? `<a href="tel:${
-                  store.phone
-              }" class="cs-store-locator__item-phone">
+            ? `<a href="tel:${store.phone}" class="cs-store-locator__item-phone">
         ${store.phone}</a>`
             : ``;
 
         const contactLine = store.email
-            ? `<a href="mailto:${
-                  store.email
-              }" class="cs-store-locator__item-email">
+            ? `<a href="mailto:${store.email}" class="cs-store-locator__item-email">
         ${store.email}</a>`
             : ``;
 

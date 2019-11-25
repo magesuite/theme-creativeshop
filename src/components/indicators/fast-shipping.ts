@@ -134,9 +134,7 @@ export default class FastShipping {
             time: parseInt(
                 this._$element
                     .find(
-                        `.${
-                            this._options.namespace
-                        }indicator-fast-shipping__data-time`
+                        `.${this._options.namespace}indicator-fast-shipping__data-time`
                     )
                     .val() as string,
                 10
@@ -144,18 +142,14 @@ export default class FastShipping {
             nextDayTime: parseInt(
                 this._$element
                     .find(
-                        `.${
-                            this._options.namespace
-                        }indicator-fast-shipping__data-time-next`
+                        `.${this._options.namespace}indicator-fast-shipping__data-time-next`
                     )
                     .val() as string,
                 10
             ),
             deliveryDay: this._$element
                 .find(
-                    `.${
-                        this._options.namespace
-                    }indicator-fast-shipping__data-delivery-day`
+                    `.${this._options.namespace}indicator-fast-shipping__data-delivery-day`
                 )
                 .val()
                 .toString(),

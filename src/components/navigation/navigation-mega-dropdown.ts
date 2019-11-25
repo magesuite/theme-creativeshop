@@ -32,17 +32,13 @@ export default class NavigationMegaDropdown extends Navigation {
      */
     protected _adjustFlyout($flyout: JQuery): void {
         const $parentItem: JQuery = $flyout.closest(
-            `.${this._options.itemClassName}--main, .${
-                this._options.itemClassName
-            }--all-categories`
+            `.${this._options.itemClassName}--main, .${this._options.itemClassName}--all-categories`
         );
 
         if ($parentItem.is(this._$allCategoriesItem)) {
             this._adjustFlyoutExtras($flyout);
             const $flyoutColumns: JQuery = $flyout.find(
-                `.${
-                    this._options.flyoutColumnsClassName
-                }, .cs-navigation__list--all-categories`
+                `.${this._options.flyoutColumnsClassName}, .cs-navigation__list--all-categories`
             );
             this._setColumnCount($flyoutColumns, 1);
 

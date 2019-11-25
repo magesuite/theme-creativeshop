@@ -53,11 +53,9 @@ const breakpoint: any = {
  */
 const breakpoints: object = getAvaliableBreakpoints();
 // Extend breakpoint module with available breakpoint keys converted to camelCase.
-Object.keys(breakpoints).forEach(
-    (breakpointName: string): void => {
-        breakpoint[breakpointName] = breakpoints[breakpointName];
-    }
-);
+Object.keys(breakpoints).forEach((breakpointName: string): void => {
+    breakpoint[breakpointName] = breakpoints[breakpointName];
+});
 
 // Let's check if we can register passive resize event for better performance.
 let passiveOption: any = undefined;

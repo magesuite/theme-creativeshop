@@ -3,10 +3,7 @@
  * Modification type: extend
  * Reason: introducing collapse functionality only for given media query, activate/deactivate for mobile or desktop depending on configuration given
  */
-define([
-    'jquery',
-    'matchMedia'
-], function ($, mediaCheck) {
+define(['jquery', 'matchMedia'], function($, mediaCheck) {
     'use strict';
 
     return function(mageCollapsible) {
@@ -14,7 +11,7 @@ define([
             options: {
                 mediaQueryScope: '',
                 isCreated: false,
-                initialActiveOption: undefined
+                initialActiveOption: undefined,
             },
 
             _create: function(isMediaCheckActive) {
@@ -28,7 +25,10 @@ define([
                     isMediaCheckActive = false;
                 }
 
-                if (!this.options.mediaQueryScope.length || isMediaCheckActive) {
+                if (
+                    !this.options.mediaQueryScope.length ||
+                    isMediaCheckActive
+                ) {
                     this._super();
                     this.options.isCreated = true;
                 } else {
@@ -45,16 +45,16 @@ define([
 
                 mediaCheck({
                     media: mediaQueryScope,
-                    entry: $.proxy(function () {
+                    entry: $.proxy(function() {
                         if (!this.options.isCreated) {
                             this._recreate();
                         }
                     }, this),
-                    exit: $.proxy(function () {
+                    exit: $.proxy(function() {
                         if (this.options.isCreated) {
                             this._initDestroySequence();
                         }
-                    }, this)
+                    }, this),
                 });
             },
 
@@ -76,7 +76,7 @@ define([
                 this._destroy();
                 this._off(this.trigger);
                 this.options.isCreated = false;
-            }
+            },
         });
 
         return $.mage.collapsible;

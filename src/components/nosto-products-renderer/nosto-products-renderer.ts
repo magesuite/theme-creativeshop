@@ -70,28 +70,24 @@ class NostoProducts {
     protected _runProductFetch(): void {
         this._collectIds()
             .then((ids: any): any => this._getProducts(ids))
-            .then(
-                (response: string): void => {
-                    const $dataTarget: JQuery = this._$element.find(
-                        this._options.contentSelector
-                    );
-                    this._$element.removeClass(
-                        `${this._options.componentClass}--loading`
-                    );
+            .then((response: string): void => {
+                const $dataTarget: JQuery = this._$element.find(
+                    this._options.contentSelector
+                );
+                this._$element.removeClass(
+                    `${this._options.componentClass}--loading`
+                );
 
-                    if (!$.isEmptyObject(response) && $dataTarget.length) {
-                        $dataTarget.html(response);
+                if (!$.isEmptyObject(response) && $dataTarget.length) {
+                    $dataTarget.html(response);
 
-                        // Initializes the product carousel for rendered html
-                        new ProductsCarousel(
-                            this._$element
-                                .find('.cs-products-carousel')
-                                .first(),
-                            this._options.productCarouselOptions
-                        );
-                    }
+                    // Initializes the product carousel for rendered html
+                    new ProductsCarousel(
+                        this._$element.find('.cs-products-carousel').first(),
+                        this._options.productCarouselOptions
+                    );
                 }
-            );
+            });
     }
 
     /**
@@ -140,20 +136,15 @@ export default function initializeNostoProductsRenderer(
             config
         );
 
-        nostojs(
-            (api: any): void => {
-                api.listen(
-                    'postrender',
-                    (nostoPostRenderEvent: any): void => {
-                        $(`.${options.componentClass}`).each(function() {
-                            new NostoProducts($(this), options);
-                        });
-                    }
-                );
-                // As our scripts are loaded later,
-                // recommendations need to be reloaded to trigger the postrender event.
-                api.loadRecommendations();
-            }
-        );
+        nostojs((api: any): void => {
+            api.listen('postrender', (nostoPostRenderEvent: any): void => {
+                $(`.${options.componentClass}`).each(function() {
+                    new NostoProducts($(this), options);
+                });
+            });
+            // As our scripts are loaded later,
+            // recommendations need to be reloaded to trigger the postrender event.
+            api.loadRecommendations();
+        });
     }
 }

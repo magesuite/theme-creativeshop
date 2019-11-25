@@ -50,21 +50,18 @@ export default class AddressAutofill {
         const typeInterval: number = 500;
         let currentValue: string = this.options.streetField.val() as string;
 
-        this.options.streetField.on(
-            'keyup',
-            (e: JQuery.Event): void => {
-                clearTimeout(typeTimer);
-                const newValue = this.options.streetField.val() as string;
+        this.options.streetField.on('keyup', (e: JQuery.Event): void => {
+            clearTimeout(typeTimer);
+            const newValue = this.options.streetField.val() as string;
 
-                if (currentValue.length < newValue.length) {
-                    typeTimer = setTimeout(
-                        this._triggerAutosuggest.bind(this),
-                        typeInterval
-                    );
-                }
-                currentValue = newValue;
+            if (currentValue.length < newValue.length) {
+                typeTimer = setTimeout(
+                    this._triggerAutosuggest.bind(this),
+                    typeInterval
+                );
             }
-        );
+            currentValue = newValue;
+        });
 
         this.options.streetField.on('blur', this._hideAutosuggest.bind(this));
     }
@@ -247,24 +244,21 @@ export default class AddressAutofill {
             }
         });
 
-        $(document).on(
-            'click',
-            (event: JQuery.ClickEvent): void => {
-                const $target: JQuery = $(event.target);
-                if ($target.closest('.cs-html-select').length) {
-                    event.preventDefault();
-                    const $items: JQuery = this.$autosuggestSelectMenu.find(
-                        '.cs-html-select__menu-item'
-                    );
-                    const selectedAddress: FormattedAddress = $target
-                        .closest($items)
-                        .data('value');
-                    this._fillFields(selectedAddress);
-                    this._focusEmptyField();
-                }
-                this._hideAutosuggest();
+        $(document).on('click', (event: JQuery.ClickEvent): void => {
+            const $target: JQuery = $(event.target);
+            if ($target.closest('.cs-html-select').length) {
+                event.preventDefault();
+                const $items: JQuery = this.$autosuggestSelectMenu.find(
+                    '.cs-html-select__menu-item'
+                );
+                const selectedAddress: FormattedAddress = $target
+                    .closest($items)
+                    .data('value');
+                this._fillFields(selectedAddress);
+                this._focusEmptyField();
             }
-        );
+            this._hideAutosuggest();
+        });
     }
 
     protected _hideAutosuggest(): void {
@@ -330,27 +324,21 @@ export default class AddressAutofill {
         let typeTimer: any;
         const typeInterval: number = 1000;
 
-        this.options.zipField.on(
-            'keyup',
-            (): void => {
-                if (!this.options.cityField.val()) {
-                    clearTimeout(typeTimer);
-                    typeTimer = setTimeout(
-                        this._fillFieldsBasedOnZip.bind(this),
-                        typeInterval
-                    );
-                }
+        this.options.zipField.on('keyup', (): void => {
+            if (!this.options.cityField.val()) {
+                clearTimeout(typeTimer);
+                typeTimer = setTimeout(
+                    this._fillFieldsBasedOnZip.bind(this),
+                    typeInterval
+                );
             }
-        );
+        });
 
-        this.options.zipField.on(
-            'blur',
-            (): void => {
-                if (!this.options.cityField.val()) {
-                    this._fillFieldsBasedOnZip();
-                }
+        this.options.zipField.on('blur', (): void => {
+            if (!this.options.cityField.val()) {
+                this._fillFieldsBasedOnZip();
             }
-        );
+        });
     }
 
     /**

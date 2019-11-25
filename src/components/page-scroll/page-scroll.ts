@@ -179,9 +179,8 @@ export default class PageScroll {
      * Monitors `click` event on button.
      */
     protected _setEvent(): void {
-        this._$button.on(
-            this._options.actionEvent,
-            (e: JQuery.Event): void => this._scrollPage(e)
+        this._$button.on(this._options.actionEvent, (e: JQuery.Event): void =>
+            this._scrollPage(e)
         );
     }
 

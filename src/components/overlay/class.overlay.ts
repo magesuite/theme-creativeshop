@@ -25,7 +25,6 @@ class Overlay implements IOverlay {
 
         this.onShow = settings.onShow;
         this.onHide = settings.onHide;
-
     }
 
     public hide(): void {
@@ -46,15 +45,13 @@ class Overlay implements IOverlay {
         if (this.onShow) {
             this.onShow();
         }
-
     }
 
     public isVisible(): boolean {
         return this._visible;
     }
-
 }
 
-export {Overlay};
-export {IOverlay};
-export {IOverlaySettings};
+export { Overlay };
+export { IOverlay };
+export { IOverlaySettings };

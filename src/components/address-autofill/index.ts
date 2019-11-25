@@ -3,8 +3,8 @@ import {
     IAddressAutofillOptions,
 } from '../../components/address-autofill/address-autofill';
 
-const AddressAutofill =  (options: IAddressAutofillOptions): AddressAutofillComponent => (
-    new AddressAutofillComponent(options)
-);
+const AddressAutofill = (
+    options: IAddressAutofillOptions
+): AddressAutofillComponent => new AddressAutofillComponent(options);
 
-export { AddressAutofill }
+export { AddressAutofill };

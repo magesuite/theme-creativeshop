@@ -230,7 +230,9 @@ export default class AddToCart {
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
         if (this._$component.length && actionFailed) {
-            this._$component.addClass(`${this._options.componentClass}--no-transitions`);
+            this._$component.addClass(
+                `${this._options.componentClass}--no-transitions`
+            );
         }
 
         if (this._$button.length) {
@@ -258,9 +260,7 @@ export default class AddToCart {
                 this._$component
                     .removeClass(`${this._options.componentClass}--loading`)
                     .addClass(
-                        `${
-                            this._options.componentClass
-                        }--done ${statusModifier}`
+                        `${this._options.componentClass}--done ${statusModifier}`
                     );
 
                 if (!actionFailed && this._options.animateMinicart) {
@@ -276,9 +276,7 @@ export default class AddToCart {
                 if (!actionFailed) {
                     this._visibilityTimeout = setTimeout((): void => {
                         this._$component.removeClass(
-                            `${
-                                this._options.componentClass
-                            }--done ${statusModifier}`
+                            `${this._options.componentClass}--done ${statusModifier}`
                         );
                     }, this._options.successVisibilityDuration);
 
@@ -299,11 +297,9 @@ export default class AddToCart {
     protected _getCartData(): any {
         const deferred: JQueryDeferred<any> = jQuery.Deferred();
         requirejs(['Magento_Customer/js/customer-data'], customerData => {
-            customerData.get('cart').subscribe(
-                (data: any): void => {
-                    deferred.resolve(data['summary_count']);
-                }
-            );
+            customerData.get('cart').subscribe((data: any): void => {
+                deferred.resolve(data['summary_count']);
+            });
         });
         return deferred;
     }
@@ -384,16 +380,13 @@ export default class AddToCart {
                 this._isMinicartSticky = false;
             }
         } else if (this._isMinicartSticky && direction === 'up') {
-            $minicart.one(
-                'animationend',
-                (): void => {
-                    $minicartLink.css('width', '');
-                    $minicart
-                        .css('position', '')
-                        .removeClass(`${this._options.minicartClass}--unstick`);
-                    this._isMinicartSticky = false;
-                }
-            );
+            $minicart.one('animationend', (): void => {
+                $minicartLink.css('width', '');
+                $minicart
+                    .css('position', '')
+                    .removeClass(`${this._options.minicartClass}--unstick`);
+                this._isMinicartSticky = false;
+            });
             $minicart.css('position', 'fixed');
             $minicart
                 .removeClass(`${this._options.minicartClass}--sticky`)
@@ -511,9 +504,8 @@ export default class AddToCart {
      * Starts monitoring for AJAX actions provided by Magento's catalog-add-to-cart.js
      **/
     protected _setEvents(): void {
-        $('body').on(
-            this._options.processingEvent,
-            (e: JQuery.Event): void => this._onProcessing(e)
+        $('body').on(this._options.processingEvent, (e: JQuery.Event): void =>
+            this._onProcessing(e)
         );
         $(document).on(
             this._options.doneEvent,

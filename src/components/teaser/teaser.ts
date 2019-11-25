@@ -210,18 +210,15 @@ const csTeaser: any = function($element: any, settings: any): void {
         swiperInstance.update();
 
         let currentWindowWidth = $(window).width();
-        $(window).on(
-            'resize',
-            (): void => {
-                const newWindowWidth = $(window).width();
-                if (!destroyed && newWindowWidth !== currentWindowWidth) {
-                    updateSliderSizing();
-                    postInit();
-                    swiperInstance.update();
-                    currentWindowWidth = newWindowWidth;
-                }
+        $(window).on('resize', (): void => {
+            const newWindowWidth = $(window).width();
+            if (!destroyed && newWindowWidth !== currentWindowWidth) {
+                updateSliderSizing();
+                postInit();
+                swiperInstance.update();
+                currentWindowWidth = newWindowWidth;
             }
-        );
+        });
     });
 
     /**

@@ -288,7 +288,7 @@ export default class ItemCloner {
 
         /* Add another class indicating that cloned element should be in hover state
          * Timeout helps with CSS animations witch didn't run without it.
-        */
+         */
         if (this.settings.delay > 0) {
             this._animationClassTimeout = setTimeout((): void => {
                 this._setCloneActive();

@@ -145,16 +145,13 @@ export default class ProportionalScaler {
     }
 
     public _setEvents(): void {
-        window.addEventListener(
-            'resize',
-            (): any => {
-                if (this._isScaleScheduled) {
-                    return;
-                }
-
-                this._isScaleScheduled = true;
-                window.requestAnimationFrame((): void => this._scale());
+        window.addEventListener('resize', (): any => {
+            if (this._isScaleScheduled) {
+                return;
             }
-        );
+
+            this._isScaleScheduled = true;
+            window.requestAnimationFrame((): void => this._scale());
+        });
     }
 }

@@ -1,6 +1,4 @@
-define([
-    'ko'
-], function (ko) {
+define(['ko'], function(ko) {
     'use strict';
 
     var mixin = {
@@ -11,7 +9,7 @@ define([
         checkboxState: ko.observableArray(false),
     };
 
-   return function (target) {
-       return target.extend(mixin);
-   };
+    return function(target) {
+        return target.extend(mixin);
+    };
 });

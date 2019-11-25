@@ -37,15 +37,15 @@ interface BrandCarouselOptions {
     slideMinWidth?: number;
 
     /**
-    * Maximum number of groups that will be still visible as dots.
-    * If you want pagination to always be dots you can either don't add
-    * .${teaserName}__numbers element in HTML or set this to something big.
-    * @type {number}
-    * @default 10
-    */
+     * Maximum number of groups that will be still visible as dots.
+     * If you want pagination to always be dots you can either don't add
+     * .${teaserName}__numbers element in HTML or set this to something big.
+     * @type {number}
+     * @default 10
+     */
     paginationBreakpoint?: number;
 
-     /**
+    /**
      * Defines if slides should be centered
      * Default: false
      * @type {boolean}
@@ -69,7 +69,7 @@ interface BrandCarouselOptions {
      */
     breakpoints?: any;
 
-     /**
+    /**
      * Number of slides to duplicate.
      * You see dupicated slides when you swipe on sides/
      * @type {number}
@@ -95,7 +95,8 @@ export default class BrandCarousel {
      * @param {options}  Optional settings object.
      */
     public constructor($element?: JQuery, options?: BrandCarouselOptions) {
-        this._settings = $.extend(true,
+        this._settings = $.extend(
+            true,
             {
                 teaserName: 'cs-brand-carousel',
                 slidesPerView: 'auto',
@@ -108,7 +109,7 @@ export default class BrandCarousel {
                 loopedSlides: 6,
                 lazy: {
                     loadOnTransitionStart: true,
-                }
+                },
             },
             options
         );
@@ -130,8 +131,8 @@ export default class BrandCarousel {
             const _this: any = this;
 
             $(window).on('resize', (): void => {
-                const newWindowWidth = $(window).width()
-                if(_this._currentWindowWidth !== newWindowWidth) {
+                const newWindowWidth = $(window).width();
+                if (_this._currentWindowWidth !== newWindowWidth) {
                     clearTimeout(throttler);
                     throttler = setTimeout((): void => {
                         _this._init();

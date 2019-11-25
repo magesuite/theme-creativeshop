@@ -32,7 +32,10 @@ export default class Pagination {
      * @param {$element} Optional, element to be initialized as Pagination component
      * @param {options}  Optional settings object.
      */
-    public constructor($element?: JQuery<HTMLInputElement>, options?: PaginationOptions) {
+    public constructor(
+        $element?: JQuery<HTMLInputElement>,
+        options?: PaginationOptions
+    ) {
         this._options = $.extend(
             {
                 componentSelector: '.cs-pagination__page-number-input',
@@ -51,8 +54,14 @@ export default class Pagination {
     }
 
     protected _redirect(event: JQuery.Event): void {
-        const targetPageNum: number = parseInt(this._$element.val() as string, 10);
-        const tagretUrl: string = this._urlPattern.replace('[page]', targetPageNum.toString());
+        const targetPageNum: number = parseInt(
+            this._$element.val() as string,
+            10
+        );
+        const tagretUrl: string = this._urlPattern.replace(
+            '[page]',
+            targetPageNum.toString()
+        );
 
         clearTimeout(this._delay);
 
@@ -72,6 +81,8 @@ export default class Pagination {
     }
 
     protected _init(): void {
-        this._$element.on('keyup mouseup', (event: JQuery.Event): void => this._redirect(event));
+        this._$element.on('keyup mouseup', (event: JQuery.Event): void =>
+            this._redirect(event)
+        );
     }
 }

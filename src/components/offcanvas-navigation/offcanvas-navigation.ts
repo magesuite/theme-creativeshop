@@ -376,9 +376,7 @@ export default class OffcanvasNavigation {
         );
         // Reset all levels.
         $levelsToHide.removeClass(
-            `${this._options.className}__list--active ${
-                this._options.className
-            }__list--current`
+            `${this._options.className}__list--active ${this._options.className}__list--current`
         );
 
         if (this._options.showActiveCategoryLevel) {
@@ -429,9 +427,7 @@ export default class OffcanvasNavigation {
             this._activeCategoryPath.length - 1
         ];
         const $activeCategoryLink = $(
-            `.${
-                this._options.className
-            }__link[data-category-id="${activeCategoryId}"]`
+            `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
         );
 
         if (
@@ -456,9 +452,7 @@ export default class OffcanvasNavigation {
                 this._activeCategoryPath.length - 1
             ];
             const $activeCategoryItem = $(
-                `.${
-                    this._options.className
-                }__link[data-category-id="${activeCategoryId}"]`
+                `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
             )
                 .parent()
                 .addClass(this._options.activeCategoryHighlightClass);
@@ -468,9 +462,7 @@ export default class OffcanvasNavigation {
             this._activeCategoryPath.length - 1
         ];
         const $activeCategoryLink = $(
-            `.${
-                this._options.className
-            }__link[data-category-id="${activeCategoryId}"]`
+            `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
         );
 
         if (

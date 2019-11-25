@@ -20,7 +20,7 @@ interface ICookieMessageSettings {
     destroyDelay?: number;
 
     /**
-     * Defines url of Ajax request to set cookie. 
+     * Defines url of Ajax request to set cookie.
      * Value shouldn't contain origin url
      * @default {cookie-message/set-cookie}
      * @type {string}
@@ -53,17 +53,19 @@ export default class CookieMessage {
      * @param  {$wrapper} JQuery components' wrapper.
      * @param  {ICookieMessageSettings} settings Optional component settings.
      */
-    public constructor( $wrapper: JQuery, settings?: ICookieMessageSettings ) {
+    public constructor($wrapper: JQuery, settings?: ICookieMessageSettings) {
         this.status = 'not-fired';
 
-        if ( $wrapper.length ) {
-            this._settings = $.extend( true, {},
+        if ($wrapper.length) {
+            this._settings = $.extend(
+                true,
+                {},
                 {
                     lifetime: 180,
                     destroyDelay: 250,
                     ajaxUrl: 'cookie-message/set-cookie',
                 },
-                settings,
+                settings
             );
 
             this.$wrapper = $wrapper;
@@ -76,10 +78,13 @@ export default class CookieMessage {
      * Adds class to $wrapper that shows cookie message
      */
     public showMessage(): void {
-        this.$wrapper.addClass( 'cs-cookie-message--shown' );
+        this.$wrapper.addClass('cs-cookie-message--shown');
         this.status = 'active';
 
-        if ( this._settings.onShown && typeof( this._settings.onShown ) === 'function' ) {
+        if (
+            this._settings.onShown &&
+            typeof this._settings.onShown === 'function'
+        ) {
             this._settings.onShown();
         }
     }
@@ -88,27 +93,30 @@ export default class CookieMessage {
      * Removes class to $wrapper that shows cookie message (hides it)
      */
     public hideMessage(): void {
-        this.$wrapper.removeClass( 'cs-cookie-message--shown' );
+        this.$wrapper.removeClass('cs-cookie-message--shown');
         this.status = 'inactive';
     }
 
     /**
      * Destroys component when it's no longer needed
      */
-    public destroyMessage( $btn?: any ): void {
+    public destroyMessage($btn?: any): void {
         this.hideMessage();
 
-        setTimeout( (): void => {
+        setTimeout((): void => {
             this.$wrapper.remove();
             this.status = 'destroyed';
 
-            if ( this._settings.onDestroyed && typeof( this._settings.onDestroyed ) === 'function' ) {
+            if (
+                this._settings.onDestroyed &&
+                typeof this._settings.onDestroyed === 'function'
+            ) {
                 this._settings.onDestroyed();
             }
-        }, this._settings.destroyDelay );
+        }, this._settings.destroyDelay);
 
-        if ( $btn && $btn.length ) {
-            $btn.off( 'click' );
+        if ($btn && $btn.length) {
+            $btn.off('click');
         }
     }
 
@@ -117,8 +125,8 @@ export default class CookieMessage {
      * @return  {string} origin url.
      */
     private _getLocationOrigin(): string {
-        if ( typeof window.location.origin === 'undefined' ) {
-            return `${ window.location.protocol }//${ window.location.host }`;
+        if (typeof window.location.origin === 'undefined') {
+            return `${window.location.protocol}//${window.location.host}`;
         }
 
         return window.location.origin;
@@ -129,11 +137,11 @@ export default class CookieMessage {
      * Additionally passes lifetime according to settings
      */
     private _setCookie(): void {
-        $.ajax( {
+        $.ajax({
             method: 'POST',
-            url: `${ this._getLocationOrigin() }/${ this._settings.ajaxUrl }`,
+            url: `${this._getLocationOrigin()}/${this._settings.ajaxUrl}`,
             data: { cookieLifetime: this._settings.lifetime },
-        } );
+        });
     }
 
     /**
@@ -141,13 +149,13 @@ export default class CookieMessage {
      */
     private _setEvents(): void {
         let _this: any = this;
-        const $btn: any = this.$wrapper.find( 'button' );
+        const $btn: any = this.$wrapper.find('button');
 
-        if ( $btn.length ) {
-            $btn.on( 'click', function(): void {
+        if ($btn.length) {
+            $btn.on('click', function(): void {
                 _this._setCookie();
-                _this.destroyMessage( $btn );
-            } );
+                _this.destroyMessage($btn);
+            });
         }
     }
 }

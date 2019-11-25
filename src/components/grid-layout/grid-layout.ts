@@ -234,14 +234,11 @@ export default class GridLayout {
      * @return {string} key with breakpoint's name
      */
     protected _getCurrentBreakpointName(): any {
-        return $.map(
-            breakpoint,
-            (val: number, key: string): string => {
-                if (breakpoint.current === val && key !== 'current') {
-                    return key;
-                }
+        return $.map(breakpoint, (val: number, key: string): string => {
+            if (breakpoint.current === val && key !== 'current') {
+                return key;
             }
-        );
+        });
     }
 
     /**
@@ -274,11 +271,9 @@ export default class GridLayout {
         let $x1items: any;
 
         if (untilIndex > 0) {
-            $bricks = $bricks.filter(
-                (idx: number): any => {
-                    return idx < untilIndex;
-                }
-            );
+            $bricks = $bricks.filter((idx: number): any => {
+                return idx < untilIndex;
+            });
         }
 
         $x4items = $bricks.filter(
@@ -286,21 +281,15 @@ export default class GridLayout {
         );
         $x2items = $bricks
             .filter(
-                `.${this.settings.brickClass}--x2:not(.${
-                    this.settings.brickClass
-                }--y2)`
+                `.${this.settings.brickClass}--x2:not(.${this.settings.brickClass}--y2)`
             )
             .add(
                 $bricks.filter(
-                    `.${this.settings.brickClass}--y2:not(.${
-                        this.settings.brickClass
-                    }--x2)`
+                    `.${this.settings.brickClass}--y2:not(.${this.settings.brickClass}--x2)`
                 )
             );
         $x1items = $bricks.filter(
-            `.${this.settings.brickClass}--teaser:not(.${
-                this.settings.brickClass
-            }--y2):not(.${this.settings.brickClass}--x2)`
+            `.${this.settings.brickClass}--teaser:not(.${this.settings.brickClass}--y2):not(.${this.settings.brickClass}--x2)`
         );
 
         return {
@@ -401,9 +390,7 @@ export default class GridLayout {
 
         for (let i: number = 0; i < this.teasersCfg.length; i++) {
             const $teaser: any = this.$grid.find(
-                `.${this.settings.brickClass}[data-teaser-id="${
-                    this.teasersCfg[i].id
-                }"]`
+                `.${this.settings.brickClass}[data-teaser-id="${this.teasersCfg[i].id}"]`
             );
             let idx: number = this._getTeaserIndex(this.teasersCfg[i]);
 
@@ -431,9 +418,7 @@ export default class GridLayout {
                     idx - this.teasersCfg[i].size.x * this.teasersCfg[i].size.y;
                 /* tslint:disable */
                 console.warn(
-                    `cs-grid-layout: Teaser was declared but not found in DOM (data-teaser-id: ${
-                        this.teasersCfg[i].id
-                    })`
+                    `cs-grid-layout: Teaser was declared but not found in DOM (data-teaser-id: ${this.teasersCfg[i].id})`
                 );
                 /* tslint:enable */
             }
@@ -499,9 +484,7 @@ export default class GridLayout {
 
         for (let i: number = 0; i < this.teasersCfg.length; i++) {
             const $teaser: any = this.$grid.find(
-                `.${this.settings.brickClass}[data-teaser-id="${
-                    this.teasersCfg[i].id
-                }"]`
+                `.${this.settings.brickClass}[data-teaser-id="${this.teasersCfg[i].id}"]`
             );
             const teaser: any = $teaser[0];
             const idx: number = this._getTeaserIndex(this.teasersCfg[i]);
@@ -563,9 +546,7 @@ export default class GridLayout {
             } else {
                 /* tslint:disable */
                 console.warn(
-                    `cs-grid-layout: Teaser was declared but not found in DOM (Teaser ID: ${
-                        this.teasersCfg[i].id
-                    })`
+                    `cs-grid-layout: Teaser was declared but not found in DOM (Teaser ID: ${this.teasersCfg[i].id})`
                 );
                 /* tslint:enable */
             }
@@ -704,9 +685,7 @@ export default class GridLayout {
 
             this.$grid
                 .find(
-                    `.${this.settings.brickClass}[data-teaser-id="${
-                        this.teasersCfg[0].id
-                    }"]`
+                    `.${this.settings.brickClass}[data-teaser-id="${this.teasersCfg[0].id}"]`
                 )
                 .addClass(`${this.settings.brickClass}--hidden`);
         }

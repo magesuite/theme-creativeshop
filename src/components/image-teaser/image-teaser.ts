@@ -280,12 +280,9 @@ export default class ImageTeaser {
         }
 
         this._toggleTeaser();
-        $(window).on(
-            'resize',
-            (): void => {
-                this._toggleTeaser();
-            }
-        );
+        $(window).on('resize', (): void => {
+            this._toggleTeaser();
+        });
 
         if (this._options.allowVideos) {
             this._$videosTriggers = $(
@@ -556,12 +553,9 @@ export default class ImageTeaser {
                 const $slide: JQuery<HTMLElement> = $(this);
 
                 if ($slide.hasClass('.lazyload')) {
-                    $slide.on(
-                        'lazyloaded',
-                        (): void => {
-                            $slide.addClass('ready');
-                        }
-                    );
+                    $slide.on('lazyloaded', (): void => {
+                        $slide.addClass('ready');
+                    });
                 } else {
                     $slide.addClass('ready');
                 }

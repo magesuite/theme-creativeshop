@@ -71,22 +71,18 @@ export default class Cart {
     }
 
     protected _attachEvents(): void {
-        window.addEventListener(
-            'orientationchange',
-            (): void => {
-                const cartTableStyle: string = getComputedStyle(
-                    this._cartTable
-                ).getPropertyValue('display');
-                this._cartTable.style.display = 'none';
-                setTimeout((): void => {
-                    this._cartTable.style.display = cartTableStyle;
-                }, 10);
-            }
-        );
+        window.addEventListener('orientationchange', (): void => {
+            const cartTableStyle: string = getComputedStyle(
+                this._cartTable
+            ).getPropertyValue('display');
+            this._cartTable.style.display = 'none';
+            setTimeout((): void => {
+                this._cartTable.style.display = cartTableStyle;
+            }, 10);
+        });
 
-        $(`${this._options.qtyIncrementButtonSelector}`).on(
-            'click',
-            (): void => this._triggerUpdate()
+        $(`${this._options.qtyIncrementButtonSelector}`).on('click', (): void =>
+            this._triggerUpdate()
         );
 
         $(`${this._options.qtyIncrementInputSelector}`).on(

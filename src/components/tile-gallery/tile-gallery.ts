@@ -159,18 +159,14 @@ export default class TileGallery {
         imgSrc: string,
         imgSrcset: string
     ): Promise<HTMLElement> {
-        return new Promise(
-            (resolve: any, reject: any): any => {
-                const img = new Image();
-                img.onload = (): any => resolve(img);
-                img.onerror = (): any => reject(img);
-                img.src = imgSrc;
-                img.className = `${this._options.mainImageClass} ${
-                    this._options.mainImageClass
-                }--animatable`;
-                img.setAttribute('srcset', imgSrcset);
-            }
-        );
+        return new Promise((resolve: any, reject: any): any => {
+            const img = new Image();
+            img.onload = (): any => resolve(img);
+            img.onerror = (): any => reject(img);
+            img.src = imgSrc;
+            img.className = `${this._options.mainImageClass} ${this._options.mainImageClass}--animatable`;
+            img.setAttribute('srcset', imgSrcset);
+        });
     }
 
     /**

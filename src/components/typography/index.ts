@@ -1,1 +1,1 @@
-import 'components/typography/typography.scss'
+import 'components/typography/typography.scss';

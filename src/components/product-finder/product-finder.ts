@@ -50,7 +50,7 @@ export default class ProductFinder {
         backButtonClassName: 'cs-product-finder__back-button',
         formClassName: 'cs-product-finder__form',
         stepResizeDelay: 800,
-        scrollOffset: 70
+        scrollOffset: 70,
     };
 
     protected _$backButtons: JQuery;
@@ -105,9 +105,17 @@ export default class ProductFinder {
         const currentStepHeight: number = $currentStep.height();
         this._$element.css('padding-bottom', this._$backButtons.outerHeight());
 
-        setTimeout(() => {
-            this._$element.css('height', $currentStep.height() + this._$backButtons.outerHeight());
-        }, previousHeight > currentStepHeight ? this._options.stepResizeDelay : 0);
+        setTimeout(
+            () => {
+                this._$element.css(
+                    'height',
+                    $currentStep.height() + this._$backButtons.outerHeight()
+                );
+            },
+            previousHeight > currentStepHeight
+                ? this._options.stepResizeDelay
+                : 0
+        );
     }
 
     /**
@@ -119,13 +127,17 @@ export default class ProductFinder {
 
         if (previousHeight > $(window).height()) {
             setTimeout(() => {
-                $('html, body').animate({
-                    scrollTop: this._$element.offset().top - this._options.scrollOffset
-                }, 500);
+                $('html, body').animate(
+                    {
+                        scrollTop:
+                            this._$element.offset().top -
+                            this._options.scrollOffset,
+                    },
+                    500
+                );
             }, this._options.stepResizeDelay);
         }
     }
-
 
     /**
      * Switches to the step with given step ID.
@@ -225,9 +237,7 @@ export default class ProductFinder {
      */
     protected _sendWithPOST(configuredData: ProductFinderConfiguration) {
         const $categoryField: JQuery = $(
-            `<input type="hidden" name="category_id" value="${
-                configuredData.category_id
-            }"></input>`
+            `<input type="hidden" name="category_id" value="${configuredData.category_id}"></input>`
         );
         this._$form.append($categoryField);
 
