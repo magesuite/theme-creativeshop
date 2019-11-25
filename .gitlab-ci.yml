@@ -1,4 +1,5 @@
 stages:
+  - build
   - lint
 
 default:
@@ -6,6 +7,18 @@ default:
   before_script:
     - npm i -g yarn
     - yarn install --frozen-lockfile
+
+build:
+  stage: build
+  script:
+    - apk add --no-cache build-base
+    - yarn build
+  after_script:
+    - yarn gulp clean
+  artifacts:
+    expire_in: 10 min
+    paths:
+      - node_modules/
 
 prettier:
   stage: lint
@@ -21,10 +34,3 @@ tslint:
   stage: lint
   script:
     - yarn tslint -c tslint.js "src/**/*.{ts,js}" -e "src/**/vendor?(s)/**/*"
-
-build:
-  stage: lint
-  script:
-    - yarn build
-  after_script:
-    - yarn gulp clean

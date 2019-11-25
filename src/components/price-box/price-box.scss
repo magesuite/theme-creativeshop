@@ -3,6 +3,8 @@
 @import 'components/price-box/variables.scss';
 @import 'utils/visually-hidden';
 
+// stylelint-disable no-descending-specificity
+
 .price-box {
     $root: &;
     @include priceBox();
@@ -45,6 +47,10 @@
         margin: 0;
         padding: 0;
 
+        > .price-container {
+            font-size: $price-box_label-font-size;
+        }
+
         .price-label {
             display: inline-block;
             padding: 0;
@@ -77,13 +83,6 @@
 
     .price-from {
         margin-right: $price-box_space-between-prices;
-    }
-
-    .price-from,
-    .price-to {
-        > .price-container {
-            font-size: $price-box_label-font-size;
-        }
     }
 
     .#{$ns}price--pdp_dailydeal-countdown & {

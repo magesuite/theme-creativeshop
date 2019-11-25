@@ -50,11 +50,11 @@ $field_select-background-size--ie: 0.7em 0.7em, 100%;
 $field_select-icon-fill: $color_border-500 !default;
 $field_select-icon-fill-active: $color_primary-500 !default;
 $field_select-background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e"),
-    linear-gradient(0, transparent 0%, transparent 100%) !default;
+    linear-gradient(0deg, transparent 0%, transparent 100%) !default;
 // IE doesn't support linear-gradient() used in this context
 $field_select-background-image--ie: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e") !default;
 $field_select-background-active: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill-active)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e"),
-    linear-gradient(0, transparent 0%, transparent 100%) !default;
+    linear-gradient(0deg, transparent 0%, transparent 100%) !default;
 // IE doesn't support linear-gradient() used in this context
 $field_select-background-active--ie: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill-active)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e") !default;
 
@@ -254,6 +254,7 @@ $field_icon-success-background: url('../images/check-green.svg') no-repeat
     background-size: $field_select-background-size;
     transition: border-color $field_transition-time;
 
+    // stylelint-disable no-descending-specificity
     &:-moz-focusring,
     &::-moz-focus-inner {
         color: transparent !important;
@@ -329,7 +330,6 @@ $field_icon-success-background: url('../images/check-green.svg') no-repeat
         color: transparent;
         border: $field_radio-border;
         box-shadow: $field_radio-box-shadow;
-        background-color: $field_radio-background-color;
         background-repeat: no-repeat;
         background-position: 50% 50%;
         background-size: $field_radio-background-size;
@@ -340,8 +340,8 @@ $field_icon-success-background: url('../images/check-green.svg') no-repeat
         background-color: $field_radio-background-color-checked;
     }
 
-    &:-moz-focusring,
-    &::-moz-focus-inner {
+    &::-moz-focus-inner,
+    &:-moz-focusring {
         color: transparent !important;
         text-shadow: 0 0 0 #000 !important;
     }
@@ -376,6 +376,7 @@ $field_icon-success-background: url('../images/check-green.svg') no-repeat
     &[disabled] + .cs-input__label {
         opacity: $field_radio-disabled-opacity;
     }
+    // stylelint-enable no-descending-specificity
 
     @include field-radio-hook();
 }
