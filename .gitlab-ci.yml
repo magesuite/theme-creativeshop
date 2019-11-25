@@ -1,6 +1,5 @@
 stages:
   - lint
-  - build
 
 default:
   image: node:lts-alpine
@@ -24,7 +23,7 @@ tslint:
     - yarn tslint -c tslint.js "src/**/*.{ts,js}" -e "src/**/vendor?(s)/**/*"
 
 build:
-  stage: build
+  stage: lint
   script:
     - yarn build
   after_script:
