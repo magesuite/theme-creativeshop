@@ -4,13 +4,13 @@ stages:
 
 default:
   image: node:lts-alpine
-  before_script:
-    - apk add --no-cache build-base jpeg-dev zlib-dev autoconf automake libtool libpng-dev
-    - npm i -g yarn
-    - yarn install --frozen-lockfile
 
 build:
   stage: build
+  before_script:
+    - apk add --no-cache build-base jpeg-dev zlib-dev automake autoconf libtool nasm libpng
+    - npm i -g yarn
+    - yarn install --frozen-lockfile
   script:
     - yarn build
   after_script:
@@ -22,15 +22,24 @@ build:
 
 prettier:
   stage: lint
+  before_script:
+    - npm i -g yarn
+    - yarn install --frozen-lockfile
   script:
     - yarn prettier --check "src/**/*.{ts,js}"
 
 stylelint:
   stage: lint
+  before_script:
+    - npm i -g yarn
+    - yarn install --frozen-lockfile
   script:
     - yarn stylelint "src/**/*.{css,scss}"
 
 tslint:
   stage: lint
+  before_script:
+    - npm i -g yarn
+    - yarn install --frozen-lockfile
   script:
     - yarn tslint -c tslint.js "src/**/*.{ts,js}" -e "src/**/vendor?(s)/**/*"
