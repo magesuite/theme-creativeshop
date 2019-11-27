@@ -6,6 +6,8 @@
 <?php if ($block->canShowBlock()):
     $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
     $isFiltersLayoutHorizontal = $pageLayout == '1column' && !$block->getForceSidebarFiltersStyle() || $block->getForceHorizontalFiltersStyle();
+    $isCategoryFilterHidden = $block->getHideCategoryFilter();
+    $categoryFilterName = $block->getCategoryFilterName();
 
     $filtersRenderer = $block->getChildBlock('renderer');
 
@@ -43,6 +45,10 @@
                         $filterDisplaySearchbox = $filter->getAttributeModel()->getDisplaySearchbox() ?? true;
                     } else {
                         $filterAttributeClass = 'filter-attribute-' . $filter->getRequestVar();
+                    }
+
+                    if ($isCategoryFilterHidden && $filterAttributeClass == $categoryFilterName) {
+                        continue;
                     }
                 ?>
                     <li
