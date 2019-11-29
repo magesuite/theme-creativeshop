@@ -70,6 +70,7 @@ import 'components/products-list';
 import 'components/product-finder';
 import 'components/separator';
 import 'components/video-player';
+import 'components/accordion';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 

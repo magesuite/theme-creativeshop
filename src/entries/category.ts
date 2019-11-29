@@ -69,6 +69,7 @@ import 'components/products-grid';
 import 'components/products-list';
 import 'components/product-finder';
 import 'components/separator';
+import 'components/accordion';
 // Category page
 import 'pages/category';
 
