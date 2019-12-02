@@ -21,6 +21,9 @@ $product-description_headline-title-font-size: $font-size_headline-2 !default;
 $product-description_headline-title-counter-visible: true !default;
 $product-description_headline-background: $color_gallery !default;
 
+// Show/hide headline for content constructor section
+$product-description_headline-cc-visible: false !default;
+
 .#{$ns}product-details {
     $root: &;
 
@@ -60,7 +63,9 @@ $product-description_headline-background: $color_gallery !default;
 
         &--content-constructor {
             #{$root}__headline {
-                @include visually-hidden();
+                @if ($product-description_headline-cc-visible == false) {
+                    @include visually-hidden();
+                }
             }
         }
 
