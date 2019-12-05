@@ -52,7 +52,10 @@ var config = {
                 'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
             },
             'Repertus_Packstation/js/form/components/account_address_type_select': {
-                'Repertus_Packstation/js/form/components/account_address_type_select-ext': true
+                'Repertus_Packstation/js/form/components/account_address_type_select-mixin': true
+            },
+            'Repertus_Packstation/js/form/components/address_type_select': {
+                'Repertus_Packstation/js/form/components/address_type_select-mixin': true
             },
         },
     },
