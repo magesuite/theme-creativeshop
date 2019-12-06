@@ -49,6 +49,9 @@ define(['jquery'], function ($) {
             this.$form.find('.field.company').after(postNumberField);
             this.$streetFieldSet.after(numberField);
         },
+        isCountryDifferentFromDefault: function () {
+            return false;
+        },
     };
 
     return function (target) {
