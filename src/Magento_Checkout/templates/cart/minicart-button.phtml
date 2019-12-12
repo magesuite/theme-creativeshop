@@ -1,0 +1,33 @@
+<?php
+// @codingStandardsIgnoreFile
+$isCarouselEnabled = $block->getVar('minicart_offcanvas/products_carousel/enabled', 'Magento_Checkout');
+$isButton = $block->getVar('minicart_offcanvas/products_carousel/button', 'Magento_Checkout');
+?>
+
+<?php if($isCarouselEnabled && $isButton): ?>
+    <?php
+    $wrapperTag = $block->getWrapperTag() ?? 'div';
+    $wrapperClass = $block->getWrapperCssClass();
+    $wrapperClass = $wrapperClass ? sprintf('class="%s"', $wrapperClass) : '';
+    $buttonCssClass = ' ' . $block->getButtonCssClass();
+    $label = $block->getLabel();
+    $icon = $block->getChildHtml();
+    ?>
+    
+    <div class="cs-container cs-container--button">
+        <div class="cs-container__inner">
+            <<?= $wrapperTag ?> <?= $wrapperClass ?>>
+                <button type="button" 
+                        class="cs-minicart__button-carousel btn-minicart-close" 
+                        name="close" 
+                        id="cs-minicart__button-carousel"
+                >
+                    <span class="cs-minicart__button-carousel-span">
+                        <?= $label; ?>
+                    </span>
+                    <?= $icon; ?>
+                </button>
+            </<?= $wrapperTag ?>>
+        </div>
+    </div>
+<?php endif; ?>
