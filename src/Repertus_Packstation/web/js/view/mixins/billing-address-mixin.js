@@ -3,7 +3,7 @@ define(
         'ko',
         'Magento_Checkout/js/model/quote',
         'mage/translate',
-        'Magento_Ui/js/model/messageList',
+        'Magento_Ui/js/model/messageList'
     ], function (
         ko,
         quote,
@@ -35,8 +35,9 @@ define(
                 this._super();
 
                 quote.billingAddress.subscribe(function (address) {
-                    if (isAddressPackstationOrPostOffice(address)) {
+                    if (address === null || isAddressPackstationOrPostOffice(address)) {
                         this.isAddressSameAsShipping(false);
+                        this.isAddressDetailsVisible(false);
                     }
                 }, this);
 
