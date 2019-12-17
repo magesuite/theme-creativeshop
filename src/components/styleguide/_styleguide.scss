@@ -94,13 +94,6 @@ $styleguide_button-animation: 'true';
         }
     }
 
-    &__section {
-        @include component-spacing();
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
     &__box-wrapper {
         width: calc(100% / 2);
 
@@ -497,6 +490,41 @@ $styleguide_button-animation: 'true';
 
         &--only-icon {
             @include button_icon($icon-pos: $styleguide_button-only-icon);
+        }
+    }
+
+    &__section {
+        @include component-spacing();
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .#{$ns}products-carousel {
+            &__wrapper {
+                display: inline;
+                margin-right: 2rem;
+            }
+
+            &__nav:not(.#{$ns}products-carousel__nav--disabled) {
+                position: relative;
+                display: inline;
+                transform: none;
+                top: 0;
+            }
+
+            &__nav {
+                @include media('<laptop') {
+                    @media (pointer: fine) {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            &__pagination {
+                display: inline-flex;
+                width: auto;
+                justify-content: left;
+            }
         }
     }
 }
