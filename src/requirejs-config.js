@@ -53,6 +53,9 @@ var config = {
             },
             'Repertus_Packstation/js/form/components/account_address_type_select': {
                 'Repertus_Packstation/js/form/components/account_address_type_select-mixin': true
+            },
+            'Repertus_Packstation/js/form/components/address_type_select': {
+                'Repertus_Packstation/js/form/components/address_type_select-mixin': true
             }
         },
     },
