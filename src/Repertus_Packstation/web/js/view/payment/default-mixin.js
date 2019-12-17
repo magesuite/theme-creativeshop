@@ -41,21 +41,19 @@ define(
 
                 me._super();
 
-                quote.billingAddress.subscribe(function (address) {
-                    if (isAddressPackstationOrPostOffice(address)) {
-                        me.isPlaceOrderActionAllowed(false);
-                        messageList.addErrorMessage({
-                            message: $t('A Packstation or Post Office can not be selected as billing address.')
-                        });
-                        // Select first payment method
-                        if (!quote.paymentMethod()) {
-                            var paymentMethods = paymentService.getAvailablePaymentMethods();
-                            if (paymentMethods.length) {
-                                selectPaymentMethod(paymentMethods[0]);
-                            }
+                if (isAddressPackstationOrPostOffice(quote.shippingAddress())) {
+                    messageList.addErrorMessage({
+                        message: $t('Packstation or Post office can not be selected as billing address. Please select a different address.')
+                    });
+                    // Select first payment method
+                    if (!quote.paymentMethod()) {
+                        var paymentMethods = paymentService.getAvailablePaymentMethods();
+                        if (paymentMethods.length) {
+                            selectPaymentMethod(paymentMethods[0]);
                         }
                     }
-                }, me);
+                }
+
 
                 return me;
             }
