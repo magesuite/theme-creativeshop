@@ -1,149 +1,160 @@
 <div class="cs-styleguide__container cs-styleguide__container--contrast">
 
-    <div class="cs-styleguide__title">
+    <h2 class="cs-styleguide__title">
         Pagination
-    </div>
+    </h2>
 
     <div class="cs-styleguide__section cs-styleguide__section--wide">
+        <div class="cs-page-category__toolbar-wrapper cs-page-category__toolbar-wrapper--top">
+            <div class="toolbar toolbar-products cs-toolbar cs-page-category__toolbar">              
+                <div class="cs-toolbar__item cs-toolbar__item--pagination">
+                    <div class="pages cs-pagination" role="navigation">
+                        <div class="cs-pagination__content" role="menubar">
 
-        <div class="cs-category-page__toolbar">
+                            <?php 
+                                $previousPageIcon = 
+                                    $this->getLayout()
+                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                        ->setIconUrl('images/icons/toolbar/pagination-previous-page.svg')
+                                        ->setCssClass('cs-pagination__action-icon cs-pagination__action-icon--previous-page')
+                                        ->setAltText('Previous page')
+                                        ->setInlined(true)
+                                        ->setLazyLoaded(true)
+                                        ->toHtml();
+                            ?>
 
-            <div class="cs-category-page__toolbar-left">
-                <div class="cs-category-page__modes | modes">
-                    <strong class="modes-label">View as</strong>
-                    <strong title="Grid" class="modes-mode active mode-grid" data-value="grid">
-                        <span>Grid</span>
-                    </strong>
-                    <a class="modes-mode mode-list" title="List" href="#" data-role="mode-switcher" data-value="list">
-                        <span>List</span>
-                    </a>
-                </div>
+                            <div class="item pages-item-previous cs-pagination__prev" role="none">
+                                <span class="link previous cs-pagination__action cs-pagination__action--previous-page cs-pagination__action--disabled"
+                                title="Previous page"
+                                tabindex="0"
+                                role="menuitem">
+                                    <?= $previousPageIcon ?>         
+                                </span>
+                            </div>      
+                            <label class="label pages-label cs-pagination__prefix-label">
+                                Page:
+                            </label>
+                            <div class="field cs-pagination__page-provider">
+                                <input
+                                    class="input-text cs-pagination__page-provider-input"
+                                    type="number"
+                                    min="1"
+                                    max="10"
+                                    size="2"
+                                    value="1"
+                                    data-url-pattern='https://test.magesuite.io/women.html?p=10'
+                                >
+                                <label class="label cs-pagination__page-provider-label">
+                                    / 10
+                                </label>
+                            </div>
 
-                <p class="cs-category-page__toolbar-amount">
-                    Items <span class="toolbar-number">1</span>-<span class="toolbar-number">5</span> of <span
-                        class="toolbar-number">48</span></p>
+                            <?php 
+                            $nextPageIcon = 
+                                $this->getLayout()
+                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                    ->setIconUrl('images/icons/toolbar/pagination-next-page.svg')
+                                    ->setCssClass('cs-pagination__action-icon cs-pagination__action-icon--next-page')
+                                    ->setAltText('Next page')
+                                    ->setInlined(true)
+                                    ->setLazyLoaded(true)
+                                    ->toHtml();
+                            ?>
 
-                <div class="cs-category-page__toolbar-sorter | cs-input | sorter">
-                    <label class="cs-category-page__toolbar-label">Sort By: </label>
-
-
-                    <select class="cs-select" data-role="sorter" tabindex="-98">
-
-                        <option value="position" selected="selected"> Position</option>
-                        <option value="name"> Product Name</option>
-                        <option value="price"> Price</option>
-
-                    </select>
-
-
-                    <a title="Set Descending Direction" href="#" class="action sorter-action sort-asc"
-                       data-role="direction-switcher" data-value="desc">
-                        <span>Set Descending Direction</span>
-                    </a>
-                </div>
-
-                <div class="cs-category-page__toolbar-limiter | cs-input">
-                    <label class="cs-category-page__toolbar-label">
-                        Display: </label>
-
-                    <div class="control cs-input__control | cs-visually-hidden">
-                        <select data-role="limiter" class="cs-input__select">
-                            <option value="5" selected="selected">
-                                5
-                            </option>
-                            <option value="24">
-                                24
-                            </option>
-                            <option value="48">
-                                48
-                            </option>
-                            <option value="all">
-                                All
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="cs-pagination cs-pagination--limiter">
-                        <button class="cs-pagination__item" data-value="5">
-                <span class="cs-pagination__number  cs-pagination__number--current">
-                    5                </span>
-                        </button>
-                        <button class="cs-pagination__item" data-value="24">
-                <span class="cs-pagination__number ">
-                    24                </span>
-                        </button>
-                        <button class="cs-pagination__item" data-value="48">
-                <span class="cs-pagination__number ">
-                    48                </span>
-                        </button>
-                        <button class="cs-pagination__item" data-value="all">
-                <span class="cs-pagination__number ">
-                    All                </span>
-                        </button>
+                            <div class="item pages-item-previous cs-pagination__next" role="none">
+                                <span class="link previous cs-pagination__action cs-pagination__action--previous-page"
+                                title="Next page"
+                                tabindex="0"
+                                role="menuitem">
+                                    <?= $nextPageIcon ?>      
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="cs-toolbar__item cs-toolbar__item--pagination">
+                    <div class="pages cs-pagination" role="navigation">
+                        <div class="cs-pagination__content" role="menubar">
 
+                            <?php 
+                                $previousPageIcon = 
+                                    $this->getLayout()
+                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                        ->setIconUrl('images/icons/toolbar/pagination-previous-page.svg')
+                                        ->setCssClass('cs-pagination__action-icon cs-pagination__action-icon--previous-page')
+                                        ->setAltText('Previous page')
+                                        ->setInlined(true)
+                                        ->setLazyLoaded(true)
+                                        ->toHtml();
+                            ?>
 
-            </div>
-            <div class="cs-category-page__toolbar-right">
+                            <div class="item pages-item-previous cs-pagination__prev" role="none">
+                                <span class="link previous cs-pagination__action cs-pagination__action--previous-page cs-pagination__action--disabled"
+                                title="Previous page"
+                                tabindex="0"
+                                role="menuitem">
+                                    <?= $previousPageIcon ?>         
+                                </span>
+                            </div>     
+                            <label class="label pages-label cs-pagination__prefix-label">
+                                Page:
+                            </label>
+                            <ul class="items pages-items cs-pagination__items" role="none">
+                                <li class="item current cs-pagination__item cs-pagination__item--first-page cs-pagination__item--current" role="none">
+                                    <a class="page first cs-pagination__number cs-pagination__number--first-page" href="#" role="menuitem">
+                                        <span class="label cs-visually-hidden"><?= /* @escapeNotVerified */ __('You\'re currently reading page') ?>2</span>
+                                        <span>1</span>
+                                    </a>
+                                </li>
+                                <li class="item cs-pagination__item" role="none">
+                                    <a class="page cs-pagination__number" href="#" role="menuitem">
+                                        <span>2</span>
+                                    </a>
+                                </li>                         
+                                <li class="item cs-pagination__item" role="none">
+                                    <a class="page cs-pagination__number" href="#" role="menuitem">
+                                        <span>3</span>
+                                    </a>
+                                </li>  
+                                <li class="item cs-pagination__item" role="none">
+                                    <a class="page cs-pagination__number" href="#" role="menuitem">
+                                        <span>4</span>
+                                    </a>
+                                </li>
+                                <li class="item cs-pagination__item cs-pagination__item--last-page" role="none">
+                                    <a class="page last cs-pagination__number cs-pagination__number--last-page" href="#" role="menuitem">
+                                        <span>5</span>
+                                    </a>
+                                </li>
+                            </ul>
 
+                            <?php 
+                            $nextPageIcon = 
+                                $this->getLayout()
+                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                    ->setIconUrl('images/icons/toolbar/pagination-next-page.svg')
+                                    ->setCssClass('cs-pagination__action-icon cs-pagination__action-icon--next-page')
+                                    ->setAltText('Next page')
+                                    ->setInlined(true)
+                                    ->setLazyLoaded(true)
+                                    ->toHtml();
+                            ?>
 
-                <div class="cs-pagination">
-                    <div class="cs-pagination__content">
-
-                        <span class="cs-pagination__prev" title="Previous">
-                            <svg class="cs-pagination__prev-icon cs-pagination__prev-icon--disabled">
-                                <use xlink:href="#icon_arrow-left"></use>
-                            </svg>
-                        </span>
-                        <span class="cs-pagination__label-wrapper">
-                            <span class="cs-pagination__label">Page: </span>
-                        </span>
-
-                        <ul class="cs-pagination__pager">
-
-
-                            <li class="cs-pagination__item current">
-                                <span class="cs-pagination__number cs-pagination__number--current">1</span>
-                            </li>
-                            <li class="cs-pagination__item">
-                                <a href="http://m2c.dev/men/tops-men.html?p=2" class="cs-pagination__number">2 </a>
-                            </li>
-                            <li class="cs-pagination__item">
-                                <a href="http://m2c.dev/men/tops-men.html?p=3" class="cs-pagination__number">3 </a>
-                            </li>
-                            <li class="cs-pagination__item">
-                                <a href="http://m2c.dev/men/tops-men.html?p=4" class="cs-pagination__number">4 </a>
-                            </li>
-                            <li class="cs-pagination__item">
-                                <a href="http://m2c.dev/men/tops-men.html?p=5" class="cs-pagination__number">5 </a>
-                            </li>
-
-                        </ul>
-
-
-                        <ul class="cs-pagination__pager">
-                            <li class="cs-pagination__separator">
-                                of
-                            </li>
-
-                            <li class="cs-pagination__item cs-pagination__item--single">
-                                <a class="cs-pagination__number" href="http://m2c.dev/men/tops-men.html?p=10">10</a>
-                            </li>
-                        </ul>
-
-
-                        <a class="cs-pagination__next" href="http://m2c.dev/men/tops-men.html?p=2" title="Next">
-                            <svg class="cs-pagination__next-icon">
-                                <use xlink:href="#icon_arrow-right"></use>
-                            </svg>
-                        </a>
-
+                            <div class="item pages-item-previous cs-pagination__next" role="none">
+                                <span class="link previous cs-pagination__action cs-pagination__action--previous-page"
+                                title="Next page"
+                                tabindex="0"
+                                role="menuitem">
+                                    <?= $nextPageIcon ?>      
+                                </span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="cs-toolbar__item cs-toolbar__item--pagination">
                     <div class="cs-pagination__content-mobile">
-
-                        <a class="cs-button cs-button--look_light cs-button--type_wide"
-                           href="http://m2c.dev/men/tops-men.html?p=2" title="Next page"> Next page
+                        <a class="cs-button cs-button--look_light cs-button--type_wide" href="http://m2c.dev/men/tops-men.html?p=2"
+                            title="Next page"> Next page
                             <svg class="cs-button__icon">
                                 <use xlink:href="#arrow_next"></use>
                             </svg>
@@ -151,9 +162,87 @@
                     </div>
                 </div>
 
-
             </div>
-
+        </div>
+    </div>
+    
+    <div class="cs-styleguide__section cs-styleguide__section--wide">
+        <div class="cs-page-category__toolbar-wrapper cs-page-category__toolbar-wrapper--top">
+            <div class="toolbar toolbar-products cs-toolbar cs-page-category__toolbar">                     
+                <div class="cs-toolbar__item cs-toolbar__item--sorter">
+                    <div class="toolbar-sorter sorter cs-sorter">
+                        <label class="sorter-label cs-toolbar__label cs-sorter__label">Sort By: </label>
+                        <div class="cs-html-select">
+                            <select id="sorter" data-role="sorter" class="sorter-options cs-select cs-sorter__select">
+                                <option value="position">Position - Ascending</option>
+                                <option value="position">Position - Descending</option>
+                                <option value="position">Price - Ascending</option>
+                                <option value="position">Price - Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="cs-toolbar__item cs-toolbar__item--limiter">
+                    <div class="field limiter cs-limiter" role="navigation">
+                        <label class="label cs-toolbar__label cs-limiter__label cs-limiter__label--prefix">
+                            <span>Display:</span>
+                        </label>
+                            <ul class="cs-limiter__pagination" role="menubar">
+                                <li class="cs-limiter__pagination-item  cs-limiter__pagination-item--current" role="none">
+                                    <button class="cs-limiter__pagination-number" data-value="5" roe="menuitem">
+                                        <span>5</span>
+                                    </button>
+                                </li>
+                                <li class="cs-limiter__pagination-item" role="none">
+                                    <button class="cs-limiter__pagination-number" data-value="24" roe="menuitem">
+                                        <span>24</span>
+                                    </button>
+                                </li>
+                                <li class="cs-limiter__pagination-item" role="none">
+                                    <button class="cs-limiter__pagination-number" data-value="48" roe="menuitem">
+                                        <span>48</span>
+                                    </button>
+                                </li>
+                                <li class="cs-limiter__pagination-item" role="none">
+                                    <button class="cs-limiter__pagination-number" data-value="all" roe="menuitem">
+                                        <span>All</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="cs-toolbar__item cs-toolbar__item--viewmode-switcher">
+                        <div class="modes cs-viewmode-switcher">
+                            <ul class="cs-viewmode-switcher__modes">
+                                <li class="cs-viewmode-switcher__mode">
+                                    <span
+                                        class="modes-mode mode-grid cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--grid">
+                                        <?= $this->getLayout()
+                                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                                    ->setIconUrl('images/icons/toolbar/viewmode-grid.svg')
+                                                    ->setCssClass('cs-viewmode-switcher__mode-icon cs-viewmode-switcher__mode-icon--grid')
+                                                    ->setInlined(true)
+                                                    ->setLazyLoaded(true)
+                                                    ->toHtml(); ?>
+                                    </span>
+                                </li>
+                                <li class="cs-viewmode-switcher__mode cs-viewmode-switcher__mode--current">
+                                    <span
+                                        class="modes-mode mode-list cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--list">
+                                        <?= $this->getLayout()
+                                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                                    ->setIconUrl('images/icons/toolbar/viewmode-list.svg')
+                                                    ->setCssClass('cs-viewmode-switcher__mode-icon cs-viewmode-switcher__mode-icon--list')
+                                                    ->setInlined(true)
+                                                    ->setLazyLoaded(true)
+                                                    ->toHtml(); ?>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
