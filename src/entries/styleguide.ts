@@ -67,6 +67,7 @@ import 'components/products-grid';
 import 'components/product-finder';
 import 'components/separator';
 // Others
+import 'pages/product';
 import 'components/bundle-box';
 import 'components/buybox';
 import 'components/indicators';
