@@ -1,102 +1,140 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/button/mixin';
+@import 'components/field/mixin';
 
-$repertus_find-packstation-button-type: 'primary' !default;
-$repertus_find-packstation-icon-pos: 'no-icon' !default;
-$repertus_checkout-button-type: 'secondary' !default;
-$repertus_checkout-button-icon-pos: 'no-icon' !default;
-$repertus_dashboard-button-type: 'secondary' !default;
-$repertus_dashboard-icon-pos: 'no-icon' !default;
+$repertus_search-button-type: 'primary' !default;
+$repertus_search-icon-pos: 'no-icon' !default;
 
+// Style Repertus Search Button
+.repertus_packstation--search-button,
+.repertus_packstation_search_button .action-basic,
 #repertus_find_packstation_button_execute {
     @include button(
-        $type: $repertus_find-packstation-button-type,
-        $icon_pos: $repertus_find-packstation-icon-pos
+        $type: $repertus_search-button-type,
+        $icon_pos: $repertus_search-icon-pos
     );
+    margin: 1rem 0 0;
 }
-.#{$ns}dashboard {
-    .repertus_packstation--search-button {
-        width: 100%;
 
-        @include button(
-            $type: $repertus_dashboard-button-type,
-            $icon_pos: $repertus_dashboard-icon-pos
-        );
+// Style Repertus Search Modal
+.repertus-packstation-search {
+    $root: &;
+
+    &.modal-popup._show {
+        // If any other Magento's modal is opened, Repertus popup must be displayed on top of it
+        z-index: 905 !important;
     }
-}
 
-.fieldset-wrapper-repertus {
-    .fieldset-wrapper-content {
-        @include media('<tablet') {
-            width: 100%;
+    .modal-title {
+        padding-left: 3rem;
+        text-transform: none;
+    }
+
+    .modal-content {
+        padding-bottom: 3rem;
+    }
+
+    .modal-footer {
+        display: none;
+    }
+
+    .action-close {
+        right: 1rem;
+        cursor: pointer;
+    }
+
+    .tonur_packstation_input {
+        margin-bottom: 1.5rem;
+    }
+
+    .repertus_packstaion--search-modal--input-fields {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .repertus--input-field {
+        @include field();
+
+        label {
+            @include field-label();
+        }
+
+        input {
+            @include field-input();
+        }
+
+        &.postcode {
+            margin-right: 1.5rem;
+        }
+    }
+
+    #tonur_packstation_map {
+        position: relative;
+        min-height: 27rem;
+        max-height: 40rem;
+        border: 0.1rem solid $color_white;
+
+        @include media('>=phone') {
+            min-height: 29.5rem;
+        }
+
+        @include media('>=tablet') {
+            min-height: 40rem;
+        }
+    }
+
+    #tonur_packstation_map_overlay {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 40.2rem;
+        background-color: $color_black;
+        opacity: 0.7;
+        z-index: 100;
+
+        p {
+            margin-top: 27%;
+            color: $color_white;
+            text-align: center;
+        }
+    }
+
+    #tonur_packstation_map_frame {
+        position: relative;
+
+        &.busy {
+            #tonur_packstation_map_overlay {
+                display: table-cell;
+            }
+        }
+    }
+
+    .MicrosoftMap .Infobox {
+        .infobox-body {
+            min-width: 190px;
+        }
+
+        .infobox-title {
+            padding: 1rem 1rem 0;
+        }
+
+        .infobox-actions {
+            height: 2.5rem;
         }
     }
 }
 
+// Style Repertus Checkout Fields
 .repertus_address_type_fieldset {
-    width: 100%;
-}
-
-.repertus_address_type_field {
-    width: 100%;
-
-    .label {
-        margin-bottom: 0.3rem;
-        display: inline-block;
-    }
-
-    @include media('>=phoneLg', '<tablet') {
-        width: 51%;
-        padding: 0 1rem 0 0;
-        display: inline-block;
-    }
-
-    @include media('>=laptop') {
+    &,
+    .fieldset-wrapper-content {
         width: 100%;
-        padding: 0;
-        display: inline-block;
     }
 }
 
-.repertus_packstation_search_button {
-    widows: 100%;
-
-    button {
-        @include button(
-            $type: $repertus_checkout-button-type,
-            $icon_pos: $repertus_checkout-button-icon-pos
-        );
-        width: 100%;
-        margin-top: 0.5rem;
-    }
-}
-
-.checkout-payment-method .payment-methods {
-    @include media('<tablet') {
-        max-width: 100vw;
-        padding-right: 0.5rem;
-        box-sizing: border-box;
-    }
-}
-
-.paypal.checkout {
-    text-align: center;
-
-    &.after,
-    &.before {
-        &:before {
-            content: attr(data-label);
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin: 1rem 0.5rem 0.2rem;
-        }
-    }
-
-    input {
-        &:focus {
-            outline: none;
-            box-shadow: none;
-        }
-    }
+.field[name='shippingAddress.repertus_address_type'] {
+    display: none;
 }
