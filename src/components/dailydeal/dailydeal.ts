@@ -474,10 +474,10 @@ export default class Dailydeal {
     protected _getCountdownLabel(n: number, timeUnit: string): string {
         if (this._options.updateLabels) {
             return n === 1
-                ? $.mage.__(`${this._labels[timeUnit]}`)
-                : $.mage.__(`${this._labels[timeUnit + 's']}`);
+                ? $.mage.__(this._labels[timeUnit])
+                : $.mage.__(this._labels[timeUnit + 's']);
         } else {
-            return $.mage.__(`${this._labels[timeUnit + 's']}`);
+            return $.mage.__(this._labels[timeUnit + 's']);
         }
     }
 
