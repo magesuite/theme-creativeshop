@@ -1,35 +1,36 @@
 /**
- * Breakpoint utility for sharing breakpoints between CSS and JS.
+ * Breakpoint utility imports breakpoints from etc/view.xml
  */
 
 import * as $ from 'jquery';
+import * as viewXml from 'etc/view.json';
+import deepGet from 'utils/deep-get/deep-get';
 
-import './breakpoint.scss';
+let viewportWidth = $(window).width();
 
-/**
- * Returns object containing available breakpoints.
- * @return {Object} Object containing available breakpoints in shape { breakpointName: pixelsNumber }
- */
-const getAvaliableBreakpoints = (): object =>
-    JSON.parse(
-        window
-            .getComputedStyle(body, ':before')
-            .getPropertyValue('content')
-            .slice(1, -1)
-            .replace(/\\"/g, '"')
-    );
+const availableBreakpoints = Object.entries(
+    deepGet(viewXml, 'vars.Magento_Theme.breakpoints')
+);
 
-/**
- * Returns current breakpoint set by CSS.
- * @return {number} Current breakpoint in number of pixels.
- */
-const getCurrentBreakpoint = (): number =>
-    +window
-        .getComputedStyle(body, ':after')
-        .getPropertyValue('content')
-        .replace(/['"]/g, '');
+const getCurrentBreakpoint = (): number => {
+    for (let i: number = 0; i < availableBreakpoints.length; i++) {
+        if (i === 0) {
+            if (viewportWidth < availableBreakpoints[i + 1][1]) {
+                return availableBreakpoints[i][1];
+            }
+        } else if (i === availableBreakpoints.length - 1) {
+            if (viewportWidth >= availableBreakpoints[i][1]) {
+                return availableBreakpoints[i][1];
+            }
+        } else if (
+            viewportWidth >= availableBreakpoints[i][1] &&
+            viewportWidth < availableBreakpoints[i + 1][1]
+        ) {
+            return availableBreakpoints[i][1];
+        }
+    }
+};
 
-const body: HTMLElement = document.querySelector('body');
 /**
  * Module cache to export.
  * @type {Object}
@@ -38,10 +39,10 @@ const breakpoint: any = $.extend(
     {
         current: getCurrentBreakpoint(),
     },
-    getAvaliableBreakpoints()
+    availableBreakpoints
 );
 
-// Let's check if we can register passive resize event for better performance.
+// Register passive resize event for better performance.
 let passiveOption: any;
 try {
     const opts: any = Object.defineProperty({}, 'passive', {
@@ -55,9 +56,11 @@ try {
 }
 
 // Update current breakpoint on every resize.
+
 window.addEventListener(
     'resize',
     () => {
+        viewportWidth = $(window).width();
         breakpoint.current = getCurrentBreakpoint();
     },
     passiveOption
