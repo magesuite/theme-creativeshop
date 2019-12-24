@@ -1,19 +1,39 @@
 /**
- * Responsive breakpoints used by include-media vendor library.
+ * Breakpoint component used by include-media vendor library.
  */
-$breakpoints: (
-    // 370px
-        phone: 23.13em,
-    // 480px
-        phoneLg: 30em,
-    // 768px
-        tablet: 48em,
-    // 1024px
-        laptop: 64em,
-    // 1280px
-        laptopLg: 80em,
-    // 1440px
-        desktop: 90em,
-    // 1920px
-        tv: 120em
-) !default;
+@import 'etc/view';
+@import 'utils/deep-get/deep-get.scss';
+
+// Breakpoints import from view.xml [px]
+$breakpoints_px: deep-get($view-xml, vars, Magento_Theme, breakpoints);
+$breakpoints_em: ();
+
+@use "sass:map";
+
+@function calculate-breakpoints($breakpoints_em, $breakpoints_px) {
+    $result: $breakpoints_em;
+    @each $key, $value in $breakpoints_px {
+        $result: map-merge(
+            $result,
+            (
+                unquote($key): $value / 16 * 1em,
+            )
+        );
+    }
+
+    @return $result;
+}
+
+/**
+* Default project breakpoints - [em] 
+*/
+
+$breakpoints: calculate-breakpoints($breakpoints_em, $breakpoints_px) !default;
+
+// phone: 23.125em - 370px
+// phoneLg: 30em - 480px,
+// tablet: 48em - 768px,
+// laptop: 64em - 1024px,
+// laptopLg: 80em - 1280px,
+// desktop: 90em - 1440px,
+// tv: 120em - 1920px,
