@@ -10,6 +10,8 @@ $plugincompany-form_submit-button-type: 'primary' !default;
 $plugincompany-form_submit-button-icon-pos: 'no-icon' !default;
 $plugincompany-form_datepicker-button-type: 'secondary' !default;
 $plugincompany-form_datepicker-button-icon-pos: 'only-icon' !default;
+// Max-width for each form. Use `false` if you want to set max-width individually per each form, using 'Front-end Style' tab in form settings in admin panel
+$plugincompany-form_max-width: 45rem !default;
 
 $plugincompany-form_align: left !default;
 $plugincompany-form_separator: 1px solid $color_border-500 !default;
@@ -19,7 +21,10 @@ $plugincompany-form_separator: 1px solid $color_border-500 !default;
     -ms-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
     margin: 0;
-    max-width: 45rem !important;
+
+    @if ($plugincompany-form_max-width) {
+        max-width: $plugincompany-form_max-width !important;
+    }
 
     @if ($plugincompany-form_align == 'center') {
         margin: 0 auto;
