@@ -8,25 +8,29 @@ import deepGet from 'utils/deep-get/deep-get';
 
 let viewportWidth = $(window).width();
 
-const availableBreakpoints = Object.entries(
-    deepGet(viewXml, 'vars.Magento_Theme.breakpoints')
-);
+const availableBreakpoints = deepGet(viewXml, 'vars.Magento_Theme.breakpoints');
 
 const getCurrentBreakpoint = (): number => {
-    for (let i: number = 0; i < availableBreakpoints.length; i++) {
+    const availableBreakpointsEntries: any = Object.keys(
+        availableBreakpoints
+    ).map(key => {
+        return [key, availableBreakpoints[key]];
+    });
+
+    for (let i: number = 0; i < availableBreakpointsEntries.length; i++) {
         if (i === 0) {
-            if (viewportWidth < availableBreakpoints[i + 1][1]) {
-                return availableBreakpoints[i][1];
+            if (viewportWidth < availableBreakpointsEntries[i + 1][1]) {
+                return availableBreakpointsEntries[i][1];
             }
-        } else if (i === availableBreakpoints.length - 1) {
-            if (viewportWidth >= availableBreakpoints[i][1]) {
-                return availableBreakpoints[i][1];
+        } else if (i === availableBreakpointsEntries.length - 1) {
+            if (viewportWidth >= availableBreakpointsEntries[i][1]) {
+                return availableBreakpointsEntries[i][1];
             }
         } else if (
-            viewportWidth >= availableBreakpoints[i][1] &&
-            viewportWidth < availableBreakpoints[i + 1][1]
+            viewportWidth >= availableBreakpointsEntries[i][1] &&
+            viewportWidth < availableBreakpointsEntries[i + 1][1]
         ) {
-            return availableBreakpoints[i][1];
+            return availableBreakpointsEntries[i][1];
         }
     }
 };
