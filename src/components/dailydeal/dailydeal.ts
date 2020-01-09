@@ -1,7 +1,4 @@
 import * as $ from 'jquery';
-
-import * as viewXml from 'etc/view.json';
-import deepGet from 'utils/deep-get/deep-get';
 import 'mage/translate';
 
 /**
@@ -83,6 +80,11 @@ interface DailydealOptions {
      */
     timeDisplayPrecision?: number;
     /**
+     * Dailydeal label translations
+     * @type object
+     */
+    labelTranslations?: object;
+    /**
      * Decides if labels should be dynamically updated every second.
      * Useful if there's 1 second left and you want to show 'second' instead of 'seconds' in this case
      * @type boolean
@@ -138,7 +140,6 @@ export default class Dailydeal {
     protected _$defaultDiscountBadge: JQuery;
     protected _$dailyDealDiscountBadge: JQuery;
     protected _$dailyDealAmountBadge: JQuery;
-    protected _labels: any;
     protected _clock: any;
     protected _options: DailydealOptions = {
         namespace: 'cs-',
@@ -197,6 +198,16 @@ export default class Dailydeal {
             return `.${this.namespace}dailydeal__badge--amount`;
         },
         timeDisplayPrecision: 1,
+        labelTranslations: {
+            day: $.mage.__('Day'),
+            days: $.mage.__('Days'),
+            hour: $.mage.__('Hour'),
+            hours: $.mage.__('Hours'),
+            minute: $.mage.__('Min'),
+            minutes: $.mage.__('Min'),
+            second: $.mage.__('Sec'),
+            seconds: $.mage.__('Sec'),
+        },
         updateLabels: false,
     };
 
@@ -271,10 +282,6 @@ export default class Dailydeal {
         }
 
         this._template = '';
-        this._labels = deepGet(
-            viewXml,
-            'vars.MageSuite_DailyDeal.countdown_labels'
-        );
         this._clock = '';
         this._renderClock();
         this._countdownElements = this._getCountdownElements();
@@ -467,17 +474,17 @@ export default class Dailydeal {
 
     /**
      * Returns label for corresponding position in countdown
-     * based on this._labels object
+     * based on labelTranslations option object
      * @param n {number} number (must know if n > 1 to get correct label)
-     * @return label {string} label from this._labels object
+     * @return label {string} label from this._options.labelTranslations object
      */
     protected _getCountdownLabel(n: number, timeUnit: string): string {
         if (this._options.updateLabels) {
             return n === 1
-                ? $.mage.__(this._labels[timeUnit])
-                : $.mage.__(this._labels[timeUnit + 's']);
+                ? this._options.labelTranslations[timeUnit]
+                : this._options.labelTranslations[timeUnit + 's'];
         } else {
-            return $.mage.__(this._labels[timeUnit + 's']);
+            return this._options.labelTranslations[timeUnit + 's'];
         }
     }
 
