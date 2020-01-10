@@ -1,63 +1,29 @@
-.repertus {
-    &_packstation {
-        &--search-modal {
-            display: none;
-        }
-
-        &-modal {
-            .modal-inner-wrap {
-                width: 40%;
-
-                @include media('>=tablet') {
-                    min-width: 60rem;
-                }
-            }
-
-            .modal-footer {
-                display: none;
-            }
-
-            .cs-modal__title {
-                @include media('<phone') {
-                    font-size: 1.4rem;
-                    line-height: 1.6rem;
-                }
-            }
+.repertus-packstation-search {
+    &.modal-popup {
+        &._show {
+            // If any other Magento's modal is opened, Repertus popup must be displayed on top of it
+            z-index: 905 !important;
         }
     }
 
-    &_address_type_fieldset {
-        width: 100%;
-    }
-}
-
-.tonur {
-    &_shipping_address_packstation_div {
-        &.tonur_hide_select {
-            .js--fancy-select,
-            .tonur_street_number_field,
-            #tonur_shipping_address_packstation {
-                display: none;
-            }
-        }
-
-        &.tonur_hide_street {
-            #street2 {
-                display: none;
-            }
-        }
+    .modal-content {
+        margin-bottom: 3rem;
     }
 
-    &_packstation_input {
+    .modal-footer {
+        display: none;
+    }
+
+    .tonur_packstation_input {
         margin-bottom: 1.5rem;
 
         .cs-form__fieldset {
             display: flex;
             justify-content: space-between;
-        }
 
-        .cs-form__field--repertus-zip {
-            margin-right: 1.5rem;
+            .postcode {
+                margin-right: 1.5rem;
+            }
         }
 
         .cs-form__buttons {
@@ -118,14 +84,18 @@
     }
 }
 
+.repertus_address_type_fieldset {
+    width: 100%;
+}
+
 // HTML cannot be updated with proper classes, therefore we're using @extend
 .repertus_packstation_search_button {
-    div {
+    .admin__field-control {
         @extend .cs-form__buttons;
         margin: 1.5rem 0 3rem;
     }
 
-    #repertus_find_packstation_button {
+    .action-basic {
         @extend .cs-button;
         @extend .cs-button--type_long;
         @extend .cs-button--type_wide-mobile;

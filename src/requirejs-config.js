@@ -33,9 +33,6 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
-            'Magento_Checkout/js/model/new-customer-address': {
-                'Magento_Checkout/js/model/new-customer-address-ext': true,
-            },
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
@@ -54,6 +51,12 @@ var config = {
             'Magento_CheckoutAgreements/js/model/agreements-assigner': {
                 'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
             },
+            'Repertus_Packstation/js/form/components/account_address_type_select': {
+                'Repertus_Packstation/js/form/components/account_address_type_select-mixin': true
+            },
+            'Repertus_Packstation/js/form/components/address_type_select': {
+                'Repertus_Packstation/js/form/components/address_type_select-mixin': true
+            }
         },
     },
     map: {
