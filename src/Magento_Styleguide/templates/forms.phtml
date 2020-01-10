@@ -1,0 +1,197 @@
+<div class="cs-styleguide__container cs-styleguide__container--contrast">
+
+    <h2 class="cs-styleguide__title">
+        Forms
+    </h2>
+
+    <div class="cs-styleguide__section cs-styleguide__section--wide">
+        <div class="cs-dashboard">
+            <form class="form create account form-create-account" action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" autocomplete="on">
+                
+                <fieldset class="fieldset create account" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">                
+                    <div class="field required">
+                        <label for="email_address" class="label"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+                        <div class="control">
+                            <input type="email" name="email" autocomplete="email" id="email_address" value="" title="<?= $block->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
+                        </div>
+                    </div>
+                    <div class="field password required">
+                        <label for="password" class="label"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
+                        <div class="control">
+                            <input type="password" name="password" id="password"
+                                title="<?= $block->escapeHtmlAttr(__('Password')) ?>"
+                                class="input-text"
+                                data-password-min-length="8"
+                                data-password-min-character-sets="3"
+                                data-validate="{required:true, 'validate-customer-password':true}"
+                                autocomplete="current-password">
+                            <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
+                                <div id="password-strength-meter" class="password-strength-meter">
+                                    <?= $block->escapeHtml(__('Password Strength')) ?>:
+                                    <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                                        <?= $block->escapeHtml(__('No Password')) ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
+                    <div class="field confirmation required">
+                        <label for="password-confirmation" class="label"><span><?= $block->escapeHtml(__('Confirm Password')) ?></span></label>
+                        <div class="control">
+                            <input type="password" name="password_confirmation" title="<?= $block->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}" autocomplete="current-password">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset address">
+                    <input type="hidden" name="create_address" value="1" />
+                    <div class="field street">
+                        <label for="street_1" class="label"><span><?= $block->escapeHtml(__('street')) ?></span></label>
+                        <div class="control">
+                            <input type="text" name="street[]" value="" title="street" id="street_1" class="input-text">
+                        </div>
+                        <div class="field required">
+                            <label for="city" class="label"><span><?= $block->escapeHtml(__('city')) ?></span></label>
+                            <div class="control">
+                                <input type="text" name="city" value="" title="city" class="input-text" id="city"  autocomplete="address-level2">
+                            </div>
+                        </div>
+                        <div class="field region required">
+                            <label for="region_id" class="label"><span><?= $block->escapeHtml(__('region')) ?></span></label>
+                            <div class="control">
+                                <select id="region_id" name="region_id" title="region" class="validate-select region_id">
+                                    <option value=""><?= $block->escapeHtml(__('Please select a region, state or province.')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Alabama')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Alasca')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('California')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Colorado')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Florida')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Missouri')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Pensylvania')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Texas')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Utah')) ?></option>
+                                    <option value=""><?= $block->escapeHtml(__('Washington')) ?></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset create info">
+                        <div class="field choice newsletter">
+                            <input type="checkbox" name="is_subscribed" title="<?= $block->escapeHtmlAttr(__('Sign Up for Newsletter')) ?>" value="1" id="is_subscribed" class="checkbox">
+                            <label for="is_subscribed" class="label"><span><?= $block->escapeHtml(__('Sign Up for Newsletter')) ?></span></label>
+                        </div>
+                </fieldset>
+        
+                <fieldset class="fieldset cs-reviews__ratings">
+                    <div id="input-message-box">
+                        <div class="cs-reviews__rating" id="product-review-table">
+                            <div class="cs-reviews__rating-item">
+                                <div class="cs-field">
+                                    <?php
+                                        $msg = __('Select your rating');
+                                    ?>
+                                    <label class="cs-field__label">
+                                        <span><?= /* @escapeNotVerified */ __("Your rating"); ?></span>
+                                    </label>
+                                </div>
+                                <div class="cs-reviews__rating-control | review-control-vote">
+                                    <span class="cs-reviews__rate-feedback" data-default-message="<?=/* @escapeNotVerified */$msg?>"><?=/* @escapeNotVerified */$msg?></span>  
+                                    <div class="cs-star-rating__form-stars">
+
+                                        <?php $ratings = [1,2,3,4,5]; ?>
+                                        <?php foreach ($ratings as $rating): ?>
+                                            
+                                            <?php switch ($rating) {
+                                            case 1:
+                                                $msg = __('Very bad');
+                                                break;
+                                            case 2:
+                                                $msg = __('Bad');
+                                                break;
+                                            case 3:
+                                                $msg = __('Could be better');
+                                                break;
+                                            case 4:
+                                                $msg = __('Good');
+                                                break;
+                                            case 5:
+                                                $msg = __('Very good!');
+                                                break;
+                                            default:
+                                                $msg = __('Click on stars to rate');
+                                        } ?>
+                                        <input
+                                            type="radio"
+                                            name="ratings[0]"
+                                            id="Price_<?= /* @escapeNotVerified */ $rating ?>"
+                                            class="radio"
+                                            data-validate="{required:true, messages:{required:'<?php /* * @escapeNotVerified */  echo __('Please select one of each of the ratings above.'); ?>'}}"
+                                            data-feedback-message="<?= /* @escapeNotVerified */ $msg ?>"
+                                            />
+                                        <label
+                                            class="cs-reviews__rate-stars rating-<?= /* @escapeNotVerified */ $rating; ?>"
+                                            for="Price_<?= /* @escapeNotVerified */ $rating ?>"
+                                            title="<?= /* @escapeNotVerified */ __('%1 %2', $rating, $rating > 1 ? 'stars' : 'star') ?>"
+                                            id="Price_<?= /* @escapeNotVerified */ $rating ?>_label"
+                                        >
+                                        <?=
+                                            $this->getLayout()
+                                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                                ->setIconUrl('images/icons/reviews/star.svg')
+                                                ->setCssClass('cs-star-rating__form-star ' . $rating)
+                                                ->setInlined(true)
+                                                ->toHtml();
+                                        ?>
+                                        <span><?= /* @escapeNotVerified */ __('%1 %2', $rating, $rating > 1 ? 'stars' : 'star') ?></span>
+                                        </label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <fieldset class="fieldset cs-field cs-form__field">
+                    <div class="cs-field__control">
+                        <label for="review_field" class="cs-field__label">Review</label>
+                        <textarea name="detail" class="cs-field__input cs-reviews__review-field"></textarea>
+                    </div>
+                </fieldset>
+
+            </form>
+      
+            <div class="cs-footer__section cs-footer__section--newsletter fieldset">
+                <div class="block newsletter cs-newsletter">
+                    <form class="form subscribe cs-newsletter__form" 
+                            method="post"
+                            data-mage-init='{"validation": {"errorClass": "mage-error"}}'
+                            id="newsletter-validate-detail">
+                        <div class="field newsletter cs-newsletter__field">
+                            <div class="cs-newsletter__control control">
+                                <input name="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
+                                    placeholder="Email adress" data-validate="{required:true, 'validate-email':true}"
+                                />
+                            </div>
+                        </div>
+                        <div class="actions cs-newsletter__actions">
+                            <button class="action subscribe primary cs-newsletter__button" title="Subscribe" type="submit">
+                            <?=
+                                $this->getLayout()
+                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                    ->setIconUrl('images/icons/newsletter/icon-submit.svg')
+                                    ->setCssClass('cs-newsletter__button-icon')
+                                    ->setInlined(true)
+                                    ->toHtml();
+                            ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
