@@ -17,6 +17,7 @@ interface StoreLocatorOptions {
     markerIcons?: object;
     clusterStyles?: object;
     limitOfShopsInitiallyDisplayed?: number;
+    storeData?: string;
 }
 
 interface Coordinates {
@@ -84,6 +85,21 @@ export default class StoreLocator {
             backgroundPosition: 'center',
         },
         limitOfShopsInitiallyDisplayed: 50,
+        storeData: `
+            name
+            latitude
+            longitude
+            city
+            street
+            postCode
+            description
+            sourceCode
+            countryId
+            phone
+            fax
+            email
+            url
+        `,
     };
 
     protected stores: any[] = [];
@@ -159,15 +175,7 @@ export default class StoreLocator {
                 query: `{
                     storePickupLocations {
                       items {
-                        name
-                        latitude
-                        longitude
-                        city
-                        street
-                        postCode
-                        description
-                        sourceCode
-                        countryId
+                        ${this._options.storeData}
                       }
                     }
                   }`,
@@ -546,7 +554,7 @@ export default class StoreLocator {
 
     /**
      * Get store info window html
-     * TODO For now there is not contact data, opening hours, description and route link in response
+     * TODO For now there is no route link in response
      */
     public getInfoWindowContent(store): string {
         const storePostCode = store.postCode ? `${store.postCode} ` : '';
@@ -559,25 +567,39 @@ export default class StoreLocator {
         ${storePostCode} ${storeCity}, ${storeStreet}</p>`
                 : ``;
 
-        const descriptionLine = store.description
-            ? `<p class="cs-store-locator__item-description">
-        ${store.description}</p>`
-            : ``;
-
-        // Contact data is not in the response for now
         const phoneLine = store.phone
-            ? `<a href="tel:${store.phone}" class="cs-store-locator__item-phone">
-        ${store.phone}</a>`
+            ? `<p class="cs-store-locator__item-phone">${$.mage.__(
+                  'Tel'
+              )}: <a href="tel:${store.phone}">${store.phone}</a></p>`
             : ``;
 
-        const contactLine = store.email
-            ? `<a href="mailto:${store.email}" class="cs-store-locator__item-email">
-        ${store.email}</a>`
+        const faxLine = store.fax
+            ? `<p class="cs-store-locator__item-fax">${$.mage.__(
+                  'Fax'
+              )}: <a href="fax:${store.fax}">${store.fax}</a></p>`
+            : ``;
+
+        const emailLine = store.email
+            ? `<p class="cs-store-locator__item-email">${$.mage.__(
+                  'E-Mail'
+              )}: <a href="mailto:${store.email}">${store.email}</a></p>`
+            : ``;
+
+        const websiteLine = store.url
+            ? `<p class="cs-store-locator__item-website">${$.mage.__(
+                  'Website'
+              )}: <a href="//${store.url}" target="_blank" rel="nofollow">${
+                  store.url
+              }</a></p>`
             : ``;
 
         const storeDistance = store.distance
             ? `<span class="cs-store-locator__item-distance">
-        ${$.mage.__('Distance')} ${store.distance} km</span>`
+        ${$.mage.__('Distance')}: ${store.distance} km</span>`
+            : ``;
+
+        const descriptionLine = store.description
+            ? `<p class="cs-store-locator__item-description">${store.description}</p>`
             : ``;
 
         // Not in the response for now
@@ -599,12 +621,14 @@ export default class StoreLocator {
                     </a>
                 </div> 
                 ${addressLine1}
-                ${descriptionLine}
                 ${phoneLine}
+                ${faxLine}
+                ${emailLine}
+                ${websiteLine}
+                ${descriptionLine}
             </div> 
             ${openingHours}
             <div class="cs-store-locator__item-footer">
-                ${contactLine} 
                 ${storeDistance}
             </div>
         </div>`;
