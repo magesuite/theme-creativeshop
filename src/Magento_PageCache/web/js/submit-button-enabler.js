@@ -2,7 +2,7 @@
  * Custom module that enables any submit button in forms that require proper
  * form key to be provided e.g. add to cart button on PDP.
  */
-define(['jquery', 'jquery/ui'], function($) {
+define(['jquery'], function($) {
     'use strict';
 
     return function() {
