@@ -27,6 +27,10 @@ export interface NavigationOptions {
      */
     flyoutMaxHeight?: number;
     /**
+     * Class name that will be added to extra navigation content (featured product, navigation teaser)
+     */
+    flyoutExtrasClassName?: string;
+    /**
      * Maximum number of columns with categories that flyout can have.
      * This value can be an object with different values per breakpoint or a number.
      */
@@ -119,6 +123,7 @@ export default class Navigation {
         itemClassName: 'cs-navigation__item',
         flyoutClassName: 'cs-navigation__flyout',
         flyoutColumnsClassName: 'cs-navigation__list--level_1',
+        flyoutExtrasClassName: 'cs-navigation__extras',
         flyoutMaxHeight: 400,
         flyoutMaxColumnCount: {
             1023: 4,
@@ -300,7 +305,7 @@ export default class Navigation {
                 width: `${this._containerClientRect.width /
                     flyoutMaxColumnCount}px`,
             })
-            .addClass('cs-navigation__extras');
+            .addClass(this._options.flyoutExtrasClassName);
     }
 
     /**
@@ -314,8 +319,14 @@ export default class Navigation {
         );
         this._setColumnCount($flyoutColumns, 1);
 
+        const extraElementsCount = $flyout.children(
+            `.${this._options.flyoutExtrasClassName}`
+        ).length;
+
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
-        const flyoutMaxColumns: number = this._getColumnsForViewport();
+        const flyoutMaxColumns: number = extraElementsCount
+            ? this._getColumnsForViewport() - extraElementsCount
+            : this._getColumnsForViewport();
 
         let flyoutHeight: number = $flyout.height();
         let prevFlyoutHeight: number = 0;
