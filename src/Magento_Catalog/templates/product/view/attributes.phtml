@@ -9,10 +9,10 @@ $product = $block->getProduct();
 $topAttributeHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExtension\Helper\TopAttribute');
 ?>
 <?php if ($additional = $block->getAdditionalData()):
-    if($this->getIsCollapseEnabled()): ?>
+    if ($this->getIsCollapseEnabled()): ?>
         <div
             class="cs-collapsible-text js-collapsible-text"
-            data-height="<?php /* @escapeNotVerified */ echo $this->getCollapseHeight() ?>"
+            data-height="<?= /* @escapeNotVerified */ $this->getCollapseHeight() ?>"
             data-content=".js-collapsible-text-content"
             data-trigger=".js-collapsible-text-trigger"
         >
@@ -21,30 +21,30 @@ $topAttributeHelper = $this->helper('Creativestyle\ProductPositiveIndicatorsExte
                 <div class="cs-attributes-list">
                     <dl class="cs-attributes-list__list" id="product-attribute-specs-table">
                         <?php foreach ($additional as $data): ?>
-                            <?php if($data['value'] == __('N/A')) { continue; } ?>
-                            
-                            <dt class="cs-attributes-list__item-label"><?php echo $block->escapeHtml(__($data['label'])) ?>:
+                            <?php if ($data['value'] == __('N/A')) { continue; } ?>
+
+                            <dt class="cs-attributes-list__item-label"><?= $block->escapeHtml(__($data['label'])) ?>:
                             </dt>
                             <dd class="cs-attributes-list__item">
-                                <?php /* @escapeNotVerified */ echo $helper->productAttribute($product, $data['value'], $data['code']) ?>
-                                <?php if($topAttributeHelper->checkTopAttribute($data['code'], $data['value'])) { ?>
+                                <?= /* @escapeNotVerified */ $helper->productAttribute($product, $data['value'], $data['code']) ?>
+                                <?php if ($topAttributeHelper->checkTopAttribute($data['code'], $data['value'])) { ?>
                                     <span class="cs-badge cs-badge--cut cs-badge--amount | cs-indicators__top-attribute">
-                                        <span class="cs-badge__span cs-badge__span--no-space | cs-indicators__top-attribute-text"><?php echo __('Top Spec'); ?></span>
+                                        <span class="cs-badge__span cs-badge__span--no-space | cs-indicators__top-attribute-text"><?= __('Top Spec'); ?></span>
                                     </span>
                                 <?php } ?>
                             </dd>
                         <?php endforeach; ?>
                     </dl>
                 </div>
-        <?php if($this->getIsCollapseEnabled()): ?>        
+        <?php if ($this->getIsCollapseEnabled()): ?>
             </div>
 
             <button
                 class="cs-button cs-button--look_light cs-button--size_300 | cs-collapsible-text__trigger js-collapsible-text-trigger"
-                data-show-less-text="<?php /* @escapeNotVerified */ echo __('Less information'); ?>"
-                data-show-more-text="<?php /* @escapeNotVerified */ echo __('More information'); ?>"
+                data-show-less-text="<?= /* @escapeNotVerified */ __('Less information'); ?>"
+                data-show-more-text="<?= /* @escapeNotVerified */ __('More information'); ?>"
             >
-                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('More information'); ?></span>
+                 <span class="cs-button__span"><?= /* @escapeNotVerified */ __('More information'); ?></span>
                  <svg class="cs-button__icon">
                     <use xlink:href="#arrow_next"></use>
                  </svg>
