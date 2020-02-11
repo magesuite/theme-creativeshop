@@ -21,8 +21,13 @@ $addtocart_feedback-bg-skew: $transform_skew-400 !default;
 
 $addtocart_ajax-success-bg-primary: $color_success-500 !default;
 $addtocart_ajax-success-bg-secondary: $color_success-600 !default;
+$addtocart_ajax-success-color: $color_white !default;
+$addtocart_ajax-success-fill: $addtocart_ajax-success-color !default;
+
 $addtocart_ajax-fail-bg-primary: $color_error-500 !default;
 $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
+$addtocart_ajax-fail-color: $color_white !default;
+$addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
 
 .#{$ns}addtocart {
     $root: &;
@@ -46,6 +51,31 @@ $addtocart_ajax-fail-bg-secondary: $color_error-600 !default;
 
         &[disabled] {
             opacity: 1;
+        }
+
+        &,
+        &:hover,
+        &:focus,
+        &:active {
+            #{$root}__success-label {
+                color: $addtocart_ajax-success-color;
+            }
+
+            #{$root}__success-icon {
+                * {
+                    fill: $addtocart_ajax-success-fill;
+                }
+            }
+
+            #{$root}__fail-label {
+                color: $addtocart_ajax-fail-color;
+            }
+
+            #{$root}__fail-icon {
+                * {
+                    fill: $addtocart_ajax-fail-fill;
+                }
+            }
         }
     }
 
