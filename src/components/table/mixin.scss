@@ -2,7 +2,15 @@
 @import 'config/variables';
 @import 'components/table/hook';
 
-@mixin table-mobile-layout() {
+$head_color: $color_mineshaft !default;
+$head_move-on-mobile: true !default;
+$head_font-size--mobile: 1.4rem !default;
+
+@mixin table-mobile-layout(
+    $head_color: $head_color,
+    $head_move-on-mobile: $head_move-on-mobile,
+    $head_font-size--mobile: $head_font-size--mobile
+) {
     border: none;
     font-size: 1.4rem;
     padding: 0;
@@ -18,7 +26,7 @@
     tbody td {
         border: none;
         display: block;
-        font-size: 1.4rem;
+        font-size: $head_font-size--mobile;
         padding: 0.2rem;
 
         &:first-child {
@@ -29,13 +37,15 @@
             padding-bottom: 1rem;
         }
 
-        &:before {
-            @include media('<laptop') {
-                padding-right: 10px;
-                content: attr(data-th) ': ';
-                display: inline-block;
-                color: $color_mineshaft;
-                font-weight: 700;
+        @if ($head_move-on-mobile) {
+            &:before {
+                @include media('<laptop') {
+                    padding-right: 10px;
+                    content: attr(data-th) ': ';
+                    display: inline-block;
+                    color: $head_color;
+                    font-weight: 700;
+                }
             }
         }
 

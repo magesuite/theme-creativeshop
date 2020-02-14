@@ -20,6 +20,8 @@ $table_head-border-bottom: 2px solid $color_border-500 !default;
 $table_head-color: $color_text-800 !default;
 $table_head-font-size: $font-size_headline-5 !default;
 $table_head-text-transform: uppercase !default;
+$table_head_font-size--mobile: 1.4rem !default;
+$table_head_move-on-mobile: true !default;
 
 $table_item-color: $color_text-800 !default;
 $table_item-font-size: $font-size_paragraph !default;
@@ -163,18 +165,24 @@ $table_actions-links-separator: 2px solid $color_border-500 !default;
         .table {
             &:not(.comparison) {
                 &:not(.totals):not(.table-totals) {
-                    @include table-mobile-layout();
+                    @include table-mobile-layout(
+                        $head_color: $table_head-color,
+                        $head_move-on-mobile: $table_head_move-on-mobile,
+                        $head_font-size--mobile: $table_head_font-size--mobile
+                    );
 
-                    &.additional-attributes {
-                        tbody {
-                            th {
-                                display: none;
-                            }
+                    @if ($table_head_move-on-mobile) {
+                        &.additional-attributes {
+                            tbody {
+                                th {
+                                    display: none;
+                                }
 
-                            td {
-                                &:last-child {
-                                    border: none;
-                                    padding: 0 0 0.5rem;
+                                td {
+                                    &:last-child {
+                                        border: none;
+                                        padding: 0 0 0.5rem;
+                                    }
                                 }
                             }
                         }
