@@ -26,24 +26,24 @@
         <div class="pages cs-pagination" role="navigation">
             <div class="cs-pagination__content" role="menubar">
                 <?php if (!$isFirstPage || $isFirstPage && $displayPrevNextButtonsIfDisabled): ?>
-                    <?php 
+                    <?php
                         $prevPageLabel = $block->getAnchorTextForPrevious() ?? __('Previous page');
                         $previousPageIcon = $block->getVar('toolbar/pagination/icons/previous_page', 'Magento_Theme');
-                        $previousPageIcon = !empty($previousPageIcon) 
+                        $previousPageIcon = !empty($previousPageIcon)
                             ? $this->getLayout()
                                  ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
                                  ->setIconUrl($previousPageIcon)
                                  ->setCssClass('cs-pagination__action-icon cs-pagination__action-icon--previous-page')
                                  ->setAltText($prevPageLabel)
                                  ->setInlined(true)
-                                 ->setLazyLoaded(true)
+                                 ->setLazyLoaded(false)
                                  ->toHtml()
                             : '';
                         $prevActionTag = $isFirstPage && $displayPrevNextButtonsIfDisabled ? 'span' : 'a';
                     ?>
                     <div class="item pages-item-previous cs-pagination__prev" role="none">
                         <<?= $prevActionTag ?> class="<?= /* @escapeNotVerified */ $prevPageLabel ? 'link ' : 'action ' ?> previous cs-pagination__action cs-pagination__action--previous-page<?= $prevActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
-                          <?php if($prevActionTag == 'a'): ?> href="<?= /* @escapeNotVerified */ $block->getPreviousPageUrl() ?>"<?php endif; ?>  
+                          <?php if($prevActionTag == 'a'): ?> href="<?= /* @escapeNotVerified */ $block->getPreviousPageUrl() ?>"<?php endif; ?>
                           title="<?= /* @escapeNotVerified */ $prevPageLabel ?>"
                           tabindex="0"
                           role="menuitem">
@@ -65,9 +65,9 @@
 
                 <?php if($this->hasInputSwitcher()): ?>
 
-                    <?php 
+                    <?php
                         $lastPageSeparator = $block->getVar('toolbar/pagination/last_page_separator', 'Magento_Theme');
-                        $lastPageSeparator = !empty($lastPageSeparator) ? __($lastPageSeparator) : '/'; 
+                        $lastPageSeparator = !empty($lastPageSeparator) ? __($lastPageSeparator) : '/';
                     ?>
                     <div class="field cs-pagination__page-provider">
                         <input
@@ -132,25 +132,25 @@
                 <?php endif; ?>
 
                 <?php if (!$isLastPage || $isLastPage && $displayPrevNextButtonsIfDisabled): ?>
-                    <?php 
+                    <?php
                         $nextPageLabel = $block->getAnchorTextForNext() ?? __('Next page');
                         $nextPageIcon = $block->getVar('toolbar/pagination/icons/next_page', 'Magento_Theme');
-                        $nextPageIcon = !empty($nextPageIcon) 
+                        $nextPageIcon = !empty($nextPageIcon)
                             ? $this->getLayout()
                                  ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
                                  ->setIconUrl($nextPageIcon)
                                  ->setCssClass('cs-pagination__action-icon cs-pagination__action-icon--next-page')
                                  ->setAltText($nextPageLabel)
                                  ->setInlined(true)
-                                 ->setLazyLoaded(true)
+                                 ->setLazyLoaded(false)
                                  ->toHtml()
                             : '';
                         $nextActionTag = $isLastPage && $displayPrevNextButtonsIfDisabled ? 'span' : 'a';
                     ?>
                     <div class="item pages-item-next cs-pagination__next" role="none">
-                        <<?= $nextActionTag ?> 
+                        <<?= $nextActionTag ?>
                           class="<?= /* @escapeNotVerified */ $nextPageLabel ? 'link ' : 'action ' ?> next cs-pagination__action cs-pagination__action--next-page<?= $nextActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
-                          <?php if($nextActionTag == 'a'): ?> href="<?= /* @escapeNotVerified */ $block->getNextPageUrl() ?>"<?php endif ?> 
+                          <?php if($nextActionTag == 'a'): ?> href="<?= /* @escapeNotVerified */ $block->getNextPageUrl() ?>"<?php endif ?>
                           title="<?= /* @escapeNotVerified */ $nextPageLabel ?>"
                           tabindex="0"
                           role="menuitem">
