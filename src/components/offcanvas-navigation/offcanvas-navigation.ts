@@ -1,10 +1,7 @@
 import * as $ from 'jquery';
 
 import requireAsync from 'utils/require-async';
-import idleDeffered, {
-    default as idleDeferred,
-    IdleDeferred,
-} from 'utils/idle-deffered';
+import { default as idleDeferred } from 'utils/idle-deffered';
 
 /**
  * Component options interface.
@@ -45,9 +42,6 @@ export default class OffcanvasNavigation {
     protected _options: OffcanvasNavigationOptions;
     protected _$element: JQuery;
     protected _$drawer: JQuery;
-    protected _$parentLink: JQuery;
-    protected _$returnLink: JQuery;
-    protected _idleDeferred: IdleDeferred;
     protected _activeCategoryPath: string[];
 
     protected _eventListeners: {
@@ -93,16 +87,17 @@ export default class OffcanvasNavigation {
             'activeCategoryPath'
         )}`.split('/');
 
-        this._initWhenIdle();
+        // Prefetch and cache mobile navigation when browser becomes idle.
+        idleDeferred().then(() => this._getHtml());
+
+        this._addEventListeners();
     }
 
     /**
      * Initializes offcanvas navigation either from cache or when browser enters idle state.
      */
-    protected _initWhenIdle(): void {
-        this._idleDeferred = idleDeferred();
-        this._idleDeferred
-            .then(() => this._getHtml())
+    protected _init(): void {
+        this._getHtml()
             .then(html => this._initHtml(html))
             .then(() => {
                 if (this._options.showActiveCategoryLevel) {
@@ -120,15 +115,6 @@ export default class OffcanvasNavigation {
     }
 
     /**
-     * Forces offcanvas navigation initialization without waiting for browser idle period.
-     */
-    protected _forceInit(): void {
-        if (this._idleDeferred) {
-            this._idleDeferred.force();
-        }
-    }
-
-    /**
      * Initializes given HTML and assigns all event listeners.
      * @param html Offcanvas navigation HTML loaded with AJAX or from cache.
      */
@@ -136,14 +122,6 @@ export default class OffcanvasNavigation {
         this._$element = $(html);
         this._$drawer.empty().append(this._$element);
 
-        this._$parentLink = this._$element.find(
-            `.${this._options.className}__link--parent`
-        );
-        this._$returnLink = this._$element.find(
-            `.${this._options.className}__link--return`
-        );
-
-        this._addEventListeners();
         this._initSwitchers();
         this._fixLoginLinks();
     }
@@ -392,8 +370,8 @@ export default class OffcanvasNavigation {
      * Sets up event listeners for a component.
      */
     protected _addEventListeners(): void {
-        this._eventListeners.offcanvasShow = this._forceInit.bind(this);
-        $(document).on('offcanvas-show', this._eventListeners.offcanvasShow);
+        this._eventListeners.offcanvasShow = this._init.bind(this);
+        $(document).one('offcanvas-show', this._eventListeners.offcanvasShow);
 
         this._eventListeners.offcanvasHide = this._resetLevels.bind(this);
         $(document).on('offcanvas-hide', this._eventListeners.offcanvasHide);
@@ -401,10 +379,19 @@ export default class OffcanvasNavigation {
         this._eventListeners.parentLinkClick = this._handleParentLinkClick.bind(
             this
         );
-        this._$parentLink.on('click', this._eventListeners.parentLinkClick);
+
+        this._$drawer.on(
+            'click',
+            `.${this._options.className}__link--parent`,
+            this._eventListeners.parentLinkClick
+        );
 
         this._eventListeners.returnLinkClick = this._hideLevel.bind(this);
-        this._$returnLink.on('click', this._eventListeners.returnLinkClick);
+        this._$drawer.on(
+            'click',
+            `.${this._options.className}__link--return`,
+            this._eventListeners.returnLinkClick
+        );
     }
     /**
      * Removes event listeners for a component.
@@ -412,8 +399,8 @@ export default class OffcanvasNavigation {
     protected _removeEventListeners(): void {
         $(document).off('offcanvas-show', this._eventListeners.offcanvasShow);
         $(document).off('offcanvas-hide', this._eventListeners.offcanvasHide);
-        this._$parentLink.off('click', this._eventListeners.parentLinkClick);
-        this._$returnLink.off('click', this._eventListeners.returnLinkClick);
+        this._$drawer.off('click', this._eventListeners.parentLinkClick);
+        this._$drawer.off('click', this._eventListeners.returnLinkClick);
     }
     /**
      * Shows current category level in navigation (or parent category level if there is no nested category).
@@ -451,7 +438,8 @@ export default class OffcanvasNavigation {
             const activeCategoryId = this._activeCategoryPath[
                 this._activeCategoryPath.length - 1
             ];
-            const $activeCategoryItem = $(
+
+            $(
                 `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
             )
                 .parent()
