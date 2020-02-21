@@ -2,7 +2,7 @@
 import * as $ from 'jquery';
 
 import breakpoint from 'utils/breakpoint/breakpoint';
-import * as viewXml from 'etc/view.json';
+import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 
 interface IGridLayoutSettings {

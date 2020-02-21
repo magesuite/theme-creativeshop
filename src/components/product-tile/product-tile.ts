@@ -1,5 +1,5 @@
 import * as $ from 'jquery';
-import * as viewXml from 'etc/view.json';
+import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 
 export interface ProductTileOptions {
