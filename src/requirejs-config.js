@@ -1,4 +1,14 @@
+var deps = [];
+
+/**
+ * Load promise polyfill if needed.
+ */
+if (!('Promise' in window) || !window.Promise.prototype['finally']) {
+    deps.push('promisePolyfill');
+}
+
 var config = {
+    deps: deps,
     paths: {
         Swiper: 'js/vendor/swiper',
         dropdown: 'js/vendor/bootstrap-dropdown',

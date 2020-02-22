@@ -8,8 +8,7 @@
  */
 (function(root, doc) {
     var settings = {
-        svgSelector:
-            'img.inline-svg[src$=".svg"], img.inline-svg[data-src$=".svg"]',
+        svgSelector: '.inline-svg',
     };
 
     /**
@@ -108,6 +107,10 @@
     var inline = function(svg) {
         // Store some attributes of the image
         var url = svg.getAttribute('data-src') || svg.src;
+
+        if (url.substring(-4) !== '.svg') {
+            return;
+        }
 
         svg.className.replace('inline-svg', '');
 
