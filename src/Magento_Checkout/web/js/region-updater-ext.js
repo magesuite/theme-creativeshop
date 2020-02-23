@@ -6,7 +6,7 @@
  * - Showing entire "State/Province" field when it is required.
  * - Hiding it when it is not.
  */
-define(['jquery', 'jquery/ui'], function($) {
+define(['jquery'], function($) {
     'use strict';
 
     return function(regionUpdater) {

@@ -1,11 +1,10 @@
 define([
-    'ko',
     'jquery',
     'underscore',
     'Magento_Search/js/form-mini',
-    'jquery/ui',
+    'jquery-ui-modules/widget',
     'mage/translate',
-], function(ko, $, _, quickSearch) {
+], function($, _, quickSearch) {
     'use strict';
 
     /**
