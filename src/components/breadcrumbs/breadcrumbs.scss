@@ -16,8 +16,10 @@ $breadcrumbs_separator-custom-show: #{map-get(
         display
     )} !default;
 
-$breadcrumbs_background: $color_background-500 url('../images/breadcrumbs.png')
-    no-repeat right / auto 6.8rem !default;
+$breadcrumbs_background-color: $color_background-500 !default;
+$breadcrumbs_background-image: url('../images/breadcrumbs.png') !default;
+$breadcrumbs_background: $breadcrumbs_background-color
+    $breadcrumbs_background-image no-repeat right / auto 6.8rem !default;
 
 $breadcrumbs_item-font-size: 1.2rem !default;
 $breadcrumbs_item-color: $color_text-400 !default;
@@ -100,11 +102,12 @@ $breadcrumbs_vertical-space: 1.3rem !default;
 .cs-container {
     &--breadcrumbs {
         max-width: none;
-        background: $breadcrumbs_background;
         display: none;
+        background: $breadcrumbs_background-color;
 
         @include media('>=tablet') {
             display: block;
+            background: $breadcrumbs_background;
         }
     }
 }
