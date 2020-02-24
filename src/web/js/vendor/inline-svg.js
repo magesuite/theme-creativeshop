@@ -108,11 +108,11 @@
         // Store some attributes of the image
         var url = svg.getAttribute('data-src') || svg.src;
 
-        if (url.substring(-4) !== '.svg') {
+        if (url.substr(-4) !== '.svg') {
             return;
         }
 
-        svg.className.replace('inline-svg', '');
+        svg.className = svg.className.replace('inline-svg', '');
 
         if (cache[url]) {
             parseAndReplace(cache[url].cloneNode(true), svg);
@@ -150,17 +150,7 @@
             observer.observe(svg);
         });
     } else {
-        if (doc.readyState !== 'loading') {
-            svgs.forEach(function(svg) {
-                inline(svg);
-            });
-        } else {
-            doc.addEventListener('DOMContentLoaded', function() {
-                svgs.forEach(function(svg) {
-                    inline(svg);
-                });
-            });
-        }
+        inline(svg);
     }
 
     if ('MutationObserver' in root) {
