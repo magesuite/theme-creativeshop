@@ -31,6 +31,17 @@ export interface HeaderSearchOptions {
      * @default '#search'
      */
     searchInputSelector?: string;
+    /**
+     * Define if input field should get focus after toggle
+     * @default true
+     */
+    searchInputFocus?: boolean;
+    /**
+     * Define if click on closeButtonSelector element in search field should close search element
+     * If false, instead of close search element, the value of input field will be removed
+     * @default true
+     */
+    closeButtonToggleSearch?: boolean;
 }
 
 export default class HeaderSearch {
@@ -49,6 +60,8 @@ export default class HeaderSearch {
                 targetActiveClass: 'cs-header__search--active',
                 triggerActiveClass: 'cs-header-user-nav__item--search-active',
                 searchInputSelector: '#search',
+                closeElementToggleSearch: true,
+                searchInputFocus: true,
             },
             options
         );
@@ -67,16 +80,44 @@ export default class HeaderSearch {
     }
 
     protected _attachEvents(): void {
-        this._$trigger.on('click', (e: Event): void => {
-            e.preventDefault();
-            this._toggle();
-            this._$searchBoxInput.focus();
-        });
-
-        this._$closeBtn.on('click', (): void => this._toggle());
+        this._triggerElementClick();
+        this._closeElementClick();
     }
 
-    protected _toggle(): void {
+    protected _triggerElementClick(): void {
+        this._$trigger.on('click', (e: Event): void => {
+            e.preventDefault();
+
+            this._toggleSearch();
+            this._focusInputField();
+        });
+    }
+
+    protected _closeElementClick(): void {
+        this._$closeBtn.on('click', (): void => {
+            if (this._options.closeElementToggleSearch) {
+                this._toggleSearch();
+            } else {
+                this._resetInputValue();
+            }
+        });
+    }
+
+    protected _resetInputValue(): void {
+        if (this._$searchBoxInput.val()) {
+            this._$searchBoxInput.val('');
+        }
+
+        this._focusInputField();
+    }
+
+    protected _focusInputField(): void {
+        if (this._options.searchInputFocus) {
+            this._$searchBoxInput.focus();
+        }
+    }
+
+    protected _toggleSearch(): void {
         this._$trigger.parent().toggleClass(this._options.triggerActiveClass);
         this._$target.toggleClass(this._options.targetActiveClass);
     }
