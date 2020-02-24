@@ -3,7 +3,7 @@ var deps = [];
 /**
  * Load promise polyfill if needed.
  */
-if (!('Promise' in window) || !window.Promise.prototype['finally']) {
+if (!('Promise' in window) || !('finally' in window.Promise.prototype)) {
     deps.push('promisePolyfill');
 }
 
