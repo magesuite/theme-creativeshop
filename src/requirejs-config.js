@@ -1,14 +1,5 @@
-var deps = [];
-
-/**
- * Load promise polyfill if needed.
- */
-if (!('Promise' in window) || !('finally' in window.Promise.prototype)) {
-    deps.push('promisePolyfill');
-}
-
 var config = {
-    deps: deps,
+    deps: [],
     paths: {
         Swiper: 'js/vendor/swiper',
         dropdown: 'js/vendor/bootstrap-dropdown',
@@ -100,3 +91,13 @@ var config = {
         },
     },
 };
+
+/**
+ * Load promise polyfill if needed.
+ */
+if (
+    'navigator' in window && // Check  if we are not executing in baler
+    (!('Promise' in window) || !('finally' in window.Promise.prototype))
+) {
+    config.deps.push('promisePolyfill');
+}
