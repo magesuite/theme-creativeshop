@@ -554,7 +554,8 @@ var LazyLoad = function () {
         data_srcset: 'srcset',
         data_sizes: 'sizes',
         class_loading: 'lazyloading',
-        class_loaded: 'lazyloaded'
+        class_loaded: 'lazyloaded',
+        thresholds: '50%'
     });
 
     if ('MutationObserver' in window) {
