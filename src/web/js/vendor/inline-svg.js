@@ -150,7 +150,9 @@
             observer.observe(svg);
         });
     } else {
-        inline(svg);
+        svgs.forEach(function(svg) {
+            inline(svg);
+        });
     }
 
     if ('MutationObserver' in root) {

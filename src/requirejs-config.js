@@ -96,8 +96,8 @@ var config = {
  * Load promise polyfill if needed.
  */
 if (
-    'navigator' in window && // Check  if we are not executing in baler
+    'navigator' in window && // Check if we are not executing in baler
     (!('Promise' in window) || !('finally' in window.Promise.prototype))
 ) {
-    config.deps.push('promisePolyfill');
+    config.deps.push('js/vendor/promisePolyfill');
 }

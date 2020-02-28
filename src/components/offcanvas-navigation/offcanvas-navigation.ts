@@ -149,13 +149,36 @@ export default class OffcanvasNavigation {
      * @param $offcanvasSwitcher Reference to switcher inside offcanvas.
      */
     protected _fixSwitcherLinks($offcanvasSwitcher: JQuery) {
-        const uenc = btoa(window.location.href);
-        $offcanvasSwitcher.find('a').each((index, element) => {
-            const $switcherLink = $(element);
-            const postData = $switcherLink.data('post');
-            postData.data.uenc = uenc;
-            $switcherLink.attr('data-post', JSON.stringify(postData));
-        });
+        const desktopSwitcherId = `#${$offcanvasSwitcher
+            .attr('id')
+            .replace('-offcanvas', '')}`;
+        const $desktopSwitcherLinks = $(`#${desktopSwitcherId} a`);
+        // If there is a desktop counterpart then just copy its "data-post".
+        if ($desktopSwitcherLinks.length) {
+            $offcanvasSwitcher.find('a').each((index, element) => {
+                $(element).attr(
+                    'data-post',
+                    $desktopSwitcherLinks.eq(index).attr('data-post')
+                );
+            });
+        } else {
+            // Otherwise try to fallback to dummy solution which should redirect to other storeview's homepage.
+            $offcanvasSwitcher.find('a').each((index, element) => {
+                const $switcherLink = $(element);
+                const postData = $switcherLink.data('post');
+                try {
+                    const endpointUrl = atob(
+                        postData.data.uenc.replace(/,/g, '')
+                    );
+                    const targetUrl = endpointUrl.slice(
+                        0,
+                        endpointUrl.indexOf(this._options.endpointPath) + 1
+                    );
+                    postData.data.uenc = btoa(targetUrl);
+                    $switcherLink.attr('data-post', JSON.stringify(postData));
+                } catch (error) {}
+            });
+        }
     }
 
     /**
