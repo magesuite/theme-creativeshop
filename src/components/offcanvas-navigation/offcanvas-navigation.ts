@@ -176,7 +176,9 @@ export default class OffcanvasNavigation {
                     );
                     postData.data.uenc = btoa(targetUrl);
                     $switcherLink.attr('data-post', JSON.stringify(postData));
-                } catch (error) {}
+                } catch (error) {
+                    // Could not parse the data.
+                }
             });
         }
     }
