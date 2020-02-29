@@ -149,6 +149,10 @@ export default class OffcanvasNavigation {
      * @param $offcanvasSwitcher Reference to switcher inside offcanvas.
      */
     protected _fixSwitcherLinks($offcanvasSwitcher: JQuery) {
+        if (!$offcanvasSwitcher.length) {
+            return;
+        }
+
         const desktopSwitcherId = `${$offcanvasSwitcher
             .attr('id')
             .replace('-offcanvas', '')}`;
