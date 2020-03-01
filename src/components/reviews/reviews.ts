@@ -47,7 +47,6 @@ export default class Reviews {
         const _this: any = this;
         let msg: string = this._$feedbackEl.data('default-message');
         const $radios: any = [];
-        const $icons: any = [];
 
         for (
             let ratingIndex: number = 0;
@@ -57,9 +56,6 @@ export default class Reviews {
             $radios[ratingIndex] = _this._$wrapper
                 .eq(ratingIndex)
                 .find('input[type="radio"]');
-            $icons[ratingIndex] = _this._$wrapper
-                .eq(ratingIndex)
-                .find('label svg');
 
             for (
                 let starIndex: number = 0;
@@ -70,8 +66,10 @@ export default class Reviews {
                     'change',
                     function(): void {
                         if ($(this).is(':checked')) {
-                            $icons[ratingIndex].each(
-                                (index: number, element: JQuery) => {
+                            _this._$wrapper
+                                .eq(ratingIndex)
+                                .find('.cs-star-rating__form-star')
+                                .each((index: number, element: JQuery) => {
                                     if (index <= starIndex) {
                                         $(element).addClass(
                                             'cs-star-rating__form-star--active'
@@ -81,8 +79,7 @@ export default class Reviews {
                                             'cs-star-rating__form-star--active'
                                         );
                                     }
-                                }
-                            );
+                                });
 
                             msg = _this._$wrapper
                                 .eq(ratingIndex)
