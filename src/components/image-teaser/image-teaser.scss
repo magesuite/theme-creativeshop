@@ -236,6 +236,15 @@ $image-teaser_cms-pages-background: $color_gallery !default;
 
         #{$root}--teaser-and-text & {
             order: 2;
+
+            &:not(#{$root}__slide--image-uploaded) {
+                #{$root}__content-wrapper {
+                    @include media('<tablet') {
+                        position: static;
+                        height: auto;
+                    }
+                }
+            }
         }
 
         &--image-uploaded {
@@ -389,13 +398,6 @@ $image-teaser_cms-pages-background: $color_gallery !default;
                 @include media('>=laptop') {
                     padding: $image-teaser_content-gutter-base * 4;
                 }
-            }
-        }
-
-        #{$root}--teaser-and-text & {
-            @include media('<tablet') {
-                position: static;
-                height: auto;
             }
         }
 
