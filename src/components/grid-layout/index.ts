@@ -9,5 +9,10 @@ const namespace: string = 'cs-';
  * GridLayout component initialization
  */
 $(`.${namespace}grid-layout`).each(function(): void {
-    new GridLayout($(this));
+    /**
+     * Initialize each grid layout in a separate task to let the browser do its stuff in between.
+     */
+    setTimeout(() => {
+        new GridLayout($(this));
+    });
 });
