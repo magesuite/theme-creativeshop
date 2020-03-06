@@ -9,17 +9,15 @@ define(['jquery', 'underscore'], function($, _) {
     return function(Form) {
         return Form.extend({
             loadTheme: function() {
-                var dfd = $.Deferred(),
-                    isMinified,
-                    cssUrl;
+                var dfd = $.Deferred();
                 /**
                  * Check URL of the first stylesheet in the head to know if we should
                  * link to the minified resource or not.
                  */
-                isMinified = $('head link[rel="stylesheet"]')
+                var isMinified = $('head link[rel="stylesheet"]')
                     .attr('href')
                     .match(/\.min.css$/);
-                cssUrl =
+                var cssUrl =
                     requirejs.toUrl('') + // Pass empty string to get the base URL while preventing "css" => "lib/require-css/css" mapping.
                     'css/plugincompany-form' +
                     (isMinified ? '.min.css' : '.css');
