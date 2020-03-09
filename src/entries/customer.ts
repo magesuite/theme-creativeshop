@@ -56,6 +56,9 @@ import 'components/typography';
 import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
+
+import 'components/non-critical';
+
 // Content Constructor (used only for usps component)
 import 'components/image-teaser';
 import 'components/image-teaser-legacy';

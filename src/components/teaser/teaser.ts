@@ -180,6 +180,7 @@ const csTeaser: any = function($element: any, settings: any): void {
 
     const postInit = (): void => {
         $element.addClass(`${currentSettings.teaserName}--ready`);
+        $element.trigger('teaserUpdated');
 
         if (
             (swiperInstance.originalParams.slidesPerView !== 1 ||
@@ -210,6 +211,7 @@ const csTeaser: any = function($element: any, settings: any): void {
         swiperInstance.update();
 
         let currentWindowWidth = $(window).width();
+
         $(window).on('resize', (): void => {
             const newWindowWidth = $(window).width();
             if (!destroyed && newWindowWidth !== currentWindowWidth) {

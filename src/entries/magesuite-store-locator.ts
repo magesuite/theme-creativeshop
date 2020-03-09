@@ -54,6 +54,9 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/usps';
 import 'components/select';
+
+import 'components/non-critical';
+
 // Content Constructor (used only for usps component)
 import 'components/image-teaser';
 // Storelocator page specific

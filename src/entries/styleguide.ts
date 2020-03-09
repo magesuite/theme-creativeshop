@@ -54,6 +54,9 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
 import 'components/select';
+
+import 'components/non-critical';
+
 // Content Constructor
 import 'components/brand-carousel';
 import 'components/category-links';

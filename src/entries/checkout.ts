@@ -24,7 +24,7 @@ import 'components/cookie-message';
 import 'components/device-detection';
 import 'components/display-controller';
 import 'components/dropdown-switcher';
-import 'components/field'; // ??
+import 'components/field';
 import 'components/footer';
 import 'components/grid-layout';
 import 'components/headline';
@@ -56,6 +56,8 @@ import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/toolbar';
+
+import 'components/non-critical';
 
 // Content Constructor
 import 'components/brand-carousel';
