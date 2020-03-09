@@ -135,6 +135,10 @@ export default class ProportionalScaler {
     }
 
     public _scale(): any {
+        if (!this._scalableElement) {
+            return;
+        }
+
         this._isScaleScheduled = false;
         this._scalableElement.style.fontSize = `${parseInt(
             this._scalableElelementFontSize,

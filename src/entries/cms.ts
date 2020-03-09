@@ -4,7 +4,6 @@
 // Each page type has own entry point containing required components.
 // It allows optimizing bundles in webpack - which gathers common imports in separate package.
 // It is a job of every component to initilize itself.
-
 import 'config/base.scss';
 // TODO: Remove this file when possible
 import 'bundle.scss';
@@ -56,6 +55,9 @@ import 'components/typography';
 import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
+
+import 'components/non-critical';
+
 // Content Constructor
 import 'components/brand-carousel';
 import 'components/category-links';

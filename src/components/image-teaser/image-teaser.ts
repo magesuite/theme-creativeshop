@@ -524,6 +524,8 @@ export default class ImageTeaser {
     }
 
     protected _initializeProportionalSlideScaling(): void {
+        const $container = this._$container;
+
         this._$container
             .find(`.${this._options.teaserName}__slide`)
             .each(function(): void {
@@ -542,6 +544,11 @@ export default class ImageTeaser {
                     badgeScaler._initScaling()
                 ).done(() => {
                     $slide.addClass('ready');
+
+                    $container.on('teaserUpdated', () => {
+                        textScaler._scale();
+                        badgeScaler._scale();
+                    });
                 });
             });
     }
