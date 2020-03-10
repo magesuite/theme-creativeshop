@@ -2,6 +2,7 @@ import * as $ from 'jquery';
 import ProductsCarousel, {
     ProductsCarouselOptions,
 } from 'components/products-carousel/products-carousel';
+import requireAsync from 'utils/require-async';
 
 /**
  * Component options interface.
@@ -14,7 +15,16 @@ export interface NostoProductsOptions {
 }
 
 /**
- * Nosto Product component that renders magesuite carousels for nosto product recommendations.
+ * Typing for Nosto product data retreived from the template
+ */
+interface NostoProductsData {
+    ids: string[];
+    urls: string[];
+}
+
+/**
+ * Nosto Product component that renders magesuite carousels for Nosto recommendation integration.
+ * Replaces product urls and attaches events for proper Nosto analytics tracking
  * Only to use with:
  * - installed magesuite-nosto-products extension (providing endpoint for getting carousel html)
  * - proper structure of nosto template, containing <span> elements with rendered product ids and contaier for the carousel
@@ -68,9 +78,10 @@ class NostoProducts {
      * - puts markup to the contentSelector defined in options
      */
     protected _runProductFetch(): void {
-        this._collectIds()
-            .then((ids: any): any => this._getProducts(ids))
-            .then((response: string): void => {
+        const productsData = this._collectNostoProductsData();
+
+        this._getProductsCarousel(productsData).then(
+            (response: string): void => {
                 const $dataTarget: JQuery = this._$element.find(
                     this._options.contentSelector
                 );
@@ -87,38 +98,74 @@ class NostoProducts {
                         this._options.productCarouselOptions
                     );
                 }
-            });
+            }
+        );
     }
 
     /**
-     * Collects information (products IDs) from template that nosto provided.
-     * Then iterates through those IDs and pushes them all into Array
-     * @return {Promise<Array>} Promise that resolves data collecting and as prop it returns this IDs array
+     * Collects products' IDs and URLs from the Nosto template.
+     * @return {NostoProductsData}
      */
-    protected _collectIds(): Promise<any> {
-        return new Promise(resolve => {
-            const ids = [];
-            const $items: JQuery = this._$element.find(
-                this._options.productIdSelector
-            );
+    protected _collectNostoProductsData(): NostoProductsData {
+        const ids = [];
+        const urls = [];
+        const $items: JQuery = this._$element.find(
+            this._options.productIdSelector
+        );
 
-            for (let i: number = 0; i < $items.length; i++) {
-                ids.push($items[i].innerText.trim());
-            }
+        for (let i: number = 0; i < $items.length; i++) {
+            ids.push($items[i].dataset.productId.trim());
+            urls.push($items[i].dataset.productUrl.trim());
+        }
 
-            resolve(ids);
-        });
+        return {
+            ids: ids,
+            urls: urls,
+        };
     }
 
     /**
      * Fetches HTML markup with all products that IDs was in array nosto provided using $.GET
-     * @param ids {Array} Array with products IDs
-     * @return {any} AJAX response with html markup of products (including PG/PC wrappers)
+     * also replacing product urls
+     * @param productsData {NostoProductsData} Array with products IDs
+     * @return {string} AJAX response with html markup of products
      */
-    protected _getProducts(ids: any): any {
+    protected _getProductsCarousel(productsData: NostoProductsData): any {
         return $.get(this._rendererEndpoint, {
-            id: ids,
+            id: productsData.ids,
+        }).then((response: string) => {
+            const productsCarouselHTML = this._replaceProductsUrlWithNosto(
+                response,
+                productsData.urls
+            );
+
+            return productsCarouselHTML;
         });
+    }
+
+    /**
+     * Replaces product urls in product tile anchors with the ones retreived from nosto
+     * @param productsCarouselHTML {string} html of the products carousel
+     * @param urls {array} array containing urls for nosto products, retreived from Nosto template
+     * @return {string} html markup with replaced product urls
+     */
+    protected _replaceProductsUrlWithNosto(
+        productsCarouselHTML: string,
+        urls: string[]
+    ): string {
+        const $output = $(productsCarouselHTML);
+
+        $output
+            .find('a.cs-product-tile__thumbnail-link')
+            .each((index, element) => {
+                $(element).attr('href', urls[index]);
+            });
+
+        $output.find('a.cs-product-tile__name-link').each((index, element) => {
+            $(element).attr('href', urls[index]);
+        });
+
+        return $output.html();
     }
 }
 
@@ -126,25 +173,46 @@ class NostoProducts {
 export default function initializeNostoProductsRenderer(
     config?: NostoProductsOptions
 ) {
-    if (typeof nostojs !== 'undefined') {
-        const options = $.extend(
-            {
-                componentClass: 'cs-nosto-products',
-                contentSelector: `.cs-nosto-products__content`,
-                productIdSelector: `.cs-nosto-products__product-id`,
-            },
-            config
-        );
+    const options = $.extend(
+        {
+            componentClass: 'cs-nosto-products',
+            contentSelector: `.cs-nosto-products__content`,
+            productIdSelector: `.cs-nosto-products__product-id`,
+        },
+        config
+    );
 
-        nostojs((api: any): void => {
-            api.listen('postrender', (nostoPostRenderEvent: any): void => {
+    const $nostoElements = $(`.${options.componentClass}`);
+
+    if ($nostoElements.length) {
+        $nostoElements.each(function() {
+            new NostoProducts($(this), options);
+        });
+    }
+
+    requireAsync(['nostojs']).then(([nostojs]) => {
+        // Init the carousels on every nosto postrender event
+        nostojs((api): void => {
+            api.listen('postrender', (nostoPostRenderEvent): void => {
                 $(`.${options.componentClass}`).each(function() {
                     new NostoProducts($(this), options);
                 });
             });
-            // As our scripts are loaded later,
-            // recommendations need to be reloaded to trigger the postrender event.
-            api.loadRecommendations();
         });
-    }
+
+        // Adds nosto add to cart action tracking to every add to cart comming from recommendation
+        $(document).on('ajax:addToCart', function(event, data) {
+            const slotId = data.form
+                .closest(`.${options.componentClass}`)
+                .attr('id');
+
+            if (slotId) {
+                data.productIds.forEach(function(productId) {
+                    nostojs(function(api) {
+                        api.recommendedProductAddedToCart(productId, slotId);
+                    });
+                });
+            }
+        });
+    });
 }
