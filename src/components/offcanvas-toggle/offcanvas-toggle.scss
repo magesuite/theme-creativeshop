@@ -7,10 +7,14 @@ $offcanvas-toggle_icon-background-active: $color_primary-500 !default;
 $offcanvas-toggle_icon-color-active: $color_background-200 !default;
 $offcanvas-toggle_icon-transition-time: $transition-default-time !default;
 $offcanvas-toggle_animation-direction: 'left' !default; // 'left' or 'right'
+$offcanvas-toggle_text-color: $color_text-800 !default;
+$offcanvas-toggle_text-color-active: $color_text-200 !default;
+$offcanvas-toggle_text-transform: uppercase !default;
 
-.#{$ns}offcanvas-toggle {
+.cs-offcanvas-toggle {
     $root: &;
 
+    position: relative;
     display: flex;
     border: 0;
     align-items: center;
@@ -107,6 +111,26 @@ $offcanvas-toggle_animation-direction: 'left' !default; // 'left' or 'right'
         &:after {
             transform: translateY(250%);
             transform: translate3d(0, 250%, 0);
+        }
+    }
+
+    &__text {
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 0.8rem;
+        color: $offcanvas-toggle_text-color;
+        text-transform: $offcanvas-toggle_text-transform;
+        transition: color 0.3s;
+
+        #{$root}--active & {
+            color: $offcanvas-toggle_text-color-active;
+        }
+
+        @include media('>=tablet') {
+            bottom: 2rem;
         }
     }
 }
