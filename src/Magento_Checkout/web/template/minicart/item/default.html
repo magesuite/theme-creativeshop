@@ -116,7 +116,16 @@
                             'data-cart-item-id': product_sku
                             }, value: qty"
                             type="number" size="4" class="item-qty cart-item-qty cs-minicart-product__qty-input cs-qty-increment__input">
-                    <span role="button" data-bind="attr: {'data-cart-item': item_id}" tabindex="0" class="cs-qty-increment__button cs-qty-increment__button--decrement" aria-pressed="false">
+                    <span 
+                        role="button" 
+                        data-bind="attr: {
+                        'data-cart-item': item_id,
+                        'disabled': qty <= 1
+                        }" 
+                        tabindex="0" 
+                        class="cs-qty-increment__button cs-qty-increment__button--decrement" 
+                        aria-pressed="false"
+                    >
                         <img class="inline-svg cs-qty-increment__icon cs-qty-increment__icon--decrement" data-bind="attr: { src: require.toUrl('images/icons/qty-increment/minus.svg') }"
                             alt="Decrement product quantity icon">
                     </span>
