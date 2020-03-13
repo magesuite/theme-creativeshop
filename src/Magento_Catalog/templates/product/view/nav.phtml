@@ -5,7 +5,10 @@ $detailedInfoGroup = $detailsBlock->getGroupChildNames('detailed_info', 'getChil
 ?>
 <?php if (!empty($detailedInfoGroup)): ?>
 <nav class="cs-product-details-nav">
-    <h2 class="cs-product-details-nav__title"><?= __('Product Navigation'); ?></h2>
+    <?php if($block->getShowBlockTitle()): ?>
+        <?php $titleTag = $block->getBlockTitleTag() ?? 'h2'; ?>
+        <<?= $titleTag ?> class="cs-product-details-nav__title"><?= __('Product Navigation'); ?></<?= $titleTag ?>>
+    <?php endif ?>
     <ul class="cs-product-details-nav__list">
     <?php
     foreach ($detailedInfoGroup as $blockName):
