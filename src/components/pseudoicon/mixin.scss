@@ -21,6 +21,8 @@ $pseudoicon-arrow-left-offset: calc(
         $pseudoicon-height}
 ) !default;
 
+$pseudoicon-active-selector: '&[aria-expanded="true"]' !default;
+
 @mixin pseudoicon(
     $type: $pseudoicon-type,
     $animated: $pseudoicon-animate,
@@ -33,7 +35,8 @@ $pseudoicon-arrow-left-offset: calc(
     $position-side-offset: $pseudoicon-position-side-offset,
     $arrow-default: $pseudoicon-arrow-default-direction,
     $arrow-active: $pseudoicon-arrow-active-direction,
-    $arrow-offset: $pseudoicon-arrow-left-offset
+    $arrow-offset: $pseudoicon-arrow-left-offset,
+    $active-selector: $pseudoicon-active-selector
 ) {
     position: relative;
 
@@ -88,7 +91,7 @@ $pseudoicon-arrow-left-offset: calc(
         }
     }
 
-    &[aria-expanded='true'] {
+    #{$active-selector} {
         &:before,
         &:after {
             @if ($color-expanded != $color) {
@@ -130,7 +133,7 @@ $pseudoicon-arrow-left-offset: calc(
             }
         }
 
-        &[aria-expanded='true'] {
+        #{$active-selector} {
             @if ($arrow-default == 'right') {
                 &:before {
                     @if ($arrow-active == 'down') {
@@ -249,7 +252,7 @@ $pseudoicon-arrow-left-offset: calc(
             transform: translate3d(0, -50%, 0) rotate(90deg) !important;
         }
 
-        &[aria-expanded='true'] {
+        #{$active-selector} {
             &:before {
                 transform: translate3d(0, -50%, 0) rotate(-90deg) !important;
                 opacity: 0;
