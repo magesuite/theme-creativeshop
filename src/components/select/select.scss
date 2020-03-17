@@ -2,6 +2,7 @@
 @import 'vendors/include-media';
 @import 'components/field/mixin.scss';
 @import 'utils/reset-list-style';
+@import 'components/pseudoicon/mixin';
 
 $html-select_trigger-font-size: $field_select-font-size !default;
 $html-select_trigger-line-height: $field_select-line-height !default;
@@ -121,57 +122,27 @@ $html-select_disabled-opacity: $field_select-disabled-opacity !default;
         overflow: hidden;
         text-overflow: ellipsis;
         font-size: $field_select-font-size;
+        margin-right: 2rem;
     }
 
     &__trigger-caret {
         position: absolute;
         right: 0;
-        top: 20%;
-        height: 60%;
-        width: 2.65em;
     }
 
     &__trigger-caret-arrow {
-        position: absolute;
-        width: 10px;
-        height: 4px;
-        top: 50%;
-        right: 50%;
-        transform: translate3d(50%, -50%, 0);
-        transform-origin: 50% 30%;
-        transition: transform 0.25s ease;
-
-        &:before,
-        &:after {
-            position: absolute;
-            top: 0;
-            width: 7px;
-            height: 2px;
-            content: '';
-            background-color: $html-select_caret-color;
-        }
-
-        &:before {
-            left: 0;
-            transform-origin: 0 50%;
-            transform: rotate(40deg);
-        }
-
-        &:after {
-            right: 0;
-            transform-origin: 100% 50%;
-            transform: rotate(-40deg);
-        }
-
-        #{$root}--open &,
-        #{$root}.open & {
-            transform: translate3d(50%, 50%, 0) rotate(-180deg);
-
-            &:before,
-            &:after {
-                background-color: $html-select_caret-active-color;
-            }
-        }
+        @include pseudoicon(
+            $type: 'arrow',
+            $color: $html-select_caret-color,
+            $color-expanded: $html-select_caret-active-color,
+            $width: 0.7rem,
+            $height: 1px,
+            $arrow-default: 'down',
+            $arrow-active: 'up',
+            $position-side-offset: 1.2rem,
+            $arrow-offset: 1.7rem,
+            $active-selector: '#{$root}--open &'
+        );
     }
 
     &__menu {
