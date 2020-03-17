@@ -1,7 +1,10 @@
 <?php
 $layout = $block->getLayout();
 $detailsBlock = $layout->getBlock('product.info.details');
-$detailedInfoGroup = $detailsBlock->getGroupChildNames('detailed_info', 'getChildHtml') ?? [];
+$detailedInfoGroup = [];
+if (is_object($detailsBlock)) {
+    $detailedInfoGroup = $detailsBlock->getGroupChildNames('detailed_info', 'getChildHtml');
+}
 ?>
 <?php if (!empty($detailedInfoGroup)): ?>
 <nav class="cs-product-details-nav">
