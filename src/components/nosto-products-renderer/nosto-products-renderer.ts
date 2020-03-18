@@ -97,6 +97,9 @@ class NostoProducts {
                         this._$element.find('.cs-products-carousel').first(),
                         this._options.productCarouselOptions
                     );
+
+                    // Refresh the form_key for new rendered html using mage.formKey widget.
+                    this._$element.formKey();
                 }
             }
         );
@@ -190,29 +193,34 @@ export default function initializeNostoProductsRenderer(
         });
     }
 
-    requireAsync(['nostojs']).then(([nostojs]) => {
-        // Init the carousels on every nosto postrender event
-        nostojs((api): void => {
-            api.listen('postrender', (nostoPostRenderEvent): void => {
-                $(`.${options.componentClass}`).each(function() {
-                    new NostoProducts($(this), options);
-                });
-            });
-        });
-
-        // Adds nosto add to cart action tracking to every add to cart comming from recommendation
-        $(document).on('ajax:addToCart', function(event, data) {
-            const slotId = data.form
-                .closest(`.${options.componentClass}`)
-                .attr('id');
-
-            if (slotId) {
-                data.productIds.forEach(function(productId) {
-                    nostojs(function(api) {
-                        api.recommendedProductAddedToCart(productId, slotId);
+    requireAsync(['nostojs', 'Magento_PageCache/js/page-cache']).then(
+        ([nostojs]) => {
+            // Init the carousels on every nosto postrender event
+            nostojs((api): void => {
+                api.listen('postrender', (nostoPostRenderEvent): void => {
+                    $(`.${options.componentClass}`).each(function() {
+                        new NostoProducts($(this), options);
                     });
                 });
-            }
-        });
-    });
+            });
+
+            // Adds nosto add to cart action tracking to every add to cart comming from recommendation
+            $(document).on('ajax:addToCart', function(event, data) {
+                const slotId = data.form
+                    .closest(`.${options.componentClass}`)
+                    .attr('id');
+
+                if (slotId) {
+                    data.productIds.forEach(function(productId) {
+                        nostojs(function(api) {
+                            api.recommendedProductAddedToCart(
+                                productId,
+                                slotId
+                            );
+                        });
+                    });
+                }
+            });
+        }
+    );
 }
