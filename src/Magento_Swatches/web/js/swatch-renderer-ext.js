@@ -5,6 +5,7 @@
  * Modification type: extend
  * Reason:
  * To add selecting swatches based on selected filters (by referrer url).
+ * Prevent to duplicate swatches on tile
  * Swatches can be selected only after:
  * - gallery is loaded, to keep correct gallery behaviour
  * - attributes config is prepared by widget logic
@@ -16,6 +17,13 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
             options: {
                 selectorProductTile: '.cs-product-tile',
+            },
+            _init: function() {
+                if (this.element.children().length) {
+                    return;
+                }
+
+                this._super();
             },
             _onGalleryLoaded: function(gallery) {
                 this._super(gallery);
