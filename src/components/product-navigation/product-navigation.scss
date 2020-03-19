@@ -1,0 +1,97 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/reset-list-style';
+@import 'components/pseudoicon/mixin';
+
+$product-navigation_margin: -4rem 0 0 !default;
+$product-navigation_height: 5rem !default;
+$product-navigation_font-size: 1.1rem !default;
+$product-navigation_border: 1px solid $color_border-500 !default;
+$product-navigation_list-padding: 1em 0 !default;
+$product-navigation_link-padding: 0.5em 2em !default;
+$product-navigation_link-color: $color_text-800 !default;
+
+$product-navigation_link-icon-show: true !default;
+$product-navigation_link-icon-width: 0.7rem !default;
+$product-navigation_link-icon-height: 1px !default;
+$product-navigation_link-icon-color: $product-navigation_link-color !default;
+$product-navigation_link-icon-color-hover: $link-color_base-hover !default;
+$product-navigation_link-icon-type: 'arrow' !default;
+
+.cs-product-navigation {
+    $root: &;
+
+    display: flex;
+    align-items: center;
+    font-size: $product-navigation_font-size;
+    margin: $product-navigation_margin;
+    height: $product-navigation_height;
+    border-bottom: $product-navigation_border;
+
+    &--initialized {
+        #{$root}__list {
+            opacity: 1;
+        }
+    }
+
+    &__list {
+        @include reset-list-style();
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $product-navigation_list-padding;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    &__link {
+        display: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: $product-navigation_link-padding;
+
+        &--active {
+            display: block;
+        }
+
+        &--back,
+        &--prev {
+            @if $product-navigation_link-icon-show {
+                @include pseudoicon(
+                    $width: $product-navigation_link-icon-width,
+                    $height: $product-navigation_link-icon-height,
+                    $color: $product-navigation_link-icon-color,
+                    $color-hover: $product-navigation_link-icon-color-hover,
+                    $arrow-default: 'left',
+                    $type: $product-navigation_link-icon-type
+                );
+
+                &:before,
+                &:after {
+                    left: 0;
+                    right: auto;
+                }
+            }
+        }
+
+        &--next {
+            @if $product-navigation_link-icon-show {
+                @include pseudoicon(
+                    $width: $product-navigation_link-icon-width,
+                    $height: $product-navigation_link-icon-height,
+                    $color: $product-navigation_link-icon-color,
+                    $color-hover: $product-navigation_link-icon-color-hover,
+                    $arrow-default: 'right',
+                    $type: $product-navigation_link-icon-type,
+                    $position-side-offset: 0
+                );
+            }
+        }
+
+        &,
+        &:visited {
+            color: $product-navigation_link-color;
+        }
+    }
+}
