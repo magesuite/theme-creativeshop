@@ -924,12 +924,7 @@
         },
 
         findLis: function() {
-            var that = this;
             if (this.$lis == null) this.$lis = this.$menu.find('li');
-
-            $(window).load(function() {
-                //that.adjustOptionPadding(that.$lis);
-            });
 
             return this.$lis;
         },
