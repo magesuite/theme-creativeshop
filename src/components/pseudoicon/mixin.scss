@@ -60,22 +60,20 @@ $pseudoicon-active-selector: '&[aria-expanded="true"]' !default;
                     ) or
                     (($arrow-default == 'right') and ($arrow-active == 'left'))
                 {
-                    transition: transform $pseudoicon-animation-time linear,
-                        right $pseudoicon-animation-time linear,
-                        background-color $pseudoicon-animation-time linear;
+                    transition: transform $animation-time linear,
+                        right $animation-time linear,
+                        background-color $animation-time linear;
                 } @else {
-                    transition: background-color
-                        $pseudoicon-animation-time
-                        linear;
+                    transition: background-color $animation-time linear;
                 }
             } @else {
-                transition: transform (2 * $pseudoicon-animation-time) ease-out,
-                    opacity $pseudoicon-animation-time ease-out,
-                    background-color $pseudoicon-animation-time linear;
+                transition: transform (2 * $animation-time) ease-out,
+                    opacity $animation-time ease-out,
+                    background-color $animation-time linear;
             }
         } @else {
             @if ($color-hover != $color) {
-                transition: background-color $pseudoicon-animation-time linear;
+                transition: background-color $animation-time linear;
             }
         }
 
@@ -109,7 +107,7 @@ $pseudoicon-active-selector: '&[aria-expanded="true"]' !default;
                 transform: rotate(45deg) translate3d(0, 0, 0);
                 right: $arrow-offset;
             } @else if ($arrow-default == 'left') {
-                transform: rotate(45deg) translate3d(50%, 0, 0);
+                transform: rotate(45deg) translate3d(50%, -50%, 0);
                 right: $arrow-offset;
             } @else if ($arrow-default == 'up') {
                 transform: rotate(-45deg) translate3d(0, 0, 0);
