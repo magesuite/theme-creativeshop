@@ -10,6 +10,8 @@ $product-navigation_border: 1px solid $color_border-500 !default;
 $product-navigation_list-padding: 1em 0 !default;
 $product-navigation_link-padding: 0.5em 2em !default;
 $product-navigation_link-color: $color_text-800 !default;
+$product-navigation_link-text-transform: uppercase !default;
+$product-navigation_link-font-weight: bold !default;
 
 $product-navigation_link-icon-show: true !default;
 $product-navigation_link-icon-width: 0.7rem !default;
@@ -23,7 +25,6 @@ $product-navigation_link-icon-type: 'arrow' !default;
 
     display: flex;
     align-items: center;
-    font-size: $product-navigation_font-size;
     margin: $product-navigation_margin;
     height: $product-navigation_height;
     border-bottom: $product-navigation_border;
@@ -46,13 +47,14 @@ $product-navigation_link-icon-type: 'arrow' !default;
     }
 
     &__link {
-        display: none;
-        text-transform: uppercase;
-        font-weight: bold;
+        visibility: hidden;
+        text-transform: $product-navigation_link-text-transform;
+        font-size: $product-navigation_font-size;
+        font-weight: $product-navigation_link-font-weight;
         padding: $product-navigation_link-padding;
 
         &--active {
-            display: block;
+            visibility: visible;
         }
 
         &--back,
@@ -64,6 +66,7 @@ $product-navigation_link-icon-type: 'arrow' !default;
                     $color: $product-navigation_link-icon-color,
                     $color-hover: $product-navigation_link-icon-color-hover,
                     $arrow-default: 'left',
+                    $animation-time: 0,
                     $type: $product-navigation_link-icon-type
                 );
 
@@ -83,6 +86,7 @@ $product-navigation_link-icon-type: 'arrow' !default;
                     $color: $product-navigation_link-icon-color,
                     $color-hover: $product-navigation_link-icon-color-hover,
                     $arrow-default: 'right',
+                    $animation-time: 0,
                     $type: $product-navigation_link-icon-type,
                     $position-side-offset: 0
                 );
