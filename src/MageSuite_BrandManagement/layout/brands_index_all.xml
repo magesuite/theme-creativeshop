@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <css src="Magento_Swatches::css/swatches.css"/>
@@ -8,14 +9,33 @@
         <!-- Attach correct js bundle for page type -->
         <referenceBlock name="scripts">
             <arguments>
-                <argument name="bundle_name" xsi:type="string">category</argument>
+                <argument name="bundle_name" xsi:type="string">magesuite-brand-management</argument>
             </arguments>
         </referenceBlock>
         <referenceContainer name="content">
             <container name="all_brands_wrapper" htmlTag="div" htmlClass="cs-brands-index">
                 <block class="MageSuite\BrandManagement\Block\All" name="all_brands_icons" template="MageSuite_BrandManagement::icons.phtml" />
                 <block class="MageSuite\BrandManagement\Block\All" name="all_brands_letters" template="MageSuite_BrandManagement::letters.phtml" />
-                <block class="MageSuite\BrandManagement\Block\All" name="all_brands_list" template="MageSuite_BrandManagement::all.phtml" />
+                <block class="MageSuite\BrandManagement\Block\All" name="all_brands_list" template="MageSuite_BrandManagement::all.phtml" >
+                    <block name="page.scroll" template="Magento_Catalog::category/page-scroll.phtml" after="-">
+                        <arguments>
+                            <argument xsi:type="string" name="wrapper_tag">div</argument>
+                            <argument xsi:type="string" name="wrapper_css_class">cs-page-scroll cs-visually-hidden</argument>
+                            <argument xsi:type="string" name="button_css_class">cs-page-scroll__button</argument>
+                            <argument name="label" xsi:type="string" translate="true">To Top</argument>
+                            <argument name="visible" xsi:type="boolean">true</argument>
+                        </arguments>
+                        <block class="MageSuite\ThemeHelpers\Block\Icon" name="page.scroll.icon">
+                            <arguments>
+                                <argument name="icon_url" xsi:type="string">images/icons/arrow_up.svg</argument>
+                                <argument name="css_class" xsi:type="string">cs-page-scroll__icon</argument>
+                                <argument name="alt_text" xsi:type="string" translate="true"></argument>
+                                <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                                <argument name="inlined" xsi:type="boolean">true</argument>
+                            </arguments>
+                        </block>
+                    </block>
+                </block>
             </container>
         </referenceContainer>
         <move element="all_brands_icons" destination="all_brands_wrapper" before="-" />
