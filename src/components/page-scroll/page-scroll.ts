@@ -40,6 +40,13 @@ interface IPageScrollSettings {
     targetElementSelector?: string;
 
     /**
+     * Defines element after which button is hidden
+     * @default {''}
+     * @type {String}
+     */
+    hideAfterSelector?: string;
+
+    /**
      * Defines the target element top offset
      * @default {0}
      * @type {number}
@@ -64,6 +71,7 @@ export default class PageScroll {
     private _$component: JQuery<HTMLElement>;
     private _$button: JQuery<HTMLElement>;
     private _$target: JQuery<HTMLElement>;
+    private _$hideAfterTarget: JQuery<HTMLElement>;
     private _$window: JQuery<Window>;
     private _$isButtonVisible: boolean;
     private _options?: IPageScrollSettings;
@@ -82,6 +90,7 @@ export default class PageScroll {
                 componentButtonClass: 'cs-page-scroll__button',
                 actionEvent: 'click',
                 targetElementSelector: '.cs-topbar',
+                hideAfterSelector: '',
                 targetElementOffset: 0,
                 scrollingDuration: 500,
             },
@@ -91,6 +100,7 @@ export default class PageScroll {
         this._$component = null;
         this._$button = null;
         this._$target = null;
+        this._$hideAfterTarget = null;
         this._$isButtonVisible = false;
         this._$window = $(window);
 
@@ -122,10 +132,31 @@ export default class PageScroll {
     }
 
     /**
+     * Checks if user scrolled to the end of element
+     * @param $el {JQuery<HTMLElement>} element to be checked
+     * @return {boolean} user scrolled to the end of element
+     */
+    protected _isElementAtTheBottom($el: JQuery<HTMLElement>): boolean {
+        const $window: JQuery<Window> = this._$window;
+        const elementTop: number = $el.offset().top;
+        const elementHeight: number = $el.outerHeight();
+        const viewportTop: number = $window.scrollTop();
+
+        return (
+            viewportTop >= elementTop + elementHeight - $window.innerHeight()
+        );
+    }
+
+    /**
      * Sets scroll button visibility
      */
     protected _setButtonVisibility(): void {
-        if (!this._isElementInViewport(this._$target)) {
+        if (
+            !this._isElementInViewport(this._$target) &&
+            (this._$hideAfterTarget.length > 0
+                ? !this._isElementAtTheBottom(this._$hideAfterTarget)
+                : true)
+        ) {
             if (!this._$isButtonVisible) {
                 this._showButton();
             }
@@ -190,6 +221,7 @@ export default class PageScroll {
     protected _init(): void {
         this._$component = $(`.${this._options.componentClass}`);
         this._$target = $(this._options.targetElementSelector);
+        this._$hideAfterTarget = $(this._options.hideAfterSelector);
 
         // Stop execution in case there is no component object
         // or element to scroll

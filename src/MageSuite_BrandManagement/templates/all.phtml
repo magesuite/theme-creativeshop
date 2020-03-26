@@ -1,93 +1,28 @@
 <?php
-
 /** @var \MageSuite\BrandManagement\Block\All $block */
 $brands = $block->getAllBrands();
 $brandsByFirstLetter = $block->getBrandsGroupedByFirstLetter();
 $sizeCollection = sizeof($brands);
-
 ?>
 
-<div class="cs-brands-index__list">
-
-    <?php  foreach($brandsByFirstLetter as $letter => $brands): ?>
-        <div class="cs-brands-index__list-item" id="letter-<?=strtoupper($letter)?>">
-            <div class="cs-brands-index__section-left">
-                <p><?=strtoupper($letter)?></p>
-            </div>
-            <div class="cs-brands-index__section-right">
-                <div class="cs-brands-index__brands">
-                    <?php foreach ($brands as $brand) :?>
-                        <a class="cs-brands-index__brand" href="<?php echo $brand->getBrandUrl();?>" target="_blank"><?php echo $brand->getBrandName();?></a>
-                    <?php endforeach;?>
+<div class="cs-brands-index__list-wrapper">
+    <div class="cs-brands-index__list">
+        <?php  foreach($brandsByFirstLetter as $letter => $brands): ?>
+            <div class="cs-brands-index__list-item" id="letter-<?=strtoupper($letter)?>">
+                <div class="cs-brands-index__section-left">
+                    <p><?=strtoupper($letter)?></p>
+                </div>
+                <div class="cs-brands-index__section-right">
+                    <div class="cs-brands-index__brands">
+                        <?php foreach ($brands as $brand) :?>
+                            <a class="cs-brands-index__brand" href="<?php echo $brand->getBrandUrl();?>" target="_blank"><?php echo $brand->getBrandName();?></a>
+                        <?php endforeach;?>
+                    </div>
                 </div>
             </div>
-        </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
     <?php if($sizeCollection > 15): ?>
-        <div class="cs-brands-index__button-wrapper">
-            <button class="cs-brands-index__button">
-                <span class="cs-brands-index__button-span"><?= __( 'To top' ); ?></span>
-            </button>
-        </div>
+        <?= $block->getChildHtml('page.scroll'); ?>
     <?php endif ?>
 </div>
-
-<script>
-    require([
-        'jquery'
-
-    ], function($) {
-
-        function handleToTopScroll(trigger, container, newContainerClass, watchedParentElement) {
-
-            this.trigger = trigger;
-            this.container = container;
-            this.newContainerClass = newContainerClass;
-            this.watchedParentElement = watchedParentElement;
-            this.initialScroll = 200;
-            this.togglePosition = function (detectPosition) {
-
-                if (detectPosition <= ( $(window).height() - 50 )) {
-                    this.container.addClass(this.newContainerClass)
-                } else {
-                    if (this.container.hasClass(this.newContainerClass)) {
-                        this.container.removeClass(this.newContainerClass);
-                    }
-                }
-            },
-            this.showHide = function () {
-
-                if ($(window).scrollTop() > this.initialScroll) {
-                    this.container.fadeIn('fast');
-
-                    var detectWatchedParentElement = document.getElementsByClassName(this.watchedParentElement)[0].getBoundingClientRect().bottom;
-                    this.togglePosition(detectWatchedParentElement);
-                    var thisTrigger = document.getElementsByClassName('cs-brands-index__button')[0];
-                    thisTrigger.addEventListener('click', this.onClick);
-
-                } else {
-                    this.container.fadeOut('fast');
-                }
-            },
-            this.onClick = function () {
-                $('html, body').animate({
-                    scrollTop: 0
-                }, 100);
-            }
-        }
-
-        var $triggerLink = $('.cs-brands-index__button');
-        var $buttonContainer = $('.cs-brands-index__button-wrapper');
-        var newButtonContainerClass = 'cs-brands-index__button-wrapper--update-position';
-        var watchedParentElement = 'cs-brands-index__list';
-
-        var toTopButton = new handleToTopScroll($triggerLink, $buttonContainer, newButtonContainerClass, watchedParentElement);
-
-        if($triggerLink.length > 0) {
-            $(window).on('scroll', function () {
-                window.requestAnimationFrame(toTopButton.showHide.bind(toTopButton));
-            });
-        }
-    })
-</script>
-

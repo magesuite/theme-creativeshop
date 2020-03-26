@@ -2,46 +2,60 @@
 @import 'vendors/include-media';
 @import 'components/button/mixin';
 
-$brands-index_button-type: $button_default-type !default;
-$brands-index_button-icon-pos: 'no-icon' !default;
+$brands-index_max-width: 93rem !default;
+$brands-index_background-color: $color_background-200 !default;
+
+$brands-index_icon_box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27) !default;
+$brands-index_icon_height: 5rem !default;
+$brands-index_icon_margin: 0.5rem !default;
+$brands-index_icon-width--mobile: calc(
+    50% - 2 * #{$brands-index_icon_margin}
+) !default;
+$brands-index_icon-width--tablet: calc(
+    25% - 2 * #{$brands-index_icon_margin}
+) !default;
+$brands-index_icon-width--desktop: calc(
+    20% - 2 * #{$brands-index_icon_margin}
+) !default;
+
+$brands-index_letter-wrapper_border: 1px solid $color_border-200 !default;
+
+$brands-index_list-item_border: 1px solid $color_border-200 !default;
+
+$brands-index_list-item_letter_font-size--mobile: 3rem !default;
+$brands-index_list-item_letter_font-size--desktop: 11rem !default;
+$brands-index_list-item_brand_flex-direction: row !default;
 
 .#{$ns}brands-index {
     $root: &;
 
-    display: block;
-    background: $color_white;
-    margin: 2rem auto 0;
-    max-width: 40rem;
-    @include media('>=phoneLg') {
-        max-width: none;
-    }
+    background: $brands-index_background-color;
+
     @include media('>=tablet') {
+        max-width: $brands-index_max-width;
         margin: 0 auto;
-        max-width: 93rem;
     }
 
     &__icons-wrapper {
-        width: 100%;
-        margin: 0 0 2rem;
         display: flex;
         flex-wrap: wrap;
+        padding-bottom: 4rem;
     }
 
     &__icon {
-        width: calc(50% - 1rem);
-        height: 5rem;
-        margin: 0.5rem;
-        padding: 0.5rem;
         display: flex;
-        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
         position: relative;
-        box-sizing: border-box;
+        width: $brands-index_icon-width--mobile;
+        height: $brands-index_icon_height;
+        margin: $brands-index_icon_margin;
+        box-shadow: $brands-index_icon_box-shadow;
 
         @include media('>=tablet') {
-            width: calc(25% - 1rem);
+            width: $brands-index_icon-width--tablet;
         }
+
         @include media('>=laptop') {
-            width: calc(20% - 1rem);
+            width: $brands-index_icon-width--desktop;
         }
     }
 
@@ -55,114 +69,14 @@ $brands-index_button-icon-pos: 'no-icon' !default;
         transform: translate3d(-50%, -50%, 0);
     }
 
-    &__list {
-        position: relative;
-
-        &-item {
-            display: flex;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 2rem 1rem;
-            border-bottom: 1px solid $color_gallery;
-
-            @include media('>=tablet') {
-                padding: 4rem 2rem;
-            }
-
-            //There is a problem with scroll while sticky header is present on mobile.brands-index
-            //In that case we do not have to scroll a bit lower than the top edge of this element.
-            //The trick with bigger top padding and minus top margin help to achieve it
-            @include media('<laptop') {
-                padding-top: 10.5rem;
-                margin-top: -6.5rem;
-
-                &:first-child {
-                    padding-top: 8rem;
-                    margin-top: -6rem;
-                }
-            }
-
-            @include media('<tablet') {
-                padding-top: 7.5rem;
-                margin-top: -5.5rem;
-
-                &:first-child {
-                    padding-top: 2rem;
-                    margin-top: 0;
-                }
-            }
-
-            &:last-child {
-                border-bottom: 0;
-            }
-        }
-    }
-
-    &__section {
-        &-left {
-            display: inline-block;
-            width: 15%;
-            line-height: 1.2;
-
-            p {
-                font-size: 3rem;
-            }
-
-            @include media('>=tablet') {
-                width: 25%;
-
-                p {
-                    font-size: 11rem;
-                }
-            }
-        }
-
-        &-right {
-            display: inline-block;
-            width: 70%;
-        }
-    }
-
-    &__brands {
-        display: flex;
-        flex-flow: row wrap;
-    }
-
-    &__brand {
-        color: $color_mineshaft;
-        padding-bottom: 0.5rem;
-        width: 50%;
-
-        @include media('<tablet') {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        @include media('>=tablet') {
-            width: 33.333%;
-        }
-    }
-
-    &__desc {
-        display: block;
-        margin: 2rem 0;
-    }
-
-    &__letters {
-        margin: 2rem 0;
-        @include media('>=tablet') {
-            margin: 4rem 0;
-        }
-    }
-
     &__letters-wrapper {
         display: flex;
         flex-wrap: wrap;
-        padding: 0.5rem 1rem;
-        border-top: 1px solid $color_gallery;
-        border-bottom: 1px solid $color_gallery;
+        padding: 0.5rem 0;
+        border-top: $brands-index_letter-wrapper_border;
+        border-bottom: $brands-index_letter-wrapper_border;
 
-        @include media('>=laptop') {
+        @include media('>=tablet') {
             flex-wrap: nowrap;
             justify-content: space-between;
         }
@@ -171,64 +85,53 @@ $brands-index_button-icon-pos: 'no-icon' !default;
     &__letter-link {
         display: block;
         padding: 1rem 1.5rem;
-        cursor: pointer;
-        color: $color_mineshaft;
-        width: 4.2rem;
-        text-align: center;
-        box-sizing: border-box;
-        flex-shrink: 0;
-
-        @include media('>=phone') {
-            width: 4rem;
-        }
-
-        @include media('>=tablet') {
-            padding: 1rem 1.25rem;
-            width: auto;
-        }
+        color: $color_text-800;
     }
 
-    &__button-wrapper {
-        position: fixed;
+    &__list {
+        position: relative;
+    }
+
+    &__list-item {
+        display: flex;
         width: 100%;
-        display: none;
-        bottom: 4rem;
-        margin: 0 auto;
-        max-width: 40rem;
-        @include media('>=phoneLg') {
-            max-width: none;
-        }
+        padding: 2rem 1rem;
+        border-bottom: $brands-index_list-item_border;
+
         @include media('>=tablet') {
-            max-width: 93rem;
+            padding: 4rem 2rem;
         }
 
-        &--update-position {
-            position: absolute;
-            bottom: 1rem;
+        &:last-child {
+            border-bottom: 0;
         }
     }
 
-    &__button {
-        @include button(
-            $type: $brands-index_button-type,
-            $icon_pos: $brands-index_button-icon-pos
-        );
+    &__section-left {
+        margin-right: 3rem;
 
-        position: absolute !important;
-        right: 3rem;
-        bottom: 0;
+        @include media('>=tablet') {
+            margin-right: 0;
+            width: 30%;
+        }
 
-        #{$root}__button-wrapper--update-position & {
-            @include media('<tablet') {
-                right: 1.8rem;
+        p {
+            font-size: $brands-index_list-item_letter_font-size--mobile;
+            margin: 0;
+
+            @include media('>=tablet') {
+                font-size: $brands-index_list-item_letter_font-size--desktop;
             }
         }
     }
 
-    &__button-span {
-        @include button_span(
-            $type: $brands-index_button-type,
-            $icon_pos: $brands-index_button-icon-pos
-        );
+    &__brands {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: $brands-index_list-item_brand_flex-direction;
+    }
+
+    &__brand {
+        color: $color_text-800;
     }
 }
