@@ -15,6 +15,7 @@ $aftersearch-nav_filters-trigger-background--opened: $color_primary-500 !default
 $aftersearch-nav_filters-trigger-color--opened: $color_text-200 !default;
 $aftersearch-nav_filters-trigger-box-shadow: 0 4px 3px -2px rgba(0, 0, 0, 0.15) !default;
 
+$aftersearch-nav_filters-trigger-include-pseudoicon: true !default;
 $aftersearch-nav_filters-trigger-pseudoicon-width: 1rem !default;
 $aftersearch-nav_filters-trigger-pseudoicon-height: 0.2rem !default;
 $aftersearch-nav_filters-trigger-pseudoicon-color: currentColor !default;
@@ -24,6 +25,7 @@ $aftersearch-nav_filter-border: 1px solid $color_border-500 !default;
 
 $aftersearch-nav_filter-font-size: 1.3rem !default;
 
+$aftersearch-nav_filter-title-include-pseudoicon: true !default;
 $aftersearch-nav_filter-title-background: $color_background-500 !default;
 $aftersearch-nav_filter-title-pseudoicon-width: 1rem !default;
 $aftersearch-nav_filter-title-pseudoicon-height: 0.2rem !default;
@@ -153,13 +155,15 @@ $aftersearch-nav--horizontal_rows: (
     }
 
     &__filters-trigger {
-        @include pseudoicon(
-            $width: $aftersearch-nav_filters-trigger-pseudoicon-width,
-            $height: $aftersearch-nav_filters-trigger-pseudoicon-height,
-            $color: $aftersearch-nav_filters-trigger-pseudoicon-color,
-            $color-expanded:
-                $aftersearch-nav_filters--expanded-trigger-pseudoicon-color
-        );
+        @if ($aftersearch-nav_filters-trigger-include-pseudoicon) {
+            @include pseudoicon(
+                $width: $aftersearch-nav_filters-trigger-pseudoicon-width,
+                $height: $aftersearch-nav_filters-trigger-pseudoicon-height,
+                $color: $aftersearch-nav_filters-trigger-pseudoicon-color,
+                $color-expanded:
+                    $aftersearch-nav_filters--expanded-trigger-pseudoicon-color
+            );
+        }
 
         margin: 0;
         display: flex;
@@ -201,14 +205,17 @@ $aftersearch-nav--horizontal_rows: (
     }
 
     &__filter-title {
-        @include pseudoicon(
-            $width: $aftersearch-nav_filter-title-pseudoicon-width,
-            $height: $aftersearch-nav_filter-title-pseudoicon-height,
-            $color: $aftersearch-nav_filter-title-pseudoicon-color,
-            $color-hover: $aftersearch-nav_filter--hover-title-pseudoicon-color,
-            $color-expanded:
-                $aftersearch-nav_filter--expanded-title-pseudoicon-color
-        );
+        @if ($aftersearch-nav_filter-title-include-pseudoicon) {
+            @include pseudoicon(
+                $width: $aftersearch-nav_filter-title-pseudoicon-width,
+                $height: $aftersearch-nav_filter-title-pseudoicon-height,
+                $color: $aftersearch-nav_filter-title-pseudoicon-color,
+                $color-hover:
+                    $aftersearch-nav_filter--hover-title-pseudoicon-color,
+                $color-expanded:
+                    $aftersearch-nav_filter--expanded-title-pseudoicon-color
+            );
+        }
 
         font-size: 1.2rem;
         cursor: pointer;
