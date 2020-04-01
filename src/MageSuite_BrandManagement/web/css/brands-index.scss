@@ -75,6 +75,8 @@ $brands-index_list-item_brand_flex-direction: row !default;
         padding: 0.5rem 0;
         border-top: $brands-index_letter-wrapper_border;
         border-bottom: $brands-index_letter-wrapper_border;
+        position: relative;
+        z-index: 10;
 
         @include media('>=tablet') {
             flex-wrap: nowrap;
@@ -95,23 +97,29 @@ $brands-index_list-item_brand_flex-direction: row !default;
     &__list-item {
         display: flex;
         width: 100%;
-        padding: 2rem 1rem;
+        margin-top: -#{$global_header-height-mobile};
+        padding: (2rem + $global_header-height-mobile) 1rem 2rem;
         border-bottom: $brands-index_list-item_border;
-
-        @include media('>=tablet') {
-            padding: 4rem 2rem;
-        }
 
         &:last-child {
             border-bottom: 0;
         }
+
+        @include media('>=tablet') {
+            margin-top: -#{$global_header-height-tablet};
+            padding: (2rem + $global_header-height-tablet) 2rem 2rem;
+        }
+
+        @include media('>=laptop') {
+            margin-top: 0;
+            padding: 4rem 2rem;
+        }
     }
 
     &__section-left {
-        margin-right: 3rem;
+        width: 20%;
 
         @include media('>=tablet') {
-            margin-right: 0;
             width: 30%;
         }
 
@@ -125,6 +133,14 @@ $brands-index_list-item_brand_flex-direction: row !default;
         }
     }
 
+    &__section-right {
+        width: 80%;
+
+        @include media('>=tablet') {
+            width: 70%;
+        }
+    }
+
     &__brands {
         display: flex;
         flex-wrap: wrap;
@@ -133,5 +149,11 @@ $brands-index_list-item_brand_flex-direction: row !default;
 
     &__brand {
         color: $color_text-800;
+        padding-bottom: 0.5rem;
+        width: 50%;
+
+        @include media('>=tablet') {
+            width: 33.33%;
+        }
     }
 }
