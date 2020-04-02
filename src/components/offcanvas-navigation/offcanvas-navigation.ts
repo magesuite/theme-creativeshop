@@ -83,7 +83,16 @@ export default class OffcanvasNavigation {
         // Prefetch mobile navigation when browser becomes idle.
         idleDeferred().then(() => this._getHtml());
 
+        this._cleanupLocalStorage();
         this._addEventListeners();
+    }
+
+    protected _cleanupLocalStorage(): void {
+        try {
+            localStorage.removeItem(this._options.localStorageKey);
+        } catch (error) {
+            // Do nothing.
+        }
     }
 
     /**
