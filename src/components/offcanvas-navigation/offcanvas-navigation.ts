@@ -23,12 +23,6 @@ export interface OffcanvasNavigationOptions {
     onNavigationRender?: () => void; // Callback to fire when navigation is rendered
 }
 
-interface OffcanvasNavigationCache {
-    key?: string;
-    generationTime?: number;
-    html?: string;
-}
-
 interface MainNavigationCacheInfo {
     url: string;
     key: string;
@@ -64,7 +58,6 @@ export default class OffcanvasNavigation {
                 showCategoryIcon: false,
                 showProductsCount: false,
                 localStorageKey: 'mgs-offcanvas-navigation',
-                cacheTTL: 60 * 60,
                 endpointPath: '/navigation/mobile/index',
                 currencySwitcherSelector: '.switcher-currency',
                 languageSwitcherSelector: '.switcher-language',
@@ -87,7 +80,7 @@ export default class OffcanvasNavigation {
             'activeCategoryPath'
         )}`.split('/');
 
-        // Prefetch and cache mobile navigation when browser becomes idle.
+        // Prefetch mobile navigation when browser becomes idle.
         idleDeferred().then(() => this._getHtml());
 
         this._addEventListeners();
@@ -215,7 +208,6 @@ export default class OffcanvasNavigation {
     protected _getHtml(): JQuery.Deferred<string> {
         const deferred = jQuery.Deferred();
         const cacheInfo = this._getCacheInfo();
-        const cache = this._loadCache();
 
         if (!cacheInfo.url) {
             /* tslint:disable */
@@ -226,56 +218,15 @@ export default class OffcanvasNavigation {
             return deferred.resolve('');
         }
 
-        if (
-            cache.key === cacheInfo.key &&
-            cache.generationTime >= cacheInfo.generationTime
-        ) {
-            return deferred.resolve(cache.html);
-        }
-
-        $.get(cacheInfo.url, { cache_key: cacheInfo.key }).then(
-            (html: string) => {
-                this._setCache(cacheInfo.key, html);
-                deferred.resolve(html);
-            }
-        );
+        $.get({
+            url: cacheInfo.url,
+            data: { cache_key: cacheInfo.key },
+            cache: true,
+        }).then((html: string) => {
+            deferred.resolve(html);
+        });
 
         return deferred;
-    }
-
-    protected _loadCache(): OffcanvasNavigationCache {
-        const cache = {};
-        try {
-            $.extend(
-                cache,
-                JSON.parse(localStorage.getItem(this._options.localStorageKey))
-            );
-        } catch (error) {
-            // tslint:disable-next-line
-            console.error(error);
-            // Cache may be corrupted from previous implementation.
-            localStorage.removeItem(this._options.localStorageKey);
-        }
-
-        return cache;
-    }
-
-    protected _setCache(key: string, html: string) {
-        const cache: OffcanvasNavigationCache = {
-            key: key,
-            html: html,
-            generationTime: Math.floor(Date.now() / 1000),
-        };
-
-        try {
-            localStorage.setItem(
-                this._options.localStorageKey,
-                JSON.stringify(cache)
-            );
-        } catch (error) {
-            // tslint:disable-next-line
-            console.error(error);
-        }
     }
 
     protected _getCacheInfo(): MainNavigationCacheInfo {
