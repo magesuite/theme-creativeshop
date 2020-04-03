@@ -2,6 +2,7 @@
 @import 'config/breakpoints';
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
+@import 'components/toolbar/hooks.scss';
 
 $pagination-list_display: flex !default;
 $pagination-list_flex-align-items: stretch !default;
@@ -12,6 +13,8 @@ $pagination-list_flex-align-items: stretch !default;
     @if $limiter_display == flex {
         align-items: $pagination-list_flex-align-items;
     }
+
+    @include pagination-list-hook();
 }
 
 $pagination-item_margin: 0 !default;
@@ -58,6 +61,8 @@ $pagination-item_as-circle: false !default;
         border-radius: 50%;
         overflow: hidden;
     }
+
+    @include pagination-item-hook();
 }
 
 $pagination-number_min-width: 3.5rem !default;
@@ -101,6 +106,8 @@ $pagination-number--hover_text-decoration: inherit !default;
         background: $pagination-number--hover_background;
         text-decoration: $pagination-number--hover_text-decoration;
     }
+
+    @include pagination-number-hook();
 }
 
 $pagination-number--current_color: $color_primary-500 !default;
@@ -114,4 +121,6 @@ $pagination-number--current_background: $color_background-500 !default;
         background: $pagination-number--current_background;
         cursor: default;
     }
+
+    @include pagination-number--current-hook();
 }
