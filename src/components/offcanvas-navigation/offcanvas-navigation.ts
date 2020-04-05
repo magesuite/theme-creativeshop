@@ -349,6 +349,10 @@ export default class OffcanvasNavigation {
      * Resets levels to root.
      */
     protected _resetLevels(): void {
+        if (!this._$element) {
+            return;
+        }
+
         const $levelsToHide = this._$element.find(
             `.${this._options.className}__list`
         );
