@@ -2,4 +2,6 @@ import SearchResultsSwitcher from 'components/search-results-switcher/search-res
 
 import 'components/search-results-switcher/search-results-switcher.scss';
 
-new SearchResultsSwitcher();
+if (document.getElementsByClassName('cs-search-results-switcher').length) {
+    new SearchResultsSwitcher();
+}
