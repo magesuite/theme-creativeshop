@@ -54,6 +54,7 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/usps';
 import 'components/select';
+import 'components/visually-hidden';
 
 import 'components/non-critical';
 
