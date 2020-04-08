@@ -12,8 +12,14 @@ define([
         defaults: {
             displayArea: 'place-order',
             template: 'Magento_Checkout/place-order',
+            /**
+             * Visible pseudo class has to be added because PayPal payment method
+             * has "_active" class set no matter if it is selected or not. This led to the situation
+             * where if you selected some other method, 2 buttons were found and clicked.
+             * The button itself on the other hand is being toggled so we can filter it out that way.
+             */
             placeOrderButtonSelector:
-                '.payment-method._active .action.checkout[type="submit"]',
+                '.payment-method._active .action.checkout[type="submit"]:visible',
         },
         isPlaceOrderActionAllowed: ko.computed(function() {
             return quote.billingAddress() && quote.paymentMethod();
