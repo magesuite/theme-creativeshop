@@ -54,8 +54,8 @@ $image-teaser_no-image-dark-scheme-background: $color_background-200 !default;
 
 $image-teaser_hero-carousel_slide-width: 77% !default;
 
-$image-teaser_cms-pages-height: 200px !default;
-$image-teaser_cms-pages-background: $color_gallery !default;
+$image-teaser_cms-pages-background: $color_background-500 !default;
+$image-teaser_cms-backlink-background: $color_background-500 !default;
 
 .#{$ns}image-teaser {
     $root: &;
@@ -275,12 +275,14 @@ $image-teaser_cms-pages-background: $color_gallery !default;
         }
 
         #{$root}--cms-teaser & {
-            min-height: $image-teaser_cms-pages-height;
+            &:not(#{$root}__slide--image-uploaded) > #{$root}__slide-wrapper {
+                background-color: $image-teaser_cms-pages-background;
+            }
         }
 
         #{$root}--backlink & {
             &:not(#{$root}__slide--image-uploaded) > #{$root}__slide-wrapper {
-                background-color: $image-teaser_cms-pages-background;
+                background-color: $image-teaser_cms-backlink-background;
                 width: calc(100% - #{$image-teaser_slides-gutter});
             }
         }
@@ -345,8 +347,8 @@ $image-teaser_cms-pages-background: $color_gallery !default;
     &__aspect-ratio {
         width: 100%;
 
-        + #{$root}__slide-wrapper,
-        + #{$root}__figure {
+        ~ #{$root}__slide-wrapper,
+        ~ #{$root}__figure {
             position: absolute;
 
             @if $image-teaser_slides-gutter > 0 {
