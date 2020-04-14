@@ -10,7 +10,7 @@ import requireAsync from 'utils/require-async';
 export interface NostoProductsOptions {
     componentClass?: string;
     contentSelector?: string;
-    productIdSelector?: string;
+    productDataSelector?: string;
     productCarouselOptions?: ProductsCarouselOptions;
 }
 
@@ -33,6 +33,7 @@ class NostoProducts {
     protected _$element: JQuery;
     protected _options: NostoProductsOptions;
     protected _rendererEndpoint: string;
+    protected _isInitialized: boolean;
 
     /**
      * Creates new NostoProducts component with optional settings.
@@ -41,8 +42,8 @@ class NostoProducts {
      */
     public constructor($element: JQuery, options?: NostoProductsOptions) {
         this._options = options;
-
         this._$element = $element;
+        this._isInitialized = false;
 
         if (this._$element.length === 0) {
             return;
@@ -52,7 +53,19 @@ class NostoProducts {
             ? this._$element.data('renderer-url')
             : '';
 
-        this._initialize();
+        requireAsync(['nostojs']).then(([nostojs]) => {
+            // Init the carousels on every nosto postrender event
+            nostojs((api): void => {
+                api.listen('postrender', (nostoPostRenderEvent): void => {
+                    if (!this._isInitialized) {
+                        this._isInitialized = true;
+                        this._initialize();
+                    }
+                });
+
+                api.loadRecommendations();
+            });
+        });
     }
 
     /**
@@ -65,7 +78,7 @@ class NostoProducts {
     protected _initialize(): void {
         if (
             this._rendererEndpoint.length &&
-            this._$element.find(this._options.productIdSelector).length
+            this._$element.find(this._options.productDataSelector).length
         ) {
             this._runProductFetch();
         }
@@ -98,8 +111,18 @@ class NostoProducts {
                         this._options.productCarouselOptions
                     );
 
-                    // Refresh the form_key for new rendered html using mage.formKey widget.
-                    this._$element.formKey();
+                    requireAsync([
+                        'Magento_PageCache/js/page-cache',
+                        'catalogAddToCart',
+                    ]).then(() => {
+                        // Refresh the form_key for new rendered html using mage.formKey widget.
+                        this._$element.formKey();
+
+                        // Initialize Magento addToCart widget
+                        this._$element
+                            .find('[data-role=tocart-form]')
+                            .catalogAddToCart();
+                    });
                 }
             }
         );
@@ -113,7 +136,7 @@ class NostoProducts {
         const ids = [];
         const urls = [];
         const $items: JQuery = this._$element.find(
-            this._options.productIdSelector
+            this._options.productDataSelector
         );
 
         for (let i: number = 0; i < $items.length; i++) {
@@ -180,7 +203,7 @@ export default function initializeNostoProductsRenderer(
         {
             componentClass: 'cs-nosto-products',
             contentSelector: `.cs-nosto-products__content`,
-            productIdSelector: `.cs-nosto-products__product-id`,
+            productDataSelector: `.cs-nosto-products__product`,
         },
         config
     );
@@ -193,34 +216,20 @@ export default function initializeNostoProductsRenderer(
         });
     }
 
-    requireAsync(['nostojs', 'Magento_PageCache/js/page-cache']).then(
-        ([nostojs]) => {
-            // Init the carousels on every nosto postrender event
-            nostojs((api): void => {
-                api.listen('postrender', (nostoPostRenderEvent): void => {
-                    $(`.${options.componentClass}`).each(function() {
-                        new NostoProducts($(this), options);
+    // Adds nosto add to cart action tracking to every add to cart comming from recommendation
+    requireAsync(['nostojs']).then(([nostojs]) => {
+        $(document).on('ajax:addToCart', function(event, data) {
+            const slotId = data.form
+                .closest(`.${options.componentClass}`)
+                .attr('id');
+
+            if (slotId) {
+                data.productIds.forEach(function(productId) {
+                    nostojs(function(api) {
+                        api.recommendedProductAddedToCart(productId, slotId);
                     });
                 });
-            });
-
-            // Adds nosto add to cart action tracking to every add to cart comming from recommendation
-            $(document).on('ajax:addToCart', function(event, data) {
-                const slotId = data.form
-                    .closest(`.${options.componentClass}`)
-                    .attr('id');
-
-                if (slotId) {
-                    data.productIds.forEach(function(productId) {
-                        nostojs(function(api) {
-                            api.recommendedProductAddedToCart(
-                                productId,
-                                slotId
-                            );
-                        });
-                    });
-                }
-            });
-        }
-    );
+            }
+        });
+    });
 }
