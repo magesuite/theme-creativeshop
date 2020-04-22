@@ -101,6 +101,9 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
     multiple-columns
 ) !default;
 
+// Apply normal flow for teasers on smallest mobile, instead of teasers with hardcoded 100% width
+$grid-layout_small-mobile-standard-teasers-flow: false !default;
+
 .#{$ns}grid-layout {
     $root: &;
 
@@ -435,6 +438,18 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
                 $autoposition: true
             );
 
+            @if ($grid-layout_small-mobile-standard-teasers-flow) {
+                @include media('<phone') {
+                    &--x2 {
+                        grid-column-end: span 2;
+                    }
+
+                    &--y2 {
+                        grid-row-end: span 2;
+                    }
+                }
+            }
+
             @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
                 @include media('>=#{$breakpoint}') {
                     @if $itemsPerRow > 1 {
@@ -488,8 +503,10 @@ $grid-layout_bricks-per-row--with-sidebar: deep-get(
             }
 
             &--teaser-ready {
-                @include media('<phone') {
-                    grid-column-start: 1 !important;
+                @if not $grid-layout_small-mobile-standard-teasers-flow {
+                    @include media('<phone') {
+                        grid-column-start: 1 !important;
+                    }
                 }
             }
 
