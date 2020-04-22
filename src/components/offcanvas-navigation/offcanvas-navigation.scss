@@ -1,5 +1,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'utils/get-value-from-list';
+@import 'components/pseudoicon/mixin';
 
 $offcanvas-navigation_background: $color_background-200 !default;
 
@@ -7,10 +9,28 @@ $offcanvas-navigation_item-background: $offcanvas-navigation_background !default
 $offcanvas-navigation_item-border: 1px $color_alto solid !default;
 
 $offcanvas-navigation_link-color: $color_text-800 !default;
+$offcanvas-navigation_link-color--hover: $offcanvas-navigation_link-color !default;
+$offcanvas-navigation_link-font-size: 1.4rem !default;
+$offcanvas-navigation_link-font-weight: 700 !default;
 $offcanvas-navigation_link-sign-color: $color_primary-500 !default;
+$offcanvas-navigation_link-sign-color--hover: $offcanvas-navigation_link-sign-color !default;
 $offcanvas-navigation_link-active-color: $color_primary-500 !default;
+$offcanvas-navigation_link-padding: 2.4rem 2rem !default;
 
-$offcanvas-navigation_icon-fill: $color_primary-500 !default;
+$offcanvas-navigation_icon-use-pseudoicon-instead-svg: true !default;
+$offcanvas-navigation_icon-width: 0.7rem !default;
+$offcanvas-navigation_icon-height: 0.1rem !default;
+$offcanvas-navigation_icon-color: $color_primary-500 !default;
+$offcanvas-navigation_icon-color--hover: $offcanvas-navigation_icon-color !default;
+// Below navigation_icon settings are usable only if you use pseudoicon
+$offcanvas-navigation_icon-type: 'arrow' !default;
+$offcanvas-navigation_icon-default--next: 'right' !default;
+$offcanvas-navigation_icon-default--prev: 'left' !default;
+$offcanvas-navigation_icon-animation: false !default;
+$offcanvas-navigation_icon-arrow-left-offset: 0 !default;
+
+$offcanvas-navigation_icon-sign-color: $color_primary-500;
+$offcanvas-navigation_icon-sign-color--hover: $offcanvas-navigation_icon-sign-color;
 
 $offcanvas-navigation_product-qty-color: $color_text-500 !default;
 
@@ -72,7 +92,10 @@ $offcanvas-navigation_product-qty-color: $color_text-500 !default;
         &--with-icon {
             #{$root}__text {
                 position: relative;
-                padding-left: 2.6rem;
+                padding-left: get-value-from-list(
+                    $offcanvas-navigation_link-padding,
+                    'left'
+                );
             }
         }
     }
@@ -81,17 +104,28 @@ $offcanvas-navigation_product-qty-color: $color_text-500 !default;
         min-width: 100%;
         width: 100%;
         display: flex;
-        padding: 2.4rem 2rem;
-        font-size: 1.4rem;
+        padding: $offcanvas-navigation_link-padding;
+        font-size: $offcanvas-navigation_link-font-size;
         align-items: center;
         text-transform: uppercase;
-        font-weight: 700;
+        font-weight: $offcanvas-navigation_link-font-weight;
         position: relative;
 
         &,
-        &:hover,
         &:visited {
             color: $offcanvas-navigation_link-color;
+        }
+
+        &:hover {
+            color: $offcanvas-navigation_link-color--hover;
+
+            @if not($offcanvas-navigation_icon-use-pseudoicon-instead-svg) {
+                #{$root}__icon {
+                    path {
+                        fill: $offcanvas-navigation_icon-color--hover;
+                    }
+                }
+            }
         }
 
         &--sign-in,
@@ -99,24 +133,50 @@ $offcanvas-navigation_product-qty-color: $color_text-500 !default;
             padding-right: 5rem;
 
             &,
-            &:hover,
             &:visited {
                 color: $offcanvas-navigation_link-sign-color;
             }
 
+            &:hover {
+                color: $offcanvas-navigation_link-sign-color--hover;
+
+                #{$root}__icon {
+                    path {
+                        fill: $offcanvas-navigation_icon-sign-color--hover;
+                    }
+                }
+            }
+
             #{$root}__icon {
-                height: 2.7rem;
-                margin-top: -1.35rem;
                 width: 2.3rem;
+                height: 2.7rem;
+                right: get-value-from-list(
+                    $offcanvas-navigation_link-padding,
+                    'right'
+                );
+
+                path {
+                    fill: $offcanvas-navigation_icon-sign-color;
+                }
             }
         }
 
         &--parent,
         &--return {
             #{$root}__icon {
-                height: 1rem;
-                width: 1rem;
-                margin-top: -0.5rem;
+                width: $offcanvas-navigation_icon-width;
+                height: $offcanvas-navigation_icon-width;
+            }
+        }
+
+        &--parent {
+            padding-right: 5rem;
+
+            #{$root}__icon {
+                right: get-value-from-list(
+                    $offcanvas-navigation_link-padding,
+                    'right'
+                );
             }
         }
 
@@ -124,15 +184,53 @@ $offcanvas-navigation_product-qty-color: $color_text-500 !default;
             padding-left: 5rem;
 
             #{$root}__icon {
-                right: auto;
-                left: 2rem;
+                left: get-value-from-list(
+                    $offcanvas-navigation_link-padding,
+                    'left'
+                );
             }
         }
 
-        &--parent {
-            padding-right: 5rem;
-            font-weight: 700;
-            text-transform: uppercase;
+        @if ($offcanvas-navigation_icon-use-pseudoicon-instead-svg) {
+            &--next {
+                @include pseudoicon(
+                    $type: $offcanvas-navigation_icon-type,
+                    $animated: $offcanvas-navigation_icon-animation,
+                    $arrow-default: $offcanvas-navigation_icon-default--next,
+                    $arrow-offset: $offcanvas-navigation_icon-arrow-left-offset,
+                    $width: $offcanvas-navigation_icon-width,
+                    $height: $offcanvas-navigation_icon-height,
+                    $color: $offcanvas-navigation_icon-color,
+                    $color-hover: $offcanvas-navigation_icon-color--hover,
+                    $position-side-offset:
+                        get-value-from-list(
+                            $offcanvas-navigation_link-padding,
+                            'right'
+                        )
+                );
+            }
+
+            &--prev {
+                @include pseudoicon(
+                    $type: $offcanvas-navigation_icon-type,
+                    $animated: $offcanvas-navigation_icon-animation,
+                    $arrow-default: $offcanvas-navigation_icon-default--prev,
+                    $arrow-offset: $offcanvas-navigation_icon-arrow-left-offset,
+                    $width: $offcanvas-navigation_icon-width,
+                    $height: $offcanvas-navigation_icon-height,
+                    $color: $offcanvas-navigation_icon-color,
+                    $color-hover: $offcanvas-navigation_icon-color--hover,
+                    $position-side-offset: auto
+                );
+
+                &:before,
+                &:after {
+                    left: get-value-from-list(
+                        $offcanvas-navigation_link-padding,
+                        'left'
+                    );
+                }
+            }
         }
     }
 
@@ -145,10 +243,10 @@ $offcanvas-navigation_product-qty-color: $color_text-500 !default;
     &__icon {
         position: absolute;
         top: 50%;
-        right: 2rem;
+        transform: translateY(-50%);
 
         path {
-            fill: $offcanvas-navigation_icon-fill;
+            fill: $offcanvas-navigation_icon-color;
         }
     }
 

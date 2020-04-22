@@ -12,10 +12,19 @@ $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
             $itemId = $item->getId();
             $itemLabel = $item->getLabel();
             $itemHasSubitems = $item->hasSubItems();
+            $itemNextAdditionalClasses = '';
+
+            if ($itemHasSubitems) {
+                $itemNextAdditionalClasses .= ' cs-offcanvas-navigation__link--parent';
+        
+                if (!$nextIcon) {
+                    $itemNextAdditionalClasses .= '  cs-offcanvas-navigation__link--next';
+                }
+            }
             ?>
             <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--level_<?= $level; ?>">
-                <a class="cs-offcanvas-navigation__link<?= $itemHasSubitems ? ' cs-offcanvas-navigation__link--parent' : ''; ?>" href="<?= $itemUrl; ?>" data-category-id="<?= $itemId ?>">
-                    <?php if ($itemHasSubitems) : ?>
+                <a class="cs-offcanvas-navigation__link<?= $itemNextAdditionalClasses; ?>" href="<?= $itemUrl; ?>" data-category-id="<?= $itemId ?>">
+                    <?php if ($itemHasSubitems && $nextIcon) : ?>
                         <?= $nextIcon ?>
                     <?php endif; ?>
                     <span class="cs-offcanvas-navigation__text">
