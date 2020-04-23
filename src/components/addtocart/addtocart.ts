@@ -297,14 +297,9 @@ export default class AddToCart {
     protected _getCartData(): any {
         const deferred: JQueryDeferred<any> = jQuery.Deferred();
         requirejs(['Magento_Customer/js/customer-data'], customerData => {
-            const cart = customerData.get('cart');
-            if (cart()) {
-                deferred.resolve(cart().summary_count);
-            } else {
-                cart.subscribe((data: any): void => {
-                    deferred.resolve(data.summary_count);
-                });
-            }
+            customerData.get('cart').subscribe((data: any): void => {
+                deferred.resolve(data.summary_count);
+            });
         });
         return deferred;
     }
