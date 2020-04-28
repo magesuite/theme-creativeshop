@@ -1,17 +1,24 @@
 <?php
 // @codingStandardsIgnoreFile
+$reviewsCount = $block->getReviewsCount();
+$ratingSummary = $block->getRatingSummary();
+// Since 2.3.3 rating summary is being returned directly, not as an object.
+if (is_object($ratingSummary)) {
+    $reviewsCount = $ratingSummary->getReviewsCount();
+    $ratingSummary = $ratingSummary->getRatingSummary();
+}
 ?>
-<?php if ($block->getReviewsCount()): ?>
+<?php if ($reviewsCount): ?>
 
         <?php
             // Transforms rating summary (0..100) into star count (0..5, with a step of a 0.5)
-            $activeStars = round($block->getRatingSummary()/10)/2;
+            $activeStars = round($ratingSummary / 10) / 2;
 
             echo $this->getLayout()
                     ->createBlock(\Magento\Framework\View\Element\Template::class)
                     ->setMaxStars(5)
                     ->setActiveStars($activeStars)
-                    ->setReviewsCount($block->getReviewsCount())
+                    ->setReviewsCount($reviewsCount)
                     ->setHideReviewsCount(false)
                     ->setShowNumericalScore($block->getShowNumericalScore())
                     ->setTemplate('Magento_Review::rating-stars.phtml')
