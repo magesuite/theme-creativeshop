@@ -44,44 +44,40 @@ class NostoProducts {
         this._options = options;
         this._$element = $element;
         this._isInitialized = false;
-
-        if (this._$element.length === 0) {
-            return;
-        }
-
         this._rendererEndpoint = this._$element.attr('data-renderer-url')
             ? this._$element.data('renderer-url')
             : '';
 
+        if (this._rendererEndpoint.length) {
+            this._initialize();
+        }
+    }
+
+    /**
+     * Adds nosto postrender listener and reloads recommendations to trigger it.
+     * Checks if:
+     * - is not already initialized
+     * - nosto template contains elements with product data
+     * and initializes _runProductFetch
+     */
+    protected _initialize(): void {
         requireAsync(['nostojs']).then(([nostojs]) => {
-            // Init the carousels on every nosto postrender event
+            // Init the carousels on first nosto postrender event
             nostojs((api): void => {
                 api.listen('postrender', (nostoPostRenderEvent): void => {
-                    if (!this._isInitialized) {
+                    if (
+                        !this._isInitialized &&
+                        this._$element.find(this._options.productDataSelector)
+                            .length
+                    ) {
                         this._isInitialized = true;
-                        this._initialize();
+                        this._runProductFetch();
                     }
                 });
 
                 api.loadRecommendations();
             });
         });
-    }
-
-    /**
-     * Initializes script sequence.
-     * Checks if:
-     * - renderEndpoint is available
-     * - nosto template contains elements with product ids
-     * If both true, reloads recommendations and initializes _runProductFetch
-     */
-    protected _initialize(): void {
-        if (
-            this._rendererEndpoint.length &&
-            this._$element.find(this._options.productDataSelector).length
-        ) {
-            this._runProductFetch();
-        }
     }
 
     /**
@@ -98,31 +94,36 @@ class NostoProducts {
                 const $dataTarget: JQuery = this._$element.find(
                     this._options.contentSelector
                 );
-                this._$element.removeClass(
-                    `${this._options.componentClass}--loading`
-                );
 
                 if (!$.isEmptyObject(response) && $dataTarget.length) {
                     $dataTarget.html(response);
 
-                    // Initializes the product carousel for rendered html
-                    new ProductsCarousel(
-                        this._$element.find('.cs-products-carousel').first(),
-                        this._options.productCarouselOptions
+                    requireAsync(['mage/cookies', 'catalogAddToCart']).then(
+                        () => {
+                            // Refresh the form_key for rendered html.
+                            const formKey = $.mage.cookies.get('form_key');
+                            $dataTarget
+                                .find('input[name="form_key"]')
+                                .each((i, input) => {
+                                    $(input).val(formKey);
+                                });
+
+                            // Initialize Magento addToCart widget
+                            $dataTarget
+                                .find('[data-role=tocart-form]')
+                                .catalogAddToCart();
+                        }
                     );
 
-                    requireAsync([
-                        'Magento_PageCache/js/page-cache',
-                        'catalogAddToCart',
-                    ]).then(() => {
-                        // Refresh the form_key for new rendered html using mage.formKey widget.
-                        this._$element.formKey();
+                    this._$element.removeClass(
+                        `${this._options.componentClass}--loading`
+                    );
 
-                        // Initialize Magento addToCart widget
-                        this._$element
-                            .find('[data-role=tocart-form]')
-                            .catalogAddToCart();
-                    });
+                    // Initializes the product carousel for rendered html
+                    new ProductsCarousel(
+                        $dataTarget.find('.cs-products-carousel').first(),
+                        this._options.productCarouselOptions
+                    );
                 }
             }
         );
