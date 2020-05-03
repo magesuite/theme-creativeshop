@@ -268,6 +268,16 @@ export default class OffcanvasNavigation {
     }
 
     /**
+     * Shows root list.
+     */
+    protected _showRootLevel(): void {
+        this._$element
+            .find(`.${this._options.className}__list`)
+            .eq(0)
+            .addClass(`${this._options.className}__list--current`);
+    }
+
+    /**
      * Shows navigation level list.
      * @param {jQuery} $levelToShow ${this._options.className}__list element which should be shown.
      */
@@ -334,10 +344,15 @@ export default class OffcanvasNavigation {
             .closest(`.${this._options.className}__list`)
             .addClass(`${this._options.className}__list--current`);
     }
+
     /**
      * Resets levels to root.
      */
     protected _resetLevels(): void {
+        if (!this._$element) {
+            return;
+        }
+
         const $levelsToHide = this._$element.find(
             `.${this._options.className}__list`
         );
@@ -349,12 +364,10 @@ export default class OffcanvasNavigation {
         if (this._options.showActiveCategoryLevel) {
             this._showActiveCategoryLevel();
         } else {
-            // Set root level to current.
-            $levelsToHide
-                .eq(0)
-                .addClass(`${this._options.className}__list--current`);
+            this._showRootLevel();
         }
     }
+
     /**
      * Sets up event listeners for a component.
      */
@@ -382,6 +395,7 @@ export default class OffcanvasNavigation {
             this._eventListeners.returnLinkClick
         );
     }
+
     /**
      * Removes event listeners for a component.
      */
@@ -391,11 +405,13 @@ export default class OffcanvasNavigation {
         this._$drawer.off('click', this._eventListeners.parentLinkClick);
         this._$drawer.off('click', this._eventListeners.returnLinkClick);
     }
+
     /**
      * Shows current category level in navigation (or parent category level if there is no nested category).
      */
     protected _showActiveCategoryLevel(): void {
         if (this._activeCategoryPath.length <= 1) {
+            this._showRootLevel();
             return;
         }
 
@@ -419,6 +435,7 @@ export default class OffcanvasNavigation {
             this._showCategoryLevel(parentCategoryId);
         }
     }
+
     /**
      * Adds highlight classname to active category list item
      */
