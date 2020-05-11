@@ -786,11 +786,18 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
         .actions-toolbar .primary {
             margin-top: $checkout_base-space;
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
+
+            @include media('>=tablet') {
+                flex-wrap: nowrap;
+            }
         }
 
         button.action.action-update {
-            order: 2;
+            @include media('>=tablet') {
+                order: 2;
+            }
         }
     }
 
@@ -803,10 +810,25 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
         );
 
         font-size: 1.4rem;
+
+        @include media('<tablet') {
+            width: 100%;
+            margin-bottom: $checkout_base-space;
+        }
+    }
+
+    .action-cancel {
+        @include media('<tablet') {
+            margin-bottom: 0;
+        }
     }
 
     .action-edit-address {
-        margin-top: 2rem;
+        margin-top: $checkout_base-space;
+    }
+
+    .payment.ccard {
+        margin-top: $checkout_base-space;
     }
 
     // Agreements
