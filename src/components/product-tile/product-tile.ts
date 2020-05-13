@@ -40,8 +40,8 @@ export default class ProductTile {
                 tileModifier: '.cs-product-tile--clickable',
                 tileLinkElement: '.cs-product-tile__thumbnail-link',
                 ignoredSelectors: areSwatchesConfigurable
-                    ? '.cs-product-tile__addtocart-button, .cs-product-tile__addto, .cs-product-tile__swatches'
-                    : '.cs-product-tile__addtocart-button, .cs-product-tile__addto',
+                    ? '.cs-product-tile__addtocart-button, .cs-product-tile__addto, .cs-product-tile__qty, .cs-product-tile__swatches'
+                    : '.cs-product-tile__addtocart-button, .cs-product-tile__addto, .cs-product-tile__qty',
             },
             options
         );
@@ -64,6 +64,7 @@ export default class ProductTile {
                 const $productTile = $target.closest(
                     this._options.tileModifier
                 );
+
                 window.location = $productTile
                     .find(`${this._options.tileLinkElement}`)
                     .attr('href');
