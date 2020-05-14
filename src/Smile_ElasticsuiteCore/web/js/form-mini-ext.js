@@ -17,6 +17,15 @@ define(['jquery'], function($) {
                     }
                 });
             },
+            _getSectionHeader: function(type, data) {
+                var header = this._super(type, data);
+
+                if (type !== undefined) {
+                    header.addClass(type);
+                }
+
+                return header;
+            },
             /**
              * Validate selection of an element (eg : when ENTER is pressed)
              *
