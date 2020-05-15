@@ -13,7 +13,7 @@ export default (dependencies: string[] = []): JQuery.Deferred<any[]> => {
 
     requirejs(
         dependencies,
-        (...args: any[]) => deferred.resolve(args),
+        (...args: any[]) => setTimeout(() => deferred.resolve(args)),
         (...args: any[]) => deferred.reject(args)
     );
 
