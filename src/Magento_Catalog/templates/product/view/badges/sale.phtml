@@ -2,10 +2,14 @@
     /** @var \Magento\Catalog\Block\Product\View\Description $block */
     $helper = $this->helper('MageSuite\Frontend\Helper\Product');
     $badgeValue = $helper->getSalePercentage($block->getProduct());
-?>
+    $productId = $block->getProduct()->getId();
+
+    $renderBadgeDynamicallyConfigurables = $block->getRenderBadgeDynamicallyConfigurables();
+    $discountsPerProduct = $helper->getConfigurableDiscounts($block->getProduct());
+    ?>
 
 <?php if($badgeValue): ?>
-    <?php 
+    <?php
         $label = $block->getLabel();
         $value = $block->getValueDisplay();
 
@@ -20,6 +24,8 @@
         $badgeTextClass = $block->getTextCssClass();
         $badgeTextClass = $badgeTextClass ? sprintf('class="%s"', $badgeTextClass) : '';
 
+        $configurablesText = $block->getConfigurablesDefaultBadgeText();
+
         $valuePrefix = $block->getValuePrefix();
         $valueSuffix = $block->getValueSuffix();
     ?>
@@ -29,10 +35,29 @@
             <span <?= $badgeTextClass ?>><?= $label ?></span>
         <?php endif; ?>
         <?php if ($value): ?>
-            <span <?= $badgeTextClass ?>><?= $valuePrefix ?><?= $badgeValue ?><?= $valueSuffix ?></span>
+            <span <?= $badgeTextClass ?>>
+                <span class="cs-page-product__badge-discount-text"><?= $configurablesText ?></span>
+                <?= $valuePrefix ?>
+                <span class="cs-page-product__badge-discount-value"><?= $badgeValue ?></span>
+                <?= $valueSuffix ?>
+            </span>
         <?php endif; ?>
         </span>
+
     </<?= $wrapperTag ?>>
 <?php endif; ?>
+
+<?php if ($renderBadgeDynamicallyConfigurables): ?>
+    <script type="text/x-magento-init">
+        {
+            ".cs-buybox": {
+                "Magento_Catalog/js/product/view/sale-badge-renderer": {
+                    "discountsList": <?= /* @noEscape */ json_encode($discountsPerProduct); ?>
+                }
+            }
+        }
+    </script>
+<?php endif; ?>
+
 
 
