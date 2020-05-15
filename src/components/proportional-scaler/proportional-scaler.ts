@@ -112,23 +112,22 @@ export default class ProportionalScaler {
 
         this._setEvents();
 
-        if (this._$element.closest('.cs-image-teaser--hero-teaser')) {
-            this._scale();
-            requestAnimationFrame(() => {
-                deferred.resolve();
-            });
-        } else if (this._$element.find('.lazyload').length) {
-            this._$element.on('lazybeforeunveil', () => {
+        const scaleWithoutBlocking = () => {
+            setTimeout(() => {
                 this._scale();
                 requestAnimationFrame(() => {
                     deferred.resolve();
                 });
             });
+        };
+
+        if (
+            this._$element.find('.lazyload').length &&
+            !this._$element.closest('.cs-image-teaser--hero-teaser')
+        ) {
+            this._$element.on('lazybeforeunveil', () => scaleWithoutBlocking);
         } else {
-            this._scale();
-            requestAnimationFrame(() => {
-                deferred.resolve();
-            });
+            scaleWithoutBlocking();
         }
 
         return deferred;

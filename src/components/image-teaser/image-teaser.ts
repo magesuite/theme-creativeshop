@@ -545,10 +545,12 @@ export default class ImageTeaser {
                 ).done(() => {
                     $slide.addClass('ready');
 
-                    $container.on('teaserUpdated', () => {
-                        textScaler._scale();
-                        badgeScaler._scale();
-                    });
+                    $container.on('teaserUpdated', () =>
+                        setTimeout(() => {
+                            textScaler._scale();
+                            badgeScaler._scale();
+                        })
+                    );
                 });
             });
     }

@@ -85,7 +85,7 @@ export interface NavigationOptions {
     /**
      * Modifier class for categories with no children
      */
-    categoriesWithNoChildrenClass: string;
+    categoriesWithNoChildrenClass?: string;
 }
 
 /**
@@ -160,10 +160,7 @@ export default class Navigation {
         this._$flyouts = $element.find(`.${this._options.flyoutClassName}`);
         this._$container = $element
             .find(`.${this._options.containerClassName}`)
-            .addBack(`.${this._options.containerClassName}`); // Allow navigation partent to be container itself.
-        this._containerClientRect = this._$container
-            .get(0)
-            .getBoundingClientRect();
+            .addBack(`.${this._options.containerClassName}`); // Allow navigation parent to be container itself.
 
         if (this._options.highlightActiveCategory) {
             this._highlightActiveCategory();
@@ -302,7 +299,7 @@ export default class Navigation {
         );
         $flyoutExtras
             .css({
-                width: `${this._containerClientRect.width /
+                width: `${this._getContainerClientRect().width /
                     flyoutMaxColumnCount}px`,
             })
             .addClass(this._options.flyoutExtrasClassName);
@@ -362,7 +359,7 @@ export default class Navigation {
         const flyoutClientRect: ClientRect = $flyout
             .get(0)
             .getBoundingClientRect();
-        const containerClientRect: ClientRect = this._containerClientRect;
+        const containerClientRect: ClientRect = this._getContainerClientRect();
         const flyoutTriggerClientRect: ClientRect = $flyout
             .parent()
             .get(0)
@@ -426,7 +423,8 @@ export default class Navigation {
 
         $element.css({
             'column-count': columnCount,
-            width: `${(this._containerClientRect.width / flyoutMaxColumnCount) *
+            width: `${(this._getContainerClientRect().width /
+                flyoutMaxColumnCount) *
                 columnCount}px`,
         });
         this._triggerColumnsReflow($element);
@@ -441,6 +439,16 @@ export default class Navigation {
         $element.css({
             transform: transform,
         });
+    }
+
+    protected _getContainerClientRect(): ClientRect {
+        if (!this._containerClientRect) {
+            this._containerClientRect = this._$container
+                .get(0)
+                .getBoundingClientRect();
+        }
+
+        return this._containerClientRect;
     }
 
     /**
