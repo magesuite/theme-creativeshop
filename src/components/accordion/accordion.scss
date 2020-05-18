@@ -2,6 +2,7 @@
 @import 'config/breakpoints';
 @import 'vendors/include-media';
 @import 'components/typography/mixin';
+@import 'components/pseudoicon/mixin';
 @import 'utils/component-spacing';
 @import 'utils/reset-list-style';
 
@@ -14,14 +15,24 @@ $accordion_item-separator: 1px solid $color_border-500 !default;
 $accordion_item-font-weight: inherit !default;
 $accordion_item-padding: 1rem 0 !default;
 
+$accordion_item-headline-icon-use-pseudoicon-instead-svg: true !default;
 $accordion_item-headline-icon-position: left !default;
 $accordion_item-headline-icon-spacing-from-text: 1rem !default;
-$accordion_item-headline-icon-width: 1.2rem !default;
-$accordion_item-headline-icon-height: 0.7rem !default;
+$accordion_item-headline-icon-width: 1rem !default;
+$accordion_item-headline-icon-height: 0.2rem !default;
 $accordion_item-headline-icon-fill: $color_primary-500 !default;
+$accordion_item-headline-icon-fill--hover: $accordion_item-headline-icon-fill !default;
 $accordion_item--active-headline-icon-fill: $accordion_item-headline-icon-fill !default;
-$accordion_item--active-headline-icon-rotate: true;
+$accordion_item--active-headline-icon-rotate: true !default;
 $accordion_item--active-content-display: block !default;
+// Below navigation_icon settings are usable only if you use pseudoicon
+$accordion_item-headline-icon-type: 'arrow' !default;
+$accordion_item-headline-icon-default--opened: 'up' !default;
+$accordion_item-headline-icon-default--closed: 'down' !default;
+
+$accordion_item-headline-icon-position-side-offset: 1.5rem !default;
+$accordion_item-headline-icon-arrow-left-offset: $accordion_item-headline-icon-position-side-offset +
+    0.6rem !default;
 
 .#{$ns}accordion {
     $root: &;
@@ -58,11 +69,46 @@ $accordion_item--active-content-display: block !default;
         }
     }
 
+    &__item-headline {
+        @if ($accordion_item-headline-icon-use-pseudoicon-instead-svg) {
+            @include pseudoicon(
+                $type: $accordion_item-headline-icon-type,
+                $animated: $accordion_item--active-headline-icon-rotate,
+                $color: $accordion_item-headline-icon-fill,
+                $color-hover: $accordion_item-headline-icon-fill--hover,
+                $color-expanded: $accordion_item--active-headline-icon-fill,
+                $width: $accordion_item-headline-icon-width,
+                $height: $accordion_item-headline-icon-height,
+                $arrow-default: $accordion_item-headline-icon-default--closed,
+                $arrow-active: $accordion_item-headline-icon-default--opened,
+                $position-side-offset:
+                    $accordion_item-headline-icon-position-side-offset,
+                $arrow-offset: $accordion_item-headline-icon-arrow-left-offset
+            );
+
+            @if ($accordion_item-headline-icon-position == left) {
+                &:before,
+                &:after {
+                    right: auto;
+                }
+
+                &:before {
+                    left: $accordion_item-headline-icon-position-side-offset;
+                }
+
+                &:after {
+                    left: $accordion_item-headline-icon-arrow-left-offset;
+                }
+            }
+        }
+
+        cursor: pointer;
+    }
+
     &__item-headline-span {
         position: relative;
         display: inline-flex;
         align-items: center;
-        cursor: pointer;
         font-weight: $accordion_item-font-weight;
 
         @include media('<tablet') {
@@ -72,32 +118,44 @@ $accordion_item--active-content-display: block !default;
                 justify-content: space-between;
             }
         }
+
+        @if ($accordion_item-headline-icon-use-pseudoicon-instead-svg) {
+            @if ($accordion_item-headline-icon-position == right) {
+                padding-right: 3 *
+                    $accordion_item-headline-icon-position-side-offset;
+            } @else {
+                padding-left: 3 *
+                    $accordion_item-headline-icon-position-side-offset;
+            }
+        }
     }
 
-    &__item-headline-icon {
-        width: $accordion_item-headline-icon-width;
-        height: $accordion_item-headline-icon-height;
-        fill: $accordion_item-headline-icon-fill;
-        flex-shrink: 0;
-        transition: all $transition_default-time;
+    @if not($accordion_item-headline-icon-use-pseudoicon-instead-svg) {
+        &__item-headline-icon {
+            width: $accordion_item-headline-icon-width;
+            height: $accordion_item-headline-icon-height;
+            fill: $accordion_item-headline-icon-fill;
+            flex-shrink: 0;
+            transition: all $transition_default-time;
 
-        @if ($accordion_item-headline-icon-position == right) {
-            margin: 0 0 0 $accordion_item-headline-icon-spacing-from-text;
+            @if ($accordion_item-headline-icon-position == right) {
+                margin: 0 0 0 $accordion_item-headline-icon-spacing-from-text;
 
-            @include media('<tablet') {
-                margin-left: auto;
-                padding-left: 1.5rem;
-                box-sizing: content-box;
+                @include media('<tablet') {
+                    margin-left: auto;
+                    padding-left: 1.5rem;
+                    box-sizing: content-box;
+                }
+            } @else {
+                margin: 0 $accordion_item-headline-icon-spacing-from-text 0 0;
+                order: -1;
             }
-        } @else {
-            margin: 0 $accordion_item-headline-icon-spacing-from-text 0 0;
-            order: -1;
-        }
 
-        #{$root}__item--active & {
-            fill: $accordion_item--active-headline-icon-fill;
-            @if ($accordion_item--active-headline-icon-rotate) {
-                transform: rotate(180deg);
+            #{$root}__item--active & {
+                fill: $accordion_item--active-headline-icon-fill;
+                @if ($accordion_item--active-headline-icon-rotate) {
+                    transform: rotate(180deg);
+                }
             }
         }
     }
@@ -108,9 +166,18 @@ $accordion_item--active-content-display: block !default;
 
         @if ($accordion_item-headline-icon-position == left) {
             @include media('>=tablet') {
-                padding-left: calc(
-                    #{$accordion_item-headline-icon-spacing-from-text} + #{$accordion_item-headline-icon-width}
-                );
+                @if not(
+                    $accordion_item-headline-icon-use-pseudoicon-instead-svg
+                )
+                {
+                    padding-left: calc(
+                        #{$accordion_item-headline-icon-spacing-from-text} +
+                            #{$accordion_item-headline-icon-width}
+                    );
+                } @else {
+                    padding-left: 3 *
+                        $accordion_item-headline-icon-position-side-offset;
+                }
             }
         }
 
