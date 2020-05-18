@@ -36,7 +36,9 @@
         <?php endif; ?>
         <?php if ($value): ?>
             <span <?= $badgeTextClass ?>>
-                <span class="cs-page-product__badge-discount-text"><?= $configurablesText ?></span>
+                <?php if ($isProductConfigurable && $badgeIsDiscountType): ?>
+                    <span class="cs-page-product__badge-discount-text"><?= $configurablesText ?></span>
+                <?php endif; ?>
                 <?= $valuePrefix ?>
                 <span class="cs-page-product__badge-discount-value"><?= $badgeValue ?></span>
                 <?= $valueSuffix ?>
