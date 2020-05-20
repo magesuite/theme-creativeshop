@@ -2,23 +2,11 @@
 // @codingStandardsIgnoreFile
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
 $label = $block->getXmlLabel();
-$eventTrigger = $block->getEventTrigger();
-$isOffcanvas = $block->getVar('minicart_offcanvas/enabled', 'Magento_Checkout');
-$offcanvasInitClass = $block->getOffcanvasInitClass();
-$actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
 ?>
 
 <li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>"> 
     <div class="cs-addtocart__minicart minicart-wrapper" data-block="minicart">
-        <a 
-            class="cs-header-user-nav__link cs-addtocart__minicart-link action <?= $actionClasses; ?>"
-            href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>"
-            <?php if($isOffcanvas): ?>
-                aria-label="<?= __('Toggle offcanvas minicart'); ?>" 
-                aria-expanded="false"
-            <?php endif; ?> 
-            data-bind="scope: 'minicart_content'"
-        >
+        <a class="cs-header-user-nav__link cs-addtocart__minicart-link action showcart" href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>" data-bind="scope: 'minicart_content'">
             <div class="cs-header-user-nav__icon-wrapper">
                 <?= $block->getChildHtml('minicart.icon'); ?>
                 <span class="counter qty empty cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__qty-counter--have-items': getCartParam('summary_count') > 0, 'cs-header-user-nav__qty-counter--empty': !getCartParam('summary_count') }">
@@ -33,10 +21,10 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
         </a>
     </div>
     <?php if ($block->getIsNeedToDisplaySideBar()): ?>
-        <div id="block-minicart" class="block block-minicart empty"
-            data-role="dropdownDialog"
-            data-mage-init='{"dropdownDialog":{
-                "triggerEvent": "<?= /* @escapeNotVerified */ $eventTrigger ?>",
+        <div class="block block-minicart empty"
+             data-role="dropdownDialog"
+             data-mage-init='{"dropdownDialog":{
+                "triggerEvent": "touchstart mouseenter",
                 "appendTo":"[data-block=minicart]",
                 "triggerTarget":".showcart",
                 "timeout": "2000",
@@ -44,23 +32,11 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
                 "closeOnEscape": true,
                 "triggerClass":"active",
                 "parentClass":"active",
-                "buttons":[]}}'
-        >
-            <?php if($isOffcanvas): ?>
-            <div class="cs-offcanvas cs-offcanvas--side_right <?= $offcanvasInitClass; ?>">
-                <div class="cs-offcanvas__overlay overlay"></div>
-                <div class="cs-offcanvas__drawer drawer">
-                    <div class="cs-minicart-offcanvas__wrapper">
-                        <?php endif; ?>
-                            <div id="minicart-content-wrapper" class="cs-minicart" data-bind="scope: 'minicart_content'">
-                                <!-- ko template: getTemplate() --><!-- /ko -->
-                            </div>
-                            <?= $block->getChildHtml('minicart.addons') ?>
-                        <?php if($isOffcanvas): ?>
-                    </div>
-                </div>
+                "buttons":[]}}'>
+            <div id="minicart-content-wrapper" class="cs-minicart" data-bind="scope: 'minicart_content'">
+                <!-- ko template: getTemplate() --><!-- /ko -->
             </div>
-            <?php endif; ?>
+            <?= $block->getChildHtml('minicart.addons') ?>
         </div>
     <?php endif ?>
     <script>

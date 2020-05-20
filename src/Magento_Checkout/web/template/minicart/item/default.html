@@ -46,43 +46,42 @@
                     <!-- /ko -->
                     <!-- /ko -->
                 </div>
-                
-                <!-- ko if: options.length -->
-                <!-- ko if: $parent.showProductOptions -->
-                <div class="product options cs-minicart-product__options-wrapper">
-                    <span data-role="title" class="toggle cs-minicart-product__options-title">
-                        <!-- ko i18n: 'See Details' -->
-                        <!-- /ko -->
-                        <img class="inline-svg cs-minicart-product__options-title-svg" data-bind="attr: { src: require.toUrl('images/icons/arrow_down.svg') }" alt="">
-                    </span>
-                    <div data-role="content" class="content cs-minicart-product__options-content">
-                        <strong class="subtitle cs-minicart-product__options-subtitle">
-                            <!-- ko i18n: 'Options Details' -->
-                            <!-- /ko --></strong>
-                        <!-- ko foreach: { data: options, as: 'option' } -->
-                        <dl class="product options list cs-minicart-product__options-group">
-                            <!-- ko if: (item && item['product_type'] && item['product_type'] !== 'bundle') -->
-                            <dt class="label cs-minicart-product__options-label">
-                                <!-- ko text: option.label -->
-                                <!-- /ko --></dt>
-                            <!-- /ko -->
-                            <dd class="values cs-minicart-product__options-value">
-                                <!-- ko if: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value.map(function(value) {
-                                    return '<span class=\'cs-minicart-product__options-value__value\'>' + value + '</span>';
-                                }).join('')"></span>
-                                <!-- /ko -->
-                                <!-- ko ifnot: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value"></span>
-                                <!-- /ko -->
-                            </dd>
-                        </dl>
-                        <!-- /ko -->
-                    </div>
-                </div>
-                <!-- /ko -->
-                <!-- /ko -->
             </div>
+            <!-- ko if: options.length -->
+            <!-- ko if: $parent.showProductOptions -->
+            <div class="product options cs-minicart-product__options-wrapper">
+                <span data-role="title" class="toggle cs-minicart-product__options-title">
+                    <!-- ko i18n: 'See Details' -->
+                    <!-- /ko -->
+                    <img class="inline-svg cs-minicart-product__options-title-svg" data-bind="attr: { src: require.toUrl('images/icons/arrow_down.svg') }" alt="">
+                </span>
+                <div data-role="content" class="content cs-minicart-product__options-content">
+                    <strong class="subtitle cs-minicart-product__options-subtitle">
+                        <!-- ko i18n: 'Options Details' -->
+                        <!-- /ko --></strong>
+                    <!-- ko foreach: { data: options, as: 'option' } -->
+                    <dl class="product options list cs-minicart-product__options-group">
+                        <!-- ko if: (item && item['product_type'] && item['product_type'] !== 'bundle') -->
+                        <dt class="label cs-minicart-product__options-label">
+                            <!-- ko text: option.label -->
+                            <!-- /ko --></dt>
+                        <!-- /ko -->
+                        <dd class="values cs-minicart-product__options-value">
+                            <!-- ko if: Array.isArray(option.value) -->
+                            <span data-bind="html: option.value.map(function(value) {
+                                return '<span class=\'cs-minicart-product__options-value__value\'>' + value + '</span>';
+                            }).join('')"></span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: Array.isArray(option.value) -->
+                            <span data-bind="html: option.value"></span>
+                            <!-- /ko -->
+                        </dd>
+                    </dl>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
 
             <div class="product actions cs-minicart-product__actions">
                 <!-- ko if: $parent.useDefaultQty -->

@@ -9,8 +9,6 @@ export interface OffcanvasOptions {
     closeOnBlur?: boolean; // Should offcanvas be closed on overlay click.
     drawerTransitionDuration?: number; // How long does the drawer CSS transition take in ms.
     overlayTransitionDuration?: number; // How long does the overlay CSS transition take in ms.
-    topbarSelector?: string; // Topbar element selector
-    pagewrapperSelector?: string; // Page wrapper element selector
 }
 
 /**
@@ -21,8 +19,6 @@ export default class Offcanvas {
     protected _$overlay: JQuery;
     protected _$drawer: JQuery;
     protected _$trigger: JQuery;
-    protected _$topbar: JQuery;
-    protected _$pageWrapper: JQuery<HTMLElement>;
     protected _options: OffcanvasOptions;
     protected _eventListeners: {
         triggerClick?: (event: Event) => void;
@@ -42,8 +38,6 @@ export default class Offcanvas {
                 closeOnBlur: true,
                 drawerTransitionDuration: 300,
                 overlayTransitionDuration: 300,
-                topbarSelector: '.cs-topbar',
-                pagewrapperSelector: '.page-wrapper',
             },
             options
         );
@@ -53,11 +47,14 @@ export default class Offcanvas {
             return;
         }
 
-        this._$drawer = this._$element.find(`.drawer`);
-        this._$overlay = this._$element.find(`.overlay`);
+        this._$drawer = this._$element.find(
+            `.${this._options.className}__drawer`
+        );
+        this._$overlay = this._$element.find(
+            `.${this._options.className}__overlay`
+        );
         this._$trigger = $(`.${this._options.triggerClassName}`);
-        this._$topbar = $(this._options.topbarSelector);
-        this._$pageWrapper = $(this._options.pagewrapperSelector);
+
         this._addEventListeners();
     }
     /**
@@ -80,12 +77,7 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is shown.
      */
     public show(): Promise<Offcanvas> {
-        const $currentTopOffset: number = window.scrollY;
-        $('body')
-            .addClass('no-scroll')
-            .offset({ top: -$currentTopOffset });
-        this._$pageWrapper.addClass('no-scroll-child');
-
+        $('body, html').addClass('no-scroll');
         this._$trigger
             .addClass(`${this._options.triggerClassName}--active`)
             .attr('aria-expanded', 'true');
@@ -101,20 +93,13 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is hidden.
      */
     public hide(): Promise<Offcanvas> {
-        const $currentTopOffset: string = $('body').css('top');
-        $('body')
-            .removeClass('no-scroll')
-            .css('top', '');
-        this._$pageWrapper.removeClass('no-scroll-child');
-        window.scrollTo(0, parseInt($currentTopOffset || '0', 10) * -1);
-
+        $('body, html').removeClass('no-scroll');
         this._$trigger
             .removeClass(`${this._options.triggerClassName}--active`)
             .attr('aria-expanded', 'false');
         return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
             () => {
                 this._$element.trigger('offcanvas-hide', this);
-                this._$topbar.css('z-index', '');
                 return this;
             }
         );
@@ -125,8 +110,9 @@ export default class Offcanvas {
      */
     protected _showOverlay(): Promise<Offcanvas> {
         return new Promise(resolve => {
-            this._$topbar.css('z-index', 'auto');
-            this._$overlay.addClass(`overlay--visible`);
+            this._$overlay.addClass(
+                `${this._options.className}__overlay--visible`
+            );
             setTimeout(
                 () => resolve(this),
                 this._options.overlayTransitionDuration
@@ -139,7 +125,9 @@ export default class Offcanvas {
      */
     protected _hideOverlay(): Promise<Offcanvas> {
         return new Promise(resolve => {
-            this._$overlay.removeClass(`overlay--visible`);
+            this._$overlay.removeClass(
+                `${this._options.className}__overlay--visible`
+            );
             setTimeout(
                 () => resolve(this),
                 this._options.overlayTransitionDuration
@@ -152,7 +140,9 @@ export default class Offcanvas {
      */
     protected _showDrawer(): Promise<Offcanvas> {
         return new Promise(resolve => {
-            this._$drawer.addClass(`drawer--visible`);
+            this._$drawer.addClass(
+                `${this._options.className}__drawer--visible`
+            );
             setTimeout(
                 () => resolve(this),
                 this._options.drawerTransitionDuration
@@ -165,7 +155,9 @@ export default class Offcanvas {
      */
     protected _hideDrawer(): Promise<Offcanvas> {
         return new Promise(resolve => {
-            this._$drawer.removeClass(`drawer--visible`);
+            this._$drawer.removeClass(
+                `${this._options.className}__drawer--visible`
+            );
             setTimeout(
                 () => resolve(this),
                 this._options.drawerTransitionDuration
@@ -177,11 +169,7 @@ export default class Offcanvas {
      */
     protected _addEventListeners(): void {
         this._eventListeners.triggerClick = (e: Event) => this.toggle(e);
-        $(document).on(
-            'click',
-            `.${this._options.triggerClassName}`,
-            this._eventListeners.triggerClick
-        );
+        this._$trigger.on('click', this._eventListeners.triggerClick);
 
         if (this._options.closeOnBlur) {
             this._eventListeners.overlayClick = () => this.hide();
