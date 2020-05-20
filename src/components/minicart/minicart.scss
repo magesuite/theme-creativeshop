@@ -1,7 +1,30 @@
 @import 'config/variables';
 @import 'vendors/include-media';
-
 @import 'components/button/mixin';
+@import 'etc/view';
+@import 'utils/deep-get/deep-get';
+
+$minicart-offcanvas: deep-get(
+    $view-xml,
+    vars,
+    Magento_Checkout,
+    minicart_offcanvas,
+    enabled
+) !default;
+
+$minicart_offcanvas-wrapper: 0 !default;
+$minicart_offcanvas-padding: 1.5rem 2rem !default;
+
+$minicart_offcanvas-carousel-background: $color_background-200 !default;
+$minicart_offcanvas-carousel-spacing: 2rem !default;
+$minicart_offcanvas-carousel-position: 'center' !default; // Default value: center. Possible values: center / top / bottom
+$minicart_offcanvas-carousel-position-offset: $minicart_offcanvas-carousel-spacing !default;
+$minicart_offcanvas-carousel-button-position: 'center' !default; // Default value: center. Possible values: center / left / right
+$minicart_offcanvas-carousel-button-border: 1px solid $color_border-500 !default;
+$minicart_offcanvas-carousel-button-spacing: 3rem !default;
+/* prettier-ignore */
+$minicart_offcanvas-carousel-transition: opacity $transition-default-time ease-in !default;
+$minicart_offcanvas-carousel-spinner-size: 11rem !default;
 
 $minicart_padding: 2rem 0 !default;
 
@@ -10,6 +33,8 @@ $minicart_close-button-color: $color_text-200 !default;
 $minicart_item-border: 1px solid $color_border-500 !default;
 $minicart_item-headline-color: $color_text-800 !default;
 $minicart_item-padding: 1.5rem !default;
+
+$minicart-offcanvas_item-padding: 1.5rem 2rem !default;
 
 $minicart_background: $color_background-500 !default;
 $minicart_box-shadow: 0 0 21px 0 rgba($color_background-800, 0.27) !default;
@@ -25,6 +50,9 @@ $minicart_button-checkout-icon-pos: $button_default-icon-pos !default;
 
 $minicart_button-viewcart-type: 'secondary' !default;
 $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
+
+$minicart_button-carousel-type: 'secondary' !default;
+$minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
 
 .#{$ns}minicart {
     $root: &;
@@ -74,6 +102,15 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
             speak: none;
             text-align: center;
         }
+
+        @if $minicart-offcanvas {
+            right: 0.5rem;
+
+            &:before {
+                font-size: 4rem;
+                color: $color_text-500;
+            }
+        }
     }
 
     &__close-text {
@@ -95,6 +132,13 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
         font-weight: 700;
         font-size: 1.8rem;
         margin: 0;
+
+        @if $minicart-offcanvas {
+            padding: $minicart_offcanvas-padding;
+            font-size: 2.1rem;
+            text-transform: uppercase;
+            border-bottom: $minicart_item-border;
+        }
     }
 
     &__items-total {
@@ -106,6 +150,11 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
 
         &:after {
             content: ')';
+        }
+
+        @if $minicart-offcanvas {
+            color: $color_text-500;
+            font-weight: 400;
         }
     }
 
@@ -155,11 +204,20 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
         &:last-child {
             border-bottom: none;
         }
+
+        @if $minicart-offcanvas {
+            padding: $minicart-offcanvas_item-padding;
+        }
     }
 
     &__actions-wrapper {
         padding: $minicart_padding;
         position: relative;
+
+        @if $minicart-offcanvas {
+            padding: $minicart_offcanvas-padding;
+            box-shadow: $minicart_action-wrapper_box-shadow;
+        }
     }
 
     &__actions {
@@ -190,6 +248,10 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
         .price {
             font-weight: 700;
             font-size: 1.5rem !important;
+
+            @if $minicart-offcanvas {
+                font-size: 2.1rem !important;
+            }
         }
     }
 
@@ -242,65 +304,206 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
             /* stylelint-disable-next-line */
         }
     }
-}
 
-.minicart-wrapper {
-    .ui-dialog {
-        position: absolute;
-        top: 100%;
-        right: 0.5rem;
-        z-index: 99999;
+    &__button-carousel {
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            padding-top: $minicart_offcanvas-carousel-button-spacing;
+            margin: $minicart_offcanvas-carousel-button-spacing 0;
+            border-top: $minicart_offcanvas-carousel-button-border;
 
-        @include media('>=laptop') {
-            right: -1rem;
+            @if $minicart_offcanvas-carousel-button-position == 'left' {
+                justify-content: flex-start;
+            } @else if $minicart_offcanvas-carousel-button-position == 'right' {
+                justify-content: flex-end;
+            }
         }
 
-        @if ($global_header-height-desktop > $global_header-height-tablet) {
-            @include media('>=laptopLg') {
-                top: calc(
-                    100% -
-                        (
-                            (
-                                    #{$global_header-height-desktop} - #{$global_header-height-tablet}
-                                ) / 2
-                        )
-                );
-            }
+        @include button(
+            $type: $minicart_button-carousel-type,
+            $icon_pos: $minicart_button-carousel-icon-pos
+        );
+
+        &-span {
+            @include button_span(
+                $type: $minicart_button-carousel-type,
+                $icon_pos: $minicart_button-carousel-icon-pos
+            );
+            /* stylelint-disable-next-line */
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $minicart_button-carousel-type,
+                $icon_pos: $minicart_button-carousel-icon-pos
+            );
+            /* stylelint-disable-next-line */
         }
     }
 
-    .block-minicart {
-        background: $minicart_background;
-        box-shadow: $minicart_box-shadow;
-        border: none;
-        width: 31rem;
-        right: 0;
-        margin: 0;
+    &__messages {
         padding: 0 2rem;
-        position: relative;
+    }
 
-        @include media('>=phoneLg') {
-            width: $minicart_width;
+    &-offcanvas__wrapper {
+        padding: $minicart_offcanvas-wrapper;
+    }
+}
+
+/* prettier-ignore */
+.#{$ns}minicart__carousel {
+    $root: &;
+    position: relative;
+    z-index: 10;
+
+    &-container {
+        opacity: 0;
+        transition: $minicart_offcanvas-carousel-transition;
+        background: $minicart_offcanvas-carousel-background;
+
+        #{$root}-wrapper--ready & {
+            opacity: 1;
+        }
+    }
+
+    &-wrapper {
+        display: none;
+        top: 50%;
+        right: calc(#{$minicart_width} + #{$minicart_offcanvas-carousel-spacing});
+        transform: translateY(-50%);
+        width: calc(100vw - (#{$minicart_width} + (2 * #{$minicart_offcanvas-carousel-spacing})));
+        max-width: 120rem;
+        padding: 0;
+        margin: 0;
+        background: transparent;
+
+        @at-root .drawer--visible & {
+            position: fixed;
         }
 
-        &:before {
-            display: none;
+        @include media('>=tablet') {
+            display: block;
         }
 
-        &:after {
-            content: '';
+        @include media('>=laptopLg') {
+            max-height: 80vh;
+        }
+
+        @include media('>=laptopLg') {
+            right: calc(#{$minicart_width} + (2 * #{$minicart_offcanvas-carousel-spacing}));
+            width: calc(100vw - (#{$minicart_width} + (4 * #{$minicart_offcanvas-carousel-spacing})));
+        }
+
+        @if $minicart_offcanvas-carousel-position == 'top' {
+            top: $minicart_offcanvas-carousel-position-offset;
+            transform: translateY(0%);
+        } @else if $minicart_offcanvas-carousel-position == 'bottom' {
+            top: auto;
+            bottom: $minicart_offcanvas-carousel-position-offset;
+            transform: translateY(0%);
+        }
+
+        .ie11 & {
+            left: $minicart_offcanvas-carousel-spacing;
+        }
+
+        .#{$ns}headline {
+            margin: 0 0 $minicart_offcanvas-carousel-spacing;
+            padding: $minicart_offcanvas-carousel-spacing 0 0;
+        }
+    }
+
+    &-spinner {
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $minicart_offcanvas-carousel-spinner-size;
+        height: $minicart_offcanvas-carousel-spinner-size;
+        padding: $minicart_offcanvas-carousel-spacing 0;
+        transform: translate3d(-50%, -50%, 0);
+        background: $minicart_offcanvas-carousel-background;
+        box-shadow: $box-shadow_base;
+        transition: $minicart_offcanvas-carousel-transition;
+
+        #{$root}-wrapper--loading & {
+            opacity: 1;
+            z-index: 10;
+        }
+    }
+
+    .#{$ns}products-carousel {
+        margin: 0;
+        background: $minicart_offcanvas-carousel-background;
+    }
+}
+
+@if $minicart-offcanvas != true {
+    .minicart-wrapper {
+        .ui-dialog {
             position: absolute;
-            width: 1.5rem;
-            height: 1.5rem;
-            background: $minicart_background;
-            transform: rotate(45deg);
-            top: -0.8rem;
-            right: 1.5rem;
-            left: auto;
+            top: 100%;
+            right: 0.5rem;
+            z-index: 99999;
 
             @include media('>=laptop') {
-                right: 4.5rem;
+                right: -1rem;
             }
+
+            @if ($global_header-height-desktop > $global_header-height-tablet) {
+                @include media('>=laptopLg') {
+                    top: calc(
+                        100% -
+                            (
+                                (
+                                        #{$global_header-height-desktop} - #{$global_header-height-tablet}
+                                    ) / 2
+                            )
+                    );
+                }
+            }
+        }
+
+        .block-minicart {
+            background: $minicart_background;
+            box-shadow: $minicart_box-shadow;
+            border: none;
+            width: 31rem;
+            right: 0;
+            margin: 0;
+            padding: 0 2rem;
+            position: relative;
+
+            @include media('>=phoneLg') {
+                width: $minicart_width;
+            }
+
+            &:before {
+                display: none;
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                width: 1.5rem;
+                height: 1.5rem;
+                background: $minicart_background;
+                transform: rotate(45deg);
+                top: -0.8rem;
+                right: 1.5rem;
+                left: auto;
+
+                @include media('>=laptop') {
+                    right: 4.5rem;
+                }
+            }
+        }
+    }
+} @else {
+    .minicart-wrapper {
+        .ui-dialog {
+            display: block !important;
         }
     }
 }

@@ -1,4 +1,6 @@
 import * as $ from 'jquery';
+import viewXml from 'etc/view';
+import deepGet from 'utils/deep-get/deep-get';
 
 type JQueryEvent = JQuery.Event;
 
@@ -121,6 +123,11 @@ interface IAddToCartSettings {
     minicartDialogSelector?: string;
 }
 
+interface IOffcanvasMinicartXmlSettings {
+    enabled: boolean;
+    open_on_product_added: boolean;
+}
+
 /**
  * ItemCloner clones given item on mouseover and places is on top of hovered element in the same place
  * Clone resides on the bottom of the DOM tree and is positioned absolutely with height z-index ( defined in options )
@@ -133,6 +140,7 @@ export default class AddToCart {
     private _visibilityTimeout: ReturnType<typeof setTimeout>;
     private _allDoneTimeout: ReturnType<typeof setTimeout>;
     private _isMinicartSticky: boolean;
+    private _minicartOffcanvasSettings: IOffcanvasMinicartXmlSettings;
     private _options?: IAddToCartSettings;
 
     /**
@@ -163,6 +171,11 @@ export default class AddToCart {
                 minicartDialogSelector: '.block-minicart',
             },
             options
+        );
+
+        this._minicartOffcanvasSettings = deepGet(
+            viewXml,
+            'vars.Magento_Checkout.minicart_offcanvas'
         );
 
         this._$component = null;
@@ -288,6 +301,10 @@ export default class AddToCart {
                 }
             }
         }
+
+        if (!actionFailed) {
+            $("[data-block='minicart']").trigger('productAdded', [ajaxRes]);
+        }
     }
 
     /**
@@ -311,15 +328,24 @@ export default class AddToCart {
      * @param $component - `cs-addtocart` component instance (parent of button that just sent AJAX requst).
      */
     protected _startQtyUpdate($component: JQuery<HTMLElement>): void {
-        this._getCartData().then(newQty => {
-            if (!isNaN(newQty) && $(`.${this._options.minicartClass}`).length) {
-                this._animateMinicart('down');
+        if (
+            !this._minicartOffcanvasSettings.enabled ||
+            (this._minicartOffcanvasSettings.enabled &&
+                !this._minicartOffcanvasSettings.open_on_product_added)
+        ) {
+            this._getCartData().then(newQty => {
+                if (
+                    !isNaN(newQty) &&
+                    $(`.${this._options.minicartClass}`).length
+                ) {
+                    this._animateMinicart('down');
 
-                if (this._options.animateQtyBadge) {
-                    this._insertQtyBadge(newQty, $component);
+                    if (this._options.animateQtyBadge) {
+                        this._insertQtyBadge(newQty, $component);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     /**
