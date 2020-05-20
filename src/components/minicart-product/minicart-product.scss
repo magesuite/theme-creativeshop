@@ -1,24 +1,44 @@
 @import 'config/variables';
 @import 'vendors/include-media';
-
 @import 'components/button/mixin';
 @import 'components/field/mixin.scss';
 @import 'utils/visually-hidden';
+@import 'etc/view';
+@import 'utils/deep-get/deep-get';
+
+$minicart-offcanvas: deep-get(
+    $view-xml,
+    vars,
+    Magento_Checkout,
+    minicart_offcanvas,
+    enabled
+) !default;
 
 $minicart-product_action-icon-color: $color_primary-500 !default;
 $minicart-product_action-icon-color-hover: $color_primary-800 !default;
 
+$minicart-offcanvas-product_action-icon-color: $color_text-800 !default;
+$minicart-offcanvas-product_action-icon-color--hover: $minicart-offcanvas-product_action-icon-color !default;
+
 $minicart-product_overview-font-size: 1.3rem !default;
 $minicart-product_name-color: $color_text-800 !default;
 $minicart-product_name-color-hover: $color_text-800 !default;
+$minicart-product_name-padding: 1.2rem !default;
 
 $minicart-product-options-title-color: $color_text-600 !default;
-
 $minicart-product_options-font-size: 1.2rem !default;
 $minicart-product_options-label-color: $color_text-400 !default;
 $minicart-product_options-value-color: $color_text-400 !default;
 $minicart-product_options_toggle-padding: 1.2rem !default;
 $minicart-product-options_toggle-disable: false !default;
+
+$minicart-offcanvas-product-options-title-color: $color_text-800 !default;
+$minicart-offcanvas-product_options-title-font-size: 1.3rem !default;
+$minicart-offcanvas-product_options-label-font-size: 1.1rem !default;
+$minicart-offcanvas-product-options-label-color: $color_text-800 !default;
+$minicart-offcanvas-product-options-label-font-weight: 700 !default;
+
+$minicart-offcanvas-product_action-icon-size: 2rem !default;
 
 $minicart-product_price-color: $color_text-800 !default;
 
@@ -50,9 +70,9 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
 
     &__overview {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: baseline;
-        padding-bottom: $minicart-product_options_toggle-padding;
     }
 
     &__details {
@@ -60,9 +80,18 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
     }
 
     &__name-wrapper {
+        flex-basis: 55%;
+        padding-bottom: $minicart-product_name-padding;
         text-align: left;
-        margin-right: 2rem;
         font-size: $minicart-product_overview-font-size;
+
+        @include media('>=phoneLg') {
+            flex-basis: 70%;
+        }
+
+        @if $minicart-offcanvas {
+            flex-basis: 100% !important;
+        }
     }
 
     &__name {
@@ -78,6 +107,17 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
             text-decoration: none;
             color: $minicart-product_name-color-hover;
         }
+
+        @if $minicart-offcanvas {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+    }
+
+    &__item-pricing {
+        @if $minicart-offcanvas {
+            order: 3;
+        }
     }
 
     &__price {
@@ -85,6 +125,17 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
             font-size: $minicart-product_overview-font-size;
             font-weight: 700;
             color: $minicart-product_price-color;
+        }
+
+        @if $minicart-offcanvas {
+            .price-including-tax,
+            .price-excluding-tax {
+                font-size: $minicart-product_overview-font-size;
+            }
+
+            .price {
+                font-weight: 400;
+            }
         }
     }
 
@@ -108,6 +159,11 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
                 }
             }
         }
+
+        @if $minicart-offcanvas {
+            font-size: $minicart-offcanvas-product_options-title-font-size;
+            color: $minicart-offcanvas-product-options-title-color;
+        }
     }
 
     &__options-title-svg {
@@ -125,6 +181,11 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
         align-items: flex-start;
         text-align: left;
         margin-top: -0.4rem;
+
+        @if $minicart-offcanvas {
+            flex-basis: 100%;
+            padding-bottom: $minicart-product_options_toggle-padding;
+        }
     }
 
     &__options-group {
@@ -148,6 +209,10 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
         @if ($minicart-product-options_toggle-disable) {
             display: block !important;
         }
+
+        @if $minicart-offcanvas {
+            padding-top: 0.5rem;
+        }
     }
 
     &__options-label {
@@ -160,6 +225,13 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
 
         &:after {
             content: ':';
+        }
+
+        @if $minicart-offcanvas {
+            font-size: $minicart-offcanvas-product_options-label-font-size;
+            font-weight: $minicart-offcanvas-product-options-label-font-weight;
+            color: $minicart-offcanvas-product-options-label-color;
+            text-transform: uppercase;
         }
     }
 
@@ -264,6 +336,11 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
     &__action-icon {
         width: 1.6rem;
         height: 1.6rem;
+
+        @if $minicart-offcanvas {
+            width: $minicart-offcanvas-product_action-icon-size;
+            height: $minicart-offcanvas-product_action-icon-size;
+        }
     }
 
     &__action-icon,
@@ -275,5 +352,23 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
 
     &__action-label {
         @include visually-hidden();
+    }
+
+    @if $minicart-offcanvas {
+        &__options-title {
+            &:hover {
+                #{$root}__options-title-svg {
+                    * {
+                        fill: $minicart-offcanvas-product_action-icon-color--hover;
+                    }
+                }
+            }
+        }
+
+        &__options-title-svg {
+            * {
+                fill: $minicart-offcanvas-product_action-icon-color;
+            }
+        }
     }
 }
