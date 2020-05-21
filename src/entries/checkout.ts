@@ -35,6 +35,7 @@ import 'components/logo';
 import 'components/messages';
 import 'components/minicart';
 import 'components/minicart-product';
+import 'components/free-shipping-indicator';
 import 'components/modal';
 import 'components/navigation';
 import 'components/newsletter';
