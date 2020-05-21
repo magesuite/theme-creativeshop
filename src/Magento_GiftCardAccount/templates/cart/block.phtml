@@ -1,0 +1,64 @@
+<?php
+/**
+ * Template overriden in order to provide magesuite classes, the same as in discount area
+ */
+
+/**
+ * @var \Magento\GiftCardAccount\Block\Checkout\Cart\Giftcardaccount $block
+ * @see \Magento\GiftCardAccount\Block\Checkout\Cart\Giftcardaccount
+ */
+?>
+<div class="block giftcard cs-discount" id="block-giftcard" data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
+    <div data-role="title" class="cs-discount__title title">
+        <span id="block-giftcard-heading" role="heading" aria-level="2" class="cs-discount__title-text">
+            <?= $block->escapeHtml(__('Gift Cards')) ?>
+        </span>
+        <?= $block->getChildHtml('checkout.cart.giftcard.icon'); ?>
+    </div>
+    <div data-role="content" class="content cs-discount__content" aria-labelledby="block-giftcard-heading">
+        <div id="giftcard-balance-lookup"></div>
+        <span id="gc-please-wait" class="please-wait load indicator" style="display: none;"
+              data-text="<?= $block->escapeHtmlAttr(__('This won\'t take long . . .')) ?>">
+            <span><?= $block->escapeHtml(__('This won\'t take long . . .')) ?></span>
+        </span>
+        <form class="form giftcard add" id="giftcard-form"
+              action="<?= $block->escapeUrl($block->getUrl('magento_giftcardaccount/cart/add')) ?>" method="post"
+              data-mage-init='{"validation": {},"giftCard": {
+                "giftCardCodeSelector": "#giftcard-code",
+                "giftCardFormSelector": "#giftcard-form",
+                "checkStatus": ".action.check",
+                "giftCardStatusUrl": "<?= $block->escapeHtml($block->getUrl('magento_giftcardaccount/cart/quickCheck', ['_secure' => true])) ?>",
+                "giftCardStatusId": "#giftcard-balance-lookup",
+                "giftCardSpinnerId": "#gc-please-wait",
+                "messages": ".page.messages .messages"
+              }}'>
+            <div class="fieldset">
+                <div class="field">
+                    <label class="label" for="giftcard-code">
+                        <span><?= $block->escapeHtml(__('Enter the gift card code')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input class="input-text" type="text" id="giftcard-code" name="giftcard_code"
+                               data-validate="{'required-entry':true}" value=""
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter the gift card code')) ?>" />
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button class="action add primary" type="submit" value="<?= $block->escapeHtmlAttr(__('Add Gift Card')) ?>">
+                            <span><?= $block->escapeHtml(__('Add Gift Card')) ?></span>
+                        </button>
+                    </div>
+                    <div class="secondary">
+                        <button class="action check" type="button" value="<?= $block->escapeHtmlAttr(__('Check Gift Card status and balance')) ?>">
+                            <span><?= $block->escapeHtml(__('Check Gift Card status and balance')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="fieldset">
+                <?= $block->getChildHtml('captcha') ?>
+            </div>
+        </form>
+    </div>
+</div>
