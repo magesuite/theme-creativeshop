@@ -159,33 +159,6 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
         text-align: center; // align everything to center
     }
 
-    // Thumbnails/Dots wrapper
-    &:not(.fotorama--fullscreen) {
-        .fotorama__nav-wrap {
-            @if $product-gallery_thumbs-gutter != 0 {
-                margin-left: -#{$product-gallery_thumbs-gutter / 2};
-                margin-right: -#{$product-gallery_thumbs-gutter / 2};
-            }
-        }
-
-        // Thumbnails/Dots list
-        .fotorama__nav {
-            width: auto !important; // overrides inline style
-            height: auto !important; // overrides inline style
-            display: inline-block; // makes sure it's not 100% width
-            white-space: normal;
-        }
-
-        .fotorama__nav__shaft {
-            transform: none !important; // disables drag-slide for thumb/dots
-            text-align: center;
-
-            &.fotorama__grab {
-                cursor: default;
-            }
-        }
-    }
-
     // Single thumbnail wrapper
     .fotorama__nav--thumbs .fotorama__nav__frame {
         padding-left: $product-gallery_thumb-padding !important;
@@ -248,7 +221,6 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
 
     // Arrow's wrapper
     .fotorama__thumb__arr {
-        width: $product-gallery_thumb-arrow-wrapper-width;
         transition: all 0.3s ease-in-out;
 
         &,
@@ -263,6 +235,7 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
             color: $product-gallery_thumb-arrow-wrapper--active-background;
         }
 
+        &.fotorama__arr--disabled,
         &--disabled {
             display: none !important; // hide arrows when not needed, overrides inline style
         }
@@ -324,6 +297,42 @@ $product-gallery_spinner-border-radius: $border-radius_base !default;
         background-image: url($product-gallery_spinner-image-url);
         background-color: $product-gallery_spinner-background-color;
         border-radius: $product-gallery_spinner-border-radius;
+    }
+
+    // Thumbnails/Dots wrapper
+    &:not(.fotorama--fullscreen) {
+        // Thumbnails/Dots list
+        .fotorama__nav {
+            width: auto !important; // overrides inline style
+            display: inline-block; // makes sure it's not 100% width
+        }
+
+        .fotorama__nav-wrap {
+            @if $product-gallery_thumbs-gutter != 0 {
+                margin-left: -#{$product-gallery_thumbs-gutter / 2};
+                margin-right: -#{$product-gallery_thumbs-gutter / 2};
+            }
+
+            &--horizontal {
+                // Thumbnails/Dots list
+                .fotorama__nav {
+                    height: auto !important; // overrides inline style
+                }
+
+                // Arrow's wrapper
+                .fotorama__thumb__arr {
+                    width: $product-gallery_thumb-arrow-wrapper-width;
+                }
+            }
+        }
+
+        .fotorama__nav__shaft {
+            text-align: center;
+
+            &.fotorama__grab {
+                cursor: default;
+            }
+        }
     }
 }
 
