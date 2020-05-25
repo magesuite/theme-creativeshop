@@ -18,6 +18,7 @@ $free-shipping-indicator_bar-padding: 0.4rem !default;
 $free-shipping-indicator_bar-border: 1px solid $color_silver-chalice !default;
 $free-shipping-indicator_bar-border-radius: $border-radius_base * 1.4 !default;
 
+$free-shipping-indicator_bar-progress-wrapper-background: transparent !default;
 $free-shipping-indicator_bar-progress-background: $color_success-500 !default;
 $free-shipping-indicator_bar-progress-border-radius: $border-radius_base !default;
 $free-shipping-indicator_bar-progress-transition: width 0.55s
@@ -32,11 +33,13 @@ $free-shipping-indicator_icon-color--free-shipping-applied: $color_success-500 !
 .#{$ns}free-shipping-indicator {
     $root: &;
 
-    border-top: $free-shipping-indicator_separator;
-    padding: $free-shipping-indicator_padding;
-    color: $color_text-500;
-    font-size: $free-shipping-indicator_font-size;
-    text-align: left;
+    &__content {
+        border-top: $free-shipping-indicator_separator;
+        padding: $free-shipping-indicator_padding;
+        color: $color_text-500;
+        font-size: $free-shipping-indicator_font-size;
+        text-align: left;
+    }
 
     &__cell {
         padding-top: 1.4rem;
@@ -82,6 +85,12 @@ $free-shipping-indicator_icon-color--free-shipping-applied: $color_success-500 !
         padding: $free-shipping-indicator_bar-padding;
         border: $free-shipping-indicator_bar-border;
         border-radius: $free-shipping-indicator_bar-border-radius;
+    }
+
+    &__bar-progress-wrapper {
+        height: 100%;
+        background: $free-shipping-indicator_bar-progress-wrapper-background;
+        border-radius: $free-shipping-indicator_bar-progress-border-radius;
     }
 
     &__bar-progress {
