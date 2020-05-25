@@ -83,7 +83,7 @@ interface DailydealOptions {
      * Dailydeal label translations
      * @type object
      */
-    labelTranslations?: object;
+    labels?: object;
     /**
      * Decides if labels should be dynamically updated every second.
      * Useful if there's 1 second left and you want to show 'second' instead of 'seconds' in this case
@@ -198,15 +198,15 @@ export default class Dailydeal {
             return `.${this.namespace}dailydeal__badge--amount`;
         },
         timeDisplayPrecision: 1,
-        labelTranslations: {
-            day: $.mage.__('Day'),
-            days: $.mage.__('Days'),
-            hour: $.mage.__('Hour'),
-            hours: $.mage.__('Hours'),
-            minute: $.mage.__('Min'),
-            minutes: $.mage.__('Min'),
-            second: $.mage.__('Sec'),
-            seconds: $.mage.__('Sec'),
+        labels: {
+            day: 'Day',
+            days: 'Days',
+            hour: 'Hour',
+            hours: 'Hours',
+            minute: 'Min',
+            minutes: 'Min',
+            second: 'Sec',
+            seconds: 'Sec',
         },
         updateLabels: false,
     };
@@ -474,17 +474,17 @@ export default class Dailydeal {
 
     /**
      * Returns label for corresponding position in countdown
-     * based on labelTranslations option object
+     * based on labels option object
      * @param n {number} number (must know if n > 1 to get correct label)
-     * @return label {string} label from this._options.labelTranslations object
+     * @return label {string} label from this._options.labels object
      */
     protected _getCountdownLabel(n: number, timeUnit: string): string {
         if (this._options.updateLabels) {
             return n === 1
-                ? this._options.labelTranslations[timeUnit]
-                : this._options.labelTranslations[timeUnit + 's'];
+                ? $.mage.__(this._options.labels[timeUnit])
+                : $.mage.__(this._options.labels[timeUnit + 's']);
         } else {
-            return this._options.labelTranslations[timeUnit + 's'];
+            return $.mage.__(this._options.labels[timeUnit + 's']);
         }
     }
 
