@@ -12,6 +12,15 @@ $minicart-offcanvas: deep-get(
     enabled
 ) !default;
 
+$minicart-offcanvas-carousel: deep-get(
+    $view-xml,
+    vars,
+    Magento_Checkout,
+    minicart_offcanvas,
+    products_carousel,
+    enabled
+) !default;
+
 $minicart_offcanvas-wrapper: 0 !default;
 $minicart_offcanvas-padding: 1.5rem 2rem !default;
 
@@ -351,91 +360,93 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
     }
 }
 
-/* prettier-ignore */
-.#{$ns}minicart__carousel {
-    $root: &;
-    position: relative;
-    z-index: 10;
+@if $minicart-offcanvas and $minicart-offcanvas-carousel {
+    /* prettier-ignore */
+    .#{$ns}minicart__carousel {
+        $root: &;
+        position: relative;
+        z-index: 10;
 
-    &-container {
-        opacity: 0;
-        transition: $minicart_offcanvas-carousel-transition;
-        background: $minicart_offcanvas-carousel-background;
+        &-container {
+            opacity: 0;
+            transition: $minicart_offcanvas-carousel-transition;
+            background: $minicart_offcanvas-carousel-background;
 
-        #{$root}-wrapper--ready & {
-            opacity: 1;
-        }
-    }
-
-    &-wrapper {
-        display: none;
-        top: 50%;
-        right: calc(#{$minicart_width} + #{$minicart_offcanvas-carousel-spacing});
-        transform: translateY(-50%);
-        width: calc(100vw - (#{$minicart_width} + (2 * #{$minicart_offcanvas-carousel-spacing})));
-        max-width: 120rem;
-        padding: 0;
-        margin: 0;
-        background: transparent;
-
-        @at-root .drawer--visible & {
-            position: fixed;
+            #{$root}-wrapper--ready & {
+                opacity: 1;
+            }
         }
 
-        @include media('>=tablet') {
-            display: block;
+        &-wrapper {
+            display: none;
+            top: 50%;
+            right: calc(#{$minicart_width} + #{$minicart_offcanvas-carousel-spacing});
+            transform: translateY(-50%);
+            width: calc(100vw - (#{$minicart_width} + (2 * #{$minicart_offcanvas-carousel-spacing})));
+            max-width: 120rem;
+            padding: 0;
+            margin: 0;
+            background: transparent;
+
+            @at-root .drawer--visible & {
+                position: fixed;
+            }
+
+            @include media('>=tablet') {
+                display: block;
+            }
+
+            @include media('>=laptopLg') {
+                max-height: 80vh;
+            }
+
+            @include media('>=laptopLg') {
+                right: calc(#{$minicart_width} + (2 * #{$minicart_offcanvas-carousel-spacing}));
+                width: calc(100vw - (#{$minicart_width} + (4 * #{$minicart_offcanvas-carousel-spacing})));
+            }
+
+            @if $minicart_offcanvas-carousel-position == 'top' {
+                top: $minicart_offcanvas-carousel-position-offset;
+                transform: translateY(0%);
+            } @else if $minicart_offcanvas-carousel-position == 'bottom' {
+                top: auto;
+                bottom: $minicart_offcanvas-carousel-position-offset;
+                transform: translateY(0%);
+            }
+
+            .ie11 & {
+                left: $minicart_offcanvas-carousel-spacing;
+            }
+
+            .#{$ns}headline {
+                margin: 0 0 $minicart_offcanvas-carousel-spacing;
+                padding: $minicart_offcanvas-carousel-spacing 0 0;
+            }
         }
 
-        @include media('>=laptopLg') {
-            max-height: 80vh;
+        &-spinner {
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: $minicart_offcanvas-carousel-spinner-size;
+            height: $minicart_offcanvas-carousel-spinner-size;
+            padding: $minicart_offcanvas-carousel-spacing 0;
+            transform: translate3d(-50%, -50%, 0);
+            background: $minicart_offcanvas-carousel-background;
+            box-shadow: $box-shadow_base;
+            transition: $minicart_offcanvas-carousel-transition;
+
+            #{$root}-wrapper--loading & {
+                opacity: 1;
+                z-index: 10;
+            }
         }
 
-        @include media('>=laptopLg') {
-            right: calc(#{$minicart_width} + (2 * #{$minicart_offcanvas-carousel-spacing}));
-            width: calc(100vw - (#{$minicart_width} + (4 * #{$minicart_offcanvas-carousel-spacing})));
+        .#{$ns}products-carousel {
+            margin: 0;
+            background: $minicart_offcanvas-carousel-background;
         }
-
-        @if $minicart_offcanvas-carousel-position == 'top' {
-            top: $minicart_offcanvas-carousel-position-offset;
-            transform: translateY(0%);
-        } @else if $minicart_offcanvas-carousel-position == 'bottom' {
-            top: auto;
-            bottom: $minicart_offcanvas-carousel-position-offset;
-            transform: translateY(0%);
-        }
-
-        .ie11 & {
-            left: $minicart_offcanvas-carousel-spacing;
-        }
-
-        .#{$ns}headline {
-            margin: 0 0 $minicart_offcanvas-carousel-spacing;
-            padding: $minicart_offcanvas-carousel-spacing 0 0;
-        }
-    }
-
-    &-spinner {
-        opacity: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: $minicart_offcanvas-carousel-spinner-size;
-        height: $minicart_offcanvas-carousel-spinner-size;
-        padding: $minicart_offcanvas-carousel-spacing 0;
-        transform: translate3d(-50%, -50%, 0);
-        background: $minicart_offcanvas-carousel-background;
-        box-shadow: $box-shadow_base;
-        transition: $minicart_offcanvas-carousel-transition;
-
-        #{$root}-wrapper--loading & {
-            opacity: 1;
-            z-index: 10;
-        }
-    }
-
-    .#{$ns}products-carousel {
-        margin: 0;
-        background: $minicart_offcanvas-carousel-background;
     }
 }
 
