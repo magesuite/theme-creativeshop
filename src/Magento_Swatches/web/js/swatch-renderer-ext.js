@@ -234,6 +234,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
             },
             _UpdatePrice: function() {
                 this._super();
+                var $widget = this;
                 var options = _.object(_.keys(this.optionsMap), {});
 
                 this.element
@@ -259,6 +260,29 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 $(
                     '.normal-price .price-final_price .price-wrapper .price'
                 ).toggleClass('discounted-price', $discounted);
+
+                $widget._UpdatePriceLabel();
+            },
+
+            // Show 'From' price label on exact tile instead of all of tiles.
+            _UpdatePriceLabel: function() {
+                var $selectedOption = $(
+                    '.' + this.options.classes.optionClass + '.selected'
+                );
+
+                var $component = $selectedOption.parents('.cs-product-tile')
+                    .length
+                    ? $selectedOption.closest('.cs-product-tile')
+                    : $selectedOption.closest('.cs-buybox');
+
+                var $componentPriceLabel = $(
+                    this.options.normalPriceLabelSelector,
+                    $component
+                );
+
+                $(this.options.normalPriceLabelSelector)
+                    .not($componentPriceLabel)
+                    .hide();
             },
             /**
              * For now swatches on tiles in Magesuite are not clickable.
