@@ -58,15 +58,12 @@ export default class ie11Modal {
         $element?: JQuery<HTMLElement>,
         options?: ie11ModalOptions
     ) {
-        console.log(options);
         this._$element = $element || $(`.${this._options.modalClassname}`);
         this._options = $.extend({}, this._options, options);
         this.$modalWrapper;
-        console.log(this._options);
 
         const ua = navigator.userAgent;
-        //if (ua.indexOf('MSIE ') === -1 && ua.indexOf('Trident/') === -1) {
-        if (false) {
+        if (ua.indexOf('MSIE ') === -1 && ua.indexOf('Trident/') === -1) {
             return;
         } else {
             if (sessionStorage.getItem('magesuite-ie11-modal')) {
