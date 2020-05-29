@@ -57,6 +57,7 @@ import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/toolbar';
+import 'components/ie11-modal';
 
 import 'components/non-critical';
 

@@ -55,6 +55,7 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/usps';
 import 'components/select';
+import 'components/ie11-modal';
 
 import 'components/non-critical';
 

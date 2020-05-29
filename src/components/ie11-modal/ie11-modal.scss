@@ -1,0 +1,134 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/reset-list-style';
+
+$ie11_modal-background: $color_background-200 !default;
+$ie11_modal-padding--vertical: 2rem !default;
+$ie11_modal-padding--horizontal: 3rem !default;
+$ie11_modal-section-border: 1px solid $color_border-500 !default;
+$ie11_modal-color: $color_text-800 !default;
+$ie11_modal-font-size: 1.4rem !default;
+
+.cs-ie11-modal {
+    $root: &;
+
+    &.modal-slide {
+        left: 0;
+        width: 100%;
+
+        .modal-inner-wrap {
+            top: 50%;
+            transform: translate3d(0, -50%, 0);
+            width: 100%;
+            max-width: 78rem;
+            background-color: $ie11_modal-background;
+            margin: auto;
+
+            .modal-content {
+                padding: 0;
+            }
+        }
+
+        .action-close {
+            background-size: 1.8rem 1.8rem;
+            margin: 2.5rem;
+        }
+
+        .modal-footer {
+            padding: $ie11_modal-padding--vertical 0;
+            margin: 0 $ie11_modal-padding--horizontal;
+            border-top: 0;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    &._show {
+        #{$root}__inner {
+            display: flex;
+        }
+    }
+
+    &__inner {
+        display: none;
+        padding: 0 $ie11_modal-padding--horizontal;
+        font-size: $ie11_modal-font-size;
+        color: $ie11_modal-color;
+        height: 100%;
+    }
+
+    &__header,
+    &__body {
+        padding: $ie11_modal-padding--vertical 0;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__header-icon {
+        width: 7rem;
+        height: 7rem;
+        margin-bottom: $ie11_modal-padding--vertical;
+    }
+
+    &__header-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        text-align: center;
+        line-height: 100%;
+        max-width: 100%;
+    }
+
+    &__body {
+        border-top: $ie11_modal-section-border;
+        border-bottom: $ie11_modal-section-border;
+    }
+
+    &__paragraph {
+        text-align: center;
+        margin-bottom: $ie11_modal-padding--vertical;
+
+        &--title {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+    }
+
+    &__list {
+        @include reset-list-style();
+
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &__list-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 130%;
+        margin: 0;
+    }
+
+    &__item-logo {
+        width: 3.8rem;
+        height: 3.8rem;
+        margin-bottom: 1rem;
+        border: 0;
+
+        .ie11 & {
+            width: 4rem;
+            height: 4rem;
+        }
+    }
+
+    &__item-name {
+        font-weight: 700;
+    }
+}
+
+.ie11 .modal-popup:not(.cs-vide-player__modal) .modal-content {
+    max-height: 100%;
+}
