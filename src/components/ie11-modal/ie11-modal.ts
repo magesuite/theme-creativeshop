@@ -19,7 +19,7 @@ export interface ie11ModalOptions {
     /**
      * Modal text content - can be customized per project
      */
-    texts?: Object;
+    texts?: object;
 }
 
 export default class ie11Modal {
