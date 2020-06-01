@@ -147,6 +147,7 @@ export default class Minicart {
     protected _productsCarouselOptions?: IProductsCarouselOptions;
     protected _areEventsBound: boolean;
     protected _options: MinicartOptions;
+    protected _endpointUrl: JQueryDeferred<string> = jQuery.Deferred();
 
     /**
      * Creates new Minicart component with optional settings.
@@ -172,6 +173,8 @@ export default class Minicart {
             },
             options
         );
+
+        this._setEndpointUrl();
 
         this._xmlSettings = deepGet(
             viewXml,
@@ -394,16 +397,34 @@ export default class Minicart {
     }
 
     /**
+     * Sets URL for carousel endpoint
+     * @return  Resolved promise with URL for carousel endpoint
+     */
+    protected _setEndpointUrl() {
+        requirejs(['mage/url'], mageUrl => {
+            mageUrl.setBaseUrl(window.BASE_URL);
+
+            this._endpointUrl.resolve(
+                mageUrl.build(
+                    `${this._productsCarouselOptions.redererEndpoint}`
+                )
+            );
+        });
+    }
+
+    /**
      * Fetches (from `this._getCartData`) HTML markup with all products
      * that matches provided relation type (related/upsell/crosssel) to provided product ID
      * @return {string} AJAX response with html markup of products
      */
     protected _getProductsCarousel(productId: any): any {
-        return $.get(this._productsCarouselOptions.redererEndpoint, {
-            id: productId,
-            relation_type: this._productsCarouselOptions.relationType,
-        }).then((response: AjaxResponse) => {
-            return response;
+        return this._endpointUrl.then(endpointUrl => {
+            return $.get(endpointUrl, {
+                id: productId,
+                relation_type: this._productsCarouselOptions.relationType,
+            }).then((response: AjaxResponse) => {
+                return response;
+            });
         });
     }
 
