@@ -546,32 +546,40 @@ var LazyLoad = function () {
 /**
  * Custom code added by CS.
  */
-(function(){
-    var lazyLoadSelector = '.lazyload';
-    var lazyLoadInstance = new LazyLoad({
-        elements_selector: lazyLoadSelector,
-        data_src: 'src',
-        data_srcset: 'srcset',
-        data_sizes: 'sizes',
-        class_loading: 'lazyloading',
-        class_loaded: 'lazyloaded',
-        thresholds: '50%'
-    });
+(function(doc){
+    var init = function() {
+        var lazyLoadSelector = '.lazyload';
+        var lazyLoadInstance = new LazyLoad({
+            elements_selector: lazyLoadSelector,
+            data_src: 'src',
+            data_srcset: 'srcset',
+            data_sizes: 'sizes',
+            class_loading: 'lazyloading',
+            class_loaded: 'lazyloaded',
+            thresholds: '50%'
+        });
 
-    if ('MutationObserver' in window) {
-        new MutationObserver(function(mutationsList) {
-            for (var i = 0; i < mutationsList.length; i++) {
-                var mutation = mutationsList[i];
-                if (mutation.type === 'childList') {
-                    if (mutation.target.querySelector(lazyLoadSelector)) {
-                        lazyLoadInstance.update();
-                        break;
+        if ('MutationObserver' in window) {
+            new MutationObserver(function(mutationsList) {
+                for (var i = 0; i < mutationsList.length; i++) {
+                    var mutation = mutationsList[i];
+                    if (mutation.type === 'childList') {
+                        if (mutation.target.querySelector(lazyLoadSelector)) {
+                            lazyLoadInstance.update();
+                            break;
+                        }
                     }
                 }
-            }
-        }).observe(document, {
-            subtree: true,
-            childList: true,
-        });
+            }).observe(doc, {
+                subtree: true,
+                childList: true,
+            });
+        }
+    };
+
+    if (doc.readyState != 'loading') {
+        init();
+    } else {
+        doc.addEventListener('DOMContentLoaded', init);
     }
-})();
+})(document);

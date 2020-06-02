@@ -129,45 +129,53 @@
         fetch(url);
     };
 
-    var observer = null;
-    var svgs = getAll(doc);
+    var init = function() {
+        var observer = null;
+        var svgs = getAll(doc);
 
-    if ('IntersectionObserver' in root) {
-        observer = new IntersectionObserver(
-            function(entries) {
-                entries.forEach(function(entry) {
-                    if (entry.intersectionRatio > 0) {
-                        observer.unobserve(entry.target);
-                        inline(entry.target);
-                    }
-                });
-            },
-            {
-                rootMargin: '50%',
-            }
-        );
-        svgs.forEach(function(svg) {
-            observer.observe(svg);
-        });
-    } else {
-        svgs.forEach(function(svg) {
-            inline(svg);
-        });
-    }
-
-    if ('MutationObserver' in root) {
-        new MutationObserver(function(mutationsList) {
-            for (var i = 0; i < mutationsList.length; i++) {
-                var mutation = mutationsList[i];
-                if (mutation.type === 'childList') {
-                    getAll(mutation.target).forEach(function(svg) {
-                        observer ? observer.observe(svg) : inline(svg);
+        if ('IntersectionObserver' in root) {
+            observer = new IntersectionObserver(
+                function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.intersectionRatio > 0) {
+                            observer.unobserve(entry.target);
+                            inline(entry.target);
+                        }
                     });
+                },
+                {
+                    rootMargin: '50%',
                 }
-            }
-        }).observe(doc, {
-            subtree: true,
-            childList: true,
-        });
+            );
+            svgs.forEach(function(svg) {
+                observer.observe(svg);
+            });
+        } else {
+            svgs.forEach(function(svg) {
+                inline(svg);
+            });
+        }
+
+        if ('MutationObserver' in root) {
+            new MutationObserver(function(mutationsList) {
+                for (var i = 0; i < mutationsList.length; i++) {
+                    var mutation = mutationsList[i];
+                    if (mutation.type === 'childList') {
+                        getAll(mutation.target).forEach(function(svg) {
+                            observer ? observer.observe(svg) : inline(svg);
+                        });
+                    }
+                }
+            }).observe(doc, {
+                subtree: true,
+                childList: true,
+            });
+        }
+    };
+
+    if (document.readyState != 'loading') {
+        init();
+    } else {
+        document.addEventListener('DOMContentLoaded', init);
     }
 })(window, document);
