@@ -174,8 +174,6 @@ export default class Minicart {
             options
         );
 
-        this._setEndpointUrl();
-
         this._xmlSettings = deepGet(
             viewXml,
             'vars.Magento_Checkout.minicart_offcanvas'
@@ -184,6 +182,8 @@ export default class Minicart {
         if (!this._xmlSettings.enabled) {
             return;
         }
+
+        this._setEndpointUrl();
 
         this._productsCarouselOptions = $.extend(
             true,
