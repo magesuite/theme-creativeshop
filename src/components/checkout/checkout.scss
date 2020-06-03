@@ -1001,6 +1001,24 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
         }
     }
 
+    .action.delete,
+    .totals.giftcard .action {
+        font-size: 0;
+        width: 1rem;
+        height: 1rem;
+        background-image: url('../images/icons/close.svg');
+        background-size: contain;
+        display: inline-block;
+        transform: translateY(-1rem);
+    }
+
+    .reward-points-buttons-container button {
+        // Do not apply button span styles for additional span inside reward points button
+        span span {
+            display: inline;
+        }
+    }
+
     .minicart-items {
         list-style: none inside none;
         padding: 0;
@@ -1344,7 +1362,7 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
         margin-top: $checkout_base-space;
     }
 
-    .opc-payment-additional {
+    .opc-payment-additional:not(.rewardpoints) {
         .payment-option-title {
             display: inline-block;
             width: auto;
@@ -1373,6 +1391,22 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
 
     .aw-giftcard-code {
         margin-top: 2rem;
+    }
+
+    .opc-payment-additional.rewardpoints {
+        padding-top: 1rem;
+
+        .payment-option-title {
+            @include headline($level: $checkout_headlines-font-size);
+        }
+
+        .payment-option-content {
+            margin-top: 0;
+        }
+
+        .payment-option-inner {
+            width: 100%;
+        }
     }
 }
 
