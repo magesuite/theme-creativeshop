@@ -17,6 +17,15 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
             options: {
                 selectorProductTile: '.cs-product-tile',
+                selectorPdp: '.cs-buybox',
+                swatchesWrapper: '.swatch-attribute-options',
+                normalPriceLabel: '.normal-price .price-label',
+                isPdp: false,
+
+                classes: {
+                    productTileClass: 'cs-product-tile',
+                    pdpClass: 'cs-buybox',
+                },
             },
             _init: function() {
                 if (this.element.children().length) {
@@ -24,6 +33,13 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 }
 
                 this._super();
+
+                var isPdp = this.element.parents(this.options.selectorPdp)
+                    .length
+                    ? true
+                    : false;
+
+                this.options.isPdp = isPdp;
             },
             _onGalleryLoaded: function(gallery) {
                 this._super(gallery);
@@ -236,8 +252,24 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 this._super();
                 var $widget = this;
                 var options = _.object(_.keys(this.optionsMap), {});
+                var element = this.element;
 
-                this.element
+                var isPdp = this.options.isPdp;
+                var currentTileSwatchesClass = element.attr('class');
+
+                this.options.classes.attributeOptionsWrapper = isPdp
+                    ? `${this.options.classes.pdpClass} ${this.options.swatchesWrapper}`
+                    : `${this.options.classes.productTileClass} .${currentTileSwatchesClass} ${this.options.swatchesWrapper}`;
+
+                this.options.normalPriceLabelSelector = isPdp
+                    ? $(
+                          `${this.options.selectorPdp} ${this.options.normalPriceLabel}`
+                      )
+                    : $(element)
+                          .closest(this.options.selectorProductTile)
+                          .find(this.options.normalPriceLabel);
+
+                element
                     .find(
                         '.' +
                             this.options.classes.attributeClass +
@@ -261,28 +293,22 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     '.normal-price .price-final_price .price-wrapper .price'
                 ).toggleClass('discounted-price', $discounted);
 
-                $widget._UpdatePriceLabel();
+                $widget._UpdateTilePriceLabel();
             },
 
             // Show 'From' price label on exact tile instead of all of tiles.
-            _UpdatePriceLabel: function() {
-                var $selectedOption = $(
-                    '.' + this.options.classes.optionClass + '.selected'
+            _UpdateTilePriceLabel: function() {
+                var $tileNormalPriceLabelSelector = $(
+                    `${this.options.selectorProductTile} ${this.options.normalPriceLabel}`
                 );
 
-                var $component = $selectedOption.parents('.cs-product-tile')
-                    .length
-                    ? $selectedOption.closest('.cs-product-tile')
-                    : $selectedOption.closest('.cs-buybox');
-
-                var $componentPriceLabel = $(
-                    this.options.normalPriceLabelSelector,
-                    $component
+                var $tilePriceLabel = $(
+                    $(this.element)
+                        .closest($(this.options.selectorProductTile))
+                        .find($tileNormalPriceLabelSelector)
                 );
 
-                $(this.options.normalPriceLabelSelector)
-                    .not($componentPriceLabel)
-                    .hide();
+                $tileNormalPriceLabelSelector.not($tilePriceLabel).hide();
             },
             /**
              * For now swatches on tiles in Magesuite are not clickable.
