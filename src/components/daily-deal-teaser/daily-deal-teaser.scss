@@ -5,6 +5,7 @@
 @import 'components/teaser/mixins';
 @import 'components/badge/mixin';
 @import 'components/button/mixin';
+@import 'utils/reset-list-style';
 
 $daily-deal-teaser_global-bold-font: 600 !default;
 $daily-deal-teaser_global-small-font: 1.2rem !default;
@@ -86,6 +87,14 @@ $daily-deal-teaser_addtocart-margin-top: 1.5rem !default;
 $daily-deal-teaser_addtocart-min-width-mobile: 20rem !default;
 $daily-deal-teaser_addtocart-min-width: 17rem !default;
 $daily-deal-teaser_addtocart-min-height: 4rem !default;
+
+$daily-deal-teaser_description-list-items-limit-mobile-and-tablet: 6 !default;
+$daily-deal-teaser_description-list-items-limit-desktop: 5 !default;
+$daily-deal-teaser_description-list-items-padding-left: 2rem !default;
+$daily-deal-teaser_description-list-icon-path: '../images/icons/check.svg' !default;
+$daily-deal-teaser_description-list-item-font-size: 1.2rem !default;
+$daily-deal-teaser_description-list-item-icon-width: 0.9rem !default;
+$daily-deal-teaser_description-list-item-icon-height: $daily-deal-teaser_description-list-item-icon-width !default;
 
 $daily-deal-teaser_product-dd-counter-min-height: $daily-deal-teaser_addtocart-min-height !default;
 
@@ -183,7 +192,43 @@ $daily-deal-teaser_product-dd-counter-min-height: $daily-deal-teaser_addtocart-m
         margin: $daily-deal-teaser_sections-gutter-mobile 0;
 
         @include media('>=laptop') {
-            margin: 0;
+            margin: 0 $daily-deal-teaser_sections-gutter-tablet-up 0 0;
+        }
+    }
+
+    &__description-list {
+        ul {
+            @include reset-list-style();
+        }
+
+        li {
+            padding-left: $daily-deal-teaser_description-list-items-padding-left;
+            margin: 0 0 0.5rem 0;
+            position: relative;
+            font-size: $daily-deal-teaser_description-list-item-font-size;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0.5rem;
+                left: 0.5rem;
+                width: $daily-deal-teaser_description-list-item-icon-width;
+                height: $daily-deal-teaser_description-list-item-icon-height;
+                background: url($daily-deal-teaser_description-list-icon-path)
+                    no-repeat center center / cover transparent;
+            }
+
+            &:nth-child(n
+                    + #{$daily-deal-teaser_description-list-items-limit-mobile-and-tablet}) {
+                display: none;
+            }
+
+            @include media('>=laptop') {
+                &:nth-child(n
+                        + #{$daily-deal-teaser_description-list-items-limit-desktop}) {
+                    display: none;
+                }
+            }
         }
     }
 
