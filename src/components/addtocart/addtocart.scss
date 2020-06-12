@@ -101,7 +101,12 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         max-height: none;
         width: $addtocart_button-icon-width;
         height: $addtocart_button-icon-height;
-        #{$addtocart_button-icon-position}: $addtocart_button-icon-edge-gutter;
+
+        /* stylelint-disable */
+        @if ($addtocart_button-icon-position == 'right') or ($addtocart_button-icon-position == 'left') {
+            #{$addtocart_button-icon-position}: $addtocart_button-icon-edge-gutter;
+        }
+        /* stylelint-enable */
     }
 
     &__fail-icon {
