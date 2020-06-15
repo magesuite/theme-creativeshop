@@ -10,6 +10,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             discountsList: {},
             productsIdsSelector: '[data-role=swatch-options]',
             attributesSelector: '.swatch-attribute',
+            tileClass: 'cs-product-tile',
         },
 
         _create: function() {
@@ -24,23 +25,43 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
         },
 
         updateSaleBadge: function() {
-            var discountsList = this.options.discountsList;
+            var isTile = this.element.hasClass(this.options.tileClass);
+
+            var allDiscountsList = this.options.discountsList;
+            var $element = isTile ? $(this.element) : $(document);
+
+            var $productsIdsIndex = $element
+                .find(this.options.productsIdsSelector)
+                .data('mageSwatchRenderer').options.jsonConfig.index;
+
+            var selectedProductDiscounts = _.filter(allDiscountsList, function(
+                key,
+                value
+            ) {
+                return value in $productsIdsIndex;
+            });
+
             var maximumDiscount = _.max(
-                _.values(discountsList, function() {
+                _.values(selectedProductDiscounts, function() {
                     return this;
                 })
             );
+
             var selectedProductId = this.getSelectedProductId();
-            var $discountBadge = $(this.options.discountBadgeSelector);
-            var $discountBadgeValue = $(
+            var $discountBadge = $element.find(
+                this.options.discountBadgeSelector
+            );
+            var $discountBadgeValue = $element.find(
                 this.options.discountBadgeValueSelector
             );
-            var $discountBadgeText = $(this.options.discountBadgeTextSelector);
+            var $discountBadgeText = $element.find(
+                this.options.discountBadgeTextSelector
+            );
 
-            var isProductSelected = selectedProductId !== 0 ? true : false;
+            var isProductSelected = selectedProductId;
 
             var selectedProductDiscount = isProductSelected
-                ? discountsList[selectedProductId]
+                ? allDiscountsList[selectedProductId]
                 : null;
 
             // Badge is shown when no product is selected or product has discount.
@@ -67,6 +88,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             var $productsIdsIndex = $(this.element)
                 .find(this.options.productsIdsSelector)
                 .data('mageSwatchRenderer').options.jsonConfig.index;
+
             var productId;
 
             $($attributesList)
