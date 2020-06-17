@@ -259,11 +259,14 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
 
                 this.options.classes.attributeOptionsWrapper = isPdp
                     ? this.options.classes.pdpClass +
+                      ' ' +
                       this.options.swatchesWrapper
                     : this.options.classes.productTileClass +
+                      ' ' +
                       '.' +
                       currentTileSwatchesClass +
-                      this.options.swatchesWrapper;
+                      ' ';
+                this.options.swatchesWrapper;
 
                 this.options.normalPriceLabelSelector = isPdp
                     ? $(
