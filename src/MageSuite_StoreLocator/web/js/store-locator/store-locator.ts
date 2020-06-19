@@ -530,21 +530,16 @@ export default class StoreLocator {
             lat: store.latitude,
             lng: store.longitude,
         };
-        const storeCenter =
-            $(window).width() >= breakpoint.laptop && !this._sidebarClosed
-                ? this.calculateCoordinatesOffset(
-                      coordinates,
-                      14,
-                      { x: 190, y: 0 },
-                      google,
-                      this.map
-                  )
-                : coordinates;
+        const sidebarWidth = $('.cs-store-locator__sidebar').width();
 
-        this.map.panTo(storeCenter);
+        this.map.panTo(coordinates);
 
         if (this.map.getZoom() < this._options.basicZoom) {
             this.map.setZoom(this._options.basicZoom);
+        }
+
+        if ($(window).width() >= breakpoint.laptop && !this._sidebarClosed) {
+            this.map.panBy(-sidebarWidth / 2, 0);
         }
 
         this._infoWindowOpened = true;
@@ -655,27 +650,6 @@ export default class StoreLocator {
                 reject(new Error('Geolocation not supported'));
             }
         });
-    }
-
-    /**
-     * Calculate coordinates offset
-     */
-    public calculateCoordinatesOffset(coordinates, scale, offset, google, map) {
-        const mapScale = Math.pow(2, scale);
-        const pixelOffset = new google.maps.Point(
-            offset.x / mapScale || offset.y,
-            0
-        );
-        const coordinatesLatLng = new google.maps.LatLng(coordinates);
-        const coordinatesProjection = map
-            .getProjection()
-            .fromLatLngToPoint(coordinatesLatLng);
-        const coordinatesWithOffset = new google.maps.Point(
-            coordinatesProjection.x - pixelOffset.x,
-            coordinatesProjection.y + pixelOffset.y
-        );
-
-        return map.getProjection().fromPointToLatLng(coordinatesWithOffset);
     }
 
     /**
