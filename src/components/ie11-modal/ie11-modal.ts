@@ -28,11 +28,11 @@ export default class ie11Modal {
     protected _options?: ie11ModalOptions = {
         modalClassname: 'cs-ie11-modal',
         texts: {
-            headline: 'Sorry, your browser is not supported',
+            headline: 'This internet browser is outdated',
             main: [
-                'This website uses current technology for features and security.',
-                'You seem to be using Internet Explorer 11 or lower. It is no longer supported.',
-                'Please use a different browser to use all functions of this site.',
+                'This store benefits from security and efficiency (or performance) of modern browsers.',
+                'You are currently using Internet Explorer that is 7 years old and is outdated.',
+                'Please consider installing and using newer browser to have bettter experience and access to all functions of this store.',
             ],
             recommendation: 'These are the browsers we recommend:',
         },
