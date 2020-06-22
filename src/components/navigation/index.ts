@@ -7,15 +7,22 @@ import NavigationMegaDropdown from 'components/navigation/navigation-mega-dropdo
 
 import 'components/navigation/navigation.scss';
 
-const $navigation: JQuery = $('.cs-navigation');
+const navigationElement = document.querySelector(
+    '.cs-navigation'
+) as HTMLElement;
+
 let NavigationClass = Navigation;
 /**
  * Navigation component initialization
  */
-if ($navigation.find('[data-category-identifier="all-categories"]').length) {
+if (
+    navigationElement.querySelector(
+        '[data-category-identifier="all-categories"]'
+    )
+) {
     NavigationClass = NavigationMegaDropdown;
 }
 
 setTimeout(() => {
-    new NavigationClass($navigation, {});
+    new NavigationClass($(navigationElement), {});
 });

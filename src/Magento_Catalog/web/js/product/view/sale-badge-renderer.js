@@ -10,27 +10,41 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             discountsList: {},
             productsIdsSelector: '[data-role=swatch-options]',
             attributesSelector: '.swatch-attribute',
-            tileClass: 'cs-product-tile',
+            buyBoxSelector: '.cs-buybox',
+            tileSelector: '.cs-product-tile',
+            isInTile: false,
         },
+
+        $tileOrBuybox: null,
 
         _create: function() {
             this._super();
+
+            var $element = $(this.element);
+            this.$tileOrBuybox = $element;
+
+            if (!$element.is(this.options.buyBoxSelector)) {
+                this.options.isInTile = true;
+                this.$tileOrBuybox = $element.closest(
+                    this.options.tileSelector
+                );
+            }
+
             this.renderSaleBadge();
         },
 
         renderSaleBadge: function() {
-            this._on(this.element, {
+            this._on(this.$tileOrBuybox, {
                 'click .swatch-option': this.updateSaleBadge.bind(this),
             });
         },
 
         updateSaleBadge: function() {
-            var isTile = this.element.hasClass(this.options.tileClass);
-
             var allDiscountsList = this.options.discountsList;
-            var $element = isTile ? $(this.element) : $(document);
-
-            var $productsIdsIndex = $element
+            var $rootElement = this.options.isInTile
+                ? this.$tileOrBuybox
+                : $(document);
+            var $productsIdsIndex = $rootElement
                 .find(this.options.productsIdsSelector)
                 .data('mageSwatchRenderer').options.jsonConfig.index;
 
@@ -38,23 +52,23 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
                 key,
                 value
             ) {
-                return value in $productsIdsIndex;
+                return $productsIdsIndex[value];
             });
 
-            var maximumDiscount = _.max(
-                _.values(selectedProductDiscounts, function() {
-                    return this;
-                })
+            var maximumDiscount = Math.max.apply(
+                null,
+                selectedProductDiscounts
             );
 
             var selectedProductId = this.getSelectedProductId();
-            var $discountBadge = $element.find(
+
+            var $discountBadge = $rootElement.find(
                 this.options.discountBadgeSelector
             );
-            var $discountBadgeValue = $element.find(
+            var $discountBadgeValue = $rootElement.find(
                 this.options.discountBadgeValueSelector
             );
-            var $discountBadgeText = $element.find(
+            var $discountBadgeText = $rootElement.find(
                 this.options.discountBadgeTextSelector
             );
 
@@ -85,7 +99,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
         getSelectedProductId: function() {
             var selectedOptions = {};
             var $attributesList = $(this.options.attributesSelector);
-            var $productsIdsIndex = $(this.element)
+            var $productsIdsIndex = this.$tileOrBuybox
                 .find(this.options.productsIdsSelector)
                 .data('mageSwatchRenderer').options.jsonConfig.index;
 

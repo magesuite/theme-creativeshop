@@ -42,7 +42,19 @@
         <?php if ($value): ?>
             <span <?= $badgeTextClass ?>>
                 <?php if ($renderSaleBadgeDinamicallyConfigurables): ?>
-                    <span class="cs-product-tile__badge-discount-text"><?= $configurablesText ?></span>
+                    <span
+                        class="cs-product-tile__badge-discount-text"
+                        data-mage-init='{
+                            "Magento_Catalog/js/product/view/sale-badge-renderer": {
+                                "discountsList": <?= /* @noEscape */ json_encode($discountsPerProduct); ?>,
+                                "discountBadgeSelector": ".cs-product-tile__badge--discount",
+                                "discountBadgeValueSelector": ".cs-product-tile__badge-discount-value",
+                                "discountBadgeTextSelector": ".cs-product-tile__badge-discount-text",
+                                "productsIdsSelector": "[data-role^=swatch-option-]",
+                                "attributesSelector": ".swatch-attribute"
+                            }
+                        }'
+                    ><?= $configurablesText ?></span>
                 <?php endif; ?>
                 <?= $valuePrefix ?>
                 <span class="cs-product-tile__badge-discount-value"><?= $badgeValue ?></span>
@@ -51,21 +63,4 @@
         <?php endif; ?>
         </span>
     </<?= $wrapperTag ?>>
-<?php endif; ?>
-
-<?php if ($renderSaleBadgeDinamicallyConfigurables): ?>
-    <script type="text/x-magento-init">
-        {
-            ".cs-product-tile": {
-                "Magento_Catalog/js/product/view/sale-badge-renderer": {
-                    "discountsList": <?= /* @noEscape */ json_encode($discountsPerProduct); ?>,
-                    "discountBadgeSelector": ".cs-product-tile__badge--discount",
-                    "discountBadgeValueSelector": ".cs-product-tile__badge-discount-value",
-                    "discountBadgeTextSelector": ".cs-product-tile__badge-discount-text",
-                    "productsIdsSelector": "[data-role^=swatch-option-]",
-                    "attributesSelector": ".swatch-attribute"
-                }
-            }
-        }
-    </script>
 <?php endif; ?>

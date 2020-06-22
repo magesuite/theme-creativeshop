@@ -207,8 +207,11 @@ const csTeaser: any = function($element: any, settings: any): void {
         );
 
         destroyed = false;
-        postInit();
-        swiperInstance.update();
+        // Adjust swiper in a separate task to prevent main thread from being blocked for too long.
+        setTimeout(() => {
+            postInit();
+            swiperInstance.update();
+        });
 
         let currentWindowWidth = $(window).width();
 
