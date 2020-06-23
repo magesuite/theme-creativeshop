@@ -80,6 +80,11 @@ interface DailydealOptions {
      */
     timeDisplayPrecision?: number;
     /**
+     * Dailydeal selector
+     * @type string
+     */
+    dailyDealSelector?: string;
+    /**
      * Dailydeal label translations
      * @type object
      */
@@ -197,6 +202,7 @@ export default class Dailydeal {
         get dailyDealAmountBadgeSelector() {
             return `.${this.namespace}dailydeal__badge--amount`;
         },
+        dailyDealSelector: '.cs-dailydeal',
         timeDisplayPrecision: 1,
         labels: {
             day: 'Day',
@@ -474,17 +480,24 @@ export default class Dailydeal {
 
     /**
      * Returns label for corresponding position in countdown
+     * Temporarily using data attribute to fix tranlation issue
+     * Can be reverted after update to M > 2.3.4-p2
      * based on labels option object
      * @param n {number} number (must know if n > 1 to get correct label)
      * @return label {string} label from this._options.labels object
      */
-    protected _getCountdownLabel(n: number, timeUnit: string): string {
+    protected _getCountdownLabel(n: number, timeUnit: string): any {
+        const ddSelector: JQuery = this._$element.closest(
+            this._options.dailyDealSelector
+        );
+        const dataPhrase: string = 'data-phrase-';
+
         if (this._options.updateLabels) {
             return n === 1
-                ? $.mage.__(this._options.labels[timeUnit])
-                : $.mage.__(this._options.labels[timeUnit + 's']);
+                ? ddSelector.attr(dataPhrase + timeUnit)
+                : ddSelector.attr(dataPhrase + timeUnit + 's');
         } else {
-            return $.mage.__(this._options.labels[timeUnit + 's']);
+            return ddSelector.attr(dataPhrase + timeUnit + 's');
         }
     }
 
