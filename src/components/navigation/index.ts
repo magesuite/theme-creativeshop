@@ -11,18 +11,20 @@ const navigationElement = document.querySelector(
     '.cs-navigation'
 ) as HTMLElement;
 
-let NavigationClass = Navigation;
-/**
- * Navigation component initialization
- */
-if (
-    navigationElement.querySelector(
-        '[data-category-identifier="all-categories"]'
-    )
-) {
-    NavigationClass = NavigationMegaDropdown;
-}
+if (navigationElement) {
+    let NavigationClass = Navigation;
+    /**
+     * Navigation component initialization
+     */
+    if (
+        navigationElement.querySelector(
+            '[data-category-identifier="all-categories"]'
+        )
+    ) {
+        NavigationClass = NavigationMegaDropdown;
+    }
 
-setTimeout(() => {
-    new NavigationClass($(navigationElement), {});
-});
+    setTimeout(() => {
+        new NavigationClass($(navigationElement), {});
+    });
+}
