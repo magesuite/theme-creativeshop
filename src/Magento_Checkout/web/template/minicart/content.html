@@ -28,7 +28,7 @@
         <!-- /ko -->
     </div>
     <div class="cs-minicart__content-wrapper">
-        <div class="cs-minicart__content">
+        <div class="cs-minicart__content" data-bind="css: { 'cs-minicart__content--empty': getCartLineItemsCount() === 0 }">
             <if args="getCartParam('summary_count')">
                 <ol id="mini-cart" class="cs-minicart__list cs-minicart__list--scroll" data-bind="foreach: { data: getCartParam('items'), as: 'item' }">
                     <each args="$parent.getRegion($parent.getItemRenderer(item.product_type))"
