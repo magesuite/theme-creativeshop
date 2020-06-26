@@ -98,7 +98,9 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
 
         getSelectedProductId: function() {
             var selectedOptions = {};
-            var $attributesList = $(this.options.attributesSelector);
+            var $attributesList = this.$tileOrBuybox.find(
+                this.options.attributesSelector
+            );
             var $productsIdsIndex = this.$tileOrBuybox
                 .find(this.options.productsIdsSelector)
                 .data('mageSwatchRenderer').options.jsonConfig.index;
