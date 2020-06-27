@@ -1,0 +1,73 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+@import 'components/typography/mixin';
+
+$pwa-notification_box-shadow: 0 -0.3rem 0.5rem 0 rgba(0, 0, 0, 0.15) !default;
+$pwa-notification_background: $color_background-200 !default;
+$pwa-notification_button-type: 'primary' !default;
+$pwa-notification_hide-modal-overlay: true !default;
+$pwa-notification_headline-font-size: $font-size_headline-3 !default;
+// $review_title-font-weight: 700 !default;
+// $review_title-color: $color_text-800 !default;
+// $review_author-color: $color_text-800 !default;
+// $review_content-color: $color_text-400 !default;
+// $review_date-color: $color_text-400 !default;
+// $review_meta-item-font-size: 0.9em !default;
+// $review_meta-item-border: 1px solid $color_border-500 !default;
+// $review_hide-compound-ratings: false !default;
+
+.#{$ns}pwa-notification {
+    &._show {
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        height: 15rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow-y: visible;
+
+        .modal-inner-wrap {
+            width: 100%;
+            margin: 0;
+            background: $pwa-notification_background;
+            box-shadow: $pwa-notification_box-shadow;
+        }
+    }
+
+    &__title {
+        margin: 0;
+        padding: 2rem;
+        font-size: $pwa-notification_headline-font-size;
+    }
+
+    &__content {
+        padding: 0.5rem 2rem 1rem;
+    }
+
+    &__footer {
+        padding: 0.5rem 2rem 2rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__button {
+        @include button(
+            $type: $pwa-notification_button-type,
+            $icon_pos: $pwa-notification_button-type
+        );
+
+        span {
+            @include button_span(
+                $type: $pwa-notification_button-type,
+                $icon_pos: $pwa-notification_button-type
+            );
+        }
+    }
+
+    @if ($pwa-notification_hide-modal-overlay == true) {
+        & + .modals-overlay {
+            display: none;
+        }
+    }
+}

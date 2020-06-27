@@ -58,6 +58,7 @@ import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/product-navigation';
+import 'components/pwa-notification';
 
 import 'components/non-critical';
 
