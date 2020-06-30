@@ -33,6 +33,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                             <span class="cs-cart-item__badge-text"><?php echo __('Free') ?></span>
                         </span>
                     <?php endif; ?>
+                    <?= $block->getChildHtml('checkout.cart.item.brand') ?>
                     <strong class="cs-cart-item__name product-item-name">
                         <?php if ($block->hasProductUrl()):?>
                             <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
@@ -100,7 +101,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
         <?php endif; ?>
         <td class="cs-cart-table__col cs-cart-item__qty col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
             <div class="cs-cart-item__qty-input">
-                <?php 
+                <?php
                     $qtyBlock = $block->getChildBlock('checkout.cart.item.'.$_item->getProduct()->getTypeId().'.qty');
                     $qtyBlock->setData('item', $_item);
                     $qtyBlock->setData('qty', $block->getQty());
