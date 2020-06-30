@@ -326,11 +326,15 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
             }
         }
 
-        // Do not show success icon for country select
-        .field[name='shippingAddress.country_id'] {
-            .control {
-                &:after {
-                    display: none !important;
+        // Do not show success icon for customer type select, country select, prefix
+        .field {
+            &[name='shippingAddress.custom_attributes.customer_type'],
+            &[name='shippingAddress.country_id'],
+            &[name='shippingAddress.prefix'] {
+                .control {
+                    &:after {
+                        display: none !important;
+                    }
                 }
             }
         }
