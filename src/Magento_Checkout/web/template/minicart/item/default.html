@@ -23,6 +23,11 @@
         <!-- /ko -->
         <div class="product-item-details cs-minicart-product__details">
             <div class="cs-minicart-product__overview">
+                <!-- ko if: $data.product_brand -->
+                <div class="cs-minicart-product__brand-wrapper">
+                    <span class="cs-minicart-product__brand" data-bind="text: product_brand"></span>
+                </div>
+                <!-- /ko -->
                 <div class="cs-minicart-product__name-wrapper">
                     <!-- ko if: product_has_url -->
                     <a class="product-item-name cs-minicart-product__name" data-bind="attr: {href: product_url}, html: product_name"></a>
@@ -46,7 +51,7 @@
                     <!-- /ko -->
                     <!-- /ko -->
                 </div>
-                
+
                 <!-- ko if: options.length -->
                 <!-- ko if: $parent.showProductOptions -->
                 <div class="product options cs-minicart-product__options-wrapper">
@@ -117,14 +122,14 @@
                             'data-cart-item-id': product_sku
                             }, value: qty"
                             type="number" size="4" class="item-qty cart-item-qty cs-minicart-product__qty-input cs-qty-increment__input">
-                    <span 
-                        role="button" 
+                    <span
+                        role="button"
                         data-bind="attr: {
                         'data-cart-item': item_id,
                         'disabled': qty <= 1
-                        }" 
-                        tabindex="0" 
-                        class="cs-qty-increment__button cs-qty-increment__button--decrement" 
+                        }"
+                        tabindex="0"
+                        class="cs-qty-increment__button cs-qty-increment__button--decrement"
                         aria-pressed="false"
                     >
                         <img class="inline-svg cs-qty-increment__icon cs-qty-increment__icon--decrement" data-bind="attr: { src: require.toUrl('images/icons/qty-increment/minus.svg') }"
