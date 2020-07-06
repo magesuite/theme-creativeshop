@@ -18,7 +18,13 @@ $buybox_section-padding-tablet: 1.5rem !default;
 $buybox_section-padding-laptop-up: 3rem !default;
 
 $buybox_category-margin: 0 !default;
-$buybox_category-name-color: $color_text-500 !default;
+$buybox_category-name-color: $color_text-400 !default;
+$buybox_category-name-font-size: 1.2rem !default;
+
+$buybox_brand-font-size: 1.2rem !default;
+$buybox_brand-color: $color_text-400 !default;
+$buybox_brand-enable-separator: true !default;
+$buybox_brand-separator-content: '/' !default;
 
 $buybox_product-name-font-size: 2.4rem !default;
 $buybox_product-name-font-weight: 700 !default;
@@ -132,10 +138,28 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
         }
     }
 
+    &__brand {
+        display: inline-block;
+
+        @if $buybox_brand-enable-separator {
+            &:after {
+                content: $buybox_brand-separator-content;
+                font-size: $buybox_brand-font-size;
+                color: $buybox_brand-color;
+            }
+        }
+    }
+
+    &__brand-text {
+        font-size: $buybox_brand-font-size;
+        color: $buybox_brand-color;
+    }
+
     &__category {
         margin: $buybox_category-margin;
         color: $buybox_category-name-color;
-        font-size: inherit;
+        font-size: $buybox_category-name-font-size;
+        display: inline;
     }
 
     &__product-name {

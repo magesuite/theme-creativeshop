@@ -3,6 +3,7 @@
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
 $_item = $block->getItem();
 $product = $_item->getProduct();
+$productType = $product->getTypeId();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
 $helper = $this->helper('Magento\Msrp\Helper\Data');
@@ -33,7 +34,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                             <span class="cs-cart-item__badge-text"><?php echo __('Free') ?></span>
                         </span>
                     <?php endif; ?>
-                    <?= $block->getChildHtml('checkout.cart.item.brand.' . $_item->getProduct()->getTypeId()) ?>
+                    <?= $block->getChildHtml('checkout.cart.item.brand.' . $productType); ?>
                     <strong class="cs-cart-item__name product-item-name">
                         <?php if ($block->hasProductUrl()):?>
                             <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
@@ -42,7 +43,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                         <?php endif; ?>
                     </strong>
                     <?php if ($_options = $block->getOptionList()):?>
-                        <div class="<?= $product->getTypeId() == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
+                        <div class="<?= $productType == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                             <?php foreach ($_options as $_option) : ?>
                             <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
                             <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>

@@ -66,6 +66,12 @@ $product-tile-grid_swatches-alignment: $product-tile-grid_alignment !default;
 $product-tile-list_swatches-margin: 0 0 0.5rem !default;
 $product-tile-list_swatches-alignment: $product-tile-list_alignment !default;
 
+// Brand
+$product-tile_brand-alignment: center !default;
+$product-tile_brand-font-size: 1.2rem !default;
+$product-tile_brand-color: $color_text-400 !default;
+$product-tile_brand-height: 2rem !default;
+
 // Addons
 $product-tile_addons-background: $product-tile_general-background !default;
 $product-tile_addons-border-radius: $product-tile_general-border-radius !default;
@@ -930,6 +936,21 @@ $product-tile-magento-catalog-image-height: to-number(
         }
     }
 
+    &__brand {
+        text-align: $product-tile_brand-alignment;
+        margin-top: $product-tile_general-tile-gutter;
+        height: $product-tile_brand-height;
+
+        &--empty {
+            height: 0;
+        }
+    }
+
+    &__brand-text {
+        font-size: $product-tile_brand-font-size;
+        color: $product-tile_brand-color;
+    }
+
     &__name {
         line-height: $product-tile_product-name-line-height;
         font-weight: $product-tile_product-name-font-weight;
@@ -951,6 +972,16 @@ $product-tile-magento-catalog-image-height: to-number(
 
         #{$root}--grid #{$root}__details > & {
             margin-top: $product-tile_general-tile-gutter;
+        }
+
+        #{$root}--grid #{$root}__details > #{$root}__brand + & {
+            margin-top: 0;
+        }
+
+        #{$root}--grid #{$root}__details > #{$root}__brand--empty + & {
+            height: $product-tile_product-name-max-lines-display *
+                $product-tile_product-name-line-height + 0.2 +
+                $product-tile_brand-height;
         }
 
         #{$root}--list & {
