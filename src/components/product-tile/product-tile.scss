@@ -67,10 +67,13 @@ $product-tile-list_swatches-margin: 0 0 0.5rem !default;
 $product-tile-list_swatches-alignment: $product-tile-list_alignment !default;
 
 // Brand
-$product-tile_brand-alignment: center !default;
 $product-tile_brand-font-size: 1.2rem !default;
 $product-tile_brand-color: $color_text-400 !default;
 $product-tile_brand-height: 2rem !default;
+$product-tile-grid_brand-alignment: center !default;
+$product-tile-list_brand-alignment: left !default;
+$product-tile-list_brand-margin: 0 !default;
+$product-tile-list_brand-order: -2 !default;
 
 // Addons
 $product-tile_addons-background: $product-tile_general-background !default;
@@ -937,12 +940,18 @@ $product-tile-magento-catalog-image-height: to-number(
     }
 
     &__brand {
-        text-align: $product-tile_brand-alignment;
-        margin-top: $product-tile_general-tile-gutter;
         height: $product-tile_brand-height;
+        margin-top: $product-tile_general-tile-gutter;
+        text-align: $product-tile-grid_brand-alignment;
 
         &--empty {
             height: 0;
+        }
+
+        #{$root}--list & {
+            margin: $product-tile-list_brand-margin;
+            order: $product-tile-list_brand-order;
+            text-align: $product-tile-list_brand-alignment;
         }
     }
 
