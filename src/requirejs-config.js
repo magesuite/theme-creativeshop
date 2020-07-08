@@ -86,6 +86,9 @@ var config = {
                 // TODO: Remove after store pickup is updated to the newest version.
                 'Magento_InventoryInStorePickupFrontend/js/model/shipping-rates-validator-ext': false,
             },
+            'Magento_Checkout/js/view/summary/item/details': {
+                'Magento_Checkout/js/view/summary/item/details-ext': true,
+            },
         },
     },
     map: {
