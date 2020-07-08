@@ -1,0 +1,349 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+@import 'utils/get-value-from-list.scss';
+@import 'components/button/mixin.scss';
+
+$pwa-notification-panel_gutter: 0 1.5rem !default;
+$pwa-notification-panel_background: $color_white !default;
+$pwa-notification-panel_border: none !default;
+$pwa-notification-panel_border-radius: $border-radius_base !default;
+$pwa-notification-panel_box-shadow: 2px 2px 3px rgba($color_black, 0.1),
+    -2px -2px 3px rgba($color_black, 0.1) !default;
+$pwa-notification-panel_padding: 2rem 1.5rem !default;
+$pwa-notification-panel_margin: 1.5rem 0 !default;
+
+$pwa-notification-panel_icon-status-width: 3.5rem !default;
+$pwa-notification-panel_icon-status-height: 3.5rem !default;
+$pwa-notification-panel_icon-status-animation: true !default;
+$pwa-notification-panel_icon-status-animation-repeat: 6s !default;
+
+$pwa-notification-panel_message-title-font-size: 2rem !default;
+$pwa-notification-panel_message-title-font-weight: 700 !default;
+$pwa-notification-panel_message-title-request-color: $color_black !default;
+$pwa-notification-panel_message-title-browser-color: $color_black !default;
+$pwa-notification-panel_message-title-enabled-color: $color_success-600 !default;
+
+$pwa-notification-panel_message-description-font-size: 1.4rem !default;
+$pwa-notification-panel_message-description-font-weight: 400 !default;
+$pwa-notification-panel_message-description-color: $color_text-400 !default;
+
+$pwa-notification-panel_button-accept-type: $button_default-type !default;
+$pwa-notification-panel_button-accept-icon-pos: 'no-icon' !default;
+
+$pwa-notification-panel_button-decline-type: 'secondary' !default;
+$pwa-notification-panel_button-decline-icon-pos: 'no-icon' !default;
+
+$pwa-notification-panel_permission-border: none !default;
+$pwa-notification-panel_permission-border-radius: $border-radius_base !default;
+$pwa-notification-panel_permission-box-shadow: 2px 2px 5px
+        rgba($color_black, 0.1),
+    -2px -2px 5px rgba($color_black, 0.1) !default;
+$pwa-notification-panel_permission-font-size: 1.2rem !default;
+$pwa-notification-panel_permission-padding: 1rem 2rem !default;
+$pwa-notification-panel_permission-color: $color_text-400 !default;
+$pwa-notification-panel_permission-button-font-size: 1.1rem !default;
+$pwa-notification-panel_permission-button-padding: 0.2rem 2rem !default;
+$pwa-notification-panel_permission-button-border: 1px solid $color_black !default;
+$pwa-notification-panel_permission-button-color: $color_black !default;
+$pwa-notification-panel_permission-icon-width: 1.2rem !default;
+$pwa-notification-panel_permission-icon-height: 1.2rem !default;
+
+$pwa-notification-panel_icon-close-width: 1.5rem !default;
+$pwa-notification-panel_icon-close-height: 1.5rem !default;
+$pwa-notification-panel_icon-close-color: $color_text-400 !default;
+$pwa-notification-panel_icon-close-color--hover: $color_black !default;
+
+.#{$ns}pwa-notification-panel {
+    $root: &;
+
+    display: none;
+
+    @include media('>=tablet') {
+        flex-wrap: nowrap;
+    }
+
+    &--request {
+        #{$root} {
+            &__icon--request {
+                display: block;
+            }
+
+            &__message--request {
+                display: flex;
+            }
+
+            &__action--request {
+                display: block;
+            }
+        }
+    }
+
+    &--browser {
+        #{$root} {
+            &__icon--browser {
+                display: block;
+            }
+
+            &__message--browser {
+                display: flex;
+            }
+
+            &__action--browser {
+                display: block;
+            }
+        }
+    }
+
+    &--enabled {
+        #{$root} {
+            &__icon--enabled {
+                display: block;
+            }
+
+            &__message--enabled {
+                display: flex;
+            }
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        position: relative;
+        background: $pwa-notification-panel_background;
+        padding: $pwa-notification-panel_padding;
+        border: $pwa-notification-panel_border;
+        border-radius: $pwa-notification-panel_border-radius;
+        box-shadow: $pwa-notification-panel_box-shadow;
+        margin: $pwa-notification-panel_margin;
+    }
+
+    &__icon-wrapper {
+        margin: $pwa-notification-panel_gutter;
+
+        @include media('<phoneLg') {
+            display: none;
+        }
+    }
+
+    &__icon {
+        display: none;
+        width: $pwa-notification-panel_icon-status-width;
+        height: $pwa-notification-panel_icon-status-height;
+
+        &--animate {
+            @if $pwa-notification-panel_icon-status-animation {
+                animation: ringing
+                    $pwa-notification-panel_icon-status-animation-repeat
+                    infinite;
+            }
+        }
+    }
+
+    &__message-wrapper {
+        margin: $pwa-notification-panel_gutter;
+        flex: 1;
+
+        @include media('<tablet') {
+            padding-right: 2 *
+                (get-value-from-list($pwa-notification-panel_padding, 'right'));
+        }
+    }
+
+    &__message {
+        display: none;
+        flex-direction: column;
+
+        &--request {
+            #{$root}__message-title {
+                color: $pwa-notification-panel_message-title-request-color;
+            }
+        }
+
+        &--browser {
+            #{$root}__message-title {
+                color: $pwa-notification-panel_message-title-browser-color;
+            }
+        }
+
+        &--enabled {
+            #{$root}__message-title {
+                color: $pwa-notification-panel_message-title-enabled-color;
+            }
+        }
+
+        &-title {
+            font-size: $pwa-notification-panel_message-title-font-size;
+            font-weight: $pwa-notification-panel_message-title-font-weight;
+        }
+
+        &-description {
+            font-size: $pwa-notification-panel_message-description-font-size;
+            font-weight: $pwa-notification-panel_message-description-font-weight;
+            color: $pwa-notification-panel_message-description-color;
+        }
+    }
+
+    &__actions {
+        margin: $pwa-notification-panel_gutter;
+
+        @include media('<tablet') {
+            display: flex;
+            justify-content: center;
+            flex: 1 1 100%;
+            margin-top: get-value-from-list(
+                $pwa-notification-panel_padding,
+                'up'
+            );
+        }
+    }
+
+    &__action {
+        display: none;
+
+        &--browser {
+            width: 30rem;
+
+            @include media('<tablet') {
+                width: 100%;
+                max-width: 30rem;
+            }
+        }
+    }
+
+    &__button {
+        @include media('<phoneLg') {
+            width: 100%;
+        }
+
+        &:first-of-type {
+            margin: 0 0 0.5rem;
+
+            @include media('>=phoneLg') {
+                margin: 0
+                    get-value-from-list($pwa-notification-panel_gutter, 'right')
+                    0;
+            }
+        }
+
+        &--accept {
+            @include button(
+                $type: $pwa-notification-panel_button-accept-type,
+                $icon_pos: $pwa-notification-panel_button-accept-icon-pos
+            );
+
+            #{$root}__button-span {
+                @include button_span(
+                    $type: $pwa-notification-panel_button-accept-type,
+                    $icon_pos: $pwa-notification-panel_button-accept-icon-pos
+                );
+            }
+
+            #{$root}__button-icon {
+                @include button_icon(
+                    $type: $pwa-notification-panel_button-accept-type,
+                    $icon_pos: $pwa-notification-panel_button-accept-icon-pos
+                );
+            }
+        }
+
+        &--decline {
+            @include button(
+                $type: $pwa-notification-panel_button-decline-type,
+                $icon_pos: $pwa-notification-panel_button-decline-icon-pos
+            );
+
+            #{$root}__button-span {
+                @include button_span(
+                    $type: $pwa-notification-panel_button-decline-type,
+                    $icon_pos: $pwa-notification-panel_button-decline-icon-pos
+                );
+            }
+
+            #{$root}__button-icon {
+                @include button_icon(
+                    $type: $pwa-notification-panel_button-decline-type,
+                    $icon_pos: $pwa-notification-panel_button-decline-icon-pos
+                );
+            }
+        }
+    }
+
+    &__permission {
+        display: flex;
+        flex-direction: column;
+        border: $pwa-notification-panel_permission-border;
+        border-radius: $pwa-notification-panel_permission-border-radius;
+        box-shadow: $pwa-notification-panel_permission-box-shadow;
+        font-size: $pwa-notification-panel_permission-font-size;
+        color: $pwa-notification-panel_permission-color;
+        padding: $pwa-notification-panel_permission-padding;
+
+        &-icon {
+            width: $pwa-notification-panel_permission-icon-width;
+            height: $pwa-notification-panel_permission-icon-height;
+            margin-right: 0.5rem;
+        }
+
+        &-button-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        &-button {
+            padding: $pwa-notification-panel_permission-button-padding;
+            margin: 0 0.2rem;
+            border: $pwa-notification-panel_permission-button-border;
+            color: $pwa-notification-panel_permission-button-color;
+            font-size: $pwa-notification-panel_permission-button-font-size;
+
+            &--block {
+                opacity: 0.3;
+            }
+        }
+    }
+
+    &__close {
+        margin: $pwa-notification-panel_gutter;
+
+        @include media('<tablet') {
+            position: absolute;
+            top: get-value-from-list($pwa-notification-panel_padding, 'up');
+            right: get-value-from-list(
+                $pwa-notification-panel_padding,
+                'right'
+            );
+        }
+
+        &-icon {
+            display: block;
+            width: $pwa-notification-panel_icon-close-width;
+            height: $pwa-notification-panel_icon-close-height;
+            fill: $pwa-notification-panel_icon-close-color;
+        }
+
+        &:hover {
+            #{$root}__close-icon {
+                fill: $pwa-notification-panel_icon-close-color--hover;
+            }
+        }
+    }
+}
+
+@keyframes ringing {
+    0%,
+    12% {
+        transform: scale(1) rotate(0deg);
+    }
+    3%,
+    7% {
+        transform: scale(1.3) rotate(27deg);
+    }
+    5%,
+    9% {
+        transform: scale(1.3) rotate(-27deg);
+    }
+}
