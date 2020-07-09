@@ -10,10 +10,31 @@
                 <argument name="bundle_name" xsi:type="string">contact</argument>
             </arguments>
         </referenceBlock>
+
         <referenceContainer name="main.content" htmlClass="cs-container cs-container--contact-page cs-dashboard cs-dashboard--contact-page" />
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">contact</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Contact</item>
+                    <item name="label" xsi:type="string" translate="true">Contact</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
         <referenceContainer name="content">
             <container name="contactForm.container" htmlTag="div" htmlClass="cs-dashboard__contact-form"/>
         </referenceContainer>
+
         <move element="contactForm" destination="contactForm.container"/>
     </body>
 </page>
