@@ -28,7 +28,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 },
             },
             _init: function() {
-                if (this.element.children().length) {
+                if (this.element.attr('data-rendered')) {
                     return;
                 }
 
