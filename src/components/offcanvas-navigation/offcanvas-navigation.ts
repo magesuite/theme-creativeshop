@@ -288,7 +288,7 @@ export default class OffcanvasNavigation {
             .${this._options.className}__link[data-category-id="${categoryId}"]
         `).next();
 
-        if ($currentLevel.length > 0) {
+        if ($currentLevel.length > 0 && $currentLevel.prop('scrollTop')) {
             $currentLevel.animate({ scrollTop: 0 }, 'fast', () => {
                 $currentLevel.removeClass(
                     `${this._options.className}__list--current`

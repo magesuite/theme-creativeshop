@@ -83,7 +83,7 @@ export default class Offcanvas {
         const $currentTopOffset: number = window.scrollY;
         $('body')
             .addClass('no-scroll')
-            .offset({ top: -$currentTopOffset });
+            .css({ top: -$currentTopOffset });
         this._$pageWrapper.addClass('no-scroll-child');
 
         this._$trigger
