@@ -54,7 +54,6 @@ import 'components/swatches';
 import 'components/tile-gallery';
 import 'components/topbar';
 import 'components/typography';
-import 'components/usps';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/toolbar';
