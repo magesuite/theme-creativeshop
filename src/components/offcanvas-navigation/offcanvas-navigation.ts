@@ -37,6 +37,7 @@ export default class OffcanvasNavigation {
     protected _$element: JQuery;
     protected _$drawer: JQuery;
     protected _activeCategoryPath: string[];
+    protected _firstInit: boolean = true;
 
     protected _eventListeners: {
         offcanvasShow?: (event: JQuery.Event) => void;
@@ -101,19 +102,26 @@ export default class OffcanvasNavigation {
     protected _init(): void {
         this._getHtml()
             .then(html => this._initHtml(html))
-            .then(() => {
-                if (this._options.showActiveCategoryLevel) {
-                    this._showActiveCategoryLevel();
-                }
+            .then(() =>
+                setTimeout(() => {
+                    this._initSwitchers();
+                    this._fixLoginLinks();
 
-                if (this._options.highlightActiveCategory) {
-                    this._highlightActiveCategoryItem();
-                }
+                    if (this._options.showActiveCategoryLevel) {
+                        this._showActiveCategoryLevel();
+                    }
 
-                if (this._options.onNavigationRender) {
-                    this._options.onNavigationRender();
-                }
-            });
+                    if (this._options.highlightActiveCategory) {
+                        this._highlightActiveCategoryItem();
+                    }
+
+                    if (this._options.onNavigationRender) {
+                        this._options.onNavigationRender();
+                    }
+
+                    this._firstInit = false;
+                })
+            );
     }
 
     /**
@@ -123,9 +131,6 @@ export default class OffcanvasNavigation {
     protected _initHtml(html: string): void {
         this._$element = $(html);
         this._$drawer.empty().append(this._$element);
-
-        this._initSwitchers();
-        this._fixLoginLinks();
     }
 
     /**
@@ -288,7 +293,11 @@ export default class OffcanvasNavigation {
             .${this._options.className}__link[data-category-id="${categoryId}"]
         `).next();
 
-        if ($currentLevel.length > 0 && $currentLevel.prop('scrollTop')) {
+        if (
+            !this._firstInit &&
+            $currentLevel.length > 0 &&
+            $currentLevel.prop('scrollTop')
+        ) {
             $currentLevel.animate({ scrollTop: 0 }, 'fast', () => {
                 $currentLevel.removeClass(
                     `${this._options.className}__list--current`
