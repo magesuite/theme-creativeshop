@@ -364,11 +364,16 @@ export default class Minicart {
                             );
 
                             requireAsync([
-                                'Magento_PageCache/js/page-cache',
+                                'mage/cookies',
                                 'catalogAddToCart',
                             ]).then(() => {
-                                // Refresh the form_key for new rendered html using mage.formKey widget.
-                                $dataTarget.formKey();
+                                // Refresh the form_key for rendered html.
+                                const formKey = $.mage.cookies.get('form_key');
+                                $dataTarget
+                                    .find('input[name="form_key"]')
+                                    .each((i, input) => {
+                                        $(input).val(formKey);
+                                    });
 
                                 // Initialize Magento addToCart widget
                                 $dataTarget
