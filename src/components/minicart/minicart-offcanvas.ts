@@ -371,9 +371,7 @@ export default class Minicart {
                                 const formKey = $.mage.cookies.get('form_key');
                                 $dataTarget
                                     .find('input[name="form_key"]')
-                                    .each((i, input) => {
-                                        $(input).val(formKey);
-                                    });
+                                    .val(formKey);
 
                                 // Initialize Magento addToCart widget
                                 $dataTarget
