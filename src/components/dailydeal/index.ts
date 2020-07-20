@@ -10,15 +10,19 @@ const ns: string = 'cs-';
  */
 
 // PDP sale block
-new Dailydeal($(`.product-info-main .${ns}dailydeal`), {
-    namespace: ns,
-    updateLabels: true,
+setTimeout(() => {
+    new Dailydeal($(`.product-info-main .${ns}dailydeal`), {
+        namespace: ns,
+        updateLabels: true,
+    });
 });
 
 // Carousels, categories, grids
 $(`.${ns}dailydeal--tile`).each(function(): void {
-    new Dailydeal($(this), {
-        namespace: ns,
-        updateLabels: false,
+    setTimeout(() => {
+        new Dailydeal($(this), {
+            namespace: ns,
+            updateLabels: false,
+        });
     });
 });

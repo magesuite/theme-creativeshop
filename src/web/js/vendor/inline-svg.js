@@ -157,15 +157,14 @@
         }
 
         if ('MutationObserver' in root) {
-            new MutationObserver(function(mutationsList) {
-                for (var i = 0; i < mutationsList.length; i++) {
-                    var mutation = mutationsList[i];
-                    if (mutation.type === 'childList') {
-                        getAll(mutation.target).forEach(function(svg) {
-                            observer ? observer.observe(svg) : inline(svg);
-                        });
-                    }
-                }
+            var checkTimeout;
+            new MutationObserver(function() {
+                clearTimeout(checkTimeout);
+                checkTimeout = setTimeout(function() {
+                    getAll(doc).forEach(function(svg) {
+                        observer ? observer.observe(svg) : inline(svg);
+                    });
+                }, 20);
             }).observe(doc, {
                 subtree: true,
                 childList: true,
