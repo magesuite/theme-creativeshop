@@ -197,7 +197,7 @@ export default class AddToCart {
      * @param e - event emitted by `this._options.processingEvent`
      */
     protected _onProcessing(e: JQuery.Event): any {
-        this._$component = $('.atc-ajax-processing').parents(
+        this._$component = $('.atc-ajax-processing').closest(
             `.${this._options.componentClass}`
         );
         this._$button = this._$component.find('button[type="submit"]');
