@@ -20,7 +20,7 @@
 ?>
     <?php if (!empty($filters)): ?>
         <nav
-            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter<?= empty($filters) ? ' filter-no-options' : ''; ?>"
+            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter"
             id="layered-filter-block"
             data-mage-init='{ "collapsible": { "active": false, "collateral": { "openedState": "filter-active", "element": "body" }, "mediaQueryScope": "(max-width: 767px)" } }'
             title="<?= /* @escapeNotVerified */ __('Filters'); ?>"
@@ -87,5 +87,11 @@
                 >
             </div>
         </nav>
+    <?php else: ?>
+        <div
+            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter filter-no-options"
+        >
+            <p class="cs-aftersearch-nav__empty-message"><?= /* @escapeNotVerified */  __('No filters available'); ?>  </p>
+        </div>
     <?php endif; ?>
 <?php endif; ?>
