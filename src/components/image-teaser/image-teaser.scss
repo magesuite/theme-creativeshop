@@ -491,113 +491,65 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
     }
 
     &__cta-button {
-        #{$root}__slide:not(#{$root}__slide--scheme-light) &,
-        #{$root}__slide:not(#{$root}__slide--scheme-dark) & {
+        @include button(
+            $type: $image-teaser_cta-button-type,
+            $icon_pos: $image-teaser_cta-button-icon-pos
+        );
+
+        #{$root}__slide--scheme-dark & {
             @include button(
-                $type: $image-teaser_cta-button-type,
-                $icon_pos: $image-teaser_cta-button-icon-pos
+                $type: $image-teaser_cta-button-type--dark,
+                $icon_pos: $image-teaser_cta-button-icon-pos--dark
             );
         }
 
-        @if ($image-teaser_cta-button-type == $image-teaser_cta-button-type--dark and $image-teaser_cta-button-icon-pos == $image-teaser_cta-button-icon-pos--dark) { /* stylelint-disable-line */
-            @include button(
-                $type: $image-teaser_cta-button-type,
-                $icon_pos: $image-teaser_cta-button-icon-pos
-            );
-        } @else {
-            #{$root}__slide--scheme-light & {
-                @include button(
-                    $type: $image-teaser_cta-button-type,
-                    $icon_pos: $image-teaser_cta-button-icon-pos
-                );
+        // Override font size defined in button component
+        #{$root}__slide & {
+            font-size: 1rem;
+
+            @include media('>=phoneLg') {
+                font-size: 1.15rem;
             }
 
-            #{$root}__slide--scheme-dark & {
-                @include button(
-                    $type: $image-teaser_cta-button-type--dark,
-                    $icon_pos: $image-teaser_cta-button-icon-pos--dark
-                );
+            @include media('>=laptop') {
+                font-size: 1.2rem;
             }
-        }
 
-        font-size: 1rem;
+            @include media('>=laptopLg') {
+                font-size: 1.4rem;
+            }
 
-        @include media('>=phoneLg') {
-            font-size: 1.15rem;
-        }
-
-        @include media('>=laptop') {
-            font-size: 1.2rem;
-        }
-
-        @include media('>=laptopLg') {
-            font-size: 1.4rem;
-        }
-
-        @include media('>=tv') {
-            font-size: 1.6rem;
+            @include media('>=tv') {
+                font-size: 1.6rem;
+            }
         }
     }
 
     &__cta-button-span {
-        #{$root}__slide:not(#{$root}__slide--scheme-light) &,
-        #{$root}__slide:not(#{$root}__slide--scheme-dark) & {
-            @include button_span(
-                $type: $image-teaser_cta-button-type,
-                $icon_pos: $image-teaser_cta-button-icon-pos
-            );
-        }
+        @include button_span(
+            $type: $image-teaser_cta-button-type,
+            $icon_pos: $image-teaser_cta-button-icon-pos
+        );
 
-        @if ($image-teaser_cta-button-type == $image-teaser_cta-button-type--dark and $image-teaser_cta-button-icon-pos == $image-teaser_cta-button-icon-pos--dark) { /* stylelint-disable-line */
+        #{$root}__slide--scheme-dark & {
             @include button_span(
-                $type: $image-teaser_cta-button-type,
-                $icon_pos: $image-teaser_cta-button-icon-pos
+                $type: $image-teaser_cta-button-type--dark,
+                $icon_pos: $image-teaser_cta-button-icon-pos--dark
             );
-        } @else {
-            #{$root}__slide--scheme-light & {
-                @include button_span(
-                    $type: $image-teaser_cta-button-type,
-                    $icon_pos: $image-teaser_cta-button-icon-pos
-                );
-            }
-
-            #{$root}__slide--scheme-dark & {
-                @include button_span(
-                    $type: $image-teaser_cta-button-type--dark,
-                    $icon_pos: $image-teaser_cta-button-icon-pos--dark
-                );
-            }
         }
     }
 
     &__cta-button-icon {
-        #{$root}__slide:not(#{$root}__slide--scheme-light) &,
-        #{$root}__slide:not(#{$root}__slide--scheme-dark) & {
-            @include button_icon(
-                $type: $image-teaser_cta-button-type,
-                $icon_pos: $image-teaser_cta-button-icon-pos
-            );
-        }
+        @include button_icon(
+            $type: $image-teaser_cta-button-type,
+            $icon_pos: $image-teaser_cta-button-icon-pos
+        );
 
-        @if ($image-teaser_cta-button-type == $image-teaser_cta-button-type--dark and $image-teaser_cta-button-icon-pos == $image-teaser_cta-button-icon-pos--dark) { /* stylelint-disable-line */
+        #{$root}__slide--scheme-dark & {
             @include button_icon(
-                $type: $image-teaser_cta-button-type,
-                $icon_pos: $image-teaser_cta-button-icon-pos
+                $type: $image-teaser_cta-button-type--dark,
+                $icon_pos: $image-teaser_cta-button-icon-pos--dark
             );
-        } @else {
-            #{$root}__slide--scheme-light & {
-                @include button_icon(
-                    $type: $image-teaser_cta-button-type,
-                    $icon_pos: $image-teaser_cta-button-icon-pos
-                );
-            }
-
-            #{$root}__slide--scheme-dark & {
-                @include button_icon(
-                    $type: $image-teaser_cta-button-type--dark,
-                    $icon_pos: $image-teaser_cta-button-icon-pos--dark
-                );
-            }
         }
     }
 
