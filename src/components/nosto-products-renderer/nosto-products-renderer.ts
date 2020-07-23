@@ -12,6 +12,11 @@ export interface NostoProductsOptions {
     contentSelector?: string;
     productDataSelector?: string;
     productCarouselOptions?: ProductsCarouselOptions;
+    /**
+     * Specifies amount of seconds for which the renderer checks
+     * if Nosto loaded its contents
+     */
+    waitTime?: number;
 }
 
 /**
@@ -33,7 +38,6 @@ class NostoProducts {
     protected _$element: JQuery;
     protected _options: NostoProductsOptions;
     protected _rendererEndpoint: string;
-    protected _isInitialized: boolean;
 
     /**
      * Creates new NostoProducts component with optional settings.
@@ -43,7 +47,6 @@ class NostoProducts {
     public constructor($element: JQuery, options?: NostoProductsOptions) {
         this._options = options;
         this._$element = $element;
-        this._isInitialized = false;
         this._rendererEndpoint = this._$element.attr('data-renderer-url')
             ? this._$element.data('renderer-url')
             : '';
@@ -61,23 +64,19 @@ class NostoProducts {
      * and initializes _runProductFetch
      */
     protected _initialize(): void {
-        requireAsync(['nostojs']).then(([nostojs]) => {
-            // Init the carousels on first nosto postrender event
-            nostojs((api): void => {
-                api.listen('postrender', (nostoPostRenderEvent): void => {
-                    if (
-                        !this._isInitialized &&
-                        this._$element.find(this._options.productDataSelector)
-                            .length
-                    ) {
-                        this._isInitialized = true;
-                        this._runProductFetch();
-                    }
-                });
+        // Check for max 15s if nosto recommendations are rendered, then fetch the carousels
+        let counter = 1;
 
-                api.loadRecommendations();
-            });
-        });
+        const interval = setInterval(() => {
+            if (this._$element.find(this._options.productDataSelector).length) {
+                this._runProductFetch();
+                clearInterval(interval);
+            } else if (counter >= this._options.waitTime * 2) {
+                clearInterval(interval);
+            }
+
+            counter++;
+        }, 500);
     }
 
     /**
@@ -104,9 +103,7 @@ class NostoProducts {
                             const formKey = $.mage.cookies.get('form_key');
                             $dataTarget
                                 .find('input[name="form_key"]')
-                                .each((i, input) => {
-                                    $(input).val(formKey);
-                                });
+                                .val(formKey);
 
                             // Initialize Magento addToCart widget
                             $dataTarget
@@ -160,9 +157,9 @@ class NostoProducts {
     protected _getProductsCarousel(productsData: NostoProductsData): any {
         return $.get(this._rendererEndpoint, {
             id: productsData.ids,
-        }).then((response: string) => {
+        }).then(({ content }) => {
             const productsCarouselHTML = this._replaceProductsUrlWithNosto(
-                response,
+                content,
                 productsData.urls
             );
 
@@ -205,6 +202,7 @@ export default function initializeNostoProductsRenderer(
             componentClass: 'cs-nosto-products',
             contentSelector: `.cs-nosto-products__content`,
             productDataSelector: `.cs-nosto-products__product`,
+            waitTime: 15,
         },
         config
     );
@@ -230,6 +228,11 @@ export default function initializeNostoProductsRenderer(
                         api.recommendedProductAddedToCart(productId, slotId);
                     });
                 });
+
+                // Reload the cart page when product is added form recommendation
+                if ($('body').hasClass('checkout-cart-index')) {
+                    location.reload();
+                }
             }
         });
     });
