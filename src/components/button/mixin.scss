@@ -114,6 +114,13 @@ $button_icon-offset: 0.1em !default;
                 $color_end: $button_primary--hover-background,
                 $icon_pos: $icon_pos
             );
+        } @else {
+            @if ($icon_pos == 'right') or ($icon_pos == 'left') {
+                &::before,
+                &::after {
+                    content: none;
+                }
+            }
         }
     }
 
@@ -125,6 +132,13 @@ $button_icon-offset: 0.1em !default;
                 $color_end: $button_secondary--hover-background,
                 $icon_pos: $icon_pos
             );
+        } @else {
+            @if ($icon_pos == 'right') or ($icon_pos == 'left') {
+                &::before,
+                &::after {
+                    content: none;
+                }
+            }
         }
     }
 
@@ -318,6 +332,8 @@ $button_icon-offset: 0.1em !default;
     letter-spacing: $button_text-letter-spacing;
 
     @if ($icon_pos == 'right') {
+        padding-left: 0;
+
         @if ($type == 'link') {
             padding-right: $button_link-icon-padding;
         } @else {
@@ -346,6 +362,8 @@ $button_icon-offset: 0.1em !default;
             }
         }
     } @else if ($icon_pos == 'left') {
+        padding-right: 0;
+
         @if ($type == 'link') {
             padding-left: $button_link-icon-padding;
         } @else {
