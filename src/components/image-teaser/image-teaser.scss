@@ -12,9 +12,6 @@ $image-teaser--mosaic_equalize-font-sizes: true !default;
 $image-teaser_slides-gutter: 0.8rem !default;
 $image-teaser_content-gutter-base: 1.88% !default;
 
-$image-teaser_cta-button-type: 'primary' !default;
-$image-teaser_cta-button-icon-pos: 'right' !default;
-
 $image-teaser_text-content-font-size: 1.4rem !default;
 $image-teaser_slogan-level: $font-size_headline-2 !default;
 $image-teaser_slogan-font-size: 2.583em !default;
@@ -23,10 +20,14 @@ $image-teaser_description-font-size: 1.55em !default;
 $image-teaser_text-content-color: $scheme--light_texts-color !default;
 $image-teaser_slogan-color: inherit !default;
 $image-teaser_description-color: inherit !default;
+$image-teaser_cta-button-type: $button_default-type !default;
+$image-teaser_cta-button-icon-pos: $button_default-icon-pos !default;
 
 $image-teaser_text-content-color--dark: $scheme--dark_texts-color !default;
 $image-teaser_slogan-color--dark: inherit !default;
 $image-teaser_description-color--dark: inherit !default;
+$image-teaser_cta-button-type--dark: $button_default-type !default;
+$image-teaser_cta-button-icon-pos--dark: $button_default-icon-pos !default;
 
 $image-teaser_slogan-font-weight: 900 !default;
 $image-teaser_description-font-weight: 300 !default;
@@ -490,10 +491,34 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
     }
 
     &__cta-button {
-        @include button(
-            $type: $image-teaser_cta-button-type,
-            $icon_pos: $image-teaser_cta-button-icon-pos
-        );
+        #{$root}__slide:not(#{$root}__slide--scheme-light) &,
+        #{$root}__slide:not(#{$root}__slide--scheme-dark) & {
+            @include button(
+                $type: $image-teaser_cta-button-type,
+                $icon_pos: $image-teaser_cta-button-icon-pos
+            );
+        }
+
+        @if ($image-teaser_cta-button-type == $image-teaser_cta-button-type--dark and $image-teaser_cta-button-icon-pos == $image-teaser_cta-button-icon-pos--dark) { /* stylelint-disable-line */
+            @include button(
+                $type: $image-teaser_cta-button-type,
+                $icon_pos: $image-teaser_cta-button-icon-pos
+            );
+        } @else {
+            #{$root}__slide--scheme-light & {
+                @include button(
+                    $type: $image-teaser_cta-button-type,
+                    $icon_pos: $image-teaser_cta-button-icon-pos
+                );
+            }
+
+            #{$root}__slide--scheme-dark & {
+                @include button(
+                    $type: $image-teaser_cta-button-type--dark,
+                    $icon_pos: $image-teaser_cta-button-icon-pos--dark
+                );
+            }
+        }
 
         font-size: 1rem;
 
@@ -515,17 +540,65 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
     }
 
     &__cta-button-span {
-        @include button_span(
-            $type: $image-teaser_cta-button-type,
-            $icon_pos: $image-teaser_cta-button-icon-pos
-        );
+        #{$root}__slide:not(#{$root}__slide--scheme-light) &,
+        #{$root}__slide:not(#{$root}__slide--scheme-dark) & {
+            @include button_span(
+                $type: $image-teaser_cta-button-type,
+                $icon_pos: $image-teaser_cta-button-icon-pos
+            );
+        }
+
+        @if ($image-teaser_cta-button-type == $image-teaser_cta-button-type--dark and $image-teaser_cta-button-icon-pos == $image-teaser_cta-button-icon-pos--dark) { /* stylelint-disable-line */
+            @include button_span(
+                $type: $image-teaser_cta-button-type,
+                $icon_pos: $image-teaser_cta-button-icon-pos
+            );
+        } @else {
+            #{$root}__slide--scheme-light & {
+                @include button_span(
+                    $type: $image-teaser_cta-button-type,
+                    $icon_pos: $image-teaser_cta-button-icon-pos
+                );
+            }
+
+            #{$root}__slide--scheme-dark & {
+                @include button_span(
+                    $type: $image-teaser_cta-button-type--dark,
+                    $icon_pos: $image-teaser_cta-button-icon-pos--dark
+                );
+            }
+        }
     }
 
     &__cta-button-icon {
-        @include button_icon(
-            $type: $image-teaser_cta-button-type,
-            $icon_pos: $image-teaser_cta-button-icon-pos
-        );
+        #{$root}__slide:not(#{$root}__slide--scheme-light) &,
+        #{$root}__slide:not(#{$root}__slide--scheme-dark) & {
+            @include button_icon(
+                $type: $image-teaser_cta-button-type,
+                $icon_pos: $image-teaser_cta-button-icon-pos
+            );
+        }
+
+        @if ($image-teaser_cta-button-type == $image-teaser_cta-button-type--dark and $image-teaser_cta-button-icon-pos == $image-teaser_cta-button-icon-pos--dark) { /* stylelint-disable-line */
+            @include button_icon(
+                $type: $image-teaser_cta-button-type,
+                $icon_pos: $image-teaser_cta-button-icon-pos
+            );
+        } @else {
+            #{$root}__slide--scheme-light & {
+                @include button_icon(
+                    $type: $image-teaser_cta-button-type,
+                    $icon_pos: $image-teaser_cta-button-icon-pos
+                );
+            }
+
+            #{$root}__slide--scheme-dark & {
+                @include button_icon(
+                    $type: $image-teaser_cta-button-type--dark,
+                    $icon_pos: $image-teaser_cta-button-icon-pos--dark
+                );
+            }
+        }
     }
 
     // Badge
