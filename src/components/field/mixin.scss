@@ -101,6 +101,9 @@ $field_icon-height: 1.3em !default;
 $field_icon-success-background: url('../images/check-green.svg') no-repeat
     center center / contain !default;
 
+$field_dob-button-type: 'secondary' !default;
+$field_dob-button-icon-pos: $button_default-icon-pos !default;
+
 @mixin field() {
     font-size: $field_font-size;
     display: flex;
@@ -407,4 +410,30 @@ $field_icon-success-background: url('../images/check-green.svg') no-repeat
     }
 
     @include field-checkbox-hook();
+}
+
+@mixin field-dob() {
+    input {
+        @include field-input();
+
+        &.mage-error {
+            @include field-input-error();
+        }
+    }
+
+    button {
+        @include button(
+            $type: $field_dob-button-type,
+            $icon_pos: $field_dob-button-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $field_dob-button-type,
+                $icon_pos: $field_dob-button-icon-pos
+            );
+        }
+    }
+
+    @include field-dob-hook();
 }
