@@ -24,6 +24,7 @@ $page-success_links-font-weight: $dashboard_links-font-weight !default;
 $page-success_links-font-size: $dashboard_links-font-size !default;
 
 $page-success_hide-personal-section: true !default;
+$page-success_show-dob: false !default;
 $page-success_hide-email: true !default;
 $page-success_hide-password-strength: true !default;
 
@@ -122,9 +123,25 @@ $page-success_hide-password-strength: true !default;
         .fieldset {
             margin-bottom: 2rem;
 
-            @if $page-success_hide-personal-section {
-                &.info {
-                    display: none;
+            &.info {
+                @if $page-success_hide-personal-section {
+                    margin-bottom: 0;
+
+                    .legend,
+                    .field {
+                        display: none;
+                    }
+                }
+
+                @if $page-success_show-dob {
+                    .legend,
+                    .field-dob {
+                        display: block;
+                    }
+
+                    .field-dob {
+                        margin-top: 0;
+                    }
                 }
             }
 

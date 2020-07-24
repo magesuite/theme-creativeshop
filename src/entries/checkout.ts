@@ -79,6 +79,7 @@ import 'components/separator';
 import 'pages/success';
 import 'pages/cart';
 
+import 'components/calendar';
 import 'components/cart';
 import 'components/checkout';
 import 'components/discount';
