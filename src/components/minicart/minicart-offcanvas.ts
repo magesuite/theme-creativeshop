@@ -6,6 +6,7 @@ import ProductsCarousel, {
     ProductsCarouselOptions,
 } from 'components/products-carousel/products-carousel';
 import requireAsync from 'utils/require-async';
+import 'mage/translate';
 
 /**
  * Minicart component options interface.
@@ -111,6 +112,20 @@ interface IProductsCarouselOptions {
      * @type {string}
      */
     redererEndpoint?: string;
+
+    /**
+     * Defines class for carousel component button
+     * @default {'cs-minicart__button-carousel'}
+     * @type {string}
+     */
+    btnClass?: string;
+
+    /**
+     * Defines class for carousel component button text
+     * @default {'cs-minicart__button-carousel-span'}
+     * @type {string}
+     */
+    btnTextClass?: string;
 }
 
 /**
@@ -122,6 +137,7 @@ interface IXmlSettings {
     products_carousel: {
         enabled: boolean;
         relation_type: boolean;
+        button_dynamic_url: boolean;
     };
 }
 
@@ -130,6 +146,10 @@ interface IXmlSettings {
  */
 interface AjaxResponse {
     content: string;
+    category: {
+        name: string;
+        url: string;
+    };
 }
 
 /**
@@ -193,6 +213,8 @@ export default class Minicart {
                 componentClass: 'cs-minicart__carousel',
                 relationType: this._xmlSettings.products_carousel.relation_type,
                 redererEndpoint: 'products_renderer/related/carousel',
+                btnClass: 'cs-minicart__button-carousel',
+                btnTextClass: 'cs-minicart__button-carousel-span',
             },
             productsCarouselOptions
         );
@@ -344,8 +366,8 @@ export default class Minicart {
                             `${this._productsCarouselOptions.componentWrapperClass}--loading`
                         );
 
-                        const responseHTML: string = response.content;
-                        const $carouselSlides = $(responseHTML).find(
+                        const responseCarouselHTML: string = response.content;
+                        const $carouselSlides = $(responseCarouselHTML).find(
                             '.cs-products-carousel__slide'
                         );
 
@@ -355,7 +377,7 @@ export default class Minicart {
                             );
 
                             $dataTarget.empty();
-                            $dataTarget.html(responseHTML);
+                            $dataTarget.html(responseCarouselHTML);
 
                             // Initializes the product carousel for rendered html
                             new ProductsCarousel(
@@ -378,6 +400,13 @@ export default class Minicart {
                                     .find('[data-role=tocart-form]')
                                     .catalogAddToCart();
                             });
+
+                            if (
+                                this._xmlSettings.products_carousel
+                                    .button_dynamic_url
+                            ) {
+                                this._dynamicRedirect(response.category);
+                            }
                         }
                     }
                 }
@@ -436,6 +465,35 @@ export default class Minicart {
      */
     protected _isMinicartOpen(): boolean {
         return this._$minicartTrigger.attr('aria-expanded') === 'true';
+    }
+
+    /**
+     * Attach event to carousel btn in order to use
+     * dynamic redirection to category page
+     */
+    protected _dynamicRedirect(response: any): void {
+        if (response == null) return;
+
+        $(`.${this._productsCarouselOptions.btnTextClass}`).text(
+            $.mage.__('View all %1').replace('%1', response.name)
+        );
+
+        $(`.${this._productsCarouselOptions.btnClass}`)
+            .off()
+            .removeClass('btn-minicart-close')
+            .attr('data-url', response.url)
+            .on('click', (event: JQuery.ClickEvent): void => {
+                const $target: JQuery = $(event.target);
+
+                if (
+                    $target.closest(
+                        `.${this._productsCarouselOptions.btnClass}`
+                    ).length
+                ) {
+                    event.preventDefault();
+                }
+                window.location.href = response.url;
+            });
     }
 
     /**
