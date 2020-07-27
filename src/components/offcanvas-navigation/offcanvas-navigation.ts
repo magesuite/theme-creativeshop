@@ -317,6 +317,9 @@ export default class OffcanvasNavigation {
                     });
             });
         } else {
+            $currentLevel.removeClass(
+                `${this._options.className}__list--current`
+            );
             $listToShow
                 .addClass(
                     `
