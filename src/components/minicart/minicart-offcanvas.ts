@@ -422,7 +422,9 @@ export default class Minicart {
         const deferred: JQueryDeferred<any> = jQuery.Deferred();
         requirejs(['Magento_Customer/js/customer-data'], customerData => {
             customerData.get('cart').subscribe((data: any): void => {
-                deferred.resolve(data.items[0].product_id);
+                if (Array.isArray(data.items) && data.items.length) {
+                    deferred.resolve(data.items[0].product_id);
+                }
             });
         });
         return deferred;
