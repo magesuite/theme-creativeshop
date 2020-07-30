@@ -293,6 +293,11 @@ export default class OffcanvasNavigation {
             .${this._options.className}__link[data-category-id="${categoryId}"]
         `).next();
 
+        if (!$listToShow.length) {
+            // Don't hide current category if there is nothing else to show.
+            return;
+        }
+
         if (
             !this._firstInit &&
             $currentLevel.length > 0 &&
