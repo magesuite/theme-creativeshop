@@ -108,11 +108,13 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             var productId;
 
             $($attributesList)
-                .filter('[option-selected]')
+                .filter('[data-option-selected]')
                 .each(function() {
                     var $attribute = $(this);
-                    var attributeId = $attribute.attr('attribute-id');
-                    var optionSelected = $attribute.attr('option-selected');
+                    var attributeId = $attribute.attr('data-attribute-id');
+                    var optionSelected = $attribute.attr(
+                        'data-option-selected'
+                    );
 
                     selectedOptions[attributeId] = optionSelected;
                 });
