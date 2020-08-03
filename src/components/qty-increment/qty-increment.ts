@@ -39,6 +39,12 @@ interface QtyIncrementOptions {
      * @default cs-qty-increment__button--decrement
      */
     decrementButtonClassName?: string;
+
+    /**
+     * Name of the class for disable button.
+     * @default cs-qty-increment__button--disabled
+     */
+    disabledButtonClassName?: string;
 }
 
 export default class QtyIncrement {
@@ -59,6 +65,7 @@ export default class QtyIncrement {
         inputClassName: 'cs-qty-increment__input',
         incrementButtonClassName: 'cs-qty-increment__button--increment',
         decrementButtonClassName: 'cs-qty-increment__button--decrement',
+        disabledButtonClassName: 'cs-qty-increment__button--disabled',
     };
 
     /**
@@ -154,6 +161,15 @@ export default class QtyIncrement {
 
         const isDecrementDisabled = value <= this._minValue;
         const isIncrementDisabled = value >= this._maxValue;
+
+        this._$decrementBtn.toggleClass(
+            this._options.disabledButtonClassName,
+            isDecrementDisabled
+        );
+        this._$incrementBtn.toggleClass(
+            this._options.disabledButtonClassName,
+            isIncrementDisabled
+        );
 
         this._$decrementBtn.prop('disabled', isDecrementDisabled);
         this._$incrementBtn.prop('disabled', isIncrementDisabled);

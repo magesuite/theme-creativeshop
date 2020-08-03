@@ -15,14 +15,16 @@ $qty-increment_button-width: 3rem !default;
 $qty-increment_button-border-radius: $border-radius_base !default;
 $qty-increment_button-background: transparent !default;
 $qty-increment_button--hover-background: $color_primary-500 !default;
-$qty-increment_button--disabled-background: $qty-increment_button-background !default;
 $qty-increment_button-border: 1px solid $color_border-500 !default;
 $qty-increment_button--hover-border: 1px solid $color_primary-500 !default;
 $qty-increment_button-animation-time: 0.5s !default;
+$qty-increment_button--disabled-background: $qty-increment_button-background !default;
+$qty-increment_button--disabled-border: $qty-increment_button-border !default;
+$qty-increment_button--disabled-opacity: 1 !default;
 
 $qty-increment_icon-fill: $color_primary-500 !default;
 $qty-increment_icon--hover-fill: $color_text-200 !default;
-$qty-increment_icon--disabled-fill: $color_alto !default;
+$qty-increment_icon--disabled-fill: $color_background-600 !default;
 $qty-increment_icon--decrement-width: 1.2rem !default;
 $qty-increment_icon--decrement-height: 0.3rem !default;
 $qty-increment_icon--increment-width: $qty-increment_icon--decrement-width !default;
@@ -125,6 +127,23 @@ $qty-increment_icon--increment-height: $qty-increment_icon--increment-width !def
             order: 2;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
+        }
+
+        &--disabled {
+            opacity: $qty-increment_button--disabled-opacity;
+
+            &,
+            &:hover,
+            &:visited,
+            &:focus {
+                background-color: $qty-increment_button--disabled-background;
+                border: $qty-increment_button--disabled-border;
+                cursor: not-allowed;
+
+                * {
+                    fill: $qty-increment_icon--disabled-fill;
+                }
+            }
         }
     }
 
