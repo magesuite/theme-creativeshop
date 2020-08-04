@@ -66,23 +66,25 @@
                             <!-- ko i18n: 'Options Details' -->
                             <!-- /ko --></strong>
                         <!-- ko foreach: { data: options, as: 'option' } -->
-                        <dl class="product options list cs-minicart-product__options-group">
-                            <!-- ko if: (item && item['product_type'] && item['product_type'] !== 'bundle') -->
-                            <dt class="label cs-minicart-product__options-label">
-                                <!-- ko text: option.label -->
-                                <!-- /ko --></dt>
-                            <!-- /ko -->
-                            <dd class="values cs-minicart-product__options-value">
-                                <!-- ko if: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value.map(function(value) {
-                                    return '<span class=\'cs-minicart-product__options-value__value\'>' + value + '</span>';
-                                }).join('')"></span>
+                        <!-- ko if: (item['product_type'] !== 'giftcard') -->
+                            <dl class="product options list cs-minicart-product__options-group">
+                                <!-- ko if: (item && item['product_type'] && item['product_type'] !== 'bundle') -->
+                                <dt class="label cs-minicart-product__options-label">
+                                    <!-- ko text: option.label -->
+                                    <!-- /ko --></dt>
                                 <!-- /ko -->
-                                <!-- ko ifnot: Array.isArray(option.value) -->
-                                <span data-bind="html: option.value"></span>
-                                <!-- /ko -->
-                            </dd>
-                        </dl>
+                                <dd class="values cs-minicart-product__options-value">
+                                    <!-- ko if: Array.isArray(option.value) -->
+                                    <span data-bind="html: option.value.map(function(value) {
+                                        return '<span class=\'cs-minicart-product__options-value__value\'>' + value + '</span>';
+                                    }).join('')"></span>
+                                    <!-- /ko -->
+                                    <!-- ko ifnot: Array.isArray(option.value) -->
+                                    <span data-bind="html: option.value"></span>
+                                    <!-- /ko -->
+                                </dd>
+                            </dl>
+                        <!-- /ko -->
                         <!-- /ko -->
                     </div>
                 </div>
