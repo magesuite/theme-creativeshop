@@ -2,90 +2,152 @@
     - add total items counter
     - add condition for showTotalItems (var in XML)
     - add empty class if there are not items in minicart -->
-
-<div class="cs-minicart__wrapper" data-bind="attr: {useDefaultQty: useDefaultQty ? 'true' : 'false'}">
+<div
+    class="cs-minicart__wrapper"
+    data-bind="attr: {useDefaultQty: useDefaultQty ? 'true' : 'false'}"
+>
     <div class="cs-minicart__title-wrapper">
-        <button type="button"
+        <button
+            type="button"
             id="btn-minicart-close"
             class="action close cs-minicart__close"
             data-action="close"
-            data-bind="attr: { title: $t('Close') }">
-            <span class="cs-minicart__close-text" translate="'Close'"/>
+            data-bind="attr: { title: $t('Close') }"
+        >
+            <span
+                class="cs-minicart__close-text"
+                data-bind="i18n: 'Close'"
+            ></span>
         </button>
-        <span class="text cs-minicart__title" translate="'My Cart'"/>
+        <span
+            class="text cs-minicart__title"
+            data-bind="i18n: 'My Cart'"
+        ></span>
         <!-- ko if: showTotalItems -->
         <div class="items-total cs-minicart__items-total">
-            <span class="count" if="maxItemsToDisplay < getCartLineItemsCount()" text="maxItemsToDisplay"/>
-            <translate args="'of'" if="maxItemsToDisplay < getCartLineItemsCount()"/>
-            <span class="count" text="getCartParam('summary_count')"/>
-                <!-- ko if: (getCartLineItemsCount() === 1) -->
-                    <span translate="'item'"/>
-                <!--/ko-->
-                <!-- ko if: (getCartLineItemsCount() > 1) -->
-                    <span translate="'items'"/>
-                <!--/ko-->
+            <!-- ko if: maxItemsToDisplay < getCartLineItemsCount() --><span
+                class="count"
+                data-bind="text: maxItemsToDisplay"
+            ></span
+            ><!-- /ko -->
+            <!-- ko if: maxItemsToDisplay < getCartLineItemsCount() --><!-- ko i18n: 'of' --><!-- /ko --><!-- /ko -->
+            <span
+                class="count"
+                data-bind="text: getCartParam('summary_count')"
+            ></span>
+            <!-- ko if: (getCartLineItemsCount() === 1) -->
+            <span data-bind="i18n: 'item'"></span>
+            <!--/ko-->
+            <!-- ko if: (getCartLineItemsCount() > 1) -->
+            <span data-bind="i18n: 'items'"></span>
+            <!--/ko-->
         </div>
         <!-- /ko -->
     </div>
     <div class="cs-minicart__content-wrapper">
-        <div class="cs-minicart__content" data-bind="css: { 'cs-minicart__content--empty': getCartLineItemsCount() === 0 }">
-            <if args="getCartParam('summary_count')">
-                <ol id="mini-cart" class="cs-minicart__list cs-minicart__list--scroll" data-bind="foreach: { data: getCartItems(), as: 'item' }">
-                    <each args="$parent.getRegion($parent.getItemRenderer(item.product_type))"
-                        render="{name: getTemplate(), data: item, afterRender: function() {$parents[1].initSidebar()}}"
-                    />
-                </ol>
-                <div class="load indicator cs-no-display"></div>
-            </if>
+        <div
+            class="cs-minicart__content"
+            data-bind="css: { 'cs-minicart__content--empty': getCartLineItemsCount() === 0 }"
+        >
+            <!-- ko if: getCartParam('summary_count') -->
+            <ol
+                id="mini-cart"
+                class="cs-minicart__list cs-minicart__list--scroll"
+                data-bind="foreach: { data: getCartItems(), as: 'item' }"
+            >
+                <!-- ko foreach: $parent.getRegion($parent.getItemRenderer(item.product_type)) --><!-- ko template: {name: getTemplate(), data: item, afterRender: function() {$parents[1].initSidebar()}} --><!-- /ko --><!-- /ko -->
+            </ol>
+            <div class="load indicator cs-no-display"></div>
+            <!-- /ko -->
         </div>
         <div class="cs-minicart__actions-wrapper">
-            <if args="getCartParam('summary_count')">
-                <each args="getRegion('subtotalContainer')" render=""/>
-                <each args="getRegion('extraInfo')" render=""/>
-                <div class="actions cs-minicart__actions" if="getCartParam('possible_onepage_checkout')">
-                    <button
-                        id="top-cart-btn-checkout"
-                        type="button"
-                        class="action primary checkout cs-minicart__button-checkout"
-                        data-action="close"
-                        data-bind="
+            <!-- ko if: getCartParam('summary_count') -->
+            <!-- ko foreach: getRegion('subtotalContainer') --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->
+            <!-- ko foreach: getRegion('extraInfo') --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->
+            <!-- ko if: getCartParam('possible_onepage_checkout') -->
+            <div class="actions cs-minicart__actions">
+                <button
+                    id="top-cart-btn-checkout"
+                    type="button"
+                    class="action primary checkout cs-minicart__button-checkout"
+                    data-action="close"
+                    data-bind="
                             attr: {
                                 title: $t('Proceed to Checkout')
                             },
                             click: closeMinicart()
                         "
-                    >
-                        <span class="cs-minicart__button-checkout-span" translate="'Proceed to Checkout'" />
-                        <img class="inline-svg cs-minicart__button-checkout-icon" data-bind="attr: { src: require.toUrl('images/icons/minicart/icon-checkout.svg') }" alt="">
-                    </button>
-                    <div class="cs-minicart__extra-buttons" data-bind="html: getCartParam('extra_actions')"></div>
-                </div>
-            </if>
-            <ifnot args="getCartParam('summary_count')">
-                <strong class="subtitle empty cs-minicart__empty"
-                    data-bind="visible: closeSidebar()"
-                    translate="'You have no items in your shopping cart.'"
-                />
-                <if args="getCartParam('cart_empty_message')">
-                    <p class="minicart empty text cs-minicart__empty" text="getCartParam('cart_empty_message')"/>
-                    <div class="cs-minicart__actions">
-                        <a class="action viewcart cs-minicart__button-viewcart" data-bind="attr: {href: shoppingCartUrl}">
-                            <span class="cs-minicart__button-viewcart-span" translate="'View and Edit Cart'"/>
-                            <img class="inline-svg cs-minicart__button-viewcart-icon" data-bind="attr: { src: require.toUrl('images/icons/minicart/icon-edit-cart.svg') }" alt="">
-                        </a>
-                    </div>
-                </if>
-            </ifnot>
-            <div class="actions cs-minicart__actions" if="getCartParam('summary_count')">
-                <a class="viewcart cs-minicart__button-viewcart" data-bind="attr: {href: shoppingCartUrl}">
-                    <span class="cs-minicart__button-viewcart-span" translate="'View and Edit Cart'"/>
-                    <img class="inline-svg cs-minicart__button-viewcart-icon" data-bind="attr: { src: require.toUrl('images/icons/minicart/icon-edit-cart.svg') }" alt="">
+                >
+                    <span
+                        class="cs-minicart__button-checkout-span"
+                        data-bind="i18n: 'Proceed to Checkout'"
+                    ></span>
+                    <img
+                        class="inline-svg cs-minicart__button-checkout-icon"
+                        data-bind="attr: { src: require.toUrl('images/icons/minicart/icon-checkout.svg') }"
+                        alt=""
+                    />
+                </button>
+                <div
+                    class="cs-minicart__extra-buttons"
+                    data-bind="html: getCartParam('extra_actions')"
+                ></div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot: getCartParam('summary_count') -->
+            <strong
+                class="subtitle empty cs-minicart__empty"
+                data-bind="visible: closeSidebar(), i18n: 'You have no items in your shopping cart.'"
+            ></strong>
+            <!-- ko if: getCartParam('cart_empty_message') -->
+            <p
+                class="minicart empty text cs-minicart__empty"
+                data-bind="text: getCartParam('cart_empty_message')"
+            ></p>
+            <div class="cs-minicart__actions">
+                <a
+                    class="action viewcart cs-minicart__button-viewcart"
+                    data-bind="attr: {href: shoppingCartUrl}"
+                >
+                    <span
+                        class="cs-minicart__button-viewcart-span"
+                        data-bind="i18n: 'View and Edit Cart'"
+                    ></span>
+                    <img
+                        class="inline-svg cs-minicart__button-viewcart-icon"
+                        data-bind="attr: { src: require.toUrl('images/icons/minicart/icon-edit-cart.svg') }"
+                        alt=""
+                    />
                 </a>
             </div>
-            <div id="minicart-widgets" class="minicart-widgets cs-minicart__widgets">
-                <each args="getRegion('promotion')" render=""/>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: getCartParam('summary_count') -->
+            <div class="actions cs-minicart__actions">
+                <a
+                    class="viewcart cs-minicart__button-viewcart"
+                    data-bind="attr: {href: shoppingCartUrl}"
+                >
+                    <span
+                        class="cs-minicart__button-viewcart-span"
+                        data-bind="i18n: 'View and Edit Cart'"
+                    ></span>
+                    <img
+                        class="inline-svg cs-minicart__button-viewcart-icon"
+                        data-bind="attr: { src: require.toUrl('images/icons/minicart/icon-edit-cart.svg') }"
+                        alt=""
+                    />
+                </a>
+            </div>
+            <!-- /ko -->
+            <div
+                id="minicart-widgets"
+                class="minicart-widgets cs-minicart__widgets"
+            >
+                <!-- ko foreach: getRegion('promotion') --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->
             </div>
         </div>
     </div>
-    <each args="getRegion('sign-in-popup')" render=""/>
+    <!-- ko foreach: getRegion('sign-in-popup') --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->
 </div>
