@@ -1,59 +1,59 @@
 <?php
-    /** @var \Magento\Catalog\Block\Product\View\Description $block */
-    $helper = $this->helper('MageSuite\Frontend\Helper\Product');
-    $badgeValue = $helper->getSalePercentage($block->getProduct());
-    $productId = $block->getProduct()->getId();
+/** @var \Magento\Catalog\Block\Product\View\Description $block */
+/** @var \MageSuite\Discount\Helper\Discount $discountHelper */
+$discountHelper = $this->helper(\MageSuite\Discount\Helper\Discount::class);
+$badgeDiscountValue = $discountHelper->getSalePercentage($block->getProduct());
 
-    $enableUpdatingBadgeConfigurables = $block->getEnableUpdatingBadgeConfigurables();
-    $isBadgeDiscountType = ($block->getBadgeType() == 'discount') ? true : false;
-    $discountsPerProduct = $helper->getConfigurableDiscounts($block->getProduct());
-    $isProductConfigurable = $block->getProduct()->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE;
+$enableUpdatingBadgeConfigurables = $block->getEnableUpdatingBadgeConfigurables();
+$isBadgeDiscountType = ($block->getBadgeType() == 'discount') ? true : false;
+$isProductConfigurable = $block->getProduct()->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE;
 
-    $renderSaleBadgeDinamicallyConfigurables = ($isProductConfigurable && $isBadgeDiscountType && $enableUpdatingBadgeConfigurables) ? true : false;
-    ?>
+$shouldRenderSaleBadgeDinamicallyConfigurables = ($isProductConfigurable && $isBadgeDiscountType && $enableUpdatingBadgeConfigurables) ? true : false;
+?>
 
-<?php if($badgeValue): ?>
+<?php if($badgeDiscountValue): ?>
     <?php
-        $label = $block->getLabel();
-        $value = $block->getValueDisplay();
+    $label = $block->getLabel();
+    $value = $block->getValueDisplay();
 
-        $wrapperTag = $block->getWrapperTag() ?? 'li';
+    $wrapperTag = $block->getWrapperTag() ?? 'li';
 
-        $wrapperClass = $block->getWrapperCssClass();
-        $wrapperClass = $wrapperClass ? sprintf('class="%s"', $wrapperClass) : '';
+    $wrapperClass = $block->getWrapperCssClass();
+    $wrapperClass = $wrapperClass ? sprintf('class="%s"', $wrapperClass) : '';
 
-        $cssClass = $block->getCssClass();
-        $cssClass = $cssClass ? sprintf('class="%s"', $cssClass) : '';
+    $cssClass = $block->getCssClass();
+    $cssClass = $cssClass ? sprintf('class="%s"', $cssClass) : '';
 
-        $badgeTextClass = $block->getTextCssClass();
-        $badgeTextClass = $badgeTextClass ? sprintf('class="%s"', $badgeTextClass) : '';
+    $badgeTextClass = $block->getTextCssClass();
+    $badgeTextClass = $badgeTextClass ? sprintf('class="%s"', $badgeTextClass) : '';
 
-        $configurablesText = $block->getConfigurablesDefaultBadgeText();
+    $configurablesText = $block->getConfigurablesDefaultBadgeText();
 
-        $valuePrefix = $block->getValuePrefix();
-        $valueSuffix = $block->getValueSuffix();
+    $valuePrefix = $block->getValuePrefix();
+    $valueSuffix = $block->getValueSuffix();
     ?>
     <<?= $wrapperTag ?> <?= $wrapperClass ?>>
         <span <?= $cssClass ?>>
         <?php if ($label): ?>
             <span <?= $badgeTextClass ?>><?= $label ?></span>
         <?php endif; ?>
-        <?php if ($value): ?>
-            <span <?= $badgeTextClass ?>>
-                <?php if ($renderSaleBadgeDinamicallyConfigurables): ?>
+            <?php if ($value): ?>
+                <span <?= $badgeTextClass ?>>
+                <?php if ($shouldRenderSaleBadgeDinamicallyConfigurables): ?>
                     <span class="cs-page-product__badge-discount-text"><?= $configurablesText ?></span>
                 <?php endif; ?>
-                <?= $valuePrefix ?>
-                <span class="cs-page-product__badge-discount-value"><?= $badgeValue ?></span>
+                    <?= $valuePrefix ?>
+                <span class="cs-page-product__badge-discount-value"><?= $badgeDiscountValue ?></span>
                 <?= $valueSuffix ?>
             </span>
-        <?php endif; ?>
+            <?php endif; ?>
         </span>
 
     </<?= $wrapperTag ?>>
 <?php endif; ?>
 
-<?php if ($renderSaleBadgeDinamicallyConfigurables): ?>
+<?php if ($shouldRenderSaleBadgeDinamicallyConfigurables): ?>
+    <?php $discountsPerProduct = $discountHelper->getConfigurableDiscounts($block->getProduct()); ?>
     <script type="text/x-magento-init">
         {
             ".cs-buybox": {
