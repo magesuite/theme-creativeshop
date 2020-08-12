@@ -99,7 +99,7 @@ export default class BrandCarousel {
             true,
             {
                 teaserName: 'cs-brand-carousel',
-                slidesPerView: 'auto',
+                slidesPerView: 6,
                 spaceBetween: 50,
                 slideMinWidth: 50,
                 roundLengths: false,
@@ -107,6 +107,25 @@ export default class BrandCarousel {
                 calculateSlides: false,
                 loop: true,
                 loopedSlides: 6,
+                breakpoints: {
+                    380: {
+                        slidesPerView: 2,
+                        spaceBetween: 25,
+                    },
+                    480: {
+                        slidesPerView: 3,
+                        spaceBetween: 35,
+                    },
+                    640: {
+                        slidesPerView: 4,
+                    },
+                    768: {
+                        slidesPerView: 5,
+                    },
+                    960: {
+                        slidesPerView: 5,
+                    },
+                },
                 lazy: {
                     loadOnTransitionStart: true,
                 },

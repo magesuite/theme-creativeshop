@@ -26,7 +26,7 @@ import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';
 import 'components/footer';
-import 'components/grid-layout';
+// import 'components/grid-layout';
 import 'components/headline';
 import 'components/header';
 import 'components/lazyload';
@@ -62,19 +62,6 @@ import 'components/pwa-notification';
 
 import 'components/non-critical';
 
-// Content Constructor
-import 'components/brand-carousel';
-import 'components/category-links';
-import 'components/daily-deal-teaser';
-import 'components/dailydeal';
-import 'components/image-teaser';
-import 'components/image-teaser-legacy';
-import 'components/paragraph';
-import 'components/products-carousel';
-import 'components/products-grid';
-import 'components/products-list';
-import 'components/product-finder';
-import 'components/separator';
 // Checkout
 import 'pages/success';
 import 'pages/cart';
