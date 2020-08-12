@@ -2,9 +2,20 @@
 @import 'vendors/include-media';
 @import 'components/pseudoicon/mixin';
 
-$category-links-dropdown_trigger-pseudoicon-width: 1rem !default;
+$category-links-dropdown_trigger-pseudoicon-type: $pseudoicon-type !default;
+$category-links-dropdown_trigger-pseudoicon-type-animate: $pseudoicon-animate !default;
+$category-links-dropdown_trigger-pseudoicon-animation-time: $pseudoicon-animation-time !default;
 $category-links-dropdown_trigger-pseudoicon-color: $color_primary-500 !default;
+$category-links-dropdown_trigger-pseudoicon-hover-color: $category-links-dropdown_trigger-pseudoicon-color !default;
+$category-links-dropdown_trigger-pseudoicon-expanded-color: $category-links-dropdown_trigger-pseudoicon-color !default;
+$category-links-dropdown_trigger-pseudoicon-width: 1rem !default;
+$category-links-dropdown_trigger-pseudoicon-height: $pseudoicon-height !default;
 $category-links-dropdown_trigger-pseudoicon-side-offset: 0 !default;
+$category-links-dropdown_trigger-pseudoicon-left-offset: -0.6rem !default;
+$category-links-dropdown_trigger-pseudoicon-active-selector: $pseudoicon-active-selector !default;
+// Additional settings for arrows
+$category-links-dropdown_trigger-pseudoicon-arrow-default-direction: $pseudoicon-arrow-default-direction !default;
+$category-links-dropdown_trigger-pseudoicon-arrow-active-direction: $pseudoicon-arrow-active-direction !default;
 
 .#{$ns}category-links-dropdown {
     $root: &;
@@ -12,11 +23,27 @@ $category-links-dropdown_trigger-pseudoicon-side-offset: 0 !default;
 
     &__trigger {
         @include pseudoicon(
-            $width: $category-links-dropdown_trigger-pseudoicon-width,
+            $type: $category-links-dropdown_trigger-pseudoicon-type,
+            $animated: $category-links-dropdown_trigger-pseudoicon-type-animate,
+            $animation-time:
+                $category-links-dropdown_trigger-pseudoicon-animation-time,
             $color: $category-links-dropdown_trigger-pseudoicon-color,
-            $color-hover: $category-links-dropdown_trigger-pseudoicon-color,
+            $color-hover:
+                $category-links-dropdown_trigger-pseudoicon-hover-color,
+            $color-expanded:
+                $category-links-dropdown_trigger-pseudoicon-expanded-color,
+            $width: $category-links-dropdown_trigger-pseudoicon-width,
+            $height: $category-links-dropdown_trigger-pseudoicon-height,
             $position-side-offset:
-                $category-links-dropdown_trigger-pseudoicon-side-offset
+                $category-links-dropdown_trigger-pseudoicon-side-offset,
+            $arrow-default:
+                $category-links-dropdown_trigger-pseudoicon-arrow-default-direction,
+            $arrow-active:
+                $category-links-dropdown_trigger-pseudoicon-arrow-active-direction,
+            $arrow-offset:
+                $category-links-dropdown_trigger-pseudoicon-left-offset,
+            $active-selector:
+                $category-links-dropdown_trigger-pseudoicon-active-selector
         );
 
         &[aria-expanded='true'] {
