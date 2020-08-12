@@ -1,8 +1,3 @@
-import * as $ from 'jquery';
+export { default as ImageTeaserLegacy } from 'components/image-teaser-legacy/image-teaser-legacy';
 
-import ImageTeaserLegacy from 'components/image-teaser-legacy/image-teaser-legacy';
 import 'components/image-teaser-legacy/image-teaser-legacy.scss';
-
-$('.cs-image-teaser-legacy').each((i, element) => {
-    new ImageTeaserLegacy($(element));
-});

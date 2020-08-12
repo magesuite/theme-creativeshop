@@ -8,6 +8,18 @@ var config = {
         isMobile: 'js/vendor/ismobile',
         bootstrapDropdown: 'js/vendor/bootstrap-dropdown',
         bootstrapSelect: 'js/vendor/bootstrap-select',
+        ccImageTeaser: 'js/image-teaser',
+        ccImageTeaserLegacy: 'js/image-teaser-legacy',
+        ccAccordion: 'js/accordion',
+        ccSeparator: 'js/separator',
+        ccBrandCarousel: 'js/brand-carousel',
+        ccCategoryLinks: 'js/category-links',
+        ccDailyDealTeaser: 'js/daily-deal-teaser',
+        ccParagraph: 'js/paragraph',
+        ccProductsCarousel: 'js/products-carousel',
+        ccProductFinder: 'js/product-finder',
+        mgsGridLayout: 'js/grid-layout',
+        mgsDailyDeal: 'js/daily-deal',
     },
     shim: {
         isMobile: {

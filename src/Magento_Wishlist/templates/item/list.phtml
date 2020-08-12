@@ -13,9 +13,16 @@ $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->g
 if ($pageLayout != '1column') {
     $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
 }
+$popGridLayoutSettings = json_encode($block->getVar('grid_layout/pop/js') ?: '{}');
+
 ?>
 
-<div class="<?= $viewModeClass . $viewModeAdditionalClass ?>">
+<?php if($viewMode == 'grid'): ?>
+    <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
+    <script defer-ignore></script>
+<?php endif ?>
+
+<div class="<?= $viewModeClass . $viewModeAdditionalClass ?>"<?php if($viewMode == 'grid'): ?> data-mage-init='{ "mgsGridLayout": <?= $wishlistGridLayoutSettings ?> }>
     <?php $iterator = 1; ?>
     <?php if (count($block->getItems())): ?>
         <ol class="<?= $viewModeListClass ?>">

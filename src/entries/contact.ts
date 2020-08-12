@@ -26,7 +26,6 @@ import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';
 import 'components/footer';
-import 'components/grid-layout';
 import 'components/headline';
 import 'components/header';
 import 'components/lazyload';
@@ -61,8 +60,6 @@ import 'components/pwa-notification';
 
 import 'components/non-critical';
 
-// Content Constructor (used only for usps component)
-import 'components/image-teaser';
 // Contact page specific
 import 'components/dashboard';
 import 'components/captcha';

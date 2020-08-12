@@ -14,9 +14,14 @@ $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->g
 if ($pageLayout != '1column') {
     $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
 }
+$wishlistGridLayoutSettings = json_encode($block->getVar('grid_layout/wishlist/js') ?: '{}');
 
 ?>
 <?php if ($wishlistHelper->isAllow()) : ?>
+    <?php if($viewMode == 'grid'): ?>
+        <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
+        <script defer-ignore></script>
+    <?php endif ?>
     <div
         class="block block-wishlist"
         data-bind="scope: 'wishlist'"
@@ -39,7 +44,7 @@ if ($pageLayout != '1column') {
             <?php if(empty($items)): ?>
                 <p><?php /* @escapeNotVerified */ echo __('You have no items in your wish list.') ?></p>
             <?php else: ?>
-                <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>">
+                <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>"<?php if($viewMode == 'grid'): ?> data-mage-init='{ "mgsGridLayout": <?= $wishlistGridLayoutSettings ?> }>
                     <ol class="<?= $viewModeListClass ?>" id="wishlist-sidebar">
                         <?php foreach($items as $item): ?>
                             <li class="<?= $viewModeListItemClass ?>">

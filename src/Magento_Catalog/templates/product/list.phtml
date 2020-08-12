@@ -44,15 +44,21 @@
 
         $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
         $iterator = 0;
+        $popGridLayoutSettings = json_encode($block->getVar('grid_layout/pop/js') ?: '{}');
 
         if ($pageLayout != '1column') {
             $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
         }
     ?>
 
+    <?php if($viewMode == 'grid'): ?>
+        <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
+        <script defer-ignore></script>
+    <?php endif ?>
+
     <div class="products wrapper <?= $viewMode ?> products-<?= $viewMode ?> cs-page-category__products-wrapper">
 
-        <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>">
+        <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>"<?php if($viewMode == 'grid'): ?> data-mage-init='{ "mgsGridLayout": <?= $popGridLayoutSettings ?> }<?php endif ?>'>
 
             <?= $block->getChildHtml('hotspot.before.list') ?>
 
