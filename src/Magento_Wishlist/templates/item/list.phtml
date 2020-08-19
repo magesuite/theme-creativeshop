@@ -13,18 +13,17 @@ $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->g
 if ($pageLayout != '1column') {
     $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
 }
-$popGridLayoutSettings = json_encode($block->getVar('grid_layout/pop/js') ?: '{}');
-
+$wishlistGridLayoutSettings = json_encode($block->getVar('grid_layout/wishlist/js') ?: '{}');
 ?>
 
 <?php if($viewMode == 'grid'): ?>
     <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
     <script defer-ignore></script>
-<?php endif ?>
+<?php endif; ?>
 
-<div class="<?= $viewModeClass . $viewModeAdditionalClass ?>"<?php if($viewMode == 'grid'): ?> data-mage-init='{ "mgsGridLayout": <?= $wishlistGridLayoutSettings ?> }>
+<div class="<?= $viewModeClass . $viewModeAdditionalClass ?>"<?php if($viewMode == 'grid') : ?> data-mage-init='{ "mgsGridLayout": <?= $wishlistGridLayoutSettings ?> }' <?php endif; ?>>
     <?php $iterator = 1; ?>
-    <?php if (count($block->getItems())): ?>
+    <?php if (count($block->getItems())) : ?>
         <ol class="<?= $viewModeListClass ?>">
             <?php foreach ($block->getItems() as $item): ?>
                 <li class="<?= $viewModeListItemClass ?>" id="item_<?= $item->getId() ?>">
@@ -41,7 +40,7 @@ $popGridLayoutSettings = json_encode($block->getVar('grid_layout/pop/js') ?: '{}
                 <?php $iterator++ ?>
             <?php endforeach; ?>
         </ol>
-    <?php else: ?>
+    <?php else : ?>
         <div class="cs-dashboard__wishlist-line">
             <span><?php /* @escapeNotVerified */
                 echo __('This Wish List has no Items'); ?></span>
