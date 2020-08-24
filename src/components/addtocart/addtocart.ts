@@ -517,12 +517,17 @@ export default class AddToCart {
     }
 
     /**
-     * As soon as cloned badge finishes transitioning we start monitoring `scroll` event on document.
+     * As soon as cloned badge finishes transitioning we check if user scrolled to the top of the page.
+     *  If yes we hide minicart badge immediately, if no, we start monitoring `scroll` event on document.
      *  The goal is to hide minicart as soon as user starts scrolling. `this._animateMinicart` method is
      *  executed only once and then event is being utilized.
      */
     protected _bindScrollEvent(): void {
-        $(document).one('scroll', (): void => this._animateMinicart('up'));
+        if (window.scrollY === 0) {
+            this._animateMinicart('up');
+        } else {
+            $(document).one('scroll', (): void => this._animateMinicart('up'));
+        }
     }
 
     /**
