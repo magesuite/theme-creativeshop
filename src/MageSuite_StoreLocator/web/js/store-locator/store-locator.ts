@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import 'mage/translate';
 
 import mapStyles from './map-style'; // custom styles for google map
-import MarkerClusterer from './markerclusterer';  // The library creates and manages per-zoom-level clusters for large amounts of markers.
+import MarkerClusterer from './markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 import breakpoint from 'utils/breakpoint/breakpoint';
 
 /**
@@ -29,25 +29,25 @@ interface Coordinates {
  * Storelocator component provide a Google maps with markers for store subsidiaries. In the sidebar the is a list of shops that are currently visible on the map.
  * Clicking on marker displays and information popup with custom template.
  * In the sidebra there is search input.
- * 
+ *
  * Storelocator is initialized in store-locator/index.ts file. the class accepts 2 arguments - jquery dom element and optional options.
  * To learn more about possible options take a look at defaults options -  `_options` field.
- * 
+ *
  * When the StoreLocator class is initialized first a google map is initialized on DOM element with `store-locator-map` ID.
- * Then graphql to the backend in sent to fetch all stores and their details. 
+ * Then graphql to the backend in sent to fetch all stores and their details.
  * Also `_attachEvents` method is executed - this method attaches events not directly connected to the map. There is for example sidebar toggle, direction or breakpoints changes related events
  * When the request succeeds response.data.storePickupLocations.items are assigned to the class's `this.stores` array and `_initMap` method is executed.
- * 
+ *
  * `_initMap` method takes care of creating markers on the map and also tries to set user's location and zoom map to displays shop in the area.
  * It also populate left sidebar with stores boxes. When zoom is small only displays only limited number of stores and button show more - which displays all shops.
  * When zoom is bigger all shops that are currently visible on the map are displayed.
- *  * 
- * When user searches for a location in sidebar input we perform request to backend in order to get coordinates of query (method `searchButtonClickHandler`). 
+ *  *
+ * When user searches for a location in sidebar input we perform request to backend in order to get coordinates of query (method `searchButtonClickHandler`).
  * Then we pan (it means that we center the map o this point and zoom to show this area) to coordinates returned by backend and set user location to this point.
  * We also recalculate distances for all stores.
- * 
+ *
  * When a user types anything in the search form modified Magento search widget is executed (magesuite.quickSearch). To learn more see comments in store-locator/form-mini.js
- * 
+ *
  */
 
 export default class StoreLocator {
@@ -64,7 +64,8 @@ export default class StoreLocator {
     protected _numberOfStores: number;
 
     protected _options: StoreLocatorOptions = {
-        mapOptions: { // To learn more about possible google map options visit: https://developers.google.com/maps/documentation/javascript/controls
+        mapOptions: {
+            // To learn more about possible google map options visit: https://developers.google.com/maps/documentation/javascript/controls
             zoom: 7, // initial zoom set when maps is loaded. It is usually quite small to show at least greater part od area when stores are located
             center: { lat: 51, lng: 9 }, // coordinates for initial central point of the map. By default they are set to show the most of Germany area
             mapTypeControl: false, // see official google documentation
@@ -75,7 +76,8 @@ export default class StoreLocator {
         basicZoomSmallDesktop: 12,
         basicZoomMobile: 12,
         useDefaultMapStyles: false, // when set to true default google maps styles are used. If not, styles from store-locator/ map-style.js file are used
-        markerIcons: { // sizes for markers in px
+        markerIcons: {
+            // sizes for markers in px
             pin: {
                 sizes: {
                     x: 18,
@@ -101,7 +103,8 @@ export default class StoreLocator {
                 },
             },
         },
-        clusterStyles: { // styles for clusters (circles that groups stores ans show their amount of there is no space to show all markers separately)
+        clusterStyles: {
+            // styles for clusters (circles that groups stores ans show their amount of there is no space to show all markers separately)
             url: '',
             height: 22,
             width: 22,
@@ -329,7 +332,7 @@ export default class StoreLocator {
      * If not, empty the sidebar and render stores - all of only part of them based on renderAllStores parameter.
      * If only part of stores, that are currently visible on the map are shown in the left sidebar, are visible (this happens when zoom is small and we do not know user location or search query location)
      * displays Show more button and on click on it render all other stores.
-     * 
+     *
      * @param {Array} stores all stores
      * @param {renderAllStores} boolean Info if all stores should be rendered
      */
@@ -784,7 +787,7 @@ export default class StoreLocator {
     }
 
     /**
-    * Sidebar (which on mobiles is located on the top of the map) mobile behavior is quite different then desktop. Below are some method for mobile functionalities.
+     * Sidebar (which on mobiles is located on the top of the map) mobile behavior is quite different then desktop. Below are some method for mobile functionalities.
      * @param {String} id id of a store
      */
     public openMobilePopup(id) {
@@ -820,8 +823,8 @@ export default class StoreLocator {
     }
 
     /**
-    * This is an important method responsible for displaying in the sidebar only store that are currently visible on the map.
-    */
+     * This is an important method responsible for displaying in the sidebar only store that are currently visible on the map.
+     */
     public mapChangeHandler() {
         if ($(window).width() < breakpoint.laptop) {
             return;
@@ -874,14 +877,14 @@ export default class StoreLocator {
     }
 
     /**
-    * The method executes methods that take care of creating markers on the map.
-    * It also checks if browser's geolocation service is available and if so it executes `setUserPositionAndPopulateDistance` method that set user's location on the map and calculate distances to the stores.
-    * When the information about access to geolocation is known (coordinations of the user are known), in the sidebar we display list of subsidiaries.
-    * In the case when location is known we displayed stores info for markers that are visible on the map - `renderItems` method is executed with filtered stores (`getFilteredStores` method is responsible for returnig only store visible on the map).
-    * When we do not know user location stores from `stores` object are rendered limited by `limitOfShopsInitiallyDisplayed`
-    * In every case `_attachMapListeners` method is executed that bounds `mapChangeHandler` and `zoomChangeHandler`. 
-    * mapChangeHandler is important method responsible for displaying in the sidebar only store that are currently visible on the map.
-    */
+     * The method executes methods that take care of creating markers on the map.
+     * It also checks if browser's geolocation service is available and if so it executes `setUserPositionAndPopulateDistance` method that set user's location on the map and calculate distances to the stores.
+     * When the information about access to geolocation is known (coordinations of the user are known), in the sidebar we display list of subsidiaries.
+     * In the case when location is known we displayed stores info for markers that are visible on the map - `renderItems` method is executed with filtered stores (`getFilteredStores` method is responsible for returnig only store visible on the map).
+     * When we do not know user location stores from `stores` object are rendered limited by `limitOfShopsInitiallyDisplayed`
+     * In every case `_attachMapListeners` method is executed that bounds `mapChangeHandler` and `zoomChangeHandler`.
+     * mapChangeHandler is important method responsible for displaying in the sidebar only store that are currently visible on the map.
+     */
     protected _initMap(): void {
         this._setMarkerIcons();
         this._createMarkers();
@@ -993,10 +996,10 @@ export default class StoreLocator {
     }
 
     /**
-    * This method bounds `mapChangeHandler` and `zoomChangeHandler`. 
-    * mapChangeHandler is important method responsible for displaying in the sidebar only store that are currently visible on the map.
-    * zoomChangeHandler is connected with mobile behavior.
-    */
+     * This method bounds `mapChangeHandler` and `zoomChangeHandler`.
+     * mapChangeHandler is important method responsible for displaying in the sidebar only store that are currently visible on the map.
+     * zoomChangeHandler is connected with mobile behavior.
+     */
     protected _attachMapListeners() {
         google.maps.event.addListener(
             this.map,
@@ -1012,7 +1015,7 @@ export default class StoreLocator {
     }
 
     /**
-     * This method attaches events not directly connected to the map. 
+     * This method attaches events not directly connected to the map.
      * There is for example sidebar toggle, direction or breakpoints changes related events
      */
     protected _attachEvents(): void {
