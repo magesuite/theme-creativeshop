@@ -1,7 +1,6 @@
 @import 'components/container/container';
 @import 'config/variables';
 $ns: 'cs-';
-$layout_padding: $main-column_padding;
 
 body,
 html {
@@ -35,9 +34,21 @@ html {
 
 .columns .column.main {
     width: auto;
-    padding: $layout_padding;
+    padding: $main-column_padding-mobile;
     max-width: 100%;
     min-height: 10rem;
+
+    @include media('>=tablet') {
+        padding: $main-column_padding;
+    }
+}
+
+.cms-home .columns .column.main {
+    padding: $homepage-main-column_padding-mobile;
+
+    @include media('>=tablet') {
+        padding: $homepage-main-column_padding;
+    }
 }
 
 .page-layout-1column {
