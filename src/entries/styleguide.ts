@@ -55,6 +55,7 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
 import 'components/select';
+import 'components/dailydeal';
 
 import 'components/non-critical';
 
