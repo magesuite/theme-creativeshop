@@ -165,6 +165,8 @@ export default class ProductsCarousel {
             options
         );
 
+        this._fixSettingsTypes();
+
         if (this._settings.viewMode === 'list') {
             if (this._settings.isSliderMobile) {
                 this._toggleMobileTeaser();
@@ -181,6 +183,26 @@ export default class ProductsCarousel {
             }
         } else {
             this._init();
+        }
+    }
+
+    /**
+     * This method converts type of properties of settings object
+     * to ones that are accepted by Swiper.
+     * Reason: custom settings set via `etc/view.xml` are provided in JSON
+     * format therefore they are string type which breaks script execution.
+     */
+    protected _fixSettingsTypes(): void {
+        this._settings.spaceBetween = parseInt(this._settings.spaceBetween, 10);
+        this._settings.slideMinWidth = parseInt(
+            this._settings.slideMinWidth,
+            10
+        );
+        if (this._settings.hasOwnProperty('slidesPerGroup')) {
+            this._settings.slidesPerGroup = parseInt(
+                this._settings.slidesPerGroup,
+                10
+            );
         }
     }
 
