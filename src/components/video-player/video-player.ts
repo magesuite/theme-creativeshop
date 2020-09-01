@@ -1,27 +1,7 @@
 import * as $ from 'jquery';
-
-/**
- * component's video handlers interface.
- * WARNING: Modal is not supported by this component. Most likely you have it alredy.
- *          This interface defines methods needed by ImageTeaser component to make videos work.
- */
-interface IVideoModalHandlers {
-    /**
-     * Handler of modal render.
-     * Used to prepare modal if it's done via JS
-     */
-    renderModal?: (ImageTeaserLegacy: IVideoPlayer) => any;
-
-    /**
-     * Handler of modal behavior: opening.
-     */
-    openModal?: (ImageTeaserLegacy: IVideoPlayer) => any;
-
-    /**
-     * Handler of modal behavior: closing.
-     */
-    closeModal?: (ImageTeaserLegacy: IVideoPlayer) => any;
-}
+import requireAsync from 'utils/require-async';
+import viewXml from 'etc/view';
+import deepGet from 'utils/deep-get/deep-get';
 
 /**
  * component options interface.
@@ -42,6 +22,13 @@ interface IVideoPlayer {
      * @default false
      */
     useModal?: boolean;
+
+    /**
+     * Defines type of the Magento modal
+     * @type {string}
+     * @default 'popup'
+     */
+    modalType?: string;
 
     /**
      * tells if video should be played automaticaly right after opening
@@ -77,12 +64,6 @@ interface IVideoPlayer {
      * @default true
      */
     openVideoInFullscreenMobile?: string;
-
-    /**
-     * Set of methods to handle modal behavior.
-     * @type {Object}
-     */
-    modalHandlers?: IVideoModalHandlers;
 }
 
 export default class VideoPlayer {
@@ -96,23 +77,14 @@ export default class VideoPlayer {
      * @param {IVideoPlayer} options Optional settings object.
      */
     public constructor(options?: IVideoPlayer) {
-        const defaultOptions: any = {
-            scope:
-                '.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser, .cs-image-teaser, .cs-hero, cs-products-grid--with-hero',
-            useModal: true,
-            videoAutoplay: true,
-            videoPlayerId: 'yt-player',
-            videoPlayerWidth: '1200',
-            videoPlayerHeight: '675',
-            openVideoInFullscreenMobile: true,
-            modalHandlers: {
-                renderModal: (VideoPlayer: VideoPlayer) => false,
-                openModal: (VideoPlayer: VideoPlayer) => false,
-                closeModal: (VideoPlayer: VideoPlayer) => false,
-            },
-        };
+        this._options = $.extend(
+            options,
+            deepGet(
+                viewXml,
+                'vars.MageSuite_ContentConstructorFrontend.video_player'
+            )
+        );
 
-        this._options = $.extend(defaultOptions, options);
         this._$videosTriggers = $(this._options.scope).find(
             'a[href*="youtube.com"]'
         );
@@ -134,12 +106,38 @@ export default class VideoPlayer {
      * (shall be delivered from the outside component)
      */
     public renderModal(): any {
-        if (
-            this._options.modalHandlers.renderModal &&
-            typeof this._options.modalHandlers.renderModal === 'function'
-        ) {
-            this._options.modalHandlers.renderModal(this);
-        }
+        const modalOptions: any = {
+            type: this._options.modalType,
+            modalClass: 'cs-modal cs-video-player__modal',
+            responsive: true,
+            innerScroll: false,
+            buttons: [],
+            closed: (): void => {
+                this._ytPlayer.stopVideo();
+            },
+            opened: (): void => {
+                const iframe: any = document.querySelector(
+                    `#${this._options.videoPlayerId}`
+                );
+                const requestFS: any =
+                    iframe.requestFullScreen ||
+                    iframe.mozRequestFullScreen ||
+                    iframe.webkitRequestFullScreen;
+
+                if (
+                    this.shallOpenVideoInFullscreen() &&
+                    typeof requestFS !== 'undefined'
+                ) {
+                    requestFS.bind(iframe)();
+                }
+            },
+        };
+
+        requireAsync(['jquery', 'Magento_Ui/js/modal/modal']).then(
+            ([$, modal]) => {
+                this._ytModal = modal(modalOptions, $('#yt-modal'));
+            }
+        );
     }
 
     /**
@@ -147,12 +145,7 @@ export default class VideoPlayer {
      * (shall be delivered from the outside component)
      */
     public openModal(): any {
-        if (
-            this._options.modalHandlers.openModal &&
-            typeof this._options.modalHandlers.openModal === 'function'
-        ) {
-            this._options.modalHandlers.openModal(this);
-        }
+        this._ytModal.openModal();
     }
 
     /**
@@ -160,12 +153,7 @@ export default class VideoPlayer {
      * (shall be delivered from the outside component)
      */
     public closeModal(): any {
-        if (
-            this._options.modalHandlers.closeModal &&
-            typeof this._options.modalHandlers.closeModal === 'function'
-        ) {
-            this._options.modalHandlers.closeModal(this);
-        }
+        this._ytModal.closeModal();
     }
 
     /**

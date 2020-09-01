@@ -78,7 +78,6 @@ import 'components/table';
 import 'components/toolbar';
 import 'components/captcha';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'components/video-player';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';
