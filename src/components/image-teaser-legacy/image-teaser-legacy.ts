@@ -2,29 +2,7 @@ import * as $ from 'jquery';
 
 import breakpoint from 'utils/breakpoint/breakpoint';
 import csTeaser from 'components/teaser/teaser';
-
-/**
- * component's video handlers interface.
- * WARNING: Modal is not supported by this component. Most likely you have it alredy.
- *          This interface defines methods needed by ImageTeaserLegacy component to make videos work.
- */
-interface ImageTeaserLegacyModalHandlers {
-    /**
-     * Handler of modal render.
-     * Used to prepare modal if it's done via JS
-     */
-    renderModal?: (ImageTeaserLegacy: ImageTeaserLegacy) => any;
-
-    /**
-     * Handler of modal behavior: opening.
-     */
-    openModal?: (ImageTeaserLegacy: ImageTeaserLegacy) => any;
-
-    /**
-     * Handler of modal behavior: closing.
-     */
-    closeModal?: (ImageTeaserLegacy: ImageTeaserLegacy) => any;
-}
+import VideoPlayer from 'components/video-player/video-player';
 
 /**
  * component options interface.
@@ -36,13 +14,6 @@ interface ImageTeaserLegacyOptions {
      * @type {string}
      */
     teaserName?: string;
-
-    /**
-     * Classname of video modal
-     * Default: 'cs-image-teaser-legacy__modal'
-     * @type {string}
-     */
-    videoModalClass?: string;
 
     /**
      * Space between slides
@@ -102,56 +73,6 @@ interface ImageTeaserLegacyOptions {
     allowVideos?: boolean;
 
     /**
-     * tells if video should be played automaticaly right after opening
-     * @type {boolean}
-     * @default true
-     */
-    videoAutoplay?: boolean;
-
-    /**
-     * Video Modal selector
-     * @type {string}
-     * @default '#yt-modal'
-     */
-    videoModalSelector?: string;
-
-    /**
-     * Html ID of Video Player
-     * @type {string}
-     * @default 'yt-player'
-     */
-    videoPlayerId?: string;
-
-    /**
-     * Html ID of Video Player for mobile devices
-     * It is separate element because it shall not be in modal
-     * @type {string}
-     * @default 'yt-player-mobile'
-     */
-    videoMobilePlayerId?: string;
-
-    /**
-     * Width of the video player (in px, as string)
-     * @type {string}
-     * @default '1200'
-     */
-    videoPlayerWidth?: string;
-
-    /**
-     * Height of the video player (in px, as string)
-     * @type {string}
-     * @default '675'
-     */
-    videoPlayerHeight?: string;
-
-    /**
-     * Tells if video should be opened in fullscreen mode for mobile devices AND all other touch devices
-     * @type {boolean}
-     * @default true
-     */
-    openVideoInFullscreenMobile?: string;
-
-    /**
      * Defines breakpoint, where carousel should be destroyed and teaser shall display as standard image teaser
      * Default: breakpoint.tablet
      * @type {number}
@@ -166,17 +87,10 @@ interface ImageTeaserLegacyOptions {
      * @type {Object}
      */
     breakpoints?: any;
-
-    /**
-     * Set of methods to handle modal behavior.
-     * @type {Object}
-     */
-    modalHandlers?: ImageTeaserLegacyModalHandlers;
 }
 
 export default class ImageTeaserLegacy {
-    public _ytModal: any;
-    public _ytPlayer: any;
+    public _videoPlayer: any;
     /**
      * Holds all settings for the image-teaser-legacy, which are be passed to csTeaser
      */
@@ -206,17 +120,6 @@ export default class ImageTeaserLegacy {
             teaserName: 'cs-image-teaser-legacy',
             allowVideos: true,
             videoModalClass: 'cs-image-teaser-legacy__modal',
-            videoAutoplay: true,
-            videoModalSelector: '#yt-modal',
-            videoPlayerId: 'yt-player',
-            videoPlayerWidth: '1200',
-            videoPlayerHeight: '675',
-            openVideoInFullscreenMobile: true,
-            modalHandlers: {
-                renderModal: (ImageTeaserLegacy: ImageTeaserLegacy) => false,
-                openModal: (ImageTeaserLegacy: ImageTeaserLegacy) => false,
-                closeModal: (ImageTeaserLegacy: ImageTeaserLegacy) => false,
-            },
             carouselBreakpoint: breakpoint.tablet,
         };
 
@@ -299,71 +202,12 @@ export default class ImageTeaserLegacy {
         }
 
         if (this._settings.allowVideos) {
-            this._$videosTriggers = $(
-                `.${this._settings.teaserName} a[href*="youtube.com"]`
-            );
-            if (this._$videosTriggers.length) {
-                if (!this._isYTapiLoaded()) {
-                    this._loadYTapi();
-                    this.renderModal();
-                }
-            }
+            this._videoPlayer = new VideoPlayer();
         }
     }
 
     public getInstance(): any {
         return this._teaserInstance;
-    }
-
-    /**
-     * Setups modal component and initialize it
-     * (shall be delivered from the outside component)
-     */
-    public renderModal(): any {
-        if (
-            this._settings.modalHandlers.renderModal &&
-            typeof this._settings.modalHandlers.renderModal === 'function'
-        ) {
-            this._settings.modalHandlers.renderModal(this);
-        }
-    }
-
-    /**
-     * Event handler for opening modal
-     * (shall be delivered from the outside component)
-     */
-    public openModal(): any {
-        if (
-            this._settings.modalHandlers.openModal &&
-            typeof this._settings.modalHandlers.openModal === 'function'
-        ) {
-            this._settings.modalHandlers.openModal(this);
-        }
-    }
-
-    /**
-     * Event handler for closing modal
-     * (shall be delivered from the outside component)
-     */
-    public closeModal(): any {
-        if (
-            this._settings.modalHandlers.closeModal &&
-            typeof this._settings.modalHandlers.closeModal === 'function'
-        ) {
-            this._settings.modalHandlers.closeModal(this);
-        }
-    }
-
-    /**
-     * Tells if video shall be opened in fullscreen mode based on browser information
-     * It returns true for all TOUCH devices, not only Smartphones and Tablets
-     * @return Boolean
-     */
-    public shallOpenVideoInFullscreen(): boolean {
-        return (
-            this._settings.openVideoInFullscreenMobile &&
-            ('ontouchstart' in window || navigator.msMaxTouchPoints > 0)
-        );
     }
 
     protected _getDataAttrOverrideSettings(): any {
@@ -443,7 +287,7 @@ export default class ImageTeaserLegacy {
             swiperInstance.navigation.nextEl &&
             this._lazyLoadedImages.length >= swiperInstance.params.slidesPerView
         ) {
-            let throttler: number;
+            let throttler: ReturnType<typeof setTimeout>;
             let $tallestImage: any;
 
             const setNavButtonsPosition: any = () => {
@@ -495,79 +339,5 @@ export default class ImageTeaserLegacy {
                 $(window).on('resize', resizeListener);
             }
         }
-    }
-
-    /**
-     * Setups click events for videos (if url matches youtube link)
-     */
-    protected _setVideoEvents(): void {
-        const _obj: any = this;
-
-        this._$videosTriggers.on('click', function(e: Event): void {
-            e.preventDefault();
-            const videoId: string = _obj._extractYTvideoId(
-                $(this).attr('href')
-            );
-
-            _obj._runYTvideo(videoId);
-        });
-    }
-
-    /**
-     * Stips url to extract ID of the video
-     */
-    protected _extractYTvideoId(YTvideoUrl: string): string {
-        const url: any = YTvideoUrl.split(
-            /(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/
-        );
-        return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
-    }
-
-    /**
-     * Checks if API script has been already added to the DOM
-     */
-    protected _isYTapiLoaded(): boolean {
-        return (
-            $('head').find('script[src*="https://www.youtube.com/iframe_api"]')
-                .length > 0
-        );
-    }
-
-    /**
-     * Loads youtube's Iframe API and then initializes player object
-     * onYouTubeIframeAPIReady() has to be accessible globaly
-     */
-    protected _loadYTapi(): void {
-        const _obj: any = this;
-        const onYTplayerReady: any = this._setVideoEvents.bind(this);
-
-        const tag: any = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag: any = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        function onYouTubeIframeAPIReady(): void {
-            _obj._ytPlayer = new YT.Player(_obj._settings.videoPlayerId, {
-                width: _obj._settings.videoPlayerWidth,
-                height: _obj._settings.videoPlayerHeight,
-                playerVars: {
-                    autoplay: 1,
-                    controls: 1,
-                },
-                events: {
-                    onReady: onYTplayerReady,
-                },
-            });
-        }
-
-        window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady.bind(this);
-    }
-
-    /**
-     * Loads video with given ID into player and opens modal
-     */
-    protected _runYTvideo(videoId: string): void {
-        this._ytPlayer.loadVideoById(videoId);
-        this.openModal();
     }
 }
