@@ -1,0 +1,91 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'components/field/mixin';
+@import 'components/3step-checkout/variables';
+
+$tsc-checkout-discount-title_color: $tsc-checkout-step-title_color !default;
+$tsc-checkout-discount-title_font-weight: $tsc-checkout-step-title_font-weight !default;
+
+$tsc-checkout-discount-content_bg: $color_background-500 !default;
+
+.tsc-checkout-index {
+    // Giftcard in Summary
+    .form-giftcard-account {
+        .actions-toolbar {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+
+            .secondary {
+                margin-left: $tsc-checkout-spacing;
+
+                button {
+                    @include button(
+                        $type: $tsc-checkout-secondary-button_type,
+                        $icon_pos: $tsc-checkout-secondary-button_icon-pos
+                    );
+
+                    span {
+                        @include button_span(
+                            $type: $tsc-checkout-secondary-button_type,
+                            $icon_pos: $tsc-checkout-secondary-button_icon-pos
+                        );
+                    }
+                }
+            }
+
+            .primary,
+            .secondary {
+                flex-basis: 50%;
+
+                .ie11 & {
+                    width: 50%;
+                }
+            }
+        }
+    }
+
+    // Discount in Payment
+    .discount-code {
+        @include media('>=tablet') {
+            padding: 1.5rem 0;
+        }
+
+        .form-discount {
+            .label {
+                font-weight: $tsc-checkout-discount-title_font-weight;
+                color: $tsc-checkout-discount-title_color;
+            }
+
+            .field {
+                .control {
+                    &:before {
+                        display: none;
+                    }
+
+                    .input-text {
+                        border-width: 1px;
+                        border-radius: $field_input-border-radius;
+                    }
+                }
+            }
+
+            .actions-toolbar {
+                button {
+                    padding: $button_padding;
+                    font-size: $button_font-size;
+                    border-radius: $button_border-radius;
+                    margin-top: $tsc-checkout-discount-button_margin-top;
+                }
+            }
+        }
+
+        .payment-option-content {
+            @include media('>=tablet') {
+                background-color: $tsc-checkout-discount-content_bg;
+            }
+        }
+    }
+}
