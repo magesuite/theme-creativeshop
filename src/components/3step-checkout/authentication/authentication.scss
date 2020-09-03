@@ -1,0 +1,131 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'components/field/mixin';
+@import 'components/3step-checkout/variables';
+@import 'components/3step-checkout/mixins/reset-success';
+@import 'components/3step-checkout/mixins/reset-button';
+@import 'components/3step-checkout/mixins/reset-button-radius';
+@import 'components/3step-checkout/mixins/higher-button';
+
+$tsc-checkout-authentication_top: 6.6rem !default;
+$tsc-checkout-hide-password-hint: true !default;
+
+.tsc-checkout-index {
+    .form-login,
+    form[data-role='login'] {
+        .field {
+            &:first-child {
+                margin-top: 1rem;
+            }
+        }
+
+        .field-password {
+            margin-bottom: 0;
+
+            // for show password icon
+            .control {
+                position: relative;
+            }
+        }
+
+        .tsc-email-autocomplete {
+            margin-bottom: 1rem;
+        }
+
+        .tsc-create-account {
+            &._success {
+                @include reset-success();
+            }
+
+            .label {
+                margin-bottom: 0;
+            }
+        }
+
+        .actions-toolbar {
+            [data-action='checkout-method-login'] {
+                width: 100%;
+            }
+
+            > .secondary {
+                background: none !important; /* stylelint-disable-line declaration-no-important */
+                padding: 1rem 0 !important; /* stylelint-disable-line declaration-no-important */
+                font-size: $field_label-font-size;
+
+                // Password hints
+                .password-strength-label-container,
+                .tsc-password-hint {
+                    @if ($tsc-checkout-hide-password-hint) {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .tsc-authentication-link-container {
+        .tsc-action-auth-toggle {
+            @include reset-button($color_background-200, $color_text-600, 400);
+        }
+    }
+
+    .tsc-authentication-wrapper {
+        .block-authentication {
+            top: $tsc-checkout-authentication_top;
+
+            @include media('>=tablet') {
+                top: auto;
+            }
+
+            .block-customer-login {
+                .block-title {
+                    border-bottom: 1px solid $color_primary-500;
+                }
+            }
+
+            .actions-toolbar {
+                > .primary {
+                    button {
+                        &.tsc-action-back {
+                            @include reset-button();
+                            text-transform: none;
+                        }
+
+                        &.action-login {
+                            @include reset-button-radius();
+                            @include higher-button();
+                        }
+                    }
+                }
+            }
+        }
+
+        .tsc-authenticate-title {
+            @include media('>=tablet') {
+                margin-bottom: 1rem;
+            }
+
+            h2 {
+                @include media('>=tablet') {
+                    line-height: 27px;
+                    color: $tsc-checkout-step-title_color;
+                }
+            }
+
+            .header-info {
+                .header-info-tooltip {
+                    border-top: 2px solid $color_primary-500;
+                }
+
+                p {
+                    a {
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
