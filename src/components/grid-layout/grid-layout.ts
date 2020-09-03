@@ -60,7 +60,7 @@ export default class GridLayout {
     public currentRowsCount: number;
     private $wrapper: JQuery;
     private $grid: JQuery;
-    private $productsGrid: JQuery;
+    private $items: JQuery;
     private $bricks: JQuery;
     private settings?: IGridLayoutSettings;
     private columnsCfg: any;
@@ -88,16 +88,16 @@ export default class GridLayout {
         this.$wrapper = $wrapper || $(`.${this.settings.componentClass}`);
         this.$grid = this.$wrapper.find(`.${this.settings.gridClass}`);
         this.$bricks = this.$grid.children();
+        this.$items = this.$grid.children('.cs-products-grid__item');
         this.teasers = [];
         this.isCssGrid = this._getIsCssGridSupported();
-        this.$productsGrid = this.$wrapper.parent('.cs-products-grid');
-        this.isProductsGrid = this.$productsGrid.length > 0;
+        this.isProductsGrid = this.$wrapper.hasClass('cs-products-grid');
 
         this.productsGridRowsLimits = this.isProductsGrid
             ? {
-                  mobile: this.$productsGrid.data('rows-mobile'),
-                  tablet: this.$productsGrid.data('rows-tablet'),
-                  desktop: this.$productsGrid.data('rows-desktop'),
+                  mobile: this.$wrapper.data('rows-mobile'),
+                  tablet: this.$wrapper.data('rows-tablet'),
+                  desktop: this.$wrapper.data('rows-desktop'),
               }
             : {};
 
@@ -640,7 +640,7 @@ export default class GridLayout {
             this._showProductsGrid('tablet');
         }
 
-        this.$productsGrid.show();
+        this.$wrapper.show();
     }
 
     /**
@@ -649,13 +649,17 @@ export default class GridLayout {
      * @param  breakpoint {string} - 'mobile' / 'tablet' / 'desktop' to get info about rows limit set
      */
     protected _showProductsGrid(breakpoint: string): void {
-        let itemsToShow: number =
+        const availableBrickSlots: number =
             this.currentColsInRow * this.productsGridRowsLimits[breakpoint];
+        let itemsToShow: number = availableBrickSlots;
 
         const teasers: any = this._getTeaserItems();
 
         const teaserMobile: any = this.teasersCfg[0].mobile;
-        const teaserRowPosition: any = this.teasersCfg[0].gridPosition.y;
+        const teaserRowPosition: any = parseInt(
+            this.teasersCfg[0].gridPosition.y,
+            10
+        );
         const teaserSize: any = {
             x: parseInt(this.teasersCfg[0].size.x, 10),
             y: parseInt(this.teasersCfg[0].size.y, 10),
@@ -668,10 +672,14 @@ export default class GridLayout {
             (teaserMobile && !wideTeaser)
         ) {
             itemsToShow -=
-                teasers.x2.length + (teasers.x4.length * 4 - teasers.x4.length);
+                teasers.x1.length +
+                teasers.x2.length * 2 +
+                teasers.x4.length * 4;
         } else {
             itemsToShow +=
-                teasers.x1.length + teasers.x2.length + teasers.x4.length;
+                teasers.x1.length +
+                teasers.x2.length * 2 +
+                teasers.x4.length * 4;
         }
 
         // if teaser height is higher than rows to show - decrease by teaser size minus X-bricks-taking size
@@ -692,14 +700,23 @@ export default class GridLayout {
 
         if (itemsToShow < 1) {
             itemsToShow = 1;
-        } else if (itemsToShow > this.$bricks.length) {
-            itemsToShow = this.$bricks.length;
+        } else if (
+            itemsToShow > this.$bricks.length ||
+            itemsToShow > availableBrickSlots
+        ) {
+            itemsToShow = Math.min(
+                itemsToShow,
+                Math.min(availableBrickSlots, this.$bricks.length)
+            );
         }
+
+        const lastItemToShow =
+            this.$items.length < itemsToShow ? this.$items.length : itemsToShow;
 
         this.$grid.children().hide();
         this.$grid
-            .children()
-            .eq(itemsToShow - 1)
+            .children('.cs-products-grid__item')
+            .eq(lastItemToShow - 1)
             .prevAll()
             .addBack()
             .show();
