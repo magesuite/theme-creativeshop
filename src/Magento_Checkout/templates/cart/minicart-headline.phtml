@@ -1,10 +1,11 @@
 <?php
 // @codingStandardsIgnoreFile
+$isOffcanvas = $block->getVar('minicart_offcanvas/enabled', 'Magento_Checkout');
 $isCarouselEnabled = $block->getVar('minicart_offcanvas/products_carousel/enabled', 'Magento_Checkout');
 $type = $block->getVar('minicart_offcanvas/products_carousel/relation_type', 'Magento_Checkout');
 ?>
 
-<?php if ($isCarouselEnabled): ?>
+<?php if ($isOffcanvas && $isCarouselEnabled): ?>
     <?= $block->getLayout()->createBlock(
         '\Creativestyle\ContentConstructorFrontendExtension\Block\Component', 'offcanvas-carousels-headline-'.$type, [
             'data' => [
