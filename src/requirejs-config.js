@@ -85,6 +85,9 @@ var config = {
             'Magento_Swatches/js/swatch-renderer': {
                 'Magento_Swatches/js/swatch-renderer-ext': true,
             },
+            'Magento_Catalog/js/validate-product': {
+                'Magento_Catalog/js/swatches-validation-ext': true,
+            },
             'MageSuite_ServerSideSwatches/js/swatch-renderer': {
                 'Magento_Swatches/js/swatch-renderer-ext': true,
             },
