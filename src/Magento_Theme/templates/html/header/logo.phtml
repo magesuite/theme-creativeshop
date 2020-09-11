@@ -3,6 +3,9 @@
 /**
  * @var \Magento\Theme\Block\Html\Header\Logo $block
  */
+    $mobileLogoPath = $block->getVar('header/mobile_logo_path', 'Magento_Theme');
+    $mobileLogoWidth = $block->getVar('header/mobile_logo_width', 'Magento_Theme');
+    $mobileLogoHeight = $block->getVar('header/mobile_logo_height', 'Magento_Theme');
 ?>
 <?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
 <div class="cs-header__logo">
@@ -11,12 +14,20 @@
     <?php else: ?>
         <a class="logo cs-logo cs-logo--link" href="<?= $block->getUrl(''); ?>" title="<?= /* @escapeNotVerified */ $storeName ?>">
     <?php endif; ?>
-            <img class="cs-logo__image"
-                src="<?= /* @escapeNotVerified */ $block->getLogoSrc() ?>"
+        <?php if ($mobileLogoPath): ?>
+            <img class="cs-logo__image<?php if ($mobileLogoPath): ?> cs-logo__image--mobile<?php endif; ?>"
+                src="<?= $block->getViewFileUrl($mobileLogoPath) ?>"
                 alt="<?= /* @escapeNotVerified */ $block->getLogoAlt() ?>"
-                <?= $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
-                <?= $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+                <?= $mobileLogoWidth ? 'width="' . $mobileLogoWidth . '"' : '' ?>
+                <?= $mobileLogoHeight ? 'height="' . $mobileLogoHeight . '"' : '' ?>
             />
+        <?php endif; ?>
+        <img class="cs-logo__image<?php if ($mobileLogoPath): ?> cs-logo__image--desktop<?php endif; ?>"
+            src="<?= /* @escapeNotVerified */ $block->getLogoSrc() ?>"
+            alt="<?= /* @escapeNotVerified */ $block->getLogoAlt() ?>"
+            <?= $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
+            <?= $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+        />
     <?php if (!$block->isHomePage()): ?>
         </a>
     <?php else: ?>

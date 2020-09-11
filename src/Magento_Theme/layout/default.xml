@@ -80,6 +80,17 @@
         </referenceContainer>
         <referenceContainer name="header.container" htmlClass="cs-header" />
         <referenceContainer name="header-wrapper" htmlClass="cs-header__content">
+            <block class="Magento\Theme\Block\Html\Header\Logo" name="back-button" template="Magento_Theme::html/header/back-button.phtml" before="logo">
+                <block class="MageSuite\ThemeHelpers\Block\Icon" name="back.button.icon">
+                    <arguments>
+                        <argument name="icon_url" xsi:type="string">images/icons/icon_arrow-left.svg</argument>
+                        <argument name="css_class" xsi:type="string">cs-header__back-button-icon</argument>
+                        <argument name="alt_text" xsi:type="string" translate="true"></argument>
+                        <argument name="lazy_loaded" xsi:type="boolean">true</argument>
+                        <argument name="inlined" xsi:type="boolean">true</argument>
+                    </arguments>
+                </block>
+            </block>
             <block name="header.offcanvas-toggle" template="Magento_Theme::html/offcanvas-toggle.phtml" before="-">
                 <arguments>
                     <argument name="menu_text" xsi:type="string"></argument>
@@ -103,7 +114,7 @@
         <referenceContainer name="page.top">
             <block name="offcanvas" template="Magento_Theme::html/offcanvas.phtml" before="-">
                 <arguments>
-                    <argument name="additional_css_classes" xsi:type="string">cs-offcanvas--navigation cs-offcanvas--side_left</argument>
+                    <argument name="additional_css_classes" xsi:type="string">cs-offcanvas--navigation</argument>
                     <argument name="additional_css_classes_drawer" xsi:type="string">cs-offcanvas__drawer--navigation</argument>
                 </arguments>
                 <block class="MageSuite\ThemeHelpers\Block\Icon" name="offcanvas.spinner">

@@ -1,11 +1,13 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/container/mixin';
+@import 'utils/deep-get/deep-get.scss';
 
 $header_font-size: 1rem !default;
 $header_border-bottom: 1px solid $color_border-200 !default;
 
 $header_is-sticky-on-mobile: true !default;
+
 $header_background: $color_background-200 !default;
 
 // Horizontal align of the searchbox if it's displayed as a layer - `$global_header-searchbox-as-layer-breakpoint`
@@ -21,7 +23,11 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
     font-size: $header_font-size;
 
     @if ($header_is-sticky-on-mobile) {
-        height: $global_header-height-mobile;
+        @if ($global_header-is-bottom-on-mobile) {
+            height: 0;
+        } @else {
+            height: $global_header-height-mobile;
+        }
 
         @include media('>=tablet') {
             height: $global_header-height-tablet;
@@ -47,29 +53,44 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
         @if ($header_is-sticky-on-mobile) {
             @include media('<laptop') {
                 position: fixed;
-                top: 0;
                 left: 0;
                 right: 0;
+                flex-wrap: nowrap;
             }
+        }
+
+        @if ($global_header-is-bottom-on-mobile) {
+            @include media('<tablet') {
+                bottom: 0;
+            }
+        } @else {
+            top: 0;
         }
 
         @include media('>=tablet') {
             height: $global_header-height-tablet;
         }
 
-        @include media('>=laptopLg') {
-            height: $global_header-height-desktop;
-        }
-
         @include media('>=laptop') {
             border-bottom: $header_border-bottom;
-            flex-wrap: nowrap;
+        }
+
+        @include media('>=laptopLg') {
+            height: $global_header-height-desktop;
         }
     }
 
     &__offcanvas-toggle {
         height: 100%;
         flex: 0 1 4rem;
+
+        @if ($global_header-mobile-menu-is-right) {
+            order: 4;
+
+            @include media('>=tablet') {
+                order: initial;
+            }
+        }
 
         @include media('>=laptop') {
             display: none;
@@ -78,16 +99,18 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
 
     &__logo {
         display: flex;
-        flex: 1 1 0%;
+        flex: 1 1;
         margin-bottom: 0;
         height: 100%;
+        padding: 0.7rem 0 0.7rem 0.7rem;
 
-        @include media('>=phoneLg') {
-            flex: 0 1 auto;
+        @include media('>=phone') {
+            padding: 0.7rem 0 0.7rem 1.5rem;
         }
 
-        @include media('<tablet') {
-            padding: 0.7rem 0 0.7rem 0.7rem;
+        @include media('>=tablet') {
+            flex: 0 1 auto;
+            padding: 0;
         }
 
         .page-print & {
@@ -110,10 +133,20 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
         background-color: $header_background;
         padding: 1rem;
         position: absolute;
-        top: 100%;
         left: 0;
         right: 0;
         z-index: 300;
+
+        @if ($global_header-is-bottom-on-mobile) {
+            bottom: $global_header-height-mobile;
+
+            @include media('>=tablet') {
+                bottom: auto;
+                top: 100%;
+            }
+        } @else {
+            top: 100%;
+        }
 
         @if ($global_header-searchbox-as-layer-breakpoint) {
             @include media($global_header-searchbox-as-layer-breakpoint) {
@@ -203,6 +236,33 @@ $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
                     flex: 0 1 25%;
                 }
             }
+        }
+    }
+
+    &__back-button {
+        border-right: 1px solid $color_border-500;
+        height: 100%;
+        display: flex;
+        padding: 0 1rem;
+        align-items: center;
+        justify-content: center;
+        min-width: 4rem;
+
+        @include media('>=phone') {
+            padding: 0 1.5rem;
+        }
+
+        @include media('>=tablet') {
+            display: none;
+        }
+    }
+
+    &__back-button-icon {
+        fill: $color_border-700;
+        height: 2.5rem;
+
+        @include media('<phone') {
+            height: 2rem;
         }
     }
 }
