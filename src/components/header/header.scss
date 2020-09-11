@@ -6,8 +6,6 @@
 $header_font-size: 1rem !default;
 $header_border-bottom: 1px solid $color_border-200 !default;
 
-$header_is-sticky-on-mobile: true !default;
-
 $header_background: $color_background-200 !default;
 
 // Horizontal align of the searchbox if it's displayed as a layer - `$global_header-searchbox-as-layer-breakpoint`
@@ -16,6 +14,15 @@ $header_searchbox-justify-content: center !default;
 // If you want to cover 'search' item in header by searchbox, provide proper negative margin based on your design
 // It works only if '$global_header-searchbox-as-layer-breakpoint' has valid breakpoint and `$header_searchbox-justify-content` = flex-end
 $header_searchbox-margin-to-cover-search-item: -6.8rem !default;
+
+// Change in etc/view.xml if necessary
+$header_is-sticky-on-mobile: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    header,
+    mobile-is-sticky
+) !default;
 
 .#{$ns}header {
     $root: &;

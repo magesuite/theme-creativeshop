@@ -100,24 +100,38 @@ $price_color: $color_cerulean-blue !default;
 $price_special-color: $color_crimson !default;
 $price_old-color: $color_dove-gray !default;
 
-// The default position of header is on the bottom for mobile, but top position is also supported
-$global_header-is-bottom-on-mobile: true !default;
-// The default position burger and menu offcanvas on mobile is on the right, but left position (set the variable below to false) ia also supported
-$global_header-mobile-menu-is-right: true !default;
+// Below are variables for header layout, used also by connected components like offcanvas.
+// Please change them in etc/view.xml file if necessary because these variables can also affect templates.
+$global_header-is-bottom-on-mobile: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    header,
+    mobile-is-bottom
+) !default;
+
+$global_header-mobile-menu-is-right: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    header,
+    mobile-menu-is-right
+) !default;
+
+// Set up behavior of 'search' trigger item (search/magnifier icon) on header user nav. Possible options:
+// - breakpoint - search icon will be visible upto breakpoint, above breakpoint search icon will be hidden
+// - true - search icon will be always hidden
+// - false - search icon will be always visible
+$global_header-hide-search-item-trigger-breakpoint: '>=laptop' !default;
+
+// Set up from which breakpoint search input will be visible as a normal header element (layer), by default between logo & user nav.
+// Below defined breakpoint search input is located as a dropdown below header. After the search icon is clicked search input is toggled.
+$global_header-searchbox-as-layer-breakpoint: '>=laptop' !default;
 
 // Below settings are global because we used it in different components related with header like offcanvas etc.
 $global_header-height-mobile: 5rem !default;
 $global_header-height-tablet: 8.3rem !default;
 $global_header-height-desktop: 11rem !default;
-
-// Set up behaviour of 'search' trigger item on header user nav. Possible options:
-// - breakpoint - item will be visible upto breakpoint, above breakpoint will be hidden
-// - true - item will be hidden always
-// - false - item will be visible always
-$global_header-hide-search-item-trigger-breakpoint: '>=laptop' !default;
-
-// Set up from which breakpoint, searchbox will be visible as a layer on header (between logo & header user nav in default), instead of sticky it below header
-$global_header-searchbox-as-layer-breakpoint: '>=laptop' !default;
 
 // Texts on images (slides on image-teaser, hero carousel, hero on grid etc.) variables
 $texts-on-image_headline-font-weight: 600 !default;
