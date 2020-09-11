@@ -4,7 +4,7 @@
 
 $page-category_border-base: 1px solid $color_border-200 !default;
 
-$page-category_top-padding-mobile: 1.5rem !default;
+$page-category_top-padding-mobile: 1.5rem !default; // applied only if header is on top
 $page-category_top-padding-tablet-up: 2 * $page-category_top-padding-mobile !default;
 $page-category_bottom-padding-mobile: 1.5rem !default;
 $page-category_bottom-padding-tablet-up: 2 *
@@ -17,8 +17,11 @@ $page-category_toolbar-wrapper--bottom-border-top: $page-category_border-base !d
 $page-category_products-wrapper-margin: 0 !default;
 
 .#{$ns}page-category {
-    padding-top: $page-category_top-padding-mobile;
     padding-bottom: $page-category_bottom-padding-mobile;
+
+    @if ($global_header-is-bottom-on-mobile == false) {
+        padding-top: $page-category_bottom-padding-mobile;
+    }
 
     @include media('>=tablet') {
         padding-top: $page-category_top-padding-tablet-up;
