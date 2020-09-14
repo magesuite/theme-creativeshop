@@ -38,6 +38,14 @@ $cookie-message_button-pos-align: flex-start !default;
     justify-content: center;
     align-items: center;
 
+    @if ($global_header-is-bottom-on-mobile) {
+        bottom: $global_header-height-mobile;
+
+        @include media('>=tablet') {
+            bottom: 0;
+        }
+    }
+
     &--shown {
         z-index: 99;
         transform: translate3d(0, 0, 0);
