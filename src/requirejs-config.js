@@ -107,6 +107,9 @@ var config = {
             'Magento_Checkout/js/view/summary/item/details': {
                 'Magento_Checkout/js/view/summary/item/details-ext': true,
             },
+            'Magento_Checkout/js/model/payment-service': {
+                'Magento_Checkout/js/model/payment-service-ext': true,
+            },
         },
     },
     map: {
