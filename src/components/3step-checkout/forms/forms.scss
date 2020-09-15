@@ -1,0 +1,275 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/field/mixin';
+@import 'components/button/mixin';
+@import 'components/messages/messages';
+@import 'components/3step-checkout/variables';
+@import 'utils/visually-hidden';
+
+$tsc-checkout-ua-note_bg: $color_background-200 !default;
+$tsc-checkout-ua-note_bg-desktop: $color_background-500 !default;
+
+.tsc-checkout-index {
+    // MageSuite button styling
+    button {
+        @include button(
+            $type: $tsc-checkout-default-button_type,
+            $icon_pos: $tsc-checkout-default-button_icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $tsc-checkout-default-button_type,
+                $icon_pos: $tsc-checkout-default-button_icon-pos
+            );
+        }
+    }
+
+    // MageSuite input styling
+    // removed select field styling as selectize.js is used
+    /* stylelint-disable no-descending-specificity */
+    .field {
+        @include field();
+        margin-bottom: 1rem;
+
+        .control {
+            @include field-control();
+
+            > textarea {
+                @include field-input();
+            }
+        }
+
+        .label {
+            @include field-label();
+            margin-bottom: 0.5rem;
+        }
+
+        &.required,
+        &._required {
+            > .label {
+                @include field-label-required();
+            }
+        }
+
+        .input-text {
+            @include field-input();
+
+            &.mage-error {
+                @include field-input-error();
+            }
+        }
+
+        select.select {
+            @include field-select();
+        }
+
+        input[type='checkbox'],
+        .checkbox {
+            @include field-checkbox();
+
+            &.mage-error {
+                @include field-input-error();
+            }
+
+            & + .label {
+                @include field-checkbox-label();
+                width: auto;
+            }
+        }
+
+        .radio {
+            @include field-radio();
+
+            & + .label {
+                @include field-radio-label();
+            }
+        }
+
+        &._error {
+            .input-text,
+            .checkbox {
+                @include field-input-error();
+            }
+        }
+
+        &._success:not(._warn) {
+            .control {
+                position: relative;
+
+                &:after {
+                    @include field-icon('success');
+                    display: block;
+                    content: '';
+                }
+            }
+        }
+
+        &.street {
+            > legend {
+                display: none;
+            }
+        }
+
+        // Reverting styles for input with tooltip.
+        .control._with-tooltip input {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        // Reverting info tooltip styles to make it appear as note below the input.
+        .field-tooltip {
+            position: static;
+
+            .label,
+            .field-tooltip-action {
+                display: none;
+            }
+
+            .field-tooltip-content {
+                position: static;
+                background: none;
+                border: none;
+
+                @include field-note();
+
+                &:before,
+                &:after {
+                    display: none;
+                }
+            }
+        }
+
+        .note {
+            @include field-note();
+            margin-bottom: 1rem;
+        }
+    }
+    /* stylelint-enable no-descending-specificity */
+
+    // Has to be scoped to div, otherwise it collides with input class.
+    div.mage-error,
+    div.field-error {
+        @include field-error();
+    }
+
+    // Selectize styling
+    .selectize-input {
+        @include field-input();
+        margin-bottom: 0;
+    }
+
+    .selectize-control {
+        border: 0;
+        margin: 0 0 0.2em;
+
+        &.single {
+            .selectize-input {
+                &:after {
+                    right: 1rem;
+                }
+            }
+        }
+    }
+
+    // visually-hidden
+    .tsc-abs-visually-hidden {
+        @include visually-hidden();
+    }
+
+    // TSC Styling General
+    .form-login,
+    form[data-role='login'],
+    .form-shipping-address,
+    .methods-shipping,
+    .payment-option {
+        padding: 0 $tsc-checkout-spacing;
+
+        @include media('>=tablet') {
+            padding: 0;
+        }
+    }
+
+    .fieldset {
+        border: 0;
+    }
+
+    .ua-customer-note {
+        // Issue with MageSuite field styling
+        &.field {
+            margin: 1rem -2rem 0;
+            background: $tsc-checkout-ua-note_bg;
+
+            @include media('>=tablet') {
+                margin: 0;
+                background-color: $tsc-checkout-ua-note_bg-desktop;
+            }
+        }
+
+        /* stylelint-disable no-descending-specificity */
+        .control {
+            background-color: $tsc-checkout-ua-note_bg;
+
+            @include media('>=tablet') {
+                background-color: $tsc-checkout-ua-note_bg-desktop;
+            }
+        }
+        /* stylelint-enable no-descending-specificity */
+    }
+
+    // Minicart slide
+    .custom-slide {
+        // BUG TSC (height/z-index)
+        &,
+        &._show {
+            z-index: 20 !important; /* stylelint-disable-line declaration-no-important */
+        }
+
+        .modal-inner-wrap {
+            .modal-header {
+                .action-close {
+                    border-radius: 0;
+                    background-color: $tsc-checkout-close-button_bg;
+                    border-color: $tsc-checkout-close-button_bg;
+                }
+            }
+        }
+
+        &.opc-sidebar {
+            .modal-inner-wrap {
+                height: $tsc-checkout-item-summary-popup_height;
+
+                @include media('>=tablet') {
+                    height: auto;
+                }
+            }
+        }
+
+        .ua-customer-note {
+            &.field {
+                width: calc(100% + 2 * 2rem);
+
+                @include media('>=tablet') {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    // Custom messages - styling from MGS
+    .no-payments-block,
+    .no-quotes-block {
+        max-width: $page_max-width;
+        margin: 1rem 0;
+        padding: $messages_padding;
+        border-radius: $messages_border-radius;
+        background-repeat: no-repeat;
+        background-position: 1.2rem center;
+        background-size: $message_icon-width $message_icon-height;
+        padding-left: 4.3rem;
+        background-color: $messages_error-background-color;
+        background-image: url('../images/icons/messages/icon-error.svg');
+        border: $messages_error-border;
+        color: $color_text-500;
+    }
+}
