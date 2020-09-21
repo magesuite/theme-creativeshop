@@ -242,13 +242,16 @@ export default class ProductsCarousel {
      * @param swiper {Object} swiper instance object.
      */
     protected _handleOverflow(swiper: any): void {
-        const itemsPerView: number = swiper.params.slidesPerView;
+        const itemsPerView: number | 'auto' =
+            swiper.params.slidesPerView === 'auto'
+                ? swiper.params.slidesPerView
+                : parseInt(swiper.params.slidesPerView, 10);
         const activeIndex: number = swiper.isEnd
-            ? Math.max(swiper.slides.length - itemsPerView, 0)
+            ? Math.max(swiper.slides.length - (itemsPerView as number), 0)
             : swiper.activeIndex;
         const $itemsToShow: JQuery<HTMLUListElement> = $(swiper.slides).slice(
             activeIndex,
-            activeIndex + itemsPerView
+            activeIndex + (itemsPerView as number)
         );
         swiper.slides.removeClass(`${swiper.params.slideClass}--in-viewport`);
         $itemsToShow.addClass(`${swiper.params.slideClass}--in-viewport`);
