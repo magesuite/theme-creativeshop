@@ -7,7 +7,7 @@
 @import 'utils/visually-hidden';
 
 $tsc-checkout-ua-note_bg: $color_background-200 !default;
-$tsc-checkout-ua-note_bg-desktop: $color_background-500 !default;
+$tsc-checkout-ua-note_bg-desktop: $tsc-checkout-sidebar_background !default;
 
 .tsc-checkout-index {
     // MageSuite button styling
@@ -187,6 +187,61 @@ $tsc-checkout-ua-note_bg-desktop: $color_background-500 !default;
 
         @include media('>=tablet') {
             padding: 0;
+        }
+    }
+
+    .form-shipping-address {
+        .field {
+            &.street {
+                margin-bottom: 0;
+
+                > .control {
+                    @include media('>=tablet') {
+                        display: flex;
+                    }
+                }
+            }
+
+            &[name*='postcode'],
+            &[name*='shippingAddress.street.1'] {
+                @include media('>=tablet') {
+                    width: 25%;
+                    float: left;
+
+                    .error,
+                    .warning {
+                        width: 400%;
+                        box-sizing: border-box;
+                        margin-top: 2.7rem;
+                        float: left;
+                    }
+                }
+            }
+
+            &[name*='shippingAddress.street.1'] {
+                @include media('>=tablet') {
+                    float: right;
+                    padding-left: 1.5rem;
+                    width: 40%;
+                }
+            }
+
+            &[name*='city'],
+            &[name*='shippingAddress.street.0'] {
+                @include media('>=tablet') {
+                    width: 75%;
+                    padding-left: 1.5rem;
+                    display: inline-flex;
+                    box-sizing: border-box;
+                }
+            }
+
+            &[name*='shippingAddress.street.0'] {
+                @include media('>=tablet') {
+                    padding-left: 0;
+                    width: 60%;
+                }
+            }
         }
     }
 

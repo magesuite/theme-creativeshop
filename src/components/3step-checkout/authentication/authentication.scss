@@ -64,6 +64,19 @@ $tsc-checkout-hide-password-hint: true !default;
         }
     }
 
+    .tsc-switcher-container {
+        border-bottom: 0;
+
+        a {
+            &.selected {
+                @include media('>=tablet') {
+                    border-bottom: 3px solid $color_primary-800;
+                    z-index: 1;
+                }
+            }
+        }
+    }
+
     .tsc-authentication-link-container {
         .tsc-action-auth-toggle {
             @include reset-button($color_background-200, $color_text-600, 400);
@@ -108,14 +121,18 @@ $tsc-checkout-hide-password-hint: true !default;
 
             h2 {
                 @include media('>=tablet') {
-                    line-height: 27px;
                     color: $tsc-checkout-step-title_color;
+                    font-size: $tsc-checkout-step-title_font-size;
+                    font-weight: $tsc-checkout-step-title_font-weight;
+                    line-height: $tsc-checkout-step-title_line-height;
+                    margin-bottom: $tsc-checkout-spacing;
                 }
             }
 
             .header-info {
                 .header-info-tooltip {
                     border-top: 2px solid $color_primary-500;
+                    background-color: transparent;
                 }
 
                 p {
