@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'components/header/user-nav/user-nav';
 
 $offcanvas-toggle_icon-background: transparent !default;
 $offcanvas-toggle_icon-color: $color_primary-500 !default;
@@ -23,6 +24,14 @@ $offcanvas-toggle_text-transform: uppercase !default;
     align-self: stretch;
     height: 100%;
     width: 100%;
+
+    @if ($global_header-mobile-search-in-offcanvas) {
+        width: 5.5rem;
+
+        @include media('>=tablet') {
+            width: auto;
+        }
+    }
 
     &,
     &:active,
@@ -112,6 +121,18 @@ $offcanvas-toggle_text-transform: uppercase !default;
             transform: translateY(250%);
             transform: translate3d(0, 250%, 0);
         }
+
+        @if ($global_header-mobile-search-in-offcanvas) {
+            display: none;
+
+            @include media('>=tablet') {
+                display: block;
+            }
+
+            #{$root}--active & {
+                display: block;
+            }
+        }
     }
 
     &__text {
@@ -131,6 +152,26 @@ $offcanvas-toggle_text-transform: uppercase !default;
 
         @include media('>=tablet') {
             bottom: 2rem;
+        }
+    }
+
+    @if ($global_header-mobile-search-in-offcanvas) {
+        &__menu-search-icon {
+            fill: $header-user-nav_icon-color;
+            width: 2.6rem;
+            height: 2.6rem;
+
+            @include media('>=tablet') {
+                display: none;
+            }
+
+            &:hover {
+                fill: $header-user-nav_icon-color-hover;
+            }
+
+            #{$root}--active & {
+                display: none;
+            }
         }
     }
 }
