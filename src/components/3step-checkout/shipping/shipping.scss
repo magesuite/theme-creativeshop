@@ -8,8 +8,21 @@
 @import 'components/3step-checkout/mixins/reset-button-radius';
 @import 'components/3step-checkout/mixins/higher-button';
 
+$tsc-checkout-shipping-tooltip_font-size: 1rem !default;
+$tsc-checkout-shipping-tooltip_border-color: $color_border-500 !default;
+
 .tsc-checkout-index {
     .checkout-shipping-address {
+        .step-subtitle {
+            span {
+                @include media('>=tablet') {
+                    background-color: transparent;
+                    font-size: $tsc-checkout-shipping-tooltip_font-size;
+                    border-top: 3px solid $color_primary-800;
+                }
+            }
+        }
+
         .modal-popup {
             // BUG TSC (z-index)
             &,
@@ -75,8 +88,13 @@
         }
 
         .step-title {
+            color: $tsc-checkout-step-title_color;
+            font-size: $tsc-checkout-step-title_font-size;
+            font-weight: $tsc-checkout-step-title_font-weight;
+            line-height: $tsc-checkout-step-title_line-height;
+
             @include media('>=tablet') {
-                color: $tsc-checkout-step-title_color;
+                margin-bottom: $tsc-checkout-spacing;
             }
         }
 
@@ -144,6 +162,15 @@
         }
     }
 
+    .tsc-shipping-top-tooltip {
+        background-color: transparent;
+        font-size: $tsc-checkout-shipping-tooltip_font-size;
+        border-color: $tsc-checkout-shipping-tooltip_border-color;
+        border-width: 1px;
+        transform: translateY(-1px);
+        z-index: 0;
+    }
+
     .checkout-shipping-method {
         .step-title {
             color: $tsc-checkout-step-title_color;
@@ -151,9 +178,11 @@
             font-weight: $tsc-checkout-step-title_font-weight;
             line-height: $tsc-checkout-step-title_line-height;
             margin-bottom: 1rem;
+            margin-top: 0;
 
             h4 {
                 text-align: center;
+                font-weight: $tsc-checkout-step-title_font-weight;
 
                 @include media('>=tablet') {
                     text-align: left;
@@ -161,6 +190,8 @@
 
                 small {
                     display: block;
+                    font-size: 1rem;
+                    line-height: 1rem;
 
                     @include media('>=tablet') {
                         display: none;
