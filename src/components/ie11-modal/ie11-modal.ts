@@ -38,9 +38,9 @@ export default class ie11Modal {
     protected _options?: ie11ModalOptions = {
         modalClassname: 'cs-ie11-modal',
         texts: {
-            headline: $.mage.__('This internet browser is outdated'),
+            headline: $.mage.__('Your internet browser is outdated'),
             main: $.mage.__(
-                'This store benefits from security and efficiency (or performance) of modern browsers. You are currently using Internet Explorer that is 7 years old and is outdated. Please consider installing and using newer browser to have better experience and access to all functions of this store.'
+                'This store benefits from the security and performance of modern browsers. You are currently using Internet Explorer that is 7 years old and outdated. Please consider installing a newer browser to have a better experience and access to all functions of this store.'
             ),
             recommendation: $.mage.__('These are the browsers we recommend:'),
             download: $.mage.__('Download'),
