@@ -19,7 +19,6 @@ var config = {
         ccProductsCarousel: 'js/products-carousel',
         ccProductFinder: 'js/product-finder',
         mgsGridLayout: 'js/grid-layout',
-        mgsDailyDeal: 'js/daily-deal',
     },
     shim: {
         isMobile: {
