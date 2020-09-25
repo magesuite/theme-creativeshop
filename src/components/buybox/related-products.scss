@@ -1,0 +1,140 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin.scss';
+@import 'components/price-box/variables.scss';
+
+$buybox-related-products_margin: 0 !default;
+$buybox-related-products_header-margin: 0 0 3rem !default;
+$buybox-related-products_make-select-all-button-smaller: true !default;
+$buybox-related-products_select-all-button-type: 'secondary' !default;
+$buybox-related-products_select-all-button-icon-pos: 'no-icon' !default;
+
+$buybox-related-products_items-separator: 1px solid $color_border-500 !default;
+$buybox-related-products_items-margin: 0 0 1rem !default;
+$buybox-related-products_items-padding: 0 0 1rem !default;
+
+$buybox-related-products_item-general-gutter: 2rem !default;
+$buybox-related-products_item-checkbox-width: 1.7em !default;
+$buybox-related-products_item-checkbox-height: $buybox-related-products_item-checkbox-width !default;
+$buybox-related-products_item-checkbox--checked-bg-size: $buybox-related-products_item-checkbox-width
+    $buybox-related-products_item-checkbox-height !default;
+
+$buybox-related-products_item-details-font-size: 1.2em !default;
+$buybox-related-products_item-link-color: $color_mineshaft !default;
+
+$buybox-related-products_atc-button-type: 'primary' !default;
+$buybox-related-products_atc-button-icon-pos: 'no-icon' !default;
+$buybox-related-products_make-atc-button-smaller: true !default;
+
+.#{$ns}buybox-related-products {
+    $root: &;
+
+    margin: $buybox-related-products_margin !important;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: $buybox-related-products_header-margin;
+    }
+
+    &__headline.title {
+        margin: 0;
+    }
+
+    &__actions {
+        margin: 0 0 0 $buybox-related-products_item-general-gutter;
+    }
+
+    &__select-all {
+        @include button(
+            $type: $buybox-related-products_select-all-button-type,
+            $icon_pos: $buybox-related-products_select-all-button-icon-pos
+        );
+
+        @if $buybox-related-products_make-select-all-button-smaller {
+            padding: 0.4em 0.55em;
+            font-weight: 400;
+        }
+    }
+
+    &__item {
+        margin: $buybox-related-products_items-margin;
+        padding: $buybox-related-products_items-padding;
+        border-bottom: $buybox-related-products_items-separator;
+
+        &:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+    }
+
+    &__item-content {
+        display: flex;
+        justify-content: stretch;
+        align-items: center;
+    }
+
+    &__checkbox-wrapper {
+        width: auto;
+        display: block;
+        min-width: 7rem;
+        margin: 0 $buybox-related-products_item-general-gutter 0 0;
+        text-align: center;
+
+        @include media('>=phone') {
+            min-width: 7.6rem;
+        }
+    }
+
+    &__checkbox {
+        margin: 0 !important;
+        width: $buybox-related-products_item-checkbox-width !important;
+        height: $buybox-related-products_item-checkbox-height !important;
+        background-size: $buybox-related-products_item-checkbox--checked-bg-size !important;
+    }
+
+    &__checkbox-label {
+        display: inline-block;
+        width: 100%;
+        margin-top: 0.5em;
+        font-weight: 400 !important;
+    }
+
+    &__image {
+        margin: 0 $buybox-related-products_item-general-gutter 0 0;
+    }
+
+    &__item-details-wrapper {
+        width: 100%;
+    }
+
+    &__item-details {
+        margin: 0 0 0.6em;
+        font-size: $buybox-related-products_item-details-font-size;
+    }
+
+    &__item-name {
+        &,
+        &:visited {
+            color: $buybox-related-products_item-link-color;
+        }
+    }
+
+    &__item-actions {
+        margin: 0 0 0 $buybox-related-products_item-general-gutter;
+    }
+
+    &__atc-button {
+        @include button(
+            $type: $buybox-related-products_atc-button-type,
+            $icon_pos: $buybox-related-products_atc-button-icon-pos
+        );
+
+        @if $buybox-related-products_make-atc-button-smaller {
+            font-size: 1em;
+            padding: 0.4em 0.7em;
+        }
+    }
+}
