@@ -19,7 +19,7 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
             <?php endif; ?> 
             data-bind="scope: 'minicart_content'"
         >
-            <div class="cs-header-user-nav__icon-wrapper">
+            <div class="cs-header-user-nav__icon-wrapper"" data-bind="css: { 'cs-header-user-nav__icon-wrapper--with-items': getCartParam('summary_count') > 0 }">
                 <?= $block->getChildHtml('minicart.icon'); ?>
                 <span class="counter qty empty cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__qty-counter--have-items': getCartParam('summary_count') > 0, 'cs-header-user-nav__qty-counter--empty': !getCartParam('summary_count') }">
                     <span class="cs-header-user-nav__qty-counter-span cs-addtocart__minicart-qty-text">
