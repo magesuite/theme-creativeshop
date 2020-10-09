@@ -56,7 +56,7 @@ foreach($subItems as $subItemIndex => $subItem):
     <li
         class="cs-navigation__item<?= $isAllCategories ? ' cs-navigation__item--all-categories' : ' cs-navigation__item--level_' .$level ?><?= $subItemHasCustomUrl ? ' cs-navigation__item--custom' : ''; ?><?= $isAllCategories && $subItem->hasSubItems() && $level === 1 ? ' cs-navigation__item--has-children' : ''; ?>"
         data-category-id="<?= $subItemId; ?>"
-        data-category-identifier="<?= $subItemCategoryIdentifier; ?>"
+        <?php if($subItemCategoryIdentifier): ?> data-category-identifier="<?= $subItemCategoryIdentifier; ?>"<?php endif; ?>
     >
         <a
             href="<?= $subItemUrl; ?>"
