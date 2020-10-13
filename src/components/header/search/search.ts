@@ -120,5 +120,6 @@ export default class HeaderSearch {
     protected _toggleSearch(): void {
         this._$trigger.parent().toggleClass(this._options.triggerActiveClass);
         this._$target.toggleClass(this._options.targetActiveClass);
+        $('body').toggleClass('search-open');
     }
 }
