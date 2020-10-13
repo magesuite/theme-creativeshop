@@ -408,12 +408,15 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
     @supports (display: grid) and (grid-auto-flow: row) {
         &__grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             grid-template-rows: auto;
 
             @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
                 @include media('>=#{$breakpoint}') {
-                    grid-template-columns: repeat(#{$itemsPerRow}, 1fr);
+                    grid-template-columns: repeat(
+                        #{$itemsPerRow},
+                        minmax(0, 1fr)
+                    );
                 }
             }
 
@@ -422,7 +425,10 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
                     $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
                 {
                     @include media('>=#{$breakpoint}') {
-                        grid-template-columns: repeat(#{$itemsPerRow}, 1fr);
+                        grid-template-columns: repeat(
+                            #{$itemsPerRow},
+                            minmax(0, 1fr)
+                        );
                     }
                 }
             }
