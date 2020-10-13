@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/button/mixin';
+@import 'components/typography/mixin';
 @import 'components/3step-checkout/variables';
 @import 'components/3step-checkout/mixins/reset-button-radius';
 @import 'components/3step-checkout/mixins/higher-button';
@@ -349,13 +350,18 @@ $tsc-checkout-place-order_font-weight: 700 !default;
                     }
 
                     // Checkout agreements
-                    .pp-gdpr-holder {
+                    .tsc-alternate-gdpr-holder {
+                        background-color: transparent;
                         padding: 0 $tsc-checkout-spacing;
                         margin: $tsc-checkout-spacing 0 8rem;
 
                         @include media('>=tablet') {
                             padding: 4rem 0 0;
                             margin: 0;
+                        }
+
+                        a {
+                            @include link();
                         }
                     }
                 }
