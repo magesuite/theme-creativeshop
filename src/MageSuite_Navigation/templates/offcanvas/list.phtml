@@ -4,6 +4,7 @@
 $level = $block->getLevel();
 $nextIcon = $block->getNextIcon();
 $prevIcon = $block->getPrevIcon();
+$showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 
 $item = $block->getItem();
 $itemUrl = $item->getUrl();
@@ -21,7 +22,7 @@ $itemIdentifier = $item->getIdentifier() ?? '';
             </span>
         </a>
     </li>
-    <li class="cs-offcanvas-navigation__item">
+    <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--all-products">
         <a class="cs-offcanvas-navigation__link" href="<?= $itemUrl; ?>"><?= __('All products'); ?></a>
     </li>
 <?php
@@ -32,6 +33,7 @@ foreach($item->getSubItems() as $subItem):
     $subItemLabel = $subItem->getLabel();
     $subItemIdentifier = $subItem->getIdentifier() ?? '';
     $subItemHasSubItems = $subItem->hasSubItems();
+    $subItemCategoryIcon = $showCategoryIconSubcats ? $subItem->getCategoryIcon() : '';
     $itemNextAdditionalClasses = '';
 
     if ($subItemHasSubItems) {
@@ -51,6 +53,11 @@ foreach($item->getSubItems() as $subItem):
             <?php if ($subItemHasSubItems && $nextIcon) : ?>
                 <?= $nextIcon ?>
             <?php endif; ?>
+            <?php if ($subItemCategoryIcon): ?>
+                <span class="cs-offcanvas-navigation__category-icon-wrapper">
+                    <img src="<?= $subItemCategoryIcon; ?>" alt="<?= $subItemLabel; ?>" class="cs-offcanvas-navigation__category-icon">
+                </span>
+            <?php endif; ?>
             <span class="cs-offcanvas-navigation__text">
                 <?= $subItemLabel; ?>
             </span>
@@ -64,6 +71,7 @@ foreach($item->getSubItems() as $subItem):
                     ->setLevel($level + 1)
                     ->setNextIcon($block->getNextIcon())
                     ->setPrevIcon($block->getPrevIcon())
+                    ->setShowCategoryIconSubcats($showCategoryIconSubcats)
                     ->toHtml();
             }
         ?>
