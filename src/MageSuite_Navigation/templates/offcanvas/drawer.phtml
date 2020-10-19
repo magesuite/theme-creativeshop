@@ -4,6 +4,7 @@
 $level = 0;
 $nextIcon = $block->getChildHtml('navigation.offcanvas.icon.next');
 $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
+$showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 ?>
 <nav class="cs-offcanvas-navigation" aria-label="<?= /* @escapeNotVerified */ __('Mobile Navigation'); ?>">
     <?= $block->getChildHtml('navigation.offcanvas.search'); ?>
@@ -18,7 +19,7 @@ $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
 
             if ($itemHasSubitems) {
                 $itemNextAdditionalClasses .= ' cs-offcanvas-navigation__link--parent';
-        
+
                 if (!$nextIcon) {
                     $itemNextAdditionalClasses .= '  cs-offcanvas-navigation__link--next';
                 }
@@ -42,6 +43,7 @@ $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
                             ->setLevel($level + 1)
                             ->setNextIcon($nextIcon)
                             ->setPrevIcon($prevIcon)
+                            ->setShowCategoryIconSubcats($showCategoryIconSubcats)
                             ->toHtml();
                     }
                     ?>
@@ -50,6 +52,6 @@ $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
         <?= $block->getChildHtml('navigation.offcanvas.authorization'); ?>
         <?= $block->getChildHtml('navigation.offcanvas.switcher-language'); ?>
         <?= $block->getChildHtml('navigation.offcanvas.switcher-currency'); ?>
+        <?= $block->getChildHtml('navigation.offcanvas.after'); ?>
     </ul>
-    <?= $block->getChildHtml('navigation.offcanvas.after'); ?>
 </nav>
