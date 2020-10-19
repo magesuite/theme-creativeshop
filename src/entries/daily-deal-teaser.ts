@@ -6,16 +6,12 @@ export function ccDailyDealTeaser(config, element) {
         updateLabels: true,
         afterRenderCallback: (dailydeal): void => {
             if (dailydeal && dailydeal._$element.length) {
-                dailydeal._$element
-                    .parents('.cs-daily-deal-teaser')
-                    .addClass('cs-daily-deal-teaser--active');
+                dailydeal._$element.addClass('cs-daily-deal-teaser--active');
             }
         },
         expiredHandler: (dailydeal): void => {
             if (dailydeal && dailydeal._$element.length) {
-                dailydeal._$element
-                    .parents('.cs-daily-deal-teaser')
-                    .removeClass('cs-daily-deal-teaser--active');
+                dailydeal._$element.removeClass('cs-daily-deal-teaser--active');
             }
         },
     });
