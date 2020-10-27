@@ -86,6 +86,11 @@ export interface NavigationOptions {
      * Modifier class for categories with no children
      */
     categoriesWithNoChildrenClass?: string;
+    /**
+     * In some projects, with quite hight navigation and big flyouts, some mouse moves intended to end on the active flyout, actually trigger another flyout
+     * To avoid the problem active flyout is will not be hidden when mouse move is to-bottom and mouse leave the active item in left-bottom or right-bottom edge
+     */
+    enhancedFlyoutHover?: boolean;
 }
 
 /**
@@ -113,10 +118,16 @@ export default class Navigation {
         itemMouseleaveListener?: (
             event: JQuery.MouseLeaveEvent | JQuery.ClickEvent
         ) => void;
+        itemMousemoveListener?: (
+            event: JQuery.MouseMoveEvent | JQuery.ClickEvent
+        ) => void;
         navigationMouseleaveListener?: (event: JQuery.MouseLeaveEvent) => void;
     } = {};
     protected _resizeTimeout: any;
     protected _showTimeout: any;
+    protected _moveDirection: any;
+    protected _oldX: number;
+    protected _oldY: number;
 
     protected _options: NavigationOptions = {
         containerClassName: 'cs-navigation__list--main',
@@ -140,6 +151,7 @@ export default class Navigation {
         activeCategoryClassName: 'active',
         markCategoriesWithNoChildren: false,
         categoriesWithNoChildrenClass: 'cs-navigation__item--no-children',
+        enhancedFlyoutHover: false,
     };
 
     /**
@@ -158,6 +170,8 @@ export default class Navigation {
         this._options = $.extend(this._options, options);
         this._$content = $(this._options.contentSelector);
         this._$flyouts = $element.find(`.${this._options.flyoutClassName}`);
+        this._oldX = 0;
+        this._oldY = 0;
         this._$container = $element
             .find(`.${this._options.containerClassName}`)
             .addBack(`.${this._options.containerClassName}`); // Allow navigation parent to be container itself.
@@ -601,6 +615,22 @@ export default class Navigation {
                 return;
             }
 
+            if (this._options.enhancedFlyoutHover) {
+                this._oldX = event.pageX;
+                this._oldY = event.pageY;
+
+                const $activeFlyout = this._$element.find(
+                    `.${this._options.flyoutClassName}--visible`
+                );
+
+                if (
+                    $activeFlyout.length &&
+                    event.offsetY > event.target.offsetHeight / 2
+                ) {
+                    return;
+                }
+            }
+
             const $rootItem: JQuery = $(event.target as HTMLElement)
                 .closest(`.${this._options.itemClassName}--main`)
                 .find(this._$flyouts);
@@ -662,6 +692,26 @@ export default class Navigation {
             }
         };
 
+        this._eventListeners.itemMousemoveListener = (
+            event: JQuery.MouseMoveEvent
+        ): void => {
+            // Detect if mouse is moving to the bottom (with overlap of 10px)
+            let direction = '';
+
+            if (
+                event.pageX <= this._oldX + 10 &&
+                event.pageX >= this._oldX - 10 &&
+                event.pageY > this._oldY
+            ) {
+                direction = 'bottom';
+            }
+
+            this._moveDirection = direction;
+
+            this._oldX = event.pageX;
+            this._oldY = event.pageY;
+        };
+
         this._eventListeners.itemMouseleaveListener = (
             event: JQuery.MouseLeaveEvent
         ): void => {
@@ -669,6 +719,16 @@ export default class Navigation {
             // There are special touch events for touch device, so mouseleave can be canceled
             if ($('body').hasClass('touch-device')) {
                 return;
+            }
+
+            if (this._options.enhancedFlyoutHover) {
+                if (
+                    this._moveDirection === 'bottom' &&
+                    event.offsetY > event.target.offsetHeight / 3 &&
+                    event.offsetY <= event.target.offsetHeight
+                ) {
+                    return;
+                }
             }
 
             clearTimeout(this._showTimeout);
@@ -720,6 +780,13 @@ export default class Navigation {
         $rootItems
             .find('a:last')
             .on('focusout', this._eventListeners.focusOutListener);
+
+        if (this._options.enhancedFlyoutHover) {
+            $rootItems.on(
+                'mousemove',
+                this._eventListeners.itemMousemoveListener
+            );
+        }
     }
 
     protected _getColumnsForViewport() {
