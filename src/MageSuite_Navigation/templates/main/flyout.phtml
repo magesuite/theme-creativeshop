@@ -68,25 +68,6 @@ if ($item->hasSubItems()) {
                     ->setIsMegaDropdownSublist(true)
                     ->toHtml();
             }
-
-            if ($subItem->hasImageTeaser()) {
-                // Fill image teaser fixed config data with data fetched dynamically
-                $subImageTeaserData = $subItem->getImageTeaser()->getItems()['0'];
-                $subImageTeaserConfig = $block->getImageTeaserConfig();
-                $subImageTeaserConfigItems = &$subImageTeaserConfig['items']['0'];
-                $subImageTeaserConfigItems['image']['raw'] = $subImageTeaserData['image']['raw'];
-                $subImageTeaserConfigItems['image']['decoded'] = $subImageTeaserData['image']['decoded'];
-                $subImageTeaserConfigItems['slogan'] = $subImageTeaserData['slogan'];
-                $subImageTeaserConfigItems['description'] = $subImageTeaserData['description'];
-                $subImageTeaserConfigItems['cta'] = $subImageTeaserData['cta'];
-
-                echo $this->getLayout()
-                    ->createBlock('MageSuite\ContentConstructorFrontend\Block\Component\ImageTeaser')
-                    ->setItem($subItem)
-                    ->setData($subImageTeaserConfig)
-                    ->setMix('cs-navigation__teaser')
-                    ->toHtml();
-            }
         }
     }
 }
