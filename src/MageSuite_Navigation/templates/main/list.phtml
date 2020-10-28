@@ -63,20 +63,20 @@ foreach($subItems as $subItemIndex => $subItem):
             class="cs-navigation__link<?= $isAllCategories ? ' cs-navigation__link--all-categories' : ' cs-navigation__link--level_' .$level ?><?= $subItemCategoryIcon ? ' cs-navigation__link--with-icon' : ''; ?>"
         >
             <?php if ($subItemCategoryIcon): ?>
-                <?php if ($subItem->getCategoryIconMimeType() != 'image/svg+xml'): ?>
-                    <span class="cs-navigation__link-icon-wrapper">
+                <span class="cs-navigation__link-icon-wrapper">
+                    <?php if (strpos($subItem->getCategoryIconMimeType(), 'image/svg') === false): ?>
                         <img src="<?= $subItemCategoryIcon; ?>" alt="<?= $subItemLabel; ?>" class="cs-navigation__link-icon">
-                    </span>
-                <?php else: ?>
-                    <?=
-                    $this->getLayout()
-                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                        ->setIconUrl($subItemCategoryIcon)
-                        ->setCssClass('cs-navigation__link-icon')
-                        ->setInlined(true)
-                        ->toHtml();
-                    ;?>
-                <?php endif;?>
+                    <?php else: ?>
+                        <?=
+                        $this->getLayout()
+                            ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                            ->setIconUrl($subItemCategoryIcon)
+                            ->setCssClass('cs-navigation__link-icon')
+                            ->setInlined(true)
+                            ->toHtml();
+                        ;?>
+                    <?php endif;?>
+                </span>
             <?php endif; ?>
             <?= $subItemLabel; ?>
             <?php if ($subItemNumberOfProducts): ?>
