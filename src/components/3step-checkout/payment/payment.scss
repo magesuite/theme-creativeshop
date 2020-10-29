@@ -125,7 +125,7 @@ $tsc-checkout-billing-address-details_margin-top: -1rem !default;
                 // BUG TSC (position/z-index)
                 .actions-toolbar {
                     position: fixed;
-                    z-index: 15;
+                    z-index: 20;
 
                     @include media('>=tablet') {
                         position: static;
@@ -151,19 +151,12 @@ $tsc-checkout-billing-address-details_margin-top: -1rem !default;
                 }
 
                 > .fieldset {
-                    &.show-address-form._show {
-                        // BUG TSC (height/scroll/z-index)
-                        &._show {
-                            height: auto;
-                            overflow-y: scroll;
-                            z-index: 20 !important;
-                            padding-bottom: $tsc-checkout-form-popup_padding-botom;
+                    &.show-address-form {
+                        position: static;
+                        display: none !important; /* stylelint-disable-line declaration-no-important */
 
-                            @include media($tsc-checkout-desktop-breakpoint) {
-                                overflow: auto;
-                                z-index: 10 !important;
-                                padding: $tsc-checkout-spacing;
-                            }
+                        &._show {
+                            display: block !important; /* stylelint-disable-line declaration-no-important */
                         }
                     }
 
@@ -226,7 +219,9 @@ $tsc-checkout-billing-address-details_margin-top: -1rem !default;
 
                         @include media('>=tablet') {
                             margin-top: 0;
-                            padding-bottom: 0;
+                            padding-bottom: calc(
+                                #{$tsc-checkout-form-popup_padding-bottom} / 2
+                            );
                         }
                     }
                 }
@@ -263,6 +258,11 @@ $tsc-checkout-billing-address-details_margin-top: -1rem !default;
                         // BUG TSC (display)
                         .actions-toolbar {
                             display: block;
+
+                            @include media('>=tablet') {
+                                padding: 0 $tsc-checkout-spacing
+                                    $tsc-checkout-spacing $tsc-checkout-spacing;
+                            }
                         }
                     }
 
