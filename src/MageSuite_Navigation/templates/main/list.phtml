@@ -65,13 +65,13 @@ foreach($subItems as $subItemIndex => $subItem):
             <?php if ($subItemCategoryIcon): ?>
                 <span class="cs-navigation__link-icon-wrapper">
                     <?php if (strpos($subItem->getCategoryIconMimeType(), 'image/svg') === false): ?>
-                        <img src="<?= $subItemCategoryIcon; ?>" alt="<?= $subItemLabel; ?>" class="cs-navigation__link-icon">
+                        <img src="<?= $subItemCategoryIcon; ?>" alt="<?= $subItemLabel; ?>" class="cs-navigation__link-icon cs-navigation__link-icon--img">
                     <?php else: ?>
                         <?=
                         $this->getLayout()
                             ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
                             ->setIconUrl($subItemCategoryIcon)
-                            ->setCssClass('cs-navigation__link-icon')
+                            ->setCssClass('cs-navigation__link-icon cs-navigation__link-icon--svg')
                             ->setInlined(true)
                             ->toHtml();
                         ;?>
