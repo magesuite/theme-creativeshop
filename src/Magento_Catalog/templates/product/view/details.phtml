@@ -14,7 +14,8 @@ $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChild
     }
 
     $alias = $layout->getElementAlias($blockName);
-    $label = __($block->getChildData($alias, 'title'))->render();
+    $headline = __($block->getChildData($alias, 'title'))->render();
+    $subheadline = __($block->getChildData($alias, 'subtitle'))->render();
     $id = str_replace('.', '-', $alias);
     $containContent = $block->getChildData($alias, 'contain_content') ?? true;
     $isCollapsible = $block->getChildData($alias, 'is_collapsible') ?? true;
@@ -29,11 +30,16 @@ $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChild
     >
         <div class="cs-container cs-container--page-pdp-details-<?= $id; ?>">
             <div class="cs-container__inner">
-                <?php if (!empty($label)): ?>
+                <?php if (!empty($headline)): ?>
                     <header class="cs-product-details__headline" data-role="title">
                         <h2 class="cs-product-details__headline-title">
-                            <?= /* @escapeNotVerified */ $label; ?>
+                            <?= /* @escapeNotVerified */ $headline; ?>
                         </h2>
+                        <?php if (!empty($subheadline)): ?>
+                            <p class="cs-product-details__headline-subtitle">
+                                <?= /* @escapeNotVerified */ $subheadline; ?>
+                            </p>
+                        <?php endif; ?>
                     </header>
                 <?php endif; ?>
     <?php if (!$containContent): ?>
