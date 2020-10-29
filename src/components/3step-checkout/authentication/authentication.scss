@@ -18,10 +18,12 @@ $tsc-checkout-email-suggestion_background: $color_background-500 !default;
     form[data-role='login'] {
         .field {
             &:first-child {
-                margin-top: 1rem;
-
                 // for email suggestion
                 position: relative;
+
+                @include media('>=tablet') {
+                    margin-top: 1rem;
+                }
             }
         }
 
@@ -71,6 +73,7 @@ $tsc-checkout-email-suggestion_background: $color_background-500 !default;
 
     .tsc-switcher-container {
         border-bottom: 0;
+        margin-bottom: 1rem;
 
         a {
             &.selected {
@@ -157,13 +160,19 @@ $tsc-checkout-email-suggestion_background: $color_background-500 !default;
         margin-bottom: 0;
     }
 
+    /* stylelint-disable no-descending-specificity */
     .tsc-password-hint-holder {
         margin: 1rem 0 1rem 2rem;
 
         .action-remind {
             @include link();
         }
+
+        + .actions-toolbar {
+            margin-bottom: 1rem;
+        }
     }
+    /* stylelint-enable no-descending-specificity */
 
     .tsc-ea-holder {
         .tsc-ea-button,

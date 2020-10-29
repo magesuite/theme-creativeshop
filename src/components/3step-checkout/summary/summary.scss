@@ -5,6 +5,7 @@
 @import 'components/3step-checkout/variables';
 @import 'components/3step-checkout/mixins/reset-button-radius';
 @import 'components/3step-checkout/mixins/higher-button';
+@import 'utils/visually-hidden';
 
 $tsc-checkout-input-qty_width: 5rem !default;
 $tsc-checkout-input-qty_font-size: 1.2rem !default;
@@ -148,6 +149,17 @@ $tsc-checkout-place-order_font-weight: 700 !default;
         }
 
         .table-totals {
+            .table-caption {
+                display: table-caption;
+                text-align: left;
+                color: $tsc-checkout-step-title_color;
+                font-size: $tsc-checkout-step-title_font-size;
+                font-weight: $tsc-checkout-step-title_font-weight;
+                line-height: $tsc-checkout-step-title_line-height;
+                padding: 3rem 0 1rem;
+                border-top: 1px solid $color_border-550;
+            }
+
             tr {
                 th,
                 td {
@@ -263,11 +275,39 @@ $tsc-checkout-place-order_font-weight: 700 !default;
                                             }
                                         }
                                     }
+
+                                    .table-totals {
+                                        .table-caption {
+                                            display: table-caption;
+                                            text-align: left;
+                                            color: $tsc-checkout-step-title_color;
+                                            font-size: $tsc-checkout-step-title_font-size;
+                                            font-weight: $tsc-checkout-step-title_font-weight;
+                                            line-height: $tsc-checkout-step-title_line-height;
+                                            padding: 3rem 0 1rem;
+                                            border-top: 1px solid
+                                                $color_border-550;
+                                        }
+                                    }
                                 }
                             }
                         }
 
+                        /* stylelint-disable no-descending-specificity */
                         .table-totals {
+                            > caption {
+                                @include visually-visible();
+
+                                display: table-caption;
+                                text-align: left;
+                                color: $tsc-checkout-step-title_color;
+                                font-size: $tsc-checkout-step-title_font-size;
+                                font-weight: $tsc-checkout-step-title_font-weight;
+                                line-height: $tsc-checkout-step-title_line-height;
+                                padding: 3rem 0 1rem;
+                                border-top: 1px solid $color_border-550;
+                            }
+
                             tbody {
                                 tr {
                                     th,
@@ -319,6 +359,7 @@ $tsc-checkout-place-order_font-weight: 700 !default;
                                 }
                             }
                         }
+                        /* stylelint-enable no-descending-specificity */
                     }
 
                     // Discount form
