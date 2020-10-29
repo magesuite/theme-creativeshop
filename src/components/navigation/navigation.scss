@@ -17,6 +17,12 @@ $navigation_link-color-hover: $color_primary-500 !default;
 $navigation_link-border: 1px solid $color_border-500 !default;
 $navigation_lists-mark-parent-on-hover: true !default;
 
+$navigation_link-icon-size-width: 2rem !default;
+$navigation_link-icon-size-height: $navigation_link-icon-size-width !default;
+// works only for svg icons
+$navigation_link-icon-color: $color_text-600 !default;
+$navigation_link-icon-color--hover: $color_primary-500 !default;
+
 .#{$ns}navigation {
     $root: &;
 
@@ -108,7 +114,7 @@ $navigation_lists-mark-parent-on-hover: true !default;
             font-size: 1.4em;
 
             &:first-of-type {
-                > #{$root}__link {
+                > #{$root}__link:not(#{$root}__link--with-icon) {
                     padding-left: 0;
                 }
             }
@@ -157,6 +163,12 @@ $navigation_lists-mark-parent-on-hover: true !default;
         &:hover {
             text-decoration: none;
             color: $navigation_link-color-hover;
+
+            #{$root}__link-icon--svg {
+                path {
+                    fill: $navigation_link-icon-color--hover;
+                }
+            }
         }
 
         &--main {
@@ -186,15 +198,17 @@ $navigation_lists-mark-parent-on-hover: true !default;
 
         &--with-icon {
             position: relative;
-            padding-left: 2.8rem;
+            padding-left: $navigation_link-icon-size-width + 1rem;
         }
 
         &-icon-wrapper {
             position: absolute;
-            width: 2rem;
-            top: 50%;
+            width: $navigation_link-icon-size-width;
+            height: $navigation_link-icon-size-height;
+            top: 0;
             left: 0;
             transform: translateY(-50%);
+            margin-top: 1.55em;
         }
 
         &-icon {
@@ -202,10 +216,17 @@ $navigation_lists-mark-parent-on-hover: true !default;
             top: 50%;
             left: 50%;
             transform: translate3d(-50%, -50%, 0);
-            max-height: 1.8rem;
+            height: $navigation_link-icon-size-width;
+            width: $navigation_link-icon-size-height;
 
             #{$root}__link--category & {
                 margin-top: -0.5rem;
+            }
+
+            &--svg {
+                path {
+                    fill: $navigation_link-icon-color;
+                }
             }
         }
 
