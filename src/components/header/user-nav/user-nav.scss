@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'utils/visually-hidden';
 
 @import 'components/qty-counter/mixin';
 
@@ -146,12 +147,14 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
         @if ($header-user-nav_label-visible == true) {
             display: block;
         } @else if ($header-user-nav_label-visible == false) {
-            display: none;
+            @include visually-hidden(
+
+            ); // Label is not displayed on screen but accessible for screen readers
         } @else {
-            display: none;
+            @include visually-hidden();
 
             @include media(#{$header-user-nav_label-visible}) {
-                display: block;
+                @include visually-visible();
             }
         }
     }
