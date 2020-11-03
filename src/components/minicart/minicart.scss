@@ -3,6 +3,7 @@
 @import 'components/button/mixin';
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
+@import 'components/pseudoicon/mixin';
 
 $minicart-offcanvas: deep-get(
     $view-xml,
@@ -27,6 +28,12 @@ $minicart_offcanvas-title-padding: 1rem 2rem !default;
 $minicart_offcanvas-item-padding: 1.5rem 2rem !default;
 $minicart_offcanvas-free-shipping-indicator: false !default;
 $minicart_offcanvas-offset-iphone-fix: 40rem !default;
+
+$minicart__close-include-pseudoicon: true !default;
+$minicart__close-width: 2rem !default;
+$minicart__close-line-width: 0.2rem !default;
+$minicart__close-color: $color_text-600 !default;
+$minicart__close-color-hover: $color_text-500 !default;
 
 $minicart_offcanvas-carousel-background: $color_background-200 !default;
 $minicart_offcanvas-carousel-spacing: 2rem !default;
@@ -83,7 +90,7 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
         position: absolute;
         right: -1.5rem;
         width: 5rem;
-        height: 3rem;
+        height: 5rem;
         top: 50%;
         transform: translateY(-50%);
         cursor: pointer;
@@ -96,32 +103,25 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
             color: inherit;
         }
 
-        &:before {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-size: 5rem;
-            line-height: 3rem;
-            color: inherit;
-            content: '\e616';
-            /* stylelint-disable-next-line */
-            font-family: 'icons-blank-theme';
-            margin: 0;
-            vertical-align: top;
-            display: inline-block;
-            font-weight: normal;
-            overflow: hidden;
-            speak: none;
-            text-align: center;
-        }
-
         @if $minicart-offcanvas {
             right: 0.5rem;
-
-            &:before {
-                font-size: 4rem;
-                color: $color_text-500;
-            }
         }
+    }
+
+    &__close-icon {
+        @if ($minicart__close-include-pseudoicon) {
+            @include pseudoicon(
+                $color: $minicart__close-color,
+                $color-hover: $minicart__close-color-hover,
+                $width: $minicart__close-width,
+                $height: $minicart__close-line-width
+            );
+        }
+
+        transform: rotate(45deg);
+        width: 100%;
+        height: 100%;
+        display: inline-block;
     }
 
     &__close-text {
