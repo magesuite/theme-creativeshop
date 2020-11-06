@@ -134,6 +134,34 @@ const csTeaser: any = function($element: any, settings: any): void {
     currentSettings = $.extend(true, {}, defaultSettings, settings);
 
     /**
+     * Converts selected properties of currentSettings object to number.
+     * Reason: custom settings set via etc/view.xml are provided in JSON
+     * format therefore they are string type which breaks script execution.
+     */
+    const fixSettingsTypes: any = (): void => {
+        currentSettings.slideMinWidth = parseInt(
+            currentSettings.slideMinWidth,
+            10
+        );
+        currentSettings.spaceBetween = parseInt(
+            currentSettings.spaceBetween,
+            10
+        );
+        currentSettings.paginationBreakpoint = parseInt(
+            currentSettings.paginationBreakpoint,
+            10
+        );
+        if (currentSettings.hasOwnProperty('slidesPerGroup')) {
+            currentSettings.slidesPerGroup = parseInt(
+                currentSettings.slidesPerGroup,
+                10
+            );
+        }
+    };
+
+    fixSettingsTypes();
+
+    /**
      * Calculates number of slides that should be visible according to teaser's wrapper width.
      * @return {number} Number of slides.
      */
