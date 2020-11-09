@@ -14,3 +14,4 @@ import 'config/base.scss';
 // Base components
 import 'components/3step-checkout';
 import 'components/messages';
+import 'components/ie11-modal';
