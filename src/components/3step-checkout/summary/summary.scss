@@ -13,9 +13,14 @@ $tsc-checkout-input-qty_font-size: 1.2rem !default;
 $tsc-checkout-summary_hide-image-qty: false !default;
 $tsc-checkout-summary_hide-summary-in-title: false !default;
 
+$tsc-checkout-summary_product-image_spacing: 1rem !default;
 $tsc-checkout-summary_product-name_color: $color_text-800 !default;
 $tsc-checkout-summary_product-name_font-size: 1.6rem !default;
 $tsc-checkout-summary_product-name_font-weight: 600 !default;
+
+$tsc-checkout-summary_product-image-qty_background: $color_background-200 !default;
+$tsc-checkout-summary_product-image-qty_color: $color_text-800 !default;
+$tsc-checkout-summary_product-image-qty_border: 1px solid $color_primary-500 !default;
 
 $tsc-checkout-summary_product-price_color: $color_text-800 !default;
 $tsc-checkout-summary_product-price_font-size: 1.6rem !default;
@@ -98,7 +103,7 @@ $tsc-checkout-summary_title_border-color: $color_border-500 !default;
                         .product-item-details {
                             .product-item-inner {
                                 .product-item-name-block {
-                                    margin-left: 1rem;
+                                    margin-left: $tsc-checkout-summary_product-image_spacing;
 
                                     .product-item-name {
                                         color: $tsc-checkout-summary_product-name-color;
@@ -110,6 +115,10 @@ $tsc-checkout-summary_title_border-color: $color_border-500 !default;
                                         @if $tsc-checkout-summary_hide-image-qty
                                         {
                                             display: none;
+                                        } @else {
+                                            background: $tsc-checkout-summary_product-image-qty_background;
+                                            color: $tsc-checkout-summary_product-image-qty_color;
+                                            border: $tsc-checkout-summary_product-image-qty_border;
                                         }
                                     }
                                 }
@@ -142,6 +151,14 @@ $tsc-checkout-summary_title_border-color: $color_border-500 !default;
                                             font-size: $tsc-checkout-input-qty_font-size;
                                         }
                                     }
+                                }
+                            }
+
+                            .product.options dl.item-options {
+                                dt,
+                                dd {
+                                    margin-left: $tsc-checkout-summary_product-image_spacing;
+                                    margin-right: 0;
                                 }
                             }
                         }
@@ -228,7 +245,7 @@ $tsc-checkout-summary_title_border-color: $color_border-500 !default;
                                                     .product-item-details {
                                                         .product-item-inner {
                                                             .product-item-name-block {
-                                                                margin-left: 1rem;
+                                                                margin-left: $tsc-checkout-summary_product-image_spacing;
 
                                                                 .product-item-name {
                                                                     color: $tsc-checkout-summary_product-name-color;
@@ -240,6 +257,10 @@ $tsc-checkout-summary_title_border-color: $color_border-500 !default;
                                                                     @if $tsc-checkout-summary_hide-image-qty
                                                                     {
                                                                         display: none;
+                                                                    } @else {
+                                                                        background: $tsc-checkout-summary_product-image-qty_background;
+                                                                        color: $tsc-checkout-summary_product-image-qty_color;
+                                                                        border: $tsc-checkout-summary_product-image-qty_border;
                                                                     }
                                                                 }
                                                             }
@@ -270,6 +291,15 @@ $tsc-checkout-summary_title_border-color: $color_border-500 !default;
                                                                         font-size: $tsc-checkout-input-qty_font-size;
                                                                     }
                                                                 }
+                                                            }
+                                                        }
+
+                                                        .product.options
+                                                            dl.item-options {
+                                                            dt,
+                                                            dd {
+                                                                margin-left: $tsc-checkout-summary_product-image_spacing;
+                                                                margin-right: 0;
                                                             }
                                                         }
                                                     }
