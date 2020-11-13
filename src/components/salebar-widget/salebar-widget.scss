@@ -1,0 +1,99 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+/**
+ * Salebar is fixed on mobile by default.
+ * static positioning of salebar requires
+ * elements which use fixed positioning
+ * to switch to sticky positioning.
+ **/
+$fixed-on-mobile: true !default;
+
+$salebar-font-size_small: 1.4rem !default;
+$salebar-font-size_medium: 1.8rem !default;
+
+.cs-container--salebar-widget {
+    will-change: height, position;
+    padding-left: 0;
+    padding-right: 0;
+
+    @if ($fixed-on-mobile) {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 300;
+
+        @include media('>=laptop') {
+            position: static;
+        }
+    }
+}
+
+.#{$ns}salebar-widget {
+    $root: &;
+
+    display: none;
+
+    &--loaded,
+    &--finished {
+        display: flex;
+    }
+
+    p {
+        margin: 0;
+        display: block;
+        width: 100%;
+    }
+
+    &__content {
+        display: flex;
+        background-color: inherit;
+        justify-content: center;
+        align-items: center;
+        font-size: $salebar-font-size_small;
+        text-align: center;
+        padding: 1rem $page_edge-gutter;
+        width: 100%;
+        line-height: 120%;
+
+        ~ p {
+            display: none;
+        }
+    }
+
+    &__text {
+        font-size: $salebar-font-size_small;
+        transition: $transition-default-time opacity,
+            $transition-default-time visibility;
+
+        @include media('>=tablet') {
+            font-size: $salebar-font-size_medium;
+        }
+
+        &,
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited,
+        a {
+            color: inherit;
+        }
+    }
+
+    &__countdown-active {
+        display: block;
+
+        #{$root}--finished & {
+            display: none;
+        }
+    }
+
+    &__countdown-finished {
+        display: none;
+
+        #{$root}--finished & {
+            display: block;
+        }
+    }
+}

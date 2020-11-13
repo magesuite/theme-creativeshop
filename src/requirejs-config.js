@@ -19,6 +19,7 @@ var config = {
         ccProductsCarousel: 'js/products-carousel',
         ccProductFinder: 'js/product-finder',
         mgsGridLayout: 'js/grid-layout',
+        mgsSalebarWidget: 'js/salebar-widget',
     },
     shim: {
         isMobile: {
