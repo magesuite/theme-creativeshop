@@ -60,12 +60,18 @@ try {
 }
 
 // Update current breakpoint on every resize.
-
 window.addEventListener(
     'resize',
     () => {
         viewportWidth = $(window).width();
-        breakpoint.current = getCurrentBreakpoint();
+
+        const newBreakpoint = getCurrentBreakpoint();
+
+        if (newBreakpoint !== breakpoint.current) {
+            $(window).trigger('breakpointChange', [newBreakpoint]);
+        }
+
+        breakpoint.current = newBreakpoint;
     },
     passiveOption
 );
