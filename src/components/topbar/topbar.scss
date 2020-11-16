@@ -1,6 +1,6 @@
 @import 'config/variables';
 @import 'vendors/include-media';
-@import 'utils/link';
+@import 'components/typography/mixin';
 
 $topbar_background: transparent !default;
 $topbar_height: 2.7rem !default;
@@ -131,8 +131,12 @@ $topbar_link-color: $color_primary-500 !default;
     }
 
     &__link {
+        @include link(
+            $color: $topbar_link-color,
+            $color-hover: $topbar_link-color-action
+        );
+
         margin-right: 0.9rem;
-        @include link($topbar_link-color, $topbar_link-color-action);
 
         &:hover {
             color: $topbar_item-hours-color;

@@ -1,5 +1,7 @@
 @import 'components/container/container';
 @import 'config/variables';
+@import 'components/typography/mixin';
+
 $ns: 'cs-';
 
 body,
@@ -92,15 +94,10 @@ html {
 }
 
 a {
-    color: $link-color_base;
-
-    &:visited {
-        color: $link-color_base;
-    }
-
-    &:hover {
-        color: $link-color_base-hover;
-    }
+    @include link(
+        $color: $link-color_base,
+        $color-hover: $link-color_base-hover
+    );
 }
 
 .gift-options-cart-item {

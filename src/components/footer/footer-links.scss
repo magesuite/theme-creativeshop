@@ -1,12 +1,14 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
+@import 'components/typography/mixin';
 
 $footer-links_list-item-margin: 0 0 0.3em !default;
 
 $footer-links_link-font-size: inherit !default;
 $footer-links_link-color: $color_background-200 !default;
 $footer-links_link-hover-color: $footer-links_link-color !default;
+$footer-links_link-decoration: none !default;
 $footer-links_link-hover-decoration: underline !default;
 $footer-links_link-padding-mobile: 0.5em 0 !default;
 $footer-links_link-padding-desktop: 0.35em 0 !default;
@@ -20,21 +22,24 @@ $footer-links_link-padding-desktop: 0.35em 0 !default;
         margin: $footer-links_list-item-margin;
     }
 
-    a,
-    a:visited {
-        display: block;
-        padding: $footer-links_link-padding-mobile;
-        font-size: $footer-links_link-font-size;
-        color: $footer-links_link-color;
+    a {
+        @include link(
+            $color: $footer-links_link-color,
+            $color-hover: $footer-links_link-hover-color,
+            $decoration: $footer-links_link-decoration,
+            $decoration-hover: $footer-links_link-hover-decoration
+        );
 
-        &:hover {
-            color: $footer-links_link-hover-color;
-            text-decoration: $footer-links_link-hover-decoration;
-        }
+        &,
+        &:visited {
+            display: block;
+            padding: $footer-links_link-padding-mobile;
+            font-size: $footer-links_link-font-size;
 
-        @include media('>=tablet') {
-            padding: $footer-links_link-padding-desktop;
-            display: inline-block;
+            @include media('>=tablet') {
+                padding: $footer-links_link-padding-desktop;
+                display: inline-block;
+            }
         }
     }
 }
