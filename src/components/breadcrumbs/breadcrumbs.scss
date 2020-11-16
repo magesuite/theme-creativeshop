@@ -4,17 +4,14 @@
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 
-$breadcrumbs_separator-custom-data: deep-get(
+$breadcrumbs_separator-custom-show: deep-get(
     $view-xml,
     vars,
     Magento_Theme,
     breadcrumbs,
-    custom_separator
+    custom_separator,
+    display
 ) !default;
-$breadcrumbs_separator-custom-show: #{map-get(
-        $breadcrumbs_separator-custom-data,
-        display
-    )} !default;
 
 $breadcrumbs_background-color: $color_background-500 !default;
 $breadcrumbs_background-image: url('../images/breadcrumbs.png') !default;
@@ -66,7 +63,7 @@ $breadcrumbs_vertical-space: 1.3rem !default;
             color: $breadcrumbs_separator-color;
         }
 
-        @if ($breadcrumbs_separator-custom-show != 'false') {
+        @if ($breadcrumbs_separator-custom-show) {
             &:after {
                 display: none;
             }
