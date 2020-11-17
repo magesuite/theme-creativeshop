@@ -1,0 +1,121 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/component-spacing';
+@import 'utils/link';
+
+$product-teaser_section-border: 1px solid $color_border-500;
+
+$product-teaser_image-margin: 0 5rem;
+$product-teaser_image-max-width: 34rem;
+
+$product-teaser_name-margin: 0 0 $page_edge-gutter 0;
+$product-teaser_name-color: $color_text-800;
+$product-teaser_name-color-hover: $color_primary-500;
+$product-teaser_name-font-size: $font-size_paragraph;
+$product-teaser_name-font-weight: 700;
+
+$product-teaser_description-margin: 0 0 $page_edge-gutter 0;
+$product-teaser_description-color: $color_text-800;
+$product-teaser_description-font-size: $font-size_paragraph;
+$product-teaser_description-font-weight: 400;
+
+$product-teaser_swatches-margin: 0 0 $page_edge-gutter 0;
+
+.#{$ns}product-teaser {
+    $root: &;
+
+    @include component-spacing();
+
+    display: flex;
+    flex-direction: column;
+
+    @include media('>=tablet') {
+        flex-direction: row;
+    }
+
+    &__image {
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        flex: 1;
+        max-width: $product-teaser_image-max-width;
+        margin: 0 auto;
+
+        @include media('>=tablet') {
+            margin: $product-teaser_image-margin;
+            align-self: center;
+        }
+    }
+
+    &__details {
+        flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        @include media('>=tablet') {
+            flex: 0 0 50%;
+        }
+
+        @include media('>=laptop') {
+            flex: 0 0 60%;
+        }
+    }
+
+    &__name {
+        @include link(
+            $link: $product-teaser_name-color,
+            $action: $product-teaser_name-color-hover,
+            $size: $product-teaser_name-font-size
+        );
+
+        display: inline-block;
+        font-weight: $product-teaser_name-font-weight;
+        margin: $product-teaser_name-margin;
+    }
+
+    &__description {
+        font-size: $product-teaser_description-font-size;
+        font-weight: $product-teaser_description-font-weight;
+        color: $product-teaser_description-color;
+        margin: $product-teaser_description-margin;
+    }
+
+    &__swatches {
+        margin: $product-teaser_swatches-margin;
+    }
+
+    &__ratings {
+        display: flex;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+
+        @include media('>=phoneLg') {
+            flex-direction: row;
+        }
+    }
+
+    &__sku {
+        margin-top: 1rem;
+
+        &:not(:only-child) {
+            @include media('>=phoneLg') {
+                border-left: $product-teaser_section-border;
+                margin: 0 0 0 1rem;
+                padding-left: 1rem;
+            }
+        }
+    }
+
+    &__action {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: $product-teaser_section-border;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
