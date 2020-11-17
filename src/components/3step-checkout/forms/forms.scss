@@ -106,6 +106,17 @@ $tsc-checkout-ua-note_bg-desktop: $tsc-checkout-sidebar_background !default;
             }
         }
 
+        // Do not show success icon for region, country, prefix select
+        &[name='shippingAddress.region_id'],
+        &[name='shippingAddress.country_id'],
+        &[name='shippingAddress.prefix'] {
+            .control {
+                &:after {
+                    display: none !important; /* stylelint-disable-line declaration-no-important */
+                }
+            }
+        }
+
         &.street {
             > legend {
                 display: none;
@@ -155,9 +166,29 @@ $tsc-checkout-ua-note_bg-desktop: $tsc-checkout-sidebar_background !default;
     }
 
     // Selectize styling
+    .selectize-dropdown {
+        border: $field_input-border;
+        color: $field_input-color;
+        font-size: $field_font-size;
+
+        .option {
+            padding: $button_padding;
+
+            &:empty {
+                display: none;
+            }
+        }
+    }
+
     .selectize-input {
         @include field-input();
         margin-bottom: 0;
+
+        &.dropdown-active {
+            &:before {
+                display: none;
+            }
+        }
     }
 
     .selectize-control {
