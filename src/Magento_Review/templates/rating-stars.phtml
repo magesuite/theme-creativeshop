@@ -3,6 +3,7 @@
     $activeStars = $block->getActiveStars();
     $reviewsCount = $block->getReviewsCount();
     $reviewsLink = $block->getReviewsLink();
+    $reviewsUrl = $block->getReviewsUrl() ? $block->getReviewsUrl() : false;
 ?>
 
 <?php if ($activeStars): ?>
@@ -40,7 +41,7 @@
                 $reviewsCountMessage = $reviewsCount . '<span class="cs-star-rating__text-annotation"> ' . ($reviewsCount == 1 ? __('review') : __('reviews')) . '</span>';
             ?>
             <?php if ($reviewsLink): ?>
-                <a class="cs-star-rating__link" href="#reviews">
+                <a class="cs-star-rating__link" href="<?= $reviewsUrl ? $reviewsUrl : '' ?>#reviews">
             <?php endif; ?>
                 <span class="cs-star-rating__text cs-star-rating__text--count"><?= $reviewsCountMessage ?></span>
             <?php if ($reviewsLink): ?>
