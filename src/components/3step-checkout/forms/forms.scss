@@ -107,14 +107,22 @@ $tsc-checkout-ua-note_bg-desktop: $tsc-checkout-sidebar_background !default;
         }
 
         // Do not show success icon for region, country, prefix select
+        &[name='shippingAddress.prefix'],
         &[name='shippingAddress.region_id'],
         &[name='shippingAddress.country_id'],
-        &[name='shippingAddress.prefix'] {
+        &[name='billingAddressshared.prefix'],
+        &[name='billingAddressshared.country_id'],
+        &[name='billingAddressshared.region_id'] {
             .control {
                 &:after {
                     display: none !important; /* stylelint-disable-line declaration-no-important */
                 }
             }
+        }
+
+        &[name='shippingAddress.prefix'],
+        &[name='billingAddressshared.prefix'] {
+            max-width: 12rem;
         }
 
         &.street {
