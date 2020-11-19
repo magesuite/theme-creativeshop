@@ -7,6 +7,7 @@
 @import 'utils/aspect-ratio';
 @import 'utils/string-to-number';
 @import 'components/typography/mixin';
+@import 'components/price-box/variables.scss';
 
 $product-teaser_2col-breakpoint: '>=tablet' !default;
 
@@ -41,6 +42,14 @@ $product-teaser_description-font-size: $font-size_paragraph !default;
 $product-teaser_description-font-weight: 400 !default;
 
 $product-teaser_swatches-margin: 0 0 $product-teaser_gutter 0 !default;
+
+$product-teaser_price-flex-direction: row-reverse !default; // when 2 prices are displayed, they're using flex for arrangement
+$product-teaser_price-flex-wrap: nowrap !default;
+$product-teaser_space-between-prices: $price-box_space-between-prices !default;
+
+$product-teaser_normal-price-font-size: $price-box_normal-price-font-size !default;
+$product-teaser_old-price-font-size: $price-box_old-price-font-size !default;
+$product-teaser_special-price-font-size: $price-box_special-price-font-size !default;
 
 .#{$ns}product-teaser {
     $root: &;
@@ -177,6 +186,44 @@ $product-teaser_swatches-margin: 0 0 $product-teaser_gutter 0 !default;
 
         @include media('>=phoneLg') {
             flex-direction: row;
+        }
+    }
+
+    &__price {
+        .price-box {
+            display: flex;
+            flex-direction: $product-teaser_price-flex-direction;
+            flex-wrap: $product-teaser_price-flex-wrap;
+
+            .price {
+                font-size: $product-teaser_normal-price-font-size;
+            }
+
+            .old-price {
+                .price {
+                    font-size: $product-teaser_old-price-font-size;
+                }
+            }
+
+            .special-price {
+                .price {
+                    font-size: $product-teaser_special-price-font-size;
+                }
+            }
+
+            @if ($product-teaser_price-flex-direction == 'row') {
+                .special-price {
+                    .price {
+                        margin-right: $product-teaser_space-between-prices;
+                    }
+                }
+            } @else if ($product-teaser_price-flex-direction == 'row-reverse') {
+                .old-price {
+                    .price {
+                        margin-right: $product-teaser_space-between-prices;
+                    }
+                }
+            }
         }
     }
 
