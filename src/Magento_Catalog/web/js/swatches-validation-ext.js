@@ -18,7 +18,10 @@ define([
 
                 var $form = $(this);
 
-                if (!$('#missing-swatches-modal').length) {
+                if (
+                    !$('#missing-swatches-modal').length &&
+                    $form.is('#product_addtocart_form')
+                ) {
                     $('body').prepend(
                         '<div id="missing-swatches-modal"></div>'
                     );
