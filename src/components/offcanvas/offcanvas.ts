@@ -11,6 +11,7 @@ export interface OffcanvasOptions {
     overlayTransitionDuration?: number; // How long does the overlay CSS transition take in ms.
     topbarSelector?: string; // Topbar element selector
     pagewrapperSelector?: string; // Page wrapper element selector
+    bodyOpenClass?: string; // Class added to the body element when given instance of offcanvas is open
 }
 
 /**
@@ -44,6 +45,7 @@ export default class Offcanvas {
                 overlayTransitionDuration: 300,
                 topbarSelector: '.cs-topbar',
                 pagewrapperSelector: '.page-wrapper',
+                bodyOpenClass: '',
             },
             options
         );
@@ -82,7 +84,7 @@ export default class Offcanvas {
     public show(): Promise<Offcanvas> {
         const $currentTopOffset: number = window.scrollY;
         $('body')
-            .addClass('no-scroll')
+            .addClass('no-scroll ' + this._options.bodyOpenClass)
             .css({ top: -$currentTopOffset });
         this._$pageWrapper.addClass('no-scroll-child');
 
@@ -103,7 +105,7 @@ export default class Offcanvas {
     public hide(): Promise<Offcanvas> {
         const $currentTopOffset: string = $('body').css('top');
         $('body')
-            .removeClass('no-scroll')
+            .removeClass('no-scroll ' + this._options.bodyOpenClass)
             .css('top', '');
         this._$pageWrapper.removeClass('no-scroll-child');
         window.scrollTo(0, parseInt($currentTopOffset || '0', 10) * -1);
