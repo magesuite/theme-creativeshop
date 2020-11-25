@@ -308,9 +308,10 @@ export default class Navigation {
      */
     protected _adjustFlyoutExtras($flyout: JQuery) {
         const flyoutMaxColumnCount = this._getColumnsForViewport();
-        const $flyoutExtras: JQuery = $flyout.children(
-            `:not(.${this._options.flyoutColumnsClassName})`
-        );
+        const $flyoutExtras: JQuery = $flyout
+            .children(`:not(.${this._options.flyoutColumnsClassName})`)
+            .not('link, script');
+
         $flyoutExtras
             .css({
                 width: `${this._getContainerClientRect().width /
