@@ -2,11 +2,22 @@
 @import 'vendors/include-media';
 @import 'utils/get-value-from-list';
 @import 'components/pseudoicon/mixin';
+@import 'utils/deep-get/deep-get.scss';
 
 $offcanvas-navigation_background: $color_background-200 !default;
 
 $offcanvas-navigation_item-background: $offcanvas-navigation_background !default;
 $offcanvas-navigation_item-border: 1px $color_alto solid !default;
+
+$offcanvas-navigation_search-enabled: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    header,
+    mobile_search_in_offcanvas
+) !default;
+
+$offcanvas-navigation_search-enabled-list-level1-top-position: 14% !default;
 
 $offcanvas-navigation_link-color: $color_text-800 !default;
 $offcanvas-navigation_link-color--hover: $offcanvas-navigation_link-color !default;
@@ -83,6 +94,11 @@ $offcanvas-navigation_category-icon_margin-right: 1rem !default;
             height: 100%;
             top: 0;
             transition: transform 0.3s;
+
+            // Prevent overlapping of search on navigation list
+            @if ($offcanvas-navigation_search-enabled) {
+                top: $offcanvas-navigation_search-enabled-list-level1-top-position;
+            }
 
             &--active {
                 transform: translateX(-105%);
