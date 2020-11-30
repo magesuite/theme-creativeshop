@@ -237,39 +237,40 @@ export default class Minicart {
             triggerClassName: `${this._options.minicartTriggerClassName}`,
         });
 
-        this._$minicart.on('contentUpdated click touchstart', (): void => {
-            if (!this._areEventsBound) {
-                this._addEvents();
-                this._areEventsBound = true;
-            }
-        });
-
-        this._$minicart.on('productAdded', (e: Event, cartData: any): void => {
-            if (this._xmlSettings.open_on_product_added) {
-                if (!this._isMinicartOpen()) {
-                    this._offcanvasMinicart.show();
+        this._$minicart
+            .on('contentUpdated click touchstart', (): void => {
+                if (!this._areEventsBound) {
+                    this._addEvents();
+                    this._areEventsBound = true;
                 }
+            })
+            .on('openMinicart', (): void => this.openMinicart());
 
-                if (this._options.isMessagesOffcanvas) {
-                    this._clearMinicartMessage();
-                    requireAsync(['Magento_Ui/js/lib/view/utils/async']).then(
-                        ([async]) => {
-                            $.async(
-                                `.${this._options.messagesContainerClass} .${this._options.messageClass}`,
-                                () => this._cloneAddToCartMessage()
-                            );
-                        }
+        if (this._xmlSettings.open_on_product_added) {
+            this._$minicart.on('productAdded', (): void => this.openMinicart());
+        }
+    }
+
+    public openMinicart(): void {
+        if (!this._isMinicartOpen()) {
+            this._offcanvasMinicart.show();
+        }
+
+        if (this._options.isMessagesOffcanvas) {
+            this._clearMinicartMessage();
+            requireAsync(['Magento_Ui/js/lib/view/utils/async']).then(
+                (): void => {
+                    $.async(
+                        `.${this._options.messagesContainerClass} .${this._options.messageClass}`,
+                        (): void => this._cloneAddToCartMessage()
                     );
                 }
-            }
+            );
+        }
 
-            if (
-                this._xmlSettings.open_on_product_added &&
-                this._xmlSettings.products_carousel.enabled
-            ) {
-                this._runProductFetch();
-            }
-        });
+        if (this._xmlSettings.products_carousel.enabled) {
+            this._runProductFetch();
+        }
     }
 
     /**
