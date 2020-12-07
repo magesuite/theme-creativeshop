@@ -8,7 +8,7 @@ $tabs_tab-title-background: $color_background-500 !default;
 $tabs_tab-title-color: $color_text-400 !default;
 $tabs_tab-title-font-size: 1.8rem !default;
 $tabs_tab-title-font-size-mobile: 1.2rem !default;
-$tabs_tab-active-title-color: $color_primary-500 !default;
+$tabs_tab-active-title-color: $color_primary-500 !important !default;
 $tabs_tab-title-font-weight: 600 !default;
 $tabs_tab-active-background-color: $color_background-200 !default;
 
@@ -28,6 +28,12 @@ $tabs--bar_tab-border-top-radius: 5px !default;
     $root: &;
     box-shadow: $tabs_box-shadow;
 
+    &--store-pickup {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+    }
+
     &--bar {
         margin: $tabs--bar_margin;
         padding: $tabs--bar_padding;
@@ -42,6 +48,10 @@ $tabs--bar_tab-border-top-radius: 5px !default;
 
         #{$root}--bar & {
             justify-content: flex-start;
+        }
+
+        #store-pickup ~ #shipping & {
+            display: none;
         }
     }
 
@@ -134,6 +144,7 @@ $tabs--bar_tab-border-top-radius: 5px !default;
         z-index: 2;
         font-weight: $tabs_tab-title-font-weight;
         font-size: $tabs_tab-title-font-size-mobile;
+        cursor: pointer;
 
         @include media('>=phoneLg') {
             padding: 0.1rem $tabs_content-padding;
@@ -193,4 +204,8 @@ $tabs--bar_tab-border-top-radius: 5px !default;
     &__content {
         padding: $tabs_content-padding;
     }
+}
+
+#store-pickup ~ #shipping #tab-customer {
+    display: none;
 }

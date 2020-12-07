@@ -1,6 +1,7 @@
 <!--
 /**
  * Template overwrtiten to add Company Name, wrapper for address details and action buttons
+ * Update 3.12.2020 - align to update in recent Magento versions (keep modifications)
  */
 -->
 <div class="shipping-address-item" css="'selected-item' : isSelected() , 'not-selected-item':!isSelected()">
@@ -14,23 +15,11 @@
         <a if="address().telephone" attr="'href': 'tel:' + address().telephone" text="address().telephone"></a><br/>
 
         <each args="data: address().customAttributes, as: 'element'">
-            <each args="data: Object.keys(element), as: 'attribute'">
-                <if args="typeof element[attribute] === 'object'">
-                    <if args="element[attribute].label">
-                        <text args="element[attribute].label"/>
-                    </if>
-                    <ifnot args="element[attribute].label">
-                        <if args="element[attribute].value">
-                            <text args="element[attribute].value"/>
-                        </if>
-                    </ifnot>
-                </if>
-                <if args="typeof element[attribute] === 'string'">
-                    <text args="element[attribute]"/>
-                </if><br/>
-            </each>
+            <text args="$parent.getCustomAttributeLabel(element)"/>
+            <br/>
         </each>
     </div>
+
     <div class="shipping-address-item__address-action">
         <button visible="address().isEditable()" type="button"
                 class="action edit-address-link"
