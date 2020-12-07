@@ -100,10 +100,6 @@ var config = {
             'Magento_Ui/js/form/element/abstract': {
                 'Magento_Ui/js/form/element/abstract-ext': true,
             },
-            'Magento_Checkout/js/model/shipping-rates-validator': {
-                // TODO: Remove after store pickup is updated to the newest version.
-                'Magento_InventoryInStorePickupFrontend/js/model/shipping-rates-validator-ext': false,
-            },
             'Magento_Checkout/js/view/summary/item/details': {
                 'Magento_Checkout/js/view/summary/item/details-ext': true,
             },

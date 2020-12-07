@@ -65,6 +65,24 @@ $checkout_paypal-primary-button-icon-pos: $button_default-icon-pos !default;
 $checkout_paypal-secondary-button-type: 'secondary' !default;
 $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
 
+// Store pickup
+$checkout_store-pickup-select-button-type: $button_default-type !default;
+$checkout_store-pickup-select-button-icon-pos: 'no-icon' !default;
+$checkout_store-pickup-location-name-font-size: 1em !important !default;
+$checkout_store-pickup-search-modal-close-button-background-size: 1.5rem !default;
+$checkout_store-pickup-search-margin: 0 0 1.5rem !default;
+$checkout_store-pickup-search-padding-bottom: 1.5rem !default;
+$checkout_store-pickup-search-border-bottom: 1px solid $color_border-500 !default;
+$checkout_store-pickup-search_button-type: $button_default-type !default;
+$checkout_store-pickup-search_button-width: 6rem !default;
+$checkout_store-pickup-search_button-border-radius: 0 !default;
+$checkout_store-pickup-search_button-transform: $transform_skew-400
+    translateX(1.7rem) !default;
+$checkout_store-pickup-search_button-background-image: url('../images/icons/header-search/icon-search.svg') !default;
+$checkout_store-pickup-search_button-background-size: 2rem !default;
+$checkout_store-pickup-select-location_button-type: 'secondary' !default;
+$checkout_store-pickup-selected-location_button-type: $button_default-type !default;
+
 .checkout-index-index {
     .column.main {
         @include media('<tablet') {
@@ -384,6 +402,10 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
         margin-bottom: 0;
     }
 
+    .checkout-shipping-address {
+        margin-bottom: 0;
+    }
+
     // Checkout boxes
     &__sidebar,
     &__step-tabs .#{$ns}tabs,
@@ -391,7 +413,8 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
     &__shipping-method,
     .opc-estimated-wrapper,
     &__payments,
-    &__after-payments {
+    &__after-payments,
+    #store-pickup {
         margin: 0 0 $checkout_steps-space;
         background: $checkout_boxes-background;
 
@@ -399,6 +422,16 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
             box-shadow: $checkout_boxes-box-shadow;
             border-radius: $checkout_boxes-border-radius;
         }
+    }
+
+    #store-pickup {
+        margin: 0;
+    }
+
+    &__guest-or-login {
+        margin-bottom: 1.5rem;
+        font-size: 0.85em;
+        color: $color_dove-gray;
     }
 
     .modal-inner-wrap {
@@ -416,8 +449,17 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
     &__shipping-method-wrapper,
     &__shipping-method,
     &__payments,
-    &__after-payments {
+    &__after-payments,
+    #store-selector {
         padding: $checkout_base-space 0;
+
+        &--hidden {
+            height: 0;
+            margin: 0;
+            padding: 0 !important;
+            opacity: 0;
+            overflow: hidden;
+        }
 
         @include media('>=tablet') {
             padding: $checkout_base-space;
@@ -1508,3 +1550,158 @@ $checkout_paypal-secondary-button-icon-pos: $button_default-icon-pos !default;
         margin-top: 0;
     }
 }
+
+//  Styles for store pickup
+/* stylelint-disable no-descending-specificity */
+#store-selector {
+    .step-title {
+        padding: 0 0 #{$checkout_base-space / 2};
+
+        .form-login ~ & {
+            padding-top: $checkout_base-space;
+        }
+    }
+
+    .location-name {
+        margin: 0;
+        font-size: $checkout_store-pickup-location-name-font-size;
+    }
+
+    .secondary .button {
+        @include button(
+            $type: $checkout_store-pickup-select-button-type,
+            $icon_pos: $checkout_store-pickup-select-button-icon-pos
+        );
+
+        @include media('<tablet') {
+            width: 100%;
+        }
+
+        span {
+            @include button_span(
+                $type: $checkout_store-pickup-select-button-type,
+                $icon_pos: $checkout_store-pickup-select-button-icon-pos
+            );
+        }
+    }
+}
+
+#opc-store-selector-popup {
+    .action-close {
+        background-size: $checkout_store-pickup-search-modal-close-button-background-size;
+    }
+
+    .store-selector-search {
+        position: relative;
+        margin: $checkout_store-pickup-search-margin;
+        padding: 0 0 $checkout_store-pickup-search-padding-bottom;
+        border-bottom: $checkout_store-pickup-search-border-bottom;
+        overflow: hidden;
+
+        .control {
+            margin: 0;
+            padding: 0;
+        }
+
+        .input-text {
+            margin-bottom: 0;
+            padding-right: calc(
+                #{$checkout_store-pickup-search_button-width} + 1em
+            );
+        }
+
+        .actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 220;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: calc(
+                100% - #{$checkout_store-pickup-search-padding-bottom}
+            );
+            border-top-right-radius: $border-radius_base;
+            border-bottom-right-radius: $border-radius_base;
+
+            &:after {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+                content: '';
+                background: transparent
+                    $checkout_store-pickup-search_button-background-image
+                    no-repeat 60% center;
+                background-size: $checkout_store-pickup-search_button-background-size;
+            }
+        }
+
+        .action {
+            @include button(
+                $type: $checkout_store-pickup-search_button-type,
+                $icon_pos: 'only-icon'
+            );
+
+            width: $checkout_store-pickup-search_button-width;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            border-radius: $checkout_store-pickup-search_button-border-radius;
+            backface-visibility: hidden;
+            transform: $checkout_store-pickup-search_button-transform;
+
+            &[disabled] {
+                opacity: 1;
+            }
+
+            span {
+                @include visually-hidden();
+            }
+        }
+    }
+
+    .store-selector-popup-table tbody {
+        .col {
+            padding-top: 1.2rem;
+            padding-bottom: 1.2rem;
+        }
+    }
+
+    .location-name {
+        margin: 0;
+        font-size: $checkout_store-pickup-location-name-font-size;
+    }
+
+    .action-select-shipping-item {
+        @include button(
+            $type: $checkout_store-pickup-select-location_button-type,
+            $icon-pos: 'no-icon'
+        );
+
+        span {
+            @include button_span(
+                $type: $checkout_store-pickup-select-location_button-type,
+                $icon-pos: 'no-icon'
+            );
+        }
+    }
+
+    .location-selected .action {
+        @include button(
+            $type: $checkout_store-pickup-selected-location_button-type,
+            $icon-pos: 'no-icon'
+        );
+
+        span {
+            @include button_span(
+                $type: $checkout_store-pickup-selected-location_button-type,
+                $icon-pos: 'no-icon'
+            );
+        }
+    }
+}
+/* stylelint-enable no-descending-specificity */

@@ -1,6 +1,7 @@
 <!--
 /**
  * Template overwrtiten to add Company Name
+ * Update 3.12.2020 - adjust to changes in recent Magento versions (keep company modification)
  */
 -->
 <div if="isAddressDetailsVisible() && currentBillingAddress()" class="billing-address-details">
@@ -13,21 +14,8 @@
     <a if="currentBillingAddress().telephone" attr="'href': 'tel:' + currentBillingAddress().telephone" text="currentBillingAddress().telephone"></a><br if="currentBillingAddress().telephone" />
 
     <each args="data: currentBillingAddress().customAttributes, as: 'element'">
-        <each args="data: Object.keys(element), as: 'attribute'">
-            <if args="typeof element[attribute] === 'object'">
-                <if args="element[attribute].label">
-                    <text args="element[attribute].label"/>
-                </if>
-                <ifnot args="element[attribute].label">
-                    <if args="element[attribute].value">
-                        <text args="element[attribute].value"/>
-                    </if>
-                </ifnot>
-            </if>
-            <if args="typeof element[attribute] === 'string'">
-                <text args="element[attribute]"/><br/>
-            </if>
-        </each>
+        <text args="$parent.getCustomAttributeLabel(element)"/>
+        <br/>
     </each>
 
     <button visible="!isAddressSameAsShipping()"
@@ -37,3 +25,4 @@
         <span translate="'Edit'"></span>
     </button>
 </div>
+
