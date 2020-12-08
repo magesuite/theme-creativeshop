@@ -77,7 +77,7 @@ $checkout_store-pickup-search_button-type: $button_default-type !default;
 $checkout_store-pickup-search_button-width: 6rem !default;
 $checkout_store-pickup-search_button-border-radius: 0 !default;
 $checkout_store-pickup-search_button-transform: $transform_skew-400
-    translateX(1.7rem) !default;
+    translateX(0.7rem) !default;
 $checkout_store-pickup-search_button-background-image: url('../images/icons/header-search/icon-search.svg') !default;
 $checkout_store-pickup-search_button-background-size: 2rem !default;
 $checkout_store-pickup-select-location_button-type: 'secondary' !default;
@@ -165,7 +165,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         list-style: none;
         max-width: 100%;
         padding: 0;
-        margin-bottom: 2rem;
+        margin-bottom: $checkout_base-space;
         box-sizing: border-box;
 
         @include media('>=tablet') {
@@ -414,7 +414,8 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     .opc-estimated-wrapper,
     &__payments,
     &__after-payments,
-    #store-pickup {
+    #store-pickup,
+    #store-selector {
         margin: 0 0 $checkout_steps-space;
         background: $checkout_boxes-background;
 
@@ -463,6 +464,14 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 
         @include media('>=tablet') {
             padding: $checkout_base-space;
+        }
+    }
+
+    #store-selector {
+        padding: $checkout_base-space;
+
+        @include media('>=tablet') {
+            box-shadow: none;
         }
     }
 
@@ -1554,6 +1563,8 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 //  Styles for store pickup
 /* stylelint-disable no-descending-specificity */
 #store-selector {
+    box-shadow: $checkout_boxes-box-shadow;
+
     .step-title {
         padding: 0 0 #{$checkout_base-space / 2};
 
@@ -1586,6 +1597,16 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 }
 
+// Modal content
+.store-selector-popup {
+    @include media('<phoneLg') {
+        .modal-content {
+            padding-left: $checkout_base-space;
+            padding-right: $checkout_base-space;
+        }
+    }
+}
+
 #opc-store-selector-popup {
     .action-close {
         background-size: $checkout_store-pickup-search-modal-close-button-background-size;
@@ -1598,12 +1619,17 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         border-bottom: $checkout_store-pickup-search-border-bottom;
         overflow: hidden;
 
+        .label:before {
+            display: none;
+        }
+
         .control {
             margin: 0;
             padding: 0;
         }
 
         .input-text {
+            position: static;
             margin-bottom: 0;
             padding-right: calc(
                 #{$checkout_store-pickup-search_button-width} + 1em
@@ -1647,6 +1673,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
             );
 
             width: $checkout_store-pickup-search_button-width;
+            right: 0;
             height: 100%;
             overflow: hidden;
             position: relative;
