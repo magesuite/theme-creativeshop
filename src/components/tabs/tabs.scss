@@ -32,6 +32,22 @@ $tabs--bar_tab-border-top-radius: 5px !default;
         width: 100%;
         margin: 0;
         box-shadow: none;
+        position: relative;
+
+        @if $tabs_box-shadow != none {
+            @include media('<tablet') {
+                &:after {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    box-shadow: $tabs_box-shadow;
+                    z-index: -1;
+                    content: '';
+                }
+            }
+        }
     }
 
     &--bar {
