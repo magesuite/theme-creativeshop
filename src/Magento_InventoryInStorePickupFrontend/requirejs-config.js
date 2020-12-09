@@ -10,6 +10,9 @@ var config = {
             'Magento_Checkout/js/view/form/element/email': {
                 'Magento_InventoryInStorePickupFrontend/js/view/form/element/email-ext': true,
             },
+            'Magento_Checkout/js/view/shipping-information': {
+                'Magento_InventoryInStorePickupFrontend/js/view/shipping-information-ext-ext': true,
+            },
         },
     },
 };

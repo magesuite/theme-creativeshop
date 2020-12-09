@@ -26,31 +26,6 @@ define([
                     this.isStorePickupAvailable !== null
                 );
             },
-
-            initialize: function() {
-                this._super();
-
-                // subscribe to value change to hide shipping form if password field is visible (means user is about to login)
-                if (!this.isStorePickupEnabled()) {
-                    this.isPasswordVisible.subscribe(function(
-                        isPasswordVisible
-                    ) {
-                        var $formWrapper = $(
-                            '.cs-checkout__shipping-method-wrapper'
-                        );
-
-                        if (
-                            !this.isStorePickupSelected &&
-                            $formWrapper.length
-                        ) {
-                            $formWrapper.toggleClass(
-                                'cs-checkout__shipping-method-wrapper--hidden',
-                                isPasswordVisible
-                            );
-                        }
-                    });
-                }
-            },
         });
     };
 });
