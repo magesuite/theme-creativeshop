@@ -4,11 +4,12 @@
 @import 'components/pseudoicon/mixin';
 
 $product-navigation_margin: -4rem 0 0 !default;
-$product-navigation_height: 5rem !default;
 $product-navigation_font-size: 1.1rem !default;
 $product-navigation_border: 1px solid $color_border-500 !default;
 $product-navigation_list-padding: 1em 0 !default;
-$product-navigation_link-padding: 0.5em 2em !default;
+$product-navigation_link-padding-top-bottom: 0.5em !default;
+$product-navigation_link-padding: $product-navigation_link-padding-top-bottom
+    2em !default;
 $product-navigation_link-color: $color_text-800 !default;
 $product-navigation_link-text-transform: uppercase !default;
 $product-navigation_link-font-weight: bold !default;
@@ -20,6 +21,11 @@ $product-navigation_link-icon-color: $product-navigation_link-color !default;
 $product-navigation_link-icon-color-hover: $link-color_base-hover !default;
 $product-navigation_link-icon-type: 'arrow' !default;
 
+// Placeholder height to prevent jump after initialization
+$product-navigation_height: calc(
+    #{$product-navigation_font-size} + (2 * #{$product-navigation_link-padding-top-bottom})
+) !default;
+
 .#{$ns}product-navigation {
     $root: &;
 
@@ -30,6 +36,8 @@ $product-navigation_link-icon-type: 'arrow' !default;
     border-bottom: $product-navigation_border;
 
     &--initialized {
+        height: auto;
+
         #{$root}__list {
             opacity: 1;
         }
