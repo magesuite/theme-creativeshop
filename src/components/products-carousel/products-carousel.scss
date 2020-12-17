@@ -16,6 +16,14 @@ $products-carousel_nav-button-position-top: calc(
 $teaser_hide-nav-buttons-on-mobile: $products-carousel_hide-nav-buttons-on-mobile;
 $teaser_nav-button-position-top: $products-carousel_nav-button-position-top;
 
+$products-carousel_item-per-row: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructor,
+    columns,
+    one-column
+) !default;
+
 .#{$ns}products-carousel {
     $root: &;
 
@@ -95,6 +103,17 @@ $teaser_nav-button-position-top: $products-carousel_nav-button-position-top;
                     $childClass: #{$ns}product-tile,
                     $autoposition: true
                 );
+            }
+        }
+    }
+
+    // Prevent CLS effects (jumping content), when products carousel is not fully loaded & initialized yet
+    &:not(#{$root}--ready) {
+        #{$root}__slide {
+            @each $breakpoint, $itemsPerRow in $products-carousel_item-per-row {
+                @include media('>=#{$breakpoint}') {
+                    width: calc(100% / #{$itemsPerRow});
+                }
             }
         }
     }

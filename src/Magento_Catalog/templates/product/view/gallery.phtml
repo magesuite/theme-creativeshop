@@ -16,7 +16,9 @@
     $mainImageUrl  = '';
     $mainImageAlt  = '';
 
-    for ($imageIndex = 0; $imageIndex < count($galleryImages); $imageIndex++) {
+    $totalImages = count($galleryImages);
+    
+    for ($imageIndex = 0; $imageIndex < $totalImages; $imageIndex++) {
         $galleryImage = $galleryImages[$imageIndex];
         if ($galleryImage->isMain) {
             $mainImageUrl = $galleryImage->img;
@@ -28,14 +30,15 @@
     // Fix for jumping content
     $imageWidth = $block->getImageAttribute('product_page_image_medium', 'width');
     $imageHeight = $block->getImageAttribute('product_page_image_medium', 'height');
-    $loaderPadding = ($imageHeight / $imageWidth) * 100 . '%';
-
+    
     // Webp support
     $imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
     $isWebpSupported = $imageTypeHelper->supportsWebp($mainImageUrl);
     $imageMimeType = $imageTypeHelper->getMimeType($mainImageUrl);
+
+    $imgClass = $block->getImgClass();
 ?>
-<div class="gallery-placeholder _block-content-loading cs-product-gallery" data-gallery-role="gallery-placeholder">
+<div class="gallery-placeholder _block-content-loading cs-product-gallery<?= $totalImages === 1 ? ' cs-product-gallery--single' : ''?>" data-gallery-role="gallery-placeholder">
     <picture class="cs-product-gallery__placeholder-image gallery-placeholder__image">
         <?php if ($isWebpSupported): ?>
             <source
@@ -53,6 +56,9 @@
             type="<?= $imageMimeType ?>"
             src="<?= $mainImageUrl ?>"
             alt="<?= $mainImageAlt ?>"
+            width="<?= $imageWidth ?>"
+            height="<?= $imageHeight ?>"
+            class="<?= $imgClass ?>"
         >
     </picture>
 </div>
