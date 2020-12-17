@@ -12,7 +12,14 @@
                 <argument name="hide_category_filter" xsi:type="boolean">false</argument>
                 <!-- Name of the excluded category name filter -->
                 <argument name="category_filter_name" xsi:type="string">filter-attribute-cat</argument>
+                <argument name="mobile_filters_trigger_label" translate="true" xsi:type="string">Filters</argument>
             </arguments>
+            <!-- Disabled by default. To render this block set toolbar/sorter/display_area to 'filters' in etc/view.xml -->
+            <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="catalog.leftnav.sorter" template="Smile_ElasticsuiteCatalog::layer/sorter-renderer.phtml" as="sorter">
+                <arguments>
+                    <argument name="sorter_template_path" xsi:type="string">Magento_Catalog::product/list/toolbar/sorter.phtml</argument>
+                </arguments>
+            </block>
         </referenceBlock>
 
         <move element="catalog.navigation.state" destination="category.products.list" as="state" />

@@ -1,0 +1,31 @@
+<?php /** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */ ?>
+<div data-role="title" class="cs-aftersearch-nav__filter-title filter-options-title">
+    <span class="cs-aftersearch-nav__filter-title-text">
+        <?= __($block->getVar('toolbar/sorter/label', 'Magento_Catalog')) ?>
+    </span>
+</div>
+<div data-role="content" class="cs-aftersearch-nav__filter-content filter-options-content">
+    <ol class="items">
+        <?php foreach ($block->getAvailableOrders() as $identifier => $label): ?>
+            <?php
+            $identifier = ($identifier == 'relevance') ? 'relevance_direction_asc' : $identifier;
+
+            list($field, $direction) = explode('_direction_', $identifier);
+            $isActive = ($block->getCurrentOrder() == $field and $block->getCurrentDirection() == $direction);
+            ?>
+
+            <li class="item<?php if ($isActive): ?> current<?php endif ?>">
+                <a href="#" 
+                data-role="sorter" 
+                data-value="<?=$field?>" 
+                data-direction="<?=$direction?>"
+                >
+                    <input type="checkbox"<?php if ($isActive): ?> checked<?php endif; ?>/>
+                    <label for="sortbyFilter_option-<?= $identifier; ?>">
+                        <span><?= $label?></span>
+                    </label>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ol>
+</div>
