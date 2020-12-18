@@ -20,22 +20,30 @@
 ?>
     <?php if (!empty($filters)): ?>
         <nav
-            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter"
+            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> block filter"
             id="layered-filter-block"
             data-mage-init='{ "collapsible": { "active": false, "collateral": { "openedState": "filter-active", "element": "body" }, "mediaQueryScope": "(max-width: 767px)" } }'
-            title="<?= /* @escapeNotVerified */ __('Filters'); ?>"
+            title="<?= $block->getMobileFiltersTriggerLabel(); ?>"
             aria-labelledby="cs-aftersearch-nav__filters-trigger"
         >
             <p class="cs-aftersearch-nav__filters-trigger" id="cs-aftersearch-nav__filters-trigger" data-role="title">
-                <?= /* @escapeNotVerified */ __('Filters'); ?>
+                <?= $block->getMobileFiltersTriggerLabel(); ?>
             </p>
-            <div class="cs-aftersearch-nav__filters | block-content filter-content" data-role="content">
+            <div class="cs-aftersearch-nav__filters block-content filter-content" data-role="content">
                 <ul
-                    class="cs-aftersearch-nav__filter-options<?= $isFiltersLayoutHorizontal ? ' cs-filter-horizontal ' : ''; ?> | filter-options"
+                    class="cs-aftersearch-nav__filter-options<?= $isFiltersLayoutHorizontal ? ' cs-filter-horizontal ' : ''; ?> filter-options"
                     id="narrow-by-list"
                     data-role="content"
                     data-mage-init='{ "accordion": { "openedState": "active", "collapsible": true, "active": <?= $openedFilters; ?>, "multipleCollapsible": <?= $isFiltersLayoutHorizontal ? 'false' : 'true' ?> } }'
                 >
+                <?php if ($block->getVar('toolbar/sorter/display', 'Magento_Catalog') && $block->getVar('toolbar/sorter/display_area', 'Magento_Catalog') == 'filters'): ?>
+                    <li
+                        data-role="collapsible"
+                        class="cs-aftersearch-nav__filter cs-aftersearch-nav__filter--sorter filter-options-item"
+                    >
+                        <?= $block->getChildHtml('sorter'); ?>
+                    </li>
+                <?php endif; ?>
                 <?php foreach ($filters as $filter):
                     $filterIsChecked = in_array($filter->getRequestVar(), $selectedRequestVars);
                     $filterDisplaySearchbox = true;
@@ -55,12 +63,12 @@
                         data-role="collapsible"
                         class="cs-aftersearch-nav__filter<?= $filterIsChecked ? ' cs-aftersearch-nav__filter--checked' : '' ?><?= !$filterDisplaySearchbox ? ' cs-aftersearch-nav__filter--hide-searchbox' : ''; ?> <?= $filterAttributeClass ?> filter-options-item"
                     >
-                        <div data-role="title" class="cs-aftersearch-nav__filter-title | filter-options-title">
+                        <div data-role="title" class="cs-aftersearch-nav__filter-title filter-options-title">
                             <span class="cs-aftersearch-nav__filter-title-text">
                                 <?= /* @escapeNotVerified */ __($filter->getName()) ?>
                             </span>
                         </div>
-                        <div data-role="content" class="cs-aftersearch-nav__filter-content | filter-options-content">
+                        <div data-role="content" class="cs-aftersearch-nav__filter-content filter-options-content">
                             <?= $filtersRenderer->render($filter); ?>
                         </div>
                     </li>
@@ -79,7 +87,7 @@
                 <?php endif; ?>
                 </ul>
             </div>
-            <div class="loading-mask | cs-aftersearch-nav__loader" data-role="panel">
+            <div class="loading-mask cs-aftersearch-nav__loader" data-role="panel">
                 <img
                     class="cs-aftersearch-nav__loader-icon lazyload"
                     src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
@@ -89,7 +97,7 @@
         </nav>
     <?php else: ?>
         <div
-            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> | block filter filter-no-options"
+            class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> block filter filter-no-options"
         >
             <p class="cs-aftersearch-nav__empty-message"><?= /* @escapeNotVerified */  __('No filters available'); ?>  </p>
         </div>
