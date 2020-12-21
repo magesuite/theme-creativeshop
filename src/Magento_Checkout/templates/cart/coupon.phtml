@@ -8,7 +8,7 @@ $buttonCancelLabel = $block->getButtonCancelLabel();
 $collapseOptions = $block->getCollapsibleWidgetOptions();
 ?>
 
-<div class="block discount cs-discount <?= $block->getAdditionalCssClasses() ?>" id="block-discount" 
+<div class="block discount cs-discount <?= $block->getAdditionalCssClasses() ?>" id="block-discount"
     <?php if($block->getIsCollapsible()): ?>
         data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
     <?php endif; ?>
@@ -46,6 +46,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                             value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>"
                             <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtml($placeholder); ?>"<?php endif; ?>
                         />
+                        <?= $block->getChildHtml('checkout.cart.coupon.additional'); ?>
                     </div>
                 </div>
                 <div class="actions-toolbar cs-discount__buttons">
