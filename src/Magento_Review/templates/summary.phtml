@@ -26,11 +26,21 @@ $allVotes = array_sum($votes);
                  ->toHtml();
         ?>
     </div>
-   
+
+    <?php if($block->getShowAllReviewsCount()): ?>
+        <div class="cs-reviews-summary__all-count">
+            <?= $allVotes == 1 ? __('Based on %1 review', $allVotes) : __('Based on %1 reviews', $allVotes) ?>
+        </div>
+    <?php endif; ?>
+
     <ul class="cs-reviews-summary__bars">
         <?php for ($ratingIndex = count($votes), $ratingSteps = 1; $ratingIndex >= $ratingSteps; $ratingIndex--):
             $ratingLabel = $ratingIndex;
-            $ratingLabel .= ' ' . ($ratingIndex == 1 ? __('star') : __('stars'));
+
+            if($block->getShowFullStarsLabel()) {
+                $ratingLabel .= ' ' . ($ratingIndex == 1 ? __('star') : __('stars'));
+            }
+
             $numOfVotes = $votes[$ratingIndex];
             $votesPercentage = ceil($numOfVotes * 100 / $allVotes);
         ?>
