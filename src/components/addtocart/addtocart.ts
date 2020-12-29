@@ -134,7 +134,7 @@ interface IOffcanvasMinicartXmlSettings {
  */
 export default class AddToCart {
     private _$source: JQuery<HTMLElement>;
-    private _$component: JQuery<HTMLElement>;
+    private _$component?: JQuery<HTMLElement>;
     private _$button: JQuery<HTMLElement>;
     private _animationTimeout: ReturnType<typeof setTimeout>;
     private _visibilityTimeout: ReturnType<typeof setTimeout>;
@@ -242,7 +242,7 @@ export default class AddToCart {
         const actionFailed: boolean =
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
-        if (this._$component.length && actionFailed) {
+        if (this._$component && this._$component.length && actionFailed) {
             this._$component.addClass(
                 `${this._options.componentClass}--no-transitions`
             );
@@ -260,7 +260,8 @@ export default class AddToCart {
             if (
                 !actionFailed &&
                 this._options.animateMinicart &&
-                this._options.animateMinicartWithCustomDoneHandler
+                this._options.animateMinicartWithCustomDoneHandler &&
+                this._$component
             ) {
                 this._startQtyUpdate(this._$component);
             }
