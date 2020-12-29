@@ -135,7 +135,7 @@ interface IOffcanvasMinicartXmlSettings {
 export default class AddToCart {
     private _$source: JQuery<HTMLElement>;
     private _$component?: JQuery<HTMLElement>;
-    private _$button: JQuery<HTMLElement>;
+    private _$button?: JQuery<HTMLElement>;
     private _animationTimeout: ReturnType<typeof setTimeout>;
     private _visibilityTimeout: ReturnType<typeof setTimeout>;
     private _allDoneTimeout: ReturnType<typeof setTimeout>;
@@ -178,8 +178,6 @@ export default class AddToCart {
             'vars.Magento_Checkout.minicart_offcanvas'
         );
 
-        this._$component = null;
-        this._$button = null;
         this._animationTimeout = null;
         this._visibilityTimeout = null;
         this._allDoneTimeout = null;
@@ -242,13 +240,21 @@ export default class AddToCart {
         const actionFailed: boolean =
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
+        if (!this._$component || !this._$component.length) {
+            console.warn(
+                `AddToCart._onDone has been called while this._$component is empty.
+Weird. Might be the cause why minicart isn't updated correctly.
+See https://github.com/magesuite/theme-creativeshop/pull/48 for more info.`
+            );
+        }
+
         if (this._$component && this._$component.length && actionFailed) {
             this._$component.addClass(
                 `${this._options.componentClass}--no-transitions`
             );
         }
 
-        if (this._$button.length) {
+        if (this._$button && this._$button.length) {
             this._$button.prop('disabled', false);
         }
 
