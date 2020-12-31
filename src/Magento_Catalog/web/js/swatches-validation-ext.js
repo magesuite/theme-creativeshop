@@ -34,7 +34,7 @@ define([
                     {
                         type: 'slide',
                         responsive: true,
-                        clickableOverlay: false,
+                        clickableOverlay: true,
                         title: $.mage.__('Please select missing options'),
                         modalClass: 'missing-swatches-modal',
                         autoOpen: true,
