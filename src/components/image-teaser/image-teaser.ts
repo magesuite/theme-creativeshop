@@ -68,9 +68,9 @@ interface ImageTeaserOptions {
     /**
      * Defines breakpoint, where carousel should be destroyed and teaser shall display as standard image teaser
      * Default: breakpoint.tablet
-     * @type {number}
+     * @type {number | string}
      */
-    carouselBreakpoint?: number;
+    carouselBreakpoint?: number | string;
 
     /**
      * Defines carousel behaviour depending on given fallback
@@ -172,7 +172,8 @@ export default class ImageTeaser {
         if (this._options.isSlider) {
             if (
                 this._options.isSliderMobile ||
-                $(window).width() >= this._options.carouselBreakpoint
+                $(window).width() >=
+                    parseInt(this._options.carouselBreakpoint, 10)
             ) {
                 this._initTeaser(this._$container);
                 this._isTeaserInitialised = true;
@@ -261,7 +262,8 @@ export default class ImageTeaser {
         const isSliderDesktopOnly =
             !this._options.isSliderMobile && this._options.isSlider;
         const isWindowMobile =
-            $(window).width() < this._options.carouselBreakpoint;
+            $(window).width() < parseInt(this._options.carouselBreakpoint, 10);
+
         if (isSliderMobileOnly) {
             if (isWindowMobile) {
                 if (!this._instance) {
