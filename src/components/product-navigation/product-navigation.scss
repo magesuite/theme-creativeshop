@@ -2,14 +2,15 @@
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
 @import 'components/pseudoicon/mixin';
+@import 'utils/get-value-from-list';
 
 $product-navigation_margin: -4rem 0 0 !default;
 $product-navigation_font-size: 1.1rem !default;
-$product-navigation_border: 1px solid $color_border-500 !default;
-$product-navigation_list-padding: 1em 0 !default;
-$product-navigation_link-padding-top-bottom: 0.5em !default;
-$product-navigation_link-padding: $product-navigation_link-padding-top-bottom
-    2em !default;
+$product-navigation_border-width: 1px !default;
+$product-navigation_border: $product-navigation_border-width solid
+    $color_border-500 !default;
+$product-navigation_list-padding: 1rem 0 !default;
+$product-navigation_link-padding: 0.5rem 2rem !default;
 $product-navigation_link-color: $color_text-800 !default;
 $product-navigation_link-text-transform: uppercase !default;
 $product-navigation_link-font-weight: bold !default;
@@ -23,8 +24,13 @@ $product-navigation_link-icon-type: 'arrow' !default;
 
 // Placeholder height to prevent jump after initialization
 $product-navigation_height: calc(
-    #{$product-navigation_font-size} + (2 * #{$product-navigation_link-padding-top-bottom})
-) !default;
+    #{$product-navigation_font-size} + (
+            #{get-value-from-list($product-navigation_list-padding, 'up')}
+        ) + (#{get-value-from-list($product-navigation_list-padding, 'down')}) +
+        (#{get-value-from-list($product-navigation_link-padding, 'up')}) + (
+            #{get-value-from-list($product-navigation_link-padding, 'down')}
+        ) + #{$product-navigation_border-width}
+);
 
 .#{$ns}product-navigation {
     $root: &;
@@ -58,6 +64,7 @@ $product-navigation_height: calc(
         display: none;
         text-transform: $product-navigation_link-text-transform;
         font-size: $product-navigation_font-size;
+        line-height: 100%;
         font-weight: $product-navigation_link-font-weight;
         padding: $product-navigation_link-padding;
 
