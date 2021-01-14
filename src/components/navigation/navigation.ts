@@ -480,12 +480,16 @@ export default class Navigation {
         const overlayHeight: number = $(document).height() - overlayOffset;
 
         if (!this._$overlay || !this._$overlay.length) {
-            this._$overlay = $('<div class="cs-navigation__overlay"></div>')
-                .css({
-                    height: overlayHeight,
-                    top: overlayOffset,
-                })
-                .appendTo('body');
+            this._$overlay = $(
+                '<div class="cs-navigation__overlay"></div>'
+            ).appendTo('body');
+        }
+
+        if (this._$overlay.length) {
+            this._$overlay.css({
+                height: overlayHeight,
+                top: overlayOffset,
+            });
         }
 
         this._$overlay.addClass('cs-navigation__overlay--visible');
