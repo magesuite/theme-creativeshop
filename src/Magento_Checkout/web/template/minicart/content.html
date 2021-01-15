@@ -26,7 +26,7 @@
             data-bind="i18n: 'My Cart'"
         ></span>
         <!-- ko if: showTotalItems -->
-        <div class="items-total cs-minicart__items-total">
+        <div class="items-total cs-minicart__items-total" data-bind="css: { 'cs-minicart__items-total--empty': getCartParam('summary_count') === 0 }">
             <!-- ko if: maxItemsToDisplay < getCartLineItemsCount() --><span
                 class="count"
                 data-bind="text: maxItemsToDisplay"
@@ -37,10 +37,10 @@
                 class="count"
                 data-bind="text: getCartParam('summary_count')"
             ></span>
-            <!-- ko if: (getCartLineItemsCount() === 1) -->
+            <!-- ko if: (getCartParam('summary_count') === 1) -->
             <span data-bind="i18n: 'item'"></span>
             <!--/ko-->
-            <!-- ko if: (getCartLineItemsCount() > 1) -->
+            <!-- ko if: (getCartParam('summary_count') > 1) -->
             <span data-bind="i18n: 'items'"></span>
             <!--/ko-->
         </div>
