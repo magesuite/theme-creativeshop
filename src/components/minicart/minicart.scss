@@ -155,12 +155,20 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
     &__items-total {
         margin-left: 0.5rem;
 
-        &:before {
-            content: '(';
+        &:not(#{$root}__items-total--empty) {
+            &:before {
+                content: '(';
+            }
+
+            &:after {
+                content: ')';
+            }
         }
 
-        &:after {
-            content: ')';
+        &--empty {
+            .count {
+                display: none;
+            }
         }
 
         @if $minicart-offcanvas {
