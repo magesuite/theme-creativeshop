@@ -135,25 +135,13 @@ $swatches_tooltip-thumbnail-height: #{map-get(
 .swatch-opt {
     font-size: $swatches--pdp_font-size;
 
-    // Selector for error container when swatches are required but not selected.
+    // Errors are hidden, because they only appear
+    // after user clicks "Add to cart" when required swatch is not selected
+    // - however we show a modal then for the user to select it,
+    // so showing an error message is not needed.
     .mage-error {
-        font-size: 1em;
-        width: 100%;
-        margin-left: calc(#{$swatches_label-width} + #{$swatches_label-gutter});
-
-        @if ($swatches_full-width-label == true) {
-            margin-left: 0;
-        }
-
-        @include media('>=laptop') {
-            margin-left: calc(
-                #{$swatches_label-width-laptop-up} + #{$swatches_label-gutter}
-            );
-
-            @if ($swatches_full-width-label == true) {
-                margin-left: 0;
-            }
-        }
+        visibility: hidden;
+        height: 0;
     }
 }
 
@@ -451,7 +439,7 @@ $swatches_tooltip-thumbnail-height: #{map-get(
 .missing-swatches-modal {
     max-width: 40rem;
     margin-left: auto;
-    
+
     .mage-error {
         padding-top: 0.8rem;
     }
