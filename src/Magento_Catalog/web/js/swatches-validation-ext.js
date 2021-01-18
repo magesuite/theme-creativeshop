@@ -56,6 +56,7 @@ define([
                         $formParent.prepend($form);
                         $form.find('.product-options-bottom').show();
                         $form.find('input, select').off('change.addToCart');
+                        $formParent.css('height', '');
                     });
 
                     $('#missing-swatches-modal').on('modalopened', function() {
