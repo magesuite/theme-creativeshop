@@ -35,6 +35,10 @@ define([
                 !$(event.target).is('a') &&
                 element.checkboxText.indexOf(' href=') !== -1
             ) {
+                var $parentLabel = $(event.target).parents('label');
+                if ($parentLabel.length) {
+                    $('#' + $parentLabel.attr('for')).trigger('click');
+                }
                 return;
             } else {
                 $modalContent.children().show();
