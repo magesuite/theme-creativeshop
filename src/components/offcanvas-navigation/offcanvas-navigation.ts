@@ -3,6 +3,13 @@ import * as $ from 'jquery';
 import requireAsync from 'utils/require-async';
 import { default as idleDeferred } from 'utils/idle-deffered';
 
+import {
+    default as HeaderSearch,
+    HeaderSearchOptions,
+} from 'components/header/search/search';
+import viewXml from 'etc/view';
+import deepGet from 'utils/deep-get/deep-get';
+
 /**
  * Component options interface.
  */
@@ -20,6 +27,7 @@ export interface OffcanvasNavigationOptions {
     showActiveCategoryLevel?: boolean;
     highlightActiveCategory?: boolean;
     activeCategoryHighlightClass?: string;
+    headerSearchOptions?: HeaderSearchOptions;
     onNavigationRender?: () => void; // Callback to fire when navigation is rendered
 }
 
@@ -66,6 +74,11 @@ export default class OffcanvasNavigation {
                 showActiveCategoryLevel: true,
                 highlightActiveCategory: false,
                 activeCategoryHighlightClass: `active`,
+                headerSearchOptions: {
+                    targetSelector: '.cs-offcanvas-navigation__search',
+                    searchInputSelector: '#search-offcanvas',
+                    closeElementToggleSearch: false,
+                },
             },
             options
         );
@@ -117,6 +130,15 @@ export default class OffcanvasNavigation {
 
                     if (this._options.onNavigationRender) {
                         this._options.onNavigationRender();
+                    }
+
+                    if (
+                        deepGet(
+                            viewXml,
+                            'vars.Magento_Theme.header.mobile_search_in_offcanvas'
+                        )
+                    ) {
+                        new HeaderSearch(this._options.headerSearchOptions);
                     }
 
                     this._firstInit = false;
