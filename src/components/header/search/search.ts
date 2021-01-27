@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 
 export interface HeaderSearchOptions {
     /**
-     * Element, which is a trigger to show/hide searchbox on click
+     * Element, which is a trigger to show/hide searchbox on click. Outside header search component
      * @default '.cs-header-user-nav__link--search'
      */
     triggerSelector?: string;
@@ -39,9 +39,10 @@ export interface HeaderSearchOptions {
     /**
      * Define if click on closeButtonSelector element in search field should close search element
      * If false, instead of close search element, the value of input field will be removed
+     * If 'both' string is provided both actions are performed
      * @default true
      */
-    closeButtonToggleSearch?: boolean;
+    closeElementToggleSearch?: boolean | string;
 }
 
 export default class HeaderSearch {
@@ -55,7 +56,7 @@ export default class HeaderSearch {
         this._options = $.extend(
             {
                 triggerSelector: '.cs-header-user-nav__link--search',
-                targetSelector: '.cs-header__search',
+                targetSelector: '.cs-header .cs-header__search',
                 closeButtonSelector: '.cs-header-search__close',
                 targetActiveClass: 'cs-header__search--active',
                 triggerActiveClass: 'cs-header-user-nav__item--search-active',
@@ -73,8 +74,10 @@ export default class HeaderSearch {
             return;
         }
 
-        this._$closeBtn = $(this._options.closeButtonSelector);
-        this._$searchBoxInput = $(this._options.searchInputSelector);
+        this._$closeBtn = this._$target.find(this._options.closeButtonSelector);
+        this._$searchBoxInput = this._$target.find(
+            this._options.searchInputSelector
+        );
 
         this._attachEvents();
     }
@@ -95,9 +98,17 @@ export default class HeaderSearch {
 
     protected _closeElementClick(): void {
         this._$closeBtn.on('click', (): void => {
-            if (this._options.closeElementToggleSearch) {
+            if (
+                this._options.closeElementToggleSearch ||
+                this._options.closeElementToggleSearch === 'both'
+            ) {
                 this._toggleSearch();
-            } else {
+            }
+
+            if (
+                !this._options.closeElementToggleSearch ||
+                this._options.closeElementToggleSearch === 'both'
+            ) {
                 this._resetInputValue();
             }
         });
