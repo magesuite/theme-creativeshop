@@ -28,7 +28,7 @@ $buybox_brand-separator-content: '/' !default;
 
 $buybox_product-name-font-size: 2.4rem !default;
 $buybox_product-name-font-weight: 700 !default;
-$buybox_product-name-line-height: 1.15 !default;
+$buybox_product-name-line-height: inherit !default;
 
 $buybox_price-flex-direction: column-reverse !default; // when 2 prices are displayed, they're using flex for arrangement
 $buybox_price-flex-wrap: nowrap !default;
@@ -166,7 +166,7 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
         margin: 0;
         font-size: $buybox_product-name-font-size;
         font-weight: $buybox_product-name-font-weight;
-        line-height: inherit;
+        line-height: $buybox_product-name-line-height;
 
         h1 {
             margin: 0;
@@ -259,6 +259,11 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
     }
 
     &__product-variants {
+        // Fix for disappearing html select
+        .#{$ns}html-select {
+            display: block !important;
+        }
+
         .#{$ns}html-select__trigger {
             height: $buybox_product-variants-select-height;
         }
