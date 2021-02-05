@@ -2,6 +2,7 @@
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
 @import 'utils/visually-hidden';
+@import 'components/typography/mixin';
 
 $product-details-nav_font-size: 1.1rem !default;
 
@@ -11,6 +12,7 @@ $product-details-nav_list-padding: 2em 0 !default;
 $product-details-nav_link-gutter: 2em !default;
 $product-details-nav_link-padding: 0.5em $product-details-nav_link-gutter !default;
 $product-details-nav_link-color: $color_text-800 !default;
+$product-details-nav_link-color-hover: $color_text-800 !default;
 
 $product-details-nav_container-background: $color_background-200 !default;
 $product-details-nav_container-box-shadow: 0px 0px 5px 0px
@@ -55,15 +57,15 @@ $product-details-nav_container-box-shadow: 0px 0px 5px 0px
     }
 
     &__link {
+        @include link(
+            $product-details-nav_link-color,
+            $product-details-nav_link-color-hover
+        );
+
         display: block;
         text-transform: uppercase;
         font-weight: bold;
         padding: $product-details-nav_link-padding;
-
-        &,
-        &:visited {
-            color: $product-details-nav_link-color;
-        }
     }
 
     .counter {
