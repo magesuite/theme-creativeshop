@@ -9,10 +9,10 @@ if($isEnabled) { ?>
             <?php foreach($block->getVariants() as $variantKey => $variantData): ?>
                 <div class="cs-indicator-fast-shipping__element cs-indicator-fast-shipping__element--<?= $variantKey ?>" data-fs-scenario="<?= $variantKey ?>">
                     <div class="cs-indicator-fast-shipping__label">
-                        <?php if(isset($variantData['icon']) && !empty($variantData['icon'])): ?>
+                        <?php if(isset($variantData['icon_url']) && !empty($variantData['icon_url'])): ?>
                             <?= $this->getLayout()
                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                   ->setIconUrl($variantData['icon'])
+                                   ->setIconUrl($variantData['icon_url'])
                                    ->setCssClass('cs-indicator-fast-shipping__element-icon cs-indicator-fast-shipping__element-icon--'.$variantKey)
                                    ->setInlined(true)
                                    ->setLazyLoaded(true)
@@ -26,11 +26,11 @@ if($isEnabled) { ?>
 
                         <?php if(strpos($variantData['text'], '%1')):
                             echo __($variantData['text'], '<span class="cs-indicator-fast-shipping__text-placeholder-'.$variantKey.'"></span>');
-                        else: 
+                        else:
                             echo __($variantData['text']);
                         endif; ?>
 
-                        
+
                     </div>
                 </div>
             <?php endforeach; ?>
