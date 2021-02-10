@@ -78,6 +78,7 @@ import 'components/stack-nav';
 import 'components/sticky-block';
 import 'components/table';
 import 'components/toolbar';
+import 'components/latest-purchased-products';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 import 'Repertus_Packstation';
