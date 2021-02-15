@@ -58,6 +58,7 @@ import 'components/select';
 import 'components/visually-hidden';
 import 'components/ie11-modal';
 import 'components/pwa-notification';
+import 'components/google-recaptcha';
 
 import 'components/non-critical';
 

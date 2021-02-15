@@ -1,0 +1,83 @@
+@import 'config/variables';
+@import 'components/typography/mixin';
+
+$google-recaptcha_margin: 1rem 0 !default;
+$google-recaptcha_text-margin: 0 !default;
+$google-recaptcha_text-color: $color_text-500 !default;
+$google-recaptcha_text-font-size: 1.2rem !default;
+$google-recaptcha_link-color: $link-color_base !default;
+$google-recaptcha_link-color-hover: $link-color_base-hover !default;
+$google-recaptcha_link-decoration: none !default;
+$google-recaptcha_link-decoration-hover: none !default;
+
+// newsletter
+$google-recaptcha_newsletter-margin: 1rem 0 !default;
+$google-recaptcha_newsletter-text-margin: 0 !default;
+$google-recaptcha_newsletter-text-color: $color_text-200 !default;
+$google-recaptcha_newsletter-text-font-size: 1.2rem !default;
+$google-recaptcha_newsletter-link-color: $color_white !default;
+$google-recaptcha_newsletter-link-color-hover: $color_white !default;
+$google-recaptcha_newsletter-link-decoration: none !default;
+$google-recaptcha_newsletter-link-decoration-hover: underline !default;
+
+.#{$ns}google-recaptcha {
+    $root: &;
+
+    margin: $google-recaptcha_margin;
+
+    &__badge {
+        &--invisible {
+            .grecaptcha-badge {
+                visibility: hidden;
+                height: 0 !important;
+            }
+        }
+    }
+
+    &__note {
+        display: inline-block;
+        margin: $google-recaptcha_text-margin;
+        font-size: $google-recaptcha_text-font-size;
+        color: $google-recaptcha_text-color;
+
+        a {
+            @include link(
+                $color: $google-recaptcha_link-color,
+                $color-hover: $google-recaptcha_link-color-hover,
+                $decoration: $google-recaptcha_link-decoration,
+                $decoration-hover: $google-recaptcha_link-decoration-hover
+            );
+        }
+    }
+
+    &--newsletter {
+        display: none;
+        margin: $google-recaptcha_newsletter-margin;
+
+        #{$root}__note {
+            margin: $google-recaptcha_newsletter-text-margin;
+            font-size: $google-recaptcha_newsletter-text-font-size;
+            color: $google-recaptcha_newsletter-text-color;
+
+            a {
+                @include link(
+                    $color: $google-recaptcha_newsletter-link-color,
+                    $color-hover: $google-recaptcha_newsletter-link-color-hover,
+                    $decoration: $google-recaptcha_newsletter-link-decoration,
+                    $decoration-hover:
+                        $google-recaptcha_newsletter-link-decoration-hover
+                );
+            }
+        }
+    }
+
+    &--customer_create {
+        margin-top: -2rem;
+    }
+
+    &--customer_login {
+        .g-recaptcha {
+            margin-bottom: 0 !important;
+        }
+    }
+}
