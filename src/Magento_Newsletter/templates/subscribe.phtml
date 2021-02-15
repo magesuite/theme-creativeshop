@@ -13,24 +13,28 @@ $buttonLabel = $block->getButtonLabel();
         method="post"
         data-mage-init='{"validation": {"errorClass": "mage-error"}}'
         id="newsletter-validate-detail">
-        <div class="field newsletter cs-newsletter__field">
-            <?php if (!empty($label)): ?>
-                <label class="label cs-newsletter__label" for="newsletter"><span><?= $block->escapeHtml($label) ?></span></label>
-            <?php endif; ?>
-            <div class="cs-newsletter__control control">
-                <label for="newsletter" class="cs-newsletter__label"><?=__('Email address') ?></label>
-                <input name="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
-                    <?php if (!empty($placeholder)): ?> placeholder="<?= $block->escapeHtmlAttr($placeholder) ?>" <?php endif; ?> value="<?= $block->escapeHtmlAttr($block->getInputValue()); ?>" data-validate="{required:true, 'validate-email':true}"
-                />
+        <div class="cs-newsletter__form-wrapper">
+            <div class="field newsletter cs-newsletter__field">
+                <?php if (!empty($label)): ?>
+                    <label class="label cs-newsletter__label" for="newsletter"><span><?= $block->escapeHtml($label) ?></span></label>
+                <?php endif; ?>
+                <div class="cs-newsletter__control control">
+                    <label for="newsletter" class="cs-newsletter__label"><?=__('Email address') ?></label>
+                    <input name="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
+                        <?php if (!empty($placeholder)): ?> placeholder="<?= $block->escapeHtmlAttr($placeholder) ?>" <?php endif; ?> value="<?= $block->escapeHtmlAttr($block->getInputValue()); ?>" data-validate="{required:true, 'validate-email':true}"
+                    />
+                </div>
+            </div>
+            <div class="actions cs-newsletter__actions">
+                <button class="action subscribe primary cs-newsletter__button" title="<?= !empty($buttonLabel) ? $block->escapeHtmlAttr($buttonLabel) : __('Subscribe') ?>" type="submit">
+                    <?= $block->getChildHtml('newsletter.subscribe.button.icon') ?>
+                    <?php if (!empty($buttonLabel)): ?>
+                        <span class="cs-newsletter__button-label<?= $block->getHideButtonLabel() ? ' cs-visually-hidden' : '' ?>"><?= $block->escapeHtml($buttonLabel) ?></span>
+                    <?php endif; ?>
+                </button>
             </div>
         </div>
-        <div class="actions cs-newsletter__actions">
-            <button class="action subscribe primary cs-newsletter__button" title="<?= !empty($buttonLabel) ? $block->escapeHtmlAttr($buttonLabel) : __('Subscribe') ?>" type="submit">
-                <?= $block->getChildHtml('newsletter.subscribe.button.icon') ?>
-                <?php if (!empty($buttonLabel)): ?>
-                    <span class="cs-newsletter__button-label<?= $block->getHideButtonLabel() ? ' cs-visually-hidden' : '' ?>"><?= $block->escapeHtml($buttonLabel) ?></span>
-                <?php endif; ?>
-            </button>
-        </div>
-    </form>
+        <?= $block->getChildHtml('newsletter.subscribe.hotspot.form_end'); ?>
+    </form> 
+    <?= $block->getChildHtml('newsletter.subscribe.hotspot.form_below'); ?>
 </div>

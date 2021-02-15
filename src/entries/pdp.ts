@@ -60,6 +60,7 @@ import 'components/select';
 import 'components/product-navigation';
 import 'components/pwa-notification';
 import 'components/dailydeal';
+import 'components/google-recaptcha';
 
 import 'components/non-critical';
 
