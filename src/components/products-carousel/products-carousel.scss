@@ -108,7 +108,7 @@ $products-carousel_item-per-row: deep-get(
     }
 
     // Prevent CLS effects (jumping content), when products carousel is not fully loaded & initialized yet
-    &:not(#{$root}--ready) {
+    &:not(#{$root}--ready):not(#{$root}--list) {
         #{$root}__slide {
             @each $breakpoint, $itemsPerRow in $products-carousel_item-per-row {
                 @include media('>=#{$breakpoint}') {
