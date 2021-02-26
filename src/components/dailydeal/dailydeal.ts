@@ -240,9 +240,9 @@ export default class Dailydeal {
         this._$pdpPriceContainer = this._$element
             .closest(this._options.pdpSaleBlockSelector)
             .find(this._options.pdpPriceContainerSelector);
-        this._$tilePriceContainer = this._$element.closest(
-            this._options.tilePriceContainerSelector
-        );
+        this._$tilePriceContainer = this._$element
+            .closest(this._options.tileContainerSelector)
+            .find(this._options.tilePriceContainerSelector);
         this._$badgeContainer = this._$element
             .closest(this._options.tileContainerSelector)
             .find(this._options.badgeContainerSelector);
