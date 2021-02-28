@@ -249,15 +249,18 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 );
             },
             _UpdatePrice: function() {
-                this._super();
-                var $widget = this;
-                var options = _.object(_.keys(this.optionsMap), {});
-                var element = this.element;
-
-                var isPdp = this.options.isPdp;
-                var currentTileSwatchesClass = element.attr('class');
-
-                this.options.classes.attributeOptionsWrapper = isPdp
+                var currentTileSwatchesClass = this.element.attr('class');
+                this.options.normalPriceLabelSelector = this.options.isPdp
+                    ? $(
+                          this.options.selectorPdp +
+                              ' ' +
+                              this.options.normalPriceLabel
+                      )
+                    : $(this.element)
+                          .closest(this.options.selectorProductTile)
+                          .find(this.options.normalPriceLabel);
+                this.options.classes.attributeOptionsWrapper = this.options
+                    .isPdp
                     ? this.options.classes.pdpClass +
                       ' ' +
                       this.options.swatchesWrapper
@@ -266,19 +269,12 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                       '.' +
                       currentTileSwatchesClass +
                       ' ';
-                this.options.swatchesWrapper;
 
-                this.options.normalPriceLabelSelector = isPdp
-                    ? $(
-                          this.options.selectorPdp +
-                              ' ' +
-                              this.options.normalPriceLabel
-                      )
-                    : $(element)
-                          .closest(this.options.selectorProductTile)
-                          .find(this.options.normalPriceLabel);
+                this._super();
 
-                element
+                var options = _.object(_.keys(this.optionsMap), {});
+
+                this.element
                     .find(
                         '.' +
                             this.options.classes.attributeClass +
@@ -286,7 +282,6 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     )
                     .each(function() {
                         var attributeId = $(this).attr('attribute-id');
-
                         options[attributeId] = $(this).attr('option-selected');
                     });
 
@@ -301,26 +296,8 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 $(
                     '.normal-price .price-final_price .price-wrapper .price'
                 ).toggleClass('discounted-price', $discounted);
-
-                $widget._UpdateTilePriceLabel();
             },
 
-            // Show 'From' price label on exact tile instead of all of tiles.
-            _UpdateTilePriceLabel: function() {
-                var $tileNormalPriceLabelSelector = $(
-                    this.options.selectorProductTile +
-                        ' ' +
-                        this.options.normalPriceLabel
-                );
-
-                var $tilePriceLabel = $(
-                    $(this.element)
-                        .closest($(this.options.selectorProductTile))
-                        .find($tileNormalPriceLabelSelector)
-                );
-
-                $tileNormalPriceLabelSelector.not($tilePriceLabel).hide();
-            },
             /**
              * For now swatches on tiles in Magesuite are not clickable.
              * Swatches area on tiles works as a link to PDP.
