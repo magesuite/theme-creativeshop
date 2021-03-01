@@ -50,21 +50,18 @@ export default class AddressAutofill {
         const typeInterval: number = 200;
         let currentValue: string = this.options.streetField.val() as string;
 
-        this.options.streetField.on(
-            'keyup',
-            (e: KeyboardEvent): void => {
-                clearTimeout(typeTimer);
-                const newValue = this.options.streetField.val() as string;
+        this.options.streetField.on('keyup', (e: KeyboardEvent): void => {
+            clearTimeout(typeTimer);
+            const newValue = this.options.streetField.val() as string;
 
-                if (currentValue.length < newValue.length) {
-                    typeTimer = setTimeout(
-                        this._triggerAutosuggest.bind(this),
-                        typeInterval
-                    );
-                }
-                currentValue = newValue;
+            if (currentValue.length < newValue.length) {
+                typeTimer = setTimeout(
+                    this._triggerAutosuggest.bind(this),
+                    typeInterval
+                );
             }
-        );
+            currentValue = newValue;
+        });
     }
 
     /**
@@ -254,22 +251,20 @@ export default class AddressAutofill {
             }
         });
 
-        $(document).click(
-            (event: Event): void => {
-                if ($(event.target).closest('.cs-html-select').length) {
-                    const $items: JQuery = this.$autosuggestSelectMenu.find(
-                        '.cs-html-select__menu-item'
-                    );
-                    event.preventDefault();
-                    const selectedAddress: FormattedAddress = $(event.target)
-                        .closest($items)
-                        .data('value');
-                    this._fillFields(selectedAddress);
-                    this._focusEmptyField();
-                }
-                this._hideAutosuggest();
+        $(document).click((event: Event): void => {
+            if ($(event.target).closest('.cs-html-select').length) {
+                const $items: JQuery = this.$autosuggestSelectMenu.find(
+                    '.cs-html-select__menu-item'
+                );
+                event.preventDefault();
+                const selectedAddress: FormattedAddress = $(event.target)
+                    .closest($items)
+                    .data('value');
+                this._fillFields(selectedAddress);
+                this._focusEmptyField();
             }
-        );
+            this._hideAutosuggest();
+        });
     }
 
     protected _hideAutosuggest(): void {
@@ -335,27 +330,21 @@ export default class AddressAutofill {
         let typeTimer: number;
         const typeInterval: number = 1000;
 
-        this.options.zipField.on(
-            'keyup',
-            (): void => {
-                if (!this.options.cityField.val()) {
-                    clearTimeout(typeTimer);
-                    typeTimer = setTimeout(
-                        this._fillFieldsBasedOnZip.bind(this),
-                        typeInterval
-                    );
-                }
+        this.options.zipField.on('keyup', (): void => {
+            if (!this.options.cityField.val()) {
+                clearTimeout(typeTimer);
+                typeTimer = setTimeout(
+                    this._fillFieldsBasedOnZip.bind(this),
+                    typeInterval
+                );
             }
-        );
+        });
 
-        this.options.zipField.on(
-            'blur',
-            (): void => {
-                if (!this.options.cityField.val()) {
-                    this._fillFieldsBasedOnZip();
-                }
+        this.options.zipField.on('blur', (): void => {
+            if (!this.options.cityField.val()) {
+                this._fillFieldsBasedOnZip();
             }
-        );
+        });
     }
 
     /**

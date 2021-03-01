@@ -112,16 +112,12 @@ export function renderTree(
         const categoryIconHTML: string =
             settings.showCategoryIcon && category.icon
                 ? `<span class="${offNavClassName}__category-icon-wrapper">
-                    <img src="${category.icon}" alt="${
-                      category.name
-                  }" class="${offNavClassName}__category-icon">
+                    <img src="${category.icon}" alt="${category.name}" class="${offNavClassName}__category-icon">
                </span>`
                 : '';
         const productCountHTML: string =
             settings.showProductsCount && category.productCount
-                ? `<span class="${offNavClassName}__product-qty">${
-                      category.productCount
-                  }</span>`
+                ? `<span class="${offNavClassName}__product-qty">${category.productCount}</span>`
                 : '';
         let additionalItemClass: string = categoryIconHTML
             ? `${offNavClassName}__item--with-icon`
@@ -145,9 +141,7 @@ export function renderTree(
             </a>
                 ${renderTree(category.subcategories, category, settings)}`;
         } else {
-            subtreeHTML += `<a class="${offNavClassName}__link" href="${
-                category.url
-            }">
+            subtreeHTML += `<a class="${offNavClassName}__link" href="${category.url}">
                 <span class="${offNavClassName}__text">
                     ${categoryIconHTML} ${category.name} ${productCountHTML}
                 </span>
