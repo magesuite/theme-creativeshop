@@ -114,7 +114,7 @@ export default class OffcanvasNavigation {
      */
     protected _init(): void {
         this._getHtml()
-            .then(html => this._initHtml(html))
+            .then((html) => this._initHtml(html))
             .then(() =>
                 setTimeout(() => {
                     this._initSwitchers();
@@ -139,6 +139,31 @@ export default class OffcanvasNavigation {
                         )
                     ) {
                         new HeaderSearch(this._options.headerSearchOptions);
+
+                        const $searchInput = $('#search-offcanvas');
+                        $searchInput.focus();
+
+                        // As offcanvas navigation is cached backend functionality to fill search input is lost
+                        // Search query is fetched form url if user is on search results page
+                        if (
+                            $('.catalogsearch-result-index').length &&
+                            !$searchInput.val()
+                        ) {
+                            const search = location.search.substring(1);
+                            const searchQuery = JSON.parse(
+                                '{"' +
+                                    decodeURI(search)
+                                        .replace(/"/g, '\\"')
+                                        .replace(/&/g, '","')
+                                        .replace(/\+/g, ' ')
+                                        .replace(/=/g, '":"') +
+                                    '"}'
+                            );
+
+                            if (searchQuery && searchQuery.q) {
+                                $searchInput.val(searchQuery.q);
+                            }
+                        }
                     }
 
                     this._firstInit = false;
