@@ -138,7 +138,7 @@ export default class OffcanvasNavigation {
                             'vars.Magento_Theme.header.mobile_search_in_offcanvas'
                         )
                     ) {
-                        new HeaderSearch(this._options.headerSearchOptions);
+                        this._handleOffcanvasSearch();
                     }
 
                     this._firstInit = false;
@@ -234,6 +234,36 @@ export default class OffcanvasNavigation {
                         `referer/${btoa(window.location.href)}/`
                     )
             );
+        }
+    }
+
+    /**
+     * Initialize search in offcanvas
+     * Focus on search input
+     * As offcanvas navigation is cached backend functionality to fill search input is lost.
+     * Instead search query is fetched form url if user is on search results page
+     */
+    protected _handleOffcanvasSearch(): void {
+        new HeaderSearch(this._options.headerSearchOptions);
+
+        const $searchInput = $('#search-offcanvas');
+        $searchInput.focus();
+
+        if ($('.catalogsearch-result-index').length && !$searchInput.val()) {
+            const search = location.search.substring(1);
+            const searchQuery = JSON.parse(
+                '{"' +
+                    decodeURI(search)
+                        .replace(/"/g, '\\"')
+                        .replace(/&/g, '","')
+                        .replace(/\+/g, ' ')
+                        .replace(/=/g, '":"') +
+                    '"}'
+            );
+
+            if (searchQuery && searchQuery.q) {
+                $searchInput.val(searchQuery.q);
+            }
         }
     }
 
