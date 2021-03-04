@@ -5,6 +5,8 @@
 
 // stylelint-disable no-descending-specificity
 
+$configurable-products-show-from-price-label: true;
+
 .price-box {
     $root: &;
     @include priceBox();
@@ -33,6 +35,14 @@
                 p:not(.price-from, .price-to)
                 & {
                 @include visually-hidden();
+            }
+        }
+    }
+
+    @if $configurable-products-show-from-price-label {
+        .normal-price {
+            .price-label {
+                display: inline;
             }
         }
     }

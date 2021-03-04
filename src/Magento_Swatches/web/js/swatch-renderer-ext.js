@@ -21,6 +21,12 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 swatchesWrapper: '.swatch-attribute-options',
                 normalPriceLabel: '.normal-price .price-label',
                 isPdp: false,
+                hideFromPriceLabels: true,
+                hideOldPrice: true,
+                $tileOrBuybox: null,
+                buyBoxSelector: '.cs-buybox',
+                isInTile: false,
+                tileSelector: '.cs-product-tile',
 
                 classes: {
                     productTileClass: 'cs-product-tile',
@@ -40,6 +46,17 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     : false;
 
                 this.options.isPdp = isPdp;
+
+                if (!isPdp) {
+                    this.options.isInTile = true;
+                    this.options.$tileOrBuybox = this.element.closest(
+                        this.options.tileSelector
+                    );
+                } else {
+                    this.options.$tileOrBuybox = this.element.parents(
+                        this.options.selectorPdp
+                    );
+                }
             },
             _onGalleryLoaded: function(gallery) {
                 this._super(gallery);
@@ -305,21 +322,44 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 $widget._UpdateTilePriceLabel();
             },
 
-            // Show 'From' price label on exact tile instead of all of tiles.
+            // Toggle price labels
             _UpdateTilePriceLabel: function() {
-                var $tileNormalPriceLabelSelector = $(
-                    this.options.selectorProductTile +
-                        ' ' +
-                        this.options.normalPriceLabel
-                );
+                var isProductSelected = this.options.$tileOrBuybox.find(
+                    '.swatch-attribute[data-option-selected]'
+                ).length;
 
-                var $tilePriceLabel = $(
-                    $(this.element)
-                        .closest($(this.options.selectorProductTile))
-                        .find($tileNormalPriceLabelSelector)
-                );
+                // Hide 'From' price label on all tiles except clicked one
+                if (this.options.hideFromPriceLabels) {
+                    var $tileNormalPriceLabelSelector = $(
+                        this.options.selectorProductTile +
+                            ' ' +
+                            this.options.normalPriceLabel
+                    );
 
-                $tileNormalPriceLabelSelector.not($tilePriceLabel).hide();
+                    var $tilePriceLabel = $(
+                        this.element
+                            .closest($(this.options.selectorProductTile))
+                            .find($tileNormalPriceLabelSelector)
+                    );
+
+                    $tileNormalPriceLabelSelector.not($tilePriceLabel).hide();
+                } else {
+                    // Keep 'from' price label always visible for configurable products
+                    var $fromPriceLabel = this.options.$tileOrBuybox.find(
+                        '.price-box .normal-price .price-label'
+                    );
+
+                    $fromPriceLabel.toggle(!isProductSelected);
+                }
+
+                // Show old price label when simple with discount is selected
+                if (!this.options.hideOldPrice) {
+                    var $oldPrice = this.options.$tileOrBuybox.find(
+                        '.price-box .old-price .price'
+                    );
+
+                    $oldPrice.toggle(isProductSelected);
+                }
             },
             /**
              * For now swatches on tiles in Magesuite are not clickable.

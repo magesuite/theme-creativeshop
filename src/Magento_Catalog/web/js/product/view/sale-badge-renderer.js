@@ -20,12 +20,12 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
         _create: function() {
             this._super();
 
-            var $element = $(this.element);
-            this.$tileOrBuybox = $element;
+            this.$tileOrBuybox = this.element; //by default we are in buybox
 
-            if (!$element.is(this.options.buyBoxSelector)) {
+            // check if we are in tile
+            if (!this.element.is(this.options.buyBoxSelector)) {
                 this.options.isInTile = true;
-                this.$tileOrBuybox = $element.closest(
+                this.$tileOrBuybox = this.element.closest(
                     this.options.tileSelector
                 );
             }
@@ -34,8 +34,12 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
         },
 
         renderSaleBadge: function() {
+            // Change event is triggered by swatch-renderer.js after proper attributes setup
             this._on(this.$tileOrBuybox, {
-                'click .swatch-option': this.updateSaleBadge.bind(this),
+                'change input.swatch-input.super-attribute-select': function() {
+                    this.updateSaleBadge();
+                    this.toggleFromPriceLabel();
+                },
             });
         },
 
@@ -101,23 +105,14 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             var $attributesList = this.$tileOrBuybox.find(
                 this.options.attributesSelector
             );
+
             var $productsIdsIndex = this.$tileOrBuybox
                 .find(this.options.productsIdsSelector)
                 .data('mageSwatchRenderer').options.jsonConfig.index;
 
             var productId;
 
-            $($attributesList)
-                .filter('[data-option-selected]')
-                .each(function() {
-                    var $attribute = $(this);
-                    var attributeId = $attribute.attr('data-attribute-id');
-                    var optionSelected = $attribute.attr(
-                        'data-option-selected'
-                    );
-
-                    selectedOptions[attributeId] = optionSelected;
-                });
+            selectedOptions = this.getSelectedOptions($attributesList);
 
             productId = _.findKey($productsIdsIndex, function(value) {
                 return _.isEqual(value, selectedOptions);
@@ -126,6 +121,51 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             return typeof productId === 'undefined'
                 ? 0
                 : parseInt(productId, 10);
+        },
+
+        getSelectedOptions: function(attributesList) {
+            var selectedOptions = {};
+            var $attributesList = $(attributesList);
+
+            if ($attributesList.length === 1) {
+                var attributeId = $attributesList.attr('data-attribute-id');
+                var optionSelected = $attributesList.attr(
+                    'data-option-selected'
+                );
+
+                selectedOptions[attributeId] = optionSelected;
+            } else {
+                $attributesList
+                    .filter('[data-option-selected]')
+                    .each(function() {
+                        var $attribute = $(this);
+                        var attributeId = $attribute.attr('data-attribute-id');
+
+                        var optionSelected = $attribute.attr(
+                            'data-option-selected'
+                        );
+
+                        selectedOptions[attributeId] = optionSelected;
+                    });
+            }
+
+            return selectedOptions;
+        },
+
+        toggleFromPriceLabel: function() {
+            var $fromPriceLabel = this.$tileOrBuybox.find(
+                '.price-box .normal-price .price-label'
+            );
+            var displayFromPriceLabel = this.shouldDisplayFromPriceLabel();
+
+            $fromPriceLabel.toggle(displayFromPriceLabel);
+        },
+
+        // Show 'from' price label when product is not selected
+        shouldDisplayFromPriceLabel: function() {
+            var isProductSelected = this.getSelectedProductId().length;
+
+            return !isProductSelected;
         },
     });
 
