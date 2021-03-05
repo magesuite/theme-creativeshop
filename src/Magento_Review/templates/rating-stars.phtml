@@ -1,12 +1,14 @@
 <?php
     $maxStars = is_numeric($block->getMaxStars()) ? $block->getMaxStars() : 5;
     $activeStars = $block->getActiveStars();
-    $reviewsCount = $block->getReviewsCount();
+    $reviewsCount = $block->getReviewsCount() ?? 0;
     $reviewsLink = $block->getReviewsLink();
-    $reviewsUrl = $block->getReviewsUrl() ? $block->getReviewsUrl() : false;
+    $reviewsUrl = $block->getReviewsUrl() ?? false;
+    $showIfNoReviews = $block->getShowIfNoReviews() ?? false;
+    $showCount = !$block->getHideReviewsCount() && ($reviewsCount > 0  || $showIfNoReviews);
 ?>
 
-<?php if ($activeStars): ?>
+<?php if ($activeStars || $showIfNoReviews): ?>
     <div class="cs-star-rating <?= $block->getAdditionalClasses(); ?>">
         <div class="cs-star-rating__stars">
             <?php
@@ -36,7 +38,7 @@
         <?php if ($block->getShowNumericalScore()): ?>
             <span class="cs-star-rating__text"><?= $activeStars ?> / <?= $maxStars ?></span>
         <?php endif; ?>
-        <?php if ($reviewsCount > 0 && !$block->getHideReviewsCount()): ?>
+        <?php if ($showCount): ?>
             <?php
                 $reviewsCountMessage = $reviewsCount . '<span class="cs-star-rating__text-annotation"> ' . ($reviewsCount == 1 ? __('review') : __('reviews')) . '</span>';
             ?>
