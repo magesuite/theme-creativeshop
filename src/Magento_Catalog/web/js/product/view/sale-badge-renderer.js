@@ -38,7 +38,6 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             this._on(this.$tileOrBuybox, {
                 'change input.swatch-input.super-attribute-select': function() {
                     this.updateSaleBadge();
-                    this.toggleFromPriceLabel();
                 },
             });
         },
@@ -150,22 +149,6 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             }
 
             return selectedOptions;
-        },
-
-        toggleFromPriceLabel: function() {
-            var $fromPriceLabel = this.$tileOrBuybox.find(
-                '.price-box .normal-price .price-label'
-            );
-            var displayFromPriceLabel = this.shouldDisplayFromPriceLabel();
-
-            $fromPriceLabel.toggle(displayFromPriceLabel);
-        },
-
-        // Show 'from' price label when product is not selected
-        shouldDisplayFromPriceLabel: function() {
-            var isProductSelected = this.getSelectedProductId().length;
-
-            return !isProductSelected;
         },
     });
 
