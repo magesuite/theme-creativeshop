@@ -21,8 +21,8 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 swatchesWrapper: '.swatch-attribute-options',
                 normalPriceLabel: '.normal-price .price-label',
                 isPdp: false,
-                hideFromPriceLabels: true,
-                hideOldPrice: true,
+                hideFromPriceLabels: false,
+                hideOldPrice: false,
                 $tileOrBuybox: null,
                 buyBoxSelector: '.cs-buybox',
                 isInTile: false,
@@ -324,9 +324,14 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
 
             // Toggle price labels
             _UpdateTilePriceLabel: function() {
-                var isProductSelected = this.options.$tileOrBuybox.find(
+                var swatchesAmount = this.options.$tileOrBuybox.find(
+                    '.swatch-attribute'
+                ).length;
+                var swatchesSelected = this.options.$tileOrBuybox.find(
                     '.swatch-attribute[data-option-selected]'
                 ).length;
+
+                var isProductSelected = swatchesAmount === swatchesSelected;
 
                 // Hide 'From' price label on all tiles except clicked one
                 if (this.options.hideFromPriceLabels) {
