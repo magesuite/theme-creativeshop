@@ -21,7 +21,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 swatchesWrapper: '.swatch-attribute-options',
                 normalPriceLabel: '.normal-price .price-label',
                 isPdp: false,
-                hideFromPriceLabels: false,
+                hideFromPriceLabels: true,
                 hideOldPrice: false,
                 $tileOrBuybox: null,
                 buyBoxSelector: '.cs-buybox',
