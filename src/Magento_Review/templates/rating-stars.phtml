@@ -4,48 +4,51 @@
     $reviewsCount = $block->getReviewsCount() ?? 0;
     $reviewsLink = $block->getReviewsLink();
     $reviewsUrl = $block->getReviewsUrl() ?? false;
-    $showIfNoReviews = $block->getShowIfNoReviews() ?? false;
-    $showCount = !$block->getHideReviewsCount() && ($reviewsCount > 0  || $showIfNoReviews);
+    $labelIfNoRatings = $block->getLabelIfNoReviews() ?? '';
+    $showCount = !$block->getHideReviewsCount() && ($reviewsCount > 0  || $labelIfNoRatings);
 ?>
 
-<?php if ($activeStars || $showIfNoReviews): ?>
+<?php if ($activeStars || $labelIfNoRatings): ?>
     <div class="cs-star-rating <?= $block->getAdditionalClasses(); ?>">
-        <div class="cs-star-rating__stars">
-            <?php
-                $iconClass = 'cs-star-rating__star';
+        <?php if ($activeStars): ?>
+            <div class="cs-star-rating__stars">
+                <?php
+                    $iconClass = 'cs-star-rating__star';
 
-                for ($starIndex = 0; $starIndex < $maxStars; $starIndex++) {
+                    for ($starIndex = 0; $starIndex < $maxStars; $starIndex++) {
 
-                    $iconStatus = '';
-                    if ($activeStars > $starIndex) {
-                        $iconStatus = ' ' . $iconClass . '--half-active';
+                        $iconStatus = '';
+                        if ($activeStars > $starIndex) {
+                            $iconStatus = ' ' . $iconClass . '--half-active';
+                        }
+
+                        if (floor($activeStars) > $starIndex) {
+                            $iconStatus = ' ' . $iconClass . '--active';
+                        }
+
+                        echo( 
+                            $this->getLayout()
+                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                ->setIconUrl('images/icons/reviews/star.svg')
+                                ->setCssClass($iconClass . $iconStatus)
+                                ->setInlined(true)
+                                ->toHtml()
+                        ); 
                     }
-                    if (floor($activeStars) > $starIndex) {
-                        $iconStatus = ' ' . $iconClass . '--active';
-                    }
-
-                    echo( 
-                        $this->getLayout()
-                            ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                            ->setIconUrl('images/icons/reviews/star.svg')
-                            ->setCssClass($iconClass . $iconStatus)
-                            ->setInlined(true)
-                            ->toHtml()
-                    ); 
-                }
-            ?>
-        </div>
-        <?php if ($block->getShowNumericalScore()): ?>
-            <span class="cs-star-rating__text"><?= $activeStars ?> / <?= $maxStars ?></span>
+                ?>
+            </div>
+            <?php if ($block->getShowNumericalScore()): ?>
+                <span class="cs-star-rating__text"><?= $activeStars ?> / <?= $maxStars ?></span>
+            <?php endif; ?>
         <?php endif; ?>
         <?php if ($showCount): ?>
             <?php
-                $reviewsCountMessage = $reviewsCount . '<span class="cs-star-rating__text-annotation"> ' . ($reviewsCount == 1 ? __('review') : __('reviews')) . '</span>';
+                $reviewsCountMessage = $reviewsCount ? $reviewsCount .'<span class="cs-star-rating__text-annotation"> ' . ($reviewsCount == 1 ? __('review') : __('reviews')) . '</span>' : $labelIfNoRatings;
             ?>
             <?php if ($reviewsLink): ?>
                 <a class="cs-star-rating__link" href="<?= $reviewsUrl ? $reviewsUrl : '' ?>#reviews">
             <?php endif; ?>
-                <span class="cs-star-rating__text cs-star-rating__text--count"><?= $reviewsCountMessage ?></span>
+                <span class="cs-star-rating__text <?= $reviewsCount ? 'cs-star-rating__text--count' : 'cs-star-rating__text--empty' ?>"><?= $reviewsCountMessage ?></span>
             <?php if ($reviewsLink): ?>
                 </a>
             <?php endif; ?>
