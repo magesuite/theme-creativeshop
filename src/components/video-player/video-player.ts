@@ -86,7 +86,7 @@ export default class VideoPlayer {
         );
 
         this._$videosTriggers = $(this._options.scope).find(
-            'a[href*="youtube.com"]'
+            'a[href*="youtube.com"], a[href*="youtu.be"]'
         );
 
         if (this._$videosTriggers.length) {
