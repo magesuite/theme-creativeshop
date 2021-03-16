@@ -30,6 +30,12 @@ $side-nav_category-current-font-weight: 700 !default;
 .#{$ns}side-nav {
     $root: &;
 
+    & ~ .#{$ns}aftersearch-nav {
+        .#{$ns}offcanvas-filters & {
+            margin-top: 0;
+        }
+    }
+
     &__parent {
         margin-bottom: 1.5rem;
         padding: 1.5rem 0;
@@ -37,6 +43,10 @@ $side-nav_category-current-font-weight: 700 !default;
         text-transform: $side-nav_parent-text-transform;
         font-weight: $side-nav_parent-font-weight;
         border-bottom: $side-nav_parent-border-bottom;
+
+        .#{$ns}offcanvas-filters & {
+            display: none;
+        }
 
         &-link,
         &-link:visited {
@@ -94,12 +104,21 @@ $side-nav_category-current-font-weight: 700 !default;
                 }
             }
         }
+
+        .#{$ns}offcanvas-filters & {
+            margin-bottom: 0;
+        }
     }
 
     &__item {
         font-weight: $side-nav_category-font-weight;
         text-transform: none;
         font-size: $side-nav_category-font-size;
+
+        .#{$ns}offcanvas-filters & {
+            padding-left: 2rem;
+            padding-right: 3rem;
+        }
     }
 
     &__link,

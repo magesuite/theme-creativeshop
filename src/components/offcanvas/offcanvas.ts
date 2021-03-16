@@ -12,6 +12,7 @@ export interface OffcanvasOptions {
     topbarSelector?: string; // Topbar element selector
     pagewrapperSelector?: string; // Page wrapper element selector
     bodyOpenClass?: string; // Class added to the body element when given instance of offcanvas is open
+    closeButtonClassName?: string; // Optional, additional close button name.
 }
 
 /**
@@ -24,10 +25,12 @@ export default class Offcanvas {
     protected _$trigger: JQuery;
     protected _$topbar: JQuery;
     protected _$pageWrapper: JQuery<HTMLElement>;
+    protected _$closeButton: JQuery;
     protected _options: OffcanvasOptions;
     protected _eventListeners: {
         triggerClick?: (event: Event) => void;
         overlayClick?: (event: Event) => void;
+        closeClick?: (event: Event) => void;
     } = {};
 
     /**
@@ -46,6 +49,7 @@ export default class Offcanvas {
                 topbarSelector: '.cs-topbar',
                 pagewrapperSelector: '.page-wrapper',
                 bodyOpenClass: '',
+                closeButtonClassName: '',
             },
             options
         );
@@ -60,6 +64,11 @@ export default class Offcanvas {
         this._$trigger = $(`.${this._options.triggerClassName}`);
         this._$topbar = $(this._options.topbarSelector);
         this._$pageWrapper = $(this._options.pagewrapperSelector);
+
+        if (this._options.closeButtonClassName) {
+            this._$closeButton = $(`.${this._options.closeButtonClassName}`);
+        }
+
         this._addEventListeners();
     }
     /**
@@ -189,6 +198,11 @@ export default class Offcanvas {
             this._eventListeners.overlayClick = () => this.hide();
             this._$overlay.on('click', this._eventListeners.overlayClick);
         }
+
+        if (this._options.closeButtonClassName && this._$closeButton.length) {
+            this._eventListeners.closeClick = () => this.hide();
+            this._$closeButton.on('click', this._eventListeners.closeClick);
+        }
     }
     /**
      * Removes event listeners.
@@ -196,5 +210,9 @@ export default class Offcanvas {
     protected _removeEventListeners(): void {
         this._$trigger.off('click', this._eventListeners.triggerClick);
         this._$overlay.off('click', this._eventListeners.overlayClick);
+
+        if (this._options.closeButtonClassName && this._$closeButton.length) {
+            this._$closeButton.off('click', this._eventListeners.closeClick);
+        }
     }
 }

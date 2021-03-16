@@ -41,6 +41,7 @@ import 'components/newsletter';
 import 'components/offcanvas-toggle';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
+import 'components/offcanvas-filters';
 import 'components/page-title';
 import 'components/page-bottom';
 import 'components/price-box';
