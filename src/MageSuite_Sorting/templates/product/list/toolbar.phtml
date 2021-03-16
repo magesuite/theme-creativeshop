@@ -9,6 +9,12 @@
 ?>
 <?php if ($block->getCollection()->getSize()): ?>
     <div class="toolbar toolbar-products cs-toolbar <?= $block->getAdditionalCssClasses() ?>" data-mage-init='<?= /* @escapeNotVerified */ $block->getWidgetOptionsJson() ?>'>
+        <?php if ($block->getVar('toolbar/filters_offcanvas_button/display', 'Magento_Catalog')): ?>
+            <div class="cs-toolbar__item cs-toolbar__item--offcanvas">
+                <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/filters-button.phtml')); ?>
+            </div>
+        <?php endif; ?>
+
         <?php if ($block->getVar('toolbar/amount/display', 'Magento_Catalog')): ?>
             <div class="cs-toolbar__item cs-toolbar__item--amount">
                 <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')); ?>

@@ -1,0 +1,21 @@
+<?php
+    $filtersIcon = $block->getVar('toolbar/filters_offcanvas_button/icon', 'Magento_Catalog');
+?>
+
+<button class="cs-toolbar__filters-button" type="button" aria-label="<?= __('Toggle filters') ?>">
+    <?php if ($filtersIcon): ?>    
+        <?= $this->getLayout()
+            ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+            ->setIconUrl($filtersIcon)
+            ->setCssClass('cs-toolbar__filters-button-icon')
+            ->setAltText(__('Set Ascending Direction'))
+            ->setInlined(true)
+            ->setLazyLoaded(true)
+            ->toHtml(); 
+        ?>
+    <?php endif; ?>
+
+    <span class="cs-toolbar__filters-button-label">
+        <?= __($block->getVar('toolbar/filters_offcanvas_button/label', 'Magento_Catalog')) ?>
+    </span>
+</button>
