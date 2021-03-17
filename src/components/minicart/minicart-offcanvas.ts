@@ -239,7 +239,10 @@ export default class Minicart {
 
         this._$minicart
             .on('contentUpdated click touchstart', (): void => {
-                if (!this._areEventsBound) {
+                if (
+                    !this._areEventsBound ||
+                    this._areEventsBound === undefined
+                ) {
                     this._addEvents();
                     this._areEventsBound = true;
                 }
