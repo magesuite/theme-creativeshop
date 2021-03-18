@@ -239,12 +239,8 @@ export default class Minicart {
 
         this._$minicart
             .on('contentUpdated click touchstart', (): void => {
-                if (
-                    !this._areEventsBound ||
-                    this._areEventsBound === undefined
-                ) {
+                if (!this._areEventsBound) {
                     this._addEvents();
-                    this._areEventsBound = true;
                 }
             })
             .on('openMinicart', (): void => this.openMinicart());
@@ -506,16 +502,23 @@ export default class Minicart {
      * Attach events to minicart
      */
     protected _addEvents(): void {
-        $('#btn-minicart-close, .btn-minicart-close').on(
-            'click',
-            (event: JQuery.ClickEvent): void => {
-                const $target: JQuery = $(event.target);
+        const $closeButton = $('#btn-minicart-close, .btn-minicart-close');
 
-                if ($target.closest('.btn-minicart-close').length) {
-                    event.preventDefault();
+        if ($closeButton.length) {
+            $('#btn-minicart-close, .btn-minicart-close').on(
+                'click',
+                (event: JQuery.ClickEvent): void => {
+                    const $target: JQuery = $(event.target);
+
+                    if ($target.closest('.btn-minicart-close').length) {
+                        event.preventDefault();
+                    }
+                    this._offcanvasMinicart.hide();
                 }
-                this._offcanvasMinicart.hide();
-            }
-        );
+            );
+            this._areEventsBound = true;
+        } else {
+            this._areEventsBound = false;
+        }
     }
 }
