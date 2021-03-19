@@ -165,7 +165,6 @@ export default class Minicart {
     protected _offcanvasMinicart: offcanvas;
     protected _$minicartTrigger: JQuery;
     protected _productsCarouselOptions?: IProductsCarouselOptions;
-    protected _areEventsBound: boolean;
     protected _options: MinicartOptions;
     protected _endpointUrl: JQueryDeferred<string> = jQuery.Deferred();
 
@@ -238,12 +237,9 @@ export default class Minicart {
         });
 
         this._$minicart
-            .on('contentUpdated click touchstart', (): void => {
-                if (!this._areEventsBound) {
-                    this._addEvents();
-                    this._areEventsBound = true;
-                }
-            })
+            .on('click touchend', '#btn-minicart-close', (): any =>
+                this._offcanvasMinicart.hide()
+            )
             .on('openMinicart', (): void => this.openMinicart());
 
         if (this._xmlSettings.open_on_product_added) {
@@ -497,22 +493,5 @@ export default class Minicart {
                 }
                 window.location.href = response.url;
             });
-    }
-
-    /**
-     * Attach events to minicart
-     */
-    protected _addEvents(): void {
-        $('#btn-minicart-close, .btn-minicart-close').on(
-            'click',
-            (event: JQuery.ClickEvent): void => {
-                const $target: JQuery = $(event.target);
-
-                if ($target.closest('.btn-minicart-close').length) {
-                    event.preventDefault();
-                }
-                this._offcanvasMinicart.hide();
-            }
-        );
     }
 }
