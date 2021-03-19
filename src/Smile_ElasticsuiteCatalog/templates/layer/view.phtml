@@ -17,18 +17,22 @@
     $selectedRequestVars = array_map(function($selectedFilter) {
         return $selectedFilter->getFilter()->getRequestVar();
     }, $selectedFilters);
+
+    $isCollapsibleMobile = $block->getIsCollapsibleMobile();
 ?>
     <?php if (!empty($filters)): ?>
         <nav
             class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> block filter"
             id="layered-filter-block"
-            data-mage-init='{ "collapsible": { "active": false, "collateral": { "openedState": "filter-active", "element": "body" }, "mediaQueryScope": "(max-width: 767px)" } }'
+            <?php if ($isCollapsibleMobile): ?>data-mage-init='{ "collapsible": { "active": false, "collateral": { "openedState": "filter-active", "element": "body" }, "mediaQueryScope": "(max-width: 767px)" } }' <?php endif; ?>
             title="<?= $block->getMobileFiltersTriggerLabel(); ?>"
             aria-labelledby="cs-aftersearch-nav__filters-trigger"
         >
-            <p class="cs-aftersearch-nav__filters-trigger" id="cs-aftersearch-nav__filters-trigger" data-role="title">
-                <?= $block->getMobileFiltersTriggerLabel(); ?>
-            </p>
+            <?php if ($isCollapsibleMobile): ?>
+                <p class="cs-aftersearch-nav__filters-trigger" id="cs-aftersearch-nav__filters-trigger" data-role="title">
+                    <?= $block->getMobileFiltersTriggerLabel(); ?>
+                </p>
+            <?php endif; ?>
             <div class="cs-aftersearch-nav__filters block-content filter-content" data-role="content">
                 <ul
                     class="cs-aftersearch-nav__filter-options<?= $isFiltersLayoutHorizontal ? ' cs-filter-horizontal ' : ''; ?> filter-options"

@@ -96,6 +96,11 @@ $aftersearch-nav--horizontal_rows: (
         margin: 0;
     }
 
+    .#{$ns}offcanvas-filters & {
+        margin: 0;
+        width: 100%;
+    }
+
     &__loader {
         display: none;
     }
@@ -196,17 +201,22 @@ $aftersearch-nav--horizontal_rows: (
             background: $aftersearch-nav_filters-trigger-background--opened;
             color: $aftersearch-nav_filters-trigger-color--opened;
         }
+
+        .#{$ns}offcanvas-filters & {
+            padding-left: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+            padding-right: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+
+            &:after,
+            &:before {
+                right: $aftersearch-nav--offcanvas-filters-tile-icon-right-position;
+            }
+        }
     }
 
     &__filters {
         padding: 0;
         margin: 0;
         overflow: hidden;
-        height: 0;
-
-        &[aria-hidden] {
-            height: auto;
-        }
 
         @include media('>=tablet') {
             height: auto;
