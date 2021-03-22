@@ -94,7 +94,8 @@ export default class Offcanvas {
         const $currentTopOffset: number = window.scrollY;
         $('body')
             .addClass('no-scroll ' + this._options.bodyOpenClass)
-            .css({ top: -$currentTopOffset });
+            .css({ top: -$currentTopOffset })
+            .trigger('before-offcanvas-open', [this]);
         this._$pageWrapper.addClass('no-scroll-child');
 
         this._$trigger
@@ -130,6 +131,23 @@ export default class Offcanvas {
             }
         );
     }
+
+    /**
+     * Hides offcanvas but leave body and topbar state. This method is trigger when another offcanvas will be opened.
+     * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is hidden.
+     */
+    public softHide(): Promise<Offcanvas> {
+        this._$trigger
+            .removeClass(`${this._options.triggerClassName}--active`)
+            .attr('aria-expanded', 'false');
+        return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
+            () => {
+                this._$element.trigger('offcanvas-hide', this);
+                return this;
+            }
+        );
+    }
+
     /**
      * Shows overlay.
      * @return {Promise<Offcanvas>} Promise that resolves after overlay is shown.
@@ -203,6 +221,12 @@ export default class Offcanvas {
             this._eventListeners.closeClick = () => this.hide();
             this._$closeButton.on('click', this._eventListeners.closeClick);
         }
+
+        $('body').on('before-offcanvas-open', (e, instance) => {
+            if (!instance._$element.is(this._$element)) {
+                this.softHide();
+            }
+        });
     }
     /**
      * Removes event listeners.
