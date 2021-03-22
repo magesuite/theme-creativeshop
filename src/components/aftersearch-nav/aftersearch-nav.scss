@@ -217,6 +217,15 @@ $aftersearch-nav--horizontal_rows: (
         padding: 0;
         margin: 0;
         overflow: hidden;
+        height: 0; // Prevent layout shift before collapse widget initialization
+
+        &[aria-hidden] {
+            height: auto; // Initialized collapse widget is recognized by additional aria-hidden attribute
+        }
+
+        .#{$ns}offcanvas-filters & {
+            height: auto;
+        }
 
         @include media('>=tablet') {
             height: auto;
