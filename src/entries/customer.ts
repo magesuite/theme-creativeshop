@@ -81,7 +81,6 @@ import 'components/toolbar';
 import 'components/latest-purchased-products';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'Repertus_Packstation';
 
 // Exported for usage in templates:
 export { Select } from 'components/select';
