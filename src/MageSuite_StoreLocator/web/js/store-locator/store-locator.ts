@@ -3,7 +3,6 @@ import 'mage/translate';
 
 import mapStyles from './map-style'; // custom styles for google map
 import MarkerClusterer from './markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
-import breakpoint from 'utils/breakpoint/breakpoint';
 
 /**
  * Store locator component options interface.
@@ -647,25 +646,25 @@ export default class StoreLocator {
         // Opening hours are not ready yest in response from backend
         const openingHours = store.openingHours ? store.openingHours : '';
 
-        return `<div class="cs-store-locator__item" 
+        return `<div class="cs-store-locator__item"
             data-id="${store.sourceCode}" data-lat="${
             store.latitude
         }" data-lng="${store.longitude}">
-            <div class="cs-store-locator__store-details-close"></div> 
+            <div class="cs-store-locator__store-details-close"></div>
             <div class="cs-store-locator__item-content">
                 <div class="cs-store-locator__item-header">
                     <h2 class="cs-store-locator__item-name">${store.name}</h2>
                     <a href="${routeLink}" target="_blank" rel="noopener noreferrer" class="cs-store-locator__item-route">
                         <span>${$.mage.__('Route')}</span>
                     </a>
-                </div> 
+                </div>
                 ${addressLine1}
                 ${phoneLine}
                 ${faxLine}
                 ${emailLine}
                 ${websiteLine}
                 ${descriptionLine}
-            </div> 
+            </div>
             ${openingHours}
             <div class="cs-store-locator__item-footer">
                 ${storeDistance}
