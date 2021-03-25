@@ -80,7 +80,6 @@ import 'components/sticky-block';
 import 'components/table';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-import 'Repertus_Packstation';
 
 import 'MageSuite_LoginOrGuestCheckoutStep';
 
