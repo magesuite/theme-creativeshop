@@ -1,6 +1,5 @@
 import * as $ from 'jquery';
 import 'mage/translate';
-import breakpoint from 'utils/breakpoint/breakpoint';
 
 interface SalebarWidgetOptions {
     timerDate?: number;
