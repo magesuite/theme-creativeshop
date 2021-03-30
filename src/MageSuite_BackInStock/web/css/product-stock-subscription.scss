@@ -1,11 +1,63 @@
 @import 'config/variables';
 @import 'components/button/mixin';
 
+$product-stock-subscription_modal-max-width: 45rem !default;
 $product-stock-subscription_button-type: $button_default-type !default;
 $product-stock-subscription_button-icon-pos: 'right' !default;
+$product-stock-subscription_push-notification-button-type: 'secondary' !default;
+$product-stock-subscription_push-notification-button-icon-pos: 'no-icon' !default;
+$product-stock-subscription_button-icon-max-width: 2.2rem !default;
+$product-stock-subscription_button-icon-max-height: $product-stock-subscription_button-icon-max-width !default;
+$product-stock-subscription_ajax-loader-width: 5rem !default;
+$product-stock-subscription_ajax-loader-height: $product-stock-subscription_ajax-loader-width !default;
 
 // MageSuite_BackInStock extension styling
 .#{$ns}product-stock-subscription {
+    $root: &;
+
+    position: relative;
+    height: auto;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.35s ease, opacity 0.25s linear;
+
+    &--hidden {
+        margin: 0 !important;
+        overflow: hidden;
+        height: 0;
+        opacity: 0;
+        transform: translate3d(0, -2rem, 0);
+
+        #{$root}__modal & {
+            height: auto;
+            opacity: 1;
+            transform: none;
+            text-align: center;
+        }
+    }
+
+    .loading-mask {
+        &,
+        img {
+            position: absolute;
+        }
+    }
+
+    .loader img {
+        width: $product-stock-subscription_ajax-loader-width;
+        height: $product-stock-subscription_ajax-loader-height;
+    }
+
+    &__modal {
+        .modal-inner-wrap {
+            max-width: $product-stock-subscription_modal-max-width;
+        }
+    }
+
+    &__introduction {
+        margin-bottom: 1rem;
+    }
+
     &__field {
         display: flex;
         flex-direction: column;
@@ -22,6 +74,24 @@ $product-stock-subscription_button-icon-pos: 'right' !default;
 
         .mage-error {
             margin-bottom: 0.6rem;
+        }
+    }
+
+    &__or {
+        display: block;
+        margin: 1.5rem 0;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    &__msg {
+        .message {
+            display: none;
+
+            &.error,
+            &.success {
+                display: block;
+            }
         }
     }
 
@@ -47,7 +117,23 @@ $product-stock-subscription_button-icon-pos: 'right' !default;
             $icon_pos: $product-stock-subscription_button-icon-pos
         );
 
-        max-width: 2.2rem;
-        max-height: 2.2rem;
+        max-width: $product-stock-subscription_button-icon-max-width;
+        max-height: $product-stock-subscription_button-icon-max-height;
+    }
+
+    &__push-button {
+        @include button(
+            $type: $product-stock-subscription_push-notification-button-type,
+            $icon_pos:
+                $product-stock-subscription_push-notification-button-icon-pos
+        );
+    }
+
+    &__push-button-label {
+        @include button_span(
+            $type: $product-stock-subscription_push-notification-button-type,
+            $icon_pos:
+                $product-stock-subscription_push-notification-button-icon-pos
+        );
     }
 }

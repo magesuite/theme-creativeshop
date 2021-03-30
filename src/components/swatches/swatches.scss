@@ -4,6 +4,7 @@
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 @import 'components/button/mixin';
+@import 'utils/get-value-from-list.scss';
 
 $swatches--clickable: deep-get(
     $view-xml,
@@ -50,6 +51,10 @@ $swatches_swatch--text-disabled-background: $color_background-200 !default;
 $swatches_swatch--text-disabled-border: 1px solid $color_border-500 !default;
 $swatches_swatch--text-disabled-color: $color_text-400 !default;
 $swatches_swatch--text-opacity: 0.65 !default;
+
+$swatches_swatch--backinstock-background: rgba($color_background-600, 0.55)
+    url(../images/icons/push-notification/icon_notification-outline.svg)
+    center/64% no-repeat;
 
 $swatches_swatch-outline-width: 1px !default;
 $swatches_swatch-outline-offset: (
@@ -299,22 +304,11 @@ $swatches_tooltip-thumbnail-height: #{map-get(
         background: url(../images/icons/swatches/disabled.svg)
             rgba($color_background-600, 0.5) center no-repeat;
         transform: translate(-50%, -50%);
-        width: calc(#{$swatches_swatch-height} - 1.4em);
-        height: calc(#{$swatches_swatch-height} - 1.4em);
+        width: calc(#{$swatches_swatch-height} - 1.2em);
+        height: calc(#{$swatches_swatch-height} - 1.2em);
         background-size: 0.6em;
         transition: opacity 0.3s;
         opacity: 0;
-    }
-
-    &:not(.disabled):not(.selected):not([disabled]) {
-        &:hover {
-            border: $swatches_swatch--hover-border;
-            background: $swatches_swatch--hover-background;
-
-            &:before {
-                border: $swatches_swatch--hover-outline;
-            }
-        }
     }
 
     &.selected {
@@ -326,8 +320,8 @@ $swatches_tooltip-thumbnail-height: #{map-get(
         }
     }
 
-    &.disabled,
-    &[disabled] {
+    &.disabled:not(.back-in-stock-alert),
+    &[disabled]:not(.back-in-stock-alert) {
         cursor: not-allowed;
 
         &.text {
@@ -344,6 +338,36 @@ $swatches_tooltip-thumbnail-height: #{map-get(
         &.color {
             &:after {
                 opacity: 1;
+            }
+        }
+    }
+
+    &.back-in-stock-alert {
+        &:after {
+            background: $swatches_swatch--backinstock-background;
+            opacity: 1;
+        }
+
+        &.text {
+            padding-right: 2em;
+
+            &:after {
+                left: auto;
+                right: get-value-from-list($swatches_swatch-padding, 'right');
+                background-color: transparent;
+                transform: translateY(-50%);
+            }
+        }
+    }
+
+    &:not(.disabled):not(.selected):not([disabled]),
+    &.back-in-stock-alert {
+        &:hover {
+            border: $swatches_swatch--hover-border;
+            background: $swatches_swatch--hover-background;
+
+            &:before {
+                border: $swatches_swatch--hover-outline;
             }
         }
     }

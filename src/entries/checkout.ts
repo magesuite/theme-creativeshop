@@ -47,7 +47,7 @@ import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
-import 'components/pwa-notification-panel';
+import 'components/push-notification';
 import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
