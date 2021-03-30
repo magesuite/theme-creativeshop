@@ -34,29 +34,31 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 },
             },
             _init: function() {
+                if (!this.options.$tileOrBuybox) {
+                    var isPdp = this.element.parents(this.options.selectorPdp)
+                        .length
+                        ? true
+                        : false;
+
+                    this.options.isPdp = isPdp;
+
+                    if (!isPdp) {
+                        this.options.isInTile = true;
+                        this.options.$tileOrBuybox = this.element.closest(
+                            this.options.tileSelector
+                        );
+                    } else {
+                        this.options.$tileOrBuybox = this.element.parents(
+                            this.options.selectorPdp
+                        );
+                    }
+                }
+
                 if (this.element.attr('data-rendered')) {
                     return;
                 }
 
                 this._super();
-
-                var isPdp = this.element.parents(this.options.selectorPdp)
-                    .length
-                    ? true
-                    : false;
-
-                this.options.isPdp = isPdp;
-
-                if (!isPdp) {
-                    this.options.isInTile = true;
-                    this.options.$tileOrBuybox = this.element.closest(
-                        this.options.tileSelector
-                    );
-                } else {
-                    this.options.$tileOrBuybox = this.element.parents(
-                        this.options.selectorPdp
-                    );
-                }
             },
             _onGalleryLoaded: function(gallery) {
                 this._super(gallery);
