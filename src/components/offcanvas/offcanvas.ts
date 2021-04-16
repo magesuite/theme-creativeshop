@@ -7,6 +7,7 @@ export interface OffcanvasOptions {
     className?: string; // Component class name.
     triggerClassName?: string; // Offcanvas trigger class name.
     closeOnBlur?: boolean; // Should offcanvas be closed on overlay click.
+    closeOnOtherOffcanvasOpened?: boolean; // Should offcanvas be closed when other offcanvas is about to be opened.
     drawerTransitionDuration?: number; // How long does the drawer CSS transition take in ms.
     overlayTransitionDuration?: number; // How long does the overlay CSS transition take in ms.
     topbarSelector?: string; // Topbar element selector
@@ -44,6 +45,7 @@ export default class Offcanvas {
                 className: 'cs-offcanvas',
                 triggerClassName: 'cs-offcanvas-trigger',
                 closeOnBlur: true,
+                closeOnOtherOffcanvasOpened: true,
                 drawerTransitionDuration: 300,
                 overlayTransitionDuration: 300,
                 topbarSelector: '.cs-topbar',
@@ -222,11 +224,13 @@ export default class Offcanvas {
             this._$closeButton.on('click', this._eventListeners.closeClick);
         }
 
-        $('body').on('before-offcanvas-open', (e, instance) => {
-            if (!instance._$element.is(this._$element)) {
-                this.softHide();
-            }
-        });
+        if (this._options.closeOnOtherOffcanvasOpened) {
+            $('body').on('before-offcanvas-open', (e, instance) => {
+                if (!instance._$element.is(this._$element)) {
+                    this.softHide();
+                }
+            });
+        }
     }
     /**
      * Removes event listeners.
