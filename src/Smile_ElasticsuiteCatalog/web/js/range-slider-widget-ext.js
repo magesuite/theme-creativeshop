@@ -64,13 +64,13 @@ define(['jquery'], function($) {
                 var key = event.key || event.keyCode;
 
                 if (event.type === 'blur' || key === 'Enter' || key === 13) {
-                    var from = parseFloat(
+                    var from = this.parseStringToFloat(
                         this.element
                             .find(this.options.fromInput)
                             .val()
                             .replace(/[^\d\.\,]/, '') || 0
                     );
-                    var to = parseFloat(
+                    var to = this.parseStringToFloat(
                         this.element
                             .find(this.options.toInput)
                             .val()
@@ -95,6 +95,17 @@ define(['jquery'], function($) {
 
                     this._updateRange(from, to);
                 }
+            },
+            /**
+             * Helper which properly transforms formatted string to float
+             * @param {string} amount
+             */
+            parseStringToFloat: function(amount) {
+                return parseFloat(
+                    amount
+                        .replace(this.options.fieldFormat.groupSymbol, '')
+                        .replace(this.options.fieldFormat.decimalSymbol, '.')
+                );
             },
             /**
              * Updates slider widget with new values.
