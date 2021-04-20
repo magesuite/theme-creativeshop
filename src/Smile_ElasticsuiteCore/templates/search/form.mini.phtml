@@ -8,12 +8,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
 
 <div class="cs-header__search">
     <form role="search" class="cs-header-search" id="search_mini_form" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get">
-        <div 
-            class="cs-header-search__field"
-            role="combobox"
-            aria-owns="search_autocomplete"
-            aria-haspopup="grid"
-        >
+        <div class="cs-header-search__field">
             <label class="label cs-header-search__label" for="search" data-role="minisearch-label">
                 <span><?= $block->escapeHtml(__('Search')) ?></span>
             </label>
@@ -32,10 +27,13 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                 placeholder="<?= /* @escapeNotVerified */ $block->getSearchPlaceholder(); ?>"
                 class="cs-header-search__input"
                 maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength(); ?>"
-                aria-controls="search_autocomplete"
-                aria-autocomplete="list"
+                role="combobox"
+                aria-haspopup="false"
+                aria-autocomplete="both"
+                aria-expanded="false"
                 autocomplete="off"
                 data-block="autocomplete-form"
+                aria-controls="search_autocomplete"
             />
             <div class="cs-header-search__action">
                 <span class="cs-header-search__close">
@@ -53,10 +51,10 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                 </button>
             </div>
         </div>
-        <div 
-            id="search_autocomplete" 
+        <div
+            id="search_autocomplete"
             class="cs-header-search__autocomplete search-autocomplete cs-autocomplete"
-            aria-labelledby="search_autocomplete" 
+            aria-labelledby="search_autocomplete"
             role="grid"
         ></div>
     </form>
