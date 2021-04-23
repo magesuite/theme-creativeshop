@@ -9,6 +9,9 @@ import 'config/base.scss';
 // TODO: Remove this file when possible
 import 'bundle.scss';
 
+// Global utilities:
+import 'utils/breakpoint/breakpoint';
+
 // =============================================================================
 // Components
 // =============================================================================
@@ -46,7 +49,7 @@ import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
-import 'components/pwa-notification-panel';
+import 'components/push-notification';
 import 'components/qty-increment';
 import 'components/slider';
 import 'components/social-media-list';

@@ -1,6 +1,4 @@
 import * as $ from 'jquery';
-
-import breakpoint from 'utils/breakpoint/breakpoint';
 import csTeaser from 'components/teaser/teaser';
 
 /**

@@ -71,6 +71,9 @@ $aftersearch-nav--horizontal_toggle-button-pseudoicon-color: currentColor !defau
 $aftersearch-nav--horizontal_toggle-button--hover-pseudoicon-color: currentColor !default;
 $aftersearch-nav--horizontal_toggle-button--expanded-pseudoicon-color: currentColor !default;
 
+$aftersearch-nav--offcanvas-filters-list-padding--horizontal: 2rem !default;
+$aftersearch-nav--offcanvas-filters-tile-icon-right-position: 3rem !default;
+
 $aftersearch-nav--horizontal_cols: (
     tablet: 4,
     laptop: 5,
@@ -91,6 +94,11 @@ $aftersearch-nav--horizontal_rows: (
     @include media('>=tablet') {
         width: auto;
         margin: 0;
+    }
+
+    .#{$ns}offcanvas-filters & {
+        margin: 0;
+        width: 100%;
     }
 
     &__loader {
@@ -193,15 +201,29 @@ $aftersearch-nav--horizontal_rows: (
             background: $aftersearch-nav_filters-trigger-background--opened;
             color: $aftersearch-nav_filters-trigger-color--opened;
         }
+
+        .#{$ns}offcanvas-filters & {
+            padding-left: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+            padding-right: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+
+            &:after,
+            &:before {
+                right: $aftersearch-nav--offcanvas-filters-tile-icon-right-position;
+            }
+        }
     }
 
     &__filters {
         padding: 0;
         margin: 0;
         overflow: hidden;
-        height: 0;
+        height: 0; // Prevent layout shift before collapse widget initialization
 
         &[aria-hidden] {
+            height: auto; // Initialized collapse widget is recognized by additional aria-hidden attribute
+        }
+
+        .#{$ns}offcanvas-filters & {
             height: auto;
         }
 
@@ -223,6 +245,13 @@ $aftersearch-nav--horizontal_rows: (
                 $color-expanded:
                     $aftersearch-nav_filter--expanded-title-pseudoicon-color
             );
+
+            .#{$ns}offcanvas-filters & {
+                &:after,
+                &:before {
+                    right: $aftersearch-nav--offcanvas-filters-tile-icon-right-position;
+                }
+            }
         }
 
         font-size: 1.2rem;
@@ -244,6 +273,11 @@ $aftersearch-nav--horizontal_rows: (
             padding: 2rem 2rem 2rem 0;
             background: transparent;
         }
+
+        .#{$ns}offcanvas-filters & {
+            padding-left: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+            padding-right: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+        }
     }
 
     &__filter-content {
@@ -259,6 +293,11 @@ $aftersearch-nav--horizontal_rows: (
 
         &[aria-hidden] {
             display: block;
+        }
+
+        .#{$ns}offcanvas-filters & {
+            padding-left: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
+            padding-right: $aftersearch-nav--offcanvas-filters-list-padding--horizontal;
         }
     }
     // Filter searchbox container.

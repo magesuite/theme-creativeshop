@@ -1,7 +1,6 @@
 /* tslint:disable:no-unused-new object-literal-key-quotes max-classes-per-file */
 import * as $ from 'jquery';
 
-import breakpoint from 'utils/breakpoint/breakpoint';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 

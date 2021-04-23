@@ -9,6 +9,9 @@ import 'config/base.scss';
 // TODO: Remove this file when possible
 import 'bundle.scss';
 
+// Global utilities:
+import 'utils/breakpoint/breakpoint';
+
 // =============================================================================
 // Components
 // =============================================================================
@@ -41,12 +44,12 @@ import 'components/newsletter';
 import 'components/offcanvas-toggle';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
+import 'components/offcanvas-filters';
 import 'components/page-title';
 import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
-import 'components/pwa-notification-panel';
 import 'components/qty-increment';
 import 'components/slider';
 import 'components/social-media-list';

@@ -1,5 +1,4 @@
 import * as $ from 'jquery';
-import breakpoint from 'utils/breakpoint/breakpoint';
 
 interface IProportionalScalerTextLayoutScenario {
     /**

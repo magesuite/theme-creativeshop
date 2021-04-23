@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'config/breakpoints';
 @import 'vendors/include-media';
+@import 'components/button/mixin';
 
 $toolbar_display: flex !default;
 $toolbar_flex-align-items: center !default;
@@ -12,7 +13,7 @@ $toolbar_text-transform: uppercase !default;
 
 $toolbar_elements-padding-tablet-up: 0 !default;
 $toolbar_elements-margin: 0 0 1.5rem !default;
-$toolbar_elements-margin-tablet-up: 0 !default;
+$toolbar_elements-margin-tablet-up: 0 0 1.5rem !default;
 
 $toolbar_select-min-height: 3.5rem !default;
 $toolbar_input-max-height: $toolbar_select-min-height !default;
@@ -32,6 +33,9 @@ $toolbar_sorter-align: left !default;
 $toolbar_limiter-align: left !default;
 $toolbar_viewmode-switcher-align: left !default;
 $toolbar_pagination-align: right !default;
+
+$toolbar_filters-button-type: 'secondary' !default;
+$toolbar_filters-button-icon-pos: 'left' !default;
 
 .#{$ns}toolbar {
     $root: &;
@@ -84,6 +88,11 @@ $toolbar_pagination-align: right !default;
             display: flex;
             align-items: center;
         }
+
+        &--offcanvas {
+            margin-right: 3rem;
+            z-index: 1;
+        }
     }
 
     .field .label {
@@ -101,6 +110,30 @@ $toolbar_pagination-align: right !default;
         &__trigger {
             min-height: $toolbar_select-min-height;
         }
+    }
+
+    &__filters-button {
+        @include button(
+            $type: $toolbar_filters-button-type,
+            $icon_pos: $toolbar_filters-button-icon-pos
+        );
+
+        svg {
+            @include button_icon(
+                $type: $toolbar_filters-button-type,
+                $icon_pos: $toolbar_filters-button-icon-pos
+            );
+
+            max-width: 2.3rem;
+            max-height: 2.3rem;
+        }
+    }
+
+    &__filters-button-label {
+        @include button_span(
+            $type: $toolbar_filters-button-type,
+            $icon_pos: $toolbar_filters-button-icon-pos
+        );
     }
 }
 

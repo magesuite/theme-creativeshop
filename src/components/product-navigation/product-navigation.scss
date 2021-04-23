@@ -10,6 +10,7 @@ $product-navigation_border-width: 1px !default;
 $product-navigation_border: $product-navigation_border-width solid
     $color_border-500 !default;
 $product-navigation_list-padding: 1rem 0 !default;
+$product-navigation_list-item-margin: 0 !default;
 $product-navigation_link-padding: 0.5rem 2rem !default;
 $product-navigation_link-color: $color_text-800 !default;
 $product-navigation_link-text-transform: uppercase !default;
@@ -60,17 +61,21 @@ $product-navigation_height: calc(
         transition: opacity 0.3s;
     }
 
-    &__link {
+    &__list-item {
         display: none;
+        margin: $product-navigation_list-item-margin;
+
+        &--active {
+            display: block;
+        }
+    }
+
+    &__link {
         text-transform: $product-navigation_link-text-transform;
         font-size: $product-navigation_font-size;
         line-height: 100%;
         font-weight: $product-navigation_link-font-weight;
         padding: $product-navigation_link-padding;
-
-        &--active {
-            display: block;
-        }
 
         &--category,
         &--search,

@@ -9,13 +9,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
 <?php if ($block->getVar('header/mobile_search_in_offcanvas', 'Magento_Theme')): ?>
     <div class="cs-offcanvas-navigation__search">
         <form role="search" class="cs-header-search cs-header-search--in-offcanvas" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get" id="cs-header-search-offcanvas">
-            
-            <div 
-                class="cs-header-search__field cs-header-search__field--offcanvas"
-                role="combobox"
-                aria-owns="search_autocomplete_offcanvas"
-                aria-haspopup="grid"
-            >
+            <div class="cs-header-search__field cs-header-search__field--offcanvas">
                 <label class="label cs-header-search__label" for="search" data-role="minisearch-label">
                     <span><?= $block->escapeHtml(__('Search')) ?></span>
                 </label>
@@ -37,11 +31,14 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                     class="cs-header-search__input"
                     maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength(); ?>"
                     role="combobox"
-                    aria-controls="search_autocomplete_offcanvas"
-                    aria-autocomplete="list"
+                    aria-haspopup="false"
+                    aria-autocomplete="both"
+                    aria-expanded="false"
                     autocomplete="off"
-                    data-block="autocomplete-form">
-                    
+                    data-block="autocomplete-form"
+                    aria-controls="search_autocomplete_offcanvas"
+                />
+
                  <div class="cs-header-search__action">
                     <span class="cs-header-search__close">
                         <?= $block->getChildHtml('top.search.icon.close'); ?>

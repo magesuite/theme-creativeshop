@@ -1,7 +1,10 @@
 /**
  * Origin: Native M2 Collapsible Widget
  * Modification type: extend
- * Reason: introducing collapse functionality only for given media query, activate/deactivate for mobile or desktop depending on configuration given
+ * Reasons:
+ * - introducing collapse functionality only for given media query
+ * - activate/deactivate for mobile or desktop depending on configuration given
+ * - disable scroll to top when closing filters for POP mobile
  */
 define(['jquery', 'matchMedia'], function($, mediaCheck) {
     'use strict';
@@ -12,6 +15,7 @@ define(['jquery', 'matchMedia'], function($, mediaCheck) {
                 mediaQueryScope: '',
                 isCreated: false,
                 initialActiveOption: undefined,
+                disableScrollIntoViewport: true,
             },
 
             _create: function(isMediaCheckActive) {
@@ -76,6 +80,15 @@ define(['jquery', 'matchMedia'], function($, mediaCheck) {
                 this._destroy();
                 this._off(this.trigger);
                 this.options.isCreated = false;
+            },
+
+            /**
+             * Disable scroll to top when closing filters for POP mobile
+             */
+            _scrollToTopIfNotVisible: function() {
+                if (!this.options.disableScrollIntoViewport) {
+                    this._super();
+                }
             },
         });
 

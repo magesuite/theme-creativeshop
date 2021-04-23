@@ -1,0 +1,84 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$offcanvas-filters_transition-time: $transition-default-time !default;
+$offcanvas-filters_overlay-background: $modals_overlay-background !default;
+$offcanvas-filters_drawer-background: $color_background-200 !default;
+$offcanvas-filters_spinner-color: $color_primary-500 !default;
+
+.#{$ns}offcanvas-filters {
+    $root: &;
+
+    position: relative;
+    z-index: 300;
+
+    &__drawer,
+    &__overlay {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    &__overlay {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        // Setting 1ms because 0 doesn't seem to work and we need seamless transition for scale here.
+        transition: background-color $offcanvas-filters_transition-time,
+            transform 1ms $offcanvas-filters_transition-time;
+        transform: scale(0);
+        cursor: pointer;
+    }
+
+    .overlay {
+        &--visible {
+            transform: scale(1);
+            background: $offcanvas-filters_overlay-background;
+            transition: background-color $offcanvas-filters_transition-time;
+        }
+    }
+
+    &__drawer {
+        position: fixed;
+        background: $offcanvas-filters_drawer-background;
+        transition: transform $offcanvas-filters_transition-time;
+        width: 90%;
+        max-width: 40rem;
+        left: 0;
+        right: auto;
+        transform: translate3d(-105%, 0, 0);
+        overflow-y: auto;
+    }
+
+    .drawer {
+        &--visible {
+            transform: translate3d(0, 0, 0) !important;
+        }
+    }
+
+    &__headline {
+        padding: 2rem;
+        font-size: $font-size_headline-2;
+    }
+
+    &__close {
+        width: 2.5rem;
+        height: 2.5rem;
+        position: absolute;
+        right: 2rem;
+        top: 2rem;
+        background: none;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+
+    &__close-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+        padding: 0;
+    }
+}
