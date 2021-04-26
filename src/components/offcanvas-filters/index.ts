@@ -9,6 +9,6 @@ setTimeout(() => {
         className: 'cs-offcanvas-filters',
         triggerClassName: 'cs-toolbar__filters-button',
         closeButtonClassName: 'cs-offcanvas-filters__close',
-        bodyOpenClass: 'navigation-offcanvas-filters-open',
+        bodyOpenClass: 'offcanvas-filters-open',
     });
 });
