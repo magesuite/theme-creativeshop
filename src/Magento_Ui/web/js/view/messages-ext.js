@@ -5,18 +5,32 @@ define(['ko', 'jquery'], function(ko, $) {
     'use strict';
     return function(Messages) {
         return Messages.extend({
-            /**
-             * @param {Boolean} isHidden
-             */
-            onHiddenChange: function(isHidden) {
-                var self = this;
+            initialize: function() {
+                this._super();
 
-                // Hide message block if needed
-                if (isHidden) {
-                    setTimeout(function() {
-                        $(self.selector).hide('blind', {}, 500);
-                    }, 30000);
+                this.hideSpeed = 500;
+                this.hideTimeout = 30000;
+
+                if (
+                    this.index.includes(
+                        'checkout.steps.billing-step.payment.payments-list'
+                    )
+                ) {
+                    this.messageContainer.errorMessages.subscribe(function() {
+                        if ($('.payment-method._active').length) {
+                            $('html, body').animate(
+                                {
+                                    scrollTop: $(
+                                        '.payment-method._active'
+                                    ).offset().top,
+                                },
+                                800
+                            );
+                        }
+                    });
                 }
+
+                return this;
             },
         });
     };
