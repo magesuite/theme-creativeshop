@@ -6,6 +6,11 @@
 @import 'components/button/mixin';
 
 $header-search_font-size: 1.4rem !default;
+// On iOS the search input has to be at least 16px large,
+// otherwise it will needlessly trigger page zoom once the input is focused.
+// - https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone
+// - https://www.warrenchandler.com/2019/04/02/stop-iphones-from-zooming-in-on-form-fields/
+$header-search_font-size-mobile: 1.6rem !default;
 
 // Width of the search field. Works only for `$global_header-searchbox-as-layer-breakpoint` breakpoint, in other case it's always 100%
 $header-search-width-as-layer: 50% !default;
@@ -92,11 +97,15 @@ $header-search_autocomplete-background: $color_background-200 !default;
     &__input {
         @include field-input();
 
-        font-size: $header-search_font-size;
+        font-size: $header-search_font-size-mobile;
         position: relative;
         z-index: 210;
         margin: 0;
         -webkit-appearance: none;
+
+        @include media('>=phoneLg') {
+            font-size: $header-search_font-size;
+        }
 
         &:focus {
             + #{$root}__action {
