@@ -21,6 +21,7 @@ $header-user-nav_label-color: $color_text-500 !default;
 $header-user-nav_label-color-hover: $color_text-500 !default;
 $header-user-nav_label-margin-top: 0.3rem !default;
 
+$header-user-nav_qty-counter-compare-show-empty: false !default;
 $header-user-nav_qty-counter-wishlist-show-empty: false !default;
 $header-user-nav_qty-counter-minicart-show-empty: false !default;
 $header-user-nav_qty-counter-animation-show: true !default;
@@ -189,6 +190,10 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
             @include qty-counter_type('minicart');
         }
 
+        &--compare {
+            @include qty-counter_type('compare');
+        }
+
         &--have-items {
             opacity: 1;
         }
@@ -202,6 +207,12 @@ $header-user-nav_qty-counter-right-offset-desktop: -1rem !default;
 
             &#{$root}__qty-counter--minicart {
                 @if ($header-user-nav_qty-counter-minicart-show-empty) {
+                    opacity: 1;
+                }
+            }
+
+            &#{$root}__qty-counter--compare {
+                @if ($header-user-nav_qty-counter-compare-show-empty) {
                     opacity: 1;
                 }
             }

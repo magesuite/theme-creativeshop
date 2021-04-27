@@ -1,13 +1,26 @@
 <?php
+/**
+ * Template override:
+ * - possibility to define icon through XML
+ * - display counter, icon and label in the same way for each `header-user-nav` items
+ * - display in counter only value, without label
+ */
 // @codingStandardsIgnoreFile
 $label = $block->getXmlLabel();
 ?>
 <li class="item link compare cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>" data-bind="scope: 'compareProducts'" data-role="compare-products-link">
-    <a class="action compare no-display cs-header-user-nav__link" title="<?= /* @escapeNotVerified */ __('Compare Products') ?>" data-bind="attr: {'href': compareProducts().listUrl}, css: {'no-display': !compareProducts().count}">
+    <a class="cs-header-user-nav__link" title="<?= /* @escapeNotVerified */ __('Compare Products') ?>" data-bind="attr: {'href': compareProducts().listUrl}">
         <div class="cs-header-user-nav__icon-wrapper">
             <?= $block->getChildHtml('catalog.compare.link.icon'); ?>
-            <span class="cs-header-user-nav__qty-counter <?= $block->getBadgeAdditionalCssClasses() ?> counter qty">
-                <span class="cs-header-user-nav__qty-counter-span" data-bind="text: compareProducts().countCaption"></span>
+            <span class="cs-header-user-nav__qty-counter counter qty <?= $block->getBadgeAdditionalCssClasses() ?>" data-bind="css: { 'cs-header-user-nav__qty-counter--have-items': compareProducts().count, 'cs-header-user-nav__qty-counter--empty': !compareProducts().count }">
+                <span class="counter qty cs-header-user-nav__qty-counter-span">
+                    <!-- ko if: compareProducts().count -->
+                        <!-- ko text: parseInt(compareProducts().count) --><!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: !compareProducts().count -->
+                    0
+                    <!-- /ko -->
+                </span>
             </span>
         </div>
         <?php if(!empty($label)): ?>
