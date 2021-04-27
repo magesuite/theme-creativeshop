@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'components/button/mixin';
 @import 'components/typography/mixin';
+@import 'vendors/include-media';
 
 $pwa-notification_box-shadow: 0 -0.3rem 0.5rem 0 rgba(0, 0, 0, 0.15) !default;
 $pwa-notification_background: $color_background-200 !default;
@@ -8,7 +9,25 @@ $pwa-notification_button-type: 'primary' !default;
 $pwa-notification_hide-modal-overlay: true !default;
 $pwa-notification_headline-font-size: $font-size_headline-3 !default;
 
+$pwa-notification--ios-guide_background: #f2f2f7 !default; // ios-like system background color
+$pwa-notification--ios-guide_filter-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1) !default;
+$pwa-notification--ios-guide_border-radius: 6px !default;
+$pwa-notification--ios-guide_localization-arrow-size: 1.6rem !default;
+$pwa-notification--ios-guide_modal-edge-padding: 2rem !default;
+$pwa-notification--ios-guide_content-padding: 0.4rem 1.4rem 1.1rem !default;
+$pwa-notification--ios-transfer-icon-width: 1.8rem !default;
+$pwa-notification--ios-transfer-icon-height: 2.4rem !default;
+$pwa-notification--ios-guide_separator-color: darken(
+    $pwa-notification--ios-guide_background,
+    8%
+) !default;
+$pwa-notification--ios-guide_close-button-padding: 1.8rem !default;
+$pwa-notification--ios-guide_close-icon-width: 1.5rem !default;
+$pwa-notification--ios-guide_close-icon-height: $pwa-notification--ios-guide_close-icon-width !default;
+
 .#{$ns}pwa-notification {
+    $root: &;
+
     &._show {
         position: fixed;
         bottom: 0;
@@ -27,6 +46,74 @@ $pwa-notification_headline-font-size: $font-size_headline-3 !default;
         }
     }
 
+    &--ios-guide {
+        .modal-inner-wrap {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            position: relative;
+            padding: 0;
+            line-height: 1.35;
+
+            &:after {
+                top: 100%;
+                left: 50%;
+                border: solid transparent;
+                content: '';
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: rgba($pwa-notification--ios-guide_background, 0);
+                border-top-color: $pwa-notification--ios-guide_background;
+                border-width: $pwa-notification--ios-guide_localization-arrow-size;
+                margin-left: -#{$pwa-notification--ios-guide_localization-arrow-size};
+            }
+        }
+
+        .modal-text-content {
+            padding: $pwa-notification--ios-guide_content-padding;
+        }
+
+        &._show {
+            height: auto;
+            left: 1.5rem;
+            width: calc(100% - 3rem);
+            padding-bottom: $pwa-notification--ios-guide_modal-edge-padding;
+
+            .modal-inner-wrap {
+                background: $pwa-notification--ios-guide_background;
+                border-radius: $pwa-notification--ios-guide_border-radius;
+                filter: drop-shadow($pwa-notification--ios-guide_filter-shadow);
+                box-shadow: none;
+            }
+        }
+
+        &.device-iPad {
+            bottom: auto;
+            top: 0;
+            padding-bottom: 0;
+            padding-top: $pwa-notification--ios-guide_modal-edge-padding;
+            left: auto;
+            right: 1.5rem;
+            width: auto;
+            max-width: 38rem;
+
+            .modal-inner-wrap:after {
+                top: auto;
+                bottom: 100%;
+                border-top-color: transparent;
+                border-bottom-color: $pwa-notification--ios-guide_background;
+                left: auto;
+                right: 12.8vw;
+
+                @include media('>=laptop') {
+                    right: 11vw;
+                }
+            }
+        }
+    }
+
     &__title {
         margin: 0;
         padding: 2rem;
@@ -37,10 +124,27 @@ $pwa-notification_headline-font-size: $font-size_headline-3 !default;
         padding: 0.5rem 2rem 1rem;
     }
 
+    &__ios-transfer-icon {
+        width: $pwa-notification--ios-transfer-icon-width;
+        height: $pwa-notification--ios-transfer-icon-height;
+        margin: 0 0.3rem;
+        vertical-align: bottom;
+    }
+
     &__footer {
         padding: 0.5rem 2rem 2rem;
         display: flex;
         justify-content: flex-end;
+
+        #{$root}--ios-guide & {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            border-left: 1px solid $pwa-notification--ios-guide_separator-color;
+        }
     }
 
     &__button {
@@ -55,6 +159,19 @@ $pwa-notification_headline-font-size: $font-size_headline-3 !default;
                 $icon_pos: $pwa-notification_button-type
             );
         }
+
+        &-icon {
+            width: $pwa-notification--ios-guide_close-icon-width;
+            height: $pwa-notification--ios-guide_close-icon-height;
+            fill: currentColor;
+        }
+    }
+
+    &__close-button {
+        border: 0;
+        background: transparent;
+        margin: 0;
+        padding: $pwa-notification--ios-guide_close-button-padding;
     }
 
     @if ($pwa-notification_hide-modal-overlay == true) {
