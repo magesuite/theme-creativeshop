@@ -60,15 +60,6 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                                     </ul>
                                 </div>
                             <?php endif; ?>
-                            <?php if (!$item->isSaleable()) :?>
-                                <div class="cs-product-compare__stock">
-                                    <?php if ($item->getIsSalable()) :?>
-                                        <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
-                                    <?php else :?>
-                                        <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
                             <a class="product-item-photo" href="<?= $block->escapeUrl($block->getProductUrl($item)) ?>" title="<?= /* @noEscape */ $block->stripTags($item->getName(), null, true) ?>">
                                 <?= $block->getImage($item, 'product_comparison_list')->toHtml() ?>
                             </a>
@@ -123,6 +114,15 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                                         )
                                         ->toHtml()
                                     ;?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!$item->isSaleable()) :?>
+                                <div class="cs-product-compare__stock">
+                                    <?php if ($item->getIsSalable()) :?>
+                                        <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                                    <?php else :?>
+                                        <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                             <div class="actions-secondary">
