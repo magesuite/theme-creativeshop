@@ -243,3 +243,28 @@ $page-product--bundle-special-price-color: $price_special-color !default;
         z-index: 2;
     }
 }
+.#{$ns}container {
+    &--pdp {
+        @include media('>=laptop') {
+            padding-top: 0;
+        }
+    }
+
+    &--page-pdp-details-aw_pq_ajax_container {
+        @include media('<tablet') {
+            padding: 0;
+        }
+    }
+
+    &__main-column {
+        // Bundle products do not have sticky buybox and should have another layout.
+        // On tablet gallery covered buybox and as a result it was impossible to click at anything there.
+        // Code below should be reviewed during refactoring containers and pdp (PDP 2.0)
+        .page-product-bundle & {
+            @include media('>=tablet', '<laptop') {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    }
+}
