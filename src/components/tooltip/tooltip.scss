@@ -1,0 +1,326 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$tooltip_trigger-title-font-size: $font-size_paragraph !default;
+$tooltip_trigger-title-color: $color_text-800 !default;
+$tooltip_trigger-title-font-weight: 400 !default;
+$tooltip_trigger-icon-width: 1.8rem !default;
+$tooltip_trigger-icon-height: 1.8rem !default;
+
+$tooltip_content-font-size: $font-size_paragraph !default;
+$tooltip_content-color: $color_text-400 !default;
+$tooltip_content-marker-background: $color_background-200 !default;
+
+$tooltip_content-title-font-size: $font-size_headline-4 !default;
+$tooltip_content-title-font-weight: 600 !default;
+$tooltip_content-title-border-bottom-color: $color_border-500 !default;
+
+$tooltip_mobile_close-icon-color: $color_background-700 !default;
+$tooltip_mobile_close-icon-width: 2.6rem !default;
+$tooltip_mobile_close-icon-height: 2.6rem !default;
+
+.#{$ns}tooltip {
+    $root: &;
+
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 1rem;
+
+    &__overlay,
+    &--clone {
+        @include media('>=laptop') {
+            display: none;
+        }
+    }
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        transition: background-color 0.3s, transform 1ms 0.3s;
+        transform: scale(0);
+        z-index: 810;
+
+        &--visible {
+            transform: scale(1);
+            background: rgba($color_black, 0.7);
+            transition: background-color 0.3s;
+        }
+    }
+
+    &__trigger {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        #{$root}--clone & {
+            display: none;
+        }
+
+        &:hover {
+            #{$root}__trigger-title {
+                @include media('>=laptop') {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        &-title {
+            margin: 0 0.7rem 0 0;
+            text-transform: none;
+            font-size: $tooltip_trigger-title-font-size;
+            color: $tooltip_trigger-title-color;
+            font-weight: $tooltip_trigger-title-font-weight;
+
+            #{$root}--clone & {
+                padding: 0 4rem 1.5rem 0;
+                margin: 0 0 1.5rem;
+                border-bottom: 1px solid $color_border-500;
+            }
+        }
+    }
+
+    &__trigger-icon {
+        width: $tooltip_trigger-icon-width;
+        height: $tooltip_trigger-icon-height;
+    }
+
+    &__content {
+        font-size: $tooltip_content-font-size;
+        display: none;
+        position: absolute;
+        color: $tooltip_content-color;
+        z-index: 811;
+
+        #{$root}--left & {
+            @include media('>=laptop') {
+                right: calc(100% - 0.2rem);
+                top: -3.5rem;
+                padding-right: 2.5rem;
+            }
+        }
+
+        #{$root}--right & {
+            @include media('>=laptop') {
+                left: calc(100% - 0.2rem);
+                top: -3.5rem;
+                padding-left: 2.5rem;
+            }
+        }
+
+        #{$root}--top & {
+            @include media('>=laptop') {
+                top: auto;
+                right: auto;
+                bottom: calc(100% - 0.2rem);
+                left: 50%;
+                padding-bottom: 2.5rem;
+                transform: translateX(-50%);
+            }
+        }
+
+        #{$root}--bottom & {
+            @include media('>=laptop') {
+                bottom: auto;
+                right: auto;
+                top: calc(100% - 0.2rem);
+                left: 50%;
+                padding-top: 2.5rem;
+                transform: translateX(-50%);
+            }
+        }
+
+        #{$root}--clone & {
+            display: block;
+            position: fixed;
+            right: auto;
+            bottom: auto;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            max-width: 40rem;
+            max-height: 80%;
+            transform: translate3d(-50%, -50%, 0);
+        }
+
+        #{$root}--active & {
+            @include media('>=laptop') {
+                display: block;
+            }
+        }
+    }
+
+    &__content-marker {
+        position: relative;
+        background-color: $tooltip_content-marker-background;
+        padding: 1.5rem;
+        box-shadow: 0 0 1rem 0 rgba($color_black, 0.17);
+
+        @include media('>=laptop') {
+            width: auto;
+            min-width: 22rem;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+
+            #{$root}--clone & {
+                display: none;
+            }
+        }
+
+        &:after {
+            right: 100%;
+            top: 4.5rem;
+            border: solid transparent;
+            content: '';
+            height: 0;
+            width: 0;
+            border-color: transparent;
+            border-right-color: $tooltip_content-marker-background;
+            border-width: 1.5rem;
+            margin-top: -1.5rem;
+
+            #{$root}--left & {
+                left: 100%;
+                bottom: auto;
+                right: auto;
+                top: 4.5rem;
+                border-color: transparent;
+                border-left-color: $tooltip_content-marker-background;
+            }
+
+            #{$root}--right & {
+                left: auto;
+                bottom: auto;
+                right: 100%;
+                top: 4.5rem;
+                border-color: transparent;
+                border-right-color: $tooltip_content-marker-background;
+            }
+
+            #{$root}--top & {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 100%;
+                right: auto;
+                bottom: auto;
+                margin-top: 0;
+                border-color: transparent;
+                border-top-color: $tooltip_content-marker-background;
+            }
+
+            #{$root}--bottom & {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 100%;
+                right: auto;
+                top: auto;
+                margin-top: 0;
+                border-color: transparent;
+                border-bottom-color: $tooltip_content-marker-background;
+            }
+        }
+
+        &:before {
+            right: calc(100% - 1rem);
+            top: 3.5rem;
+            height: 2rem;
+            width: 2rem;
+            transform: rotate(45deg);
+            background-color: $tooltip_content-marker-background;
+            box-shadow: 0 0 1rem 0 rgba($color_black, 0.17);
+            z-index: -1;
+
+            #{$root}--left & {
+                bottom: auto;
+                left: calc(100% - 1rem);
+                right: auto;
+                top: 3.5rem;
+            }
+
+            #{$root}--right & {
+                bottom: auto;
+                left: auto;
+                right: calc(100% - 1rem);
+                top: 3.5rem;
+            }
+
+            #{$root}--top & {
+                top: calc(100% - 1rem);
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+                right: auto;
+                bottom: auto;
+            }
+
+            #{$root}--bottom & {
+                bottom: calc(100% - 1rem);
+                left: 50%;
+                transform: translateX(-50%) rotate(45deg);
+                right: auto;
+                top: auto;
+            }
+        }
+    }
+
+    &__content-title {
+        font-size: $tooltip_content-title-font-size;
+        text-transform: none;
+        margin: 0 0 0.7rem;
+        border-bottom: 1px solid $tooltip_content-title-border-bottom-color;
+        padding: 0 0 0.7rem 0;
+        font-weight: $tooltip_content-title-font-weight;
+
+        #{$root}--clone & {
+            padding: 0 4rem 1.5rem 0;
+            margin: 0 0 1.5rem;
+        }
+    }
+
+    &__content-text {
+        max-height: 52vh;
+        overflow: visible;
+        line-height: 1.35;
+
+        #{$root}--clone & {
+            padding-right: 2.5rem;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: $tooltip_mobile_close-icon-width;
+        height: $tooltip_mobile_close-icon-height;
+        cursor: pointer;
+
+        &:before,
+        &:after {
+            width: 1.6rem;
+            height: 0.2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0) rotate(45deg);
+            content: '';
+            background-color: $tooltip_mobile_close-icon-color;
+        }
+
+        &:after {
+            transform: translate3d(-50%, -50%, 0) rotate(-45deg);
+        }
+
+        @include media('>=laptop') {
+            display: none;
+        }
+    }
+}
