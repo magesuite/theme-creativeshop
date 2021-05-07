@@ -1,0 +1,175 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+
+$reorder-banner_background: $color_primary-500 !default;
+$reorder-banner_text-color: $color_text-200 !default;
+$reorder-banner_text-font-size: $font-size_paragraph !default;
+$reorder-banner_link-color: $color_text-200 !default;
+$reorder-banner_link-color-hover: $color_text-200 !default;
+$reorder-banner_button-type: 'secondary' !default;
+$reorder-banner_button-icon-pos: 'no-icon' !default;
+$reorder-banner_close-icon-size: 1.4rem !default;
+
+$reorder-banner_height-mobile: 7rem !default;
+$reorder-banner_height: 9rem !default;
+
+// Change in etc/view.xml if necessary
+$header_is-sticky-on-mobile: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    header,
+    mobile_is_sticky
+) !default;
+
+.#{$ns}reorder-banner {
+    $root: &;
+
+    background-color: $reorder-banner_background;
+    color: $reorder-banner_text-color;
+    font-size: $reorder-banner_text-font-size;
+
+    @include media('>=laptop') {
+        margin-top: 0;
+    }
+
+    &__inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        height: 0;
+        transform: translateY(-105%);
+        transition: 0.4s ease-out;
+        transition-property: height, transform;
+
+        #{$root}--display & {
+            transition: initial;
+        }
+
+        #{$root}--show & {
+            transform: translateY(0);
+            height: $reorder-banner_height-mobile;
+            padding: 1rem 0;
+
+            @include media('>=tablet') {
+                height: $reorder-banner_height;
+                padding: 1.5rem 0;
+            }
+        }
+    }
+
+    &__start {
+        padding-right: 2rem;
+        display: none;
+
+        @include media('>=tablet') {
+            display: block;
+            padding-left: 5.5rem;
+            background-size: 4rem;
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-image: url('../images/icons/reorder-banner/reorder.svg');
+        }
+    }
+
+    &__text-welcome {
+        display: inline-block;
+        margin-bottom: 0;
+
+        span:first-child {
+            font-weight: 600;
+        }
+    }
+
+    &__link {
+        text-decoration: underline;
+
+        &,
+        &:visited {
+            color: $reorder-banner_link-color;
+        }
+
+        &:hover {
+            color: $reorder-banner_link-color-hover;
+        }
+    }
+
+    &__end {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+
+        @include media('>=tablet') {
+            width: auto;
+            justify-content: flex-start;
+        }
+    }
+
+    &__order {
+        margin-bottom: 0;
+        margin-right: 2rem;
+    }
+
+    &__order-text {
+        display: block;
+    }
+
+    &__products-count {
+        @include media('>=tablet') {
+            display: none;
+        }
+    }
+
+    &__amount {
+        font-weight: 700;
+    }
+
+    &__items {
+        display: none;
+
+        @include media('>=tablet') {
+            display: block;
+            margin-bottom: 0;
+        }
+    }
+
+    &__item-count {
+        padding-left: 1rem;
+        float: right;
+    }
+
+    &__form {
+        display: flex;
+        align-items: center;
+    }
+
+    &__button {
+        @include button(
+            $type: $reorder-banner_button-type,
+            $icon_pos: $reorder-banner_button-icon-pos
+        );
+
+        margin-left: 2rem;
+    }
+
+    &__button-span {
+        @include button-span(
+            $type: $reorder-banner_button-type,
+            $icon_pos: $reorder-banner_button-icon-pos
+        );
+    }
+
+    &__close {
+        font-size: 0;
+        width: $reorder-banner_close-icon-size;
+        height: $reorder-banner_close-icon-size;
+        background-image: url('../images/icons/reorder-banner/close.svg');
+        background-size: contain;
+        display: inline-block;
+        margin-left: 2rem;
+        cursor: pointer;
+    }
+}
