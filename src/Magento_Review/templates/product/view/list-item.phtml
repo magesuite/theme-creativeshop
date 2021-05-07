@@ -1,14 +1,29 @@
 <?php
 // @codingStandardsIgnoreFile
 $ratingData = $block->getRatingData();
+$reviewConfigurationData = $block->getReviewConfigurationData();
+$isReviewWithConfigurationData = !empty($reviewConfigurationData);
 ?>
 <div class="cs-review">
     <div class="cs-review__title" ><?= $block->getTitle(); ?></div>
-    <div class="cs-review__meta">
+    <div class="cs-review__meta <?= $isReviewWithConfigurationData ? 'cs-review__meta--variant-support' : '' ?>">
         <span class="cs-review__author cs-review__meta-item"><?= $block->getAuthor(); ?></span>
         <time class="cs-review__date cs-review__meta-item" datetime="<?= $block->getDate(); ?>">
             <?= $block->getDate(); ?>
         </time>
+        <?php if ($isReviewWithConfigurationData): ?>
+                <div class="cs-review__variant swatch-opt">
+                    <div class="swatch-attribute">
+                        <div class="swatch-attribute-options clearfix">
+                            <?php foreach ($reviewConfigurationData as $configurationData): ?>
+                                <div class="swatch-option text">
+                                    <?= $configurationData['value'] ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+        <?php endif; ?>
     </div>
     <?php if(count($ratingData['compoundRatings'])): ?>
     <ul class="cs-review__ratings">

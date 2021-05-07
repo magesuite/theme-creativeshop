@@ -8,6 +8,7 @@ $review_content-color: $color_text-400 !default;
 $review_date-color: $color_text-400 !default;
 $review_meta-item-font-size: 0.9em !default;
 $review_meta-item-border: 1px solid $color_border-500 !default;
+$review_meta-item-padding: 0 1rem !default;
 $review_hide-compound-ratings: false !default;
 
 .#{$ns}review {
@@ -54,11 +55,16 @@ $review_hide-compound-ratings: false !default;
     &__meta {
         margin: 0 0 2rem;
         font-size: $review_meta-item-font-size;
+
+        &--variant-support {
+            display: flex;
+            align-items: center;
+        }
     }
 
     &__meta-item {
         vertical-align: middle;
-        padding: 0 1rem;
+        padding: $review_meta-item-padding;
         line-height: 1em;
         border-right: $review_meta-item-border;
 
@@ -78,6 +84,19 @@ $review_hide-compound-ratings: false !default;
     &__date {
         margin-left: -4px;
         color: $review_date-color;
+    }
+
+    &__variant {
+        flex-grow: 1;
+        padding: $review_meta-item-padding;
+
+        .swatch-attribute-options {
+            margin-bottom: 0;
+        }
+
+        .swatch-option {
+            cursor: default;
+        }
     }
 
     &__content {
