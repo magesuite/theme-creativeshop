@@ -56,7 +56,6 @@ import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/swatches';
-import 'components/tile-gallery';
 import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
@@ -88,3 +87,8 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 // Exported for usage in templates:
 export { Select } from 'components/select';
 export { AddressAutofill } from 'components/address-autofill';
+
+// Optional components - can be imported in child theme entry
+// import 'components/tooltip';
+// import 'components/tile-gallery';
+// import 'components/reorder-banner';
