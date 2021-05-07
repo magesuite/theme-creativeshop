@@ -49,6 +49,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                                 "overallScore" => $overallScore,
                                 "compoundRatings" => $compoundRatings
                              ])
+                             ->setReviewConfigurationData($review->getData('review_configuration_data'))
                              ->setAuthor($block->escapeHtml($review->getNickname()))
                              ->setDate($block->formatDate($createdAt, $format))
                              ->setContent(nl2br($block->escapeHtml($review->getDetail())))
