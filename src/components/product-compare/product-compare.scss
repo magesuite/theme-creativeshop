@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/button/mixin';
+@import 'components/typography/mixin';
 
 $product-compare__vertical-border: 1px solid $color_border-500 !default;
 $product-compare__horizontal-border-width: 1px !default;
@@ -41,6 +42,10 @@ $product-compare__attr-text-align: left !default;
 $product_compare__details-gutter: 1rem 0 0 0 !default;
 
 $product-compare__name-font-size: $font-size_paragraph !default;
+$product-compare_name-link-color: $color_primary-500 !default;
+$product-compare_name-link-color-hover: $color_primary-800 !default;
+$product-compare_name-link-decoration: none !default;
+$product-compare_name-link-hover-decoration: none !default;
 
 $product-compare__tax-color: $color_text-900 !default;
 $product-compare__tax-font-size: 1.2rem !default;
@@ -118,6 +123,7 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
 
         th {
             background-color: $product-compare__thead-label-background;
+            z-index: 20;
         }
 
         tr {
@@ -229,6 +235,13 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
     .product-item-name {
         font-size: $product-compare__name-font-size;
         margin: $product_compare__details-gutter;
+
+        @include link(
+            $color: $product-compare_name-link-color,
+            $color-hover: $product-compare_name-link-color-hover,
+            $decoration: $product-compare_name-link-decoration,
+            $decoration-hover: $product-compare_name-link-hover-decoration
+        );
     }
 
     .secondary-addto-links {
@@ -302,5 +315,55 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
             $type: $product-compare__remove-button-type,
             $icon_pos: $product-compare__remove-button-icon-pos
         );
+    }
+}
+
+// Adjustments for product compare print options
+.catalog-product_compare-index {
+    @media print {
+        margin: 0;
+        padding: 0;
+
+        .#{$ns}header {
+            &__user-nav {
+                display: none;
+            }
+
+            &__content {
+                position: relative;
+            }
+
+            &__logo {
+                flex: 0 0 auto;
+                justify-content: flex-start;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        .#{$ns}container {
+            &--footer,
+            &--page-bottom {
+                display: none;
+            }
+        }
+
+        .#{$ns}product-compare {
+            th,
+            tr,
+            td {
+                border: none !important;
+            }
+
+            th,
+            td {
+                padding: 0.5rem 1rem !important;
+            }
+
+            .product-item-name {
+                font-weight: 700;
+                text-decoration: none !important;
+            }
+        }
     }
 }
