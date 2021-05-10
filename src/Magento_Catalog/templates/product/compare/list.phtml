@@ -14,6 +14,7 @@ $total = $block->getItems()->getSize();
 $productNameInFooter = $block->getProductNameInFooter();
 $taxInfoEnabled = $block->getTaxInfoEnabled();
 $taxInfoLabel = $block->getTaxInfoLabel();
+$showPrintOption = $block->getShowPrintOption();
 $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
 ?>
 <?php if ($total) :?>
@@ -34,6 +35,7 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                 <?php foreach ($block->getItems() as $item) :?>
                     <?php if ($index++ == 0) :?>
                         <th scope="row" class="" rowspan="2">
+                            <?php if ($showPrintOption): ?>
                             <a href="#" class="action print hidden-print" title="<?= $block->escapeHtmlAttr(__('Print This Page')) ?>">
                                 <?= $this->getLayout()
                                     ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
@@ -44,6 +46,7 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                                 ?>
                                 <span class="print-span"><?= $block->escapeHtml(__('Print This Page')) ?></span>
                             </a>
+                            <?php endif; ?>
                         </th>
                     <?php endif; ?>
                     <td data-th="<?= $block->escapeHtmlAttr(__('Product')) ?>" class="cell product info">
