@@ -34,6 +34,9 @@ var config = {
             'mage/collapsible': {
                 'js/collapsible-ext': true,
             },
+            'mage/dropdown': {
+                'js/dropdown-ext': true,
+            },
             'mage/validation': {
                 'js/validation-ext': true,
             },
