@@ -59,20 +59,6 @@ interface ITileGallery {
      * @type {Number}
      */
     initialActiveItem?: number;
-
-    /**
-     * Defines if gallery should reset main image to first one when leaving tile
-     * @default {false}
-     * @type {Boolean}
-     */
-    resetMainImageOnTileLeave?: boolean;
-
-    /**
-     * Defines delay of removing all old main-images (in ms)
-     * @default 550
-     * @type {Number}
-     */
-    imagesCleanupDelay?: number;
 }
 
 /**
@@ -84,7 +70,7 @@ interface ITileGallery {
 export default class TileGallery {
     private _$gallery: JQuery;
     private _$galleryItems: JQuery;
-
+    private _$defaultMainImage: JQuery;
     private _options?: ITileGallery;
 
     /**
@@ -111,8 +97,6 @@ export default class TileGallery {
                 activeGalleryItemClass: 'cs-tile-gallery__item--active',
                 itemSwitchEvent: 'mouseenter',
                 initialActiveItem: 0,
-                resetMainImageOnTileLeave: false,
-                imagesCleanupDelay: 550,
             },
             options
         );
@@ -120,7 +104,9 @@ export default class TileGallery {
         this._$galleryItems = this._$gallery.find(
             `.${this._options.galleryItemClass}`
         );
-
+        this._$defaultMainImage = this._$gallery
+            .closest(`.${this._options.galleryAndMainImageWrapperClass}`)
+            .find(`.${this._options.mainImageClass}`);
         this._setActiveThumbnail(this._options.initialActiveItem);
         this._setGalleryActiveClass();
         this._loadThumbnails();
@@ -153,11 +139,13 @@ export default class TileGallery {
      * It doesn't modify DOM in any way, just returns promise when image is loaded
      * @param  {string} imgSrc: path to main image to be loaded
      * @param  {string} imgSrcSet: srcset of main image to be loaded.
+     * @param  {number} index: index of main image to be set
      * @return {promise} Promise that image has been loaded and is ready to be displayed.
      */
     protected _loadChosenImage(
         imgSrc: string,
-        imgSrcset: string
+        imgSrcset: string,
+        index: number
     ): Promise<HTMLElement> {
         return new Promise((resolve: any, reject: any): any => {
             const img = new Image();
@@ -166,6 +154,7 @@ export default class TileGallery {
             img.src = imgSrc;
             img.className = `${this._options.mainImageClass} ${this._options.mainImageClass}--animatable`;
             img.setAttribute('srcset', imgSrcset);
+            img.setAttribute('index', index.toString());
         });
     }
 
@@ -173,48 +162,52 @@ export default class TileGallery {
      * Switches gallery image with and marks active thumbnail with CSS class.
      * This method provides additional classes that can be used to animate switch.
      */
-    protected _switchImage(imgSrc: string, imgSrcset: string): any {
+    protected _switchImage(
+        imgSrc: string,
+        imgSrcset: string,
+        index: number
+    ): any {
         if (!imgSrc) {
             return;
         }
 
-        const $currentImage: JQuery = this._$gallery
-            .closest(`.${this._options.galleryAndMainImageWrapperClass}`)
-            .find(`.${this._options.mainImageClass}`)
-            .last();
-
-        if (
-            $currentImage.attr('data-src') === imgSrc ||
-            $currentImage.attr('src') === imgSrc
-        ) {
+        // For index 0, use default image
+        if (index === 0) {
+            this._toggleMainImage(this._$defaultMainImage);
             return;
         }
 
-        this._loadChosenImage(imgSrc, imgSrcset).then(
-            (newImage: HTMLElement): void => {
-                $currentImage.parent().append(newImage);
-                requestAnimationFrame(() => {
-                    $(newImage).addClass(
-                        `${this._options.mainImageClass}--animate`
-                    );
+        // Store or load new image
+        const mainImageParent = this._$defaultMainImage.parent();
+        const $selectedImage = mainImageParent.find('[index*=' + index + ']');
 
-                    setTimeout((): void => {
-                        $currentImage.remove();
-                    }, this._options.imagesCleanupDelay);
-                });
-            }
-        );
+        if ($selectedImage.length > 0) {
+            this._toggleMainImage($selectedImage);
+        } else {
+            this._loadChosenImage(imgSrc, imgSrcset, index).then(
+                (newImage: HTMLElement): void => {
+                    mainImageParent.append(newImage);
+                    requestAnimationFrame(() => {
+                        this._toggleMainImage($(newImage));
+                    });
+                }
+            );
+        }
+    }
+
+    protected _toggleMainImage($image: JQuery): void {
+        $image
+            .addClass(`${this._options.mainImageClass}--animate`)
+            .siblings()
+            .removeClass(`${this._options.mainImageClass}--animate`);
     }
 
     protected _setActiveThumbnail(index: number): void {
-        const $thumbs: JQuery = this._$gallery.find(
-            `.${this._options.galleryItemClass}`
-        );
-
-        $thumbs
-            .removeClass(this._options.activeGalleryItemClass)
+        this._$galleryItems
             .eq(index)
-            .addClass(this._options.activeGalleryItemClass);
+            .addClass(this._options.activeGalleryItemClass)
+            .siblings()
+            .removeClass(this._options.activeGalleryItemClass);
     }
 
     /**
@@ -227,14 +220,15 @@ export default class TileGallery {
                 event.preventDefault();
 
                 const $item = $(event.target).closest(this._$galleryItems);
+                const index = this._$galleryItems.index($item);
                 const $itemImg = $item.find('img');
-                const imageSrc: string =
-                    $itemImg.data('data-src') || $itemImg.data('src');
-                const imageSrcset: string =
-                    $itemImg.attr('data-srcset') || $itemImg.attr('srcset');
+                const imageSrc: string = $itemImg.data('product-image-src');
+                const imageSrcset: string = $itemImg.data(
+                    'product-image-srcset'
+                );
 
-                this._setActiveThumbnail(this._$galleryItems.index($item));
-                this._switchImage(imageSrc, imageSrcset);
+                this._setActiveThumbnail(index);
+                this._switchImage(imageSrc, imageSrcset, index);
             }
         );
     }
