@@ -558,3 +558,27 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
         }
     }
 }
+
+.#{$ns}container {
+    &--grid-teaser {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+    }
+
+    @supports (display: grid) and (grid-auto-flow: row) {
+        &--grid-teaser {
+            position: relative;
+            top: auto;
+            left: auto;
+            right: auto;
+            bottom: auto;
+            overflow: visible;
+        }
+    }
+}

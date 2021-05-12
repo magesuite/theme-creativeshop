@@ -2,8 +2,6 @@
 @import 'vendors/include-media';
 @import 'components/container/mixin';
 
-$container_background-top-bar: $color_background-500 !default;
-
 .#{$ns}container {
     $root: &;
 
@@ -21,20 +19,6 @@ $container_background-top-bar: $color_background-500 !default;
             content: '';
             display: table;
             clear: both;
-        }
-
-        &--flex {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-
-            @include media('>=tablet') {
-                flex-wrap: nowrap;
-            }
-
-            &:after {
-                display: none;
-            }
         }
     }
 
@@ -69,54 +53,12 @@ $container_background-top-bar: $color_background-500 !default;
         @include media('<tablet') {
             max-width: 100% !important;
             width: 100% !important;
-            //min-height: 30rem;
-        }
-
-        // Bundle products do not have sticky buybox and should have another layout.
-        // On tablet gallery covered buybox and as a result it was impossible to click at anything there.
-        // Code below should be reviewed during refactoring containers and pdp (PDP 2.0)
-        .page-product-bundle & {
-            @include media('>=tablet', '<laptop') {
-                width: 100%;
-                margin-right: 0;
-            }
         }
 
         &--space-top {
             @include media('>=laptop') {
                 padding-top: 3rem;
             }
-        }
-    }
-
-    &__reviews {
-        @extend .#{$ns}container__inner;
-
-        @include media('>=tablet') {
-            background: $color_white;
-            margin-top: 3rem;
-            padding: 0 2rem;
-        }
-
-        @include media('>=desktop') {
-            padding: 2rem 0 0;
-        }
-
-        &:after {
-            content: '';
-            display: table;
-            clear: both;
-        }
-        padding-bottom: 2rem;
-    }
-
-    &__cart-coupons {
-        display: flex;
-        flex-wrap: wrap;
-
-        @include media('>=laptop') {
-            flex-wrap: nowrap;
-            justify-content: space-between;
         }
     }
 
@@ -130,11 +72,6 @@ $container_background-top-bar: $color_background-500 !default;
         }
     }
 
-    &--top-bar {
-        background-color: $container_background-top-bar;
-        max-width: none;
-    }
-
     &--spacious {
         padding-top: 2rem;
         padding-bottom: 2rem;
@@ -143,72 +80,10 @@ $container_background-top-bar: $color_background-500 !default;
             padding-top: 3rem;
             padding-bottom: 3rem;
         }
-
-        .catalog-category-view &,
-        .catalogsearch-result-index & {
-            @include media('>=tablet') {
-                padding-top: 0;
-            }
-        }
-    }
-
-    &--image-teaser-window-width,
-    &--store-locator {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    &--grid-teaser {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-    }
-
-    &--hero-teaser {
-        overflow: hidden;
-        padding-left: 0;
-        padding-right: 0;
     }
 
     &--noscroll {
         overflow: hidden;
-    }
-
-    &--pdp {
-        @include media('>=laptop') {
-            padding-top: 0;
-        }
-    }
-
-    &--usps {
-        #{$root}--headline {
-            padding: 0;
-        }
-    }
-
-    &--create-account-page,
-    &--login-page,
-    &--success-page,
-    &--logout-page {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-
-        @include media('>=laptop') {
-            padding-top: 3rem;
-            padding-bottom: 5rem;
-        }
-    }
-
-    &--my-account-page {
-        @include media('>=tablet', '<laptop') {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
     }
 
     &--ontop {
@@ -217,44 +92,5 @@ $container_background-top-bar: $color_background-500 !default;
 
     &--viewport-width {
         max-width: none;
-    }
-
-    &--page-pdp-details-aw_pq_ajax_container {
-        @include media('<tablet') {
-            padding: 0;
-        }
-    }
-
-    &--cart-page {
-        #{$root}--products-carousel {
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        #{$root}--headline {
-            padding-left: 0;
-            padding-right: 0;
-        }
-    }
-
-    &--cms-teaser {
-        margin-top: 2rem;
-    }
-
-    @supports (display: grid) and (grid-auto-flow: row) {
-        &--grid-teaser {
-            position: relative;
-            top: auto;
-            left: auto;
-            right: auto;
-            bottom: auto;
-            overflow: visible;
-        }
-    }
-
-    &--footer-usps {
-        .#{$ns}image-teaser__content {
-            margin: 0 !important;
-        }
     }
 }
