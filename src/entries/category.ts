@@ -55,7 +55,6 @@ import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/swatches';
-import 'components/tile-gallery';
 import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
