@@ -45,3 +45,5 @@ import 'components/pwa-notification';
 import 'components/google-recaptcha';
 import 'components/non-critical';
 import 'components/product-compare';
+
+// import 'components/ie11';

@@ -217,19 +217,6 @@ $product-finder_option-border-radius: 0.5rem !default;
                     &:nth-child(#{$i}n + #{$i}) {
                         margin-right: 0;
                     }
-
-                    /**
-                     * flex-basis does not respect box-sizing: border-box
-                     * It is fixed on Edge but not on IE11:
-                     * https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/106816/
-                     * To properly calculate flex-basis we have to add gap (margin)
-                     */
-                    .ie11 & {
-                        flex-basis: calc(
-                            #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap /
-                                $i + $product-finder_step-option-gap}
-                        );
-                    }
                 }
             }
         }
@@ -260,10 +247,6 @@ $product-finder_option-border-radius: 0.5rem !default;
         -ms-grid-rows: minmax(0, 1fr);
         grid-template-rows: minmax(0, 1fr);
 
-        .ie11 & {
-            -ms-grid-rows: 1fr auto;
-            grid-template-rows: 1fr auto;
-        }
         -ms-grid-columns: 1fr;
         grid-template-columns: 1fr;
     }

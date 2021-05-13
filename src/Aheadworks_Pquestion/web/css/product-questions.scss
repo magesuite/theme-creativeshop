@@ -76,11 +76,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
         &__field-name {
             @include media('>=laptop') {
                 flex: 1 1 49%;
-
-                // Set flex-basis explicitly to prevent overlapping in IE
-                .ie11 & {
-                    flex-basis: 49%;
-                }
             }
         }
 
@@ -89,11 +84,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 flex: 1 1 50%;
                 margin-top: 0 !important;
                 padding: 0 0 0 2rem;
-
-                // Set flex-basis explicitly and to lower than 50% to prevent overlappig in IE
-                .ie11 & {
-                    flex-basis: 49%;
-                }
             }
         }
 
@@ -384,15 +374,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                 }
             }
 
-            &-item {
-                // 1 Fix zero height IE bug
-                .ie11 & {
-                    @include media('<laptop') {
-                        display: block;
-                    }
-                }
-            }
-
             &-item_hidden {
                 display: none !important;
             }
@@ -407,18 +388,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
                 @include media('>=laptop') {
                     padding-top: $pq-spacing;
-                }
-
-                // Fix not wrapping text IE bug
-                .ie11 & {
-                    flex-basis: 100%;
-                }
-            }
-
-            // Fix zero height IE bug
-            .ie11 & {
-                @include media('<laptop') {
-                    display: block;
                 }
             }
         }
@@ -602,19 +571,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
 
                 @include media('>=laptop') {
                     width: $pq-list_item-laptop-indent;
-
-                    // IE needs to have flex-basis set explicitly
-                    .ie11 & {
-                        flex-basis: $pq-list_item-laptop-indent;
-                    }
-                }
-
-                // Fix positioning in IE
-                .ie11 & {
-                    @include media('<laptop') {
-                        top: 0;
-                        left: 0;
-                    }
                 }
             }
 
@@ -715,15 +671,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             &-list {
                 display: block !important;
                 flex: 1 1 auto;
-
-                // 1 Fix zero height IE Flexbox bug
-                // 2 Enable positioning of helpfulness-wrapper in IE
-                .ie11 & {
-                    @include media('<laptop') {
-                        flex: 1; // 1
-                        position: relative; // 2
-                    }
-                }
             }
 
             &-action-bar {
@@ -744,13 +691,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
                         1px
                     ); // Fix Chrome transparent line in background bug
                 }
-
-                // Fix zero height IE bug
-                .ie11 & {
-                    @include media('<laptop') {
-                        display: block;
-                    }
-                }
             }
 
             &-action-wrapper {
@@ -762,10 +702,6 @@ $pq-helpfullnes_background-color: lighten($color_background-500, 3%) !default;
             &-wrapper {
                 @include media('>=tablet') {
                     padding-bottom: 0;
-                }
-
-                .ie11 & {
-                    flex-basis: 100%;
                 }
             }
         }

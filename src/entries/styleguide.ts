@@ -82,3 +82,5 @@ import 'components/table';
 import 'components/styleguide';
 
 export { Select } from 'components/select';
+
+// import 'components/ie11';

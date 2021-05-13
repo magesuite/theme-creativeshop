@@ -1,0 +1,111 @@
+/* 
+    Sample of hooks to be used with projects that should support IE11. 
+    Move styles for corresponding hooks into your src/components/field/hook.scss in your theme
+*/
+
+// IE doesn't understand keyword auto in background-size
+$field_select-background-size--ie: 0.7em 0.7em, 100% !default;
+
+/* stylelint-disable block-no-empty */
+@mixin field-hook() {
+}
+
+@mixin field-error-hook() {
+}
+
+@mixin field-label-hook() {
+}
+
+@mixin field-label-required-hook() {
+}
+
+@mixin field-control-hook() {
+}
+
+@mixin field-input-hook() {
+}
+
+@mixin field-input-error-hook() {
+}
+
+@mixin field-icon-hook($type: '') {
+}
+
+@mixin field-note-hook() {
+}
+
+@mixin field-error-hook() {
+}
+
+@mixin field-warning-hook() {
+}
+
+@mixin field-select-hook() {
+    &::-ms-expand {
+        display: none; // Hide native dropdown arrow on IE 10/11.
+    }
+
+    &:hover,
+    &:focus {
+        &:not([disabled]) {
+            // Use different set of properties that will work in IE
+            .ie11 & {
+                background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill-active)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e");
+            }
+        }
+    }
+
+    // Use different set of properties that will work in IE
+    .ie11 & {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9' fill='#{uri-friendly-hex($field_select-icon-fill)}'%3e%3cpath d='M0 1.2C0 .5.6 0 1.2 0c.3 0 .6.1.8.3l6 5.9 6-5.9c.5-.4 1.2-.3 1.7.1.4.4.4 1.1 0 1.5L8.9 8.7c-.5.4-1.2.4-1.7 0L.4 2a.9.9 0 0 1-.4-.8z'/%3e%3c/svg%3e");
+        background-size: $field_select-background-size--ie;
+    }
+}
+
+@mixin field-radio-hook() {
+    // Styling for IE11, needs to be duplicated.
+    &::-ms-check {
+        color: transparent;
+        border: $field_radio-border;
+        box-shadow: $field_radio-box-shadow;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: $field_radio-background-size;
+        outline: 0;
+        border-radius: 50%;
+        transition: background-color $field_transition-time,
+            border-color $field_transition-time;
+        background-color: $field_radio-background-color-checked;
+    }
+
+    &:checked {
+        &::-ms-check {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle fill='#{uri-friendly-hex($field_radio-icon-fill)}' r='4' cy='6.5' cx='6.5'/%3e%3c/svg%3e");
+        }
+    }
+}
+
+@mixin field-radio-label-hook() {
+}
+
+@mixin field-checkbox-hook() {
+    // Styling for IE11, needs to be duplicated.
+    &::-ms-check {
+        color: transparent;
+        border-radius: $field_checkbox-border-radius;
+        background-size: $field_checkbox-background-size;
+    }
+
+    &:checked {
+        &::-ms-check {
+            background-image: $field_checkbox-background-image-checked;
+        }
+    }
+}
+
+@mixin field-checkbox-label-hook() {
+}
+
+@mixin field-dob-hook() {
+}
+/* stylelint-enable */
