@@ -1,0 +1,384 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$product-finder_step-option-max-per-row--ie: 6 !default;
+$product-finder_step-option-gap--ie: 1rem !default;
+$product-teaser_2col-breakpoint--ie: '>=tablet' !default;
+$product-teaser_description-2col-width--ie: 60% !default;
+
+$star-rating_star-width-default--ie: 1.5rem !default;
+$star-rating_star-width-reviews-summary--ie: 2rem !default;
+$star-rating_star-width-review--ie: 1.5rem !default;
+
+// Determines star svg for ie11 height calculations
+$star-rating_star-aspect-ratio--ie: 1.05 !default;
+
+.ie11 {
+    .page-wrapper {
+        display: block !important;
+    }
+
+    source {
+        height: 0 !important;
+    }
+
+    .#{$ns}page-category {
+        &__toolbar-wrapper {
+            // Fix IE not supporting auto margin for pagination item
+            .#{$ns}toolbar__item {
+                &--pagination {
+                    @include media('>=tablet') {
+                        margin-left: 0;
+                        flex-grow: 1;
+                        justify-content: flex-end;
+                    }
+
+                    .#{$ns}pagination__content {
+                        @include media('>=tablet') {
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .#{$ns}autocomplete {
+        &__badge {
+            &:after {
+                content: '';
+                min-height: auto;
+                font-size: 0;
+            }
+        }
+    }
+
+    .#{$ns}bundle-box {
+        &__qty {
+            .qty {
+                max-width: 6rem;
+            }
+        }
+    }
+
+    .#{$ns}cart-item {
+        &__details {
+            flex-basis: 100%; // fix  no wrapping text inside flexbox
+        }
+
+        &__item {
+            width: 100%; // fix no wrapping text inside flexbox
+        }
+    }
+
+    .checkout-index-index {
+        #maincontent {
+            min-height: calc(100vh - 25rem);
+        }
+    }
+
+    .#{$ns}checkout {
+        &__progress-bar {
+            @include media('>=tablet') {
+                top: -10.5rem;
+            }
+        }
+
+        .table-totals {
+            table-layout: fixed;
+        }
+    }
+
+    .#{$ns}dashboard {
+        &__page-title {
+            @include media('>=tablet') {
+                margin-top: 1.5rem;
+            }
+        }
+
+        &__login {
+            &-section {
+                .actions-toolbar {
+                    flex-wrap: wrap;
+                }
+
+                .secondary {
+                    width: 100%;
+                }
+            }
+        }
+
+        .actions-toolbar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+
+    .#{$ns}discount {
+        &__trigger-icon {
+            margin-bottom: 0.2rem;
+        }
+    }
+
+    .#{$ns}header {
+        &__search {
+            @if ($global_header-searchbox-as-layer-breakpoint) {
+                @include media($global_header-searchbox-as-layer-breakpoint) {
+                    position: inherit;
+                    top: inherit;
+                }
+            }
+        }
+    }
+
+    .drawer--visible .#{$ns}minicart__carousel-wrapper {
+        position: fixed;
+    }
+
+    .modal-slide,
+    .modal-popup,
+    .modal-custom {
+        .action-close {
+            background-size: 10px 10px; // IE11 cuts background when in rem units
+        }
+    }
+
+    .modal-popup:not(.cs-video-player__modal) .modal-content {
+        max-height: calc(100vh - 33rem);
+    }
+
+    .#{$ns}product-finder {
+        $root: &;
+
+        &__step-option {
+            @for $i from 1 to $product-finder_step-option-max-per-row--ie + 1 {
+                $step-option-num-of-gaps: $i - 1;
+
+                #{$root}__step--options-desktop_#{$i} & {
+                    @include media('>=laptop') {
+                        /**
+                         * flex-basis does not respect box-sizing: border-box
+                         * It is fixed on Edge but not on IE11:
+                         * https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/106816/
+                         * To properly calculate flex-basis we have to add gap (margin)
+                         */
+                        flex-basis: calc(
+                            #{100% / $i} - #{$step-option-num-of-gaps * $product-finder_step-option-gap--ie /
+                                $i + $product-finder_step-option-gap--ie}
+                        );
+                    }
+                }
+            }
+        }
+
+        &__option-content {
+            -ms-grid-rows: 1fr auto;
+            grid-template-rows: 1fr auto;
+        }
+    }
+
+    .#{$ns}product-teaser {
+        &__link,
+        &__details {
+            max-width: 100%;
+        }
+
+        &__link {
+            @include media(#{$product-teaser_2col-breakpoint--ie}) {
+                max-width: 100% - $product-teaser_description-2col-width--ie;
+            }
+        }
+
+        &__details {
+            @include media(#{$product-teaser_2col-breakpoint--ie}) {
+                max-width: $product-teaser_description-2col-width--ie;
+            }
+        }
+    }
+
+    .#{$ns}product-tile {
+        &__addons-right {
+            width: 30%; // Limit width to prevent overlapping problems in IE
+        }
+
+        &__addons-left {
+            width: 70%; // Limit width to prevent overlapping problems in IE
+        }
+
+        &__swatches {
+            width: 100%; // IE needs to have width set explicitly
+        }
+
+        &__addto {
+            width: 100%; // IE needs to have width set explicitly
+        }
+
+        // IE needs to have width set explicitly
+        .cs-links-block-addto {
+            &__item--wishlist {
+                width: 100%;
+            }
+
+            &--grid {
+                width: 100%;
+            }
+        }
+    }
+
+    .#{$ns}progress-bar {
+        $root: &;
+
+        &__item {
+            &._complete {
+                #{$root}__indicator {
+                    &:before {
+                        transform: translateY(3px);
+                    }
+                }
+            }
+        }
+    }
+
+    .#{$ns}qty-increment {
+        &__input {
+            flex-basis: auto;
+        }
+    }
+
+    .#{$ns}reviews {
+        @include media('<laptop') {
+            flex-basis: auto;
+        }
+    }
+
+    .#{$ns}star-rating {
+        $root: &;
+
+        &__star {
+            height: calc(
+                #{$star-rating_star-width-default--ie} / #{$star-rating_star-aspect-ratio--ie}
+            );
+
+            #{$root}--summary & {
+                height: calc(
+                    #{$star-rating_star-width-reviews-summary--ie} / #{$star-rating_star-aspect-ratio--ie}
+                );
+            }
+
+            #{$root}--review & {
+                height: calc(
+                    #{$star-rating_star-width-review--ie} / #{$star-rating_star-aspect-ratio--ie}
+                );
+            }
+        }
+    }
+
+    [class^='swatch-opt-'] {
+        width: 100%;
+    }
+
+    .#{$ns}limiter {
+        &__pagination-number {
+            // Bug: Setting min-height breaks align-items: center in ie11.
+            // Setting height to a value less then min-height fixes the align-items: center issue in IE11, but the container still sets its size based on min-height
+            height: 1px;
+        }
+    }
+
+    .#{$ns}pagination {
+        &__number,
+        &__action {
+            // Bug: Setting min-height breaks align-items: center in ie11.
+            // Setting height to a value less then min-height fixes the align-items: center issue in IE11, but the container still sets its size based on min-height
+            height: 1px;
+        }
+    }
+
+    .#{$ns}store-locator {
+        &__sidebar {
+            display: block;
+        }
+
+        &__popup {
+            width: 34rem;
+        }
+
+        &__stores-list {
+            @include media('>=laptop') {
+                max-height: calc(100vh - 42rem);
+            }
+        }
+    }
+
+    .aw-pq {
+        $root: &;
+
+        &-form {
+            &__field-name {
+                @include media('>=laptop') {
+                    flex-basis: 49%; // Set flex-basis explicitly to prevent overlapping
+                }
+            }
+
+            &__field-email {
+                @include media('>=laptop') {
+                    flex-basis: 49%; // Set flex-basis explicitly and to lower than 50% to prevent overlapping
+                }
+            }
+        }
+
+        &-list {
+            &__helpfulness {
+                &-wrapper {
+                    @include media('<laptop') {
+                        top: 0;
+                        left: 0;
+                    }
+
+                    @include media('>=laptop') {
+                        flex-basis: 14rem; // IE needs to have flex-basis set explicitly
+                    }
+                }
+            }
+
+            &__question,
+            &__answer {
+                @include media('<laptop') {
+                    display: block;
+                }
+
+                &-item {
+                    @include media('<laptop') {
+                        display: block; // 1 Fix zero height IE bug
+                    }
+                }
+
+                &-wrapper {
+                    flex-basis: 100%;
+                }
+            }
+
+            &__answer {
+                &-list {
+                    // 1 Fix zero height IE Flexbox bug
+                    // 2 Enable positioning of helpfulness-wrapper in IE
+                    @include media('<laptop') {
+                        flex: 1; // 1
+                        position: relative; // 2
+                    }
+                }
+
+                &-action-bar {
+                    @include media('<laptop') {
+                        display: block; // Fix zero height IE bug
+                    }
+                }
+
+                &-wrapper {
+                    flex-basis: 100%;
+                }
+            }
+        }
+    }
+}

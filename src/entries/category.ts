@@ -86,3 +86,4 @@ export { AddressAutofill } from 'components/address-autofill';
 // import 'components/tooltip';
 // import 'components/tile-gallery';
 // import 'components/reorder-banner';
+// import 'components/ie11';
