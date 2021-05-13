@@ -65,6 +65,7 @@ import 'components/google-recaptcha';
 import 'components/non-critical';
 
 // Contact page specific
+import 'pages/contact';
 import 'components/dashboard';
 import 'components/captcha';
 import 'components/form';

@@ -1,0 +1,116 @@
+// Styles moved from less files in Amazon module
+// We do not like to include them if it is not necessary
+// If a child project uses amazon modules include this file in entry
+
+@import 'config/variables';
+@import 'vendors/include-media';
+
+/* stylelint-disable */
+
+.amazon-button-container {
+    display: table;
+    margin: 0 0 22px;
+
+    &__cell {
+        display: table-cell;
+        min-width: 45px;
+        position: relative;
+    }
+
+    img {
+        display: block;
+    }
+
+    .field-tooltip {
+        display: none;
+        margin: -12px 0 0;
+        right: 5px;
+        top: 50%;
+    }
+
+    .checkout-shipping-address & {
+        margin: 22px 0;
+    }
+}
+
+.login-container {
+    .block {
+        &-amazon-login {
+            .actions-toolbar {
+                margin-top: 25px;
+            }
+        }
+    }
+}
+
+.amazon-validate-container {
+    .block {
+        .block-title {
+            font-size: 1.8rem;
+            border-bottom: 1px solid #e8e8e8;
+            margin-bottom: 15px;
+            padding-bottom: 12px
+        }
+    }
+
+    .fieldset {
+        &:after {
+            margin: 10px 0 0;
+            content: attr(data-hasrequired);
+            display: block;
+            letter-spacing: normal;
+            word-spacing: normal;
+            color: #e02b27;
+            font-size: 1.2rem
+        }
+    }
+}
+
+@include media('<=tablet') {
+    .amazon-button-container {
+        width: 100%;
+    }
+}
+
+//
+//  Desktop
+//  ---------------------------------------------
+
+@include media('>tablet') {
+    .login-container .block-amazon-login {
+        clear: none;
+        float: right
+    }
+
+    .login-container .block-amazon-login .actions-toolbar {
+        margin-top: 25px
+    }
+
+    .login-container .block:nth-child(2)+.block-amazon-login {
+        clear: none
+    }
+
+    .amazon-validate-container {
+        margin: 40px auto 0 auto;
+        width: 500px
+    }
+
+    .amazon-validate-container .primary {
+        width: 190px
+    }
+
+    .amazon-validate-container .continue-as-guest {
+        width: 130px
+    }
+
+    .amazon-validate-container .forgot-password {
+        text-align: right;
+        width: 175px
+    }
+
+    .amazon-addresses .amazon-address {
+        margin-bottom: 0
+    }
+}
+
+/* stylelint-enable */
