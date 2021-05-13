@@ -415,10 +415,6 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         }
     }
 
-    #store-pickup {
-        margin: 0;
-    }
-
     &__guest-or-login {
         margin-bottom: 1.5rem;
         color: $color_dove-gray;
@@ -1507,6 +1503,75 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 }
 
 .paypal-review {
+    .items-qty {
+        margin: 0;
+        padding: 0;
+        list-style: none none;
+
+        > li {
+            margin: 0;
+        }
+
+        .item {
+            white-space: nowrap;
+        }
+
+        .title {
+            @include media('>=tablet') {
+                border-bottom: $checkout_elements-border;
+            }
+
+            &:after {
+                content: ': ';
+            }
+        }
+
+        .block-content {
+            .box-order-shipping-address,
+            .box-order-shipping-method,
+            .box-order-shipping-method + .box-order-billing-address {
+                @include media('>=tablet') {
+                    box-sizing: border-box;
+                    float: left;
+                    width: 33%;
+                }
+            }
+
+            .box-order-shipping-address {
+                @include media('>=tablet') {
+                    padding: 0 5%;
+                    width: 34%;
+                }
+            }
+        }
+
+        .col.subtotal,
+        .mark,
+        .amount {
+            @include media('>=tablet') {
+                text-align: right;
+            }
+        }
+    }
+
+    .actions-toolbar {
+        margin-top: 1rem;
+    }
+
+    .item-options {
+        dt {
+            display: inline-block;
+
+            &:after {
+                content: ': ';
+            }
+        }
+
+        dd {
+            margin: 0;
+        }
+    }
+
     .primary {
         button {
             @include button(
@@ -1540,6 +1605,35 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 }
 
+.paypal-review-discount {
+    border-bottom: 1px solid $checkout_elements-border;
+    margin: 2rem 0;
+
+    .block {
+        margin-bottom: 0;
+
+        > .title {
+            border-top: 1px solid $checkout_elements-border;
+            cursor: pointer;
+            font-weight: 700;
+            display: block;
+            text-decoration: none;
+            margin-bottom: 0;
+            overflow: hidden;
+            padding: 0.7rem 3rem 0.7rem 0.5rem;
+            position: relative;
+        }
+
+        > .content {
+            display: block;
+        }
+
+        .fieldset {
+            padding: 1rem 0 2rem;
+        }
+    }
+}
+
 //Amazon Pay - payment method
 
 //Style Amazon widget wrapper for iframe/ and iframe element
@@ -1569,6 +1663,24 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 /* stylelint-disable no-descending-specificity */
 #store-selector {
     box-shadow: $checkout_boxes-box-shadow;
+
+    .form-login {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .form-continue {
+        margin: 2rem 0 0;
+
+        .actions-toolbar {
+            .action {
+                &.primary {
+                    // button
+                }
+            }
+        }
+    }
 
     .step-title {
         padding: 0 0 #{$checkout_base-space / 2};
@@ -1610,9 +1722,27 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
             padding-right: $checkout_base-space;
         }
     }
+
+    .modal-title {
+        border-bottom: 0;
+    }
+
+    .modal-header {
+        padding-bottom: 0;
+    }
 }
 
 #opc-store-selector-popup {
+    display: none;
+
+    .block-search {
+        float: none;
+        width: 100%;
+        margin: 0 0 20px;
+        padding: 0 0 10px;
+        border-bottom: 1px solid $checkout_elements-border;
+    }
+
     .action-close {
         background-size: $checkout_store-pickup-search-modal-close-button-background-size;
     }
@@ -1735,5 +1865,105 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
             );
         }
     }
+}
+
+// Style below are moved from module-inventory-in-store-pickup in order to avoid including them in every entry
+#store-pickup {
+    margin: 0;
+
+    &.selected-shipping {
+        ~ #store-selector {
+            display: none;
+        }
+    }
+
+    &.selected-store-pickup {
+        ~ #shipping,
+        ~ #opc-shipping_method {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+    }
+}
+
+#delivery-method-selector {
+    display: flex;
+
+    .action {
+        // BUTTON
+
+        &.selected {
+            // BUTTON selected
+        }
+    }
+
+    .action-select-shipping {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .action-select-store-pickup {
+        border-bottom-left-radius: 0;
+        border-left: 0;
+        border-top-left-radius: 0;
+    }
+}
+
+.location-details {
+    .location-name {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+}
+
+.modal-content {
+    #opc-store-selector-popup {
+        display: block;
+    }
+}
+
+.store-selector-popup-table {
+    thead {
+        th {
+            display: none;
+        }
+    }
+
+    tbody {
+        .location {
+            .location-name {
+                font-size: 1.8rem;
+            }
+
+            + .location {
+                border-top: 1px solid $checkout_elements-border;
+            }
+        }
+
+        .col-location-details {
+            padding-left: 0;
+
+            p {
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .col-location-actions {
+            padding-right: 0;
+            vertical-align: middle;
+
+            .action {
+                float: right;
+            }
+        }
+    }
+}
+
+.store-selector-popup-empty-query,
+.store-selector-popup-no-locations {
+    margin: 0 0 20px;
 }
 /* stylelint-enable no-descending-specificity */

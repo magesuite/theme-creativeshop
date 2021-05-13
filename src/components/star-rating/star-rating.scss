@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'utils/visually-hidden';
 
 $star-rating_color-active: $color_review-active !default;
 $star-rating_color-inactive: $color_review-inactive !default;
@@ -191,9 +192,15 @@ $star-rating_label-text-transform: uppercase !default;
 }
 
 .review-control-vote {
+    overflow: hidden;
+
     @for $i from 1 through 5 {
-        .rating-#{$i}:before {
-            content: none;
+        .rating-#{$i} {
+            z-index: #{$i};
+
+            &:before {
+                content: none;
+            }
         }
     }
 
@@ -203,6 +210,8 @@ $star-rating_label-text-transform: uppercase !default;
 
     label {
         position: static;
+        cursor: pointer;
+        display: block;
         width: $star-rating_star-width-review-form +
             $star-rating_star-padding-review-form-mobile;
         padding-right: $star-rating_star-padding-review-form-mobile;
@@ -217,6 +226,10 @@ $star-rating_label-text-transform: uppercase !default;
         &:last-child {
             width: $star-rating_star-width-review-form;
             padding-right: 0;
+        }
+
+        span {
+            @include visually-visible();
         }
     }
 }
