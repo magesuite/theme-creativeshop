@@ -237,8 +237,10 @@ export default class Minicart {
         });
 
         this._$minicart
-            .on('click touchend', '#btn-minicart-close', (): any =>
-                this._offcanvasMinicart.hide()
+            .on(
+                'click touchend',
+                '#btn-minicart-close, .btn-minicart-close',
+                (): any => this._offcanvasMinicart.hide()
             )
             .on('openMinicart', (): void => this.openMinicart());
 
