@@ -8,7 +8,7 @@ define([
     return Component.extend({
         defaults: {
             displayArea: 'before-place-order',
-            template: 'Magento_Checkout/payment/before-place-order',
+            template: 'Magento_Checkout/sidebar/before-place-order',
         },
 
         isHidden: function() {
