@@ -2,6 +2,7 @@
 @import 'components/field/mixin';
 @import 'components/button/mixin';
 @import 'vendors/include-media';
+@import 'utils/visually-hidden';
 
 $reviews-border: 1px solid $color_border-500 !default;
 $reviews-spacing: 2.5rem !default;
@@ -27,6 +28,8 @@ $reviews_form-submit-button-type: $button_default-type !default;
 $reviews_form-submit-button-icon-pos: 'no-icon' !default;
 
 .#{$ns}reviews {
+    $root: &;
+
     flex: 1 1 0;
 
     @include media('<laptop') {
@@ -180,6 +183,11 @@ $reviews_form-submit-button-icon-pos: 'no-icon' !default;
         margin: 0 0 0.2em;
         display: flex;
         align-items: center;
+
+        input[type='radio'],
+        #{$root}__rate-stars span {
+            @include visually-hidden();
+        }
     }
 
     &__rate-stars {
