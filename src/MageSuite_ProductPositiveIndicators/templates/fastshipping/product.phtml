@@ -8,17 +8,17 @@ if($isEnabled) { ?>
             <?= $block->getChildHtml('') ?>
             <?php foreach($block->getVariants() as $variantKey => $variantData): ?>
                 <div class="cs-indicator-fast-shipping__element cs-indicator-fast-shipping__element--<?= $variantKey ?>" data-fs-scenario="<?= $variantKey ?>">
+                    <?php if(isset($variantData['icon_url']) && !empty($variantData['icon_url'])): ?>
+                        <?= $this->getLayout()
+                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                ->setIconUrl($variantData['icon_url'])
+                                ->setCssClass('cs-indicator-fast-shipping__icon cs-indicator-fast-shipping__icon--'.$variantKey)
+                                ->setInlined(true)
+                                ->setLazyLoaded(true)
+                                ->toHtml();
+                        ?>
+                    <?php endif; ?>
                     <div class="cs-indicator-fast-shipping__label">
-                        <?php if(isset($variantData['icon_url']) && !empty($variantData['icon_url'])): ?>
-                            <?= $this->getLayout()
-                                   ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                   ->setIconUrl($variantData['icon_url'])
-                                   ->setCssClass('cs-indicator-fast-shipping__element-icon cs-indicator-fast-shipping__element-icon--'.$variantKey)
-                                   ->setInlined(true)
-                                   ->setLazyLoaded(true)
-                                   ->toHtml();
-                            ?>
-                        <?php endif; ?>
 
                         <?php if(isset($variantData['headline'])): ?>
                             <span class="cs-indicator-fast-shipping__headline"><?= $variantData['headline'] ?></span>
