@@ -26,6 +26,7 @@
     <?php endif; ?>
 
     <?php if($block->getVar('ajax_addtocart/enabled', 'Magento_Catalog')): ?>
+        <?php /* If you use ajax method for adding products to cart, don't use <span> inside button because Magento will replace its contents with "Adding..." and "Added". Use <strong> instead. */ ?>
         <?php
             // If you use ajax method for adding products to cart, don't use "span" inside button because Magento will replace its contents with "Adding..." and "Added". Use "strong" tag instead.
             $processingLabel = __($block->getVar('ajax_addtocart/labels/processing', 'Magento_Catalog'));
@@ -33,13 +34,13 @@
             $failLabel = __($block->getVar('ajax_addtocart/labels/fail', 'Magento_Catalog'));
         ?>
 
-        <?php // Processing ?>
+        <?php /* Processing */ ?>
         <?php include ($block->getTemplateFile('Magento_Catalog::addtocart/loading-indicator.phtml')); ?>
         <?php if(!empty($processingLabel)): ?>
             <strong class="<?= $block->getVar('ajax_addtocart/css_classes/processing_label', 'Magento_Catalog') ?>"><?= $processingLabel ?></strong>
         <?php endif; ?>
 
-        <?php // Done ?>
+        <?php /* Done */ ?>
         <strong class="<?= $block->getVar('ajax_addtocart/css_classes/success_overlay', 'Magento_Catalog') ?>"></strong>
         <?php if(!empty($block->getVar('ajax_addtocart/icons/success/path', 'Magento_Catalog'))): ?>
             <?= $this->getLayout()
@@ -55,7 +56,7 @@
             <strong class="<?= $block->getVar('ajax_addtocart/css_classes/success_label', 'Magento_Catalog') ?>"><?= $successLabel ?></strong>
         <?php endif; ?>
 
-        <?php // Done but failed ?>
+        <?php /* Done but failed */ ?>
         <?php if(!empty($block->getVar('ajax_addtocart/icons/fail/path', 'Magento_Catalog'))): ?>
             <?= $this->getLayout()
                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
