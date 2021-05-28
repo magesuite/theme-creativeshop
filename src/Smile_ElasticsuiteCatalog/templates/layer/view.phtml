@@ -19,8 +19,28 @@
     }, $selectedFilters);
 
     $isCollapsibleMobile = $block->getIsCollapsibleMobile();
+    $offcanvasMobileEnabled = $block->getVar('offcanvas_filters_enabled/mobile', 'Magento_Catalog');
+    $offcanvasDesktopEnabled = $block->getVar('offcanvas_filters_enabled/desktop', 'Magento_Catalog');
 ?>
     <?php if (!empty($filters)): ?>
+        <?php if ($offcanvasMobileEnabled || $offcanvasDesktopEnabled): ?>
+            <div class="cs-offcanvas-filters">
+                <div class="cs-offcanvas-filters__overlay overlay"></div>
+                <div class="cs-offcanvas-filters__drawer drawer">
+                    <button class="cs-offcanvas-filters__close" title="<?= __('Close') ?>">
+                        <?=  $this->getLayout()
+                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                ->setIconUrl('images/icons/close.svg')
+                                ->setCssClass('cs-offcanvas-filters__close-icon')
+                                ->setAltText(__('Close'))
+                                ->setInlined(true)
+                                ->setLazyLoaded(true)
+                                ->toHtml(); 
+                        ?>
+                    </button>
+                    <div class="cs-offcanvas-filters__headline"><?= __('Filters') ?></div>
+        <?php endif; ?>
+
         <nav
             class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> block filter"
             id="layered-filter-block"
@@ -99,6 +119,12 @@
                 >
             </div>
         </nav>
+
+        <?php if ($offcanvasMobileEnabled || $offcanvasDesktopEnabled): ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
     <?php else: ?>
         <div
             class="cs-aftersearch-nav<?= $isFiltersLayoutHorizontal ? ' cs-aftersearch-nav--horizontal' : ''; ?> block filter filter-no-options"

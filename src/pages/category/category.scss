@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'pages/layout/2columns-left/mixin';
+@import 'utils/deep-get/deep-get.scss';
 
 $page-category_border-base: 1px solid $color_border-200 !default;
 
@@ -18,6 +19,25 @@ $page-category_toolbar-wrapper--top-border-bottom: $page-category_border-base !d
 $page-category_toolbar-wrapper--bottom-border-top: $page-category_border-base !default;
 
 $page-category_products-wrapper-margin: 0 !default;
+
+// Below this breakpoint mobile offcanvas filters setting will be applied
+$page-category_offcanvas_filters_breakpoint: 'laptop' !default;
+
+$page-category_offcanvas_filters_mobile: deep-get(
+    $view-xml,
+    vars,
+    Magento_Catalog,
+    offcanvas_filters_enabled,
+    mobile
+) !default;
+
+$page-category_offcanvas_filters_desktop: deep-get(
+    $view-xml,
+    vars,
+    Magento_Catalog,
+    offcanvas_filters_enabled,
+    desktop
+) !default;
 
 .#{$ns}page-category {
     padding-bottom: $page-category_bottom-padding-mobile;
@@ -127,6 +147,63 @@ $page-category_products-wrapper-margin: 0 !default;
 
     &__products-wrapper {
         margin: $page-category_products-wrapper-margin;
+    }
+
+    @if (
+        $page-category_offcanvas_filters_mobile or
+            $page-category_offcanvas_filters_desktop
+    ) {
+        .cs-toolbar__item--offcanvas {
+            @if not($page-category_offcanvas_filters_mobile) {
+                @include media(
+                    '<#{$page-category_offcanvas_filters_breakpoint}'
+                ) {
+                    display: none;
+                }
+            }
+
+            @if not($page-category_offcanvas_filters_desktop) {
+                @include media(
+                    '>=#{$page-category_offcanvas_filters_breakpoint}'
+                ) {
+                    display: none;
+                }
+            }
+        }
+
+        @if not($page-category_offcanvas_filters_mobile) {
+            .cs-offcanvas-filters__drawer {
+                @include media(
+                    '<#{$page-category_offcanvas_filters_breakpoint}'
+                ) {
+                    position: static;
+                    background: none;
+                    transition: initial;
+                    width: auto;
+                    max-width: initial;
+                    left: auto;
+                    right: auto;
+                    transform: none;
+                }
+            }
+        }
+
+        @if not($page-category_offcanvas_filters_desktop) {
+            .cs-offcanvas-filters__drawer {
+                @include media(
+                    '>=#{$page-category_offcanvas_filters_breakpoint}'
+                ) {
+                    position: static;
+                    background: none;
+                    transition: initial;
+                    width: auto;
+                    max-width: initial;
+                    left: auto;
+                    right: auto;
+                    transform: none;
+                }
+            }
+        }
     }
 }
 
