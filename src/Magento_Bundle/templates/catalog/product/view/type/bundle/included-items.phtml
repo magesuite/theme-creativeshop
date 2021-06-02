@@ -1,0 +1,28 @@
+<?php /** Custom template to display list of items for bundle products */ ?>
+<?php /** @var $block Magento\Bundle\Block\Catalog\Product\View\Type\Bundle */ ?>
+<?php
+$product = $block->getProduct();
+$stripSelection = $product->getConfigureMode() ? true : false;
+$options = $block->decorateArray($block->getOptions($stripSelection));
+?>
+<?php if (count($options)) : ?>
+    <ul class="cs-buybox__bundle-items">
+        <?php foreach ($options as $option) : ?>
+            <?php $selections = $option->getSelections() ?>
+            <?php foreach ($selections as $selection) : ?>
+                <?php 
+                    if (!$option->getSelections()) {
+                        continue;
+                    }
+                ?>
+                <li>
+                    <a href="<?= $selection->getProductUrl(); ?>">
+                        <span class="product-name">
+                            <?= $selection->getSelectionQty() * 1 ?> x <?= $this->escapeHtml($selection->getName()) ?>
+                        </span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </ul>   
+<?php endif; ?>
