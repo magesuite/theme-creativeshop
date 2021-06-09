@@ -1,6 +1,6 @@
 <?php
 /**
- * Async font loading based on https://timkadlec.com/remembers/2020-02-13-when-css-blocks
+ * Font loading based on https://dev.to/masakudamatsu/loading-google-fonts-and-any-other-web-fonts-as-fast-as-possible-in-early-2021-4f5o
  */
 
 $webFonts = $block->getWebFonts();
@@ -12,12 +12,13 @@ if (!empty($webFonts)):
      */
     foreach ($webFonts as $url):
         if (!empty($url)): ?>
-            <link rel="stylesheet" href="<?= $url ?>" media="print" onload="this.onload=null;this.media='all'">
-            <noscript><link rel="stylesheet" href="<?= $url ?>"></noscript>
             <?php if (strpos($url, 'fonts.googleapis') !== false): ?>
                 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-            <?php endif;
-        endif;
+            <?php endif; ?>
+            <link rel="preload" as="style" href="<?= $url ?>">
+            <link rel="stylesheet" href="<?= $url ?>" media="print" onload="this.onload=null;this.media='all'">
+            <noscript><link rel="stylesheet" href="<?= $url ?>"></noscript>
+        <?php endif;
     endforeach;
 endif;
 
@@ -28,8 +29,9 @@ if (!empty($localFonts)):
     foreach ($localFonts as $url):
         if (!empty($url)):
             $localFontUrl = $this->getViewFileUrl($url); ?>
+            <link rel="preload" as="style" href="<?= $localFontUrl ?>">
             <link rel="stylesheet" href="<?= $localFontUrl ?>" media="print" onload="this.media='all'">
             <noscript><link rel="stylesheet" href="<?= $localFontUrl ?>"></noscript>
         <?php endif;
     endforeach;
-endif;
+endif; ?>
