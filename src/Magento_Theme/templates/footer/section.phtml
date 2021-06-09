@@ -1,16 +1,17 @@
 <?php
+$isCollapsible = $block->getIsCollapsible();
 $collapseOptions = $block->getCollapsibleWidgetOptions();
 $headline = $block->getHeadline();
 $headlineTag = $block->getHeadlineTag() ?? 'h3';
 ?>
 <div
-    class="cs-footer__section <?= $block->getAdditionalCssClasses() ?>"
-    <?php if($block->getIsCollapsible()): ?>
+    class="cs-footer__section<?php if($isCollapsible): ?> cs-footer__section--collapsible<?php endif; ?> <?= $block->getAdditionalCssClasses() ?>"
+    <?php if($isCollapsible): ?>
          data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
     <?php endif; ?>
 >
     <?php if ($headline): ?>
-    <<?= $headlineTag ?> class="cs-footer__section-title"<?php if($block->getIsCollapsible()): ?> data-role="title"<?php endif; ?>>
+    <<?= $headlineTag ?> class="cs-footer__section-title"<?php if($isCollapsible): ?> data-role="title"<?php endif; ?>>
             <?= $headline; ?>
         </<?= $headlineTag ?>>
     <?php endif; ?>
