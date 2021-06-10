@@ -234,6 +234,7 @@ export default class Minicart {
         this._offcanvasMinicart = new offcanvas(null, {
             className: 'cs-offcanvas--mini-cart',
             triggerClassName: `${this._options.minicartTriggerClassName}`,
+            bodyOpenClass: 'minicart-offcanvas-open',
         });
 
         this._$minicart
