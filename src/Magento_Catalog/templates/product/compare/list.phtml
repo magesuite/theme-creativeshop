@@ -18,7 +18,7 @@ $showPrintOption = $block->getShowPrintOption();
 $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
 ?>
 <?php if ($total) :?>
-    <div class="cs-product-compare table-wrapper comparison">
+    <div class="cs-product-compare cs-product-compare--total-<?= $total; ?> table-wrapper comparison">
         <table class="data table table-comparison" id="product-comparison"
                data-mage-init='{"compareList":{
                     "windowPrintSelector":".action.print",
@@ -47,6 +47,9 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                                 <span class="print-span"><?= $block->escapeHtml(__('Print This Page')) ?></span>
                             </a>
                             <?php endif; ?>
+                            <span class="attribute label">
+                                <?= __('Product'); ?>
+                            </span>
                         </th>
                     <?php endif; ?>
                     <td data-th="<?= $block->escapeHtmlAttr(__('Product')) ?>" class="cell product info">
@@ -149,9 +152,9 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                             <?php $label = $block->escapeHtml($attribute->getStoreLabel() ? $attribute->getStoreLabel() : __($attribute->getFrontendLabel())); ?>
                             <?php if ($index++ == 0) :?>
                                 <th scope="row" class="<?= strtolower(preg_replace('/\s+/', '-', $label)); ?>">
-                                        <span class="attribute label">
-                                            <?= $label; ?>
-                                        </span>
+                                    <span class="attribute label">
+                                        <?= $label; ?>
+                                    </span>
                                 </th>
                             <?php endif; ?>
                             <td>
