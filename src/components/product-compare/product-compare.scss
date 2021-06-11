@@ -11,14 +11,20 @@ $product-compare__horizontal-border: $product-compare__horizontal-border-width
 $product-compare__cell-padding: 2rem !default;
 
 $product-compare__thead-label-background: $color_background-500 !default;
+$product-compare__thead-label-min-width: 20rem !default;
 $product-compare__thead-attr-background: $color_background-200 !default;
+$product-compare__thead-attr-min-width: 30rem !default;
 
 $product-compare__tbody-label-background-odd: $color_background-500 !default;
 $product-compare__tbody-label-background-even: $color_background-500 !default;
+$product-compare__tbody-attr-background-odd: rgba(
+    $color_background-500,
+    0.5
+) !default;
+$product-compare__tbody-attr-background-even: $color_background-200 !default;
 
 $product-compare__label-sticky: '>=tablet' !default; // set false to disable
 $product-compare__label-color: $color_text-900 !default;
-$product-compare__label-width: 20rem !default;
 $product-compare__label-font-size: $font-size_paragraph !default;
 $product-compare__label-font-weight: 700 !default;
 $product-compare__label-text-transform: none !default;
@@ -26,14 +32,7 @@ $product-compare__label-text-align: left !default;
 $product-compare__label-border-enabled: true !default;
 $product-compare__label-border-right: 1px solid $color_border-500 !default;
 
-$product-compare__tbody-attr-background-odd: rgba(
-    $color_background-500,
-    0.5
-) !default;
-$product-compare__tbody-attr-background-even: $color_background-200 !default;
-
 $product-compare__attr-color: $color_text-900 !default;
-$product-compare__attr-min-width: 27rem !default;
 $product-compare__attr-font-size: $font-size_paragraph !default;
 $product-compare__attr-font-weight: 400 !default;
 $product-compare__attr-text-transform: none !default;
@@ -42,10 +41,10 @@ $product-compare__attr-text-align: left !default;
 $product_compare__details-gutter: 1rem 0 0 0 !default;
 
 $product-compare__name-font-size: $font-size_paragraph !default;
-$product-compare_name-link-color: $color_primary-500 !default;
-$product-compare_name-link-color-hover: $color_primary-800 !default;
-$product-compare_name-link-decoration: none !default;
-$product-compare_name-link-hover-decoration: none !default;
+$product-compare__name-link-color: $color_primary-500 !default;
+$product-compare__name-link-color-hover: $color_primary-800 !default;
+$product-compare__name-link-decoration: none !default;
+$product-compare__name-link-hover-decoration: none !default;
 
 $product-compare__tax-color: $color_text-900 !default;
 $product-compare__tax-font-size: 1.2rem !default;
@@ -63,9 +62,23 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
 
     overflow: auto;
 
+    @for $i from 1 through 4 {
+        &--total-#{$i} {
+            thead {
+                tr {
+                    &:first-of-type {
+                        td {
+                            width: 100% / $i;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     th {
-        min-width: $product-compare__label-width;
-        width: $product-compare__label-width;
+        min-width: $product-compare__thead-label-min-width;
+        width: $product-compare__thead-label-min-width;
         color: $product-compare__label-color;
         font-size: $product-compare__label-font-size;
         font-weight: $product-compare__label-font-weight;
@@ -141,6 +154,10 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
                 }
             }
         }
+
+        td {
+            min-width: $product-compare__thead-attr-min-width;
+        }
     }
 
     tbody {
@@ -175,7 +192,6 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
         }
 
         td {
-            min-width: $product-compare__attr-min-width;
             color: $product-compare__attr-color;
             font-size: $product-compare__attr-font-size;
             font-weight: $product-compare__attr-font-weight;
@@ -209,6 +225,7 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
         text-transform: none;
         display: flex;
         align-items: center;
+        margin-bottom: 2rem;
     }
 
     .print-icon {
@@ -237,10 +254,10 @@ $product-compare__remove-button-icon-pos: 'no-icon' !default;
         margin: $product_compare__details-gutter;
 
         @include link(
-            $color: $product-compare_name-link-color,
-            $color-hover: $product-compare_name-link-color-hover,
-            $decoration: $product-compare_name-link-decoration,
-            $decoration-hover: $product-compare_name-link-hover-decoration
+            $color: $product-compare__name-link-color,
+            $color-hover: $product-compare__name-link-color-hover,
+            $decoration: $product-compare__name-link-decoration,
+            $decoration-hover: $product-compare__name-link-hover-decoration
         );
     }
 
