@@ -1,0 +1,20 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * Preload first gallery image
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ */
+?>
+<?php
+    $galleryImagesJson = $block->getGalleryImagesJson();
+    $galleryImages = json_decode($galleryImagesJson);
+    $firstImageUrl = array_shift($galleryImages)->img;
+
+    // Webp support
+    $imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
+    $isWebpSupported = $imageTypeHelper->supportsWebp($firstImageUrl);
+
+    $imgUrl = $isWebpSupported ? $firstImageUrl.'.webp' : $firstImageUrl;
+?>
+<link rel="preload" href="<?= $imgUrl ?>" as="image">
