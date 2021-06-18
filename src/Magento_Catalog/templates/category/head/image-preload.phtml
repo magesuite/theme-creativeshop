@@ -1,0 +1,19 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * Preload category image if exists
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+?>
+<?php
+    $category = $block->getCurrentCategory();
+    $image = $block->getImage();
+?>
+
+<?php if ($image): ?>
+    <?php 
+        $imgUrl = $image->getUrl($category);
+    ?>
+    <link rel="preload" href="<?= $block->escapeUrl($imgUrl) ?>" as="image">
+<?php endif; ?>

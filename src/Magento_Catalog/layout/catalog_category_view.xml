@@ -4,7 +4,17 @@
         <!-- Attach css bundle for this page type -->
         <css src="css/category.css" />
     </head>
-    <body>
+    <body>    
+        <!-- Preload category image if exists -->
+        <referenceBlock name="head.additional">
+            <block class="Magento\Catalog\Block\Category\View" name="category.head.preload.image" template="Magento_Catalog::category/head/image-preload.phtml" >
+                <arguments>
+                    <argument name="image" xsi:type="object">Magento\Catalog\ViewModel\Category\Image</argument>
+                    <argument name="output" xsi:type="object">Magento\Catalog\ViewModel\Category\Output</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
         <!-- Attach correct js bundle for page type -->
         <referenceBlock name="scripts">
             <arguments>
