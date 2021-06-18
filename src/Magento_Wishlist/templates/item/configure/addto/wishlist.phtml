@@ -1,0 +1,29 @@
+<?php
+/**
+ * Template changed to add custom html structure and classes, the same as adding a product to a wishlist
+ */
+
+/** @var \Magento\Wishlist\Block\Item\Configure $block */
+?>
+
+<?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow()) : ?>
+    <li class="cs-buybox__addto-item <?= $block->getAdditionalCssClasses() ?>">
+        <a href="#"
+           class="action towishlist updated cs-buybox__addto-link"
+           title="<?= $block->getLinkLabel() ?? __('Update wishlist') ?>"
+           data-role="add-to-links"
+           data-post='<?= /* @noEscape */ $block->getUpdateParams() ?>'
+           data-action="add-to-wishlist"
+        >
+            <?= $block->getChildHtml(''); ?>
+            <span class="cs-buybox__addto-link-text"><?= $block->getLinkLabel() ?></span>
+        </a>
+    </li>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "addToWishlist": <?= /* @noEscape */ $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($block->getWishlistOptions()) ?>
+        }
+    }
+</script>
