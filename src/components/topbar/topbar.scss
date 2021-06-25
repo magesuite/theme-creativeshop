@@ -1,19 +1,20 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'components/typography/mixin';
+@import 'utils/reset-list-style';
 
 $topbar_background: transparent !default;
 $topbar_height: 2.7rem !default;
 
 $topbar_item-font-size: 1.1rem !default;
 $topbar_item-text-color: $color_mineshaft !default;
-$topbar_item-hours-color: $color_black !default;
+$topbar_enable-borders: true !default;
 $topbar_item-border: 0.2rem solid $color_white !default;
 $topbar_item-border-transform: $transform_skew-400 !default;
 $topbar_item-phone_number-color: $color_black !default;
 
-$topbar_link-color-action: $color_primary-800 !default;
-$topbar_link-color: $color_primary-500 !default;
+$topbar_link-color: $link-color_base !default;
+$topbar_link-color-hover: $link-color_base-hover !default;
 $topbar_link-decoration: none !default;
 $topbar_link-hover-decoration: $topbar_link-decoration !default;
 
@@ -26,20 +27,10 @@ $container_background-top-bar: $color_background-500 !default;
     display: none;
     width: 100%;
     font-size: $topbar_item-font-size;
-    transform: translateY(0);
-    transition: transform 0.3s;
 
     @include media('>=laptop') {
         display: flex;
         z-index: 302;
-    }
-
-    &--hidden {
-        transform: translateY(-105%);
-    }
-
-    .page-print & {
-        display: none;
     }
 
     &__wrapper {
@@ -63,22 +54,17 @@ $container_background-top-bar: $color_background-500 !default;
 
         &--usps {
             margin-right: auto;
-            @include media('<laptopLg') {
-                display: none !important;
-            }
+            display: none;
 
-            .page-wrapper--checkout & {
-                display: none !important;
+            @include media('>=laptopLg') {
+                display: flex;
             }
         }
 
         &--hotline {
             align-items: center;
-
-            @include media('<laptopLg') {
-                flex: 1;
-                justify-content: flex-end;
-            }
+            flex: 1;
+            justify-content: flex-end;
         }
 
         &--language {
@@ -88,12 +74,11 @@ $container_background-top-bar: $color_background-500 !default;
 
     &__list,
     &__item > ul {
+        @include reset-list-style();
+
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        list-style: none;
-        margin: 0;
-        padding: 0;
     }
 
     &__list-item {
@@ -102,30 +87,28 @@ $container_background-top-bar: $color_background-500 !default;
         display: flex;
         align-items: center;
         position: relative;
-        margin-right: 0.9rem;
-        padding: 0 0.3rem 0 0;
+
+        &:not(:last-child) {
+            margin-right: 0.9rem;
+            padding: 0 0.3rem 0 0;
+        }
 
         @include media('>=laptop') {
             padding: 0 1.3rem 0 0;
             margin-right: 1.7rem;
         }
 
-        &:before {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            content: '';
-            border-right: $topbar_item-border;
-            transform: $topbar_item-border-transform;
-        }
-
-        &:last-child {
-            margin-right: 0;
-            padding-right: 0;
-
-            &:before {
-                content: none;
+        @if ($topbar_enable-borders) {
+            &:not(:last-child) {
+                &:before {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    content: '';
+                    border-right: $topbar_item-border;
+                    transform: $topbar_item-border-transform;
+                }
             }
         }
     }
@@ -137,20 +120,12 @@ $container_background-top-bar: $color_background-500 !default;
     &__link {
         @include link(
             $color: $topbar_link-color,
-            $color-hover: $topbar_link-color-action,
+            $color-hover: $topbar_link-color-hover,
             $decoration: $topbar_link-decoration,
             $decoration-hover: $topbar_link-hover-decoration
         );
 
         margin-right: 0.9rem;
-
-        &:hover {
-            color: $topbar_item-hours-color;
-        }
-
-        @include media('<laptop') {
-            display: none;
-        }
     }
 
     &__hotline {
@@ -159,13 +134,13 @@ $container_background-top-bar: $color_background-500 !default;
     }
 
     &__phone-number {
-        color: $topbar_item-hours-color;
+        @include link(
+            $color: $topbar_item-phone_number-color,
+            $color-hover: $topbar_item-phone_number-color
+        );
+
         font-weight: 700;
         margin-right: 0.9rem;
-
-        &:hover {
-            color: $topbar_item-hours-color;
-        }
     }
 }
 
