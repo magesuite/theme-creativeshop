@@ -1,4 +1,5 @@
 import 'config/base.scss';
+import 'utils/utility-classes.scss';
 import 'utils/breakpoint/breakpoint';
 
 // =============================================================================
@@ -35,6 +36,7 @@ import 'components/offcanvas';
 import 'components/page-title';
 import 'components/page-bottom';
 import 'components/price-box';
+import 'components/qty-increment';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/topbar';
