@@ -1,10 +1,11 @@
 import sourcemaps from 'gulp-sourcemaps';
-import sass from 'gulp-sass';
 import postcss from 'gulp-postcss';
 import gulpIf from 'gulp-if';
 import cleanCSS from 'gulp-clean-css';
 import environment from '../../environment';
 import settings from '../../config/build/styles';
+
+var sass = require('gulp-sass')(require('node-sass'));
 
 let firstRun = true;
 
