@@ -1,4 +1,7 @@
 import * as $ from 'jquery';
+import viewXml from 'etc/view';
+import deepGet from 'utils/deep-get/deep-get';
+import breakpoint from 'utils/breakpoint/breakpoint';
 
 export interface AftersearchNavOptions {
     horizontalClassName?: string;
@@ -17,6 +20,7 @@ export class AftersearchNav {
     protected _$toggleButton: JQuery;
     protected _$listOfFilters: JQuery;
     protected _isHorizontal = false;
+    protected _switchBreakpoint: number;
     protected _options: AftersearchNavOptions = {
         horizontalClassName: 'cs-aftersearch-nav--horizontal',
         filtersExpandedClassName: 'cs-aftersearch-nav--expanded',
@@ -40,6 +44,14 @@ export class AftersearchNav {
     public constructor($element: JQuery, options?: AftersearchNavOptions) {
         this._$element = $element;
         this._options = $.extend(this._options, options);
+
+        this._switchBreakpoint =
+            breakpoint[
+                deepGet(
+                    viewXml,
+                    'vars.Magento_Catalog.filters.breakpoint_switch'
+                )
+            ] ?? breakpoint.tablet;
 
         this._$toggleButton = this._$element.find(
             `.${this._options.toggleButtonClassName}`
@@ -79,7 +91,7 @@ export class AftersearchNav {
         // Remove height that was previously set to start with clean value.
         $filterContent.css('max-height', '');
 
-        if (!this._isHorizontal || $(window).width() < breakpoint.tablet) {
+        if (!this._isHorizontal || $(window).width() < this._switchBreakpoint) {
             return;
         }
 
@@ -97,7 +109,7 @@ export class AftersearchNav {
      *  Add right alignment class to dropdown content to prevent it from overflowing the screen.
      */
     protected _adjustCollapseAlignment($filter: JQuery): void {
-        if (!this._isHorizontal || $(window).width() < breakpoint.tablet) {
+        if (!this._isHorizontal || $(window).width() < this._switchBreakpoint) {
             return;
         }
 

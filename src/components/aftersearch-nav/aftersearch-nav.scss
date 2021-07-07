@@ -74,6 +74,15 @@ $aftersearch-nav--horizontal_toggle-button--expanded-pseudoicon-color: currentCo
 $aftersearch-nav--offcanvas-filters-list-padding--horizontal: 2rem !default;
 $aftersearch-nav--offcanvas-filters-tile-icon-right-position: 3rem !default;
 
+// If the breakpoint here is bigger than tablet, adjust $aftersearch-nav--horizontal_cols and $aftersearch-nav--horizontal_rows
+$aftersearch-nav--filters-switch-breakpoint: deep-get(
+    $view-xml,
+    vars,
+    Magento_Catalog,
+    filters,
+    breakpoint_switch
+) !default;
+
 $aftersearch-nav--horizontal_cols: (
     tablet: 4,
     laptop: 5,
@@ -85,13 +94,18 @@ $aftersearch-nav--horizontal_rows: (
     desktop: 1,
 ) !default;
 
+// Calculates layout for elements in horizontal navigation for each breakpoint.
+$num-aftersearch-nav--horizontal_cols: length(
+    $aftersearch-nav--horizontal_cols
+) !default;
+
 .#{$ns}aftersearch-nav {
     $root: &;
     overflow: visible;
     width: calc(100% + #{$aftersearch-nav--mobile_bleed * 2});
     margin: 0 -#{$aftersearch-nav--mobile_bleed} 3rem;
 
-    @include media('>=tablet') {
+    @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
         width: auto;
         margin: 0;
     }
@@ -118,7 +132,7 @@ $aftersearch-nav--horizontal_rows: (
     &.filter-no-options {
         display: none;
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             display: block;
         }
     }
@@ -134,7 +148,7 @@ $aftersearch-nav--horizontal_rows: (
         & + & {
             border-top: $aftersearch-nav_filter-border;
 
-            @include media('>=tablet') {
+            @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
                 border-top: 0;
             }
         }
@@ -145,7 +159,7 @@ $aftersearch-nav--horizontal_rows: (
             }
         }
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             padding-bottom: 0;
             border-bottom: $aftersearch-nav_filter-border;
         }
@@ -193,7 +207,7 @@ $aftersearch-nav--horizontal_rows: (
         font-weight: 700;
         text-transform: uppercase;
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             display: none;
         }
 
@@ -227,7 +241,7 @@ $aftersearch-nav--horizontal_rows: (
             height: auto;
         }
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             height: auto;
             border-bottom: none;
             overflow: visible;
@@ -269,7 +283,7 @@ $aftersearch-nav--horizontal_rows: (
         background: $aftersearch-nav_filter-title-background;
         padding: 1.3rem 3rem 1.3rem $aftersearch-nav_gutter;
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             padding: 2rem 2rem 2rem 0;
             background: transparent;
         }
@@ -286,7 +300,7 @@ $aftersearch-nav--horizontal_rows: (
         padding: 2rem $aftersearch-nav_gutter;
         display: none;
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             padding: 0 0 2rem;
             width: auto;
         }
@@ -314,7 +328,7 @@ $aftersearch-nav--horizontal_rows: (
         @include reset-list-style();
         columns: 2;
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             padding-top: 0;
             columns: 1;
         }
@@ -405,7 +419,7 @@ $aftersearch-nav--horizontal_rows: (
     &--horizontal {
         margin-top: 1rem;
 
-        @include media('>=tablet') {
+        @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
             z-index: 20;
             padding-bottom: 0;
             margin-bottom: 2rem;
@@ -565,7 +579,9 @@ $aftersearch-nav--horizontal_rows: (
                 opacity: 0;
                 box-shadow: $aftersearch-nav--horizontal_filter-content-box-shadow;
 
-                @include media('>=tablet') {
+                @include media(
+                    '>=#{$aftersearch-nav--filters-switch-breakpoint}'
+                ) {
                     padding-bottom: 0;
                 }
 
@@ -622,11 +638,6 @@ $aftersearch-nav--horizontal_rows: (
                 }
             }
         }
-
-        // Calculates layout for elements in horizontal navigation for each breakpoint.
-        $num-aftersearch-nav--horizontal_cols: length(
-            $aftersearch-nav--horizontal_cols
-        );
 
         @for $i from 1 through $num-aftersearch-nav--horizontal_cols {
             $cols-breakpoint: nth($aftersearch-nav--horizontal_cols, $i);
