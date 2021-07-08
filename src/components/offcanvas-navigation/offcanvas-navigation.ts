@@ -247,7 +247,6 @@ export default class OffcanvasNavigation {
         new HeaderSearch(this._options.headerSearchOptions);
 
         const $searchInput = $('#search-offcanvas');
-        $searchInput.focus();
 
         if ($('.catalogsearch-result-index').length && !$searchInput.val()) {
             const search = location.search.substring(1);
