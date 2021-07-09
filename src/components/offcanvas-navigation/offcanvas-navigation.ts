@@ -21,7 +21,6 @@ export interface OffcanvasNavigationOptions {
     currencySwitcherSelector?: string;
     showCategoryIcon?: boolean;
     showProductsCount?: boolean;
-    localStorageKey?: string;
     endpointPath?: string;
     authorizationLinkSelector?: string;
     showActiveCategoryLevel?: boolean;
@@ -66,7 +65,6 @@ export default class OffcanvasNavigation {
                 drawerClassName: 'cs-offcanvas__drawer',
                 showCategoryIcon: false,
                 showProductsCount: false,
-                localStorageKey: 'mgs-offcanvas-navigation',
                 endpointPath: '/navigation/mobile/index',
                 currencySwitcherSelector: '.switcher-currency',
                 languageSwitcherSelector: '.switcher-language',
@@ -95,24 +93,21 @@ export default class OffcanvasNavigation {
         )}`.split('/');
 
         // Prefetch mobile navigation when browser becomes idle.
-        idleDeferred().then(() => this._getHtml());
+        idleDeferred().then(() => this._init());
 
-        this._cleanupLocalStorage();
         this._addEventListeners();
     }
 
-    protected _cleanupLocalStorage(): void {
-        try {
-            localStorage.removeItem(this._options.localStorageKey);
-        } catch (error) {
-            // Do nothing.
-        }
-    }
-
     /**
-     * Initializes offcanvas navigation either from cache or when browser enters idle state.
+     * Initializes offcanvas navigation once - either on ofcaanvas show or when browser enters idle state.
      */
     protected _init(): void {
+        if (!this._firstInit) {
+            return;
+        }
+
+        this._firstInit = false;
+
         this._getHtml()
             .then(html => this._initHtml(html))
             .then(() =>
@@ -140,8 +135,6 @@ export default class OffcanvasNavigation {
                     ) {
                         this._handleOffcanvasSearch();
                     }
-
-                    this._firstInit = false;
                 })
             );
     }
