@@ -172,10 +172,8 @@ $page-category_offcanvas_filters_desktop: deep-get(
         }
 
         @if not($page-category_offcanvas_filters_mobile) {
-            .cs-offcanvas-filters__drawer {
-                @include media(
-                    '<#{$page-category_offcanvas_filters_breakpoint}'
-                ) {
+            @include media('<#{$page-category_offcanvas_filters_breakpoint}') {
+                .cs-offcanvas-filters__drawer {
                     position: static;
                     background: none;
                     transition: initial;
@@ -185,14 +183,21 @@ $page-category_offcanvas_filters_desktop: deep-get(
                     right: auto;
                     transform: none;
                 }
+
+                .cs-offcanvas-filters__headline,
+                .cs-offcanvas-filters__close {
+                    display: none;
+                }
             }
         }
 
         @if not($page-category_offcanvas_filters_desktop) {
-            .cs-offcanvas-filters__drawer {
-                @include media(
-                    '>=#{$page-category_offcanvas_filters_breakpoint}'
-                ) {
+            @include media('>=#{$page-category_offcanvas_filters_breakpoint}') {
+                .cs-offcanvas-filters {
+                    z-index: 1;
+                }
+
+                .cs-offcanvas-filters__drawer {
                     position: static;
                     background: none;
                     transition: initial;
@@ -201,6 +206,11 @@ $page-category_offcanvas_filters_desktop: deep-get(
                     left: auto;
                     right: auto;
                     transform: none;
+                }
+
+                .cs-offcanvas-filters__headline,
+                .cs-offcanvas-filters__close {
+                    display: none;
                 }
             }
         }
