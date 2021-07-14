@@ -88,12 +88,14 @@ export default class HeaderSearch {
     }
 
     protected _triggerElementClick(): void {
-        this._$trigger.on('click', (e: Event): void => {
-            e.preventDefault();
+        if (this._$trigger.length) {
+            this._$trigger.on('click', (e: Event): void => {
+                e.preventDefault();
 
-            this._toggleSearch();
-            this._focusInputField();
-        });
+                this._toggleSearch();
+                this._focusInputField();
+            });
+        }
     }
 
     protected _closeElementClick(): void {

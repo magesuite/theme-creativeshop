@@ -73,6 +73,7 @@ export default class OffcanvasNavigation {
                 highlightActiveCategory: false,
                 activeCategoryHighlightClass: `active`,
                 headerSearchOptions: {
+                    triggerSelector: false,
                     targetSelector: '.cs-offcanvas-navigation__search',
                     searchInputSelector: '#search-offcanvas',
                     closeElementToggleSearch: false,
@@ -232,7 +233,6 @@ export default class OffcanvasNavigation {
 
     /**
      * Initialize search in offcanvas
-     * Focus on search input
      * As offcanvas navigation is cached backend functionality to fill search input is lost.
      * Instead search query is fetched form url if user is on search results page
      */
