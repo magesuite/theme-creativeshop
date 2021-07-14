@@ -5,10 +5,10 @@
 @import 'utils/visually-hidden';
 
 // Defines spacing between inputs, slider and message with button elements.
-$cs-aftersearch-nav-range_elements-bottom-spacing: 1.5em !default;
+$cs-aftersearch-nav-range_elements-bottom-spacing: 1.9rem !default;
 // Make sure that inputs have enough space for content without overflow.
-$cs-aftersearch-nav-range_input-min-width: 7em !default;
-$cs-aftersearch-nav-range_input-max-width: 10em !default;
+$cs-aftersearch-nav-range_input-min-width: 10rem !default;
+$cs-aftersearch-nav-range_input-max-width: 15rem !default;
 
 $cs-aftersearch-nav-range_label-color: $color_text-500 !default;
 
@@ -55,6 +55,8 @@ $cs-aftersearch-nav-range_apply-button-icon-pos: 'no-icon' !default;
 
         &--to {
             margin: 0 0.5em;
+            flex: 1 0 auto;
+            text-align: center;
         }
     }
 
@@ -62,26 +64,23 @@ $cs-aftersearch-nav-range_apply-button-icon-pos: 'no-icon' !default;
         @include field();
         position: relative;
         font-size: 1em;
+        width: auto;
+        min-width: $cs-aftersearch-nav-range_input-min-width;
+        max-width: $cs-aftersearch-nav-range_input-max-width;
+        flex: 1 1 auto;
     }
 
     &__currency {
         position: absolute;
-        left: 8.7em;
+        right: 1.2rem;
         top: 50%;
         transform: translateY(-50%);
         color: $cs-aftersearch-nav-range_currency-color;
-
-        @include media('>=tablet') {
-            left: auto;
-            right: 0.6em;
-        }
     }
 
     &__input {
         @include field-input();
         margin-bottom: 0;
-        min-width: $cs-aftersearch-nav-range_input-min-width;
-        max-width: $cs-aftersearch-nav-range_input-max-width;
     }
 
     &__slider {
