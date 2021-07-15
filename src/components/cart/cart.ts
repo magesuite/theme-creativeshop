@@ -81,8 +81,18 @@ export default class Cart {
             }, 10);
         });
 
-        $(`${this._options.qtyIncrementButtonSelector}`).on('click', (): void =>
-            this._triggerUpdate()
+        $(`${this._options.qtyIncrementButtonSelector}`).on(
+            'click',
+            (e): void => {
+                if (
+                    !$(e.target)
+                        .parents('.cs-qty-increment__button')
+                        .hasClass('cs-qty-increment__button--disabled') &&
+                    !$(e.target).hasClass('cs-qty-increment__button--disabled')
+                ) {
+                    this._triggerUpdate();
+                }
+            }
         );
 
         $(`${this._options.qtyIncrementInputSelector}`).on(
