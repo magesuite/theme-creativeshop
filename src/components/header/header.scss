@@ -24,6 +24,71 @@ $header_is-sticky-on-mobile: deep-get(
     mobile_is_sticky
 ) !default;
 
+$header_sticky-top-position-mobile: 0 !default;
+$header_sticky-top-position-tablet: $header_sticky-top-position-mobile !default;
+
+/**
+ * Variables related to sticky header and topbar on mobile devices.
+ * to prevent page jumping when offacnvas (fixed positioned) is opened
+ * If you have more elements on top, you have to include their height.
+ */
+$sticky-header-page-wrapper-offset-mobile: $global_header-height-mobile !default;
+$sticky-header-page-wrapper-offset-tablet: $global_header-height-tablet !default;
+
+@if (
+    $header_is-sticky-on-mobile and $global_header-is-bottom-on-mobile != true
+) {
+    /**
+     * Styles related to sticky header and topbar on mobile devices.
+     * to prevent page jumping when offacnvas (fixed positioned) is opened
+     */
+    .page-wrapper.no-scroll-child {
+        @include media('<laptop') {
+            padding-top: $sticky-header-page-wrapper-offset-tablet;
+        }
+
+        @include media('<tablet') {
+            padding-top: $sticky-header-page-wrapper-offset-mobile;
+        }
+    }
+
+    .#{$ns}container {
+        &--header {
+            @include media('<laptop') {
+                position: sticky;
+                z-index: 800;
+                padding-left: 0;
+                padding-right: 0;
+                top: $header_sticky-top-position-tablet;
+
+                /**
+                 * Fixed positioning required to work with offcanvas elements.
+                 * Also, as a fallback for IE which does not support sticky.
+                 */
+                .no-scroll &,
+                .ie11 {
+                    position: fixed;
+                }
+            }
+
+            @include media('<tablet') {
+                top: $header_sticky-top-position-mobile;
+            }
+        }
+    }
+}
+
+@if not($header_is-sticky-on-mobile) {
+    .#{$ns}-container {
+        &--header {
+            @include media('<laptop') {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+}
+
 .#{$ns}header {
     $root: &;
 
@@ -57,21 +122,13 @@ $header_is-sticky-on-mobile: deep-get(
         position: relative;
         max-width: 100vw;
 
-        @if ($header_is-sticky-on-mobile) {
-            @include media('<laptop') {
+        @if ($global_header-is-bottom-on-mobile) {
+            @include media('<tablet') {
                 position: fixed;
                 left: 0;
                 right: 0;
-                flex-wrap: nowrap;
-            }
-        }
-
-        @if ($global_header-is-bottom-on-mobile) {
-            @include media('<tablet') {
                 bottom: 0;
             }
-        } @else {
-            top: 0;
         }
 
         @include media('>=tablet') {
@@ -262,15 +319,6 @@ $header_is-sticky-on-mobile: deep-get(
 
         @include media('<phone') {
             height: 2rem;
-        }
-    }
-}
-
-@if not($header_is-sticky-on-mobile) {
-    @include media('<laptop') {
-        .cs-container--header {
-            padding-left: 0;
-            padding-right: 0;
         }
     }
 }
