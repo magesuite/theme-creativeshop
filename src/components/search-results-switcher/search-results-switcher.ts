@@ -210,8 +210,6 @@ export default class SearchresultsSwitcher {
         this._$tabs = this._$triggers.parent();
         const urlParams: any = this._getUrlParams();
 
-        this._setResultsCount();
-
         if (
             $(this._options.filtersStateSelector).length ||
             (urlParams.p !== undefined && parseInt(urlParams.p, 10) > 1)
@@ -223,9 +221,13 @@ export default class SearchresultsSwitcher {
                 $(this._options.productsResultsSelector).length &&
                 $productsTrigger.length
             ) {
+                this._setResultsCount(true);
                 this.openTab($productsTrigger, false);
+            } else {
+                this._setResultsCount();
             }
         } else {
+            this._setResultsCount();
             this._setEvents();
 
             if (
@@ -272,7 +274,7 @@ export default class SearchresultsSwitcher {
         return params;
     }
 
-    protected _setResultsCount(): void {
+    protected _setResultsCount(countOnlyProducts: Boolean = false): void {
         const $overallResultsCountHeadline: JQuery = $(
             `.${this._options.componentClass}__overall-count`
         );
@@ -311,7 +313,9 @@ export default class SearchresultsSwitcher {
         }
 
         if ($overallResultsCountHeadline.length) {
-            const overallCount: any = cmsCount + productsCount;
+            const overallCount: any = countOnlyProducts
+                ? productsCount
+                : cmsCount + productsCount;
             $overallResultsCountHeadline.html(overallCount);
         }
     }
