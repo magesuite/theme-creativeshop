@@ -4,13 +4,10 @@
 $badge_font-size: 1.1rem !default;
 $badge_font-weight: 700 !default;
 $badge_height: 2em !default;
-$badge_padding: 0 0.7rem 0 0.3rem !default;
+$badge_padding: 0 0.7rem !default;
 $badge_border: 0 !default;
 $badge_border-radius: $border-radius_base !default;
 $badge_text-transform: uppercase !default;
-
-$badge_transform: $transform_skew-300 !default;
-$badge_span-transform: $transform_skew-300-revert !default;
 
 $badge--default-background: $color_primary-500 !default;
 $badge--default-color: $color_text-200 !default;
@@ -44,7 +41,6 @@ $badge--top-color: $color_text-200 !default;
     justify-content: center;
     align-items: center;
     position: relative;
-    transform: $badge_transform;
     background-color: $badge--default-background;
     color: $badge--default-color;
     border: $badge_border;
@@ -54,22 +50,6 @@ $badge--top-color: $color_text-200 !default;
     font-weight: $badge_font-weight;
     min-height: $badge_height;
     text-transform: $badge_text-transform;
-
-    &:before {
-        content: '';
-        width: 1rem;
-        position: absolute;
-        min-height: inherit;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: inherit;
-        transform: $badge_span-transform;
-        border-radius: $badge_border-radius 0 0 $badge_border-radius;
-        border: inherit;
-        border-right: 0;
-        transform-origin: bottom left;
-    }
 
     @include badge_hook($type);
 }
@@ -125,7 +105,6 @@ $badge--top-color: $color_text-200 !default;
 
 @mixin badge_span($type: 'default') {
     line-height: normal;
-    transform: $badge_span-transform;
 
     & + & {
         margin-left: 0.5rem;
