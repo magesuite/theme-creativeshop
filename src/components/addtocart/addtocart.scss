@@ -17,8 +17,6 @@ $addtocart_button-padding-right: 4.5rem !default;
 $addtocart_loading-indicator-ball-color: $color_text-200 !default;
 $addtocart_loading-indicator-ball-size: 10px !default;
 
-$addtocart_feedback-bg-skew: $transform_skew-400 !default;
-
 $addtocart_ajax-success-bg-primary: $color_success-500 !default;
 $addtocart_ajax-success-bg-secondary: $color_success-600 !default;
 $addtocart_ajax-success-color: $color_white !default;
@@ -164,39 +162,22 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
     }
 
     &__feedback-bg {
-        &,
-        &:after {
-            content: '';
-            position: absolute;
-            left: -1em;
-            top: -#{$button_border-size};
-            bottom: -#{$button_border-size};
-            width: calc(100% + 2.5em);
-            transform: $addtocart_feedback-bg-skew translate3d(-100%, 0, 0);
-            transform-origin: 0 0;
-            transition: transform 0.45s cubic-bezier(0.01, 0.65, 0.38, 1);
-            background: $addtocart_ajax-success-bg-secondary;
+        position: absolute;
+        left: -1em;
+        top: -#{$button_border-size};
+        bottom: -#{$button_border-size};
+        width: calc(100% + 2.5em);
+        transform: translate3d(-100%, 0, 0);
+        transform-origin: 0 0;
+        transition: transform 0.45s cubic-bezier(0.01, 0.65, 0.38, 1);
+        background: $addtocart_ajax-success-bg-secondary;
 
-            #{$root}--no-transitions & {
-                transition: none;
-            }
-
-            #{$root}--fail & {
-                background: $addtocart_ajax-fail-bg-secondary;
-            }
+        #{$root}--no-transitions & {
+            transition: none;
         }
 
-        &:after {
-            background: $addtocart_ajax-success-bg-primary;
-            z-index: 2;
-            left: 0;
-            width: 100%;
-            transform: translate3d(-100%, 0, 0);
-            transition-delay: 0.3s;
-
-            #{$root}--fail & {
-                background: $addtocart_ajax-fail-bg-primary;
-            }
+        #{$root}--fail & {
+            background: $addtocart_ajax-fail-bg-secondary;
         }
     }
 
@@ -336,7 +317,7 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         }
 
         #{$root}__feedback-bg {
-            transform: $addtocart_feedback-bg-skew translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
 
             &:after {
                 transform: translate3d(

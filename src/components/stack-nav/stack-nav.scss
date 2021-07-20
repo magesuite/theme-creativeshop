@@ -20,7 +20,6 @@ $stack-nav_item-mobile-hover-background: $color_border-500 !default;
 
 $stack-nav_current-indicator-background: $color_secondary-500 !default;
 $stack-nav_current-indicator-width: 0.5rem !default;
-$stack-nav_skewed-indicator-enabled: true !default;
 $stack-nav_indicator-enabled: true !default;
 
 $stack-nav_delimiter-border: 1px solid $color_border-500 !default;
@@ -142,31 +141,6 @@ $stack-nav_delimiter-disabled: false !default;
                     width: $stack-nav_current-indicator-width;
                     height: 100%;
                     background: $stack-nav_current-indicator-background;
-
-                    @if $stack-nav_skewed-indicator-enabled {
-                        height: 100%;
-                    }
-                }
-
-                @if $stack-nav_skewed-indicator-enabled {
-                    &:after {
-                        position: absolute;
-                        left: -0.5rem;
-                        top: 0;
-                        content: '';
-                        display: block;
-                        width: 0;
-                        height: 0;
-                        border-left: 10px solid transparent;
-                        border-right: 10px solid transparent;
-                        border-top: 35px
-                            solid
-                            $stack-nav_current-indicator-background;
-
-                        @include media('>=tablet') {
-                            border-top-width: 28px;
-                        }
-                    }
                 }
             }
         }
