@@ -1,0 +1,22 @@
+<?php
+/**
+ * Template has been overwritten in order to:
+ * - add additional html elements for text and pseudoicon
+ */
+
+/**
+ * @var \Magento\Customer\Block\Account\AuthorizationLink $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+
+<a class="lac-notification-close-link" <?= /* @noEscape */ $block->getLinkAttributes()
+?><?= /* @noEscape */ $dataPostParam ?>>
+    <span class="lac-notification-close-text"><?= $escaper->escapeHtml(__('Close Session')) ?></span>
+    <span class="lac-notification-close-icon"></span>
+</a>
+
