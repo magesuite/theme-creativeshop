@@ -274,7 +274,7 @@ export default class SearchresultsSwitcher {
         return params;
     }
 
-    protected _setResultsCount(countOnlyProducts: Boolean = false): void {
+    protected _setResultsCount(countOnlyProducts: boolean = false): void {
         const $overallResultsCountHeadline: JQuery = $(
             `.${this._options.componentClass}__overall-count`
         );
