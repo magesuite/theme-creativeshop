@@ -12,9 +12,9 @@ define(['ko', 'jquery'], function(ko, $) {
                 this.hideTimeout = 30000;
 
                 if (
-                    this.index.includes(
+                    this.index.indexOf(
                         'checkout.steps.billing-step.payment.payments-list'
-                    )
+                    ) !== -1
                 ) {
                     this.messageContainer.errorMessages.subscribe(function() {
                         if ($('.payment-method._active').length) {
