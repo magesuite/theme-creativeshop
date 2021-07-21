@@ -1,0 +1,146 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/container/mixin';
+@import 'components/pseudoicon/mixin';
+@import 'utils/deep-get/deep-get.scss';
+
+$lac-notification_color: $color_text-200 !default;
+$lac-notification_font-size: 1.2rem !default;
+$lac-notification_gutter: $page_edge-gutter !default;
+$lac-notification_gutter--small: 0.5rem !default;
+$lac-notification_img-width: 2.8rem !default;
+$lac-notification_img-gutter: 1rem !default;
+$lac-notification_background: $color_primary-500 !default;
+
+$lac-notification_close-include-pseudoicon: true !default;
+$lac-notification_close-pseudoicon-type: 'plus' !default;
+$lac-notification_close-width: 1.6rem !default;
+$lac-notification_close-line-width: 0.1rem !default;
+$lac-notification_close-color: $color_background-200 !default;
+$lac-notification_close-color-hover: $lac-notification_close-color !default;
+
+$header_is-sticky-on-mobile: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    header,
+    mobile_is_sticky
+) !default;
+
+.lac-notification {
+    $root: &;
+
+    @include container();
+
+    &-sticky {
+        z-index: 300;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+
+        @if ($header_is-sticky-on-mobile) {
+            @if ($global_header-is-bottom-on-mobile) {
+                @include media('<tablet') {
+                    position: relative;
+                }
+            }
+        }
+
+        @include media('>=laptop') {
+            position: relative;
+        }
+
+        .checkout-index-index & {
+            position: relative;
+        }
+
+        #{$root} {
+            padding-top: $lac-notification_gutter--small;
+            padding-bottom: $lac-notification_gutter--small;
+            font-size: $lac-notification_font-size;
+            color: $lac-notification_color;
+            background-color: $lac-notification_background;
+
+            #{$root}-text {
+                display: flex;
+                justify-content: flex-start;
+                flex-basis: calc(
+                    100% - #{$lac-notification_img-width +
+                        $lac-notification_img-gutter}
+                );
+                padding: $lac-notification_gutter--small 0;
+
+                @include media('>=laptop') {
+                    padding: $lac-notification_gutter 0;
+                }
+            }
+
+            #{$root}-icon {
+                display: flex;
+                flex-shrink: 0;
+                width: $lac-notification_img-width;
+                margin: 0 $lac-notification_img-gutter 0 0;
+            }
+
+            #{$root}-links {
+                display: flex;
+                flex-basis: 100%;
+                justify-content: flex-end;
+                padding: $lac-notification_gutter--small 0;
+                font-size: $lac-notification_font-size;
+            }
+
+            #{$root}-links a {
+                font-size: inherit;
+                color: $lac-notification_color;
+                text-decoration: none;
+            }
+
+            #{$root}-close-link {
+                display: flex;
+            }
+
+            #{$root}-close-text {
+                @if ($lac-notification_close-include-pseudoicon) {
+                    margin-right: 0.5rem;
+                }
+            }
+
+            #{$root}-close-icon {
+                @if ($lac-notification_close-include-pseudoicon) {
+                    @include pseudoicon(
+                        $type: $lac-notification_close-pseudoicon-type,
+                        $color: $lac-notification_close-color,
+                        $color-hover: $lac-notification_close-color-hover,
+                        $width: $lac-notification_close-width,
+                        $height: $lac-notification_close-line-width
+                    );
+
+                    transform: rotate(45deg);
+                    width: $lac-notification_close-width;
+                    display: inline-block;
+
+                    &:before,
+                    &:after {
+                        right: 0;
+                    }
+                } @else {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .top-container {
+        @include container-wrapper();
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+
+        @include media('>=tablet') {
+            flex-wrap: nowrap;
+        }
+    }
+}

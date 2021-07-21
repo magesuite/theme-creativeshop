@@ -1,0 +1,46 @@
+<?php
+/**
+ * Template has been overwritten in order to:
+ * - remove sticky feature init,
+ * - link stylesheet only when LAC notification is visible on frontend
+ */
+
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php if ($block->getConfig()->isEnabled()): ?>
+    <link rel="stylesheet" type="text/css" href="<?= $block->getViewFileUrl('css/login-as-customer.css'); ?>"/>
+    <?php $viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg'); ?>
+
+    <div class="lac-notification-sticky"
+         data-bind="scope: 'loginAsCustomer'" >
+        <div class="lac-notification clearfix" data-bind="visible: isVisible" style="display: none">
+            <div class="top-container">
+                <div class="lac-notification-icon wrapper">
+                    <img class="logo-img"  src="<?= $escaper->escapeUrl($viewFileUrl) ?>" alt="Magento" />
+                </div>
+                <div class="lac-notification-text wrapper">
+                    <span data-bind="html: notificationText"></span>
+                </div>
+                <div class="lac-notification-links wrapper">
+                   <?= $block->getChildHtml('login-as-customer-notice-links') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "loginAsCustomer": {
+                        "component": "Magento_LoginAsCustomerFrontendUi/js/view/loginAsCustomer"
+                    }
+                }
+            }
+        }
+    }
+    </script>
+<?php endif; ?>
