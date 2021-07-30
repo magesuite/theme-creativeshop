@@ -1,7 +1,6 @@
 import * as $ from 'jquery';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
-import breakpoint from 'utils/breakpoint/breakpoint';
 
 export interface AftersearchNavOptions {
     horizontalClassName?: string;

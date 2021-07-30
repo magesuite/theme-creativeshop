@@ -95,11 +95,3 @@ if (!window.breakpoint || typeof window.breakpoint !== 'object') {
         passiveEventOptionSupported ? { passive: true } : false
     );
 }
-
-/**
- * Export left only for compatibility reasons.
- * All the components using
- * "import breakpoint from 'utils/breakpoint/breakpoint'"";
- * should remove this import to use breakpoint directly form the window object.
- */
-export default window.breakpoint;

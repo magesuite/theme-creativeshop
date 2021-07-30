@@ -8,9 +8,6 @@ import 'config/base.scss';
 // TODO: Remove this file when possible
 import 'bundle.scss';
 
-// Global utilities:
-import 'utils/breakpoint/breakpoint';
-
 // =============================================================================
 // Components
 // =============================================================================
