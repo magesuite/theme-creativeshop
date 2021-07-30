@@ -1,6 +1,5 @@
 import 'config/base.scss';
 import 'utils/utility-classes.scss';
-import 'utils/breakpoint/breakpoint';
 
 // =============================================================================
 // Components
