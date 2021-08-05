@@ -1,9 +1,4 @@
-<!--
-/**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
+
 
 <div class="cs-minicart">
 
@@ -11,8 +6,13 @@
             id="btn-minicart-close"
             class="action close"
             data-action="close"
-            data-bind="attr: { title: $t('Close') }">
-        <span><!-- ko i18n: 'Close' --><!-- /ko --></span>
+            data-bind="
+                attr: {
+                    title: $t('Close')
+                },
+                click: closeMinicart()
+            ">
+            <span translate="'Close'"/>
     </button>
 
     <span class="cs-minicart__title">
@@ -54,20 +54,25 @@
                         id="top-cart-btn-checkout"
                         type="button"
                         class="cs-button cs-button--look_default cs-button--type_long cs-button--type_wide | checkout"
-                        data-bind="attr: {title: $t('Proceed to Checkout')}">
+                        data-bind="
+                            attr: {
+                                title: $t('Proceed to Checkout')
+                            },
+                            click: closeMinicart()
+                        ">
                     <span class="cs-button__span"><!-- ko i18n: 'Go to Checkout' --><!-- /ko --></span>
                     <svg class="cs-button__icon">
                         <use xlink:href="#arrow_next"></use>
                     </svg>
 
                 </button>
-                <div class="cs-minicart__extra-buttons" data-bind="html: getCartParam('extra_actions')"></div>
+                <div class="cs-minicart__extra-buttons" data-bind="html: getCartParamUnsanitizedHtml('extra_actions')"></div>
             </div>
             <!-- /ko -->
         <!-- /ko -->
 
         <!-- ko ifnot: getCartParam('summary_count') -->
-            <strong class="subtitle empty" data-bind="visible: closeSidebar()">
+            <strong class="subtitle empty">
                 <!-- ko i18n: 'You have no items in your shopping cart.' --><!-- /ko -->
             </strong>
             <!-- ko if: getCartParam('cart_empty_message') -->
@@ -95,13 +100,9 @@
             </div>
         <!-- /ko -->
 
-            <div id="minicart-widgets" class="minicart-widgets">
-                <!-- ko foreach: getRegion('promotion') -->
-                <!-- ko template: getTemplate() --><!-- /ko -->
-                <!-- /ko -->
+            <div id="minicart-widgets" class="minicart-widgets" if="regionHasElements('promotion')">
+                <each args="getRegion('promotion')" render=""/>
             </div>
-
-
         </div>
 
 
