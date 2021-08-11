@@ -96,13 +96,15 @@ export default class Cart {
         );
 
         $(`${this._options.qtyIncrementInputSelector}`).on(
-            'keydown',
-            (e: KeyboardEvent): void => {
-                const delay: number =
-                    e.keyCode === 13
-                        ? 0
-                        : this._options.updateCartActionTimeout;
-                this._triggerUpdate(delay);
+            'input change',
+            (e): void => {
+                var newValue = $(e.target).val();
+
+                if (Number(newValue) === 0 || newValue === '') {
+                    return;
+                } else {
+                    this._triggerUpdate();
+                }
             }
         );
     }

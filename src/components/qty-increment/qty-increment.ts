@@ -1,4 +1,5 @@
 import * as $ from 'jquery';
+import requireAsync from 'utils/require-async';
 
 /**
  * Component options interface.
@@ -108,8 +109,12 @@ export default class QtyIncrement {
     /**
      * Returns current value of the input.
      */
-    public getValue(): number {
-        return Number(this._$input.val());
+    public getValue(): any {
+        if (this._$input.val() === '') {
+            return false;
+        } else {
+            return Number(this._$input.val());
+        }
     }
 
     /**
@@ -127,7 +132,7 @@ export default class QtyIncrement {
      * Increments input value by specified step if possible.
      */
     public increment(): void {
-        const value: number = this.getValue();
+        const value: any = this.getValue();
         const newValue: number = Math.min(value + this._step, this._maxValue);
 
         if (newValue === value) {
@@ -145,7 +150,9 @@ export default class QtyIncrement {
         const value: number = this.getValue();
         const newValue: number = Math.max(value - this._step, this._minValue);
 
-        if (newValue === value) {
+        if (newValue < this._options.maxValue) {
+            this._removeItem();
+
             return;
         }
 
@@ -157,21 +164,28 @@ export default class QtyIncrement {
      * Toggles buttons disabled state depending on current value of the input.
      */
     protected _toggleButtons(): void {
-        const value: number = this.getValue();
+        const value: any = this.getValue();
 
-        const isDecrementDisabled = value <= this._minValue;
+        if (value === false) {
+            return;
+        }
+
         const isIncrementDisabled = value >= this._maxValue;
 
-        this._$decrementBtn.toggleClass(
-            this._options.disabledButtonClassName,
-            isDecrementDisabled
-        );
+        if (
+            this._$input.hasClass(this._options.inputClassName) &&
+            value < this._minValue
+        ) {
+            this._removeItem();
+
+            return;
+        }
+
         this._$incrementBtn.toggleClass(
             this._options.disabledButtonClassName,
             isIncrementDisabled
         );
 
-        this._$decrementBtn.prop('disabled', isDecrementDisabled);
         this._$incrementBtn.prop('disabled', isIncrementDisabled);
     }
 
@@ -179,6 +193,14 @@ export default class QtyIncrement {
         if (this._$input.val() === '') {
             this.setValue(this._initialValue);
         }
+    }
+
+    protected _removeItem(): void {
+        const removeButton = this._$input
+            .parents('.item-info')
+            .find('.cs-cart-item__link--remove > a');
+
+        removeButton.trigger('click');
     }
 
     /**
@@ -189,6 +211,7 @@ export default class QtyIncrement {
         this._$incrementBtn.on('click', this.increment.bind(this));
 
         this._$input.on('input change', this._toggleButtons.bind(this));
+
         this._$input.on('blur', this._resetValue.bind(this));
     }
 }
