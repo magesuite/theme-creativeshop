@@ -62,7 +62,7 @@ define(['jquery'], function($) {
             },
 
             _validateQty: function(elem) {
-                if (parseInt(elem.val()) < this.options.minValue) {
+                if (parseInt(elem.val(), 10) < this.options.minValue) {
                     $(this.options.button.remove).trigger('click');
 
                     return;

@@ -98,7 +98,7 @@ export default class Cart {
         $(`${this._options.qtyIncrementInputSelector}`).on(
             'input change',
             (e): void => {
-                var newValue = $(e.target).val();
+                const newValue = $(e.target).val();
 
                 if (Number(newValue) === 0 || newValue === '') {
                     return;
