@@ -6,10 +6,12 @@ $pagescroll_button-height: $pagescroll_button-width !default;
 $pagescroll_button-position: 'right' !default;
 $pagescroll_button-vertical-offset: 1rem !default;
 $pagescroll_button-horizontal-offset: $pagescroll_button-vertical-offset !default;
-$pagescroll_button-border-radius: 50% !default;
+$pagescroll_button-border-radius: $pagescroll_button-height !default;
 $pagescroll_button-background-color: $color_primary-500 !default;
 $pagescroll_button-shadow: none !default;
-$pagescroll_button-zindex: 99 !default;
+$pagescroll_button-zindex: 1000 !default;
+$pagescroll_button-padding: 0 0.5rem !default;
+$pagescroll_button-text-color: $color_text-200 !default;
 
 $pagescroll_icon-width: 1.25rem !default;
 $pagescroll_icon-height: $pagescroll_icon-width !default;
@@ -17,22 +19,13 @@ $pagescroll_icon-background-color: $color_background-200 !default;
 
 .#{$ns}page-scroll {
     $root: &;
-    display: none;
-
-    .brands-index-all & {
-        display: block;
-    }
-
-    @include media('>=tablet') {
-        display: block;
-    }
 
     &__button {
         opacity: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: $pagescroll_button-width;
+        min-width: $pagescroll_button-width;
         height: $pagescroll_button-height;
         box-sizing: border-box;
         background: $pagescroll_button-background-color;
@@ -42,6 +35,8 @@ $pagescroll_icon-background-color: $color_background-200 !default;
         z-index: $pagescroll_button-zindex;
         position: fixed;
         bottom: $pagescroll_button-vertical-offset;
+        padding: $pagescroll_button-padding;
+        cursor: pointer;
 
         @if ($pagescroll_button-position == 'right') {
             right: $pagescroll_button-horizontal-offset;
@@ -51,9 +46,14 @@ $pagescroll_icon-background-color: $color_background-200 !default;
             left: $pagescroll_button-horizontal-offset;
         }
 
-        &--visible {
+        &.visible {
             opacity: 1;
         }
+    }
+
+    &__text {
+        color: $pagescroll_button-text-color;
+        margin-right: 1rem;
     }
 
     &__icon {
