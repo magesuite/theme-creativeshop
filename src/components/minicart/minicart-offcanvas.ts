@@ -476,7 +476,7 @@ export default class Minicart {
     protected _dynamicRedirect(response: any): void {
         if (response == null) return;
 
-        $(`.${this._productsCarouselOptions.btnTextClass}`).text(
+        $(`.${this._productsCarouselOptions.btnTextClass}`).html(
             $.mage.__('View all %1').replace('%1', response.name)
         );
 
