@@ -1,6 +1,6 @@
 /**
  * @see https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.js
- * 
+ *
  * Script adjusted at the bottom to:
  * - Change class from .lazy to .lazyload.
  * - Add reacting to DOM changes via Mutation Observer.
@@ -75,7 +75,7 @@ var LazyLoad = function () {
 
     window.dispatchEvent(event);
   };
-  /* Auto initialization of one or more instances of lazyload, depending on the 
+  /* Auto initialization of one or more instances of lazyload, depending on the
       options passed in (plain object or an array) */
 
 
@@ -100,6 +100,20 @@ var LazyLoad = function () {
   var timeoutDataName = "ll-timeout";
   var trueString = "true";
 
+  // Escape unsecure characters before DOM modification
+
+  var sanitize = function sanitize(string) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;'
+    };
+    const reg = /[&<>"']/ig;
+    return string.replace(reg, (match) => (map[match]));
+  }
+
   var getData = function getData(element, attribute) {
     return element.getAttribute(dataPrefix + attribute);
   };
@@ -112,7 +126,7 @@ var LazyLoad = function () {
       return;
     }
 
-    element.setAttribute(attrName, value);
+    element.setAttribute(attrName, sanitize(value));
   };
 
   var resetWasProcessedData = function resetWasProcessedData(element) {
@@ -190,7 +204,7 @@ var LazyLoad = function () {
       return;
     }
 
-    element.setAttribute(attrName, value);
+    element.setAttribute(attrName, sanitize(value));
   };
 
   var setImageAttributes = function setImageAttributes(element, settings) {
