@@ -305,10 +305,27 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 
                 .error,
                 .warning {
-                    width: 400%;
+                    width: calc(
+                        (
+                                (100vw - (#{$page_edge-gutter} * 2)) *
+                                    (1 - #{$checkout_sidebar-width / 100%})
+                            ) - (#{$checkout_base-space} * 2) - 0.7rem
+                    ); // 7px for scrollbar
                     box-sizing: border-box;
                     margin-top: 2.7rem;
                     float: left;
+                }
+            }
+
+            @include media('>=laptop') {
+                .error,
+                .warning {
+                    width: calc(
+                        (
+                                #{$checkout_page-max-width} * (1 - #{$checkout_sidebar-width /
+                                            100%})
+                            ) - (#{$checkout_base-space} * 2)
+                    );
                 }
             }
         }
