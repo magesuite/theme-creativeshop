@@ -1,16 +1,24 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'components/pseudoicon/mixin';
 
 $offcanvas-filters_transition-time: $transition-default-time !default;
 $offcanvas-filters_overlay-background: $modals_overlay-background !default;
 $offcanvas-filters_drawer-background: $color_background-200 !default;
 $offcanvas-filters_spinner-color: $color_primary-500 !default;
 
+$offcanvas-filters__close-include-pseudoicon: true !default;
+$offcanvas-filters__close-pseudoicon-type: 'plus' !default;
+$offcanvas-filters__close-width: 2rem !default;
+$offcanvas-filters__close-line-width: 0.2rem !default;
+$offcanvas-filters__close-color: $color_text-600 !default;
+$offcanvas-filters__close-color-hover: $color_text-500 !default;
+
 .#{$ns}offcanvas-filters {
     $root: &;
 
     position: relative;
-    z-index: 300;
+    z-index: 1001;
 
     &__drawer,
     &__overlay {
@@ -63,22 +71,31 @@ $offcanvas-filters_spinner-color: $color_primary-500 !default;
     }
 
     &__close {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 4rem;
+        height: 4rem;
         position: absolute;
-        right: 2rem;
-        top: 2rem;
+        right: 1.5rem;
+        top: 1rem;
         background: none;
         border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         padding: 0;
     }
 
     &__close-icon {
-        width: 1.3rem;
-        height: 1.3rem;
-        padding: 0;
+        @if ($offcanvas-filters__close-include-pseudoicon) {
+            @include pseudoicon(
+                $type: $offcanvas-filters__close-pseudoicon-type,
+                $color: $offcanvas-filters__close-color,
+                $color-hover: $offcanvas-filters__close-color-hover,
+                $width: $offcanvas-filters__close-width,
+                $height: $offcanvas-filters__close-line-width,
+                $position-side-offset: 1rem
+            );
+        }
+
+        transform: rotate(45deg) translateY(-0.5rem);
+        width: 100%;
+        height: 100%;
+        display: inline-block;
     }
 }
