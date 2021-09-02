@@ -43,13 +43,6 @@ define(['jquery'], function($) {
                 var itemId = $(event.currentTarget).data('cart-item');
                 var qtyElement = $('#cart-item-' + itemId + '-qty');
                 var qtyValue = parseInt(qtyElement.val(), 10);
-
-                if (qtyValue === 1 && action === 'qtyDecrease') {
-                    $(this.options.button.remove).trigger('click');
-
-                    return;
-                }
-
                 qtyValue =
                     action === 'qtyDecrease'
                         ? Math.max(
@@ -57,20 +50,8 @@ define(['jquery'], function($) {
                               this.options.minValue
                           )
                         : qtyValue + this.options.step;
-
                 qtyElement.val(qtyValue).trigger('keyup');
             },
-
-            _validateQty: function(elem) {
-                if (parseInt(elem.val(), 10) < this.options.minValue) {
-                    $(this.options.button.remove).trigger('click');
-
-                    return;
-                } else {
-                    this._super(elem);
-                }
-            },
-
             _showItemButton: function(elem) {
                 if (this.options.useDefaultQty === true) {
                     this._super(elem);
