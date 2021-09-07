@@ -46,6 +46,19 @@ $product-description_headline-cc-visible: false !default;
         }
 
         &--reviews {
+            // Add scroll top margin to show review section below sticky header when scrolled 
+            // Projects without sticky header also will receive scroll margin, but it is better to 
+            // scroll a bit lower than have review covered by header
+            scroll-margin-top: $global_header-height-mobile;
+
+            @include media('>=tablet') {
+                scroll-margin-top: $global_header-height-tablet;
+            }
+
+            @include media('>=laptopLg') {
+                scroll-margin-top: $global_header-height-desktop;
+            }
+
             #{$root}__content {
                 display: flex;
                 flex-flow: row wrap;
