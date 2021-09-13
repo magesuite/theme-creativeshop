@@ -160,6 +160,17 @@ export default class ImageTeaser {
                     const pagination = this.pagination;
                     $(pagination.el).toggle(pagination.bullets.length > 1);
                 },
+                init: function() {
+                    if (this.params.autoplay.enabled) {
+                        $element.on('mouseenter', (): void => {
+                            this.autoplay.pause();
+                        });
+
+                        $element.on('mouseleave', (): void => {
+                            this.autoplay.run();
+                        });
+                    }
+                },
             },
         };
 
@@ -232,6 +243,7 @@ export default class ImageTeaser {
      */
     protected _destroyTeaser(): void {
         this._isTeaserInitialised = false;
+        this._$container.off('mouseenter mouseleave');
         this._instance.destroy();
         this._instance = undefined;
     }
