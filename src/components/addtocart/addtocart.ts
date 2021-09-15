@@ -242,6 +242,14 @@ export default class AddToCart {
         const actionFailed: boolean =
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
+        if (!actionFailed) {
+            $("[data-block='minicart']").trigger('productAdded', [ajaxRes]);
+        }
+
+        if (!this._$component || !this._$button) {
+            return;
+        }
+
         if (this._$component.length && actionFailed) {
             this._$component.addClass(
                 `${this._options.componentClass}--no-transitions`
@@ -300,10 +308,6 @@ export default class AddToCart {
                     }, this._options.successAnimationDuration + this._options.successVisibilityDuration);
                 }
             }
-        }
-
-        if (!actionFailed) {
-            $("[data-block='minicart']").trigger('productAdded', [ajaxRes]);
         }
     }
 
