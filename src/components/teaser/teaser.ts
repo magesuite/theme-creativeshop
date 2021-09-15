@@ -226,6 +226,16 @@ const csTeaser: any = function($element: any, settings: any): void {
             swiperInstance.pagination.render();
             swiperInstance.pagination.update();
         }
+
+        if (swiperInstance.autoplay) {
+            $element.on('mouseenter', () => {
+                swiperInstance.autoplay.pause();
+            });
+
+            $element.on('mouseleave', () => {
+                swiperInstance.autoplay.run();
+            });
+        }
     };
 
     requireAsync(['Swiper']).then(([Swiper]) => {
