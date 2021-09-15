@@ -133,7 +133,6 @@ export default class ImageTeaser {
             calculateSlides: false,
             breakpoints: {
                 [maxMobileWidth]: {
-                    autoplay: false,
                     slidesPerView:
                         parseInt(
                             this._$container.data('mobile-items-per-view'),
