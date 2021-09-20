@@ -130,9 +130,11 @@ export default class PageScroll {
     /**
      * Hide button.
      * Hides button by removing component button class with `--visible` modifier
+     * Blur button
      */
     protected _hideButton(): void {
         this._$button.removeClass('visible');
+        this._$button.blur();
     }
 
     /**
