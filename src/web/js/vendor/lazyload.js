@@ -101,8 +101,7 @@ var LazyLoad = function () {
   var trueString = "true";
 
   // Escape unsecure characters before DOM modification
-
-  var sanitize = function sanitize(string) {
+  const sanitize = string => {
     const map = {
         '&': '&amp;',
         '<': '&lt;',
@@ -110,8 +109,10 @@ var LazyLoad = function () {
         '"': '&quot;',
         "'": '&#x27;'
     };
-    const reg = /[&<>"']/ig;
-    return string.replace(reg, (match) => (map[match]));
+
+    // Regexp handles ampersand case, which can also be a part of expressions itself
+    const reg = /&(?!(?:\#[0-9]+|\#x[0-9a-f]+|[0-9a-z]+);)|[<>"']/ig;
+    return string.replace(reg, match => map[match]);
   }
 
   var getData = function getData(element, attribute) {
