@@ -1,6 +1,21 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overwritten to:
+* - add magesuite classes
+* - replace text with childHtml block
+*/
 
-/** @var $block \Magento\Wishlist\Block\Cart\Item\Renderer\Actions\MoveToWishlist */
+/** @var \Magento\Wishlist\Block\Cart\Item\Renderer\Actions\MoveToWishlist $block */
 ?>
-
+<?php if ($block->isAllowInCart() && $block->isProductVisibleInSiteVisibility()) : ?>
+    <div class="cs-cart-item__link cs-cart-item__link--wishlist">
+        <a 
+            class="cs-cart-item__link-wrapper use-ajax action towishlist action-towishlist"
+            href="#"
+            title="<?= $block->escapeHtml(__('Move to Wishlist')); ?>"
+            data-post='<?= /* @noEscape */ $block->getMoveFromCartParams() ?>'
+        >
+            <?= $block->getChildHtml(); ?>
+        </a>
+    </div>
+<?php endif ?>
