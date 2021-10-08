@@ -392,7 +392,7 @@ export default class StoreLocator {
                     'cs-store-locator__item-hours-trigger-icon'
                 )
             ) {
-                this.itemClickHandler($(e.currentTarget).attr('data-id'));
+                this.itemClickHandler($(e.currentTarget));
             }
         });
 
@@ -530,7 +530,9 @@ export default class StoreLocator {
     /**
      * Pan to clicked store on the map, show info window
      */
-    public itemClickHandler(id) {
+    public itemClickHandler(currentItem) {
+        const id = currentItem.attr('data-id');
+
         if (this.markers) {
             const marker = this.markers.find(
                 marker => marker.get('storeId') === id
