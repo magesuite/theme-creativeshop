@@ -218,9 +218,9 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
             @if $minicart_offcanvas-free-shipping-indicator {
                 /* iPhone X and Xs Max */
                 /* prettier-ignore */
-                @media only screen 
-                and (min-device-width: 375px) 
-                and (min-device-height: 812px) 
+                @media only screen
+                and (min-device-width: 375px)
+                and (min-device-height: 812px)
                 and (-webkit-device-pixel-ratio: 3)
                 and (orientation: portrait) {
                     max-height: calc(100vh - #{$minicart_offcanvas-offset-iphone-fix}) !important;
@@ -228,10 +228,10 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
 
                 /* iPhone XR */
                 /* prettier-ignore */
-                @media only screen 
-                and (min-device-width: 414px) 
-                and (min-device-height: 896px) 
-                and (-webkit-device-pixel-ratio: 2) 
+                @media only screen
+                and (min-device-width: 414px)
+                and (min-device-height: 896px)
+                and (-webkit-device-pixel-ratio: 2)
                 and (orientation: portrait) {
                     max-height: calc(100vh - #{$minicart_offcanvas-offset-iphone-fix}) !important;
                 }
@@ -413,6 +413,8 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
 
         &-wrapper {
             display: none;
+            visibility: hidden;
+            pointer-events: none;
             top: 50%;
             right: calc(#{$minicart_width} + #{$minicart_offcanvas-carousel-spacing});
             transform: translateY(-50%);
@@ -422,12 +424,20 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
             margin: 0;
             background: transparent;
 
+            &--loading,
+            &--ready {
+                visibility: visible;
+                pointer-events: auto;
+            }
+
             @at-root .drawer--visible & {
                 position: absolute;
             }
 
-            @include media('>=tablet') {
-                display: block;
+            .minicart-offcanvas-open & {
+                @include media('>=tablet') {
+                    display: block;
+                }
             }
 
             @include media('>=laptopLg') {
