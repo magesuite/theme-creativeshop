@@ -144,14 +144,18 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
 
     &__details {
         padding: 0 1rem 1rem 2rem;
-
-        @include media('>=laptop') {
-            padding: 0 1rem 0 2rem;
-        }
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         align-content: center;
+
+        @include media('>=laptop', '<laptopLg') {
+            padding: 0 0 0 2rem;
+        }
+
+        @include media('>=laptopLg') {
+            padding: 0 1rem 0 2rem;
+        }
     }
 
     &__options {
@@ -203,6 +207,10 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
         }
 
         @include media('>=laptop') {
+            padding: 0.4rem 1.5rem 0.4rem 0 !important;
+        }
+
+        @include media('>=laptopLg') {
             padding: 0.4rem 2rem 0.4rem 0 !important;
         }
     }
@@ -211,7 +219,11 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
         padding: 0.4rem 2rem 0.4rem 0 !important;
 
         @include media('>=laptop') {
-            padding-right: 0;
+            padding: 0.4rem 1.5rem 0.4rem 0 !important;
+        }
+
+        @include media('>=laptopLg') {
+            padding: 0.4rem 2rem 0.4rem 0 !important;
         }
 
         @include media('<laptop') {
@@ -258,6 +270,10 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
         padding: 0.4rem 0 !important;
 
         @include media('>=laptop') {
+            padding: 0.4rem 1.5rem 0.4rem 0 !important;
+        }
+
+        @include media('>=laptopLg') {
             padding: 0.4rem 2rem 0.4rem 0 !important;
         }
 
@@ -282,6 +298,10 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
             &:before {
                 display: none !important; /* stylelint-disable-line declaration-no-important */
             }
+        }
+
+        @include media('>=laptop', '<laptopLg') {
+            padding-left: 0 !important;
         }
     }
 
@@ -309,12 +329,20 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-end;
+
+        @include media('>=laptop', '<laptopLg') {
+            justify-content: flex-start;
+        }
     }
 
     &__link {
         display: flex;
         align-items: center;
         margin-left: 1rem;
+
+        @include media('>=laptop', '<laptopLg') {
+            margin: 0 0.2rem;
+        }
 
         &--remove {
             margin-right: 0.5rem;

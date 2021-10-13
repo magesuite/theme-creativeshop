@@ -80,6 +80,14 @@ $cart-table_item-color: $color_text-800 !default;
         text-transform: uppercase;
         font-size: 1.1rem;
 
+        @include media('>=laptop', '<laptopLg') {
+            // Second cell from the end is Subtotal. In German language Zwischensumme is too long on horizontal tablets/small laptops
+            // The last cell is empty co with position absolute this text will be fully, but cell won't take space that is needed for action icons
+            &:nth-last-child(2) {
+                position: absolute;
+            }
+        }
+
         &--right {
             text-align: right;
         }
