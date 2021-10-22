@@ -1,5 +1,7 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overridden to add tile component for wishlist items
+*/
 /** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
 $columns = $block->getColumns();
 
@@ -42,12 +44,11 @@ $wishlistGridLayoutSettings = json_encode($block->getVar('grid_layout/wishlist/j
         </ol>
     <?php else : ?>
         <div class="cs-dashboard__wishlist-line">
-            <span><?php /* @escapeNotVerified */
-                echo __('This Wish List has no Items'); ?></span>
+            <span><?= $block->escapeHtml(__('This Wish List has no Items')) ?></span>
         </div>
     <?php endif; ?>
 </div>
 
-<?php foreach ($columns as $column): ?>
-    <?php echo $column->getAdditionalHtml(); ?>
+<?php foreach ($columns as $column) : ?>
+    <?= $column->getAdditionalHtml() ?>
 <?php endforeach; ?>

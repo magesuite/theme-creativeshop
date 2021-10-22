@@ -1,9 +1,15 @@
-<?php
-// @codingStandardsIgnoreFile
-// Override due to reorganize elements and introduce BEM
-?>
+<?php 
+/** Template overridden to:
+* - reorganize elements
+* - add magesuite classes 
+* - remove stock info
+* - add placeholder area at the end of the file
+* - change slide speed to 300ms
+*/ 
 
-<?php
+// phpcs:disable PHPCompatibility.Miscellaneous.RemovedAlternativePHPTags.MaybeASPOpenTagFound
+?>
+<?php 
     $product = $block->getProduct();
 ?>
 <?php if ($product->isSaleable() && $block->hasOptions()): ?>
@@ -12,7 +18,7 @@
      data-mage-init='{"sticky":{"container": ".product-add-form"}}'>
     <div class="content cs-bundle-box__summary-content">
         <div class="bundle-info cs-bundle-box__summary-section cs-bundle-box__summary-section--product-details">
-            <p class="title cs-bundle-box__summary-title"><?= /* @escapeNotVerified */ __('Your Customization') ?></p>
+            <p class="title cs-bundle-box__summary-title"><?= $block->escapeHtml(__('Your Customization')) ?></p>
             <div class="cs-bundle-box__summary-product-details">
                 <?= $block->getImage($product, 'bundled_product_customization_page')->toHtml() ?>
                 <p class="product name cs-bundle-box__summary-product-name"><?= $block->escapeHtml($product->getName()) ?></p>
@@ -28,7 +34,7 @@
                     </li>
                 </script>
                 <script data-defer-ignore="true" data-template="bundle-option" type="text/x-magento-template">
-                    <div><?= /* @escapeNotVerified */ __('%1 x %2', '<%- data._quantity_ %>', '<%- data._label_ %>') ?></div>
+                    <div><?= /* @noEscape */ __('%1 x %2', '<%- data._quantity_ %>', '<%- data._label_ %>') ?></div>
                 </script>
             </div>
 

@@ -1,10 +1,16 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overridden to:
+* - add data-uenc-update="true"
+* - integrate with xml configuration 
+* - add additional child block (placeholder)
+*/
+
 /** @var $block \Magento\Catalog\Block\Catalog\Product\View\Addto\Compare */
 ?>
 
 <li class="cs-buybox__addto-item <?= $block->getAdditionalCssClasses() ?>">
-    <a href="#" data-post='<?= /* @escapeNotVerified */ $block->getPostDataParams() ?>'
+    <a href="#" data-post='<?= /* @noEscape */ $block->getPostDataParams() ?>'
         data-uenc-update="true"
         data-role="add-to-links"
         title="<?= $block->getLinkLabel() ?? __('Add to compare') ?>"

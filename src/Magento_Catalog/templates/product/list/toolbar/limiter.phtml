@@ -1,13 +1,12 @@
 <?php
-    // @codingStandardsIgnoreFile
-?>
-<?php
-    /**
-     * Product list toolbar
-     *
-     * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
-     */
-    use Magento\Catalog\Model\Product\ProductList\Toolbar;
+/**
+* Template overridden to:
+* - add magesuite classes
+* - add option to display limiter as buttons, not a select 
+* (buttons are default magesuite option)
+*/
+
+/** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */
 ?>
 <?php
     $prefixLabel = $block->getVar('toolbar/limiter/prefix_label', 'Magento_Catalog');
@@ -24,9 +23,9 @@
     <div class="control cs-limiter__control<?php if(!$displayAsSelect): ?> cs-visually-hidden<?php endif; ?>">
     <select id="limiter" data-role="limiter" class="limiter-options<?php if($displayAsSelect): ?> cs-select cs-limiter__select<?php endif; ?>">
             <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                <option value="<?= /* @escapeNotVerified */ $_key ?>"<?php if ($block->isLimitCurrent($_key)): ?>
+                <option value="<?= $block->escapeHtmlAttr($_key) ?>"<?php if ($block->isLimitCurrent($_key)): ?>
                     selected="selected"<?php endif ?>>
-                    <?= /* @escapeNotVerified */ $_limit ?>
+                    <?= $block->escapeHtml($_limit) ?>
                 </option>
             <?php endforeach; ?>
         </select>

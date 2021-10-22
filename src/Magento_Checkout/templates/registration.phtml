@@ -1,5 +1,10 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overridden in order to:
+* - add magasuite classes
+*/
+
+/** @var $block \Magento\Checkout\Block\Registration */
 ?>
 <div id="registration" data-bind="scope:'registration'" class="cs-page-success__section cs-page-success__section--registration">
     <!-- ko template: getTemplate() --><!-- /ko -->
@@ -11,8 +16,9 @@
                         "registration": {
                             "component": "Magento_Checkout/js/view/registration",
                             "config": {
-                                "registrationUrl": "<?= /* @escapeNotVerified */ $block->getCreateAccountUrl() ?>",
-                                "email": "<?= /* @escapeNotVerified */ $block->getEmailAddress() ?>"
+                                "registrationUrl":
+                                    "<?= $block->escapeJs($block->escapeUrl($block->getCreateAccountUrl())) ?>",
+                                "email": "<?= $block->escapeJs($block->getEmailAddress()) ?>"
                             },
                             "children": {
                                 "errors": {
