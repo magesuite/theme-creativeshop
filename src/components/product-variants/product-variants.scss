@@ -1,0 +1,127 @@
+@import 'config/variables';
+@import 'components/field/mixin';
+@import 'components/pseudoicon/mixin';
+
+$product-variants_trigger-height: 4.8rem !default;
+$product-variants_trigger-border: $field_select-border !default;
+$product-variants_trigger-border-active: $field_select-border-active !default;
+$product-variants_trigger-padding: $field_select-padding !default;
+$product-variants_trigger-border-radius: $field_select-border-radius !default;
+$product-variants_variant-height: 3.5rem !default;
+$product-variants_variant-hover-background: $color_primary-500 !default;
+$product-variants_variant-hover-text: $color_text-200 !default;
+$product-variants_variant-active-background: $color_primary-800 !default;
+$product-variants_variant-active-text: $color_text-200 !default;
+
+$product-variants_text-color: $color_text-500 !default;
+
+$product-variants_caret-width: 1.2rem !default;
+$product-variants_caret-height: 1px !default;
+$product-variants_caret-color: $color_border-700 !default;
+$product-variants_caret-active-color: $color_border-700 !default;
+
+.#{$ns}product-variants {
+    $root: &;
+
+    margin-bottom: 2rem;
+
+    .page-product-bundle {
+        margin-bottom: 0;
+    }
+
+    &__label {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+
+    &__content {
+        position: relative;
+    }
+
+    &__trigger {
+        height: $product-variants_trigger-height;
+        border: $product-variants_trigger-border;
+        padding: $product-variants_trigger-padding;
+        border-radius: $product-variants_trigger-border-radius;
+
+        @include pseudoicon(
+            $type: 'arrow',
+            $color: $product-variants_caret-color,
+            $color-expanded: $product-variants_caret-active-color,
+            $width: $product-variants_caret-width,
+            $height: $product-variants_caret-height,
+            $arrow-default: 'down',
+            $arrow-active: 'up',
+            //$position-side-offset: 1.2rem,
+            //$arrow-offset: 1.7rem,
+            $active-selector: '.active &'
+        );
+
+        .active & {
+            border: $product-variants_trigger-border-active;
+            border-bottom: $product-variants_trigger-border;
+        }
+    }
+
+    &__list {
+        display: none;
+        position: absolute;
+        top: calc(#{$product-variants_trigger-height} - 1px);
+        width: 100%;
+        background-color: $color_background-200;
+        border-bottom-left-radius: $product-variants_trigger-border-radius;
+        border-bottom-right-radius: $product-variants_trigger-border-radius;
+        border: $product-variants_trigger-border-active;
+        border-top: $product-variants_trigger-border;
+
+        .active & {
+            display: block;
+            z-index: 5;
+        }
+
+        #{$root}__variant {
+            height: $product-variants_variant-height;
+            padding: $product-variants_trigger-padding;
+
+            &:hover {
+                background-color: $product-variants_variant-hover-background;
+                color: $product-variants_variant-hover-text;
+            }
+
+            &:first-child {
+                background-color: $product-variants_variant-active-background;
+                color: $product-variants_variant-active-text;
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+
+        #{$root}__variant-link {
+            display: flex;
+            white-space: nowrap;
+            align-items: center;
+            width: 100%;
+            color: $product-variants_text-color;
+        }
+
+        #{$root}__variant-image {
+            width: 2.3rem;
+            height: 2.3rem;
+        }
+    }
+
+    &__variant {
+        display: flex;
+        white-space: nowrap;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    &__variant-image {
+        width: 2.7rem;
+        height: 2.7rem;
+        display: block;
+        margin-right: 1rem;
+    }
+}

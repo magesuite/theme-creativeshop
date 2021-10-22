@@ -21,7 +21,6 @@ import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
 import 'components/cookie-message';
-import 'components/device-detection';
 import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';

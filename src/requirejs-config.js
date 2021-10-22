@@ -5,9 +5,6 @@ var config = {
         dropdown: 'js/vendor/bootstrap-dropdown',
         selectpicker: 'js/vendor/bootstrap-select',
         vendors: 'vendors',
-        isMobile: 'js/vendor/ismobile',
-        bootstrapDropdown: 'js/vendor/bootstrap-dropdown',
-        bootstrapSelect: 'js/vendor/bootstrap-select',
         ccImageTeaser: 'js/image-teaser',
         ccImageTeaserLegacy: 'js/image-teaser-legacy',
         ccAccordion: 'js/accordion',
@@ -22,11 +19,6 @@ var config = {
         mgsSalebarWidget: 'js/salebar-widget',
     },
     shim: {
-        isMobile: {
-            exports: 'isMobile',
-        },
-        bootstrapDropdown: ['jquery'],
-        bootstrapSelect: ['jquery', 'bootstrapDropdown'],
         'mage/dataPost': ['js/uenc-updater'],
     },
     config: {
