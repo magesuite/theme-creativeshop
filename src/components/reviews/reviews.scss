@@ -3,6 +3,7 @@
 @import 'components/button/mixin';
 @import 'vendors/include-media';
 @import 'utils/visually-hidden';
+@import 'components/pseudoicon/mixin';
 
 $reviews-border: 1px solid $color_border-500 !default;
 $reviews-spacing: 2.5rem !default;
@@ -26,6 +27,9 @@ $reviews_form-fedback-font-size: 0.85em !default;
 
 $reviews_form-submit-button-type: $button_default-type !default;
 $reviews_form-submit-button-icon-pos: 'no-icon' !default;
+
+$reviews_load-more-scenario-enabled: true !default;
+$reviews_count-color: $color_text-500 !default;
 
 .#{$ns}reviews {
     $root: &;
@@ -214,5 +218,79 @@ $reviews_form-submit-button-icon-pos: 'no-icon' !default;
     .cs-pagination__content {
         justify-content: center;
         margin: $reviews-spacing 0;
+    }
+
+    @if ($reviews_load-more-scenario-enabled) {
+        &--load-more {
+            padding-bottom: 3rem;
+
+            #{$root}__content {
+                @include media('>=tablet') {
+                    position: relative;
+                }
+            }
+
+            #{$root}__button {
+                @include button($type: 'primary', $icon_pos: 'no-icon');
+
+                @include pseudoicon(
+                    $type: 'arrow',
+                    $color: $button_primary-fill,
+                    $width: 1rem,
+                    $height: 1px,
+                    $arrow-default: 'down',
+                    $position-side-offset: 1.6rem
+                );
+
+                margin: 2rem 0 0.5rem;
+                padding-right: 4rem;
+                position: relative;
+
+                &:hover {
+                    &:after,
+                    &:before {
+                        color: $button_primary--hover-fill;
+                    }
+                }
+
+                span {
+                    @include button-span(
+                        $type: 'secondary',
+                        $icon_pos: 'no-icon'
+                    );
+                }
+
+                .count {
+                    display: inline-flex;
+                    padding-left: 0.5rem;
+
+                    &:before {
+                        content: '(';
+                    }
+
+                    &:after {
+                        content: ')';
+                    }
+                }
+
+                .loading-mask {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('../images/spinner.svg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 2.5rem 2.5rem;
+
+                    img {
+                        display: none;
+                    }
+                }
+            }
+
+            #{$root}__count {
+                color: $reviews_count-color;
+            }
+        }
     }
 }

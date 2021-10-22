@@ -109,6 +109,9 @@ var config = {
             'Magento_Checkout/js/model/payment-service': {
                 'Magento_Checkout/js/model/payment-service-ext': true,
             },
+            'Magento_Review/js/process-reviews': {
+                'Magento_Review/js/process-reviews-ext': true,
+            },
         },
     },
 };
