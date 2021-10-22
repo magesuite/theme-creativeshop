@@ -1,12 +1,21 @@
-<?php
-// @codingStandardsIgnoreFile
+<?php 
+/** Template overridden to:
+* - add magesuite classes - cs-cms-block class allows to use general typography styles
+* - assign current category to a variable
+*/ 
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 /**
- * @var $block \Magento\Catalog\Block\Category\View
- */
+* @var $block \Magento\Catalog\Block\Category\View
+*/
 ?>
 <?php $currentCategory = $block->getCurrentCategory() ?>
 <?php if ($description = $currentCategory->getDescription()): ?>
     <div class="cs-cms-block | cs-page-category__description">
-        <?php /* @escapeNotVerified */ echo $this->helper('Magento\Catalog\Helper\Output')->categoryAttribute($currentCategory, $description, 'description') ?>
+    <?= /* @noEscape */ $this->helper(\Magento\Catalog\Helper\Output::class)->categoryAttribute(
+            $currentCategory,
+            $description,
+            'description'
+        ) ?>
     </div>
 <?php endif; ?>

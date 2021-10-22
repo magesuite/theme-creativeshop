@@ -1,5 +1,13 @@
+<?php
+/**
+* Template overwritten to:
+* - add stock/out of stock icon
+* - add placeholder at the end ($block->getChildHtml())
+*/
+
+/* @var $block \Magento\Catalog\Block\Product\View\AbstractView */
+?>
 <?php 
-    /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */
     $isAvailable = $block->getProduct()->isAvailable();
     $cssClass = $isAvailable ? 'available cs-buybox__stock--available' : 'unavailable cs-buybox__stock--unavailable';
     $text = $isAvailable ? __('In stock') : __('Out of stock');
@@ -17,7 +25,7 @@
 ?>
 
 <?php if ($block->displayProductStockStatus()): ?>
-    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= /* @escapeNotVerified */ __('Availability') ?>">
+    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
         <?= $icon ?>
         <span class="cs-buybox__stock-text"><?= $text ?></span>
     </div>

@@ -1,36 +1,39 @@
 <?php
-// @codingStandardsIgnoreFile
-/** This changes need to valid applying filters and configuration before search process is started. */
+/**
+* Template overwritten to:
+* - valid applying filters and configuration before search process is started.
+* - add magesuite classes to messages
+* - move addtionalHtml after messages
+*/
+?>
+<?php
 $productList = $block->getProductListHtml();
 ?>
 <?php if ($block->getResultCount()): ?>
-    <?php echo $block->getChildHtml('tagged_product_list_rss_link'); ?>
+    <?= /* @noEscape */ $block->getChildHtml('tagged_product_list_rss_link') ?>
     <div class="search results">
         <?php if ($messages = $block->getNoteMessages()):?>
             <div class="cs-messages__message cs-messages__message--notice">
                 <?php foreach ($messages as $message):?>
                     <div class="cs-messages__text">
-                        <?php /* @escapeNotVerified */ echo $message?><br />
+                        <?php /* @noEscape */ echo $message?><br />
                     </div>
                 <?php endforeach;?>
             </div>
         <?php endif; ?>
-        <?= $productList ?>
+        <?= /* @noEscape */ $productList ?>
     </div>
 <?php else: ?>
 
     <div class="cs-messages">
         <div class="cs-messages__message cs-messages__message--notice">
-            <?php
-            $getNoResultText = $block->getNoResultText();
-            /* @escapeNotVerified */ echo($getNoResultText) ? $getNoResultText : __('Your search returned no results.')
-            ?>
+            <?= $block->escapeHtml($block->getNoResultText() ? $block->getNoResultText() : __('Your search returned no results.')) ?>
             <?php if ($messages = $block->getNoteMessages()):?>
                 <?php foreach ($messages as $message):?>
-                    <br /><?php /* @escapeNotVerified */ echo $message?>
+                    <br /><?= /* @noEscape */ $message?>
                 <?php endforeach;?>
             <?php endif; ?>
         </div>
     </div>
-    <?php echo $block->getAdditionalHtml() ?>
+    <?= /* @noEscape */ $block->getAdditionalHtml() ?>
 <?php endif; ?>

@@ -1,24 +1,22 @@
 <?php
 /**
- * Template overwritten to:
- * - Add custom itemref to fix availability scope.
- * - Add price rounding for itemprop="price" element.
- */
-/** @var \Magento\Framework\Pricing\Render\Amount $block */
+* Template overwritten to:
+* - Remove schema attribute
+*/
+/** @var $block \Magento\Framework\Pricing\Render\Amount */ 
 ?>
 
-<span class="price-container <?= /* @escapeNotVerified */ $block->getAdjustmentCssClasses() ?>">
+<span class="price-container <?= $block->escapeHtmlAttr($block->getAdjustmentCssClasses()) ?>">
     <?php if ($block->getDisplayLabel()): ?>
-        <span class="price-label"><?= /* @escapeNotVerified */ $block->getDisplayLabel() ?></span>
+        <span class="price-label"><?= $block->escapeHtml($block->getDisplayLabel()) ?></span>
     <?php endif; ?>
-    <span <?php if ($block->getPriceId()): ?> id="<?= /* @escapeNotVerified */ $block->getPriceId() ?>"<?php endif;?>
-        <?= ($block->getPriceDisplayLabel()) ? 'data-label="' . $block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes() . '"' : '' ?>
-            data-price-amount="<?= /* @escapeNotVerified */ $block->getDisplayValue() ?>"
-            data-price-type="<?= /* @escapeNotVerified */ $block->getPriceType() ?>"
-            class="price-wrapper <?= /* @escapeNotVerified */ $block->getPriceWrapperCss() ?>">
-        <?= /* @escapeNotVerified */ $block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()) ?>
-    </span>
-    <?php if ($block->hasAdjustmentsHtml()): ?>
+    <span <?php if ($block->getPriceId()) :?> id="<?= $block->escapeHtmlAttr($block->getPriceId()) ?>"<?php endif;?>
+        <?= ($block->getPriceDisplayLabel()) ? 'data-label="' . $block->escapeHtmlAttr($block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes()) . '"' : '' ?>
+            data-price-amount="<?= $block->escapeHtmlAttr($block->getDisplayValue()) ?>"
+            data-price-type="<?= $block->escapeHtmlAttr($block->getPriceType()) ?>"
+            class="price-wrapper <?= $block->escapeHtmlAttr($block->getPriceWrapperCss()) ?>"
+        ><?= $block->escapeHtml($block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()), ['span']) ?></span>
+    <?php if ($block->hasAdjustmentsHtml()) :?>
         <?= $block->getAdjustmentsHtml() ?>
     <?php endif; ?>
 </span>

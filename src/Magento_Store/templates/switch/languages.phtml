@@ -1,8 +1,13 @@
 <?php
 /**
- * @codingStandardsIgnoreFile
- * Language switcher template
- */
+* Template overridden to:
+* - add magesuite classes
+* - add optional flag images
+* - make labels optional
+* - replace <a href="<?= $block->escapeUrl($block->getViewModel()->getTargetStoreRedirectUrl($_lang)) ?>"> with  <a href="#" data-post='<?= $block->getTargetStorePostData($_lang); ?>'>
+*/
+
+/** @var \Magento\Store\Block\Switcher $block */
 ?>
 
 <?php if (count($block->getStores())>1): ?>
@@ -11,10 +16,16 @@
     $showFlags = $block->getShowFlags();
     $showLabels = $block->getShowLabels();
 ?>
-    <div class="switcher language switcher-language cs-dropdown-switcher <?= $block->getAdditionalCssClasses(); ?>" data-ui-id="language-switcher" id="switcher-language<?= /* @escapeNotVerified */ $id?>">
-        <span class="cs-visually-hidden label switcher-label"><span><?= /* @escapeNotVerified */ __('Language') ?></span></span>
+    <div class="switcher language switcher-language cs-dropdown-switcher <?= $block->getAdditionalCssClasses(); ?>" data-ui-id="language-switcher" id="switcher-language<?= $block->escapeHtmlAttr($id)?>">
+        <span class="cs-visually-hidden label switcher-label"><span><?= $block->escapeHtml(__('Language')) ?></span></span>
         <div class="actions dropdown options switcher-options">
-            <div class="action toggle switcher-trigger cs-dropdown-switcher__trigger" id="switcher-language-trigger<?= /* @escapeNotVerified */ $id?>">
+            <div 
+                class="action toggle switcher-trigger cs-dropdown-switcher__trigger" 
+                id="switcher-language-trigger<?= $block->escapeHtmlAttr($id)?>"
+                data-mage-init='{"dropdown":{}}'
+                data-toggle="dropdown"
+                data-trigger-keypress-button="true"
+            >
                 <span class="cs-dropdown-switcher__trigger-span view-<?= $block->escapeHtml($block->getCurrentStoreCode()) ?>">
                     <?php if ($showFlags): ?>
                         <?= $this->getLayout()
@@ -30,14 +41,7 @@
                     <?= $block->getChildHtml('store_language.trigger-icon'); ?>
                 </span>
             </div>
-            <ul class="cs-dropdown-switcher__list dropdown switcher-dropdown"
-                data-mage-init='{"dropdownDialog":{
-                    "appendTo":"#switcher-language<?= /* @escapeNotVerified */ $id ?> > .options",
-                    "triggerTarget":"#switcher-language-trigger<?= /* @escapeNotVerified */ $id ?>",
-                    "closeOnMouseLeave": false,
-                    "triggerClass":"active",
-                    "parentClass":"active",
-                    "buttons":null}}'>
+            <ul class="cs-dropdown-switcher__list dropdown switcher-dropdown" data-target="dropdown">
                 <?php foreach ($block->getStores() as $_lang): ?>
                     <li class="cs-dropdown-switcher__list-item | view-<?= $block->escapeHtml($_lang->getCode()); ?> switcher-option">
                         <?php if ($_lang->getId() != $block->getCurrentStoreId()): ?>

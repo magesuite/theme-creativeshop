@@ -1,4 +1,10 @@
 <?php
+/**
+* Template overridden to:
+* -add magesuite classes
+* -add optional collapse
+*/
+
 /** @var $block \Magento\Framework\View\Element\Html\Links */
 /** @var $block \Magento\Customer\Block\Account\Navigation */ 
 $collapseOptions = $block->getCollapsibleWidgetOptions();
@@ -10,12 +16,12 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
     <?php endif; ?> 
     >
         <div class="cs-stack-nav__trigger" data-role="title">
-           <?php /* @escapeNotVerified */ echo __('My Account Menu'); ?>
+        <?= $block->escapeHtml( __('My Account Menu')) ?>
            <?= $block->getChildHtml('dashboard.nav.collapse.icon'); ?>
         </div>
         <nav class="cs-stack-nav__nav | nav items" data-role="content">
             <ul class="cs-stack-nav__list">
-                <?php echo $block->getChildHtml();?>
+                <?= $block->getChildHtml();?>
             </ul>
         </nav>
     </div>

@@ -1,8 +1,7 @@
 <?php
-// @codingStandardsIgnoreFile
-// Custom stock indicator template, overriden completely
+// Custom stock indicator template, fully overridden
+/* @var $block \Magento\Catalog\Block\Product\View\AbstractView */
 ?>
-<?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
 <?php 
     $associatedProducts = $block->getAssociatedProducts();
     $isAvailable = $block->getProduct()->isAvailable() && count($associatedProducts) > 0;
@@ -22,9 +21,9 @@
 ?>
 
 <?php if ($block->displayProductStockStatus()): ?>
-    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= /* @escapeNotVerified */ __('Availability') ?>">
+    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
         <?= $icon ?>
-        <span class="cs-buybox__stock-text"><?= $text ?></span>
+        <span class="cs-buybox__stock-text"><?= $block->escapeHtml($text) ?></span>
     </div>
 <?php endif; ?>
 <?= $block->getChildHtml() ?>

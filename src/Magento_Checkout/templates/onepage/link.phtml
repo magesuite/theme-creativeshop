@@ -1,14 +1,30 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+ * Template overridden in order to: 
+ * - add magesuite classes
+ * - add button icon
+ */
+
+use Magento\Checkout\Block\Onepage\Link;
+use Magento\Framework\Escaper;
+
+/**
+ * @var Link $block
+ * @var Escaper $escaper
+ */
 ?>
 <?php if ($block->isPossibleOnepageCheckout()):?>
     <button type="button"
             data-role="proceed-to-checkout"
-            title="<?php /* @escapeNotVerified */ echo __('Proceed to Checkout') ?>"
-            data-mage-init='{"Magento_Checkout/js/proceed-to-checkout":{"checkoutUrl":"<?php /* @escapeNotVerified */ echo $block->getCheckoutUrl(); ?>"}}'
-            class="cs-cart-summary__to-checkout-button <?php echo($block->isDisabled()) ? ' disabled' : ''; ?>"
+            title="<?= $escaper->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
+            data-mage-init='{
+                "Magento_Checkout/js/proceed-to-checkout":{
+                    "checkoutUrl":"<?= $escaper->escapeJs($block->getCheckoutUrl()) ?>"
+                }
+            }'            
+            class="cs-cart-summary__to-checkout-button <?= ($block->isDisabled()) ? ' disabled' : '' ?>"
             <?php if ($block->isDisabled()):?>disabled="disabled"<?php endif; ?>>
-            <span class="cs-cart-summary__to-checkout-button-span"><?php /* @escapeNotVerified */ echo __('Proceed to Checkout') ?></span>
+            <span class="cs-cart-summary__to-checkout-button-span"><?= $escaper->escapeHtml(__('Proceed to Checkout')) ?></span>
             <?= $block->getChildHtml('checkout.cart.methods.onepage.bottom.button.icon'); ?>
     </button>
 <?php endif?>

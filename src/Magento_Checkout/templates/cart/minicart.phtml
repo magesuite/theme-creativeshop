@@ -1,6 +1,18 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overridden to:
+* - add EventTrigger to dropdown
+* - add magesuite classes
+* - add minicart offcanvas as option
+* - integrate with xml configuration (dropdown/offcanvas)
+* - change tags from div into li
+*  * TODO - this is the only place when dropdownDialog is present, however some other scripts depend on dropdownDialog events
+*/
+
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+?>
+<?php
 $label = $block->getXmlLabel();
 $eventTrigger = $block->getEventTrigger();
 $isOffcanvas = $block->getVar('minicart_offcanvas/enabled', 'Magento_Checkout');
@@ -12,7 +24,7 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
     <div class="cs-addtocart__minicart minicart-wrapper" data-block="minicart">
         <a 
             class="cs-header-user-nav__link cs-addtocart__minicart-link action <?= $actionClasses; ?>"
-            href="<?= /* @escapeNotVerified */ $block->getShoppingCartUrl() ?>"
+            href="<?= $block->escapeUrl($block->getShoppingCartUrl()) ?>"
             <?php if($isOffcanvas): ?>
                 aria-label="<?= __('Toggle offcanvas minicart'); ?>" 
                 aria-expanded="false"
@@ -28,7 +40,7 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
                 </span>
             </div>
             <?php if (!empty($label)): ?>
-                <span class="cs-header-user-nav__label"><?= /* @escapeNotVerified */ $block->escapeHtml($label) ?></span>
+                <span class="cs-header-user-nav__label"><?= $block->escapeHtml($label) ?></span>
             <?php endif; ?>
         </a>
     </div>
@@ -62,18 +74,29 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
             </div>
             <?php endif; ?>
         </div>
+    <?php else: ?>
+        <?php $scriptString = <<<script
+            require(['jquery'], function ($) {
+                $('a.action.showcart').click(function() {
+                    $(document.body).trigger('processStart');
+                });
+            });
+script;
+        ?>
+        <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>
     <?php endif ?>
-    <script>
-        window.checkout = <?= /* @escapeNotVerified */ $block->getSerializedConfig() ?>;
-    </script>
+    <?= /* @noEscape */ $secureRenderer->renderTag('script', [], 'window.checkout = ' .
+     /* @noEscape */ $block->getSerializedConfig(), false); ?>
     <script type="text/x-magento-init">
-        {
-            "[data-block='minicart']": {
-                "Magento_Ui/js/core/app": <?= /* @escapeNotVerified */ $block->getJsLayout() ?>
-            },
-            "*": {
-                "Magento_Ui/js/block-loader": "<?= /* @escapeNotVerified */ $block->getViewFileUrl('images/loader-1.gif') ?>"
-            }
+    {
+        "[data-block='minicart']": {
+            "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?= $block->escapeJs(
+                $block->escapeUrl($block->getViewFileUrl('images/loader-1.gif'))
+            ) ?>"
         }
+    }
     </script>
 </li>

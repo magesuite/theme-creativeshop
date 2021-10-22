@@ -1,5 +1,11 @@
 <?php 
-    /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle */
+/** Template overridden to:
+* - add magesuite classes 
+* - add stock/out-of-stock icon
+*/ 
+/* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle */
+?>
+<?php 
     $isAvailable = $block->getProduct()->isAvailable();
     $cssClass = $isAvailable ? 'available cs-buybox__stock--available' : 'unavailable cs-buybox__stock--unavailable';
     $text = $isAvailable ? __('In stock') : __('Out of stock');
@@ -17,9 +23,9 @@
 ?>
 
 <?php if ($block->displayProductStockStatus()): ?>
-    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= /* @escapeNotVerified */ __('Availability') ?>">
+    <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
         <?= $icon ?>
-        <span class="cs-buybox__stock-text"><?= $text ?></span>
+        <span class="cs-buybox__stock-text"><?= $block->escapeHtmlAttr($text) ?></span>
     </div>
 <?php endif; ?>
 <?= $block->getChildHtml('bundle_prices') ?>

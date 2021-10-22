@@ -1,5 +1,9 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overridden to use custom rating-stars.phtml template
+*/
+?>
+<?php
 $reviewsCount = $block->getReviewsCount();
 $ratingSummary = $block->getRatingSummary();
 // Since 2.3.3 rating summary is being returned directly, not as an object.
@@ -8,7 +12,7 @@ if (is_object($ratingSummary)) {
     $ratingSummary = $ratingSummary->getRatingSummary();
 }
 ?>
-<?php if ($reviewsCount): ?>
+<?php if ($reviewsCount && $block->getReviewsCount()): ?>
 
         <?php
             // Transforms rating summary (0..100) into star count (0..5, with a step of a 0.5)
@@ -26,10 +30,10 @@ if (is_object($ratingSummary)) {
                     ->toHtml();
         ?>
 
-<?php elseif ($block->getDisplayIfEmpty()): ?>
+<?php elseif ($block->isReviewEnabled() && $block->getDisplayIfEmpty()): ?>
 
     <div class="cs-buybox__no-review">
-        <a class="cs-buybox__no-review-link" href="#reviews"><?= /* @escapeNotVerified */ __('Be the first to review this product'); ?></a>
+        <a class="cs-buybox__no-review-link" href="#reviews"><?= $block->escapeHtml(__('Be the first to review this product')) ?></a>
     </div>
 
 <?php endif; ?>

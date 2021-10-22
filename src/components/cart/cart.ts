@@ -13,6 +13,7 @@ export interface CartOptions {
 }
 /**
  * Cart component to modify default M2 behavior
+ * See Magento_Checkout/templates/cart/form.phtml for more details
  */
 export default class Cart {
     protected _options: CartOptions;

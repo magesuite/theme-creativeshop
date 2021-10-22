@@ -1,13 +1,23 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overwritten to:
+* - add magesuite classes
+* - hide .cart.main.actions element with cs-visually-hidden - we prefer to update cart automatically after user change qty or remove item from cart
+* There is a script prepared in: `components/cart/cart.ts` which shows loader and triggers click on hidden #update-cart-button button
+*/
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
 /**  @var $block \Magento\Checkout\Block\Cart\Grid */
 ?>
-<?php $mergedCells = ($this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices() ? 2 : 1); ?>
+<?php $mergedCells = ($this->helper(\Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
 <?= $block->getChildHtml('form_before') ?>
-<form action="<?= /* @escapeNotVerified */ $block->getUrl('checkout/cart/updatePost') ?>"
+<form action="<?= $block->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>"
           method="post"
           id="form-validate"
-          data-mage-init='{"validation":{}}'
+          data-mage-init='{"Magento_Checkout/js/action/update-shopping-cart":
+              {"validationURL" : "<?= $block->escapeUrl($block->getUrl('checkout/cart/updateItemQty')) ?>",
+              "updateCartActionContainer": "#update_cart_action_container"}
+          }'
           class="form form-cart cs-form cs-container__cart-items">
     <?= $block->getBlockHtml('formkey') ?>
     <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?> cs-cart-table-wrapper">
@@ -18,20 +28,20 @@
                class="cart items data table cs-cart-table"
                data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
                "updateCartActionContainer": "#update_cart_action_container"}}'>
-            <caption role="heading" aria-level="2" class="table-caption cs-cart-table__caption"><?= /* @escapeNotVerified */ __('Shopping Cart Items') ?></caption>
+            <caption class="table-caption cs-cart-table__caption"><?= $block->escapeHtml(__('Shopping Cart Items')) ?></caption>
             <thead class="cs-cart-table__head">
                 <tr>
                     <th class="col item cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Item') ?></span>
+                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Item')) ?></span>
                     </th>
                     <th class="col price cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Price') ?></span>
+                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Price')) ?></span>
                     </th>
                     <th class="col qty cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Qty') ?></span>
+                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Qty')) ?></span>
                     </th>
                     <th class="col subtotal cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= /* @escapeNotVerified */ __('Subtotal') ?></span>
+                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Subtotal')) ?></span>
                     </th>
                     <th class="col cs-cart-table__head-col" scope="col">
                     </th>
@@ -51,17 +61,19 @@
             <a class="action continue"
                href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>"
                title="<?= $block->escapeHtml(__('Continue Shopping')) ?>">
-                <span><?= /* @escapeNotVerified */ __('Continue Shopping') ?></span>
+                <span><?= $block->escapeHtml(__('Continue Shopping')) ?></span>
             </a>
         <?php endif; ?>
-        <button type="submit"
-                name="update_cart_action"
-                data-cart-empty=""
-                value="empty_cart"
-                title="<?= $block->escapeHtml(__('Clear Shopping Cart')) ?>"
-                class="action clear" id="empty_cart_button">
-            <span><?= /* @escapeNotVerified */ __('Clear Shopping Cart') ?></span>
-        </button>
+        <?php if ($block->getViewModel()->isClearShoppingCartEnabled()): ?>
+            <button type="button"
+                    name="update_cart_action"
+                    data-cart-empty=""
+                    value="empty_cart"
+                    title="<?= $block->escapeHtml(__('Clear Shopping Cart')) ?>"
+                    class="action clear" id="empty_cart_button">
+                <span><?= $block->escapeHtml(__('Clear Shopping Cart')) ?></span>
+            </button>
+        <?php endif ?>
         <button type="submit"
                 name="update_cart_action"
                 id="update-cart-button"
@@ -69,11 +81,10 @@
                 value="update_qty"
                 title="<?= $block->escapeHtml(__('Update Shopping Cart')) ?>"
                 class="action update">
-            <span><?= /* @escapeNotVerified */ __('Update Shopping Cart') ?></span>
+            <span><?= $block->escapeHtml(__('Update Shopping Cart')) ?></span>
         </button>
         <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
     </div>
 </form>
 <?= $block->getChildHtml('checkout.cart.order.actions') ?>
 <?= $block->getChildHtml('shopping.cart.table.after') ?>
-

@@ -1,12 +1,18 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overwritten to:
+* - add magesuite classes
+* - replace text with childHtml block
+* - add  data-uenc-update attribute
+*/
+
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer\Actions\Remove */
 ?>
 <div class="cs-cart-item__link cs-cart-item__link--remove">
     <a class="cs-cart-item__link-wrapper"
         href="#"
         title="<?= $block->escapeHtml(__('Remove item')); ?>"
-        data-post='<?= /* @escapeNotVerified */ $block->getDeletePostJson(); ?>'
+        data-post='<?= /* @noEscape */ $block->getDeletePostJson(); ?>'
         data-uenc-update="true"
     >
         <?= $block->getChildHtml(); ?>

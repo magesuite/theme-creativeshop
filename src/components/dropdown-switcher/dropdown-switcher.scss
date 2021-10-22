@@ -56,21 +56,6 @@ $dropdown-switcher_font-size-secondary: 1.1rem !default;
     width: 100%;
 
     @include media('>=laptop') {
-        .mage-dropdown-dialog {
-            position: absolute;
-            top: 100%;
-            right: -1rem;
-            left: 1rem;
-        }
-    }
-
-    &--currency {
-        .mage-dropdown-dialog {
-            right: -1rem;
-        }
-    }
-
-    @include media('>=laptop') {
         position: relative;
         display: inline-flex;
         align-items: center;
@@ -176,7 +161,7 @@ $dropdown-switcher_font-size-secondary: 1.1rem !default;
             }
         }
 
-        &.active {
+        .active & {
             background: $dropdown-switcher_background;
             border-top-left-radius: $dropdown-switcher_border-radius;
             border-top-right-radius: $dropdown-switcher_border-radius;
@@ -211,6 +196,18 @@ $dropdown-switcher_font-size-secondary: 1.1rem !default;
         @include media('>=laptop') {
             background: $dropdown-switcher_list-background-color;
             min-width: 100%;
+            position: absolute;
+            top: 100%;
+            right: -1rem;
+            left: 1rem;
+        }
+
+        #{$root}--currency {
+            right: -1rem;
+        }
+
+        .active & {
+            display: block;
         }
 
         &-item {

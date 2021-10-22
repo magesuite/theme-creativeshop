@@ -1,32 +1,47 @@
 <?php
-// @codingStandardsIgnoreFile
 /**
- * @var \Magento\Theme\Block\Html\Header\Logo $block
- */
+* Template overridden in order to:
+* - add possibility to define mobile logo
+* - add magesuite classes
+* - do not wrap logo with link tag if it is homepage
+*/
+/**
+* @var \Magento\Theme\Block\Html\Header\Logo $block
+*/
     $mobileLogoPath = $block->getVar('header/mobile_logo_path', 'Magento_Theme');
     $mobileLogoWidth = $block->getVar('header/mobile_logo_width', 'Magento_Theme');
     $mobileLogoHeight = $block->getVar('header/mobile_logo_height', 'Magento_Theme');
+    /**
+     * @var \Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolverInterface|null $logoSizeResolver
+     */
+    $logoSizeResolver = $block->getLogoSizeResolver();
+    $logoWidth = $logoSizeResolver !== null && $logoSizeResolver->getWidth()
+        ? $logoSizeResolver->getWidth()
+        : $block->getLogoWidth();
+    $logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
+        ? $logoSizeResolver->getHeight()
+        : $block->getLogoHeight();
 ?>
 <?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
 <div class="cs-header__logo">
     <?php if ($block->isHomePage()): ?>
         <div class="logo cs-logo cs-logo--text">
     <?php else: ?>
-        <a class="logo cs-logo cs-logo--link" href="<?= $block->getUrl(''); ?>" title="<?= /* @escapeNotVerified */ $storeName ?>">
+        <a class="logo cs-logo cs-logo--link" href="<?= $block->escapeUrl($block->getUrl('')) ?>" title="<?= $block->escapeHtmlAttr($storeName) ?>">
     <?php endif; ?>
         <?php if ($mobileLogoPath): ?>
             <img class="cs-logo__image<?php if ($mobileLogoPath): ?> cs-logo__image--mobile<?php endif; ?>"
                 src="<?= $block->getViewFileUrl($mobileLogoPath) ?>"
-                alt="<?= /* @escapeNotVerified */ $block->getLogoAlt() ?>"
+                alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
                 <?= $mobileLogoWidth ? 'width="' . $mobileLogoWidth . '"' : '' ?>
                 <?= $mobileLogoHeight ? 'height="' . $mobileLogoHeight . '"' : '' ?>
             />
         <?php endif; ?>
         <img class="cs-logo__image<?php if ($mobileLogoPath): ?> cs-logo__image--desktop<?php endif; ?>"
-            src="<?= /* @escapeNotVerified */ $block->getLogoSrc() ?>"
-            alt="<?= /* @escapeNotVerified */ $block->getLogoAlt() ?>"
-            <?= $block->getLogoWidth() ? 'width="' . $block->getLogoWidth() . '"' : '' ?>
-            <?= $block->getLogoHeight() ? 'height="' . $block->getLogoHeight() . '"' : '' ?>
+            src="<?= $block->escapeUrl($block->getLogoSrc()) ?>"
+            alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
+            <?= $logoWidth ? 'width="' . $block->escapeHtmlAttr($logoWidth) . '"' : '' ?>
+            <?= $logoHeight ? 'height="' . $block->escapeHtmlAttr($logoHeight) . '"' : '' ?>
         />
     <?php if (!$block->isHomePage()): ?>
         </a>

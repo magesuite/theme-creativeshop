@@ -1,4 +1,12 @@
 <?php
+/**
+* Template overwritten to:
+* - add magesuite class
+* - make collapse option - can be configured via xml
+* - add $containContent - if set to false in xml content is not rendered
+*/
+?>
+<?php
 $layout = $block->getLayout();
 $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChildHtml') ?? [];
 ?>
@@ -16,7 +24,7 @@ $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChild
     $alias = $layout->getElementAlias($blockName);
     $headline = __($block->getChildData($alias, 'title'))->render();
     $subheadline = __($block->getChildData($alias, 'subtitle'))->render();
-    $id = str_replace('.', '-', $alias);
+    $id = str_replace('.', '-', $block->escapeHtmlAttr($alias));
     $containContent = $block->getChildData($alias, 'contain_content') ?? true;
     $isCollapsible = $block->getChildData($alias, 'is_collapsible') ?? true;
     $collapseOptions = $block->getChildData($alias, 'collapsible_widget_options');
@@ -33,11 +41,11 @@ $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChild
                 <?php if (!empty($headline)): ?>
                     <header class="cs-product-details__headline" data-role="title">
                         <h2 class="cs-product-details__headline-title">
-                            <?= /* @escapeNotVerified */ $headline; ?>
+                            <?= /* @noEscape */ $headline; ?>
                         </h2>
                         <?php if (!empty($subheadline)): ?>
                             <p class="cs-product-details__headline-subtitle">
-                                <?= /* @escapeNotVerified */ $subheadline; ?>
+                                <?= /* @noEscape */ $subheadline; ?>
                             </p>
                         <?php endif; ?>
                     </header>
@@ -47,7 +55,7 @@ $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChild
         </div>
     <?php endif; ?>
         <div class="cs-product-details__content" data-role="content">
-            <?= /* @escapeNotVerified */ $html; ?>
+            <?= /* @noEscape */ $html; ?>
         </div>
     <?php if ($containContent): ?>
             </div>

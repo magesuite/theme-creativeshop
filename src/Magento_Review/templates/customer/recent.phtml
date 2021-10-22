@@ -1,23 +1,25 @@
 <?php
 /**
- * Template overriden to add Magesuite stars component include
- */
+* Template overridden to add Magesuite stars component include
+*/
 
-// @codingStandardsIgnoreFile
-
-/** @var \Magento\Review\Block\Customer\Recent $block */
+/**
+* @var \Magento\Review\Block\Customer\Recent $block
+* @var \Magento\Framework\Escaper $escaper
+* @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+*/
 ?>
 <?php if ($block->getReviews() && count($block->getReviews())): ?>
 <div class="block block-reviews-dashboard">
     <div class="block-title">
-        <strong><?= $block->escapeHtml(__('My Recent Reviews')) ?></strong>
-        <a class="action view" href="<?= $block->escapeUrl($block->getAllReviewsUrl()) ?>"><span><?= $block->escapeHtml(__('View All')) ?></span></a>
+        <strong><?= $escaper->escapeHtml(__('My Recent Reviews')) ?></strong>
+        <a class="action view" href="<?= $escaper->escapeUrl($block->getAllReviewsUrl()) ?>"><span><?= $escaper->escapeHtml(__('View All')) ?></span></a>
     </div>
     <div class="block-content">
         <ol class="items">
         <?php foreach ($block->getReviews() as $review): ?>
             <li class="item">
-                <strong class="product-name"><a href="<?= $block->escapeUrl($block->getReviewUrl($review->getReviewId())) ?>"><?= $block->escapeHtml($review->getName()) ?></a></strong>
+                <strong class="product-name"><a href="<?= $escaper->escapeUrl($block->getReviewUrl($review->getReviewId())) ?>"><?= $block->escapeHtml($review->getName()) ?></a></strong>
                 <?php if ($review->getSum()): ?>
                 <?php              
                     $review_count = $review->getCount();

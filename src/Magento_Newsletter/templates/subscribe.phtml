@@ -1,6 +1,13 @@
 <?php
-// @codingStandardsIgnoreFile
-
+/**
+* Template has been overwritten in order to:
+* - add magesuite classes
+* - remove title
+* - reorganize elements
+* - add hotspots
+*/
+?>
+<?php
 /** @var \Magento\Newsletter\Block\Subscribe $block */
 $label = $block->getInputLabel();
 $placeholder = $block->getInputPlaceholder();
@@ -38,3 +45,12 @@ $buttonLabel = $block->getButtonLabel();
     </form> 
     <?= $block->getChildHtml('newsletter.subscribe.hotspot.form_below'); ?>
 </div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "newsletter-validate-detail"
+            }
+        }
+    }
+</script>
