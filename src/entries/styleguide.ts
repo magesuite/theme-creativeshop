@@ -21,7 +21,6 @@ import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
 import 'components/cookie-message';
-import 'components/device-detection';
 import 'components/dropdown-switcher';
 import 'components/field';
 import 'components/footer';
@@ -77,7 +76,5 @@ import 'components/tabs';
 import 'components/form';
 import 'components/table';
 import 'components/styleguide';
-
-export { Select } from 'components/select';
 
 // import 'components/ie11';
