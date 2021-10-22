@@ -1,47 +1,23 @@
 <!--
 /**
- * Sidebar needs additional wrapper and special mobile layout
+ * Sidebar needs additional wrapper
  * Also next button is removed and move to custom template
  */
 -->
 
 <div class="cs-checkout__sidebar">
     <div class="cs-checkout__sidebar-inner">
-        <div class="cs-checkout__mobile-summary">
-            <!-- ko foreach: getRegion('summary') -->
+        <div class="opc-block-shipping-information">
+            <!-- ko foreach: getRegion('shipping-information') -->
             <!-- ko template: getTemplate() -->
             <!-- /ko -->
             <!--/ko-->
         </div>
 
-        <div
-            id="opc-sidebar"
-            class="cs-checkout__summary-wrapper"
-            data-bind="afterRender:setModalElement, mageInit: {
-                    'Magento_Ui/js/modal/modal':{
-                        'type': 'custom',
-                        'modalClass': 'opc-summary-wrapper',
-                        'wrapperClass': 'cs-checkout__sidebar-inner',
-                        'parentModalClass': '_has-modal-custom',
-                        'responsive': true,
-                        'responsiveClass': 'custom-slide',
-                        'overlayClass': 'modal-custom-overlay',
-                        'buttons': []
-                    }
-                }"
-        >
-            <!-- ko foreach: getRegion('summary') -->
-            <!-- ko template: getTemplate() -->
-            <!-- /ko -->
-            <!--/ko-->
-
-            <div class="opc-block-shipping-information">
-                <!-- ko foreach: getRegion('shipping-information') -->
-                <!-- ko template: getTemplate() -->
-                <!-- /ko -->
-                <!--/ko-->
-            </div>
-        </div>
+        <!-- ko foreach: getRegion('summary') -->
+        <!-- ko template: getTemplate() -->
+        <!-- /ko -->
+        <!--/ko-->
     </div>
 
     <!-- ko foreach: getRegion('next-button') -->
