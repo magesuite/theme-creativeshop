@@ -140,15 +140,18 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 
 .#{$ns}checkout {
     $root: &;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    justify-content: space-between;
-    max-width: 45rem;
-    margin: 0 auto 1.5rem auto;
 
-    @include media('>=tablet') {
-        max-width: $checkout_page-max-width;
+    .checkout-container {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        justify-content: space-between;
+        max-width: 45rem;
+        margin: 0 auto 1.5rem auto;
+
+        @include media('>=tablet') {
+            max-width: $checkout_page-max-width;
+        }
     }
 
     // General checkout layout and checkout forms
@@ -533,12 +536,21 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 
     &__sidebar-inner {
+        display: flex;
+        flex-direction: column;
+
         @if ($checkout_next-button-outside == true) {
             @include media('>=tablet') {
                 margin: 0 0 $checkout_steps-space;
                 background: $checkout_boxes-background;
                 box-shadow: $checkout_boxes-box-shadow;
                 border-radius: $checkout_boxes-border-radius;
+            }
+        }
+
+        .opc-block-shipping-information {
+            @include media('>=tablet') {
+                order: 10;
             }
         }
     }
@@ -669,14 +681,22 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 
     .shipping-information-content {
-        padding: 0 $checkout_base-space;
+        padding: 0;
+
+        @include media('>=tablet') {
+            padding: 0 $checkout_base-space;
+        }
     }
 
     .shipping-information-title {
         display: flex;
         justify-content: space-between;
         font-weight: 600;
-        padding: $checkout_base-space $checkout_base-space 0;
+        padding: $checkout_base-space 0 0;
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space $checkout_base-space 0;
+        }
 
         button.action.action-edit {
             cursor: pointer;
@@ -941,13 +961,14 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     // Summary (sidebar on desktop and tablets)
 
     .opc-block-summary {
-        padding: 0;
+        padding-top: $checkout_base-space;
+        border-top: $checkout_elements-border;
 
         .action.checkout,
         .items-in-cart,
         .title {
             @include media('<tablet') {
-                display: none;
+                display: block;
             }
         }
 
@@ -1192,11 +1213,19 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         }
 
         .items-in-cart {
+            margin-top: $checkout_base-space;
+
             @include media('<tablet') {
                 display: block;
             }
 
+            @include media('>=tablet') {
+                margin-top: 0;
+            }
+
             .title {
+                padding: $checkout_base-space;
+
                 // Summary amount of product (magento markup)
                 strong {
                     font-size: 1.4rem;
