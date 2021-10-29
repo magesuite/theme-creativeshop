@@ -17,14 +17,13 @@ define([
                 this._super(event, validation);
 
                 var $form = $(this);
+                var $body = $('body');
 
                 if (
                     !$('#missing-swatches-modal').length &&
                     $form.is('#product_addtocart_form')
                 ) {
-                    $('body').prepend(
-                        '<div id="missing-swatches-modal"></div>'
-                    );
+                    $body.prepend('<div id="missing-swatches-modal"></div>');
 
                     var slideModal = modal(
                         {
@@ -52,14 +51,17 @@ define([
                     $formParent.css('height', $formParent.innerHeight());
 
                     $('#missing-swatches-modal').on('modalclosed', function() {
+                        $body.removClass('missing-swatches-modal-visible');
                         $clonedForm.remove();
                         $formParent.prepend($form);
                         $form.find('.product-options-bottom').show();
                         $form.find('input, select').off('change.addToCart');
                         $formParent.css('height', '');
+                        $('.swatch-option-tooltip').hide();
                     });
 
                     $('#missing-swatches-modal').on('modalopened', function() {
+                        $body.addClass('missing-swatches-modal-visible');
                         $form.find('.product-options-bottom').hide();
                         $form.appendTo(
                             '.missing-swatches-modal .modal-content'
