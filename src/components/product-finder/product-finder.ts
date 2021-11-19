@@ -161,6 +161,7 @@ export default class ProductFinder {
         );
 
         this._updateSizes();
+        this._$backButtons.blur();
         this._scrollToTop();
     }
 
@@ -184,6 +185,7 @@ export default class ProductFinder {
         }
 
         this._updateSizes();
+        this._$backButtons.blur();
     }
 
     /**
