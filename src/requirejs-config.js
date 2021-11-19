@@ -104,6 +104,9 @@ var config = {
             'Magento_Review/js/process-reviews': {
                 'Magento_Review/js/process-reviews-ext': true,
             },
+            'Magento_Bundle/js/slide': {
+                'Magento_Bundle/js/slide-ext': true,
+            },
         },
     },
 };
