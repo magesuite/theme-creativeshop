@@ -51,22 +51,48 @@
         <p data-bind="html: getInstructions()"></p>
         <div class="cs-payment__agreements | checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
+        <div data-role="checkout-payone-boni-agreement">
+            <div class="checkout-payone-boni-agreement">
+                <!-- ko if: (isAgreementVisible()) -->
+                    <!-- ko if: (canShowPaymentHintText()) -->
+                        <div>
+                            <strong><span data-bind="html: getPaymentHintText()"></span></strong>
+                        </div>
+                    <!-- /ko -->
+                    <!-- ko if: (canShowAgreementMessage()) -->
+                        <div>
+                            <input type="checkbox"
+                                   data-bind="attr: {
+                                                        'id': 'payone_boni_agreement_' + getCode(),
+                                                        'name': 'payone_boni_agreement',
+                                                        'value': '1'}" />
+                            <label data-bind="attr: {'for': 'payone_boni_agreement_' + getCode()}">
+                                <span data-bind="html: getAgreementMessage()"></span>
+                            </label>
+                        </div>
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if: isPaydirektOneKlickDisplayable() -->
+            <button data-bind="click: redirectToOneKlickController"><!-- ko i18n: 'Register for paydirekt oneKlick'--><!-- /ko --></button>
+        <!--/ko-->
         <p class="cs-t-text cs-t-text--look_attention" data-bind="i18n: 'You will be redirected to Paydirekt after the checkout'"></p>
         <div class="cs-payment__buttons">
-            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
-                    type="submit"
-                    data-bind="
-                    click: continueToPayone,
-                    attr: {title: $t('Place Order')},
-                    enable: (getCode() == isChecked()),
-                    css: {disabled: !isPlaceOrderActionAllowed()}
-                    "
-                    disabled>
-                <span data-bind="i18n: 'Place Order'"></span>
-            </button>
+                <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
+                        type="submit"
+                        data-bind="
+                        click: continueToPayone,
+                        attr: {title: $t('Place Order')},
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed()}
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
         </div>
     </div>
 </div>
