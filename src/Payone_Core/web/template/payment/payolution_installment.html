@@ -50,23 +50,6 @@
         <form action="#" method="post" data-bind="attr: {id: getCode() + '_form'}">
             <input type="hidden" name="payment[duration]" value="" data-bind="attr: {id: getCode() + '_duration'}">
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode()}">
-                <!-- ko if: isB2bMode() -->
-                <div class="cs-input | number required">
-                    <label data-bind="attr: {for: getCode() + '_tradeRegistryNumber'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Company trade registry number'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <input type="text" name="payment[tradeRegistryNumber]" class="cs-input__input" value=""
-                               data-bind="attr: {
-                                    autocomplete: off,
-                                    id: getCode() + '_tradeRegistryNumber',
-                                    title: $t('Company trade registry number'),
-                                    'data-container': getCode() + '-tradeRegistryNumber'},
-                              value: tradeRegistryNumber,
-                              valueUpdate: 'keyup' "/>
-                    </div>
-                </div>
-                <!--/ko-->
                 <!-- ko if: requestBirthday() -->
                 <div class="cs-input | number required" data-bind="attr: {id: getCode() + '_birthday_field'}">
                     <label data-bind="attr: {for: getCode() + '_birthday'}" class="cs-input__label">
@@ -133,14 +116,13 @@
                 <div class="cs-form__field cs-input cs-input--type-checkbox">
                     <input type="checkbox" data-bind="attr: {id: getCode() + '_additional_fields_agreement_checkbox'}, checked: agreement" class="cs-input__checkbox"/>
                     <label data-bind="attr: {for: getCode() + '_additional_fields_agreement_checkbox'}" class="cs-input__label | required" style="float:none;">
-                        <!-- ko i18n: 'I agree with the transmission of the necessary data to payolution which is needed for processing the purchase, the identity-check and the credit rating.'--><!-- /ko -->
+                        <!-- ko i18n: 'I agree with the transmission of the necessary data to Unzer which is needed for processing the purchase, the identity-check and the credit rating.'--><!-- /ko -->
                         <!-- ko i18n: 'My'--><!-- /ko -->
                         <a href="#" style="float:none; margin:0;" data-bind="click: displayPayolutionOverlay"><!-- ko i18n: 'acceptance'--><!-- /ko --></a>
                         <!-- ko i18n: 'can be revoked for the future any time.'--><!-- /ko -->
                         <em style="float:none; position:relative;">*</em>
                     </label>
                 </div>
-
                 <div data-bind="attr: {id: getCode() + '_overlay'}" style="display:none;" class="payolution_overlay">
                     <a href="#" data-bind="click: removePayolutionOverlay"
                        style="float:right;font-weight:bold;"><!-- ko i18n: 'Close window'--><!-- /ko --></a><br><br>
@@ -155,25 +137,47 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
-
+        <div data-role="checkout-payone-boni-agreement">
+            <div class="checkout-payone-boni-agreement">
+                <!-- ko if: (isAgreementVisible()) -->
+                    <!-- ko if: (canShowPaymentHintText()) -->
+                    <div class="cs-t-tect cs-t-text--look_attention">
+                        <span data-bind="html: getPaymentHintText()"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: (canShowAgreementMessage()) -->
+                        <div class="cs-input--type-checkbox">
+                            <input type="checkbox" class="cs-input__checkbox"
+                                data-bind="attr: {
+                                                'id': 'payone_boni_agreement_' + getCode(),
+                                                'name': 'payone_boni_agreement',
+                                                'value': '1'}" />
+                            <label class="cs-input__label" data-bind="attr: {'for': 'payone_boni_agreement_' + getCode()}">
+                                <span data-bind="html: getAgreementMessage()"></span>
+                            </label>
+                        </div>
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
         <div class="cs-payment__buttons">
-            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout" type="button"
-                    data-bind="
-                    click: handleInstallment,
-                    attr: {id: getCode() + '_check', title: $t('Check installment availability')},
-                    enable: (getCode() == isChecked())">
-                <span data-bind="i18n: 'Check installment availability'"></span>
-            </button>
-            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout" type="submit" style="display:none;"
-                    data-bind="
-                    click: placeOrder,
-                    attr: {id: getCode() + '_submit', title: $t('Place Order')},
-                    enable: (getCode() == isChecked()),
-                    css: {disabled: !isPlaceOrderActionAllowed()}
-                    "
-                    disabled>
-                <span data-bind="i18n: 'Place Order'"></span>
-            </button>
+                <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout" type="button"
+                        data-bind="
+                        click: handleInstallment,
+                        attr: {id: getCode() + '_check', title: $t('Check installment availability')},
+                        enable: (getCode() == isChecked())">
+                    <span data-bind="i18n: 'Check installment availability'"></span>
+                </button>
+                <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout" type="submit" style="display:none;"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {id: getCode() + '_submit', title: $t('Place Order')},
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed()}
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
         </div>
     </div>
 </div>

@@ -51,21 +51,44 @@
         <p data-bind="html: getInstructions()"></p>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
-        <div class="cs-payment__buttonsr">
-            <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
-                    type="submit"
-                    data-bind="
-                    click: placeOrder,
-                    attr: {title: $t('Place Order')},
-                    enable: (getCode() == isChecked()),
-                    css: {disabled: !isPlaceOrderActionAllowed()}
-                    "
-                    disabled>
-                <span data-bind="i18n: 'Place Order'"></span>
-            </button>
+        <div data-role="checkout-payone-boni-agreement">
+            <div class="checkout-payone-boni-agreement">
+                <!-- ko if: (isAgreementVisible()) -->
+                    <!-- ko if: (canShowPaymentHintText()) -->
+                    <div class="cs-t-tect cs-t-text--look_attention">
+                        <span data-bind="html: getPaymentHintText()"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: (canShowAgreementMessage()) -->
+                        <div class="cs-input--type-checkbox">
+                            <input type="checkbox" class="cs-input__checkbox"
+                                data-bind="attr: {
+                                                'id': 'payone_boni_agreement_' + getCode(),
+                                                'name': 'payone_boni_agreement',
+                                                'value': '1'}" />
+                            <label class="cs-input__label" data-bind="attr: {'for': 'payone_boni_agreement_' + getCode()}">
+                                <span data-bind="html: getAgreementMessage()"></span>
+                            </label>
+                        </div>
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="cs-payment__buttons">
+                <button class="cs-button cs-button--look_default cs-button--type_long | cs-button-payment-method | checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed()}
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
         </div>
     </div>
 </div>

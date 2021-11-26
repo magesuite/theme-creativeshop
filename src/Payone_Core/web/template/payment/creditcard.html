@@ -53,103 +53,153 @@
             <input type="hidden" name="payment[cc_pseudocardpan]" value=""
                    data-bind="attr: {autocomplete: off, id: getCode() + '_pseudocardpan'},
                               value: pseudocardpan">
+
             <fieldset data-bind="attr: {class: 'fieldset payment items ccard ' + getCode(), id: 'payone_form_cc'}">
-                <div class="cs-input">
-                    <label data-bind="attr: {for: getCode() + '_credit_card_type'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Credit Card Type'--><!-- /ko --></span>
-                    </label>
-                    <div class='cs-input__control'>
-                        <select style="width:230px;" name="payment[cc_type]" class="select | cs-input__select"
-                                data-bind=" attr: {id: getCode() + '_credit_card_type', 'data-container': getCode() + '_credit_card_type'},
-                                        mageInit: {creditCardType:{creditCardTypeContainer:'#' + getCode() + '_credit_card_type_ss_div'}},
-                                        enable: true,
-                                        options: getCreditcardTypes(),
-                                        optionsValue: 'id',
-                                        optionsText: 'title',
-                                        optionsCaption: $t('--Please Select--')">
-                        </select>
+                <!-- ko if: useSaveDataMode() -->
+                <div data-bind="foreach: getSavedPaymentData()">
+                    <div class="payment-method">
+                        <div class="cs-payment__title | cs-input cs-input--type-radio">
+                            <input data-bind="attr: {id: $parent.getCode() + '_data_' + $data.id, name: $parent.getCode() + '_saved_data'}, value: $data.payment_data.cardpan, event: { change: $parent.handleNewDataVisibility }" type="radio" class="cs-input__radio"/>
+                            <label data-bind="attr: {for: $parent.getCode() + '_data_' + $data.id}" class="cs-input__label cs-input__label--big">
+                                <img data-bind="attr: {src: 'https://cdn.pay1.de/cc/' + $data.payment_data.cardtype.toLowerCase() + '/s/default.png'}"/>
+                                <!-- ko i18n: 'ends with'--><!-- /ko -->
+                                <span data-bind="text: '-' + $data.payment_data.masked.substring(($data.payment_data.masked.length-4), $data.payment_data.masked.length)"></span>
+                                <span data-bind="text: $data.payment_data.cardholder" class="cardholder"></span>
+                                <span data-bind="text: $data.payment_data.cardexpiredate.substring(2, 4) + '/20' + $data.payment_data.cardexpiredate.substring(0, 2)"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
+                <div class="payment-method">
+                    <div class="payment-method-title field choice">
+                        <input data-bind="attr: {id: getCode() + '_new_data', name: getCode() + '_saved_data'}, event: { change: handleNewDataVisibility }" type="radio" class="radio" value="new"/>
+                        <label data-bind="attr: {for: getCode() + '_new_data'}" class="label"><!-- ko i18n: 'Add new creditcard'--><!-- /ko --></label>
+                    </div>
+                </div>
+                <!--/ko-->
+                <div data-bind="attr: {id: getCode() + '_new_data_container'}" class="fieldset ccard">
+                    <!-- ko if: isAutoCardtypeDetectionEnabled() -->
+                    <input name="payment[cc_type]" type="hidden" value="" data-bind="attr: {id: getCode() + '_credit_card_type', value: getCreditcardTypes()[0].id, 'data-container': getCode() + '_credit_card_type'}" />
+                    <!--/ko-->
+                    <!-- ko if: !isAutoCardtypeDetectionEnabled() -->
+                    <div class="cs-input">
+                        <label data-bind="attr: {for: getCode() + '_credit_card_type'}" class="cs-input__label">
+                            <span><!-- ko i18n: 'Credit Card Type'--><!-- /ko --></span>
+                        </label>
+                        <div class='cs-input__control'>
+                            <select style="width:230px;" name="payment[cc_type]" class="select | cs-input__select"
+                                    data-bind=" attr: {id: getCode() + '_credit_card_type', 'data-container': getCode() + '_credit_card_type'},
+                                            mageInit: {creditCardType:{creditCardTypeContainer:'#' + getCode() + '_credit_card_type_ss_div'}},
+                                            enable: true,
+                                            options: getCreditcardTypes(),
+                                            optionsValue: 'id',
+                                            optionsText: 'title',
+                                            optionsCaption: $t('--Please Select--')">
+                            </select>
+                        </div>
+                    </div>
+                    <!--/ko-->
 
-                <div class="cs-input | number required">
-                    <label data-bind="attr: {for: getCode() + '_firstname'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Firstname'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <input type="text" name="payment[cc_firstname]" class="cs-input__input" value=""
-                               data-bind="attr: {
-                                    autocomplete: off,
-                                    id: getCode() + '_firstname',
-                                    title: $t('Firstname'),
-                                    'data-container': getCode() + '-firstname'},
-                              value: firstname,
-                              valueUpdate: 'keyup' "/>
+                    <div class="cs-input | number required">
+                        <label data-bind="attr: {for: getCode() + '_cardholder'}" class="cs-input__label">
+                            <span><!-- ko i18n: 'Cardholder'--><!-- /ko --></span>
+                        </label>
+                        <div class="cs-input__control">
+                            <input type="text" name="payment[cc_cardholder]" class="cs-input__input" value=""
+                                   data-bind="attr: {
+                                        autocomplete: off,
+                                        id: getCode() + '_cardholder',
+                                        title: $t('Cardholder'),
+                                        'data-container': getCode() + '-cardholder'},
+                                  value: cardholder,
+                                  valueUpdate: 'keyup' "/>
+                        </div>
                     </div>
-                </div>
-                <div class="cs-input | number required">
-                    <label data-bind="attr: {for: getCode() + '_lastname'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Lastname'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <input type="text" name="payment[cc_lastname]" class="cs-input__input" value=""
-                               data-bind="attr: {
-                                    autocomplete: off,
-                                    id: getCode() + '_lastname',
-                                    title: $t('Lastname'),
-                                    'data-container': getCode() + '-lastname'},
-                              value: lastname,
-                              valueUpdate: 'keyup' "/>
-                    </div>
-                </div>
 
-                <div class="cs-input | number required">
-                    <label data-bind="attr: {for: getCode() + '_cc_number'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <span id="cardpan" class="inputIframe"></span>
+                    <div class="cs-input | number required">
+                        <label data-bind="attr: {for: getCode() + '_cc_number'}" class="cs-input__label">
+                            <span><!-- ko i18n: 'Credit Card Number'--><!-- /ko --></span>
+                            <!-- ko if: isAutoCardtypeDetectionEnabled() -->
+                            <!-- ko foreach: getCreditcardTypes() -->
+                            <img class="cc-icon" data-bind="attr: {id: $parent.getCode() + '_cc_icon_' + id.toLowerCase(), src: 'https://cdn.pay1.de/cc/' + id.toLowerCase() + '/s/default.png'}"/>
+                            <!--/ko-->
+                            <!--/ko-->
+                        </label>
+                        <div class="cs-input__control">
+                            <span id="cardpan" class="inputIframe"></span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="cs-input | date required" data-bind="attr: {id: getCode() + '_cc_type_exp_div'}">
-                    <label data-bind="attr: {for: getCode() + '_expiration'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Expiration Date'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <div class="cs-input__fields-row group group-2">
-                            <div class="field no-label month">
-                                <div class="cs-input__control">
-                                    <span id="cardexpiremonth"></span>
+                    <div class="cs-input | date required" data-bind="attr: {id: getCode() + '_cc_type_exp_div'}">
+                        <label data-bind="attr: {for: getCode() + '_expiration'}" class="cs-input__label">
+                            <span><!-- ko i18n: 'Expiration Date'--><!-- /ko --></span>
+                        </label>
+                        <div class="cs-input__control">
+                            <div class="cs-input__fields-row group group-2">
+                                <div class="field no-label month">
+                                    <div class="cs-input__control">
+                                        <span id="cardexpiremonth"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field no-label year">
-                                <div class="cs-input__control">
-                                    <span id="cardexpireyear"></span>
+                                <div class="field no-label year">
+                                    <div class="cs-input__control">
+                                        <span id="cardexpireyear"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- ko if: showCvc() -->
-                <div class="cs-input cvv required" data-bind="attr: {id: getCode() + '_cc_type_cvv_div'}">
-                    <label data-bind="attr: {for: getCode() + '_cc_cid'}" class="cs-input__label">
-                        <span><!-- ko i18n: 'Card Verification Number'--><!-- /ko --></span>
-                    </label>
-                    <div class="cs-input__control">
-                        <span id="cardcvc2" class="inputIframe"></span>
+                    <!-- ko if: showCvc() -->
+                    <div class="cs-input cvv required" data-bind="attr: {id: getCode() + '_cc_type_cvv_div'}">
+                        <label data-bind="attr: {for: getCode() + '_cc_cid'}" class="cs-input__label">
+                            <span><!-- ko i18n: 'Card Verification Number'--><!-- /ko --></span>
+                        </label>
+                        <div class="cs-input__control">
+                            <span id="cardcvc2" class="inputIframe"></span>
+                        </div>
                     </div>
+                    <!--/ko-->
+                    <!-- ko if: isSaveDataEnabled() -->
+                    <input type="checkbox" data-bind="attr: {id: getCode() + '_save_data_checkbox'}, checked: saveData" />
+                    <label data-bind="attr: {for: getCode() + '_save_data_checkbox'}" class="required" style="float:none;">
+                        <!-- ko i18n: 'Save the payment data for future use.'--><!-- /ko --><br>
+                    </label>
+                    <!--/ko-->
                 </div>
-                <!--/ko-->
             </fieldset>
         </form>
         <div data-bind="html: handleIframes()"></div>
+        <span data-bind="html: markDefaultSavedPayment()"></span>
 
         <p data-bind="html: getInstructions()"></p>
         <div class="checkout-agreements-block">
             <!-- ko foreach: $parent.getRegion('before-place-order') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
+        </div>
+        <div data-role="checkout-payone-boni-agreement">
+            <div class="checkout-payone-boni-agreement">
+                <!-- ko if: (isAgreementVisible()) -->
+                    <!-- ko if: (canShowPaymentHintText()) -->
+                    <div class="cs-t-tect cs-t-text--look_attention">
+                        <span data-bind="html: getPaymentHintText()"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: (canShowAgreementMessage()) -->
+                        <div class="cs-input--type-checkbox">
+                            <input type="checkbox" class="cs-input__checkbox"
+                                data-bind="attr: {
+                                                'id': 'payone_boni_agreement_' + getCode(),
+                                                'name': 'payone_boni_agreement',
+                                                'value': '1'}" />
+                            <label class="cs-input__label" data-bind="attr: {'for': 'payone_boni_agreement_' + getCode()}">
+                                <span data-bind="html: getAgreementMessage()"></span>
+                            </label>
+                        </div>
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
         </div>
         <div class="cs-payment__buttons">
             <div class="primary">
