@@ -1,0 +1,52 @@
+<?php
+    $bpConfig = json_encode($block->getVar('breakpoints', 'Magento_Theme'));
+?>
+
+<script data-defer-ignore="true">
+    if (!window.breakpoint || typeof window.breakpoint !== 'object') {
+        const bpConfig = JSON.parse('<?= /* @noEscape */ $bpConfig ?>'),
+            bpConfigEntries = Object.entries(bpConfig),
+            breakpointChangeEvent = new CustomEvent('breakpointChange', {detail: {}});
+
+        window.breakpoint = {
+            ...bpConfig,
+            current: window.innerWidth
+        };
+
+        for (let i = 0; i < bpConfigEntries.length; i++) {
+            let mq;
+            if (i === 0) {
+                mq = window.matchMedia(`(max-width: ${bpConfigEntries[i][1]}px)`);
+            } else if (i === bpConfigEntries.length - 1) {
+                mq = window.matchMedia(`(min-width: ${bpConfigEntries[i][1]}px)`);
+            } else {
+                mq = window.matchMedia(`(min-width: ${bpConfigEntries[i][1]}px) and (max-width: ${bpConfigEntries[i+1][1]}px)`);
+            }
+
+            if (mq.matches) {
+                window.breakpoint.current = bpConfigEntries[i][1];
+            }
+
+            <?php
+            /**
+             * We trigger a custom event which passess current breakpoint
+             * and a breakpoint name in the event detail object.
+             * It can be listened to as follows:
+             * document.addEventListener("breakpointChange", (event) => {
+             *    // event.detail.breakpointName
+             *    // event.detail.breakpoint
+             * })
+             */
+            ?>
+            mq.addEventListener('change', () => {
+                if (mq.matches) {
+                    window.breakpoint.current = bpConfigEntries[i][1];
+                    breakpointChangeEvent.detail.breakpointName = bpConfigEntries[i][0];
+                    breakpointChangeEvent.detail.breakpoint= bpConfigEntries[i][1];
+
+                    document.dispatchEvent(breakpointChangeEvent);
+                }
+            });
+        }
+    }
+</script>
