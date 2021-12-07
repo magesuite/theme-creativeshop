@@ -64,7 +64,7 @@ export default class Reviews {
             ratingIndex < this._$wrapper.length;
             ratingIndex++
         ) {
-            let $activeRadio = this._$wrapper
+            const $activeRadio = this._$wrapper
                 .eq(ratingIndex)
                 .find('input[type="radio"]')
                 .eq(index);
@@ -72,7 +72,7 @@ export default class Reviews {
 
             this._setActiveStars($activeRadio, ratingIndex, index);
 
-            let defaultMsg = this._$feedbackEl.data('default-message');
+            const defaultMsg = this._$feedbackEl.data('default-message');
             this._$feedbackEl.eq(ratingIndex).text(defaultMsg);
         }
     }
