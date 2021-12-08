@@ -43,8 +43,8 @@ export default class Reviews {
 
         this._$wrapper = $wrapper || $('.cs-reviews__rating-control');
         this._$feedbackEl = this._options.feedbackElementSelector
-            ? $wrapper.find(this._options.feedbackElementSelector)
-            : $wrapper.find('.cs-reviews__rate-feedback');
+            ? this._$wrapper.find(this._options.feedbackElementSelector)
+            : this._$wrapper.find('.cs-reviews__rate-feedback');
 
         if (this._$wrapper.length && this._$feedbackEl.length) {
             this._attachEvents();
@@ -129,7 +129,7 @@ export default class Reviews {
             ) {
                 $radios[ratingIndex][starIndex].addEventListener(
                     'change',
-                    function(): void {
+                    function (): void {
                         _this
                             ._setActiveStars($(this), ratingIndex, starIndex)
                             .bind(_this);
