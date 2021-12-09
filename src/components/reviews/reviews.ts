@@ -129,7 +129,7 @@ export default class Reviews {
             ) {
                 $radios[ratingIndex][starIndex].addEventListener(
                     'change',
-                    function (): void {
+                    function(): void {
                         _this
                             ._setActiveStars($(this), ratingIndex, starIndex)
                             .bind(_this);
