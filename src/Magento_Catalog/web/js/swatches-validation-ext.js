@@ -78,40 +78,33 @@ define([
                     $form.appendTo('.missing-swatches-modal .modal-content');
                     $formParent.prepend($clonedForm);
 
-                    $form
-                        .find('input, select')
-                        .on('change.addToCart', function() {
-                            if ($form.validation('isValid')) {
-                                $form.trigger('processStart');
+                    $form.find('input').on('change.addToCart', function() {
+                        if ($form.validation('isValid')) {
+                            $form.trigger('processStart');
 
-                                setTimeout(function() {
-                                    $clonedForm.remove();
-                                    $formParent.prepend($form);
+                            setTimeout(function() {
+                                $clonedForm.remove();
+                                $formParent.prepend($form);
 
-                                    $form
-                                        .find('.product-options-bottom')
-                                        .show();
-                                    $formParent.css('height', '');
+                                $form.find('.product-options-bottom').show();
+                                $formParent.css('height', '');
 
-                                    if ($('#missing-swatches-modal').length) {
-                                        slideModal.closeModal();
-                                    }
+                                if ($('#missing-swatches-modal').length) {
+                                    slideModal.closeModal();
+                                }
 
-                                    $modal.remove();
+                                $modal.remove();
 
-                                    $form.trigger('processStop');
+                                $form.trigger('processStop');
 
-                                    var jqForm = $form.catalogAddToCart({
-                                        bindSubmit: false,
-                                    });
+                                var jqForm = $form.catalogAddToCart({
+                                    bindSubmit: false,
+                                });
 
-                                    jqForm.catalogAddToCart(
-                                        'submitForm',
-                                        jqForm
-                                    );
-                                }, 500);
-                            }
-                        });
+                                jqForm.catalogAddToCart('submitForm', jqForm);
+                            }, 500);
+                        }
+                    });
                 });
             },
         });
