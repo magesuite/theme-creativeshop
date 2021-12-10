@@ -18,94 +18,85 @@ define([
 
                 var $form = $(this);
 
-                if ($form.prop('id') !== 'product_addtocart_form') {
-                    return;
-                }
+                if (
+                    !$('#missing-swatches-modal').length &&
+                    $form.is('#product_addtocart_form')
+                ) {
+                    $('body').prepend(
+                        '<div id="missing-swatches-modal"></div>'
+                    );
 
-                var $existingModal = $('#missing-swatches-modal');
+                    console.log('init modal');
 
-                if ($existingModal.length) {
-                    $existingModal.modal('openModal');
-                    return;
-                }
-
-                var $body = $('body');
-
-                $body.prepend('<div id="missing-swatches-modal"></div>');
-
-                var $modal = $('#missing-swatches-modal');
-
-                var slideModal = modal(
-                    {
-                        type: 'slide',
-                        responsive: true,
-                        clickableOverlay: true,
-                        title: $.mage.__('Please select missing options'),
-                        modalClass: 'missing-swatches-modal',
-                        autoOpen: true,
-                        focus: 'none',
-                        actions: {
-                            cancel: function() {
-                                $form.appendTo(
-                                    '.cs-buybox__section--product-form'
-                                );
+                    var slideModal = modal(
+                        {
+                            type: 'slide',
+                            responsive: true,
+                            clickableOverlay: false,
+                            title: $.mage.__('Please select missing options'),
+                            modalClass: 'missing-swatches-modal',
+                            autoOpen: true,
+                            focus: 'none',
+                            actions: {
+                                cancel: function() {
+                                    $form.appendTo(
+                                        '.cs-buybox__section--product-form'
+                                    );
+                                },
                             },
+                            buttons: [],
                         },
-                        buttons: [],
-                    },
-                    $modal
-                );
+                        $('#missing-swatches-modal')
+                    );
 
-                var $formParent = $('.cs-buybox__section--product-form');
-                var $clonedForm = $form.clone();
-                $formParent.css('height', $formParent.innerHeight());
+                    var $formParent = $('.cs-buybox__section--product-form');
+                    var $clonedForm = $form.clone();
+                    $formParent.css('height', $formParent.innerHeight());
 
-                $modal.on('modalclosed', function() {
-                    $clonedForm.remove();
-                    $formParent.prepend($form);
-                    $form.find('.product-options-bottom').show();
-                    $form.find('input, select').off('change.addToCart');
-                    $formParent.css('height', '');
-
-                    $body.removeClass('missing-swatches-modal-visible');
-                    $('.swatch-option-tooltip').hide();
-                });
-
-                $modal.on('modalopened', function() {
-                    $body.addClass('missing-swatches-modal-visible');
-
-                    $form.find('.product-options-bottom').hide();
-                    $form.appendTo('.missing-swatches-modal .modal-content');
-                    $formParent.prepend($clonedForm);
-
-                    $form.find('input').on('change.addToCart', function() {
-                        if ($form.validation('isValid')) {
-                            $form.trigger('processStart');
-
-                            setTimeout(function() {
-                                $clonedForm.remove();
-                                $formParent.prepend($form);
-
-                                $form.find('.product-options-bottom').show();
-                                $formParent.css('height', '');
-
-                                if ($('#missing-swatches-modal').length) {
-                                    slideModal.closeModal();
-                                }
-
-                                $modal.remove();
-
-                                $form.trigger('processStop');
-
-                                var jqForm = $form.catalogAddToCart({
-                                    bindSubmit: false,
-                                });
-
-                                jqForm.catalogAddToCart('submitForm', jqForm);
-                            }, 500);
-                        }
+                    $('#missing-swatches-modal').on('modalclosed', function() {
+                        $clonedForm.remove();
+                        $formParent.prepend($form);
+                        $form.find('.product-options-bottom').show();
+                        $form.find('input, select').off('change.addToCart');
+                        $formParent.css('height', '');
                     });
-                });
+
+                    $('#missing-swatches-modal').on('modalopened', function() {
+                        $form.find('.product-options-bottom').hide();
+                        $form.appendTo(
+                            '.missing-swatches-modal .modal-content'
+                        );
+                        $formParent.prepend($clonedForm);
+
+                        $form
+                            .find('input, select')
+                            .on('change.addToCart', function() {
+                                if ($form.validation('isValid')) {
+                                    $form.trigger('processStart');
+
+                                    $clonedForm.remove();
+                                    $formParent.prepend($form);
+                                    $form
+                                        .find('.product-options-bottom')
+                                        .show();
+                                    $formParent.css('height', '');
+
+                                    slideModal.closeModal();
+
+                                    $form.trigger('processStop');
+
+                                    var jqForm = $form.catalogAddToCart({
+                                        bindSubmit: false,
+                                    });
+
+                                    jqForm.catalogAddToCart(
+                                        'submitForm',
+                                        jqForm
+                                    );
+                                }
+                            });
+                    });
+                }
             },
         });
 
