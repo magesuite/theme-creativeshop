@@ -16,14 +16,14 @@
         for (let i = 0; i < bpConfigEntries.length; i++) {
             let mq;
             if (i === 0) {
-                mq = window.matchMedia(`(max-width: ${bpConfigEntries[i][1]}px)`);
+                mq = window.matchMedia(`screen and (max-width: ${bpConfigEntries[i][1]}px)`);
             } else if (i === bpConfigEntries.length - 1) {
-                mq = window.matchMedia(`(min-width: ${bpConfigEntries[i][1]}px)`);
+                mq = window.matchMedia(`screen and (min-width: ${bpConfigEntries[i][1]}px)`);
             } else {
-                mq = window.matchMedia(`(min-width: ${bpConfigEntries[i][1]}px) and (max-width: ${bpConfigEntries[i+1][1]}px)`);
+                mq = window.matchMedia(`screen and (min-width: ${bpConfigEntries[i][1]}px) and (max-width: ${bpConfigEntries[i+1][1]}px)`);
             }
 
-            if (mq.matches) {
+            if (mq && mq.matches) {
                 window.breakpoint.current = bpConfigEntries[i][1];
             }
 
@@ -38,7 +38,8 @@
              * })
              */
             ?>
-            mq.addEventListener('change', () => {
+
+            const handleMqChange = () => {
                 if (mq.matches) {
                     window.breakpoint.current = bpConfigEntries[i][1];
                     breakpointChangeEvent.detail.breakpointName = bpConfigEntries[i][0];
@@ -46,7 +47,16 @@
 
                     document.dispatchEvent(breakpointChangeEvent);
                 }
-            });
+            }
+
+            if (mq && mq.addEventListener && typeof mq.addEventListener === 'function') {
+                mq.addEventListener('change', handleMqChange);
+            } else if (mq && mq.addListener && typeof mq.addListener === 'function') {
+                <?php
+                /* Compatibility for older Safari versions */
+                ?>
+                mq.addListener(handleMqChange);
+            }
         }
     }
 </script>
