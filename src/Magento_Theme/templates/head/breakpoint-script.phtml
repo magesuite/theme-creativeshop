@@ -4,9 +4,11 @@
 
 <script data-defer-ignore="true">
     if (!window.breakpoint || typeof window.breakpoint !== 'object') {
-        const bpConfig = JSON.parse('<?= /* @noEscape */ $bpConfig ?>'),
-            bpConfigEntries = Object.entries(bpConfig),
-            breakpointChangeEvent = new CustomEvent('breakpointChange', {detail: {}});
+        const bpConfig = JSON.parse('<?= /* @noEscape */ $bpConfig ?>');
+        Object.keys(bpConfig).forEach((bp) => bpConfig[bp] = +bpConfig[bp]);
+
+        const bpConfigEntries = Object.entries(bpConfig);
+        const breakpointChangeEvent = new CustomEvent('breakpointChange', {detail: {}});
 
         window.breakpoint = {
             ...bpConfig,
