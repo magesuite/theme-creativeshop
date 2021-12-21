@@ -12,7 +12,9 @@ $cart-item_brand-font-size: 1.2rem !default;
 $cart-item_brand-color: $color_text-400 !default;
 
 $cart-item_name-color: $color_text-800 !default;
+
 $cart-item_price-color: $color_text-800 !default;
+$cart-item_show-special-price: true !default;
 
 $cart-item_options-in-row: false !default;
 $cart-item_options-label-color: $color_text-800 !default;
@@ -212,6 +214,28 @@ $cart-item_qty-input-width--laptop-and-up: 11rem !default;
 
         @include media('>=laptopLg') {
             padding: 0.4rem 2rem 0.4rem 0 !important;
+        }
+
+        @if ($cart-item_show-special-price) {
+            .has-old-price {
+                .cart-price {
+                    .price {
+                        color: $price_special-color;
+                    }
+                }
+
+                .old-price {
+                    .price {
+                        color: $price_old-color;
+                    }
+                }
+            }
+        }
+
+        @if not($cart-item_show-special-price) {
+            .old-price {
+                display: none;
+            }
         }
     }
 
