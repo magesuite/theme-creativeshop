@@ -522,12 +522,36 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
         // Apply qty-switcher width (for whole table column)
         .qty {
             width: $buybox_qty-wrapper-width;
+
+            @include media('>=tablet') {
+                margin-left: auto;
+            }
+        }
+
+        .out-of-stock .qty {
+            width: auto;
         }
 
         // Display price below product option and make some spacing between option's name and price
         .price-final_price {
             display: block;
             margin-top: 0.3em;
+        }
+
+        .back-in-stock-modal-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            span {
+                display: inline-block;
+                padding-right: 0.5rem;
+            }
+
+            svg {
+                height: 2rem;
+                width: auto;
+            }
         }
     }
 

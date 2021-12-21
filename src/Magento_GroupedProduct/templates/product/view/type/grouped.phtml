@@ -31,7 +31,7 @@
         <?php if ($_hasAssociatedProducts) : ?>
         <tbody>
         <?php foreach ($_associatedProducts as $_item) : ?>
-            <tr>
+            <tr class="<?= !$_item->isSaleable() ? 'out-of-stock' : '' ?>">
                 <td data-th="<?= $block->escapeHtml(__('Product Name')) ?>" class="col item">
                     <strong class="product-item-name"><?= $block->escapeHtml($_item->getName()) ?></strong>
                     <?php if ($block->getCanShowProductPrice($_product)) : ?>
@@ -41,7 +41,7 @@
                      <?php endif; ?>
                 </td>
                 <?php if ($_product->isSaleable()) : ?>
-                <td data-th="<?= $block->escapeHtml(__('Qty')) ?>" class="col qty">
+                <td data-th="<?= $block->escapeHtml(__('Qty')) ?>" data-simple-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>" class="col qty">
                 <?php if ($_item->isSaleable()) : ?>
                     <div class="control qty">
                         <?= $this->getLayout()
@@ -58,6 +58,7 @@
                     <div class="stock unavailable" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
                         <span><?= $block->escapeHtml(__('Out of stock')) ?></span>
                     </div>
+                    <?= $block->getChildHtml('grouped.item.outofstock.spot') ?>
                 <?php endif; ?>
                 </td>
                 <?php endif; ?>
