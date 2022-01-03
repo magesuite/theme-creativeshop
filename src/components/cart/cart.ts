@@ -8,7 +8,6 @@ export interface CartOptions {
     qtyIncrementButtonSelector?: string;
     qtyIncrementInputSelector?: string;
     cartUpdateButtonSelector?: string;
-    loadingIndicatorSelector?: string;
     updateCartActionTimeout?: number; // in ms
 }
 /**
@@ -27,7 +26,6 @@ export default class Cart {
                 qtyIncrementButtonSelector: '.cs-qty-increment__button',
                 qtyIncrementInputSelector: '.cs-qty-increment__input',
                 cartUpdateButtonSelector: '#update-cart-button',
-                loadingIndicatorSelector: '.load.indicator',
                 updateCartActionTimeout: 1500,
             },
             options
@@ -50,24 +48,7 @@ export default class Cart {
         }
 
         this._updateTimeout = setTimeout((): void => {
-            const $updateCartButton = $(
-                `${this._options.cartUpdateButtonSelector}`
-            );
-            $updateCartButton.trigger('click');
-
-            const $qtyInput = $(`${this._options.qtyIncrementInputSelector}`);
-
-            if (
-                !(
-                    $qtyInput.attr('aria-invalid') ||
-                    $qtyInput.attr('aria-invalid') === 'true'
-                )
-            ) {
-                $updateCartButton.prop('disabled', true);
-                $(`${this._options.loadingIndicatorSelector}`).removeClass(
-                    'cs-no-display'
-                );
-            }
+            $(`${this._options.cartUpdateButtonSelector}`).trigger('click');
         }, delay);
     }
 
@@ -103,6 +84,7 @@ export default class Cart {
                     e.keyCode === 13
                         ? 0
                         : this._options.updateCartActionTimeout;
+
                 this._triggerUpdate(delay);
             }
         );
