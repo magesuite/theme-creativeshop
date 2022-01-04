@@ -1,6 +1,9 @@
 <?php
-
-// Override due to implementation of qty-increment component instead of native input
+/**
+ * Override to adjust table:
+ * - implementation of qty-increment component instead of native input
+ * - copied back in stock modifications from magesuite-back-in-stock/view/frontend/templates/product/view/type/grouped/grouped.phtml
+ */
 
 /**
 * Grouped product data template
@@ -17,7 +20,7 @@
 <div class="table-wrapper grouped">
     <table class="table data grouped"
            id="super-product-table"
-           data-mage-init='{ "Magento_GroupedProduct/js/product-ids-resolver": {} }'>
+           data-mage-init='{"Magento_GroupedProduct/js/product-ids-resolver": {}}'>
         <caption class="table-caption"><?= $block->escapeHtml(__('Grouped product items')) ?></caption>
         <thead>
         <tr>
@@ -31,7 +34,7 @@
         <?php if ($_hasAssociatedProducts) : ?>
         <tbody>
         <?php foreach ($_associatedProducts as $_item) : ?>
-            <tr class="<?= !$_item->isSaleable() ? 'out-of-stock' : '' ?>">
+            <tr class="associated-product <?= !$_item->isSaleable() ? 'out-of-stock' : '' ?>" data-simple-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>">
                 <td data-th="<?= $block->escapeHtml(__('Product Name')) ?>" class="col item">
                     <strong class="product-item-name"><?= $block->escapeHtml($_item->getName()) ?></strong>
                     <?php if ($block->getCanShowProductPrice($_product)) : ?>
@@ -41,7 +44,7 @@
                      <?php endif; ?>
                 </td>
                 <?php if ($_product->isSaleable()) : ?>
-                <td data-th="<?= $block->escapeHtml(__('Qty')) ?>" data-simple-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>" class="col qty">
+                <td data-th="<?= $block->escapeHtml(__('Qty')) ?>" class="col qty">
                 <?php if ($_item->isSaleable()) : ?>
                     <div class="control qty">
                         <?= $this->getLayout()
