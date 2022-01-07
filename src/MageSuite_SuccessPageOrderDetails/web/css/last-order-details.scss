@@ -1,0 +1,126 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'utils/reset-list-style';
+
+$last-order-details_button-type: 'secondary';
+$last-order-details_button-icon-pos: 'no-icon';
+
+.cs-last-order-details {
+    &__button {
+        @include button(
+            $type: $last-order-details_button-type,
+            $icon_pos: $last-order-details_button-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $last-order-details_button-type,
+                $icon_pos: $last-order-details_button-icon-pos
+            );
+        }
+    }
+
+    &__section:not(:last-of-type) {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-bottom: 2rem;
+    }
+
+    &__section-title {
+        flex: 1 0 100%;
+    }
+
+    &__box {
+        flex: 1 1 50%;
+    }
+
+    &__box-title {
+        font-weight: 700;
+        margin-bottom: 1rem;
+
+        &:after {
+            content: ':';
+        }
+    }
+
+    &__modal {
+        .cs-custom-modal__close {
+            margin: 2.2rem;
+        }
+    }
+
+    &__payment-info {
+        dl,
+        dt {
+            margin-bottom: 0;
+        }
+    }
+
+    &__products {
+        @include reset-list-style();
+    }
+
+    &__product {
+        display: flex;
+        margin: 0;
+
+        &:first-of-type {
+            padding-top: 1rem;
+        }
+
+        &:not(:last-of-type) {
+            padding-bottom: 1.5rem;
+        }
+    }
+
+    &__thumbnail-wrapper {
+        flex: 0 1 10rem;
+        align-items: center;
+        justify-content: flex-start;
+
+        img {
+            flex: 0 1 auto;
+        }
+    }
+
+    &__product-details {
+        flex: 1 0 auto;
+    }
+
+    &__qty-label {
+        text-transform: uppercase;
+
+        &:after {
+            content: ':';
+        }
+    }
+
+    &__totals-table {
+        & th,
+        & td {
+            padding: 0.5rem 0;
+            font-weight: normal;
+
+            strong {
+                font-weight: normal;
+            }
+        }
+
+        td,
+        .amount {
+            text-align: right;
+        }
+
+        tr.grand_total {
+            th,
+            td {
+                padding-top: 2rem;
+
+                strong {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
