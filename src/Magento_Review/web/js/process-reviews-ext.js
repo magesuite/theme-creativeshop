@@ -35,7 +35,9 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
                                     lastPageReviewsCount
                                 );
                                 $('.cs-reviews__count').text(
-                                    $.mage.__('Show %1 out of %2 reviews')
+                                    // eslint-disable-next-line
+                                    $.mage
+                                        .__('Show %1 out of %2 reviews')
                                         .replace('%1', lastPageReviewsCount)
                                         .replace('%2', allReviewsCount)
                                 );
@@ -96,7 +98,9 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
 
                         $('#product-review-container').append(
                             '<div class="cs-reviews__count">' +
-                                $.mage.__('Show %1 out of %2 reviews')
+                                // eslint-disable-next-line
+                                $.mage
+                                    .__('Show %1 out of %2 reviews')
                                     .replace('%1', reviewsCountForPage)
                                     .replace('%2', allReviewsCount) +
                                 '</div>'
