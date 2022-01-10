@@ -53,7 +53,7 @@ export default class QtyIncrement {
     protected _$decrementBtn: JQuery;
     protected _$incrementBtn: JQuery;
 
-    protected _initialValue: number;
+    protected _initialValue: number | string;
     protected _minValue: number;
     protected _maxValue: number;
     protected _step: number;
@@ -101,7 +101,6 @@ export default class QtyIncrement {
         const step = this._$input.attr('step');
         this._step = step !== undefined ? Number(step) : this._options.step;
 
-        this._toggleButtons();
         this._attachEvents();
     }
 
@@ -109,7 +108,7 @@ export default class QtyIncrement {
      * Returns current value of the input.
      */
     public getValue(): number {
-        return Number(this._$input.val());
+        return +this._$input.val();
     }
 
     /**
@@ -128,14 +127,18 @@ export default class QtyIncrement {
      */
     public increment(): void {
         const value: number = this.getValue();
-        const newValue: number = Math.min(value + this._step, this._maxValue);
 
-        if (newValue === value) {
+        let newValue: number = Math.min(value + this._step, this._maxValue);
+
+        if (newValue > this._maxValue) {
             return;
         }
 
+        if (value === 0) {
+            newValue = this._minValue;
+        }
+
         this.setValue(newValue);
-        this._toggleButtons();
     }
 
     /**
@@ -143,36 +146,15 @@ export default class QtyIncrement {
      */
     public decrement(): void {
         const value: number = this.getValue();
-        const newValue: number = Math.max(value - this._step, this._minValue);
 
-        if (newValue === value) {
-            return;
+        let newValue: number = Math.max(value - this._step, this._minValue);
+
+        // Set 0 Qty when user click decrement with current minimum Qty value
+        if (value === this._minValue || value === 0) {
+            newValue = 0;
         }
 
         this.setValue(newValue);
-        this._toggleButtons();
-    }
-
-    /**
-     * Toggles buttons disabled state depending on current value of the input.
-     */
-    protected _toggleButtons(): void {
-        const value: number = this.getValue();
-
-        const isDecrementDisabled = value <= this._minValue;
-        const isIncrementDisabled = value >= this._maxValue;
-
-        this._$decrementBtn.toggleClass(
-            this._options.disabledButtonClassName,
-            isDecrementDisabled
-        );
-        this._$incrementBtn.toggleClass(
-            this._options.disabledButtonClassName,
-            isIncrementDisabled
-        );
-
-        this._$decrementBtn.prop('disabled', isDecrementDisabled);
-        this._$incrementBtn.prop('disabled', isIncrementDisabled);
     }
 
     protected _resetValue(): void {
@@ -188,7 +170,6 @@ export default class QtyIncrement {
         this._$decrementBtn.on('click', this.decrement.bind(this));
         this._$incrementBtn.on('click', this.increment.bind(this));
 
-        this._$input.on('input change', this._toggleButtons.bind(this));
         this._$input.on('blur', this._resetValue.bind(this));
     }
 }
