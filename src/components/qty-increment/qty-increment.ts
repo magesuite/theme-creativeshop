@@ -134,7 +134,7 @@ export default class QtyIncrement {
             return;
         }
 
-        if (value === 0) {
+        if (value === this._minValue - 1) {
             newValue = this._minValue;
         }
 
