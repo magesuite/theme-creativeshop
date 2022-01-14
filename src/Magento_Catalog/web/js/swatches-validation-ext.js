@@ -26,8 +26,6 @@ define([
                         '<div id="missing-swatches-modal"></div>'
                     );
 
-                    console.log('init modal');
-
                     var slideModal = modal(
                         {
                             type: 'slide',
