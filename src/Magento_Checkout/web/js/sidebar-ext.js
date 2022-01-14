@@ -201,7 +201,7 @@ define([
 
             _triggerRemove: function(elem) {
                 const deleteTrigger = elem
-                    .parents('.actions')
+                    .parents('.product-item')
                     .find('a.action.delete')
                     .eq(0);
 
