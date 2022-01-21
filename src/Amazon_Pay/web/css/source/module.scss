@@ -1,0 +1,164 @@
+// Styles moved from less files in Amazon module excluding tooltip
+// If your project is using Amazon_Pay, please include it in the entries
+// import 'Amazon_Pay/web/css/source/module.scss';
+
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$amazon-pay_divider-color: $color_alto !default;
+$amazon-pay_divider-text-background: $color_white !default;
+$amazon-pay_login-block-width: calc(50% - 3rem) !default;
+
+/* stylelint-disable */
+.amazon-sign-in-button-container .field-tooltip,
+.amazon-button-column-tooltip {
+    display: none !important;
+}
+
+.amazon-payment-action-container {
+    margin-bottom: 2rem;
+}
+
+.amazon-button-container {
+    max-width: none;
+    z-index: 200;
+
+    .amazon-button-column {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.amazon-divider {
+    border-bottom: 1px solid $amazon-pay_divider-color;
+    line-height: 0.1em;
+    margin: 2rem 0;
+    text-align: center;
+
+    span {
+        background: $amazon-pay_divider-text-background;
+        padding: 0 0.5rem;
+    }
+}
+
+.amazon-checkout-now {
+    border-top: 1px solid $amazon-pay_divider-color;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.revert-checkout {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.checkout-payment-method {
+    .amazon-sandbox-simulator {
+        .payment-option-title {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .amazon-sandbox-simulator-scenario {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.checkout-methods-items {
+    .amazon-minicart-container {
+        .amazon-divider {
+            display: none;
+        }
+    }
+}
+
+.amazon-widget {
+    max-width: 400px;
+    height: 228px;
+}
+
+.amazon-widget--address {
+    margin-top: 2rem;
+}
+
+.amazon-addresses {
+    margin-top: 2rem;
+
+    .amazon-address {
+        margin-bottom: 2rem;
+    }
+}
+
+.checkout-payment-method {
+    .amazon-payment-method {
+        .payment-method-title {
+            visibility: hidden; //hide the title for Amazon Pay methods only
+            padding-bottom: 0;
+        }
+    }
+}
+
+/** Prevent movement after a soft decline to other payment steps **/
+.opc-progress-bar-item._complete.lock-step {
+    cursor: none;
+    pointer-events: none;
+}
+
+.amazon-product-button .amazon-checkout-button:active {
+    pointer-events: none;
+}
+
+.amazon-validate-container {
+    .actions-toolbar {
+        margin-top: 2rem;
+
+        .secondary a {
+            margin-top: 0.7rem;
+            display: inline-block;
+        }
+    }
+}
+
+.amazon-express-title {
+    font-weight: 600;
+    font-size: 1.8rem;
+
+    + .amazon-button-container {
+        margin-top: 1rem;
+
+        @include media('<tablet') {
+            max-width: initial;
+        }
+    }
+}
+
+.block-amazon-login {
+    @include media('>=tablet') {
+        margin-top: 4rem;
+        width: 50%;
+        padding-right: 2rem;
+    }
+
+    .block-title,
+    .block-content {
+        .#{$ns}container--create-account-page & {
+            max-width: 45rem;
+            width: auto;
+        }
+
+        .#{$ns}container--login-page & {
+            width: $amazon-pay_login-block-width;
+        }
+    }
+}
+
+.block-amazon-validate {
+    .block-title,
+    .block-content {
+        max-width: 45rem;
+        width: auto;
+    }
+}
+/* stylelint-enable */
