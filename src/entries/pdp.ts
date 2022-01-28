@@ -60,6 +60,9 @@ import 'components/pwa-notification';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 
+// Carousels (navigation/pagination CSS)
+import 'components/_slider';
+
 import 'components/non-critical';
 
 // PDP specific
@@ -86,3 +89,4 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 // import 'components/ie11';
 // import 'components/page-scroll';
 // import 'components/product-variants';
+// import 'components/product-tile-list';

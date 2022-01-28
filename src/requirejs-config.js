@@ -1,7 +1,6 @@
 var config = {
     deps: ['js/breakpoint'],
     paths: {
-        Swiper: 'js/vendor/swiper',
         dropdown: 'js/vendor/bootstrap-dropdown',
         selectpicker: 'js/vendor/bootstrap-select',
         vendors: 'vendors',
@@ -15,7 +14,6 @@ var config = {
         ccParagraph: 'js/paragraph',
         ccProductsCarousel: 'js/products-carousel',
         ccProductFinder: 'js/product-finder',
-        mgsGridLayout: 'js/grid-layout',
         mgsSalebarWidget: 'js/salebar-widget',
     },
     shim: {

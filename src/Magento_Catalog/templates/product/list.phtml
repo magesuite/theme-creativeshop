@@ -14,11 +14,11 @@
 /**
  * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
-?>
-
-<?php
-    $productCollection = $block->getLoadedProductCollection();
-    $productCollection->addMediaGalleryData();
+// @codingStandardsIgnoreFile
+$productCollection = $block->getLoadedProductCollection();
+$productCollection->addMediaGalleryData();
+$teasersHelper = $block->getTeasersHelperPath() ? $this->helper($block->getTeasersHelperPath()) : null;
+$teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\TeaserCss');
 ?>
 
 <?php if (!$productCollection->count()): ?>
@@ -35,40 +35,40 @@
     <?= $block->getChildHtml('state'); ?>
 
     <?php
-        if ($block->getMode() == 'grid') {
-            $viewMode = 'grid';
-            $viewModeClass = $block->getGridComponentClass();
-            $viewModeAdditionalClass = $block->hasAdditionalGridComponentClass() ? ' ' .$block->getAdditionalGridComponentClass() : '';
-            $viewModeListClass = $block->getGridComponentListClass();
-            $viewModeListItemClass = $block->getGridComponentListItemClass();
-            $image = 'category_page_grid';
-            $image2x = 'category_page_grid_x2';
-        } else {
-            $viewMode = 'list';
-            $viewModeClass = $block->getListComponentClass();
-            $viewModeAdditionalClass = $block->hasAdditionalListComponentClass() ? ' ' .$block->getAdditionalListComponentClass() : '';
-            $viewModeListClass = $block->getListComponentListClass();
-            $viewModeListItemClass = $block->getListComponentListItemClass();
-            $image = 'category_page_list';
-        }
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $viewModeClass = $block->getGridComponentClass();
+        $viewModeAdditionalClass = $block->hasAdditionalGridComponentClass() ? ' ' .$block->getAdditionalGridComponentClass() : '';
+        $viewModeListClass = $block->getGridComponentListClass();
+        $viewModeListItemClass = $block->getGridComponentListItemClass();
+        $image = 'category_page_grid';
+        $image2x = 'category_page_grid_x2';
+    } else {
+        $viewMode = 'list';
+        $viewModeClass = $block->getListComponentClass();
+        $viewModeAdditionalClass = $block->hasAdditionalListComponentClass() ? ' ' .$block->getAdditionalListComponentClass() : '';
+        $viewModeListClass = $block->getListComponentListClass();
+        $viewModeListItemClass = $block->getListComponentListItemClass();
+        $image = 'category_page_list';
+    }
 
-        $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
-        $iterator = 0;
-        $popGridLayoutSettings = json_encode($block->getVar('grid_layout/pop/js') ?: '{}');
+    $pageLayout = $this->helper(\MageSuite\ThemeHelpers\Helper\PageLayout::class)->getPageLayout();
+    $iterator = 0;
 
-        if ($pageLayout != '1column') {
-            $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
-        }
+    if ($pageLayout != '1column') {
+        $viewModeClass .= ' ' . $viewModeClass . '--with-sidebar';
+    }
     ?>
 
     <?php if($viewMode == 'grid'): ?>
+        <?php $teasersSetRandId = $teaserCssHelper->getUniqueComponentId(); ?>
         <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
         <script defer-ignore></script>
     <?php endif ?>
 
     <div class="products wrapper <?= $viewMode ?> products-<?= $viewMode ?> cs-page-category__products-wrapper">
 
-        <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>"<?php if($viewMode == 'grid'): ?> data-mage-init='{ "mgsGridLayout": <?= $popGridLayoutSettings ?> }<?php endif ?>'>
+        <div class="<?= $viewModeClass . $viewModeAdditionalClass ?>">
 
             <?= $block->getChildHtml('hotspot.before.list') ?>
 
@@ -86,11 +86,20 @@
                     </li>
                     <?php $iterator++; ?>
                 <?php endforeach; ?>
-
-                <?php if($viewMode == 'grid'): ?>
-                    <?= $block->getChildHtml('hotspot.inside.list') ?>
+                <?php if($viewMode == 'grid' && $teasers = $block->getChildBlock('category.teasers')): ?>
+                    <?= $teasers
+                        ->setTeasersSetId($teasersSetRandId)
+                        ->toHtml(); ?>
                 <?php endif; ?>
             </ol>
+            <?php if($viewMode == 'grid' && $teasersCss = $block->getChildBlock('grid.teasers.css')): ?>
+                <?= $teasersCss
+                    ->setTeasersSetId($teasersSetRandId)
+                    ->setProductsCount($productCollection->count())
+                    ->setIsProductsGrid(false)
+                    ->setUseTeasers(true)
+                    ->toHtml(); ?>
+            <?php endif; ?>
 
             <?= $block->getChildHtml('hotspot.after.list') ?>
         </div>

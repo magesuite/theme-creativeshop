@@ -2,9 +2,6 @@ import * as $ from 'jquery';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 import offcanvas from 'components/offcanvas/offcanvas';
-import ProductsCarousel, {
-    ProductsCarouselOptions,
-} from 'components/products-carousel/products-carousel';
 import requireAsync from 'utils/require-async';
 import 'mage/translate';
 
@@ -95,7 +92,7 @@ interface IProductsCarouselOptions {
      * Defines options for product carousel initialization
      * @type {object}
      */
-    options?: ProductsCarouselOptions;
+    options?: any;
 
     /**
      * Defines relation type for products to be fetched for ProductsCarousel
@@ -214,6 +211,12 @@ export default class Minicart {
                 redererEndpoint: 'products_renderer/related/carousel',
                 btnClass: 'cs-minicart__button-carousel',
                 btnTextClass: 'cs-minicart__button-carousel-span',
+                columnsConfig: () => {
+                    return deepGet(
+                        viewXml,
+                        'vars.MageSuite_ContentConstructor.columns.multiple-columns'
+                    );
+                },
             },
             productsCarouselOptions
         );
@@ -378,12 +381,13 @@ export default class Minicart {
 
                             $dataTarget.empty();
                             $dataTarget.html(responseCarouselHTML);
+                            $dataTarget.trigger('contentUpdated');
 
                             // Initializes the product carousel for rendered html
-                            new ProductsCarousel(
-                                this._$minicart.find('.cs-products-carousel'),
-                                this._productsCarouselOptions.options
-                            );
+                            // new ProductsCarousel(
+                            //     this._$minicart.find('.cs-products-carousel'),
+                            //     this._productsCarouselOptions.options
+                            // );
 
                             requireAsync([
                                 'mage/cookies',

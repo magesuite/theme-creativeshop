@@ -1,20 +1,11 @@
 @import 'config/variables';
 @import 'config/breakpoints';
 @import 'vendors/include-media';
-@import 'utils/aspect-ratio';
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
 @import 'utils/component-spacing';
-@import 'components/teaser/mixins';
 
-$products-carousel_tile-ratio-width: $tile_aspect-ratio-width !default;
-$products-carousel_tile-ratio-height: $tile_aspect-ratio-height !default;
-
-$products-carousel_hide-nav-buttons-on-mobile: false !default;
-$products-carousel_nav-button-position-top: calc(
-    50% - 1.5rem
-) !default; // 1.5rem recompenses half of height of the bullet-pagination
-
-$teaser_hide-nav-buttons-on-mobile: $products-carousel_hide-nav-buttons-on-mobile;
-$teaser_nav-button-position-top: $products-carousel_nav-button-position-top;
+@import 'components/_slider/mixin';
 
 $products-carousel_item-per-row: deep-get(
     $view-xml,
@@ -23,98 +14,25 @@ $products-carousel_item-per-row: deep-get(
     columns,
     one-column
 ) !default;
+$products-carousel_mobile-gap: 0.8rem !default;
+$products-carousel_desktop-gap: 0.8rem !default;
+$products-carousel_next-slide-visible: 0px !default; // it will be this value + page-gutter
 
 .#{$ns}products-carousel {
     $root: &;
 
-    @include teaser();
     @include component-spacing();
 
-    &--list {
-        #{$root}__nav,
-        #{$root}__pagination,
-        #{$root}__scrollbar {
-            display: none !important;
-        }
-    }
+    @include slider(
+        $columns-config: $products-carousel_item-per-row,
+        $m-gap: $products-carousel_mobile-gap,
+        $d-gap: $products-carousel_desktop-gap,
+        $next-visible: $products-carousel_next-slide-visible,
+        $root: $root
+    );
 
     &__wrapper {
-        overflow: visible;
-
-        @include media('>=laptop') {
-            &:hover {
-                z-index: 5;
-            }
-        }
-    }
-
-    &__slides {
-        #{$root}--list & {
-            flex-wrap: wrap;
-        }
-    }
-
-    &__slide {
-        #{$root}:not(.cs-products-carousel--list) & {
-            opacity: 0;
-            backface-visibility: hidden;
-            overflow: hidden;
-            transition: transform 0.15s linear, opacity 0.25s linear 0.1s;
-
-            &:not(#{$root}__slide--in-viewport) {
-                transform: scale(0);
-            }
-
-            &--in-viewport {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            &:hover {
-                @include media('>=laptop') {
-                    z-index: 5;
-                    overflow: visible;
-                }
-            }
-        }
-    }
-
-    &__product-tile {
-        width: 100%;
-
-        #{$root}:not(.cs-products-carousel--list) & {
-            @include aspect-ratio(
-                $width: $products-carousel_tile-ratio-width,
-                $height: $products-carousel_tile-ratio-height,
-                $childClass: #{$ns}product-tile,
-                $autoposition: true
-            );
-        }
-    }
-
-    &__scrollbar {
-        height: 0.5rem;
-    }
-
-    @supports (display: grid) and (grid-auto-flow: row) {
-        &__product-tile {
-            #{$root}:not(.cs-products-carousel--list) & {
-                @include aspect-ratio-reset(
-                    $childClass: #{$ns}product-tile,
-                    $autoposition: true
-                );
-            }
-        }
-    }
-
-    // Prevent CLS effects (jumping content), when products carousel is not fully loaded & initialized yet
-    &:not(#{$root}--ready):not(#{$root}--list) {
-        #{$root}__slide {
-            @each $breakpoint, $itemsPerRow in $products-carousel_item-per-row {
-                @include media('>=#{$breakpoint}') {
-                    width: calc(100% / #{$itemsPerRow});
-                }
-            }
-        }
+        position: relative;
+        z-index: 2;
     }
 }

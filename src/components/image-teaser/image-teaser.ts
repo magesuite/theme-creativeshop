@@ -1,341 +1,224 @@
-import * as $ from 'jquery';
-
-import csTeaser from 'components/teaser/teaser';
-import ProportionalScaler from 'components/proportional-scaler/proportional-scaler';
-import VideoPlayer from 'components/video-player/video-player';
+import ISliderNavigation from 'components/_slider/navigation/interface';
+import ISliderPagination from 'components/_slider/pagination/interface';
+import ISliderAutorotation from 'components/_slider/autorotation/interface';
 
 /**
  * component options interface.
  */
-interface ImageTeaserOptions {
+export interface IImageTeaser {
     /**
-     * Classname of image teaser
-     * Default: 'cs-image-teaser'
-     * @type {string}
+     * Informs component about overall items count in slider
+     * @required
      */
-    teaserName?: string;
-
+    itemsCount: number;
     /**
-     * Space between slides
-     * Default: 8
-     * @type {number}
+     * Informs component about amount of items per view
+     * @required
      */
-    spaceBetween?: number;
-
+    itemsPerView: number;
     /**
-     * Slides visible at one time when carousel mode is enabled
-     * Default: 1
-     * @type {number}
+     * Decides if pagination sub-module should be used (module is not even fetched if the value is falsy)
+     * @default false
      */
-    slidesPerView?: number;
-
+    usePagination?: boolean;
     /**
-     * Defines for how many slides carousel should be moved after prev/next click
-     * Default: same as slidesPerView
-     * @type {number}
+     * Object containing navigation settings
      */
-    slidesPerGroup?: number;
-
+    navigationOptions: ISliderNavigation;
     /**
-     * Defines if teaser should be always a slider
-     * Default: false
-     * @type {boolean}
+     * Object containing pagination settings
      */
-    isSlider?: boolean;
-
+    paginationOptions: ISliderPagination;
     /**
-     * Defines if slides should be centered
-     * Default: false
-     * @type {boolean}
+     * Selector of slides wrapper (scrollable element)
+     * @default '.cs-image-teaser__slides'
      */
-    centeredSlides?: boolean;
-
+    slidesWrapperSelector: string;
     /**
-     * Defines if teaser should be a carousel until given breakpoint
-     * Default: false
-     * @type {boolean}
+     * Selector of single slide
+     * @default '.cs-image-teaser__slide'
      */
-    isSliderMobile?: boolean;
-
+    slideSelector: string;
     /**
-     * Tells if videos shall be handled
-     * @type {boolean}
-     * @default true
+     * Defines if autorotate should be enabled for this instance
+     * @default false
      */
-    allowVideos?: boolean;
-
+    useAutorotation?: boolean;
     /**
-     * Defines breakpoint, where carousel should be destroyed and teaser shall display as standard image teaser
-     * Default: breakpoint.tablet
-     * @type {number | string}
+     * Decides about autorotate (see autorotate interface)
      */
-    carouselBreakpoint?: number | string;
-
+    autorotationOptions: ISliderAutorotation;
     /**
-     * Defines carousel behaviour depending on given fallback
-     * Default: {
-     *     breakpoint.tablet - 1
-     * }
-     * @type {Object}
+     * Tells if configuration is set to "use_whole_screen"
      */
-    breakpoints?: any;
-
-    /**
-     * Defines if ProportionalScaler shall be initialized.
-     * @type {boolean}
-     */
-    scaleFontsDynamically?: boolean;
+    useWholeScreen: boolean;
 }
 
 export default class ImageTeaser {
-    public _options: ImageTeaserOptions;
-    public _videoPlayer: any;
-    protected _$container: JQuery;
-    protected _swiperDefaults: object;
-    protected _optionsOverrides: any;
-    protected _instance: any;
-    protected _$videosTriggers: JQuery;
-    protected _isTeaserInitialised: any = false;
+    public options: IImageTeaser = {
+        usePagination: false,
+        slidesWrapperSelector: '.cs-image-teaser__slides',
+        slideSelector: '.cs-image-teaser__slide',
+        paginationOptions: {
+            fractionBreakpoint: 10,
+            fractionTemplate: '<span class="current">%c</span> / %a',
+        },
+        navigationOptions: {},
+        itemsCount: 1,
+        itemsPerView: 1,
+        useAutorotation: false,
+        autorotationOptions: {
+            delay: 6000,
+        },
+        useWholeScreen: false,
+    };
+    public currentItemsPerView: number;
+    public navigation: any;
+    public pagination: any;
+    public autorotation: any;
+    protected _$it: JQuery<HTMLElement>;
+    protected _isTablet: MediaQueryList = window.matchMedia(`
+        (min-width: ${window.breakpoint.phoneLg})
+        and
+        (max-width: ${window.breakpoint.laptop - 1})
+    `);
 
     /**
      * Creates new ImageTeaser component with optional settings.
      * @param  {ImageTeaser} options  Optional settings object.
      */
-    public constructor($element: JQuery, options?: ImageTeaserOptions) {
-        const defaultOptions: any = {
-            teaserName: 'cs-image-teaser',
-            allowVideos: true,
-            videoModalClass: 'cs-image-teaser__modal',
-            scaleFontsDynamically: true,
+    public constructor($element: JQuery<HTMLElement>, options?: IImageTeaser) {
+        this.options = { ...this.options, ...options };
+        this._$it = $element;
+        this.currentItemsPerView = this._getCurrentItemsPerView();
+
+        this._initNavigation();
+
+        if (this.options.usePagination) {
+            this._initPagination();
+        }
+
+        this._watchBreakpointChanges();
+    }
+
+    /**
+     * Calculates current items per view option. This setting comes from CC settings (1-in-row, 3-in-row etc...)
+     * @param breakpoint {number} optional breakpoint (screen-width in px) for which calculation should happen. If not passed, fallbacks to current window width.
+     * @return number of items per view for given breakpoint
+     */
+    protected _getCurrentItemsPerView(
+        breakpoint: number = window.innerWidth
+    ): number {
+        return this._isTablet?.matches && +this.options.itemsPerView === 4
+            ? 2
+            : breakpoint >= window.breakpoint.tablet
+            ? this.options.itemsPerView
+            : 1;
+    }
+
+    /**
+     * ASYNC. Collects all Navigation Submodule options, imports module asynchronously and initializes with given settings.
+     * @return Promise
+     */
+    protected async _initNavigation(): Promise<any> {
+        const navigationOptions: ISliderNavigation = {
+            ...{
+                rootComponentNode: this._$it[0],
+                collectionSize: this.options.itemsCount,
+                itemsPerView: this.currentItemsPerView,
+                slidesWrapperSelector: this.options.slidesWrapperSelector,
+                slideSelector: this.options.slideSelector,
+                useWholeScreen: this.options.useWholeScreen,
+            },
+            ...this.options.navigationOptions,
         };
 
-        this._options = $.extend(defaultOptions, options);
-        this._$container = $element;
+        const { default: SliderNavigation } = await import(
+            'components/_slider/navigation/navigation'
+        );
+        this.navigation = new SliderNavigation(navigationOptions);
 
-        const maxMobileWidth: number = breakpoint.tablet - 1;
-        this._swiperDefaults = {
-            spaceBetween: 0,
-            slidesPerView:
-                parseInt(this._$container.data('items-per-view'), 10) || 1,
-            slidesPerGroup:
-                parseInt(this._$container.data('items-per-view'), 10) || 1,
-            isSlider: Boolean(this._$container.data('is-slider')) || false,
-            isSliderMobile:
-                Boolean(this._$container.data('mobile-is-slider')) || false,
-            carouselBreakpoint: breakpoint.tablet,
-            loop:
-                parseInt(this._$container.data('items-per-view'), 10) >=
-                this._$container.find(`.${this._options.teaserName}__slide`)
-                    .length
-                    ? false
-                    : true,
-            centeredSlides: false,
-            calculateSlides: false,
-            breakpoints: {
-                [maxMobileWidth]: {
-                    slidesPerView:
-                        parseInt(
-                            this._$container.data('mobile-items-per-view'),
-                            10
-                        ) ||
-                        parseInt(this._$container.data('items-per-view'), 10) ||
-                        1,
-                    slidesPerGroup:
-                        parseInt(
-                            this._$container.data('mobile-items-per-view'),
-                            10
-                        ) ||
-                        parseInt(this._$container.data('items-per-view'), 10) ||
-                        1,
-                },
+        if (
+            this.options.useAutorotation &&
+            window.matchMedia('(hover:hover)').matches &&
+            this._$it[0].offsetParent != null
+        ) {
+            this._initAutorotation();
+        }
+    }
+
+    /**
+     * ASYNC. Collects all Pagination Submodule options, imports module asynchronously and initializes with given settings.
+     * @return Promise
+     */
+    protected async _initPagination(): Promise<any> {
+        const paginationOptions: ISliderPagination = {
+            ...{
+                rootComponentNode: this._$it[0],
+                collectionSize: this.options.itemsCount,
+                itemsPerView: this.currentItemsPerView,
+                slidesWrapperSelector: this.options.slidesWrapperSelector,
+                slideSelector: this.options.slideSelector,
             },
-            preloadImages: false,
-            lazy: {
-                loadPrevNext: true,
-                loadOnTransitionStart: true,
-            },
-            on: {
-                paginationRender: function() {
-                    const pagination = this.pagination;
-                    $(pagination.el).toggle(pagination.bullets.length > 1);
-                },
-            },
+            ...this.options.paginationOptions,
         };
 
-        this._options = $.extend(this._swiperDefaults, this._options);
-        this._optionsOverrides = this._getDataAttrOverrideOptions();
-        if (this._optionsOverrides) {
-            this._options = $.extend(this._options, this._optionsOverrides);
-        }
-
-        if (this._options.isSlider) {
-            if (
-                this._options.isSliderMobile ||
-                $(window).width() >=
-                    parseInt(this._options.carouselBreakpoint, 10)
-            ) {
-                this._initTeaser(this._$container);
-                this._isTeaserInitialised = true;
-            }
-        }
-
-        this._toggleTeaser();
-        $(window).on('resize', (): void => {
-            this._toggleTeaser();
-        });
-
-        if (this._options.allowVideos) {
-            this._videoPlayer = new VideoPlayer();
-        }
-
-        if (this._options.scaleFontsDynamically) {
-            this._initializeProportionalSlideScaling();
-        } else {
-            this._onImageReady();
-        }
-    }
-
-    public getInstance(): any {
-        return this._instance;
-    }
-
-    protected _getDataAttrOverrideOptions(): any {
-        let result: any;
-        const dataAttrCfg: any = this._$container.data('js-configuration');
-
-        if (dataAttrCfg) {
-            try {
-                result = JSON.parse(JSON.stringify(dataAttrCfg));
-            } catch (err) {
-                /* tslint:disable */
-                console.warn(
-                    `Could not parse settings from data-attribute: ${err}`
-                );
-                /* tslint:enable */
-            }
-        }
-
-        return result;
+        const { default: SliderPagination } = await import(
+            'components/_slider/pagination/pagination'
+        );
+        this.pagination = new SliderPagination(paginationOptions);
     }
 
     /**
-     * Initializes teaser
+     * ASYNC. Collects all Autorotation Submodule options, imports module asynchronously and initializes with given settings.
+     * @return Promise
      */
-    protected _initTeaser($element: JQuery): void {
-        this._isTeaserInitialised = true;
-        this._instance = new csTeaser($element, this._options);
+    protected async _initAutorotation(): Promise<any> {
+        const autorotationOptions: ISliderNavigation = {
+            ...{
+                collectionSize: this.options.itemsCount,
+                itemsPerView: this.currentItemsPerView,
+                navInstance: this.navigation,
+                pauseNode: this._$it[0].querySelector(
+                    '.cs-image-teaser__slides-wrapper'
+                ),
+            },
+            ...this.options.autorotationOptions,
+        };
+
+        const { default: SliderAutorotation } = await import(
+            'components/_slider/autorotation/autorotation'
+        );
+        this.autorotation = new SliderAutorotation(autorotationOptions);
     }
 
     /**
-     * Destroys teaser
+     * Listens to 'breakpointChange' event. When emitted, checks if 'currentItemsPerView' should be updated and updates if so. Afterwards it calls Navigation and Pagination API to set new items per view value and update those modules.
      */
-    protected _destroyTeaser(): void {
-        this._isTeaserInitialised = false;
-        this._instance.destroy();
-        this._instance = undefined;
-    }
-
-    /**
-     * Manipulates teaser's classes and style attributes
-     */
-    protected _toggleTeaserClasses(): void {
-        if (this._isTeaserInitialised) {
-            this._$container
-                .removeClass(`${this._options.teaserName}--slider`)
-                .find(`.${this._options.teaserName}__slides`)
-                .removeAttr('style')
-                .find(`.${this._options.teaserName}__slide`)
-                .removeAttr('style');
-        } else if (!this._isTeaserInitialised) {
-            this._$container.addClass(`${this._options.teaserName}--slider`);
-        }
-    }
-
-    /**
-     * Manipulates the teaser depending on slider setting (mobile or desktop)
-     * and current window width.
-     */
-    protected _toggleTeaser(): void {
-        const isSliderMobileOnly =
-            this._options.isSliderMobile && !this._options.isSlider;
-        const isSliderDesktopOnly =
-            !this._options.isSliderMobile && this._options.isSlider;
-        const isWindowMobile =
-            $(window).width() < parseInt(this._options.carouselBreakpoint, 10);
-
-        if (isSliderMobileOnly) {
-            if (isWindowMobile) {
-                if (!this._instance) {
-                    this._toggleTeaserClasses();
-                    this._initTeaser(this._$container);
-                }
-            } else {
-                if (this._instance) {
-                    this._toggleTeaserClasses();
-                    this._instance.destroy();
-                }
-            }
-        }
-        if (isSliderDesktopOnly) {
-            if (isWindowMobile) {
-                if (this._instance) {
-                    this._toggleTeaserClasses();
-                    this._instance.destroy();
-                }
-            } else {
-                if (!this._instance) {
-                    this._toggleTeaserClasses();
-                    this._initTeaser(this._$container);
-                }
-            }
-        }
-    }
-
-    protected _initializeProportionalSlideScaling(): void {
-        const $container = this._$container;
-
-        this._$container
-            .find(`.${this._options.teaserName}__slide`)
-            .each(function(): void {
-                const $slide: JQuery<HTMLElement> = $(this);
-
-                const textScaler = new ProportionalScaler($slide, {
-                    scalableElementSelector: '.cs-image-teaser__text-content',
-                });
-
-                const badgeScaler = new ProportionalScaler($slide, {
-                    scalableElementSelector: '.cs-image-teaser__badge',
-                });
-
-                $.when(
-                    textScaler._initScaling(),
-                    badgeScaler._initScaling()
-                ).done(() => {
-                    $slide.addClass('ready');
-
-                    $container.on('teaserUpdated', () =>
-                        setTimeout(() => {
-                            textScaler._scale();
-                            badgeScaler._scale();
-                        })
+    protected _watchBreakpointChanges(): void {
+        document.addEventListener(
+            'breakpointChange',
+            (e: CustomEvent): void => {
+                if (
+                    this.currentItemsPerView !==
+                    this._getCurrentItemsPerView(e.detail?.breakpoint)
+                ) {
+                    this.currentItemsPerView = this._getCurrentItemsPerView(
+                        e.detail?.breakpoint
                     );
-                });
-            });
-    }
-
-    protected _onImageReady(): void {
-        this._$container
-            .find(`.${this._options.teaserName}__slide`)
-            .each(function(): void {
-                const $slide: JQuery<HTMLElement> = $(this);
-
-                if ($slide.hasClass('.lazyload')) {
-                    $slide.on('lazyloaded', (): void => {
-                        $slide.addClass('ready');
-                    });
-                } else {
-                    $slide.addClass('ready');
+                    this.navigation?.setItemsPerView(this.currentItemsPerView);
+                    this.pagination?.setItemsPerView(this.currentItemsPerView);
                 }
-            });
+
+                if (
+                    this.options.useAutorotation &&
+                    window.matchMedia('(hover:hover)').matches &&
+                    this._$it[0].offsetParent != null &&
+                    !this.autorotation
+                ) {
+                    this._initAutorotation();
+                }
+            }
+        );
     }
 }

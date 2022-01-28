@@ -26,3 +26,6 @@ import 'components/offcanvas';
 import 'components/topbar';
 import 'components/visually-hidden';
 import 'components/critical';
+
+// Carousels (navigation/pagination CSS)
+import 'components/_slider';

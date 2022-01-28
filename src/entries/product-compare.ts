@@ -48,3 +48,4 @@ import 'components/non-critical';
 import 'components/product-compare';
 
 // import 'components/ie11';
+// import 'components/product-tile';

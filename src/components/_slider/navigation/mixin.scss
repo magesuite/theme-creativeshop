@@ -1,0 +1,68 @@
+@import 'config/variables';
+@import '../hooks';
+
+$trigger_width: 4.4rem !default;
+$trigger_height: 5.2rem !default;
+$trigger_edge-offset: 1.5rem !default;
+$trigger_border: 0 !default;
+$trigger_radius: $border-radius_base !default;
+$trigger_background: $color_background-200 !default;
+$trigger_shadow: 1px 1px 2px 0 rgba($color_black, 0.25) !default;
+$trigger_shadow--hover: 1px 1px 10px 0 rgba($color_black, 0.25) !default;
+$trigger_color: $color_primary-500 !default; // icon color inherits
+$trigger--disabled-opacity: 0.25 !default;
+$trigger--disabled-grayout: true !default;
+
+$trigger-icon_width: 1.4rem !default;
+$trigger-icon_height: 2.7rem !default;
+
+@mixin slider-navigation() {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $trigger_width;
+    height: $trigger_height;
+    border: $trigger_border;
+    border-radius: $trigger_radius;
+    background: $trigger_background;
+    box-shadow: $trigger_shadow;
+    padding: 0;
+    color: $trigger_color;
+    cursor: pointer;
+    transition: all $transition-default-time;
+
+    &--prev {
+        left: $trigger_edge-offset;
+    }
+
+    &--next {
+        right: $trigger_edge-offset;
+    }
+
+    &[disabled] {
+        opacity: $trigger--disabled-opacity;
+        cursor: not-allowed;
+
+        @if ($trigger--disabled-grayout == true) {
+            svg {
+                filter: grayscale(1);
+            }
+        }
+    }
+
+    &:not([disabled]):hover {
+        box-shadow: $trigger_shadow--hover;
+    }
+
+    &__icon {
+        width: $trigger-icon_width;
+        height: $trigger-icon_height;
+        fill: currentColor;
+    }
+
+    @include slider-navigation-hook();
+}

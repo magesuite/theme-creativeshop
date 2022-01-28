@@ -58,6 +58,9 @@ import 'components/ie11-modal';
 import 'components/pwa-notification';
 import 'components/google-recaptcha';
 
+// Carousels (navigation/pagination CSS)
+import 'components/_slider';
+
 import 'components/non-critical';
 
 // Contact page specific
@@ -73,3 +76,4 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 // import 'components/tile-gallery';
 // import 'components/reorder-banner';
 // import 'components/ie11';
+// import 'components/product-tile-list';

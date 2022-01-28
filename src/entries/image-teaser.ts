@@ -1,6 +1,5 @@
-import * as $ from 'jquery';
-import { ImageTeaser } from 'components/image-teaser';
+import { ISlider, ImageTeaser } from 'components/image-teaser';
 
-export function ccImageTeaser(config, element) {
-    new ImageTeaser($(element), config);
+export function ccImageTeaser(config: ISlider, element: HTMLElement) {
+    new ImageTeaser(element, config);
 }
