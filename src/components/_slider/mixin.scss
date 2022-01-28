@@ -1,0 +1,270 @@
+@import 'config/variables';
+@import 'utils/reset-list-style';
+@import 'utils/strip-unit';
+@import './hooks';
+
+// Calculate container breakpoint + 2 * edge gutter and transform to 'em' unit for media query
+$containerBreakpointPx: (
+        strip-unit($page_max-width) + 2 * strip-unit($page_edge-gutter)
+    ) * 10;
+$containerBreakpointEm: $containerBreakpointPx / 16 * 1em;
+$toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
+
+@mixin it-grid($m-gap: 0.8rem, $d-gap: 0.8rem) {
+    $root: &;
+    --gap: #{$m-gap};
+
+    &:not(.#{$ns}container--use-whole-width) & {
+        &#{$root}--container-width {
+            #{$root}__slides-wrapper {
+                max-width: $page_max-width;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+
+    &__slides {
+        --columns: 1;
+
+        display: grid;
+        gap: var(--gap);
+        grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+        margin: 0;
+        padding: 0;
+
+        #{$root}--items-in-row-mobile-2 & {
+            --columns: 2;
+        }
+    }
+
+    &__slide {
+        display: inline-block;
+        margin: 0;
+    }
+
+    &__link {
+        outline-offset: calc(var(--gap) / 2 + 2);
+
+        &:focus {
+            outline-offset: 0.4rem;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition: outline-offset 0.25s ease;
+        }
+    }
+
+    &__picture {
+        display: block;
+        user-select: none;
+        overflow: hidden;
+        width: 100%;
+        height: auto;
+
+        /* stylelint-disable -- stylelint doesn't know this media query yet. */
+        @media (prefers-reduced-data: reduce) {
+            display: none;
+        }
+        /* stylelint-enable */
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: $color_background-500;
+    }
+
+    @include media('>=tablet') {
+        --gap: #{$d-gap};
+
+        @for $i from 2 through 8 {
+            &--items-in-row-#{$i} #{$root}__slides {
+                --columns: #{$i};
+            }
+        }
+    }
+
+    @include media('>=tablet', '<laptop') {
+        &--items-in-row-4:not(#{$root}--icon) #{$root}__slides {
+            --columns: 2;
+        }
+    }
+
+    @include it-grid-hook($m-gap, $d-gap);
+}
+
+@mixin slider-essentials($root: $root) {
+    #{$root}__slides-wrapper {
+        position: relative;
+    }
+
+    #{$root}__slides {
+        display: flex;
+        flex: 0 0 100%;
+        gap: 0;
+        flex-wrap: nowrap;
+        padding: var(--gap) 0;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+
+        @supports not (scroll-behavior: smooth) {
+            scroll-snap-type: none !important;
+        }
+    }
+
+    #{$root}__slide {
+        display: inline-block;
+        flex: 0 0 var(--size);
+        margin-right: var(--gap);
+        scroll-snap-align: start;
+        min-width: 0;
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+    }
+
+    #{$root}__image {
+        display: block;
+    }
+
+    @include slider-essentials-hook($root);
+}
+
+@mixin slider(
+    $columns-config: 'class-based',
+    $m-gap: 0.8rem,
+    $d-gap: 0.8rem,
+    $next-visible: 3.2rem,
+    $root: '&'
+) {
+    --gap: #{$m-gap};
+    --base-size: calc(100% - #{$next-visible});
+
+    @media (min-width: #{$containerBreakpointEm}) {
+        &#{$root}--container-width {
+            --base-size: calc(#{$page_max-width} - #{$next-visible});
+        }
+
+        &#{$root}--use-whole-screen:not(#{$root}--full-width-slider) {
+            --base-size: 100%;
+
+            max-width: 100%;
+
+            #{$root}__slides {
+                scroll-snap-type: x proximity;
+                padding-left: calc((100% - #{$page_max-width}) / 2);
+                padding-right: calc((100% - #{$page_max-width}) / 2);
+                scroll-padding-left: calc((100% - #{$page_max-width}) / 2);
+                scroll-padding-right: calc((100% - #{$page_max-width}) / 2);
+                scroll-margin-left: calc((100vw - #{$page_max-width}) / 2);
+                scroll-margin-right: calc((100vw - #{$page_max-width}) / 2);
+            }
+        }
+    }
+
+    @media (hover: hover) and (min-width: #{$containerBreakpointEm}) {
+        &#{$root}--container-width {
+            --base-size: #{$page_max-width};
+        }
+    }
+
+    --size: var(--base-size);
+
+    @if $columns-config == 'class-based' {
+        @include media('>=tablet') {
+            --gap: #{$d-gap};
+
+            @for $i from 2 through 8 {
+                &#{$root}--items-in-row-#{$i} {
+                    --size: calc(
+                        var(--base-size) /
+                            #{$i} -
+                            ((#{$i - 1} * var(--gap)) / #{$i})
+                    );
+                }
+            }
+        }
+
+        @include media('>=tablet', '<laptop') {
+            &#{$root}--items-in-row-4:not(#{$root}--icon) {
+                --size: calc(var(--base-size) / 2 - (1 * var(--gap) / 2));
+            }
+        }
+    } @else {
+        $baseItemsPerRow: map-get($columns-config, 'phone');
+        --size: calc(
+            var(--base-size) /
+                #{$baseItemsPerRow} -
+                #{$baseItemsPerRow -
+                1} *
+                var(--gap) /
+                #{$baseItemsPerRow}
+        );
+
+        @each $breakpoint, $itemsPerRow in $columns-config {
+            @include media('>=#{$breakpoint}') {
+                --size: calc(
+                    var(--base-size) / #{$itemsPerRow} - ((
+                                    #{$itemsPerRow - 1} * var(--gap)
+                                ) / #{$itemsPerRow})
+                );
+            }
+        }
+    }
+
+    /*  container padding fix  */
+    @media (max-width: #{$toContainerBreakpointEm}) {
+        &#{$root}--container-width {
+            #{$root}__slides {
+                padding-left: $page_edge-gutter;
+                padding-right: $page_edge-gutter;
+                scroll-padding-left: $page_edge-gutter;
+                scroll-padding-right: $page_edge-gutter;
+            }
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        #{$root}__slides {
+            scroll-behavior: smooth;
+        }
+    }
+
+    @include slider-essentials($root);
+
+    @include slider-hook($columns-config, $m-gap, $d-gap, $next-visible, $root);
+}
+
+@mixin slider-mobile($m-gap: 0.8rem, $next-visible: 3.2rem, $root: '&') {
+    --gap: #{$m-gap};
+    --base-size: calc(100% - #{$next-visible});
+    --size: var(--base-size);
+
+    &#{$root}--container-width {
+        margin-left: -#{$page_edge-gutter};
+        margin-right: -#{$page_edge-gutter};
+
+        #{$root}__slides {
+            padding-left: $page_edge-gutter;
+            padding-right: $page_edge-gutter;
+            scroll-padding-left: $page_edge-gutter;
+            scroll-padding-right: $page_edge-gutter;
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        #{$root}__slides {
+            scroll-behavior: smooth;
+        }
+    }
+
+    @include slider-essentials($root);
+
+    @include slider-mobile-hook($m-gap, $next-visible, $root);
+}

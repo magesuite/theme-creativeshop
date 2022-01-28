@@ -2,95 +2,40 @@
 @import 'config/breakpoints';
 @import 'vendors/include-media';
 @import 'utils/component-spacing';
-@import 'components/teaser/mixins';
 
-$brand-carousel_carousel-padding: 0 !default;
-$brand-carousel_carousel-padding--slider: 0 3.8rem !default;
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
 
-$brand-carousel_min-slide-width: 3rem !default;
-$brand-carousel_min-slide-margin: 0 2rem 0 0 !default;
+@import 'components/_slider/mixin';
 
-$brand-carousel_max-image-height: 8.5rem !default;
-
-$brand-carousel_nav-button-width: 3rem !default;
-$brand-carousel_nav-button-height: 5rem !default;
-$brand-carousel_nav-button-box-shadow: none !default;
-$brand-carousel_nav-button--hover-box-shadow: $brand-carousel_nav-button-box-shadow !default;
-
-$brand-carousel_hide-nav-buttons-on-mobile: true !default;
-$teaser_hide-nav-buttons-on-mobile: $brand-carousel_hide-nav-buttons-on-mobile !default;
-
-$teaser_nav-button-width: $brand-carousel_nav-button-width !default;
-$teaser_nav-button-height: $brand-carousel_nav-button-height !default;
-$teaser_nav-button-box-shadow: $brand-carousel_nav-button-box-shadow !default;
-$teaser_nav-button--hover-box-shadow: $brand-carousel_nav-button--hover-box-shadow !default;
+$brand-carousel_items-per-view: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructorFrontend,
+    brand_carousel,
+    slides_per_view
+) !default;
+$brand-carousel_mobile-gap: 0.8rem !default;
+$brand-carousel_desktop-gap: 0.8rem !default;
+$brand-carousel_next-slide-visible: 0px !default; // it will be this value + page-gutter
 
 .#{$ns}brand-carousel {
     $root: &;
 
-    @include teaser();
     @include component-spacing();
 
-    position: relative;
+    @include slider(
+        $columns-config: $brand-carousel_items-per-view,
+        $m-gap: $brand-carousel_mobile-gap,
+        $d-gap: $brand-carousel_desktop-gap,
+        $next-visible: $brand-carousel_next-slide-visible,
+        $root: $root
+    );
 
-    &__carousel {
-        padding: $brand-carousel_carousel-padding;
-
-        @include media('>=tablet') {
-            #{$root}--slider & {
-                padding: $brand-carousel_carousel-padding--slider;
-            }
-        }
-    }
-
-    &__slides {
-        align-items: center;
+    #{$root}__slide {
+        display: flex;
         justify-content: center;
-
-        #{$root}--slider & {
-            justify-content: space-between;
-        }
-    }
-
-    &__slide {
-        min-width: $brand-carousel_min-slide-width;
-        max-width: none;
-        width: auto;
-        margin: $brand-carousel_min-slide-margin;
-
-        &:last-child,
-        #{$root}--slider & {
-            margin-right: 0;
-        }
-    }
-
-    &__image {
-        width: auto;
-        max-width: 100%;
-        max-height: $brand-carousel_max-image-height;
-    }
-
-    &__nav {
-        z-index: 3;
-
-        // Do not display navigation, when teaser destroyed on resize.
-        #{$root}:not(#{$root}--slider) & {
-            display: none;
-        }
-    }
-
-    &__pagination {
-        @include media('>=tablet') {
-            display: none;
-        }
-
-        &:not(:empty) {
-            margin-top: 1.5rem;
-        }
-    }
-
-    &--static {
-        width: 100%;
-        padding: $brand-carousel_carousel-padding;
+        align-items: center;
+        margin-bottom: 0;
     }
 }

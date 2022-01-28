@@ -1,0 +1,55 @@
+@import 'config/variables';
+@import '../hooks';
+
+$slider-pagination_bullets-gap: 0.8rem !default;
+$slider-pagination_bullet-border: 0 !default;
+$slider-pagination_bullet-radius: 2px !default;
+$slider-pagination_bullet-bg: $color_background-500 !default;
+$slider-pagination_bullet-width: 2.2rem !default;
+$slider-pagination_bullet-height: 0.9rem !default;
+
+$slider-pagination--fraction_color: inherit !default;
+$slider-pagination--fraction_font-weight: 600 !default;
+$slider-pagination--fraction_current-color: $color_secondary-500 !default;
+
+@mixin slider-pagination() {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: $slider-pagination_bullets-gap;
+    min-height: 3rem;
+
+    &--fraction {
+        gap: 0;
+        white-space: pre-wrap;
+        color: $slider-pagination--fraction_color;
+        font-weight: $slider-pagination--fraction_font-weight;
+
+        span {
+            color: $slider-pagination--fraction_current-color;
+        }
+    }
+
+    &__bullet {
+        position: relative;
+        border-radius: $slider-pagination_bullet-radius;
+        background: $slider-pagination_bullet-bg;
+        border: $slider-pagination_bullet-border;
+        inline-size: $slider-pagination_bullet-width;
+        block-size: $slider-pagination_bullet-height;
+        transition: all 0.15s;
+        overflow: hidden;
+        text-indent: -99rem;
+
+        &.current {
+            background-color: $color_secondary-500;
+        }
+
+        &:only-child {
+            display: none;
+        }
+    }
+
+    @include slider-pagination-hook();
+}

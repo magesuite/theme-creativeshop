@@ -1,412 +1,168 @@
 @import 'config/variables';
 @import 'config/breakpoints';
-@import 'include-media/dist/include-media';
+@import 'vendors/include-media';
 @import 'utils/component-spacing';
-@import 'components/teaser/mixins';
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
+
+@import 'components/image-teaser/mixins/contrast-optimizers/gradient';
+@import 'components/image-teaser/mixins/contrast-optimizers/text-shadow';
+
+@import 'components/_slider/mixin';
+@import 'components/_slider/navigation/navigation'; // TMP
+@import 'components/_slider/pagination/pagination'; // TMP
+
 @import 'components/button/mixin';
-@import 'components/typography/mixin';
 
-@import 'components/video-player/video-player';
+$it_mobile-gap: 0.8rem !default;
+$it_desktop-gap: 0.8rem !default;
 
-$image-teaser_scale-fonts-proportionally: false !default;
-$image-teaser--mosaic_equalize-font-sizes: true !default;
+$it--slider_mobile-gap: $it_mobile-gap !default;
+$it--slider_desktop-gap: $it_desktop-gap !default;
 
-$image-teaser_slides-gutter: 0.8rem !default;
-$image-teaser_content-gutter-base: 1.88% !default;
+// "next-slide-visible" will work on mobiles and browser-width desktop
+// For container-width desktop it doesn't make sense.
+// Please use 'use_whole_screen' option in etc/view to have next slides visible for content-width
+$it--slider_next-slide-visible: 0px !default; // must be with unit (any kind)
 
-$image-teaser_text-content-font-size: 1.4rem !default;
-$image-teaser_slogan-level: $font-size_headline-2 !default;
-$image-teaser_slogan-font-size: 2.583em !default;
-$image-teaser_description-font-size: 1.55em !default;
+$it_cta-type: 'primary' !default;
+$it_cta-font-size: 1.2rem !default;
+$it_cta-icon-position: 'right' !default;
+$it_cta-icon-width: 1.2rem !default;
+$it_cta-icon-height: 1.4rem !default;
 
-$image-teaser_text-content-color: $scheme--light_texts-color !default;
-$image-teaser_slogan-color: inherit !default;
-$image-teaser_description-color: inherit !default;
-$image-teaser_cta-button-type: $button_default-type !default;
-$image-teaser_cta-button-icon-pos: $button_default-icon-pos !default;
+// contrast optimizers
+$it_container-background--light: $color_background-700 !default;
+$it_container-background--dark: $color_background-200 !default;
+$it_gradient-color--light: $color_background-700 !default;
+$it_gradient-color--dark: $color_background-200 !default;
+$it_text-shadow-color--dark: $color_background-200 !default;
+$it_text-shadow-offset--dark: 0 0 2.5rem !default;
+$it_text-shadow-step--dark: 5 !default;
+$it_text-shadow-color--light: $color_background-700 !default;
+$it_text-shadow-offset--light: 0 0 2.5rem !default;
+$it_text-shadow-step--light: 5 !default;
 
-$image-teaser_text-content-color--dark: $scheme--dark_texts-color !default;
-$image-teaser_slogan-color--dark: inherit !default;
-$image-teaser_description-color--dark: inherit !default;
-$image-teaser_cta-button-type--dark: $button_default-type !default;
-$image-teaser_cta-button-icon-pos--dark: $button_default-icon-pos !default;
-
-$image-teaser_slogan-font-weight: 900 !default;
-$image-teaser_description-font-weight: 300 !default;
-
-$image-teaser_text-shadow-color--dark: $color_background-200 !default;
-$image-teaser_text-shadow-offset--dark: 0 0 2.5rem !default;
-$image-teaser_text-shadow-step--dark: 5 !default;
-
-$image-teaser_text-shadow-color--light: $color_background-700 !default;
-$image-teaser_text-shadow-offset--light: 0 0 2.5rem !default;
-$image-teaser_text-shadow-step--light: 5 !default;
-
-$image-teaser_container-background--light: $color_background-700 !default;
-$image-teaser_container-background--dark: $color_background-200 !default;
-
-$image-teaser_gradient-color--light: $color_background-700 !default;
-$image-teaser_gradient-color--dark: $color_background-200 !default;
-
-$image-teaser_badge-color: $color_text-200 !default;
-$image-teaser_badge-background: $color_primary-500 !default;
-$image-teaser_badge-font-size: 1.1em !default;
-
-$image-teaser_no-image-light-scheme-background: $color_background-700 !default;
-$image-teaser_no-image-dark-scheme-background: $color_background-200 !default;
-
-$image-teaser_hero-carousel_slide-width: 77% !default;
-
-$image-teaser_cms-pages-background: $color_background-500 !default;
-$image-teaser_cms-backlink-background: $color_background-500 !default;
+// icon component
+/**
+ * This components is sort of unique because it's items-per-row configuration is only available for tablet+
+ * This map adds possibility to 'force' provied columns configuration up to laptop resolutions.
+ */
+$it--icon_items-in-view-till-laptop: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructorFrontend,
+    icon,
+    js,
+    columnsConfig
+) !default;
 
 .#{$ns}image-teaser {
     $root: &;
 
-    @include teaser();
+    --slogan-font-size: 3.8rem;
+    --description-font-size: 1.5rem;
+
     @include component-spacing();
 
-    &--window-width {
-        overflow: hidden;
+    @include it-grid($m-gap: $it_mobile-gap, $d-gap: $it_desktop-gap);
+
+    &--slider {
+        @include slider(
+            $m-gap: $it--slider_mobile-gap,
+            $d-gap: $it--slider_desktop-gap,
+            $next-visible: $it--slider_next-slide-visible,
+            $root: $root
+        );
     }
 
-    &:not(#{$root}--slider) {
-        #{$root}__nav,
-        #{$root}__pagination {
-            display: none;
+    &--slider-mobile:not(#{$root}--slider) {
+        @include media('<tablet') {
+            @include slider-mobile(
+                $m-gap: $it--slider_mobile-gap,
+                $next-visible: $it--slider_next-slide-visible,
+                $root: $root
+            );
         }
 
-        #{$root}__slides {
-            flex-wrap: wrap;
-
-            #{$root}--items-in-row-mobile-1 & {
-                display: block;
-            }
-        }
-    }
-
-    &__carousel {
-        position: relative;
-
-        #{$root}--grid-teaser & {
-            height: 100%;
-        }
-    }
-
-    &__wrapper {
-        margin: -#{$image-teaser_slides-gutter / 2};
-        width: calc(100% + #{$image-teaser_slides-gutter});
-
-        &--content-under {
-            #{$root}__slide {
-                display: block;
-
-                &--scheme-light {
-                    #{$root}__content {
-                        background: $image-teaser_container-background--light;
-                    }
-                }
-
-                &--scheme-dark {
-                    #{$root}__content {
-                        background: $image-teaser_container-background--dark;
-                    }
-                }
-            }
-
-            #{$root}__slide-wrapper {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                overflow: initial;
-            }
-
-            #{$root}__content-wrapper {
-                position: relative;
-                height: 100%;
-                justify-content: center;
-                align-items: stretch;
-                text-align: center;
-                padding: 2rem 2rem 0;
-            }
-
-            #{$root}__content {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                margin: -3rem 0 0;
-                padding: 2rem;
-            }
-
-            #{$root}--items-in-row-2 & {
-                @include media('>=tablet') {
-                    #{$root}__slogan {
-                        font-size: 1.95em;
-                    }
-
-                    #{$root}__description {
-                        font-size: 1.2em;
-                    }
-                }
-            }
-        }
-
-        #{$root}--grid-teaser & {
-            height: 100%;
-            margin: 0;
-        }
-    }
-
-    &__slides {
         @include media('>=tablet') {
-            &--mosaic-scenario {
-                &-1 {
-                    #{$root}__slide:first-child {
-                        width: calc((100% / 3) * 2);
-
-                        @if $image-teaser--mosaic_equalize-font-sizes {
-                            #{$root}__slogan {
-                                font-size: $image-teaser_slogan-font-size *
-                                    0.75;
-                            }
-
-                            #{$root}__description {
-                                font-size: $image-teaser_description-font-size *
-                                    0.75;
-                            }
-                        }
-                    }
-
-                    #{$root}__slide:last-child {
-                        width: calc(100% / 3);
-
-                        @if $image-teaser--mosaic_equalize-font-sizes {
-                            #{$root}__slogan {
-                                font-size: $image-teaser_slogan-font-size * 1.5;
-                            }
-
-                            #{$root}__description {
-                                font-size: $image-teaser_description-font-size *
-                                    1.5;
-                            }
-                        }
-                    }
-                }
-
-                &-2 {
-                    #{$root}__slide:first-child {
-                        width: calc(100% / 3);
-
-                        @if $image-teaser--mosaic_equalize-font-sizes {
-                            #{$root}__slogan {
-                                font-size: $image-teaser_slogan-font-size * 1.5;
-                            }
-
-                            #{$root}__description {
-                                font-size: $image-teaser_description-font-size *
-                                    1.5;
-                            }
-                        }
-                    }
-
-                    #{$root}__slide:last-child {
-                        width: calc((100% / 3) * 2);
-
-                        @if $image-teaser--mosaic_equalize-font-sizes {
-                            #{$root}__slogan {
-                                font-size: $image-teaser_slogan-font-size *
-                                    0.75;
-                            }
-
-                            #{$root}__description {
-                                font-size: $image-teaser_description-font-size *
-                                    0.75;
-                            }
-                        }
-                    }
-                }
+            #{$root}__nav,
+            #{$root}__pagination {
+                display: none;
             }
         }
     }
 
     &__slide {
-        padding: $image-teaser_slides-gutter / 2;
-        transition: opacity 0.3s;
+        --scheme-color: #{$scheme--dark_texts-color};
+        --scheme-background: #{$scheme--dark_background};
 
-        #{$root}--items-in-row-mobile-2 & {
-            width: 50%;
+        &--scheme-light {
+            --scheme-color: #{$scheme--light_texts-color};
+            --scheme-background: #{$scheme--light_background};
         }
 
-        #{$root}--teaser-and-text & {
-            order: 2;
-
-            &:not(#{$root}__slide--image-uploaded) {
-                > #{$root}__slide-wrapper {
-                    width: 100%;
-                }
-
-                #{$root}__content-wrapper {
-                    @include media('<tablet') {
-                        position: static;
-                        height: auto;
-                    }
-                }
-            }
-        }
-
-        &--image-uploaded {
-            #{$root}__slides--mobile-text-image & {
-                @include media('<tablet') {
-                    order: 3;
-                }
-            }
-
-            #{$root}__slides--mobile-image-text & {
-                @include media('<tablet') {
+        // teaser & text
+        @include media('<tablet') {
+            &--image-uploaded {
+                #{$root}__slides--mobile_text-image & {
                     order: 1;
                 }
-            }
-        }
 
-        @for $i from 2 through 8 {
-            #{$root}--items-in-row-#{$i} & {
-                @include media('>=tablet') {
-                    width: (100% / $i);
+                #{$root}__slides--mobile_image-text & {
+                    order: -1;
                 }
-            }
-        }
-
-        #{$root}--grid-teaser & {
-            height: 100%;
-            padding: 0;
-        }
-
-        #{$root}--cms-teaser & {
-            &:not(#{$root}__slide--image-uploaded) > #{$root}__slide-wrapper {
-                background-color: $image-teaser_cms-pages-background;
-            }
-        }
-
-        #{$root}--backlink & {
-            &:not(#{$root}__slide--image-uploaded) > #{$root}__slide-wrapper {
-                background-color: $image-teaser_cms-backlink-background;
-            }
-        }
-
-        &:not(.ready) {
-            #{$root}__content-wrapper {
-                opacity: 0;
             }
         }
     }
 
-    &__slide-wrapper {
-        display: block;
-        overflow: hidden;
+    // Hero in mobile as 'Large Teaser' scenario
+    @include media('<tablet') {
+        &--as-list-mobile {
+            #{$root}__slides {
+                display: block !important;
+            }
 
-        &,
-        &:hover,
-        &:focus {
-            color: inherit;
-        }
+            #{$root}__slide {
+                margin: 0 0 #{$it--slider_mobile-gap};
+            }
 
-        #{$root}--instagram-feed & {
-            position: relative;
-            width: 100%;
-
-            &:before {
-                content: '';
-                display: block;
-                width: 100%;
-                padding-top: 100%;
+            #{$root}__pagination,
+            #{$root}__nav {
+                display: none;
             }
         }
+    }
 
-        #{$root}__slide--scheme-light:not(#{$root}__slide--image-uploaded) & {
-            background: $image-teaser_no-image-light-scheme-background;
-        }
-
-        #{$root}__slide--scheme-dark:not(#{$root}__slide--image-uploaded) & {
-            background: $image-teaser_no-image-dark-scheme-background;
-        }
+    &__link {
+        display: block;
     }
 
     &__figure {
-        #{$root}--instagram-feed & {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #{$root}--grid-teaser & {
-            height: 100%;
-
-            img {
-                height: 100%;
-            }
-        }
-    }
-
-    &__aspect-ratio {
-        width: 100%;
-
-        ~ #{$root}__slide-wrapper,
-        ~ #{$root}__figure {
-            position: absolute;
-
-            @if $image-teaser_slides-gutter > 0 {
-                top: $image-teaser_slides-gutter / 2;
-                left: $image-teaser_slides-gutter / 2;
-                width: calc(100% - #{$image-teaser_slides-gutter});
-            } @else {
-                top: 0;
-                left: 0;
-                width: 100%;
-            }
-
-            @if $image-teaser_slides-gutter > 0 {
-                #{$root}__wrapper:not(#{$root}__wrapper--content-under) & {
-                    height: calc(100% - #{$image-teaser_slides-gutter});
-
-                    #{$root}--grid-teaser & {
-                        height: 100%;
-                    }
-                }
-            }
-
-            #{$root}--grid-teaser & {
-                top: 0;
-                left: 0;
-            }
-        }
+        position: relative;
     }
 
     &__content-wrapper {
-        position: absolute;
-        z-index: 2;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        opacity: 1;
+        color: var(--scheme-color);
 
-        #{$root}__wrapper--content-over & {
-            padding: $image-teaser_content-gutter-base * 2;
+        &--under {
+            position: relative;
+            z-index: 1;
+            margin: -2rem 2rem 0;
+            padding: 2rem;
+            background-color: var(--scheme-background);
+            text-align: center;
+        }
 
-            #{$root}--items-in-row-3 & {
-                @include media('>=tablet') {
-                    padding: $image-teaser_content-gutter-base * 3;
-                }
-            }
+        &--over {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 2rem;
+            overflow: hidden;
 
-            #{$root}--items-in-row-4 & {
-                @include media('>=laptop') {
-                    padding: $image-teaser_content-gutter-base * 4;
-                }
+            @media (hover: hover) {
+                padding: 4.5rem;
             }
         }
 
@@ -433,224 +189,92 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
         }
     }
 
-    &__content {
-        &--container {
-            position: relative;
-            padding: inherit;
-        }
+    &__picture + #{$root}__content-wrapper--over {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 
-    &__text-content {
-        font-size: $image-teaser_text-content-font-size;
-        color: $image-teaser_text-content-color;
-
-        #{$root}__slide--scheme-dark & {
-            color: $image-teaser_text-content-color--dark;
-        }
+    &__content {
+        position: relative;
     }
 
     &__slogan {
-        @include headline($level: $image-teaser_slogan-level);
         margin: 0;
-        font-size: $image-teaser_slogan-font-size;
-        font-weight: $image-teaser_slogan-font-weight;
-        text-transform: none;
-        line-height: 1.05;
-        color: $image-teaser_slogan-color;
-
-        #{$root}__slide--scheme-dark & {
-            color: $image-teaser_slogan-color--dark;
-        }
+        line-height: 1.1;
+        font-size: var(--slogan-font-size);
+        font-weight: 900;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
     }
 
     &__description {
-        margin: 0;
-        font-size: $image-teaser_description-font-size;
-        font-weight: $image-teaser_description-font-weight;
-        letter-spacing: -0.18px;
-        line-height: 1.2;
-        color: $image-teaser_description-color;
-
-        * + & {
-            margin-top: 0.5em;
-        }
-
-        #{$root}__slide--scheme-dark & {
-            color: $image-teaser_description-color--dark;
-        }
-
-        @include media('>=laptop', '<laptopLg') {
-            #{$root}--items-in-row-4 & {
-                font-size: 1.75em;
-            }
-        }
+        margin: 1em 0 0;
+        line-height: 1.1;
+        font-size: var(--description-font-size);
     }
 
     &__cta {
-        * + & {
-            margin-top: 1.5rem;
-        }
-    }
+        @include button($type: $it_cta-type, $icon_pos: $it_cta-icon-position);
 
-    &__cta-button {
-        @include button(
-            $type: $image-teaser_cta-button-type,
-            $icon_pos: $image-teaser_cta-button-icon-pos
-        );
-
-        #{$root}__slide--scheme-dark & {
-            @include button(
-                $type: $image-teaser_cta-button-type--dark,
-                $icon_pos: $image-teaser_cta-button-icon-pos--dark
-            );
-        }
-
-        // Override font size defined in button component
-        #{$root}__slide & {
-            font-size: 1rem;
-
-            @include media('>=phoneLg') {
-                font-size: 1.15rem;
-            }
-
-            @include media('>=laptop') {
-                font-size: 1.2rem;
-            }
-
-            @include media('>=laptopLg') {
-                font-size: 1.4rem;
-            }
-
-            @include media('>=tv') {
-                font-size: 1.6rem;
-            }
-        }
-    }
-
-    &__cta-button-span {
-        @include button_span(
-            $type: $image-teaser_cta-button-type,
-            $icon_pos: $image-teaser_cta-button-icon-pos
-        );
-
-        #{$root}__slide--scheme-dark & {
+        &-span {
             @include button_span(
-                $type: $image-teaser_cta-button-type--dark,
-                $icon_pos: $image-teaser_cta-button-icon-pos--dark
+                $type: $it_cta-type,
+                $icon_pos: $it_cta-icon-position
             );
         }
-    }
 
-    &__cta-button-icon {
-        @include button_icon(
-            $type: $image-teaser_cta-button-type,
-            $icon_pos: $image-teaser_cta-button-icon-pos
-        );
-
-        #{$root}__slide--scheme-dark & {
+        &-icon {
             @include button_icon(
-                $type: $image-teaser_cta-button-type--dark,
-                $icon_pos: $image-teaser_cta-button-icon-pos--dark
+                $type: $it_cta-type,
+                $icon_pos: $it_cta-icon-position
             );
         }
-    }
 
-    // Badge
-    &__badge {
-        $badge: &;
+        display: none;
 
-        font-size: $image-teaser_badge-font-size;
-        position: absolute;
-        top: 0.7em;
-        left: 0.7em;
-        color: $image-teaser_badge-color;
-        background: $image-teaser_badge-background;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        padding: 0.9em;
-        text-align: center;
-        z-index: 3;
-
-        &:before {
-            content: '';
+        @include media('>=phoneLg') {
             display: inline-flex;
+            z-index: 1;
+            margin: 1.2em 0 0;
             align-items: center;
-            justify-content: center;
-            padding-top: 100%;
-            height: 0;
-        }
+            font-size: $it_cta-font-size;
 
-        &--align-x {
-            &-2 {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            &-3 {
-                left: auto;
-                right: 0.7em;
-            }
-        }
-
-        &--align-y {
-            &-2 {
-                top: 50%;
-                transform: translateY(-50%);
-
-                &#{$badge}--align-x-2 {
-                    transform: translate(-50%, -50%);
-                }
-            }
-
-            &-3 {
-                top: auto;
-                bottom: 0.7em;
-            }
-        }
-
-        small {
-            font-size: 75%;
-            line-height: 75%;
-        }
-
-        small,
-        big {
-            padding-bottom: 0.2rem;
-            display: inline-block;
-
-            &:last-child {
-                padding-bottom: 0;
+            &-icon {
+                width: $it_cta-icon-width;
+                height: $it_cta-icon-height;
             }
         }
     }
 
-    &__badge-span {
-        text-align: center;
-    }
-
-    // Contrast Optimizers
+    /**
+     * Contrast Optimizers
+     */
+    // common for overlay amnd gradient
     &__overlay,
     &__gradient {
         position: absolute;
-        top: -1%;
-        left: -1%;
-        width: 102%;
-        height: 102%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
 
-    &__overlay {
+    // overlay, container
+    &__overlay,
+    &__optimizer-container {
         #{$root}__slide--scheme-light & {
-            background: $image-teaser_container-background--light;
+            background-color: $it_container-background--light;
         }
 
         #{$root}__slide--scheme-dark & {
-            background: $image-teaser_container-background--dark;
+            background-color: $it_container-background--dark;
         }
     }
 
+    // gradient
     &__gradient {
         @for $x from 1 through 3 {
             &--direction-x-#{$x} {
@@ -660,7 +284,7 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
                             @include teaser-gradient-overlay(
                                 $x,
                                 $y,
-                                $image-teaser_gradient-color--light,
+                                $it_gradient-color--light,
                                 85%
                             );
                         }
@@ -669,7 +293,7 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
                             @include teaser-gradient-overlay(
                                 $x,
                                 $y,
-                                $image-teaser_gradient-color--dark,
+                                $it_gradient-color--dark,
                                 85%
                             );
                         }
@@ -679,17 +303,18 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
         }
     }
 
+    // mirror image
     &__image {
-        // Hides alt text so it doesn't show before image is loaded.
-        /* stylelint-disable */
-        font: 0/0 a;
-        /* stylelint-enable */
-        text-shadow: none;
-        color: transparent;
-
         &--mirror {
             transform: scaleX(-1);
         }
+    }
+
+    // container
+    &__content--container {
+        position: relative;
+        z-index: 1;
+        padding: 2em;
     }
 
     &__optimizer-container {
@@ -699,87 +324,117 @@ $image-teaser_cms-backlink-background: $color_background-500 !default;
         width: 100%;
         height: 100%;
         z-index: -1;
-
-        #{$root}__slide--scheme-dark & {
-            background-color: $image-teaser_container-background--dark;
-        }
-
-        #{$root}__slide--scheme-light & {
-            background-color: $image-teaser_container-background--light;
-        }
     }
 
+    // text shadow
     &__text-content--text-shadow {
         #{$root}__slide--scheme-dark & {
             @include optimizer-text-shadow(
-                $color: $image-teaser_text-shadow-color--dark,
-                $text-shadow-offset: $image-teaser_text-shadow-offset--dark,
-                $step: $image-teaser_text-shadow-step--dark
+                $color: $it_text-shadow-color--dark,
+                $text-shadow-offset: $it_text-shadow-offset--dark,
+                $step: $it_text-shadow-step--dark
             );
         }
 
         #{$root}__slide--scheme-light & {
             @include optimizer-text-shadow(
-                $color: $image-teaser_text-shadow-color--light,
-                $text-shadow-offset: $image-teaser_text-shadow-offset--light,
-                $step: $image-teaser_text-shadow-step--light
+                $color: $it_text-shadow-color--light,
+                $text-shadow-offset: $it_text-shadow-offset--light,
+                $step: $it_text-shadow-step--light
             );
         }
     }
 
-    &--grid-teaser {
-        height: 100%;
-        margin: 0;
-    }
-
-    &--hero-teaser {
-        @include media('>=tablet') {
-            padding: 0 (100% - $image-teaser_hero-carousel_slide-width) / 2;
+    // Icon component
+    &--icon {
+        @include media('>=tablet', '<laptop') {
+            @include slider-mobile(
+                $m-gap: $it--slider_mobile-gap,
+                $next-visible: $it--slider_next-slide-visible,
+                $root: $root
+            );
         }
 
-        #{$root}__wrapper {
-            @include media('>=tablet') {
-                overflow: visible;
+        @each $breakpoint, $itemsPerRow in $it--icon_items-in-view-till-laptop {
+            @include media('>=#{$breakpoint}', '<laptop') {
+                --size: calc(
+                    var(--base-size) / #{$itemsPerRow} - ((
+                                    #{$itemsPerRow - 1} * var(--gap)
+                                ) / #{$itemsPerRow})
+                ) !important;
             }
         }
 
-        #{$root}__carousel {
-            position: static; // Do not affect image teaser nav positioning
-        }
-
-        &#{$root}--as-list-mobile {
-            @include media('<tablet') {
-                #{$root}__slides {
-                    flex-wrap: wrap;
+        @include media('>=tablet', '<laptop') {
+            &#{$root}--slider-mobile:not(#{$root}--slider) {
+                #{$root}__nav {
+                    display: block;
                 }
 
                 #{$root}__pagination {
-                    display: none;
+                    display: flex;
                 }
+            }
+        }
+
+        #{$root}__slogan {
+            --slogan-font-size: 1.6rem;
+        }
+
+        #{$root}__description {
+            margin-top: 0.5em;
+        }
+
+        #{$root}__cta {
+            display: none;
+        }
+
+        #{$root}__content-wrapper--under {
+            margin-top: 0;
+            padding: 1rem;
+        }
+    }
+
+    // Mosaic component
+    @include media('>=tablet') {
+        &--mosaic {
+            #{$root}__slides--mosaic-scenario {
+                &-1 {
+                    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+                }
+
+                &-2 {
+                    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+                }
+            }
+        }
+    }
+
+    // Teaser & Text component
+    @include media('<tablet') {
+        &--teaser-and-text {
+            #{$root}__slides {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            #{$root}__slide {
+                flex: 0 0 100%;
             }
         }
     }
 }
 
-.#{$ns}container {
-    &--hero-teaser {
-        overflow: hidden;
-        padding-left: 0;
-        padding-right: 0;
-    }
+.#{$ns}container--image-teaser-window-width {
+    padding-left: 0;
+    padding-right: 0;
 
-    &--image-teaser-window-width {
-        padding-left: 0;
-        padding-right: 0;
-        max-width: none;
-
-        .#{$ns}image-teaser__slide {
-            margin-left: 0;
-            margin-right: 0;
-        }
+    .#{$ns}container__inner {
+        max-width: 100%;
     }
+}
 
-    &--cms-teaser {
-        margin-top: 2rem;
-    }
+.#{$ns}container--image-teaser-slider {
+    padding-left: 0;
+    padding-right: 0;
 }

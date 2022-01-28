@@ -5,9 +5,7 @@
 @import 'config/variables';
 @import 'config/breakpoints';
 @import 'vendors/include-media';
-@import 'utils/aspect-ratio';
 @import 'utils/poly-fluid-sizing';
-@import 'utils/clearfix';
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 @import 'components/button/mixin';
@@ -17,8 +15,8 @@ $grid-layout_rows-separator-height: 1px !default;
 $grid-layout_rows-separator-color: $color_gallery !default;
 
 $grid-layout_bricks-gutter: 0 !default;
-$grid-layout_brick-margin: $grid-layout_bricks-gutter !default;
-$grid-layout_brick-padding: 0 !default;
+// If $grid-layout_rows-separator-show is set to true brick should have padding with at least hight of separator
+$grid-layout_brick-padding: 1px !default;
 
 $grid-layout_brick-ratio-width: $tile_aspect-ratio-width !default;
 $grid-layout_brick-ratio-height: $tile_aspect-ratio-height !default;
@@ -107,25 +105,116 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
 .#{$ns}grid-layout {
     $root: &;
 
-    position: relative;
-    @if $grid-layout_bricks-gutter == 0 {
-        width: 100%;
-    } @else {
-        width: calc(100% + 2 * #{$grid-layout_bricks-gutter});
-        margin: -#{$grid-layout_bricks-gutter} -#{$grid-layout_bricks-gutter} 0;
-    }
-
     &__grid {
         width: 100%;
         margin: 0;
         padding: 0;
         list-style: none;
-        @include clearfix();
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto;
+        gap: $grid-layout_bricks-gutter;
+        position: relative;
+
+        @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
+            @include media('>=#{$breakpoint}') {
+                grid-template-columns: repeat(#{$itemsPerRow}, minmax(0, 1fr));
+            }
+        }
+
+        #{$root}--with-sidebar & {
+            @each $breakpoint,
+                $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
+            {
+                @include media('>=#{$breakpoint}') {
+                    grid-template-columns: repeat(
+                        #{$itemsPerRow},
+                        minmax(0, 1fr)
+                    );
+                }
+            }
+        }
+    }
+
+    &__brick {
+        width: 100%;
+        padding: $grid-layout_brick-padding;
+        margin: 0;
+        overflow: hidden;
+
+        &--x2 {
+            aspect-ratio: #{$grid-layout_brick-ratio-width * 2}/#{$grid-layout_brick-ratio-height};
+        }
+
+        &--y2 {
+            aspect-ratio: #{$grid-layout_brick-ratio-width}/#{$grid-layout_brick-ratio-height *
+                2};
+        }
+
+        &--x2#{$root}__brick--y2 {
+            aspect-ratio: #{$grid-layout_brick-ratio-width * 2}/#{$grid-layout_brick-ratio-height *
+                2};
+        }
+
+        @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
+            @include media('>=#{$breakpoint}') {
+                @if $itemsPerRow > 1 {
+                    &--x2 {
+                        grid-column-end: span 2;
+                    }
+
+                    &--y2 {
+                        grid-row-end: span 2;
+                    }
+                }
+            }
+        }
+
+        &,
+        &--teaser-ready {
+            width: 100% !important;
+            display: block;
+        }
+
+        &--teaser-ready {
+            display: block;
+
+            @if not $grid-layout_small-mobile-standard-teasers-flow {
+                @include media('<phone') {
+                    grid-column-start: 1 !important;
+                }
+            }
+        }
+
+        &--hidden {
+            display: none !important;
+        }
+
+        &--teaser {
+            display: none;
+
+            &:before {
+                @include media('<phoneLg') {
+                    padding-top: 0;
+                }
+            }
+        }
+
+        @if ($grid-layout_small-mobile-standard-teasers-flow) {
+            @include media('<phone') {
+                &--x2 {
+                    grid-column-end: span 2;
+                }
+
+                &--y2 {
+                    grid-row-end: span 2;
+                }
+            }
+        }
     }
 
     &__teaser {
         overflow: hidden;
-        @include aspect-ratio-child-position();
 
         &-content-wrapper {
             display: flex;
@@ -158,29 +247,6 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
             flex-direction: column;
             padding: $grid-layout_teaser-content-padding;
             line-height: $grid-layout_teaser-content-line-height;
-
-            /* Variants will be refactored after CC IT refactor due to new position options */
-            &--variant-1 {
-                justify-content: center;
-                align-items: flex-start;
-            }
-
-            &--variant-2 {
-                justify-content: flex-end;
-                align-items: flex-start;
-            }
-
-            &--variant-3 {
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-            }
-
-            &--variant-4 {
-                justify-content: flex-end;
-                align-items: center;
-                text-align: center;
-            }
         }
 
         &-content-inner {
@@ -281,110 +347,11 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
         }
     }
 
-    &__brick {
-        width: 100%;
-        margin: $grid-layout_brick-margin;
-        padding: $grid-layout_brick-padding;
-        float: left;
-        @include aspect-ratio(
-            $width: $grid-layout_brick-ratio-width,
-            $height: $grid-layout_brick-ratio-height,
-            $childClass: #{$ns}product-tile,
-            $autoposition: true
-        );
-
-        @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
-            @include media('>=#{$breakpoint}') {
-                width: calc(100% / #{$itemsPerRow});
-
-                @if $itemsPerRow > 1 {
-                    &--x2 {
-                        width: calc(100% / #{$itemsPerRow} * 2);
-                    }
-                }
-            }
-        }
-
-        &--x2:not(#{$root}__brick--y2) {
-            @include aspect-ratio-override(
-                $width: $grid-layout_brick-ratio-width * 2,
-                $height: $grid-layout_brick-ratio-height
-            );
-
-            &#{$root}__brick--teaser {
-                &:before {
-                    @include media('<phoneLg') {
-                        padding-top: 0;
-                    }
-                }
-            }
-        }
-
-        &--y2 {
-            &#{$root}__brick--left {
-                float: left;
-            }
-
-            &:not(#{$root}__brick--x2) {
-                @include aspect-ratio-override(
-                    $width: $grid-layout_brick-ratio-width,
-                    $height: $grid-layout_brick-ratio-height * 2
-                );
-            }
-
-            &#{$root}__brick--teaser {
-                &:before {
-                    @include media('<phoneLg') {
-                        padding-top: 0;
-                    }
-                }
-            }
-        }
-
-        &--right {
-            float: right;
-        }
-
-        &--hidden {
-            display: none !important;
-        }
-
-        &--teaser {
-            display: none;
-
-            &:before {
-                @include media('<phoneLg') {
-                    padding-top: 0;
-                }
-            }
-
-            &-ready {
-                display: block;
-            }
-        }
-    }
-
-    &--with-sidebar {
-        @each $breakpoint,
-            $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
-        {
-            #{$root}__brick {
-                @include media('>=#{$breakpoint}') {
-                    width: calc(100% / #{$itemsPerRow});
-
-                    @if $itemsPerRow > 1 {
-                        &--x2 {
-                            width: calc(100% / #{$itemsPerRow} * 2);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @if $grid-layout_rows-separator-show {
         &,
         &__brick {
+            position: relative;
+
             &:after {
                 position: absolute;
                 bottom: 0;
@@ -404,181 +371,17 @@ $grid-layout_small-mobile-standard-teasers-flow: false !default;
             }
         }
     }
-
-    @supports (display: grid) and (grid-auto-flow: row) {
-        &__grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: auto;
-
-            @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
-                @include media('>=#{$breakpoint}') {
-                    grid-template-columns: repeat(
-                        #{$itemsPerRow},
-                        minmax(0, 1fr)
-                    );
-                }
-            }
-
-            #{$root}--with-sidebar & {
-                @each $breakpoint,
-                    $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
-                {
-                    @include media('>=#{$breakpoint}') {
-                        grid-template-columns: repeat(
-                            #{$itemsPerRow},
-                            minmax(0, 1fr)
-                        );
-                    }
-                }
-            }
-
-            &:after {
-                display: none;
-            }
-        }
-
-        &__brick {
-            @include aspect-ratio-reset(
-                $childClass: #{$ns}product-tile,
-                $autoposition: true
-            );
-
-            @if ($grid-layout_small-mobile-standard-teasers-flow) {
-                @include media('<phone') {
-                    &--x2 {
-                        grid-column-end: span 2;
-                    }
-
-                    &--y2 {
-                        grid-row-end: span 2;
-                    }
-                }
-            }
-
-            @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
-                @include media('>=#{$breakpoint}') {
-                    @if $itemsPerRow > 1 {
-                        &--x2 {
-                            grid-column-end: span 2;
-                        }
-
-                        &--y2 {
-                            grid-row-end: span 2;
-                        }
-                    }
-                }
-            }
-
-            #{$root}:not(#{$root}--with-sidebar) & {
-                @each $breakpoint, $itemsPerRow in $grid-layout_bricks-per-row {
-                    @include media('>=#{$breakpoint}') {
-                        &:not(#{$root}__brick--x2) {
-                            @if $itemsPerRow >= 2 {
-                                .cs-image-teaser__aspect-ratio {
-                                    padding-top: unset !important;
-                                }
-                            }
-                        }
-
-                        &--x2 {
-                            @if $itemsPerRow >= 3 {
-                                .cs-image-teaser__aspect-ratio {
-                                    padding-top: unset !important;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            &--x2:not(#{$root}__brick--y2) {
-                @include aspect-ratio-override-reset();
-            }
-
-            &--y2 {
-                &:not(#{$root}__brick--x2) {
-                    @include aspect-ratio-override-reset();
-                }
-            }
-
-            &,
-            &--teaser-ready {
-                width: 100% !important;
-                display: block;
-            }
-
-            &--teaser-ready {
-                @if not $grid-layout_small-mobile-standard-teasers-flow {
-                    @include media('<phone') {
-                        grid-column-start: 1 !important;
-                    }
-                }
-            }
-
-            &--right {
-                float: none;
-            }
-        }
-
-        &--with-sidebar {
-            @each $breakpoint,
-                $itemsPerRow in $grid-layout_bricks-per-row--with-sidebar
-            {
-                #{$root}__brick {
-                    @include media('>=#{$breakpoint}') {
-                        @if $itemsPerRow > 1 {
-                            &--x2 {
-                                grid-column-end: span 2;
-                            }
-
-                            &--y2 {
-                                grid-row-end: span 2;
-                            }
-                        }
-
-                        &:not(#{$root}__brick--x2) {
-                            @if $itemsPerRow >= 2 {
-                                .cs-image-teaser__aspect-ratio {
-                                    padding-top: unset !important;
-                                }
-                            }
-                        }
-
-                        &--x2 {
-                            @if $itemsPerRow >= 3 {
-                                .cs-image-teaser__aspect-ratio {
-                                    padding-top: unset !important;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 .#{$ns}container {
     &--grid-teaser {
         width: 100%;
         height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        overflow: hidden;
-    }
-
-    @supports (display: grid) and (grid-auto-flow: row) {
-        &--grid-teaser {
-            position: relative;
-            top: auto;
-            left: auto;
-            right: auto;
-            bottom: auto;
-            overflow: visible;
-        }
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        overflow: visible;
     }
 }

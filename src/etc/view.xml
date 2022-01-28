@@ -4,7 +4,7 @@
         <var name="columns">
             <var name="default_layout">multiple-columns</var>
             <var name="one-column">
-                <var name="phone">2</var>
+                <var name="phone">1</var>
                 <var name="phoneLg">2</var>
                 <var name="tablet">3</var>
                 <var name="laptop">4</var>
@@ -13,7 +13,7 @@
                 <var name="tv">4</var>
             </var>
             <var name="multiple-columns">
-                <var name="phone">2</var>
+                <var name="phone">1</var>
                 <var name="phoneLg">2</var>
                 <var name="tablet">2</var>
                 <var name="laptop">3</var>
@@ -151,10 +151,17 @@
 
         <var name="brand_carousel">
             <var name="additional_css_classes"></var>
-            <var name="lazyload_brand_images">true</var>
             <var name="link_brands">true</var>
+            <var name="slides_per_view">
+                <var name="phone">2</var>
+                <var name="phoneLg">3</var>
+                <var name="tablet">5</var>
+                <var name="laptop">8</var>
+                <var name="laptopLg">8</var>
+                <var name="desktop">8</var>
+                <var name="tv">8</var>
+            </var>
             <var name="pagination">
-                <var name="show">true</var>
                 <var name="additional_css_classes"></var>
             </var>
             <var name="navigation">
@@ -169,6 +176,16 @@
                         <var name="path">images/icons/icon_arrow-right.svg</var>
                     </var>
                 </var>
+            </var>
+            <var name="js">
+                <var name="slidesWrapperSelector">.cs-brand-carousel__slides</var>
+                <var name="slideSelector">.cs-brand-carousel__slide</var>
+                <var name="usePagination">true</var>
+                <var name="paginationOptions">
+                    <var name="fractionBreakpoint">10</var>
+                    <var name="fractionPattern">%currentSlide / %allSlides</var>
+                </var>
+                <var name="useAutorotation">false</var>
             </var>
         </var>
         <var name="button">
@@ -205,7 +222,6 @@
             <var name="additional_css_classes"></var>
             <var name="content_placement">over</var>
             <var name="pagination">
-                <var name="show">true</var>
                 <var name="additional_css_classes"></var>
             </var>
             <var name="navigation">
@@ -287,15 +303,9 @@
             <var name="additional_css_classes">cs-hero--centered</var>
             <var name="teaser_width">container-slider</var>
             <var name="content_placement">over</var>
-            <var name="js_config">
-                <var name="loopedSlides">5</var>
-                <var name="autoplay">
-                    <var name="delay">5000</var>
-                </var>
-                <var name="centeredSlides">true</var>
-            </var>
             <var name="cta_button_icon_path">images/icons/hero/arrow_next.svg</var>
             <var name="sizes">(max-width: 48em) 100vw, (max-width: 1200px) 80vw, 960px</var>
+            <var name="use_whole_screen">false</var> <!-- applies to container-width slider (desktop)-->
             <var name="navigation">
                 <var name="show">true</var>
                 <var name="arrows">
@@ -310,13 +320,17 @@
                 </var>
             </var>
             <var name="pagination">
-                <var name="show">true</var>
                 <var name="additional_css_classes"></var>
+            </var>
+            <var name="js">
+                <var name="usePagination">true</var>
+                <var name="useAutorotation">true</var>
             </var>
         </var>
         <var name="image_teaser">
             <var name="additional_css_classes"></var>
             <var name="cta_button_icon_path">images/icons/arrow_next.svg</var>
+            <var name="use_whole_screen">false</var> <!-- applies to container-width slider (desktop)-->
             <var name="navigation">
                 <var name="show">true</var>
                 <var name="arrows">
@@ -331,13 +345,45 @@
                 </var>
             </var>
             <var name="pagination">
-                <var name="show">true</var>
                 <var name="additional_css_classes"></var>
             </var>
-            <var name="js"></var>
+            <var name="js">
+                <var name="usePagination">true</var>
+                <var name="paginationOptions">
+                    <var name="fractionBreakpoint">9</var>
+                    <var name="fractionPattern">%currentSlide / %allSlides</var>
+                </var>
+                <var name="useAutorotation">false</var>
+            </var>
         </var>
         <var name="icon">
-            <var name="js"></var>
+            <var name="navigation">
+                <var name="show">true</var>
+                <var name="arrows">
+                    <var name="prev">
+                        <var name="additional_css_classes"></var>
+                        <var name="path">images/icons/icon_arrow-left.svg</var>
+                    </var>
+                    <var name="next">
+                        <var name="additional_css_classes"></var>
+                        <var name="path">images/icons/icon_arrow-right.svg</var>
+                    </var>
+                </var>
+            </var>
+            <var name="js">
+                <var name="usePagination">true</var>
+                <var name="paginationOptions">
+                    <var name="fractionBreakpoint">9</var>
+                    <var name="fractionPattern">%currentSlide / %allSlides</var>
+                </var>
+                <!-- Make sure you won't affect CC settings (for icon component they define columnsConfig for laptop+ resolutions) -->
+                <var name="columnsConfig">
+                    <var name="0px">2</var>
+                    <var name="phone">2</var>
+                    <var name="phoneLg">3</var>
+                    <var name="tablet">5</var>
+                </var>
+            </var>
         </var>
         <var name="teaser_and_text">
             <var name="js"></var>
@@ -347,6 +393,7 @@
         </var>
         <var name="product_carousel">
             <var name="additional_css_classes"></var>
+            <var name="use_whole_screen">false</var>
             <var name="navigation">
                 <var name="show">true</var>
                 <var name="arrows">
@@ -362,11 +409,20 @@
             </var>
             <var name="pagination">
                 <var name="additional_css_classes"></var>
-                <var name="show">true</var>
             </var>
             <var name="scrollbar">
                 <var name="additional_css_classes"></var>
                 <var name="show">false</var>
+            </var>
+            <var name="js">
+                <var name="slidesWrapperSelector">.cs-products-carousel__slides</var>
+                <var name="slideSelector">.cs-products-carousel__slide</var>
+                <var name="usePagination">true</var>
+                <var name="paginationOptions">
+                    <var name="fractionBreakpoint">10</var>
+                    <var name="fractionPattern">%currentSlide / %allSlides</var>
+                </var>
+                <var name="useAutorotation">false</var>
             </var>
         </var>
         <var name="product_teaser">

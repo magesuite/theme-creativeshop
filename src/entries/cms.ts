@@ -45,22 +45,21 @@ import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
 import 'components/qty-increment';
-import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/swatches';
 import 'components/topbar';
 import 'components/typography';
 import 'components/visually-hidden';
-import 'components/select';
 import 'components/ie11-modal';
 import 'components/pwa-notification';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 
-import 'components/non-critical';
+// Carousels (navigation/pagination CSS)
+import 'components/_slider';
 
-import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
+import 'components/non-critical';
 
 // Optional components - can be imported in child theme entry
 // import 'components/tooltip';
@@ -68,3 +67,4 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 // import 'components/reorder-banner';
 // import 'components/ie11';
 // import 'components/page-scroll';
+// import 'components/product-tile-list';
