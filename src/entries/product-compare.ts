@@ -1,5 +1,4 @@
 import 'config/base.scss';
-import 'utils/utility-classes.scss';
 
 // =============================================================================
 // Components
@@ -40,6 +39,7 @@ import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/topbar';
 import 'components/typography';
+import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/ie11-modal';
 import 'components/pwa-notification';
@@ -47,5 +47,14 @@ import 'components/google-recaptcha';
 import 'components/non-critical';
 import 'components/product-compare';
 
+// Optional components - can be imported in child theme entry
+// import 'Amazon_Pay/web/css/source/module.scss';
 // import 'components/ie11';
+// import 'components/page-scroll';
 // import 'components/product-tile';
+// import 'components/product-tile-list';
+// import 'components/product-variants';
+// import 'components/reorder-banner';
+// import 'components/tile-gallery';
+// import 'components/tooltip';
+// import 'components/video-layer';

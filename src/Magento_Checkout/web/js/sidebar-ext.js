@@ -224,10 +224,10 @@ define([
 
                     if (that._isValidQty(itemQty, elem.val())) {
                         setTimeout(function() {
-                            loadIndicator.removeClass('cs-no-display');
+                            loadIndicator.show();
                             setTimeout(function() {
                                 updateItemButton.click();
-                                loadIndicator.addClass('cs-no-display');
+                                loadIndicator.hide();
                             }, that.options.delay);
                         }, that.options.delay);
                     }

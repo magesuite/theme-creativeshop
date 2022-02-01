@@ -1,0 +1,52 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$video-player_background-color: $color_background-200 !default;
+
+.#{$ns}video-layer {
+    $root: &;
+    max-height: calc(100vh - 12rem);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+
+    &__wrapper {
+        display: none;
+
+        #{$root}__modal & {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            padding-top: 56.25%;
+        }
+    }
+
+    &__modal {
+        &._show {
+            .modal-inner-wrap {
+                transform: translateY(-50%);
+            }
+        }
+
+        .modal-inner-wrap {
+            overflow: hidden;
+            top: 50%;
+            background: $video-player_background-color !important;
+            padding: 3rem 0 0;
+
+            @include media('>=tablet') {
+                width: 94vw;
+                max-height: 94vh !important;
+                margin: auto !important;
+                padding: 3rem 0;
+            }
+
+            @include media('>=laptop') {
+                width: 86vw;
+            }
+        }
+    }
+}

@@ -466,15 +466,69 @@
                 <var name="js"></var>
             </var>
         </var>
-        <var name="video_player">
-            <var name="scope">.cs-image-teaser-legacy, .cs-grid-layout__brick--teaser, .cs-grid-layout_in-column__brick--teaser, .cs-image-teaser, .cs-hero, cs-products-grid--with-hero</var>
-            <var name="useModal">true</var>
-            <var name="modalType">popup</var>
-            <var name="videoAutoplay">true</var>
-            <var name="videoPlayerId">yt-player</var>
-            <var name="videoPlayerWidth">1200</var>
-            <var name="videoPlayerHeight">675</var>
-            <var name="openVideoInFullscreenMobile">true</var>
+        <var name="video_teaser">
+            <var name="youtube">
+                <var name="loop">1</var> <!-- Play the video again when it reaches the end - not available as player_vars for single YouTube videos -->
+                <var name="width">100%</var>
+                <var name="height">100%</var>
+                <var name="player_vars"> <!-- https://developers.google.com/youtube/player_parameters -->
+                    <var name="playsinline">1</var> <!-- Play video inline on mobile devices -->
+                    <var name="autoplay">1</var> <!-- Automatically start playback of the video -->
+                    <var name="mute">1</var> <!-- Mute video on load -->
+                    <var name="controls">0</var> <!-- Show all elements in player -->
+                    <var name="showinfo">0</var> <!-- Show name of video -->
+                </var>
+            </var>
+            <var name="vimeo">
+                <var name="width">100%</var>
+                <var name="height">100%</var>
+                <var name="player_vars"> <!-- https://developer.vimeo.com/player/sdk/embed -->
+                    <var name="playsinline">1</var> <!-- Play video inline on mobile devices -->
+                    <var name="autoplay">1</var> <!-- Automatically start playback of the video -->
+                    <var name="muted">1</var> <!-- Mute video on load -->
+                    <var name="controls">0</var> <!-- Show all elements in player -->
+                    <var name="loop">1</var> <!-- Play the video again when it reaches the end -->
+                    <var name="responsive">1</var> <!-- Resize according to the parent element -->
+                </var>
+            </var>
+            <var name="facebook">
+                <var name="app_id"></var> <!-- Facebook developers application ID -->
+                <var name="app_version"></var> <!-- Facebook developers application version, example: v3.2 -->
+                <var name="width">auto</var> <!-- Facebook does not accept % values -->
+                <var name="player_vars"> <!-- https://developers.facebook.com/docs/plugins/embedded-video-player#settings -->
+                    <var name="autoplay">1</var> <!-- Automatically start playback of the video -->
+                    <var name="mute">1</var> <!-- Mute video on load -->
+                    <var name="controls">0</var> <!-- Show all elements in player -->
+                    <var name="loop">1</var> <!-- Play the video again when it reaches the end -->
+                </var>
+            </var>
+            <var name="file">
+                <var name="width">100%</var>
+                <var name="height">auto</var>
+                <var name="player_vars">
+                    <var name="playsinline">1</var> <!-- Play video inline on mobile devices -->
+                    <var name="autoplay">1</var> <!-- Automatically start playback of the video -->
+                    <var name="controls">0</var> <!-- Show all elements in player -->
+                    <var name="muted">1</var> <!-- Mute video on load -->
+                    <var name="loop">1</var> <!-- Play the video again when it reaches the end -->
+                </var>
+            </var>
+        </var>
+        <var name="video_layer">
+            <var name="mobile_fullscreen">true</var> <!-- Force fullscreen for touch and mobile devices -->
+            <var name="modal_type">popup</var> <!-- Magento modal type -->
+            <var name="youtube">
+                <var name="loop">1</var> <!-- Play the video again when it reaches the end - not available as player_vars for single YouTube videos -->
+                <var name="width">1200</var>
+                <var name="height">675</var>
+                <!-- https://developers.google.com/youtube/player_parameters -->
+                <var name="player_vars">
+                    <var name="playsinline">1</var> <!-- Play video inline on mobile devices -->
+                    <var name="autoplay">1</var> <!-- Automatically start playback of the video -->
+                    <var name="controls">1</var> <!-- Show all elements in player -->
+                    <var name="rel">0</var> <!-- Show related videos -->
+                </var>
+            </var>
         </var>
     </vars>
 
@@ -540,6 +594,17 @@
         <!-- Defaines if IE11 modal should be displayed -->
         <var name="ie11_modal">
             <var name="enabled">true</var>
+        </var>
+
+        <!-- Consent Management -->
+        <var name="consent_management">
+            <var name="vendor"></var> <!-- Must be filled in, possible values: 'usercentrics' or 'amasty' -->
+            <!-- Consent name to be checked -->
+            <var name="services">
+                <var name="youtube">YouTube Video</var>
+                <var name="vimeo">Vimeo</var>
+                <var name="facebook">Facebook Videos</var>
+            </var>
         </var>
     </vars>
 

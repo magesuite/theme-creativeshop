@@ -53,6 +53,7 @@ import 'components/star-rating';
 import 'components/swatches';
 import 'components/topbar';
 import 'components/typography';
+import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/product-navigation';
@@ -83,10 +84,12 @@ import 'components/captcha';
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 
 // Optional components - can be imported in child theme entry
-// import 'components/tooltip';
-// import 'components/tile-gallery';
-// import 'components/reorder-banner';
+// import 'Amazon_Pay/web/css/source/module.scss';
 // import 'components/ie11';
 // import 'components/page-scroll';
-// import 'components/product-variants';
 // import 'components/product-tile-list';
+// import 'components/product-variants';
+// import 'components/reorder-banner';
+// import 'components/tile-gallery';
+// import 'components/tooltip';
+// import 'components/video-layer';
