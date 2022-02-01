@@ -146,12 +146,12 @@ export default class VideoTeaser {
         const distance: DOMRect = element.getBoundingClientRect();
 
         return (
-            distance.top >= 0 &&
-            distance.left >= 0 &&
-            distance.bottom <=
+            distance.top <=
                 (window.innerHeight || document.documentElement.clientHeight) &&
-            distance.right <=
-                (window.innerWidth || document.documentElement.clientWidth)
+            distance.left <=
+                (window.innerWidth || document.documentElement.clientWidth) &&
+            distance.bottom >= 0 &&
+            distance.right >= 0
         );
     }
 }
