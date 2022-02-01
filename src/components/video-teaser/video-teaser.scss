@@ -1,0 +1,30 @@
+@import 'config/variables';
+
+.#{$ns}image-teaser {
+    $root: &;
+
+    [data-video-teaser] {
+        // Prevent video slipping outside of aspect-ratio
+        overflow: hidden;
+        position: relative;
+
+        // Hide video placeholder if video is not rendered
+        &:empty {
+            display: none;
+        }
+
+        // Hide image in teaser if video has rendered
+        &:not(:empty) + #{$root}__picture {
+            display: none;
+        }
+    }
+
+    // Position video in center of placeholder in case it won't fit image aspect-ratio
+    [id^='video-teaser'] {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

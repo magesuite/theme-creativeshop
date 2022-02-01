@@ -1,7 +1,7 @@
 import * as $ from 'jquery';
 
 import csTeaser from 'components/teaser/teaser';
-import VideoPlayer from 'components/video-player/video-player';
+import VideoPlayer from 'components/video-layer/video-layer';
 
 /**
  * component options interface.
@@ -65,13 +65,6 @@ interface ImageTeaserLegacyOptions {
     };
 
     /**
-     * Tells if videos shall be handled
-     * @type {boolean}
-     * @default true
-     */
-    allowVideos?: boolean;
-
-    /**
      * Defines breakpoint, where carousel should be destroyed and teaser shall display as standard image teaser
      * Default: breakpoint.tablet
      * @type {number}
@@ -117,8 +110,6 @@ export default class ImageTeaserLegacy {
         const _this = this;
         const defaultOptions: any = {
             teaserName: 'cs-image-teaser-legacy',
-            allowVideos: true,
-            videoModalClass: 'cs-image-teaser-legacy__modal',
             carouselBreakpoint: breakpoint.tablet,
         };
 
@@ -198,10 +189,6 @@ export default class ImageTeaserLegacy {
             $(window).on('resize', function(): void {
                 _this._toggleMobileTeaser();
             });
-        }
-
-        if (this._settings.allowVideos) {
-            this._videoPlayer = new VideoPlayer();
         }
     }
 
