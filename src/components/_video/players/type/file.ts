@@ -1,12 +1,6 @@
 import { FilePlayerOptions } from 'components/_video/interfaces';
 
-declare global {
-    interface Window {
-        BASE_URL: string;
-    }
-}
-
-const MAGENTO_MEDIA_URL = `${window.BASE_URL ?? window.location.origin}media/`;
+const MAGENTO_MEDIA_URL = `${window.location.origin}/media/`;
 const MATCH_URL_MAGENTO = /"(.*?)"/;
 
 /**
