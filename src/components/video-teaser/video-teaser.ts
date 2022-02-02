@@ -41,17 +41,22 @@ export default class VideoTeaser {
      * Register IntersectionObserver
      */
     protected addIntersectionObserver(): void {
-        const io: IntersectionObserver = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                this.handleVideoTeaser(
-                    entry.target,
-                    entry.intersectionRatio > 0,
-                    Array.from(this._videoTeasers).indexOf(
-                        entry.target as HTMLDivElement
-                    )
-                );
-            });
-        });
+        const io: IntersectionObserver = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    this.handleVideoTeaser(
+                        entry.target,
+                        entry.isIntersecting,
+                        Array.from(this._videoTeasers).indexOf(
+                            entry.target as HTMLDivElement
+                        )
+                    );
+                });
+            },
+            {
+                threshold: 0.5,
+            }
+        );
 
         this._videoTeasers.forEach(el => io.observe(el));
     }
@@ -133,6 +138,15 @@ export default class VideoTeaser {
         } else {
             if (isVisible && hasPlayer) {
                 videoPlayer.destroy(videoTeaserId);
+
+                if (
+                    videoPlayerPlaceholder.firstElementChild.id ===
+                    videoTeaserId
+                ) {
+                    videoPlayerPlaceholder.removeChild(
+                        videoPlayerPlaceholder.firstElementChild
+                    );
+                }
             }
         }
     }
