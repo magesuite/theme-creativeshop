@@ -1,12 +1,22 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overwritten to:
+* - add magesuite classes
+* - add different classes for options in case of bundle product
+* - add free badge if exists
+* - add checkout.cart.item.brand, checkout.cart.item.renderers.default.option.edit hotspots
+* - add qty-increment component instead of input
+*/
+
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+?>
+<?php
 $_item = $block->getItem();
 $product = $_item->getProduct();
 $productType = $product->getTypeId();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
-$helper = $this->helper('Magento\Msrp\Helper\Data');
+$helper = $this->helper(\Magento\Msrp\Helper\Data::class);
 $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
 ?>
 <tbody class="cs-cart-table__body cart item">
@@ -14,7 +24,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
         <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="cs-cart-table__col cs-cart-item__item col item">
             <div class="cs-cart-item__product">
                 <?php if ($block->hasProductUrl()):?>
-                    <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"
+                    <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
                     title="<?= $block->escapeHtml($block->getProductName()) ?>"
                     tabindex="-1"
                     class="cs-cart-item__image product-item-photo">
@@ -31,13 +41,13 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php $isFreeBadge = (float)$_item->getPrice() ? false : true;
                     if($_item->getIsGift() and $isFreeBadge): ?>
                         <span class="cs-cart-item__badge cs-cart-item__badge--free">
-                            <span class="cs-cart-item__badge-text"><?php echo __('Free') ?></span>
+                            <span class="cs-cart-item__badge-text"><?= __('Free') ?></span>
                         </span>
                     <?php endif; ?>
                     <?= $block->getChildHtml('checkout.cart.item.brand.' . $_item->getProductType(), false); ?>
                     <strong class="cs-cart-item__name product-item-name">
                         <?php if ($block->hasProductUrl()):?>
-                            <a href="<?= /* @escapeNotVerified */ $block->getProductUrl() ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
+                            <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
                         <?php else: ?>
                             <?= $block->escapeHtml($block->getProductName()) ?>
                         <?php endif; ?>
@@ -48,8 +58,8 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                             <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
                             <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
                                 <a class="cs-cart-item__option-link"
-                                    href="<?php /* @escapeNotVerified */ echo $this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]);?>"
-                                    title="<?php echo $block->escapeHtml(__('Edit item parameter')); ?>"
+                                    href="<?= $block->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
+                                    title="<?= $block->escapeHtml(__('Edit item parameter')); ?>"
                                 >
                             <?php endif; ?>
                                 <dl class="cs-cart-item__options-group item-options">
@@ -58,9 +68,9 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                                     </dt>
                                     <dd class="cs-cart-item__options-value">
                                         <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                            <?= /* @escapeNotVerified */ $_formatedOptionValue['full_view'] ?>
+                                            <?= $block->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
                                         <?php else: ?>
-                                            <?= /* @escapeNotVerified */ $_formatedOptionValue['value'] ?>
+                                            <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
                                         <?php endif; ?>
                                         <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
                                             <?= $block->getChildHtml('checkout.cart.item.renderers.default.option.edit'); ?>
@@ -75,7 +85,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif;?>
                     <?php if ($messages = $block->getMessages()): ?>
                         <?php foreach ($messages as $message): ?>
-                            <div class="cs-cart-item__message cart item message <?= /* @escapeNotVerified */ $message['type'] ?>"><div><?= $block->escapeHtml($message['text']) ?></div></div>
+                            <div class="cs-cart-item__message cart item message <?= $block->escapeHtmlAttr($message['type']) ?>"><div><?= $block->escapeHtml($message['text']) ?></div></div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
@@ -88,10 +98,10 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
         <?php if ($canApplyMsrp): ?>
             <td class="cs-cart-table__col cs-cart-item__price col msrp" data-th="<?= $block->escapeHtml(__('Price')) ?>">
                 <span class="pricing msrp">
-                    <span class="msrp notice"><?= /* @escapeNotVerified */ __('See price before order confirmation.') ?></span>
+                    <span class="msrp notice"><?= $block->escapeHtml(__('See price before order confirmation.')) ?></span>
                     <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
-                    <a href="#" class="action help map" id="<?= /* @escapeNotVerified */ ($helpLinkId) ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?= /* @escapeNotVerified */ $helpLinkId ?>","productName": "<?= /* @escapeNotVerified */ $product->getName() ?>","showAddToCart": false}}'>
-                        <span><?= /* @escapeNotVerified */ __("What's this?") ?></span>
+                    <a href="#" class="action help map" id="<?= $block->escapeHtmlAttr(($helpLinkId)) ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?= $block->escapeJs($block->escapeHtml($helpLinkId)) ?>","productName": "<?= $block->escapeJs($block->escapeHtml($product->getName())) ?>","showAddToCart": false}}'>
+                        <span><?= $block->escapeHtml(__("What's this?")) ?></span>
                     </a>
                 </span>
             </td>
@@ -121,7 +131,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
         </td>
         <td class="cs-cart-table__col cs-cart-item__bottom">
             <div class="cs-cart-item__buttons actions-toolbar">
-                <?= /* @escapeNotVerified */ $block->getActions($_item) ?>
+                <?= /* @noEscape */ $block->getActions($_item) ?>
             </div>
         </td>
     </tr>

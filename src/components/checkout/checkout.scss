@@ -45,17 +45,17 @@ $checkout_place-order-button-icon-pos: $button_default-icon-pos !default;
 $checkout_next-button-outside: false !default;
 
 $checkout_show-cart-button-type: 'secondary' !default;
-$checkout_show-cart-button-icon-pos: $button_default-icon-pos !default;
+$checkout_show-cart-button-icon-pos: 'no-icon' !default;
 $checkout_login-button-type: $button_default-type !default;
-$checkout_login-button-icon-pos: $button_default-icon-pos !default;
+$checkout_login-button-icon-pos: 'no-icon' !default;
 $checkout_estimation-button-type: 'secondary' !default;
-$checkout_estimation-button-icon-pos: $button_default-icon-pos !default;
+$checkout_estimation-button-icon-pos: 'no-icon' !default;
 $checkout_billing-address-button-type: 'secondary' !default;
-$checkout_billing-address-button-icon-pos: $button_default-icon-pos !default;
+$checkout_billing-address-button-icon-pos: 'no-icon' !default;
 $checkout_show-popup-button-type: $button_default-type !default;
-$checkout_show-popup-button-icon-pos: $button_default-icon-pos !default;
+$checkout_show-popup-button-icon-pos: 'no-icon' !default;
 $checkout_addresses-button-type: 'secondary' !default;
-$checkout_addresses-button-icon-pos: $button_default-icon-pos !default;
+$checkout_addresses-button-icon-pos: 'no-icon' !default;
 
 $checkout_show-success-icon-on-shipping-form: true !default;
 
@@ -140,15 +140,18 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
 
 .#{$ns}checkout {
     $root: &;
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    justify-content: space-between;
-    max-width: 45rem;
-    margin: 0 auto 1.5rem auto;
 
-    @include media('>=tablet') {
-        max-width: $checkout_page-max-width;
+    .checkout-container {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        justify-content: space-between;
+        max-width: 45rem;
+        margin: 0 auto 1.5rem auto;
+
+        @include media('>=tablet') {
+            max-width: $checkout_page-max-width;
+        }
     }
 
     // General checkout layout and checkout forms
@@ -533,12 +536,21 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 
     &__sidebar-inner {
+        display: flex;
+        flex-direction: column;
+
         @if ($checkout_next-button-outside == true) {
             @include media('>=tablet') {
                 margin: 0 0 $checkout_steps-space;
                 background: $checkout_boxes-background;
                 box-shadow: $checkout_boxes-box-shadow;
                 border-radius: $checkout_boxes-border-radius;
+            }
+        }
+
+        .opc-block-shipping-information {
+            @include media('>=tablet') {
+                order: 10;
             }
         }
     }
@@ -669,14 +681,22 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 
     .shipping-information-content {
-        padding: 0 $checkout_base-space;
+        padding: 0;
+
+        @include media('>=tablet') {
+            padding: 0 $checkout_base-space;
+        }
     }
 
     .shipping-information-title {
         display: flex;
         justify-content: space-between;
         font-weight: 600;
-        padding: $checkout_base-space $checkout_base-space 0;
+        padding: $checkout_base-space 0 0;
+
+        @include media('>=tablet') {
+            padding: $checkout_base-space $checkout_base-space 0;
+        }
 
         button.action.action-edit {
             cursor: pointer;
@@ -878,6 +898,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 
     .action-edit-address,
+    .action-edit-payment,
     .action-update,
     .action-cancel {
         @include button(
@@ -941,13 +962,14 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     // Summary (sidebar on desktop and tablets)
 
     .opc-block-summary {
-        padding: 0;
+        padding-top: $checkout_base-space;
+        border-top: $checkout_elements-border;
 
         .action.checkout,
         .items-in-cart,
         .title {
             @include media('<tablet') {
-                display: none;
+                display: block;
             }
         }
 
@@ -1192,11 +1214,19 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         }
 
         .items-in-cart {
+            margin-top: $checkout_base-space;
+
             @include media('<tablet') {
                 display: block;
             }
 
+            @include media('>=tablet') {
+                margin-top: 0;
+            }
+
             .title {
+                padding: $checkout_base-space;
+
                 // Summary amount of product (magento markup)
                 strong {
                     font-size: 1.4rem;
@@ -1652,31 +1682,6 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         .fieldset {
             padding: 1rem 0 2rem;
         }
-    }
-}
-
-//Amazon Pay - payment method
-
-//Style Amazon widget wrapper for iframe/ and iframe element
-
-.amazon-widget {
-    width: 100%;
-    max-width: 100%;
-    height: 25rem;
-    margin-top: 0;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.27);
-    margin-bottom: 2rem;
-
-    iframe {
-        border: none !important;
-    }
-}
-
-.amazon-payment-method {
-    .payment-method-content,
-    .payment-method-title {
-        padding: 0;
-        margin-top: 0;
     }
 }
 

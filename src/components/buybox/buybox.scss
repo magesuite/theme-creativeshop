@@ -46,8 +46,6 @@ $buybox_price-special-price-color: $price-box_special-price-color !default;
 $buybox_price-special-price-font-size: 1.8rem !default;
 $buybox_price-special-price-font-weight: $price-box_special-price-font-weight !default;
 
-$buybox_product-variants-select-height: 4em !default;
-
 $buybox_addtocart-fieldset-display: flex !default;
 $buybox_addtocart-fieldset-justify-content: stretch !default;
 $buybox_addtocart-fieldset-align-items: flex-start !default;
@@ -261,22 +259,6 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
         .page-product-bundle {
             margin-bottom: 0;
         }
-    }
-
-    &__product-variants {
-        // Fix for disappearing html select
-        .#{$ns}html-select {
-            display: block !important;
-        }
-
-        .#{$ns}html-select__trigger {
-            height: $buybox_product-variants-select-height;
-        }
-    }
-
-    &__product-variants-label {
-        display: inline-block;
-        margin-bottom: 0.4em;
     }
 
     &__addtocart-fieldset {
@@ -540,12 +522,36 @@ $buybox_customize-button-icon-pos: 'no-icon' !default;
         // Apply qty-switcher width (for whole table column)
         .qty {
             width: $buybox_qty-wrapper-width;
+
+            @include media('>=tablet') {
+                margin-left: auto;
+            }
+        }
+
+        .out-of-stock .qty {
+            width: auto;
         }
 
         // Display price below product option and make some spacing between option's name and price
         .price-final_price {
             display: block;
             margin-top: 0.3em;
+        }
+
+        .back-in-stock-modal-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            span {
+                display: inline-block;
+                padding-right: 0.5rem;
+            }
+
+            svg {
+                height: 2rem;
+                width: auto;
+            }
         }
     }
 

@@ -73,27 +73,25 @@ define([
                                 if ($form.validation('isValid')) {
                                     $form.trigger('processStart');
 
-                                    setTimeout(function() {
-                                        $clonedForm.remove();
-                                        $formParent.prepend($form);
-                                        $form
-                                            .find('.product-options-bottom')
-                                            .show();
-                                        $formParent.css('height', '');
+                                    $clonedForm.remove();
+                                    $formParent.prepend($form);
+                                    $form
+                                        .find('.product-options-bottom')
+                                        .show();
+                                    $formParent.css('height', '');
 
-                                        slideModal.closeModal();
+                                    slideModal.closeModal();
 
-                                        $form.trigger('processStop');
+                                    $form.trigger('processStop');
 
-                                        var jqForm = $form.catalogAddToCart({
-                                            bindSubmit: false,
-                                        });
+                                    var jqForm = $form.catalogAddToCart({
+                                        bindSubmit: false,
+                                    });
 
-                                        jqForm.catalogAddToCart(
-                                            'submitForm',
-                                            jqForm
-                                        );
-                                    }, 500);
+                                    jqForm.catalogAddToCart(
+                                        'submitForm',
+                                        jqForm
+                                    );
                                 }
                             });
                     });

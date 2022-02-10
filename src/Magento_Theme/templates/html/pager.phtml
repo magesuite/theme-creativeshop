@@ -1,9 +1,10 @@
 <?php
-// @codingStandardsIgnoreFile
-
 /**
- * @see \Magento\Theme\Block\Html\Pager
- */
+* Template overridden in order to:
+* - add custom pagination input
+* - add magesuite classes
+*/
+/** @see \Magento\Theme\Block\Html\Pager */
 ?>
 
 <?php if ($block->getCollection()->getSize()): ?>
@@ -42,14 +43,14 @@
                         $prevActionTag = $isFirstPage && $displayPrevNextButtonsIfDisabled ? 'span' : 'a';
                     ?>
                     <div class="item pages-item-previous cs-pagination__prev" role="none">
-                        <<?= $prevActionTag ?> class="<?= /* @escapeNotVerified */ $prevPageLabel ? 'link ' : 'action ' ?> previous cs-pagination__action cs-pagination__action--previous-page<?= $prevActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
-                          <?php if($prevActionTag == 'a'): ?> href="<?= /* @escapeNotVerified */ $block->getPreviousPageUrl() ?>"<?php endif; ?>
-                          title="<?= /* @escapeNotVerified */ $prevPageLabel ?>"
+                        <<?= $prevActionTag ?> class="<?= $block->escapeHtmlAttr($prevPageLabel ? 'link ' : 'action ') ?> previous cs-pagination__action cs-pagination__action--previous-page<?= $prevActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
+                          <?php if($prevActionTag == 'a'): ?> href="<?= $block->escapeUrl($block->getPreviousPageUrl()) ?>"<?php endif; ?>
+                          title="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"
                           tabindex="0"
                           role="menuitem">
                             <?= $previousPageIcon ?>
                             <?php if($displayPrevNextLabels): ?>
-                                <span class="cs-pagination__action-label cs-pagination__action-label--previous-page"><?= /* @escapeNotVerified */ $prevPageLabel ?></span>
+                                <span class="cs-pagination__action-label cs-pagination__action-label--previous-page"><?= $block->escapeHtml($prevPageLabel) ?></span>
                             <?php endif; ?>
                         </<?= $prevActionTag ?>>
                     </div>
@@ -57,9 +58,9 @@
 
                 <?php if(!empty($prefix)): ?>
                     <?php if($this->hasInputSwitcher()): ?>
-                        <label class="label pages-label cs-pagination__prefix-label" role="none"><?= /* @escapeNotVerified */ __($prefix) ?></label>
+                        <label class="label pages-label cs-pagination__prefix-label" role="none"><?= $block->escapeHtml(__($prefix)) ?></label>
                     <?php else: ?>
-                        <p class="label pages-label cs-pagination__prefix-label" role="none"><?= /* @escapeNotVerified */ __($prefix) ?></p>
+                        <p class="label pages-label cs-pagination__prefix-label" role="none"><?= $block->escapeHtml(__($prefix)) ?></p>
                     <?php endif; ?>
                 <?php endif; ?>
 
@@ -75,16 +76,16 @@
                             type="number"
                             aria-label="<?= __('Page:'); ?>"
                             min="1"
-                            max="<?= /* @escapeNotVerified */ $lastPageNum; ?>"
+                            max="<?= $block->escapeHtmlAttr($lastPageNum) ?>"
                             size="2"
-                            value="<?= /* @escapeNotVerified */ $block->getCurrentPage(); ?>"
-                            data-url-pattern='<?= /* @escapeNotVerified */ $block->escapeHtml($this->getUrlPattern()); ?>'
+                            value="<?= $block->escapeHtmlAttr($block->getCurrentPage()) ?>"
+                            data-url-pattern='<?= $block->escapeHtmlAttr($block->escapeHtml($this->getUrlPattern())) ?>'
                         >
 
                         <label class="label cs-pagination__page-provider-label">
                             <?php if($lastPageSeparator):
                                 echo $lastPageSeparator; ?>
-                            <?php endif; ?> <?= /* @escapeNotVerified */ $lastPageNum; ?>
+                            <?php endif; ?> <?= $block->escapeHtml($lastPageNum) ?>
                         </label>
                     </div>
 
@@ -93,13 +94,13 @@
                     <ul class="items pages-items cs-pagination__items" role="none">
                         <?php if ($block->canShowFirst()): ?>
                             <li class="item cs-pagination__item cs-pagination__item--first-page" role="none">
-                                <a class="page first cs-pagination__number cs-pagination__number--first-page" href="<?= /* @escapeNotVerified */ $block->getFirstPageUrl() ?>" role="menuitem"><span>1</span></a>
+                                <a class="page first cs-pagination__number cs-pagination__number--first-page" href="<?= $block->escapeUrl($block->getFirstPageUrl()) ?>" role="menuitem"><span>1</span></a>
                             </li>
                         <?php endif;?>
 
                         <?php if ($block->canShowPreviousJump()): ?>
                             <li class="item cs-pagination__item" role="none">
-                                <a class="page previous jump cs-pagination__number cs-pagination__number--jump" href="<?= /* @escapeNotVerified */ $block->getPreviousJumpUrl(); ?>" role="menuitem"><span>...</span></a>
+                                <a class="page previous jump cs-pagination__number cs-pagination__number--jump" href="<?= $block->escapeUrl($block->getPreviousJumpUrl()) ?>" role="menuitem"><span>...</span></a>
                             </li>
                         <?php endif;?>
 
@@ -107,26 +108,26 @@
                             <?php if ($block->isPageCurrent($page)): ?>
                                 <li class="item current cs-pagination__item cs-pagination__item--current" role="none">
                                     <span class="cs-pagination__number cs-pagination__number--current">
-                                        <span class="label cs-visually-hidden"><?= /* @escapeNotVerified */ __('You\'re currently reading page') ?> </span>
-                                        <span><?= /* @escapeNotVerified */ $page; ?></span>
+                                        <span class="label cs-visually-hidden"><?= $block->escapeHtml(__('You\'re currently reading page')) ?> </span>
+                                        <span><?= $block->escapeHtml($page) ?></span>
                                     </span>
                                 </li>
                             <?php else: ?>
                                 <li class="item cs-pagination__item" role="none">
-                                    <a href="<?= /* @escapeNotVerified */ $block->getPageUrl($page); ?>" class="page cs-pagination__number" role="menuitem"><span><?= /* @escapeNotVerified */ $page; ?></span></a>
+                                    <a href="<?= $block->escapeUrl($block->getPageUrl($page)) ?>" class="page cs-pagination__number" role="menuitem"><span><?= /* @escapeNotVerified */ $page; ?></span></a>
                                 </li>
                             <?php endif;?>
                         <?php endforeach;?>
 
                         <?php if ($block->canShowNextJump()): ?>
                             <li class="item cs-pagination__item" role="none">
-                                <a class="page next jump cs-pagination__number cs-pagination__number--jump" href="<?= /* @escapeNotVerified */ $block->getNextJumpUrl(); ?>" role="menuitem"><span>...</span></a>
+                                <a class="page next jump cs-pagination__number cs-pagination__number--jump" href="<?= $block->escapeUrl($block->getNextJumpUrl()) ?>" role="menuitem"><span>...</span></a>
                             </li>
                         <?php endif;?>
 
                         <?php if ($block->canShowLast()): ?>
                             <li class="item cs-pagination__item cs-pagination__item--last-page" role="none">
-                                <a class="page last cs-pagination__number cs-pagination__number--last-page" href="<?= /* @escapeNotVerified */ $block->getLastPageUrl() ?>" role="menuitem"><span><?= /* @escapeNotVerified */ $block->getLastPageNum() ?></span></a>
+                                <a class="page last cs-pagination__number cs-pagination__number--last-page" href="<?= $block->escapeUrl($block->getLastPageUrl()) ?>" role="menuitem"><span><?= $block->escapeHtml($block->getLastPageNum()) ?></span></a>
                             </li>
                         <?php endif;?>
                     </ul>
@@ -150,9 +151,9 @@
                     ?>
                     <div class="item pages-item-next cs-pagination__next" role="none">
                         <<?= $nextActionTag ?>
-                          class="<?= /* @escapeNotVerified */ $nextPageLabel ? 'link ' : 'action ' ?> next cs-pagination__action cs-pagination__action--next-page<?= $nextActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
-                          <?php if($nextActionTag == 'a'): ?> href="<?= /* @escapeNotVerified */ $block->getNextPageUrl() ?>"<?php endif ?>
-                          title="<?= /* @escapeNotVerified */ $nextPageLabel ?>"
+                          class="<?= $block->escapeHtmlAttr($nextPageLabel) ? 'link ' : 'action ' ?> next cs-pagination__action cs-pagination__action--next-page<?= $nextActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
+                          <?php if($nextActionTag == 'a'): ?> href="<?= $block->escapeUrl($block->getNextPageUrl()) ?>"<?php endif ?>
+                          title="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"
                           tabindex="0"
                           role="menuitem">
                             <?= $nextPageIcon ?>
@@ -168,16 +169,16 @@
 
     <?php if ($block->isShowPerPage()): ?>
         <div class="cs-toolbar__item cs-toolbar__item--limiter">
-        <strong class="limiter-label"><?= /* @escapeNotVerified */ __('Show') ?></strong>
+        <strong class="limiter-label"><?= $block->escapeHtml(__('Show')) ?></strong>
             <select id="limiter" data-mage-init='{"redirectUrl": {"event":"change"}}' class="limiter-options">
                 <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                    <option value="<?= /* @escapeNotVerified */ $block->getLimitUrl($_key) ?>"<?php if ($block->isLimitCurrent($_key)): ?>
+                    <option value="<?= $block->escapeUrl($block->getLimitUrl($_key)) ?>"<?php if ($block->isLimitCurrent($_key)): ?>
                         selected="selected"<?php endif ?>>
-                        <?= /* @escapeNotVerified */ $_limit ?>
+                        <?= $block->escapeHtml($_limit) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
-            <span class="limiter-text"><?= /* @escapeNotVerified */ __('per page') ?></span>
+            <span class="limiter-text"><?= $block->escapeHtml(__('per page')) ?></span>
         </div>
     <?php endif ?>
 <?php endif ?>

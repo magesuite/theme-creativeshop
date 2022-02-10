@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+   <head>
+        <!-- Attach css bundle for this page type -->
+        <css src="css/customer.css" />
+    </head>
+    <body>
+        <!-- Attach correct js bundle for page type -->
+        <referenceBlock name="scripts">
+            <arguments>
+                <argument name="bundle_name" xsi:type="string">customer</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Home</item>
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="link" xsi:type="string">{{baseUrl}}</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string">login</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="title" xsi:type="string" translate="true">Login</item>
+                    <item name="label" xsi:type="string" translate="true">Login</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="main.content" htmlClass="cs-container cs-container--login-page cs-dashboard" />
+
+        <referenceBlock name="page.main.title" display="true">
+            <action method="setPageTitle">
+                <argument name="title" translate="true" xsi:type="string">You are signed out</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

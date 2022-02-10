@@ -1,27 +1,26 @@
 <?php
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
+* Template overridden in order to add magesuite classes
+*/
 ?>
 <div data-bind="scope: 'messages'" class="cs-messages">
     <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
-    <div role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages cs-messages__inner">
+    <div aria-atomic="true" role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages cs-messages__inner">
         <div data-bind="attr: {
             class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type,
             'data-ui-id': 'message-' + message.type
         }">
-            <div data-bind="html: message.text" class="cs-messages__text"></div>
+            <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
         </div>
     </div>
     <!-- /ko -->
     <!-- ko if: messages().messages && messages().messages.length > 0 -->
-    <div role="alert" data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages cs-messages__inner">
+    <div aria-atomic="true" role="alert" data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages cs-messages__inner">
         <div data-bind="attr: {
             class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type,
             'data-ui-id': 'message-' + message.type
         }">
-            <div data-bind="html: message.text" class="cs-messages__text"></div>
+            <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
         </div>
     </div>
     <!-- /ko -->

@@ -21,7 +21,6 @@ import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
 import 'components/cookie-message';
-import 'components/device-detection';
 import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';
@@ -82,12 +81,10 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 
 import 'MageSuite_LoginOrGuestCheckoutStep';
 
-// Exported for usage in templates:
-export { Select } from 'components/select';
-
 // Optional components - can be imported in child theme entry
 // import 'components/tooltip';
 // import 'components/tile-gallery';
 // import 'components/reorder-banner';
 // import 'components/ie11';
 // import 'MageSuite_PackstationDhl/web/css/source/module.scss';
+// import 'MageSuite_SuccessPageOrderDetails/web/css/last-order-details.scss';

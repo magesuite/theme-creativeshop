@@ -1,13 +1,12 @@
 <?php
-    // @codingStandardsIgnoreFile
-?>
-<?php
-    /**
-     * Product list toolbar
-     *
-     * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
-     */
-    use Magento\Catalog\Model\Product\ProductList\Toolbar;
+/**
+* Template overridden to:
+* - add magesuite classes
+* - introduce xml configuration (etc/view.xml)
+* - add icons
+*/
+
+/** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */
 ?>
 <?php if ($block->isEnabledViewSwitcher()): ?>
     <div class="modes cs-viewmode-switcher">
@@ -18,7 +17,7 @@
             ?>
 
             <?php if(!empty($prefixLabel)): ?>
-                <p class="modes-label cs-viewmode-switcher__label" id="modes-label"><?= /* @escapeNotVerified */ __($prefixLabel) ?> </p>
+                <p class="modes-label cs-viewmode-switcher__label" id="modes-label"><?= $block->escapeHtml(__($prefixLabel)) ?> </p>
             <?php endif; ?>
 
             <ul class="cs-viewmode-switcher__modes">
@@ -26,9 +25,9 @@
                     <?php $codeLowercase = strtolower($code) ?>
                     <?php if ($block->isModeActive($code)): ?>
                         <li class="cs-viewmode-switcher__mode cs-viewmode-switcher__mode--current">
-                            <span title="<?= /* @escapeNotVerified */ $label ?>"
-                                class="modes-mode active mode-<?= /* @escapeNotVerified */ $codeLowercase ?> cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--<?= /* @escapeNotVerified */ $codeLowercase ?>"
-                                data-value="<?= /* @escapeNotVerified */ $codeLowercase ?>">
+                            <span title="<?= $block->escapeHtmlAttr($label) ?>"
+                                class="modes-mode active mode-<?= $block->escapeHtmlAttr($codeLowercase) ?> cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--<?= $block->escapeHtmlAttr($codeLowercase) ?>"
+                                data-value="<?= $block->escapeHtmlAttr($codeLowercase) ?>">
                                 <?php if($block->getVar('toolbar/viewmode_switcher/display_modes_icons', 'Magento_Catalog')): ?>
                                     <?= $this->getLayout()
                                          ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
@@ -38,18 +37,18 @@
                                          ->setLazyLoaded(false)
                                          ->toHtml(); ?>
                                 <?php endif; ?>
-                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= /* @escapeNotVerified */ $label ?></span>
+                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= $block->escapeHtml($label) ?></span>
                             </span>
                         </li>
                     <?php else: ?>
                         <li class="cs-viewmode-switcher__mode">
-                            <a class="modes-mode mode-<?= /* @escapeNotVerified */ $codeLowercase ?> cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--<?= /* @escapeNotVerified */ $codeLowercase ?>"
-                               title="<?= /* @escapeNotVerified */ $label ?>"
+                            <a class="modes-mode mode-<?= $block->escapeHtmlAttr($codeLowercase) ?> cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--<?= $block->escapeHtmlAttr($codeLowercase) ?>"
+                               title="<?= $block->escapeHtmlAttr($label) ?>"
                                href="#"
                                data-role="mode-switcher"
-                               data-value="<?= /* @escapeNotVerified */ $codeLowercase ?>"
-                               id="mode-<?= /* @escapeNotVerified */ $codeLowercase ?>"
-                               aria-labelledby="modes-label mode-<?= /* @escapeNotVerified */ $codeLowercase ?>">
+                               data-value="<?= $block->escapeHtmlAttr($codeLowercase) ?>"
+                               id="mode-<?= $block->escapeHtmlAttr($codeLowercase) ?>"
+                               aria-labelledby="modes-label mode-<?= $block->escapeHtmlAttr($codeLowercase) ?>">
                                 <?php if($block->getVar('toolbar/viewmode_switcher/display_modes_icons', 'Magento_Catalog')): ?>
                                     <?= $this->getLayout()
                                          ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
@@ -59,7 +58,7 @@
                                          ->setLazyLoaded(false)
                                          ->toHtml(); ?>
                                 <?php endif; ?>
-                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= /* @escapeNotVerified */ $label ?></span>
+                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= $block->escapeHtml($label) ?></span>
                             </a>
                         </li>
                     <?php endif; ?>

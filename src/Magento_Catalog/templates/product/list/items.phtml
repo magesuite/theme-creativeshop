@@ -1,7 +1,14 @@
 <?php
+/**
+* Template overridden to:
+* - use CC carousel 
+* - change headline wordings
+*/
 
 /* @var $block \Magento\Catalog\Block\Product\AbstractProduct */
+?>
 
+<?php
 switch ($type = $block->getType()) {
 
     case 'related-rule':
@@ -14,6 +21,7 @@ switch ($type = $block->getType()) {
             $items = $block->getAllItems();
             $limit = $block->getPositionLimit();
             $shuffle = (int) $block->isShuffled();
+            $isWeightedRandom = (int) $block->getRotation()->isWeightedRandom($block->getProductListType());
             $canItemsAddToCart = $block->canItemsAddToCart();
 
             $showAddTo = true;
@@ -34,6 +42,7 @@ switch ($type = $block->getType()) {
             $items = $block->getItems();
             $limit = 0;
             $shuffle = 0;
+            $isWeightedRandom = 0;
             $canItemsAddToCart = $block->canItemsAddToCart();
 
             $showAddTo = true;
@@ -53,6 +62,7 @@ switch ($type = $block->getType()) {
             $items = $block->getAllItems();
             $limit = $block->getPositionLimit();
             $shuffle = (int) $block->isShuffled();
+            $isWeightedRandom = (int) $block->getRotation()->isWeightedRandom($block->getProductListType());
 
             $showAddTo = false;
             $showCart = false;
@@ -73,6 +83,7 @@ switch ($type = $block->getType()) {
             $items = $block->getItemCollection()->getItems();
             $limit = $block->getItemLimit('upsell');
             $shuffle = 0;
+            $isWeightedRandom = 0;
 
             $showAddTo = false;
             $showCart = false;
@@ -102,7 +113,7 @@ switch ($type = $block->getType()) {
 
     case 'crosssell':
         /** @var \Magento\Catalog\Block\Product\ProductList\Crosssell $block */
-        if ($exist = $block->getItemCount()) {
+        if ($exist = count($block->getItems())) {
             $type = 'crosssell';
             $class = $type;
 
@@ -138,8 +149,8 @@ switch ($type = $block->getType()) {
         }
         break;
 
-    case 'other':
-        break;
+    default:
+        $exist = null;
 }
 ?>
 
@@ -147,21 +158,23 @@ switch ($type = $block->getType()) {
     <?php if ($type == 'related' || $type == 'upsell'): ?>
         <?php if ($type == 'related'): ?>
             <div
-            class="block products-<?php /* @escapeNotVerified */ echo $class; ?>"
-            data-mage-init='{"relatedProducts":{"relatedCheckbox":".related.checkbox"}}'
-            data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>"
-            data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>"
+                class="block products-<?= $block->escapeHtmlAttr($class) ?>"
+                data-mage-init='{"relatedProducts":{"relatedCheckbox":".related.checkbox"}}'
+                data-limit="<?= $block->escapeHtmlAttr($limit) ?>"
+                data-shuffle="<?= /* @noEscape */ $shuffle ?>"
+                data-shuffle-weighted="<?= /* @noEscape */ $isWeightedRandom ?>">
             >
         <?php else: ?>
             <div
-            class="block products-<?php /* @escapeNotVerified */ echo $class; ?>"
-            data-mage-init='{"upsellProducts":{}}'
-            data-limit="<?php /* @escapeNotVerified */ echo $limit; ?>"
-            data-shuffle="<?php /* @escapeNotVerified */ echo $shuffle; ?>"
+                class="block products-<?= $block->escapeHtmlAttr($class) ?>"
+                data-mage-init='{"upsellProducts":{}}'
+                data-limit="<?= $block->escapeHtmlAttr($limit) ?>"
+                data-shuffle="<?= /* @noEscape */ $shuffle ?>"
+                data-shuffle-weighted="<?= /* @noEscape */ $isWeightedRandom ?>"
             >
         <?php endif; ?>
     <?php else: ?>
-        <div class="block products-<?php /* @escapeNotVerified */ echo $class; ?>">
+        <div class="block products-<?= $block->escapeHtmlAttr($class) ?>">
     <?php endif; ?>
 
     <?php if ($block->getIncludeHeadline() ?? true): ?>

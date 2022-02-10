@@ -1,4 +1,7 @@
 <?php
+/** Custom template to add login icon in header. TODO Verify link escape */
+?>
+<?php
     $labelLogIn = $block->getLabelLogIn();
     $labelLogOut = $block->getLabelLogOut();
 
@@ -12,12 +15,12 @@
             <?php if ($isLoggedIn): ?>
                 <?= $block->getChildHtml('my-account-link.icon.logged-in'); ?>
                 <?php if (!empty($labelLogIn)): ?>
-                    <span class="cs-header-user-nav__label"><?php echo $labelLogIn ?></span>
+                    <span class="cs-header-user-nav__label"><?= $labelLogIn ?></span>
                 <?php endif; ?>
             <?php else: ?>
                 <?= $block->getChildHtml('my-account-link.icon.logged-out'); ?>
                 <?php if (!empty($labelLogOut)): ?>
-                    <span class="cs-header-user-nav__label"><?php echo $labelLogOut ?></span>
+                    <span class="cs-header-user-nav__label"><?= $labelLogOut ?></span>
                 <?php endif; ?>
             <?php endif; ?>
         </div>

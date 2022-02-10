@@ -1,3 +1,8 @@
+<?php 
+/** 
+* Custom template to display navigation for PDP details area
+*/ 
+?>
 <?php
 $layout = $block->getLayout();
 $detailsBlock = $layout->getBlock('product.info.details');
@@ -19,7 +24,7 @@ if (is_object($detailsBlock)) {
         $html = trim($layout->renderElement($blockName));
         $inNav = $detailsBlock->getChildData($alias, 'in_nav') ?? true;
         $label = __($detailsBlock->getChildData($alias, 'title'));
-        $id = str_replace('.', '-', $alias);
+        $id = str_replace('.', '-', $block->escapeHtmlAttr($alias));
 
         if (empty($html) || !$inNav) {
             continue;
@@ -27,7 +32,7 @@ if (is_object($detailsBlock)) {
     ?>
         <li class="cs-product-details-nav__item">
             <a class="cs-product-details-nav__link" href="#<?= $id; ?>">
-                <?= /* @escapeNotVerified */ $label; ?>
+                <?= /* @noEscape */ $label; ?>
             </a>
         </li>
     <?php endforeach; ?>

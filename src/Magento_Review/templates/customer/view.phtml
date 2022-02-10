@@ -1,11 +1,12 @@
 <?php
 /**
- * Template overriden to add Magesuite stars component
- */
+* Template overriden to add Magesuite stars component
+*/
 
-// @codingStandardsIgnoreFile
-
-/** @var \Magento\Review\Block\Customer\View $block */
+/**
+* @var \Magento\Review\Block\Customer\View $block
+* @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+*/
 
 $product = $block->getProductData();
 ?>
@@ -55,7 +56,7 @@ $product = $block->getProductData();
         <?php endif; ?>
 
         <div class="review-title"><?= $block->escapeHtml($block->getReviewData()->getTitle()) ?></div>
-        <div class="review-content"><?= nl2br($block->escapeHtml($block->getReviewData()->getDetail())) ?></div>
+        <div class="review-content"><?= /* @noEscape */ nl2br($block->escapeHtml($block->getReviewData()->getDetail())) ?></div>
         <div class="review-date">
             <?= $block->escapeHtml(__('Submitted on %1', '<time class="date">' . $block->dateFormat($block->getReviewData()->getCreatedAt()) . '</time>'), ['time']) ?>
         </div>

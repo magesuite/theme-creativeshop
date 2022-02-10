@@ -21,7 +21,6 @@ import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
 import 'components/cookie-message';
-import 'components/device-detection';
 import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';
@@ -80,9 +79,6 @@ import 'components/toolbar';
 import 'components/latest-purchased-products';
 
 import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-
-// Exported for usage in templates:
-export { Select } from 'components/select';
 
 // Optional components - can be imported in child theme entry
 // import 'components/tooltip';

@@ -1,12 +1,22 @@
 <?php
-    /**
-     * Product list/grid template
-     *
-     * @var $block \Magento\Catalog\Block\Product\ListProduct
-     */
+/**
+* Template overridden in order to:
+* - render products as product tile
+* - add magesuite classes
+* - add hotspots
+* - add retina images - category_page_grid_x2
+* - add css/grid-layout.css in case of grid layout
+* - add toolbar at the bottom of list
+* - remove initialization of catalogAddToCart
+* - add empty.category.message child block
+*/
 
-    // @codingStandardsIgnoreFile
+/**
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
 
+<?php
     $productCollection = $block->getLoadedProductCollection();
     $productCollection->addMediaGalleryData();
 ?>

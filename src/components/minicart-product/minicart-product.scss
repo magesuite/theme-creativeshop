@@ -46,6 +46,7 @@ $minicart-offcanvas-product-options-label-font-weight: 700 !default;
 $minicart-offcanvas-product_action-icon-size: 2rem !default;
 
 $minicart-product_price-color: $color_text-800 !default;
+$minicart-product_show-special-price: true !default;
 
 $minicart-product_qty-enable: true !default;
 $minicart-product_qty-height: 3rem !default;
@@ -132,6 +133,31 @@ $minicart-product_qty-button-icon-pos: 'only-icon' !default;
     &__item-pricing {
         @if $minicart-offcanvas {
             order: 3;
+        }
+
+        @if $minicart-product_show-special-price {
+            &--with-special {
+                text-align: left;
+
+                .old-price {
+                    .price {
+                        font-size: $minicart-product_overview-font-size;
+                        color: $price_old-color;
+                    }
+                }
+
+                #{$root}__price {
+                    .price {
+                        color: $price_special-color;
+                    }
+                }
+            }
+        }
+
+        @if not $minicart-product_show-special-price {
+            .old-price {
+                display: none;
+            }
         }
     }
 

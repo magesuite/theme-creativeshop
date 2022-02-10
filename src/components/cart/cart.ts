@@ -4,29 +4,31 @@ import * as $ from 'jquery';
  * Component options interface.
  */
 export interface CartOptions {
+    minQtyValue?: number;
     cartTableSelector?: string;
     qtyIncrementButtonSelector?: string;
     qtyIncrementInputSelector?: string;
     cartUpdateButtonSelector?: string;
-    loadingIndicatorSelector?: string;
     updateCartActionTimeout?: number; // in ms
 }
 /**
  * Cart component to modify default M2 behavior
+ * See Magento_Checkout/templates/cart/form.phtml for more details
  */
 export default class Cart {
     protected _options: CartOptions;
     protected _cartTable: HTMLElement;
     protected _updateTimeout: any;
+    protected _removeTimeout: any;
 
     public constructor(options?: CartOptions) {
         this._options = $.extend(
             {
+                minQtyValue: 1,
                 cartTableSelector: '#shopping-cart-table',
                 qtyIncrementButtonSelector: '.cs-qty-increment__button',
                 qtyIncrementInputSelector: '.cs-qty-increment__input',
                 cartUpdateButtonSelector: '#update-cart-button',
-                loadingIndicatorSelector: '.load.indicator',
                 updateCartActionTimeout: 1500,
             },
             options
@@ -43,31 +45,38 @@ export default class Cart {
     protected _triggerUpdate(
         delay: number = this._options.updateCartActionTimeout
     ): void {
-        if (this._updateTimeout) {
+        this._destroyRunningTimeouts();
+
+        this._updateTimeout = setTimeout((): void => {
+            $(`${this._options.cartUpdateButtonSelector}`).trigger('click');
+        }, delay);
+    }
+
+    protected _removeItem(
+        item: JQuery,
+        delay: number = this._options.updateCartActionTimeout
+    ): void {
+        this._destroyRunningTimeouts();
+
+        this._removeTimeout = setTimeout((): void => {
+            const removeTrigger: JQuery = item
+                .parents('.item-info')
+                .find('.cs-cart-item__link--remove > a');
+
+            if (removeTrigger) {
+                removeTrigger.trigger('click');
+            }
+        }, delay);
+    }
+
+    protected _destroyRunningTimeouts(): void {
+        if (this._removeTimeout) {
+            clearTimeout(this._removeTimeout);
+            this._removeTimeout = false;
+        } else if (this._updateTimeout) {
             clearTimeout(this._updateTimeout);
             this._updateTimeout = false;
         }
-
-        this._updateTimeout = setTimeout((): void => {
-            const $updateCartButton = $(
-                `${this._options.cartUpdateButtonSelector}`
-            );
-            $updateCartButton.trigger('click');
-
-            const $qtyInput = $(`${this._options.qtyIncrementInputSelector}`);
-
-            if (
-                !(
-                    $qtyInput.attr('aria-invalid') ||
-                    $qtyInput.attr('aria-invalid') === 'true'
-                )
-            ) {
-                $updateCartButton.prop('disabled', true);
-                $(`${this._options.loadingIndicatorSelector}`).removeClass(
-                    'cs-no-display'
-                );
-            }
-        }, delay);
     }
 
     protected _attachEvents(): void {
@@ -96,13 +105,18 @@ export default class Cart {
         );
 
         $(`${this._options.qtyIncrementInputSelector}`).on(
-            'keydown',
-            (e: KeyboardEvent): void => {
-                const delay: number =
-                    e.keyCode === 13
-                        ? 0
-                        : this._options.updateCartActionTimeout;
-                this._triggerUpdate(delay);
+            'input change',
+            (e): void => {
+                const newValue = $(e.target).val();
+
+                if (
+                    Number(newValue) < this._options.minQtyValue ||
+                    newValue === ''
+                ) {
+                    this._removeItem($(e.target));
+                } else {
+                    this._triggerUpdate();
+                }
             }
         );
     }

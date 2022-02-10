@@ -2,7 +2,9 @@
     - move product price to product overview wrapper
     - add product to product overview wrapper
     - add SVG for See Details
-    - add conditions for boolean variables from XML -->
+    - add conditions for boolean variables from XML
+    - add original price (old price - item.row_total_product_original_price) in case there is a special price
+-->
 
 <li class="item product product-item cs-minicart__list-item" data-role="product-item">
     <div class="product cs-minicart-product">
@@ -38,7 +40,7 @@
                     <!-- /ko -->
                     <!-- /ko -->
                 </div>
-                <div class="product-item-pricing cs-minicart-product__item-pricing">
+                <div data-bind="attr: {class: item.row_total_product_original_price ? 'product-item-pricing cs-minicart-product__item-pricing cs-minicart-product__item-pricing--with-special' : 'product-item-pricing cs-minicart-product__item-pricing'}">
                     <!-- ko if: canApplyMsrp -->
                     <div class="details-map">
                         <span class="label" data-bind="i18n: 'Price'"></span>
@@ -51,6 +53,7 @@
                     <!-- /ko -->
                     <!-- /ko -->
                     <!-- /ko -->
+                    <span if="item.row_total_product_original_price" data-bind="html: item.row_total_product_original_price" class="old-price"></span>
                 </div>
 
                 <!-- ko if: options.length -->

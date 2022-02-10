@@ -1,8 +1,15 @@
-define(['mage/url'], function(url) {
+define(['jquery', 'mage/url', 'Magento_Checkout/js/model/sidebar'], function(
+    $,
+    url,
+    sidebarModel
+) {
     'use strict';
 
     var mixin = {
         cartUrl: url.build('checkout/cart'),
+        setModalElement: function(element) {
+            sidebarModel.setPopup($(element));
+        },
     };
 
     return function(target) {

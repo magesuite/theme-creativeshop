@@ -1,6 +1,14 @@
 <?php
-// @codingStandardsIgnoreFile
-
+/**
+* Template overwritten to:
+* - add magesuite classes
+* - make collapse optional
+* - integrate with xml configuration: headline, icon, labels, input placeholder
+* - add checkout.cart.coupon.additional hotspot
+* TODO - verify if captcha should be removed and also functionality to open collapse if there is coupon already inserted (see newest Magento file)
+*/
+?>
+<?php
 $placeholder = $block->getInputPlaceholder();
 $inputLabel = $block->getInputLabel();
 $buttonApplyLabel = $block->getButtonApplyLabel();
@@ -34,7 +42,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                 <div class="field">
                     <?php if(!empty($inputLabel)): ?>
                     <label for="coupon_code" class="label">
-                        <span><?= /* @escapeNotVerified */ $block->escapeHtml($inputLabel) ?></span>
+                        <span><?= $block->escapeHtml($inputLabel) ?></span>
                     </label>
                     <?php endif; ?>
                     <div class="control">
@@ -43,8 +51,8 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                             class="input-text"
                             id="coupon_code"
                             name="coupon_code"
-                            value="<?php echo $block->escapeHtml($block->getCouponCode()) ?>"
-                            <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtml($placeholder); ?>"<?php endif; ?>
+                            value="<?= $block->escapeHtmlAttr($block->getCouponCode()) ?>"
+                            <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtmlAttr($placeholder); ?>"<?php endif; ?>
                         />
                         <?= $block->getChildHtml('checkout.cart.coupon.additional'); ?>
                     </div>
@@ -55,9 +63,9 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                             class="action apply primary"
                             type="submit"
                             id="coupon_apply"
-                            value="<?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?>"
+                            value="<?= $block->escapeHtmlAttr($buttonApplyLabel); ?>"
                         >
-                            <span><?= /* @escapeNotVerified */ $block->escapeHtml($buttonApplyLabel); ?></span>
+                            <span><?= $block->escapeHtml($buttonApplyLabel); ?></span>
                             <?= $block->getChildHtml('checkout.cart.coupon.apply.icon'); ?>
                         </button>
                     <?php else: ?>
@@ -65,9 +73,9 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                             type="button"
                             class="action cancel primary"
                             id="coupon_cancel"
-                            value="<?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?>"
+                            value="<?= $block->escapeHtmlAttr($buttonCancelLabel); ?>"
                         >
-                            <span><?= /* @escapeNotVerified */ $block->escapeHtml($buttonCancelLabel); ?></span>
+                            <span><?= $block->escapeHtml($buttonCancelLabel); ?></span>
                             <?= $block->getChildHtml('checkout.cart.coupon.cancel.icon'); ?>
                         </button>
                     <?php endif; ?>

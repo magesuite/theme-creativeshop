@@ -1,10 +1,15 @@
 <?php
+/**
+* Template overridden to:
+* - add magesuite classes
+*/
 
-// @codingStandardsIgnoreFile
-
+// phpcs:disable Magento2.Templates.ThisInTemplate
 /** @var $block Magento\Checkout\Block\Cart\Item\Renderer */
-
+?>
+<?php
 $item = $block->getItem();
+$taxDataHelper = $this->helper(\Magento\Tax\Helper\Data::class);
 ?>
 <tbody>
 
@@ -28,9 +33,9 @@ $item = $block->getItem();
                                 </dt>
                                 <dd class="cs-cart-item__options-value">
                                     <?php if (isset($formatedOptionValue['full_view'])): ?>
-                                    <?= $formatedOptionValue['full_view'] ?>
+                                    <?= /* @noEscape */ $formatedOptionValue['full_view'] ?>
                                     <?php else: ?>
-                                    <?= $formatedOptionValue['value'] ?>
+                                    <?= /* @noEscape */ $formatedOptionValue['value'] ?>
                                     <?php endif; ?>
                                 </dd>
                             </dl>
@@ -44,28 +49,28 @@ $item = $block->getItem();
         </div>
     </td>
     <td class="col | cs-cart-item__price" data-th="<?= $block->escapeHtml(__('Price'));?>">
-        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceInclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
-            <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax'));?>">
-            <?= $block->getUnitPriceInclTaxHtml($item); ?>
+        <?php if ($taxDataHelper->displayCartPriceInclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+            <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax')) ?>">
+            <?= $block->getUnitPriceInclTaxHtml($item) ?>
                 </span>
         <?php endif; ?>
-        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceExclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
-            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax'));?>">
-            <?= $block->getUnitPriceExclTaxHtml($item); ?>
+        <?php if ($taxDataHelper->displayCartPriceExclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
+            <?= $block->getUnitPriceExclTaxHtml($item) ?>
                 </span>
         <?php endif; ?>
     </td>
     <td class="col | cs-cart-item__qty" data-th="<?= $block->escapeHtml(__('Qty'));?>"><span class="cs-cart-item__qty-input"><?= $item->getQty() ?></span></td>
-    <td class="col | cs-cart-item__subtotal | subtotal" data-th="<?= $block->escapeHtml(__('Subtotal'));?>">
-        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceInclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
-            <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax'));?>">
-            <?= $block->getRowTotalInclTaxHtml($item); ?>
-                </span>
+    <td class="col | cs-cart-item__subtotal | subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
+        <?php if ($taxDataHelper->displayCartPriceInclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+            <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax')) ?>">
+                <?= $block->getRowTotalInclTaxHtml($item) ?>
+            </span>
         <?php endif; ?>
-        <?php if ($this->helper('Magento\Tax\Helper\Data')->displayCartPriceExclTax() || $this->helper('Magento\Tax\Helper\Data')->displayCartBothPrices()): ?>
-            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax'));?>">
-            <?= $block->getRowTotalExclTaxHtml($item); ?>
-                </span>
+        <?php if ($taxDataHelper->displayCartPriceExclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
+                <?= $block->getRowTotalExclTaxHtml($item) ?>
+            </span>
         <?php endif; ?>
     </td>
 </tr>

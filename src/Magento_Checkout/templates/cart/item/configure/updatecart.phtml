@@ -1,5 +1,10 @@
 <?php
-// @codingStandardsIgnoreFile
+/**
+* Template overwritten to:
+* - add magesuite classes
+* - replace input with qty-increment component
+*/
+
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
 <?php
@@ -32,15 +37,15 @@
             <div class="cs-buybox__addtocart-actions">
                 <button
                     type="submit"
-                    title="<?= /* @escapeNotVerified */ $buttonTitle ?>"
+                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                     class="action primary tocart cs-buybox__update"
                     id="product-updatecart-button"
                 >
-                    <span class="cs-buybox__update-span"><?= /* @escapeNotVerified */ $buttonTitle ?></span>
+                    <span class="cs-buybox__update-span"><?= $block->escapeHtml($buttonTitle) ?></span>
                     <?= $this->getLayout()
                         ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
                         ->setIconUrl('images/icons/addtocart/icon-configure.svg')
-                        ->setCssClass('cs-addtocart__configure-icon')
+                        ->setCssClass('cs-buybox__update-icon')
                         ->setInlined(true)
                         ->setLazyLoaded(false)
                         ->toHtml();

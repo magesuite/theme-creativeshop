@@ -1,4 +1,9 @@
 <?php
+/**
+* Custom file created in order to add qty-increment component
+*/
+?>
+<?php
 $item = $block->getData('item');
 
 echo $this->getLayout()
@@ -6,7 +11,7 @@ echo $this->getLayout()
     ->setInputName('cart[' . $item->getId() . '][qty]')
     ->setInputSize(1)
     ->setInputInitialValue($block->getQty())
-    ->setInputAdditionalParams('data-validate="{required:true,\'validate-greater-than-zero\':true}" id="cart-' . /* @escapeNotVerified */ $item->getId().'-qty" data-cart-item-id="' ./* @escapeNotVerified */ $item->getSku() . '" data-role="cart-item-qty"')
+    ->setInputAdditionalParams('data-validate="{required:true}" id="cart-' . $block->escapeHtmlAttr($item->getId()) .'-qty" data-cart-item-id="' . $block->escapeHtmlAttr($item->getSku()) . '" data-role="cart-item-qty"')
     ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
     ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
     ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
