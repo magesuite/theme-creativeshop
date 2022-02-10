@@ -19,6 +19,7 @@ define([
                 var $form = $(this);
 
                 if (
+                    !document.body.classList.contains('page-product-bundle') &&
                     !$('#missing-swatches-modal').length &&
                     $form.is('#product_addtocart_form')
                 ) {
