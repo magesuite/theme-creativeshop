@@ -58,6 +58,9 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     return;
                 }
 
+                this.options.selectorProduct =
+                    '.product-info-main, .cs-product-tile';
+
                 this._super();
             },
             _onGalleryLoaded: function(gallery) {
