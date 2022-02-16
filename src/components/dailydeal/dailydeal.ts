@@ -599,6 +599,10 @@ export default class Dailydeal {
         this._$countdown.addClass(`countdown-${rdm}-${this._endTime}`);
     }
 
+    protected _daysLeft(days: number): void {
+        this._$countdown.attr('data-days', days);
+    }
+
     /**
      * Updates clock
      */
@@ -657,6 +661,8 @@ export default class Dailydeal {
                 .last()
                 .html(this._$countdown.html());
         }
+
+        this._daysLeft(timeRemaining.days);
     }
 
     /**
