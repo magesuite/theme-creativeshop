@@ -380,6 +380,7 @@ $product-tile-magento-catalog-image-height: to-number(
 
         .price-box {
             display: flex;
+            margin: $product-tile_prices-margin;
 
             .price {
                 font-size: $product-tile_normal-price-font-size;
@@ -409,60 +410,64 @@ $product-tile-magento-catalog-image-height: to-number(
                 display: flex;
             }
 
-            #{$root}--grid & {
-                margin: $product-tile_prices-margin;
+            @if ($product-tile_display-old-price-first) {
+                .old-price {
+                    order: -1;
+                }
+            }
+
+            @if ($product-tile_prices-direction == 'vertical') {
+                flex-direction: column;
+
+                .price-from {
+                    margin-right: 0;
+                }
+
+                .minimal-price {
+                    flex-direction: column;
+                }
+
+                @if ($product-tile_prices-alignment == 'left') {
+                    align-items: flex-start;
+                } @else if ($product-tile_prices-alignment == 'right') {
+                    align-items: flex-end;
+                } @else {
+                    align-items: center;
+                }
+            } @else {
+                align-items: center;
+
+                .minimal-price {
+                    align-items: center;
+                }
 
                 @if ($product-tile_display-old-price-first) {
                     .old-price {
-                        order: -1;
+                        .price {
+                            margin-right: $price-box_space-between-prices;
+                        }
+                    }
+                } @else {
+                    .minimal-price {
+                        > .price-container {
+                            .price {
+                                margin-right: $price-box_space-between-prices;
+                            }
+                        }
+                    }
+                    .special-price {
+                        .price {
+                            margin-right: $price-box_space-between-prices;
+                        }
                     }
                 }
 
-                @if ($product-tile_prices-direction == 'vertical') {
-                    flex-direction: column;
-
-                    .price-from {
-                        margin-right: 0;
-                    }
-
-                    .minimal-price {
-                        flex-direction: column;
-                    }
+                @if ($product-tile_prices-alignment == 'left') {
+                    justify-content: flex-start;
+                } @else if ($product-tile_prices-alignment == 'right') {
+                    justify-content: flex-end;
                 } @else {
-                    align-items: center;
-
-                    .minimal-price {
-                        align-items: center;
-                    }
-
-                    @if ($product-tile_display-old-price-first) {
-                        .old-price {
-                            .price {
-                                margin-right: $price-box_space-between-prices;
-                            }
-                        }
-                    } @else {
-                        .minimal-price {
-                            > .price-container {
-                                .price {
-                                    margin-right: $price-box_space-between-prices;
-                                }
-                            }
-                        }
-                        .special-price {
-                            .price {
-                                margin-right: $price-box_space-between-prices;
-                            }
-                        }
-                    }
-
-                    @if ($product-tile_prices-alignment == 'left') {
-                        justify-content: flex-start;
-                    } @else if ($product-tile_prices-alignment == 'right') {
-                        justify-content: flex-end;
-                    } @else {
-                        justify-content: center;
-                    }
+                    justify-content: center;
                 }
             }
         }
