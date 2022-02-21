@@ -1,16 +1,5 @@
 import { FilePlayerOptions } from 'components/_video/interfaces';
 
-const MAGENTO_MEDIA_URL = `${window.location.origin}/media/`;
-const MATCH_URL_MAGENTO = /"(.*?)"/;
-
-/**
- * Get full video url from Magento's media library
- * @param url
- * @returns
- */
-const getMediaSource = (url: string): string | null =>
-    url ? MAGENTO_MEDIA_URL + url.match(MATCH_URL_MAGENTO)[1] : null;
-
 const filePlayer = {
     players: {},
     /**
@@ -20,16 +9,9 @@ const filePlayer = {
      * @param id
      */
     render: function(url: string, options: FilePlayerOptions, id: string) {
-        const mediaSource = getMediaSource(url);
-
-        // Guard: prevent if there is no source
-        if (!mediaSource) {
-            return;
-        }
-
         const video = document.createElement('video');
         video.id = id;
-        video.src = mediaSource;
+        video.src = url;
         video.style.width = options.width;
         video.style.height = options.height;
         options.player_vars.muted ? (video.muted = true) : null;

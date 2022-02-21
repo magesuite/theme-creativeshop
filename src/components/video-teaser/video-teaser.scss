@@ -3,30 +3,24 @@
 .#{$ns}image-teaser {
     $root: &;
 
+    // Render video teaser over the image
     [data-video-teaser] {
-        // Prevent video slipping outside of aspect-ratio
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
-        position: relative;
-
-        // Safari does not support aspect-ratio, we add padding-top inline in video.phtml
-        // For browsers that support aspect-ratio we have to reset padding-top
-        @supports (aspect-ratio: 1 / 1) {
-            padding-top: unset !important;
-        }
+        z-index: 1;
 
         // Hide video placeholder if video is not rendered
         &:empty {
             display: none;
         }
-
-        // Hide image in teaser if video has rendered
-        &:not(:empty) + #{$root}__picture {
-            display: none;
-        }
     }
 
+    // If video does not fit image aspect ratio, it will center itself in the container
     [id^='video-teaser'] {
-        // If video does not fit image aspect ratio, it will center itself in the container
         width: 100%;
         pointer-events: none;
         position: absolute;
