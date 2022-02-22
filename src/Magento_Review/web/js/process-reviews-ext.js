@@ -12,6 +12,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
         var allReviewsCount = $('#reviews .counter').length
             ? parseInt($('#reviews .counter').text(), 10)
             : null;
+        var showMoreText = $.mage.__('Show %1 out of %2 reviews');
 
         function processReviewsLoadMore(url, fromPages) {
             $.ajax({
@@ -35,9 +36,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
                                     lastPageReviewsCount
                                 );
                                 $('.cs-reviews__count').text(
-                                    // eslint-disable-next-line
-                                    $.mage
-                                        .__('Show %1 out of %2 reviews')
+                                    showMoreText
                                         .replace('%1', lastPageReviewsCount)
                                         .replace('%2', allReviewsCount)
                                 );
@@ -98,9 +97,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
 
                         $('#product-review-container').append(
                             '<div class="cs-reviews__count">' +
-                                // eslint-disable-next-line
-                                $.mage
-                                    .__('Show %1 out of %2 reviews')
+                                showMoreText
                                     .replace('%1', reviewsCountForPage)
                                     .replace('%2', allReviewsCount) +
                                 '</div>'
