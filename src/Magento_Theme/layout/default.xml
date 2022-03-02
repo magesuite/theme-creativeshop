@@ -2,10 +2,17 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="head.additional">
-            <block class="Magento\Framework\View\Element\Template" name="auto.tel.conversion.prevention" template="Magento_Theme::html/phone-number-conversion.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="preload" template="Magento_Theme::html/preload.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="fonts" template="Magento_Theme::html/fonts.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="styles" template="Magento_Theme::html/styles.phtml"/>
+            <block name="auto.tel.conversion.prevention" template="Magento_Theme::html/phone-number-conversion.phtml"/>
+            <block name="preload" template="Magento_Theme::html/preload.phtml"/>
+            <block name="fonts" template="Magento_Theme::html/fonts.phtml" before="-">
+                <arguments>
+                    <argument name="local_fonts" xsi:type="array">
+                        <item name="fonts" xsi:type="string">css/fonts.css</item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <block name="styles" template="Magento_Theme::html/styles.phtml"/>
         </referenceBlock>
 
         <move element="skip_to_content" destination="header.container" before="-"/>
@@ -21,7 +28,7 @@
         <referenceContainer name="page.wrapper">
             <container name="information.stripe.container" htmlTag="div" htmlClass="cs-container cs-container--contrast cs-container--viewport-width" before="-">
                 <container name="information.stripe.container.inner" htmlTag="div" htmlClass="cs-container__inner cs-container__inner--flex">
-                    <block class="Magento\Framework\View\Element\Template" name="information-stripe" template="Magento_Theme::html/information-stripe.phtml"/>
+                    <block name="information-stripe" template="Magento_Theme::html/information-stripe.phtml"/>
 
                     <!-- this block is moved by js to offcanvas navigation -->
                     <container name="store_language_nav_container" htmlTag="div" htmlClass="cs-visually-hidden">
@@ -59,7 +66,7 @@
                     </arguments>
                 </block>
             </container>
-            <block class="Magento\Framework\View\Element\Template" name="header.burger" template="Magento_Theme::html/burger.phtml"/>
+            <block name="header.burger" template="Magento_Theme::html/burger.phtml"/>
         </referenceContainer>
         <move element="minicart" destination="header.user-area" after="-"/>
 
@@ -104,7 +111,7 @@
                 <referenceBlock name="report.bugs" remove="true"/>
                 <referenceBlock name="footer_links" remove="true"/>
                 <container name="footer.left" htmlTag="div" htmlClass="cs-footer__left">
-                    <block class="Magento\Framework\View\Element\Template" name="footer.columns" template="Magento_Theme::html/footer/columns.phtml"/>
+                    <block name="footer.columns" template="Magento_Theme::html/footer/columns.phtml"/>
                 </container>
                 <container name="footer.right" htmlTag="div" htmlClass="cs-footer__right">
                 </container>
@@ -114,9 +121,9 @@
 
         <container name="page.bottom.wrapper" htmlTag="div" htmlClass="cs-container cs-container--viewport-width">
             <container name="page.bottom.inner" htmlTag="div" htmlClass="cs-container__inner">
-                <block class="Magento\Framework\View\Element\Template" name="page.bottom" template="Magento_Theme::html/page-bottom.phtml"/>
+                <block name="page.bottom" template="Magento_Theme::html/page-bottom.phtml"/>
             </container>
-            <block class="Magento\Framework\View\Element\Template" name="scripts" template="Magento_Theme::html/scripts.phtml" after="-"/>
+            <block name="scripts" template="Magento_Theme::html/scripts.phtml" after="-"/>
         </container>
 
         <move element="page.bottom.wrapper" destination="page.wrapper" after="-"/>

@@ -15,5 +15,5 @@ export default {
         // Fonts.
         path.join(paths.src, '**/*.{ttf,woff,woff2,eot}'),
     ],
-    dest: path.join(paths.dist, 'web/'),
+    dest: path.join(paths.dist, '/'),
 };
