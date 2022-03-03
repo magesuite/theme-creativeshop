@@ -1,7 +1,6 @@
 <!--
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * Overwritten to add classname
  */
 -->
 <select class="cs-input__select" data-bind="
@@ -9,7 +8,9 @@
         name: inputName,
         id: uid,
         disabled: disabled,
-        'aria-describedby': noticeId,
+        'aria-describedby': getDescriptionId(),
+        'aria-required': required,
+        'aria-invalid': error() ? true : 'false',
         placeholder: placeholder
     },
     hasFocus: focused,
@@ -23,4 +24,4 @@
             ko.applyBindingsToNode(option, {attr: {disabled: true}}, item);
         }
     }"
-        />
+></select>

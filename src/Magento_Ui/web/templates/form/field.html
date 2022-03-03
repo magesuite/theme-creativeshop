@@ -4,17 +4,17 @@
  * See COPYING.txt for license details.
  */
 -->
-<div class="field cs-form__field | cs-input" data-bind="visible: visible, attr: {'name': element.dataScope}, css: additionalClasses">
+<div class="field cs-form__field cs-input" data-bind="visible: visible, attr: {'name': element.dataScope}, css: additionalClasses">
 
     <label class="cs-input__label" data-bind="attr: { for: element.uid }">
         <!-- ko if: element.label -->
-        <span data-bind="text: element.label"></span>
+        <span data-bind="i18n: element.label"></span>
         <!-- /ko -->
     </label>
 
     <div class="cs-input__control" data-bind="css: {'_with-tooltip': element.tooltip, '_error': element.error()}">
         <!-- ko ifnot: element.hasAddons() -->
-        <!-- ko template: element.elementTmpl --><!-- /ko -->
+            <!-- ko template: element.elementTmpl --><!-- /ko -->
         <!-- /ko -->
 
         <svg class="cs-input__icon" focusable="false">
@@ -22,34 +22,39 @@
         </svg>
 
         <!-- ko if: element.hasAddons() -->
-        <div class="control-addon">
-            <!-- ko template: element.elementTmpl --><!-- /ko -->
+            <div class="control-addon">
+                <!-- ko template: element.elementTmpl --><!-- /ko -->
 
-            <!-- ko if: element.addbefore -->
-            <label class="addon-prefix" data-bind="attr: { for: element.uid }"><span data-bind="text: element.addbefore"></span></label>
-            <!-- /ko -->
+                <!-- ko if: element.addbefore -->
+                    <label class="addon-prefix" data-bind="attr: { for: element.uid }"><span data-bind="i18n: element.addbefore"></span></label>
+                <!-- /ko -->
 
-            <!-- ko if: element.addafter -->
-            <label class="addon-suffix" data-bind="attr: { for: element.uid }"><span data-bind="text: element.addafter"></span></label>
-            <!-- /ko -->
-        </div>
+                <!-- ko if: element.addafter -->
+                    <label class="addon-suffix" data-bind="attr: { for: element.uid }"><span data-bind="i18n: element.addafter"></span></label>
+                <!-- /ko -->
+            </div>
         <!-- /ko -->
 
         <!-- ko if: element.tooltip -->
-        <!-- ko template: element.tooltipTpl --><!-- /ko -->
+            <!-- ko template: element.tooltipTpl --><!-- /ko -->
         <!-- /ko -->
 
         <!-- ko if: element.notice -->
-        <div class="cs-input__note" data-bind="attr: { id: element.noticeId }"><span data-bind="text: element.notice"></span></div>
+            <div class="cs-input__note" data-bind="attr: { id: element.noticeId }">
+                <span data-bind="i18n: element.notice"></span>
+            </div>
         <!-- /ko -->
 
         <!-- ko if: element.error() -->
-        <div class="mage-error" data-bind="attr: { for: element.uid }, text: element.error" generated="true"></div>
+            <div class="mage-error" data-bind="attr: { id: element.errorId }" generated="true">
+                <span data-bind="i18n: element.error"></span>
+            </div>
         <!-- /ko -->
 
         <!-- ko if: element.warn() -->
-        <div class="message warning" generated="true"><span data-bind="text: element.warn"></span></div>
+            <div role="alert" class="message warning" data-bind="attr: { id: element.warningId }" generated="true">
+                <span data-bind="i18n: element.warn"></span>
+            </div>
         <!-- /ko -->
     </div>
 </div>
-<!-- /ko -->
