@@ -30,17 +30,27 @@
                         >
                             <?php echo $block->escapeHtml($review->getName()) ?>
                         </a>
-                        <?php if ($review->getSum()): ?>
-                            <?php
-                                $rating = $review->getSum() / $review->getCount();
-                                $dividedRating = floor(($rating / 20) * 2) / 2;
-                                $items_wording = ($review->getCount() == 0) ? __('No reviews') : ($review->getCount() == 1) ? __('Review') : __('Reviews');
+                        <?php
+                            $review_sum = $review->getSum();
+
+                            if ($review_sum):
                                 $review_count = $review->getCount();
+                                $rating = $review_sum / $review_count;
+                                $dividedRating = floor(($rating / 20) * 2) / 2;
+
+                                $items_wording = __('Reviews');
+                                if ($review_count == 0) {
+                                    $items_wording = __('No reviews');
+                                }
+                                if ($review_count == 1) {
+                                    $items_wording = __('Review');
+                                }
+
                                 $text = '
                                     <span>'.$dividedRating.'</span> / <span>5</span>
                                     (<span>'.$review_count.'</span> '.$items_wording.')
                                 ';
-                            ?>
+                        ?>
                             <?= $this->getLayout()->createBlock('Creativestyle\FrontendExtension\Block\Twig', 'rating-summary-grid-product-' . $iterator, [
                                     'data' => [
                                         'namespace' => 'cs-',
