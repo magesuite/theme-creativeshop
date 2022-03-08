@@ -42,6 +42,10 @@ const youtubePlayer = {
                     ...options.player_vars,
                 },
                 events: {
+                    // Trigger manual play for mobile devices (iOS, Android)
+                    onReady: event => {
+                        event.target.playVideo();
+                    },
                     // Trigger manual loop
                     onStateChange: event => {
                         if (options.loop && !options.player_vars.controls) {
