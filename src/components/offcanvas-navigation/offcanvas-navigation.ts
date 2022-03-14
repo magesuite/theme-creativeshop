@@ -345,7 +345,7 @@ export default class OffcanvasNavigation {
         if (
             !this._firstInit &&
             $currentLevel.length > 0 &&
-            $currentLevel.prop('scrollTop')
+            $currentLevel.last().prop('scrollTop')
         ) {
             $currentLevel.animate({ scrollTop: 0 }, 'fast', () => {
                 $currentLevel.removeClass(
