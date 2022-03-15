@@ -23,12 +23,15 @@ const consentManagement = {
                 return checkConsentForService(this.services[service]);
 
                 break;
-            case 'amasty':
-                break;
             default:
-                // If you debugged here, then probably vendor is not set in XML
-                // You can also set it to true in case you want to ignore XML settings for development purposes
-                return false;
+                /**
+                 * If you debugged here, then probably vendor is not set in XML
+                 * Default value is used instead
+                 */
+                return deepGet(
+                    viewXml,
+                    'vars.Magento_Theme.consent_management.default_value'
+                );
                 break;
         }
     },
@@ -42,8 +45,6 @@ const consentManagement = {
             case 'usercentrics':
                 return attachInitializeEvent(callback);
 
-                break;
-            case 'amasty':
                 break;
             default:
                 break;
@@ -59,8 +60,6 @@ const consentManagement = {
             case 'usercentrics':
                 return attachChangeEvent(callback);
 
-                break;
-            case 'amasty':
                 break;
             default:
                 break;
