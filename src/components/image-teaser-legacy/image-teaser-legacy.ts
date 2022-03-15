@@ -1,7 +1,6 @@
 import * as $ from 'jquery';
 
 import csTeaser from 'components/teaser/teaser';
-import VideoPlayer from 'components/video-layer/video-layer';
 
 /**
  * component options interface.
@@ -82,7 +81,6 @@ interface ImageTeaserLegacyOptions {
 }
 
 export default class ImageTeaserLegacy {
-    public _videoPlayer: any;
     /**
      * Holds all settings for the image-teaser-legacy, which are be passed to csTeaser
      */
@@ -91,7 +89,6 @@ export default class ImageTeaserLegacy {
     protected _swiperDefaults: object;
     protected _settingsOverrides: any;
     protected _teaserInstance: any;
-    protected _$videosTriggers: JQuery;
     /**
      * Fields for setting navigation position for lazy loaded images
      */
