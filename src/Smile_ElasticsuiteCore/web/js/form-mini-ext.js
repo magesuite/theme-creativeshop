@@ -73,6 +73,12 @@ define(['jquery'], function($) {
                     'active-popup',
                     Boolean(!all && this.responseList.indexList.length)
                 );
+
+                console.log(Boolean(!all && this.responseList.indexList.length));
+                $('html').toggleClass(
+                    'autocomplete-dropdown-visible',
+                    Boolean(!all && this.responseList.indexList.length)
+                );
             },
             /**
              * Override blur event handle in order to not close autocomplete on touch devices
