@@ -58,7 +58,6 @@ define(['jquery'], function($) {
                     Boolean(!all && this.responseList.indexList.length)
                 );
 
-                console.log(Boolean(!all && this.responseList.indexList.length));
                 $('html').toggleClass(
                     'autocomplete-dropdown-visible',
                     Boolean(!all && this.responseList.indexList.length)
