@@ -150,7 +150,7 @@ export default class Dailydeal {
         namespace: 'cs-',
         get countdownTemplate() {
             return `<span class="${this.namespace}dailydeal__countdown-element ${this.namespace}dailydeal__countdown-element--special">
-                    <img class="inline-svg ${this.namespace}dailydeal__countdown-icon" data-bind="attr: { src: require.toUrl('./images/icons/clock.svg') }" alt="">
+                    <img class="inline-svg ${this.namespace}dailydeal__countdown-icon" data-src="${requirejs.toUrl('images/icons/clock.svg')}" alt="">
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
                     <span class="${this.namespace}dailydeal__countdown-value">%d%</span>
