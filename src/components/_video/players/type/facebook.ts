@@ -23,11 +23,11 @@ const prepareVideoData = (
     element.setAttribute('data-width', options.width);
     element.setAttribute(
         'data-autoplay',
-        options.player_vars.autoplay.toString()
+        Boolean(options.player_vars.autoplay).toString()
     );
     element.setAttribute(
         'data-controls',
-        options.player_vars.controls.toString()
+        Boolean(options.player_vars.controls).toString()
     );
 };
 
@@ -75,6 +75,10 @@ const facebookPlayer = {
                         this.players[id].mute();
                     } else {
                         this.players[id].unmute();
+                    }
+
+                    if (options.player_vars.autoplay) {
+                        this.players[id].play();
                     }
 
                     // For some reason Facebook have added `visibility: hidden`
