@@ -57,6 +57,12 @@ define(['jquery'], function($) {
                     'active-popup',
                     Boolean(!all && this.responseList.indexList.length)
                 );
+
+                console.log(Boolean(!all && this.responseList.indexList.length));
+                $('html').toggleClass(
+                    'autocomplete-dropdown-visible',
+                    Boolean(!all && this.responseList.indexList.length)
+                );
             },
         });
 
