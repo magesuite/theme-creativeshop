@@ -92,7 +92,7 @@ export default class ie11Modal {
         return `
             <div class="${this._options.modalClassname}__inner">
                 <div class="${this._options.modalClassname}__header">
-                    <img class="${this._options.modalClassname}__header-icon" data-bind="attr: {src: require.toUrl('./images/browser/ie-grayscale.svg')}">
+                    <img class="${this._options.modalClassname}__header-icon" data-src="${requirejs.toUrl('./images/browser/ie-grayscale.svg')}">
                     <span class="${this._options.modalClassname}__header-title">
                         ${this._options.texts.headline}
                     </span>
@@ -104,22 +104,22 @@ export default class ie11Modal {
                     </p>
                     <ul class="${this._options.modalClassname}__list">
                         <li class="${this._options.modalClassname}__list-item ${this._options.modalClassname}__list-item--chrome">
-                            <img class="${this._options.modalClassname}__item-logo" data-bind="attr: {src: require.toUrl('./images/browser/chrome.svg')}">
+                            <img class="${this._options.modalClassname}__item-logo" data-src="${requirejs.toUrl('./images/browser/chrome.svg')}">
                             <span class="${this._options.modalClassname}__item-name">Google Chrome</span>
                             <a href="https://www.google.com/chrome/" target="_blank" class="${this._options.modalClassname}__item-link">${this._options.texts.download}</a>
                         </li>
                         <li class="${this._options.modalClassname}__list-item ${this._options.modalClassname}__list-item--firefox">
-                            <img class="${this._options.modalClassname}__item-logo" data-bind="attr: {src: require.toUrl('./images/browser/firefox.svg')}">
+                            <img class="${this._options.modalClassname}__item-logo" data-src="${requirejs.toUrl('./images/browser/firefox.svg')}">
                             <span class="${this._options.modalClassname}__item-name">Firefox</span>
                             <a href="https://www.firefox.com/" target="_blank" class="${this._options.modalClassname}__item-link">${this._options.texts.download}</a>
                         </li>
                         <li class="${this._options.modalClassname}__list-item ${this._options.modalClassname}__list-item--opera">
-                            <img class="${this._options.modalClassname}__item-logo" data-bind="attr: {src: require.toUrl('./images/browser/opera.svg')}">
+                            <img class="${this._options.modalClassname}__item-logo" data-src="${requirejs.toUrl('./images/browser/opera.svg')}">
                             <span class="${this._options.modalClassname}__item-name">Opera</span>
                             <a href="https://www.opera.com/" target="_blank" class="${this._options.modalClassname}__item-link">${this._options.texts.download}</a>
                         </li>
                         <li class="${this._options.modalClassname}__list-item ${this._options.modalClassname}__list-item--edge">
-                            <img class="${this._options.modalClassname}__item-logo" data-bind="attr: {src: require.toUrl('./images/browser/edge.svg')}">
+                            <img class="${this._options.modalClassname}__item-logo" data-src="${requirejs.toUrl('./images/browser/edge.svg')}">
                             <span class="${this._options.modalClassname}__item-name">Edge</span>
                             <a href="https://www.microsoft.com/en-us/windows/microsoft-edge/" target="_blank" class="${this._options.modalClassname}__item-link">${this._options.texts.download}</a>
                         </li>
