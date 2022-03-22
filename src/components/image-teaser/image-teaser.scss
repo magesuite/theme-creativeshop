@@ -26,6 +26,7 @@ $it--slider_desktop-gap: $it_desktop-gap !default;
 $it--slider_next-slide-visible: 0px !default; // must be with unit (any kind)
 
 $it_cta-type: 'primary' !default;
+$it_cta-type--light: 'secondary' !default;
 $it_cta-font-size: 1.2rem !default;
 $it_cta-icon-position: 'right' !default;
 $it_cta-icon-width: 1.2rem !default;
@@ -219,11 +220,24 @@ $it--icon_items-in-view-till-laptop: deep-get(
     &__cta {
         @include button($type: $it_cta-type, $icon_pos: $it_cta-icon-position);
 
+        #{$root}__slide--scheme-light & {
+            @include button(
+                $type: $it_cta-type--light,
+                $icon_pos: $it_cta-icon-position
+            );
+        }
         &-span {
             @include button_span(
                 $type: $it_cta-type,
                 $icon_pos: $it_cta-icon-position
             );
+
+            #{$root}__slide--scheme-light & {
+                @include button_span(
+                    $type: $it_cta-type--light,
+                    $icon_pos: $it_cta-icon-position
+                );
+            }
         }
 
         &-icon {
@@ -231,6 +245,13 @@ $it--icon_items-in-view-till-laptop: deep-get(
                 $type: $it_cta-type,
                 $icon_pos: $it_cta-icon-position
             );
+
+            #{$root}__slide--scheme-light & {
+                @include button_icon(
+                    $type: $it_cta-type--light,
+                    $icon_pos: $it_cta-icon-position
+                );
+            }
         }
 
         display: none;
