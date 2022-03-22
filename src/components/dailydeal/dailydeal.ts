@@ -149,24 +149,48 @@ export default class Dailydeal {
     protected _options: DailydealOptions = {
         namespace: 'cs-',
         get countdownTemplate() {
-            return `<span class="${this.namespace}dailydeal__countdown-element ${this.namespace}dailydeal__countdown-element--special">
-                    <img class="inline-svg ${this.namespace}dailydeal__countdown-icon" data-bind="attr: { src: require.toUrl('./images/icons/clock.svg') }" alt="">
+            return `<span class="${
+                this.namespace
+            }dailydeal__countdown-element ${
+                this.namespace
+            }dailydeal__countdown-element--special">
+                    <img class="inline-svg ${
+                        this.namespace
+                    }dailydeal__countdown-icon" data-src="${requirejs.toUrl(
+                'images/icons/clock.svg'
+            )}" alt="">
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${this.namespace}dailydeal__countdown-value">%d%</span>
-                    <span class="${this.namespace}dailydeal__countdown-label">%ld%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-value">%d%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-label">%ld%</span>
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${this.namespace}dailydeal__countdown-value">%h%</span>
-                    <span class="${this.namespace}dailydeal__countdown-label">%lh%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-value">%h%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-label">%lh%</span>
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${this.namespace}dailydeal__countdown-value">%m%</span>
-                    <span class="${this.namespace}dailydeal__countdown-label">%lm%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-value">%m%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-label">%lm%</span>
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${this.namespace}dailydeal__countdown-value">%s%</span>
-                    <span class="${this.namespace}dailydeal__countdown-label">%ls%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-value">%s%</span>
+                    <span class="${
+                        this.namespace
+                    }dailydeal__countdown-label">%ls%</span>
                 </span>`;
         },
         get countdownSelector() {
