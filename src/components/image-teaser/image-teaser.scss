@@ -25,7 +25,7 @@ $it--slider_desktop-gap: $it_desktop-gap !default;
 // Please use 'use_whole_screen' option in etc/view to have next slides visible for content-width
 $it--slider_next-slide-visible: 0px !default; // must be with unit (any kind)
 
-$it_cta-type: 'primary' !default;
+$it_cta-type--dark: 'primary' !default;
 $it_cta-type--light: 'secondary' !default;
 $it_cta-font-size: 1.2rem !default;
 $it_cta-icon-position: 'right' !default;
@@ -218,7 +218,12 @@ $it--icon_items-in-view-till-laptop: deep-get(
     }
 
     &__cta {
-        @include button($type: $it_cta-type, $icon_pos: $it_cta-icon-position);
+        #{$root}__slide--scheme-dark & {
+            @include button(
+                $type: $it_cta-type--dark,
+                $icon_pos: $it_cta-icon-position
+            );
+        }
 
         #{$root}__slide--scheme-light & {
             @include button(
@@ -226,11 +231,14 @@ $it--icon_items-in-view-till-laptop: deep-get(
                 $icon_pos: $it_cta-icon-position
             );
         }
+
         &-span {
-            @include button_span(
-                $type: $it_cta-type,
-                $icon_pos: $it_cta-icon-position
-            );
+            #{$root}__slide--scheme-dark & {
+                @include button_span(
+                    $type: $it_cta-type--dark,
+                    $icon_pos: $it_cta-icon-position
+                );
+            }
 
             #{$root}__slide--scheme-light & {
                 @include button_span(
@@ -241,10 +249,12 @@ $it--icon_items-in-view-till-laptop: deep-get(
         }
 
         &-icon {
-            @include button_icon(
-                $type: $it_cta-type,
-                $icon_pos: $it_cta-icon-position
-            );
+            #{$root}__slide--scheme-dark & {
+                @include button_icon(
+                    $type: $it_cta-type--dark,
+                    $icon_pos: $it_cta-icon-position
+                );
+            }
 
             #{$root}__slide--scheme-light & {
                 @include button_icon(
