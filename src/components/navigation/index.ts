@@ -1,7 +1,5 @@
 import * as $ from 'jquery';
 
-import 'components/navigation/teaser';
-
 import Navigation from 'components/navigation/navigation';
 import NavigationMegaDropdown from 'components/navigation/navigation-mega-dropdown';
 
