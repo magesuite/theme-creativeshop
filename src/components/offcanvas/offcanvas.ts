@@ -72,6 +72,11 @@ export default class Offcanvas {
         }
 
         this._addEventListeners();
+
+        // Hide offcanvas when search is opened
+        $('body').on('before-search-open', () => {
+            this.hide()
+        });
     }
     /**
      * Toggles offcanvas visibility depending on its current state.
