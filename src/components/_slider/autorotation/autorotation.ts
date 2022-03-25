@@ -14,7 +14,9 @@ export default class SliderAutorotation {
     public currentSlideIndex: number;
     protected _navigation: any;
     protected _rotator: ReturnType<typeof setInterval>;
-    protected _isTouch: MediaQueryList = window.matchMedia('(hover: none)');
+    protected _isTouch: MediaQueryList =
+        window.matchMedia('(hover: none)') &&
+        window.matchMedia('(pointer: coarse)');
     protected boundMouseenterHandler: any;
     protected boundMouseleaveHandler: any;
 
