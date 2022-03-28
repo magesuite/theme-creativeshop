@@ -161,10 +161,7 @@ $it--icon_items-in-view-till-laptop: deep-get(
             display: flex;
             padding: 2rem;
             overflow: hidden;
-
-            @media (hover: hover) and (pointer: fine) {
-                padding: 4.5rem;
-            }
+            align-items: flex-start;
         }
 
         &--content-align-x {
@@ -198,6 +195,14 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
     &__content {
         position: relative;
+    }
+
+    /*
+     * Keep CTA separated from text-content for all scenarios
+     * "!important" added due to fallback from --scheme-* with button() mixin that resets margins
+     */
+    &__text-content + #{$root}__cta {
+        margin-top: 1em !important;
     }
 
     &__slogan {
