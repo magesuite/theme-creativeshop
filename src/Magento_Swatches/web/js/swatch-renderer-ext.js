@@ -325,7 +325,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 var discounted =
                     typeof result != 'undefined' &&
                     result.basePrice.amount === 0;
-                console.log(result);
+
                 $productPrice
                     .find('.price-final_price')
                     .toggleClass('special-price', discounted);
