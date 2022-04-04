@@ -8,12 +8,13 @@
 
 @import 'components/_slider/mixin';
 
-$brand-carousel_items-per-view: deep-get(
+$columns: deep-get(
     $view-xml,
     vars,
     MageSuite_ContentConstructorFrontend,
     brand_carousel,
-    slides_per_view
+    js,
+    columnsConfig
 ) !default;
 $brand-carousel_mobile-gap: 0.8rem !default;
 $brand-carousel_desktop-gap: 0.8rem !default;
@@ -25,7 +26,7 @@ $brand-carousel_next-slide-visible: 0px !default; // it will be this value + pag
     @include component-spacing();
 
     @include slider(
-        $columns-config: $brand-carousel_items-per-view,
+        $columns-config: $columns,
         $m-gap: $brand-carousel_mobile-gap,
         $d-gap: $brand-carousel_desktop-gap,
         $next-visible: $brand-carousel_next-slide-visible,
