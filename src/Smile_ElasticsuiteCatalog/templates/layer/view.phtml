@@ -64,6 +64,9 @@
                     $filterIsChecked = in_array($filter->getRequestVar(), $selectedRequestVars);
                     $filterDisplaySearchbox = true;
                     $filterAttributeClass = '';
+                    if ($filter->getAttributeModel()->getAttributeCode() == 'schalen_material' && $filter->getItemsCount() <= 1) {
+                        continue;
+                    }
                     if ($filter->hasAttributeModel()) {
                         $filterAttributeClass = 'filter-attribute-' . $filter->getAttributeModel()->getAttributeCode();
                         $filterDisplaySearchbox = $filter->getAttributeModel()->getDisplaySearchbox() ?? true;
