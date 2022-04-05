@@ -1,5 +1,7 @@
 @import 'config/variables';
 
+$vt_disable-pointer-events: true !default;
+
 .#{$ns}image-teaser {
     $root: &;
 
@@ -8,7 +10,12 @@
             position: relative;
         }
 
-        #{$root}__content-wrapper {
+        // Show text-content and overlays over the video
+        // If added on content-wrapper will prevent interaction with video
+        #{$root}__content,
+        #{$root}__overlay,
+        #{$root}__gradient,
+        #{$root}__optimizer-container {
             z-index: 1;
         }
     }
@@ -32,10 +39,13 @@
     // If video does not fit image aspect ratio, it will center itself in the container
     [id^='video-teaser'] {
         width: 100%;
-        pointer-events: none;
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+
+        @if $vt_disable-pointer-events {
+            pointer-events: none;
+        }
     }
 }
