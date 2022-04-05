@@ -150,8 +150,12 @@ export default class Slider {
      * If no "scrollBehavior" property is detected, import asynchronously and apply polyfill
      */
     protected _smoothScrollPolyfill(): void {
+        debugger;
         if (
             !('scrollBehavior' in document.documentElement.style) &&
+            window.navigator.userAgent.indexOf('AppleWebKit') !== -1 &&
+            window.navigator.userAgent.indexOf('15.4') === -1 &&
+            window.navigator.userAgent.indexOf('Macintosh') !== -1 &&
             !window.__smoothScrollPolyfilled
         ) {
             import('smoothscroll-polyfill').then(smoothscroll => {
