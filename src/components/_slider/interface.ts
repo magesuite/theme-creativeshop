@@ -47,7 +47,7 @@ export default interface ISlider {
      */
     slideSelector: string;
     /**
-     * Defines if autorotate should be enabled for this instance
+     * Defines if autorotate should be enabled for this instance (but not for touch screens)
      * @default false
      */
     useAutorotation?: boolean;

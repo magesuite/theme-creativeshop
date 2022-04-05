@@ -24,9 +24,7 @@ export default class Slider {
         itemsPerView: 1,
         columnsConfig: null,
         useAutorotation: false,
-        autorotationOptions: {
-            delay: 6000,
-        },
+        autorotationOptions: {},
         useWholeScreen: false,
         componentType: 'image_teaser',
     };
@@ -188,9 +186,14 @@ export default class Slider {
         );
         this.navigation = new SliderNavigation(navigationOptions);
 
+        const checkTouch: boolean = this.options.autorotationOptions
+            .useAutorotationAlsoForTouchScreens
+            ? true
+            : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
+
         if (
             this.options.useAutorotation &&
-            window.matchMedia('(hover:hover)').matches &&
+            checkTouch &&
             this._instanceNode.offsetParent != null
         ) {
             this._initAutorotation();
@@ -232,6 +235,7 @@ export default class Slider {
                 pauseNode: this._instanceNode.querySelector(
                     '.cs-image-teaser__slides-wrapper'
                 ),
+                delay: 6000,
             },
             ...this.options.autorotationOptions,
         };
@@ -300,9 +304,15 @@ export default class Slider {
                     this.rebuild();
                 }
 
+                const checkTouch: boolean = this.options.autorotationOptions
+                    .useAutorotationAlsoForTouchScreens
+                    ? true
+                    : window.matchMedia('(hover:hover) and (pointer: fine)')
+                          .matches;
+
                 if (
                     this.options.useAutorotation &&
-                    window.matchMedia('(hover:hover)').matches &&
+                    checkTouch &&
                     this._instanceNode.offsetParent != null &&
                     !this.autorotation
                 ) {

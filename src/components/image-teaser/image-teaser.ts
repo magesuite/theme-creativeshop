@@ -138,9 +138,14 @@ export default class ImageTeaser {
         );
         this.navigation = new SliderNavigation(navigationOptions);
 
+        const checkTouch: boolean = this.options.autorotationOptions
+            .useAutorotationAlsoForTouchScreens
+            ? true
+            : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
+
         if (
             this.options.useAutorotation &&
-            window.matchMedia('(hover:hover)').matches &&
+            checkTouch &&
             this._$it[0].offsetParent != null
         ) {
             this._initAutorotation();
@@ -210,9 +215,15 @@ export default class ImageTeaser {
                     this.pagination?.setItemsPerView(this.currentItemsPerView);
                 }
 
+                const checkTouch: boolean = this.options.autorotationOptions
+                    .useAutorotationAlsoForTouchScreens
+                    ? true
+                    : window.matchMedia('(hover:hover) and (pointer: fine)')
+                          .matches;
+
                 if (
                     this.options.useAutorotation &&
-                    window.matchMedia('(hover:hover)').matches &&
+                    checkTouch &&
                     this._$it[0].offsetParent != null &&
                     !this.autorotation
                 ) {
