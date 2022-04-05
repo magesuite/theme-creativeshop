@@ -29,4 +29,8 @@ export default interface ISliderAutorotate {
      * Autorotate delay
      */
     delay?: number;
+    /**
+     * Use autorotation also on touch screens
+     */
+    useAutorotationAlsoForTouchScreens?: boolean;
 }
