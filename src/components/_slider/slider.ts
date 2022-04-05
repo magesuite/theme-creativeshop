@@ -150,9 +150,7 @@ export default class Slider {
     protected _smoothScrollPolyfill(): void {
         if (
             !('scrollBehavior' in document.documentElement.style) &&
-            window.navigator.userAgent.indexOf('AppleWebKit') !== -1 &&
-            window.navigator.userAgent.indexOf('15.4') === -1 &&
-            window.navigator.userAgent.indexOf('Macintosh') !== -1 &&
+            window.matchMedia('(hover:hover)').matches &&
             !window.__smoothScrollPolyfilled
         ) {
             import('smoothscroll-polyfill').then(smoothscroll => {
