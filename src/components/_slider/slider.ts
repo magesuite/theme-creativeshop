@@ -165,6 +165,17 @@ export default class Slider {
     }
 
     /**
+     * Check if autorotation can be enable (not touch screen) or if there is an option to enable autorotation also on touch screens
+     * @return boolean
+     */
+    protected _checkTouch(): boolean {
+        return this.options.autorotationOptions
+            .useAutorotationAlsoForTouchScreens
+            ? true
+            : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
+    }
+
+    /**
      * ASYNC. Collects all Navigation Submodule options, imports module asynchronously and initializes with given settings.
      * @return Promise
      */
@@ -186,14 +197,9 @@ export default class Slider {
         );
         this.navigation = new SliderNavigation(navigationOptions);
 
-        const checkTouch: boolean = this.options.autorotationOptions
-            .useAutorotationAlsoForTouchScreens
-            ? true
-            : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
-
         if (
             this.options.useAutorotation &&
-            checkTouch &&
+            this._checkTouch() &&
             this._instanceNode.offsetParent != null
         ) {
             this._initAutorotation();
@@ -304,15 +310,9 @@ export default class Slider {
                     this.rebuild();
                 }
 
-                const checkTouch: boolean = this.options.autorotationOptions
-                    .useAutorotationAlsoForTouchScreens
-                    ? true
-                    : window.matchMedia('(hover:hover) and (pointer: fine)')
-                          .matches;
-
                 if (
                     this.options.useAutorotation &&
-                    checkTouch &&
+                    this._checkTouch() &&
                     this._instanceNode.offsetParent != null &&
                     !this.autorotation
                 ) {
