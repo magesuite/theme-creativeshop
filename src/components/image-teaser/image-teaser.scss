@@ -25,8 +25,8 @@ $it--slider_desktop-gap: $it_desktop-gap !default;
 // Please use 'use_whole_screen' option in etc/view to have next slides visible for content-width
 $it--slider_next-slide-visible: 0px !default; // must be with unit (any kind)
 
-$it_cta-type--dark: 'primary' !default;
 $it_cta-type--light: 'secondary' !default;
+$it_cta-type--dark: 'primary' !default;
 $it_cta-font-size: 1.2rem !default;
 $it_cta-icon-position: 'right' !default;
 $it_cta-icon-width: 1.2rem !default;
@@ -37,12 +37,12 @@ $it_container-background--light: $color_background-700 !default;
 $it_container-background--dark: $color_background-200 !default;
 $it_gradient-color--light: $color_background-700 !default;
 $it_gradient-color--dark: $color_background-200 !default;
-$it_text-shadow-color--dark: $color_background-200 !default;
-$it_text-shadow-offset--dark: 0 0 2.5rem !default;
-$it_text-shadow-step--dark: 5 !default;
 $it_text-shadow-color--light: $color_background-700 !default;
+$it_text-shadow-color--dark: $color_background-200 !default;
 $it_text-shadow-offset--light: 0 0 2.5rem !default;
+$it_text-shadow-offset--dark: 0 0 2.5rem !default;
 $it_text-shadow-step--light: 5 !default;
+$it_text-shadow-step--dark: 5 !default;
 
 // icon component
 /**
@@ -63,8 +63,6 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
     --slogan-font-size: 3.8rem;
     --description-font-size: 1.5rem;
-
-    @include component-spacing();
 
     @include it-grid($m-gap: $it_mobile-gap, $d-gap: $it_desktop-gap);
 
@@ -95,15 +93,21 @@ $it--icon_items-in-view-till-laptop: deep-get(
     }
 
     &__slide {
-        --scheme-color: #{$scheme--dark_texts-color};
-        --scheme-background: #{$scheme--dark_background};
-
         &--scheme-light {
             --scheme-color: #{$scheme--light_texts-color};
             --scheme-background: #{$scheme--light_background};
         }
 
+        &--scheme-dark {
+            --scheme-color: #{$scheme--dark_texts-color};
+            --scheme-background: #{$scheme--dark_background};
+        }
+
         // teaser & text
+        &:not(#{$root}__slide--image-uploaded) {
+            background: var(--scheme-background);
+        }
+
         @include media('<tablet') {
             &--image-uploaded {
                 #{$root}__slides--mobile_text-image & {
@@ -137,9 +141,19 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
     &__link {
         display: block;
+        height: 100%;
+
+        &,
+        &:hover,
+        &:visited,
+        &:active,
+        &:focus {
+            text-decoration: none;
+        }
     }
 
     &__figure {
+        height: 100%;
         position: relative;
     }
 
@@ -162,6 +176,13 @@ $it--icon_items-in-view-till-laptop: deep-get(
             padding: 2rem;
             overflow: hidden;
             align-items: flex-start;
+
+            #{$root}__picture + &,
+            #{$root}--teaser-and-text & {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
         }
 
         &--content-align-x {
@@ -185,12 +206,6 @@ $it--icon_items-in-view-till-laptop: deep-get(
                 align-items: flex-end;
             }
         }
-    }
-
-    &__picture + #{$root}__content-wrapper--over {
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 
     &__content {
@@ -459,6 +474,14 @@ $it--icon_items-in-view-till-laptop: deep-get(
             }
         }
     }
+}
+
+.#{$ns}container--image-teaser {
+    @include component-spacing();
+}
+
+.#{$ns}container--grid-teaser {
+    margin: 0;
 }
 
 .#{$ns}container--image-teaser-window-width {
