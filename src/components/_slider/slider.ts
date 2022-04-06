@@ -24,9 +24,7 @@ export default class Slider {
         itemsPerView: 1,
         columnsConfig: null,
         useAutorotation: false,
-        autorotationOptions: {
-            delay: 6000,
-        },
+        autorotationOptions: {},
         useWholeScreen: false,
         componentType: 'image_teaser',
     };
@@ -152,6 +150,7 @@ export default class Slider {
     protected _smoothScrollPolyfill(): void {
         if (
             !('scrollBehavior' in document.documentElement.style) &&
+            window.matchMedia('(hover:hover)').matches &&
             !window.__smoothScrollPolyfilled
         ) {
             import('smoothscroll-polyfill').then(smoothscroll => {
@@ -164,6 +163,17 @@ export default class Slider {
                 }
             });
         }
+    }
+
+    /**
+     * Check if autorotation can be enable (not touch screen) or if there is an option to enable autorotation also on touch screens
+     * @return boolean
+     */
+    protected _checkTouch(): boolean {
+        return this.options.autorotationOptions
+            .useAutorotationAlsoForTouchScreens
+            ? true
+            : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
     }
 
     /**
@@ -190,7 +200,7 @@ export default class Slider {
 
         if (
             this.options.useAutorotation &&
-            window.matchMedia('(hover:hover)').matches &&
+            this._checkTouch() &&
             this._instanceNode.offsetParent != null
         ) {
             this._initAutorotation();
@@ -232,6 +242,7 @@ export default class Slider {
                 pauseNode: this._instanceNode.querySelector(
                     '.cs-image-teaser__slides-wrapper'
                 ),
+                delay: 6000,
             },
             ...this.options.autorotationOptions,
         };
@@ -302,7 +313,7 @@ export default class Slider {
 
                 if (
                     this.options.useAutorotation &&
-                    window.matchMedia('(hover:hover)').matches &&
+                    this._checkTouch() &&
                     this._instanceNode.offsetParent != null &&
                     !this.autorotation
                 ) {
