@@ -51,15 +51,9 @@ export default class Slider {
      */
     public constructor(element: HTMLElement, options?: ISlider) {
         this.options = { ...this.options, ...options };
-        this.slides = element.querySelectorAll(this.options.slideSelector);
-
-        // Do not initialize when carousel is empty
-        if (this.options.itemsCount === 0) {
-            return;
-        }
-
         this._instanceNode = element;
         this.currentItemsPerView = this._getCurrentItemsPerView();
+        this.slides = element.querySelectorAll(this.options.slideSelector);
 
         this._setIntersectionObserver();
         this._observe();
