@@ -54,7 +54,7 @@ export default class Slider {
         this.slides = element.querySelectorAll(this.options.slideSelector);
 
         // Do not initialize when carousel is empty
-        if (!this.slides.length) {
+        if (this.options.itemsCount === 0) {
             return;
         }
 
