@@ -51,6 +51,7 @@ export default class HeaderSearch {
     protected _$target: JQuery<HTMLElement>;
     protected _$closeBtn: JQuery<HTMLElement>;
     protected _$searchBoxInput: JQuery<HTMLElement>;
+    protected _isOpen: boolean;
 
     public constructor(options?: HeaderSearchOptions) {
         this._options = $.extend(
@@ -69,6 +70,7 @@ export default class HeaderSearch {
 
         this._$trigger = $(this._options.triggerSelector);
         this._$target = $(this._options.targetSelector);
+        this._isOpen = false;
 
         if (!this._$trigger.length && !this._$target.length) {
             return;
@@ -80,6 +82,11 @@ export default class HeaderSearch {
         );
 
         this._attachEvents();
+
+        // Hide search and autocomplete list when minicart/offcanvas navigation is opened
+        $('body').on('before-offcanvas-open', () => {
+            this._hideSearch();
+        });
     }
 
     protected _attachEvents(): void {
@@ -131,8 +138,26 @@ export default class HeaderSearch {
     }
 
     protected _toggleSearch(): void {
-        this._$trigger.parent().toggleClass(this._options.triggerActiveClass);
-        this._$target.toggleClass(this._options.targetActiveClass);
-        $('body').toggleClass('search-open');
+        if (this._isOpen) {
+            this._hideSearch();
+        } else {
+            this._openSearch();
+        }
+    }
+
+    protected _openSearch(): void {
+        this._$trigger.parent().addClass(this._options.triggerActiveClass);
+        this._$target.addClass(this._options.targetActiveClass);
+        $('body').addClass('search-open');
+        this._isOpen = true;
+
+        $('body').trigger('before-search-open');
+    }
+
+    protected _hideSearch(): void {
+        this._$trigger.parent().removeClass(this._options.triggerActiveClass);
+        this._$target.removeClass(this._options.targetActiveClass);
+        $('body').removeClass('search-open');
+        this._isOpen = false;
     }
 }
