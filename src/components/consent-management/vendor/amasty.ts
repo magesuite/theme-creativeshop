@@ -15,6 +15,7 @@ const amasty = {
      */
     checkConsent: (serviceName: string) => {
         if (window.isGdprCookieEnabled) {
+            const allowedGroups = getCookie('amcookie_allowed'); // No groups if Amasty hasn't initialized yet
             const disallowedCookie = getCookie('amcookie_disallowed') || '';
             const isCookiePolicyAllowed = getCookie('amcookie_policy_restriction') === 'allowed';
 
@@ -24,7 +25,7 @@ const amasty = {
             }
 
             // %2C is encoded ','
-            return !(!disallowedCookie || disallowedCookie.split('%2C').indexOf(serviceName) !== -1);
+            return !((!allowedGroups && !disallowedCookie) || disallowedCookie.split('%2C').indexOf(serviceName) !== -1);
         } else {
             // Don't allow if Amasty is disabled in Admin Panel
             return false;
