@@ -212,6 +212,7 @@ export default class Minicart {
                 btnClass: 'cs-minicart__button-carousel',
                 btnTextClass: 'cs-minicart__button-carousel-span',
                 columnsConfig: () => {
+                    // TODO: Mincart Carousel should have own columns config
                     return deepGet(
                         viewXml,
                         'vars.MageSuite_ContentConstructor.columns.multiple-columns'

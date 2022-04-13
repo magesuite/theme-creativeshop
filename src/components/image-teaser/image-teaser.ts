@@ -67,9 +67,7 @@ export default class ImageTeaser {
         itemsCount: 1,
         itemsPerView: 1,
         useAutorotation: false,
-        autorotationOptions: {
-            delay: 6000,
-        },
+        autorotationOptions: {},
         useWholeScreen: false,
     };
     public currentItemsPerView: number;
@@ -117,6 +115,17 @@ export default class ImageTeaser {
     }
 
     /**
+     * Check if autorotation can be enable (not touch screen) or if there is an option to enable autorotation also on touch screens
+     * @return boolean
+     */
+    protected _checkTouch(): boolean {
+        return this.options.autorotationOptions
+            .useAutorotationAlsoForTouchScreens
+            ? true
+            : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
+    }
+
+    /**
      * ASYNC. Collects all Navigation Submodule options, imports module asynchronously and initializes with given settings.
      * @return Promise
      */
@@ -140,7 +149,7 @@ export default class ImageTeaser {
 
         if (
             this.options.useAutorotation &&
-            window.matchMedia('(hover:hover)').matches &&
+            this._checkTouch() &&
             this._$it[0].offsetParent != null
         ) {
             this._initAutorotation();
@@ -182,6 +191,7 @@ export default class ImageTeaser {
                 pauseNode: this._$it[0].querySelector(
                     '.cs-image-teaser__slides-wrapper'
                 ),
+                delay: 6000,
             },
             ...this.options.autorotationOptions,
         };
@@ -210,9 +220,15 @@ export default class ImageTeaser {
                     this.pagination?.setItemsPerView(this.currentItemsPerView);
                 }
 
+                const checkTouch: boolean = this.options.autorotationOptions
+                    .useAutorotationAlsoForTouchScreens
+                    ? true
+                    : window.matchMedia('(hover:hover) and (pointer: fine)')
+                          .matches;
+
                 if (
                     this.options.useAutorotation &&
-                    window.matchMedia('(hover:hover)').matches &&
+                    this._checkTouch() &&
                     this._$it[0].offsetParent != null &&
                     !this.autorotation
                 ) {

@@ -1,10 +1,7 @@
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
-import {
-    checkConsentForService,
-    attachInitializeEvent,
-    attachChangeEvent,
-} from 'components/consent-management/vendor/usercentrics';
+import usercentrics from 'components/consent-management/vendor/usercentrics';
+import amasty from 'components/consent-management/vendor/amasty';
 
 const consentManagement = {
     vendor: deepGet(viewXml, 'vars.Magento_Theme.consent_management.vendor'),
@@ -12,28 +9,27 @@ const consentManagement = {
         viewXml,
         'vars.Magento_Theme.consent_management.services'
     ),
+    defaultValue: deepGet(
+        viewXml,
+        'vars.Magento_Theme.consent_management.default_value'
+    ),
+    mapVendors: {
+        usercentrics: usercentrics,
+        amasty: amasty,
+    },
     /**
      * Check consent status
      * @param service
      * @returns
      */
     checkConsent: function(service: string): boolean {
-        switch (this.vendor) {
-            case 'usercentrics':
-                return checkConsentForService(this.services[service]);
-
-                break;
-            default:
-                /**
-                 * If you debugged here, then probably vendor is not set in XML
-                 * Default value is used instead
-                 */
-                return deepGet(
-                    viewXml,
-                    'vars.Magento_Theme.consent_management.default_value'
-                );
-                break;
+        if (!this.vendor || !this.mapVendors[this.vendor]) {
+            return this.defaultValue;
         }
+
+        return this.mapVendors[this.vendor].checkConsent(
+            this.services[service]
+        );
     },
     /**
      * Run callback on vendor initialization
@@ -41,14 +37,11 @@ const consentManagement = {
      * @returns
      */
     initializeEvent: function(callback: () => void): void {
-        switch (this.vendor) {
-            case 'usercentrics':
-                return attachInitializeEvent(callback);
-
-                break;
-            default:
-                break;
+        if (!this.vendor || !this.mapVendors[this.vendor]) {
+            return;
         }
+
+        return this.mapVendors[this.vendor].attachInitializeEvent(callback);
     },
     /**
      * Run callback on vendor consent change
@@ -56,14 +49,11 @@ const consentManagement = {
      * @returns
      */
     changeEvent: function(callback: () => void): void {
-        switch (this.vendor) {
-            case 'usercentrics':
-                return attachChangeEvent(callback);
-
-                break;
-            default:
-                break;
+        if (!this.vendor || !this.mapVendors[this.vendor]) {
+            return;
         }
+
+        return this.mapVendors[this.vendor].attachChangeEvent(callback);
     },
 };
 

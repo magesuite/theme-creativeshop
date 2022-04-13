@@ -269,9 +269,16 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
             },
             _UpdatePrice: function() {
                 this._super();
+
                 var $widget = this;
                 var options = _.object(_.keys(this.optionsMap), {});
                 var element = this.element;
+                var $product = $widget.element.parents(
+                    $widget.options.selectorProduct
+                );
+                var $productPrice = $product.find(
+                    this.options.selectorProductPrice
+                );
 
                 var isPdp = this.options.isPdp;
                 var currentTileSwatchesClass = element.attr('class');
@@ -301,25 +308,27 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     .find(
                         '.' +
                             this.options.classes.attributeClass +
-                            '[option-selected]'
+                            '[data-option-selected]'
                     )
                     .each(function() {
                         var attributeId = $(this).attr('attribute-id');
 
-                        options[attributeId] = $(this).attr('option-selected');
+                        options[attributeId] = $(this).attr(
+                            'data-option-selected'
+                        );
                     });
 
-                var result = this.options.jsonConfig.optionPrices[
-                    _.findKey(this.options.jsonConfig.index, options)
-                ];
-
-                var $discounted =
+                var result = $widget._getPrices(
+                    $widget._getNewPrices(),
+                    $productPrice.priceBox('option').prices
+                );
+                var discounted =
                     typeof result !== 'undefined' &&
-                    result.oldPrice.amount !== result.finalPrice.amount;
+                    result.basePrice.amount === 0;
 
-                $(
-                    '.normal-price .price-final_price .price-wrapper .price'
-                ).toggleClass('discounted-price', $discounted);
+                $productPrice
+                    .find('.price-final_price')
+                    .toggleClass('special-price', discounted);
 
                 $widget._UpdateTilePriceLabel();
             },

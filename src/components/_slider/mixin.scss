@@ -102,6 +102,8 @@ $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
     }
 
     #{$root}__slides {
+        @include reset-list-style();
+
         display: flex;
         flex: 0 0 100%;
         gap: 0;
@@ -109,15 +111,16 @@ $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
         padding: var(--gap) 0;
         overflow-x: auto;
         overscroll-behavior-inline: contain;
-        scroll-snap-type: x mandatory;
         scrollbar-width: thin;
 
-        @supports not (scroll-behavior: smooth) {
-            scroll-snap-type: none !important;
+        @supports (scroll-behavior: smooth) {
+            scroll-snap-type: x mandatory;
         }
     }
 
     #{$root}__slide {
+        @include reset-list-style();
+
         display: inline-block;
         flex: 0 0 var(--size);
         margin-right: var(--gap);
@@ -168,7 +171,7 @@ $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
         }
     }
 
-    @media (hover: hover) and (min-width: #{$containerBreakpointEm}) {
+    @media (hover: hover) and (pointer: fine) and (min-width: #{$containerBreakpointEm}) {
         &#{$root}--container-width {
             --base-size: #{$page_max-width};
         }
@@ -176,10 +179,16 @@ $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
 
     --size: var(--base-size);
 
+    @include media('>=tablet') {
+        --gap: #{$d-gap};
+    }
+
+    /**
+     * class-based columns config relates to classnames, like '--items-in-row-4'
+     * which are added to elements, depending on the CC Components configuration.
+     */
     @if $columns-config == 'class-based' {
         @include media('>=tablet') {
-            --gap: #{$d-gap};
-
             @for $i from 2 through 8 {
                 &#{$root}--items-in-row-#{$i} {
                     --size: calc(

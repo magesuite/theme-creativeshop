@@ -1,7 +1,8 @@
 import ISliderAutorotation from './interface';
 
 /**
- * Following Baymard report we do not apply autorotate on touch devices,
+ * Following Baymard report we do not apply autorotate on touch devices by default,
+ * however it is possible also to set option useAutorotationAlsoForTouchScreens to true to enable autorotate also on touch
  * Applied desktop autorotate will be paused on mouseenter and resumed after mouseleave. Interaction disables autorotate at all until next visit.
  * More about it here: https://baymard.com/blog/homepage-carousel
  */
@@ -14,9 +15,12 @@ export default class SliderAutorotation {
     public currentSlideIndex: number;
     protected _navigation: any;
     protected _rotator: ReturnType<typeof setInterval>;
-    protected _isTouch: MediaQueryList = window.matchMedia('(hover: none)');
+    protected _isNotTouch: MediaQueryList = window.matchMedia(
+        '(hover: hover) and (pointer: fine)'
+    );
     protected boundMouseenterHandler: any;
     protected boundMouseleaveHandler: any;
+    protected canEnable: boolean;
 
     /**
      * Creates new Slider Navigation component with given settings.
@@ -32,7 +36,11 @@ export default class SliderAutorotation {
 
         this.currentSlideIndex = 1;
 
-        if (!this._isTouch?.matches) {
+        this.canEnable =
+            this.options.useAutorotationAlsoForTouchScreens ||
+            this._isNotTouch?.matches;
+
+        if (this.canEnable) {
             this._startAutorotate();
         }
         this._attachEvents();
@@ -105,7 +113,7 @@ export default class SliderAutorotation {
     protected _attachEvents(): void {
         if (
             this.options.pauseNode &&
-            !this._isTouch?.matches &&
+            this.canEnable &&
             !this._navigation.interacted
         ) {
             this.boundMouseenterHandler = this._stopAutorotate.bind(this);
@@ -120,12 +128,12 @@ export default class SliderAutorotation {
             );
         }
 
-        this._isTouch.addEventListener(
+        this._isNotTouch.addEventListener(
             'change',
             (): void => {
-                if (this._isTouch?.matches && this._rotator != null) {
+                if (!this._isNotTouch?.matches && this._rotator != null) {
                     this._stopAutorotate();
-                } else if (!this._isTouch?.matches && this._rotator == null) {
+                } else if (this._isNotTouch?.matches && this._rotator == null) {
                     this._startAutorotate();
                 }
             },
@@ -135,7 +143,7 @@ export default class SliderAutorotation {
         document.addEventListener(
             'visibilitychange',
             (): void => {
-                if (!this._isTouch?.matches) {
+                if (this._isNotTouch?.matches) {
                     if (document.visibilityState === 'hidden') {
                         this._stopAutorotate();
                     } else {
