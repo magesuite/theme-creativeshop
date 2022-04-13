@@ -15,12 +15,12 @@ const amasty = {
      */
     checkConsent: (serviceName: string) => {
         if (window.isGdprCookieEnabled) {
-            const allowedGroups = getCookie('amcookie_allowed'); // No groups if Amasty hasn't initialized yet
+            const allowedGroups = getCookie('amcookie_allowed');
             const disallowedCookie = getCookie('amcookie_disallowed') || '';
-            const isCookiePolicyAllowed = getCookie('amcookie_policy_restriction') === 'allowed';
+            const cookiePolicyRestriction = getCookie('amcookie_policy_restriction');
 
             // Cookie policy can be restricted to specific countries, skip checking for disabled countries
-            if (!isCookiePolicyAllowed) {
+            if (cookiePolicyRestriction != null ? cookiePolicyRestriction !== 'allowed' : false) {
                 return true;
             }
 
