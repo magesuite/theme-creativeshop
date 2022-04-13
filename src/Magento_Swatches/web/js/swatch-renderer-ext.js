@@ -323,7 +323,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     $productPrice.priceBox('option').prices
                 );
                 var discounted =
-                    typeof result != 'undefined' &&
+                    typeof result !== 'undefined' &&
                     result.basePrice.amount === 0;
 
                 $productPrice
