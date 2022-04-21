@@ -96,7 +96,6 @@ define(['jquery'], function($) {
                         setTimeout(
                             $.proxy(function() {
                                 if (this.isTouchDevice) {
-                                    this.element.trigger('focus');
                                     this.setActiveState(true);
                                     return;
                                 }
