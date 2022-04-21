@@ -88,6 +88,11 @@ export default class SliderAutorotation {
      * Starts autorotate interval (caused on mouseleave as long as root component wasn't interacted manually)
      */
     protected _startAutorotate(): void {
+        if (this._rotator) {
+            clearInterval(this._rotator);
+            this._rotator = null;
+        }
+
         if (!this._navigation?.interacted) {
             this._rotator = setInterval(
                 (): void => this._scrollToNext(),
