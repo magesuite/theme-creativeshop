@@ -99,11 +99,11 @@ export default class Offcanvas {
      */
     public show(): Promise<Offcanvas> {
         const $currentTopOffset: number = window.scrollY;
-        $('html').addClass('no-scroll');
         $('body')
             .addClass('no-scroll ' + this._options.bodyOpenClass)
             .css({ top: -$currentTopOffset })
             .trigger('before-offcanvas-open', [this]);
+        this._$pageWrapper.addClass('no-scroll-child');
 
         this._$trigger
             .addClass(`${this._options.triggerClassName}--active`)
@@ -121,10 +121,10 @@ export default class Offcanvas {
      */
     public hide(): Promise<Offcanvas> {
         const $currentTopOffset: string = $('body').css('top');
-        $('html').removeClass('no-scroll');
         $('body')
             .removeClass('no-scroll ' + this._options.bodyOpenClass)
             .css('top', '');
+        this._$pageWrapper.removeClass('no-scroll-child');
         window.scrollTo(0, parseInt($currentTopOffset || '0', 10) * -1);
 
         this._$trigger
