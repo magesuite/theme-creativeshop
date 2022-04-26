@@ -1,4 +1,6 @@
-/*global define*/
+/**
+ * Provides logic to hide/show agreements only on the last step of checkout
+ */
 define([
     'ko',
     'uiComponent',
@@ -16,7 +18,7 @@ define([
                 return step.code === 'shipping';
             })[0];
 
-            return shipping ? shipping.isVisible : ko.observable(false);
+            return shipping ? shipping.isVisible() : ko.observable(false);
         },
     });
 });
