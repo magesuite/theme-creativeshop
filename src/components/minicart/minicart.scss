@@ -4,21 +4,13 @@
 @import 'etc/view.scss';
 @import 'utils/deep-get/deep-get.scss';
 @import 'components/pseudoicon/mixin';
+@import 'components/_slider/mixin';
 
 $minicart-offcanvas: deep-get(
     $view-xml,
     vars,
     Magento_Checkout,
     minicart_offcanvas,
-    enabled
-) !default;
-
-$minicart-offcanvas-carousel: deep-get(
-    $view-xml,
-    vars,
-    Magento_Checkout,
-    minicart_offcanvas,
-    products_carousel,
     enabled
 ) !default;
 
@@ -63,6 +55,29 @@ $minicart_width: 40rem !default;
 $minicart_content-background: $color_background-200 !default;
 $minicart_action-wrapper_box-shadow: 0 -5px 5px -5px
     rgba($color_background-800, 0.27) !default;
+
+$minicart-offcanvas-carousel: deep-get(
+    $view-xml,
+    vars,
+    Magento_Checkout,
+    minicart_offcanvas,
+    products_carousel,
+    enabled
+) !default;
+
+$minicart-offcanvas-carousel_item-per-row: deep-get(
+    $view-xml,
+    vars,
+    Magento_Checkout,
+    minicart_offcanvas,
+    products_carousel,
+    js,
+    columnsConfig
+) !default;
+
+$minicart-offcanvas-carousel_mobile-gap: 0.8rem !default;
+$minicart-offcanvas-carousel_desktop-gap: 0.8rem !default;
+$minicart-offcanvas-carousel_next-slide-visible: 0.8rem !default;
 
 $minicart_button-checkout-type: $button_default-type !default;
 $minicart_button-checkout-icon-pos: $button_default-icon-pos !default;
@@ -478,6 +493,16 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
         }
 
         .#{$ns}products-carousel {
+            $root: &;
+
+            @include slider(
+                $columns-config: $minicart-offcanvas-carousel_item-per-row,
+                $m-gap: $minicart-offcanvas-carousel_mobile-gap,
+                $d-gap: $minicart-offcanvas-carousel_desktop-gap,
+                $next-visible: $minicart-offcanvas-carousel_next-slide-visible,
+                $root: $root
+            );
+
             margin: 0;
             background: $minicart_offcanvas-carousel-background;
         }

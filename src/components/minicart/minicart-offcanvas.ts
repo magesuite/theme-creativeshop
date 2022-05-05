@@ -3,6 +3,7 @@ import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 import offcanvas from 'components/offcanvas/offcanvas';
 import requireAsync from 'utils/require-async';
+import ISlider from 'components/_slider/interface';
 import 'mage/translate';
 
 /**
@@ -123,6 +124,13 @@ interface IProductsCarouselOptions {
      * @type {string}
      */
     btnTextClass?: string;
+
+    /**
+     * Defines class for products carousel component
+     * @default {'cs-products-carousel'}
+     * @type {string}
+     */
+    carouselClass?: string;
 }
 
 /**
@@ -162,6 +170,7 @@ export default class Minicart {
     protected _offcanvasMinicart: offcanvas;
     protected _$minicartTrigger: JQuery;
     protected _productsCarouselOptions?: IProductsCarouselOptions;
+    protected _productsCarouselSettings: ISlider;
     protected _options: MinicartOptions;
     protected _endpointUrl: JQueryDeferred<string> = jQuery.Deferred();
 
@@ -211,17 +220,15 @@ export default class Minicart {
                 redererEndpoint: 'products_renderer/related/carousel',
                 btnClass: 'cs-minicart__button-carousel',
                 btnTextClass: 'cs-minicart__button-carousel-span',
-                columnsConfig: () => {
-                    // TODO: Mincart Carousel should have own columns config
-                    return deepGet(
-                        viewXml,
-                        'vars.MageSuite_ContentConstructor.columns.multiple-columns'
-                    );
-                },
+                carouselClass: 'cs-products-carousel',
             },
             productsCarouselOptions
         );
 
+        this._productsCarouselSettings = deepGet(
+            viewXml,
+            'vars.Magento_Checkout.minicart_offcanvas.products_carousel.js'
+        );
         this._$minicartTrigger = $(
             `.${this._options.minicartTriggerClassName}`
         );
@@ -372,23 +379,42 @@ export default class Minicart {
 
                         const responseCarouselHTML: string = response.content;
                         const $carouselSlides = $(responseCarouselHTML).find(
-                            '.cs-products-carousel__slide'
+                            `.${this._productsCarouselOptions.carouselClass}__slide`
                         );
+
+                        $dataTarget.empty();
 
                         if ($carouselSlides.length) {
                             $carouselWrapper.addClass(
                                 `${this._productsCarouselOptions.componentWrapperClass}--ready`
                             );
 
-                            $dataTarget.empty();
-                            $dataTarget.html(responseCarouselHTML);
-                            $dataTarget.trigger('contentUpdated');
+                            const carouselHTMLMarkup = $(responseCarouselHTML);
+                            let carouselSettings = $(
+                                `.${this._productsCarouselOptions.carouselClass}`,
+                                carouselHTMLMarkup
+                            ).data('mage-init');
 
-                            // Initializes the product carousel for rendered html
-                            // new ProductsCarousel(
-                            //     this._$minicart.find('.cs-products-carousel'),
-                            //     this._productsCarouselOptions.options
-                            // );
+                            if (carouselSettings != null) {
+                                carouselSettings.ccProductsCarousel = {
+                                    ...carouselSettings.ccProductsCarousel,
+                                    ...this._productsCarouselSettings,
+                                };
+
+                                carouselSettings = JSON.stringify(
+                                    carouselSettings
+                                );
+
+                                $(
+                                    `.${this._productsCarouselOptions.carouselClass}`,
+                                    carouselHTMLMarkup
+                                ).attr('data-mage-init', carouselSettings);
+                                $dataTarget.append(carouselHTMLMarkup);
+                            } else {
+                                $dataTarget.html(responseCarouselHTML);
+                            }
+
+                            $dataTarget.trigger('contentUpdated');
 
                             requireAsync([
                                 'mage/cookies',
