@@ -75,7 +75,13 @@ export default class Offcanvas {
 
         // Hide offcanvas when search is opened
         $('body').on('before-search-open', () => {
-            this.hide();
+            if (
+                this._$trigger.hasClass(
+                    `${this._options.triggerClassName}--active`
+                )
+            ) {
+                this.hide();
+            }
         });
     }
     /**

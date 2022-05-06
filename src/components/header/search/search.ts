@@ -85,7 +85,9 @@ export default class HeaderSearch {
 
         // Hide search and autocomplete list when minicart/offcanvas navigation is opened
         $('body').on('before-offcanvas-open', () => {
-            this._hideSearch();
+            if (this._isOpen) {
+                this._hideSearch();
+            }
         });
     }
 
