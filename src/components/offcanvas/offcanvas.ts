@@ -14,6 +14,8 @@ export interface OffcanvasOptions {
     pagewrapperSelector?: string; // Page wrapper element selector
     bodyOpenClass?: string; // Class added to the body element when given instance of offcanvas is open
     closeButtonClassName?: string; // Optional, additional close button name.
+    offcanvasShowTriggerEvent?: string; // Adds event to be listened to on body, that will trigger ofcanvas open.
+    offcanvasHideTriggerEvent?: string; // Adds event to be listened to on body, that will trigger ofcanvas close.
 }
 
 /**
@@ -36,10 +38,10 @@ export default class Offcanvas {
 
     /**
      * Creates new offcanvas component with optional settings.
-     * @param {JQuery} $element Optional, element to be initialized on.
+     * @param {HTMLElement} element Optional, element to be initialized on.
      * @param {OffcanvasOptions} options  Optional settings object.
      */
-    public constructor($element?: JQuery, options?: OffcanvasOptions) {
+    public constructor(element?: HTMLElement, options?: OffcanvasOptions) {
         this._options = $.extend(
             {
                 className: 'cs-offcanvas',
@@ -56,7 +58,9 @@ export default class Offcanvas {
             options
         );
 
-        this._$element = $element || $(`.${this._options.className}`);
+        this._$element = element
+            ? $(element)
+            : $(`.${this._options.className}`);
         if (this._$element.length === 0) {
             return;
         }
@@ -224,6 +228,18 @@ export default class Offcanvas {
             `.${this._options.triggerClassName}`,
             this._eventListeners.triggerClick
         );
+
+        if (this._options.offcanvasShowTriggerEvent) {
+            $('body').on(this._options.offcanvasShowTriggerEvent, () =>
+                this.show()
+            );
+        }
+
+        if (this._options.offcanvasHideTriggerEvent) {
+            $('body').on(this._options.offcanvasHideTriggerEvent, () =>
+                this.hide()
+            );
+        }
 
         if (this._options.closeOnBlur) {
             this._eventListeners.overlayClick = () => this.hide();

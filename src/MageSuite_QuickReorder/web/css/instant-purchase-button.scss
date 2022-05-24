@@ -1,0 +1,46 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'components/pseudoicon/mixin';
+@import 'utils/visually-hidden';
+
+$instant-purchase_include-default-pseudoicon: true !default;
+$instant-purchase_create-button-type: 'primary' !default;
+$instant-purchase_create-button-icon-pos: 'right' !default;
+
+.#{$ns}instant-purchase-button {
+    $root: &;
+
+    @include button(
+        $type: $instant-purchase_create-button-type,
+        $icon_pos: $instant-purchase_create-button-icon-pos
+    );
+
+    @include media('<laptop') {
+        width: 100%;
+    }
+
+    .checkout-cart-index & {
+        width: 100%;
+    }
+
+    .catalog-product-view & {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    span {
+        @include button_span(
+            $type: $instant-purchase_create-button-type,
+            $icon_pos: $instant-purchase_create-button-icon-pos
+        );
+    }
+
+    svg,
+    img {
+        @include button_icon(
+            $type: $instant-purchase_create-button-type,
+            $icon_pos: $instant-purchase_create-button-icon-pos
+        );
+    }
+}
