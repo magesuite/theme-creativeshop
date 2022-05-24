@@ -1,0 +1,203 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'components/pseudoicon/mixin';
+
+$instant-purchase_place-order-button-type: 'primary' !default;
+$instant-purchase_place-order-button-icon-pos: 'right' !default;
+$instant-purchase_offcanvas-product-image-max-height: 10rem !default;
+$instant-purchase_offcanvas-spacing: 2rem !default;
+$instant-purchase_close-include-default-pseudoicon: true !default;
+$instant-purchase_order-detais-background: $color_background-500 !default;
+
+// Order details need to have fixed height to support slide up smooth animation and css grid.
+$instant-purchase_order-details-height: 10rem !default;
+$instant-purchase_order-details-visible-height: 26rem !default;
+
+.#{$ns}offcanvas--instant-purchase {
+    z-index: 800;
+
+    .#{$ns}offcanvas__overlay,
+    .#{$ns}offcanvas__drawer {
+        height: 100%;
+        display: block;
+        top: 0;
+    }
+}
+
+.#{$ns}instant-purchase {
+    $root: &;
+    height: 100%;
+    display: grid;
+    grid-template-rows: min-content 2fr auto min-content;
+
+    &__title-wrapper {
+        position: relative;
+        display: flex;
+        background: $color_background-600;
+        color: $color_text-800;
+        margin: 0;
+        padding: 1.5rem 2rem;
+        font-size: 1.5rem;
+        line-height: 1.2;
+        text-transform: uppercase;
+        border-bottom: 1px solid $color_border-500;
+    }
+
+    &__close {
+        background: $color_primary-500;
+        position: absolute;
+        right: 0;
+        width: 5rem;
+        height: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+
+    &__close-icon {
+        @if ($instant-purchase_close-include-default-pseudoicon) {
+            @include pseudoicon(
+                $type: 'plus',
+                $color: $color_text-200,
+                $color-hover: $color_text-200,
+                $width: 2rem,
+                $height: 0.2rem
+            );
+
+            transform: rotate(45deg);
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+        }
+    }
+
+    &__place-order {
+        @include button(
+            $type: $instant-purchase_place-order-button-type,
+            $icon_pos: $instant-purchase_place-order-button-icon-pos
+        );
+
+        width: 100%;
+
+        span {
+            @include button_span(
+                $type: $instant-purchase_place-order-button-type,
+                $icon_pos: $instant-purchase_place-order-button-icon-pos
+            );
+        }
+
+        svg {
+            @include button_icon(
+                $type: $instant-purchase_place-order-button-type,
+                $icon_pos: $instant-purchase_place-order-button-icon-pos
+            );
+        }
+    }
+
+    &__products {
+        overflow-y: scroll;
+    }
+
+    &__product {
+        display: flex;
+        padding: 1rem $instant-purchase_offcanvas-spacing 0.5rem;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid $color_border-500;
+        }
+
+        &-image {
+            max-height: $instant-purchase_offcanvas-product-image-max-height;
+        }
+
+        &-details {
+            flex: 1 0 auto;
+            display: flex;
+            flex-flow: row wrap;
+            align-content: center;
+        }
+
+        &-name {
+            width: 100%;
+            font-weight: 600;
+        }
+
+        &-price {
+            width: 100%;
+            padding: 0.8rem 0;
+        }
+
+        &-qty-label {
+            &:after {
+                content: ':';
+            }
+        }
+    }
+
+    &__totals {
+        padding: $instant-purchase_offcanvas-spacing;
+        box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.27);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        line-height: 1;
+
+        &-text {
+            font-size: 1.5rem;
+        }
+
+        &-amount {
+            font-size: 2.1rem;
+        }
+    }
+
+    &__actions {
+        z-index: 1;
+        padding: 1.5rem $instant-purchase_offcanvas-spacing;
+        background-color: $color_background-200;
+    }
+
+    &__order-details {
+        position: relative;
+        margin: 0 $instant-purchase_offcanvas-spacing;
+        height: $instant-purchase_order-details-height;
+        border-radius: 3px;
+        background: $instant-purchase_order-detais-background;
+        transition: height 300ms ease-in-out;
+        overflow: hidden;
+
+        &--show {
+            height: $instant-purchase_order-details-visible-height;
+        }
+
+        &-box {
+            padding: 0.8rem 0.8rem 0;
+            pointer-events: none;
+
+            #{$root}__order-details--show & {
+                pointer-events: auto;
+            }
+
+            .#{$ns}field__radio {
+                width: 100%;
+            }
+        }
+
+        &-toggle {
+            color: $link-color_base;
+            cursor: pointer;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1rem $instant-purchase_offcanvas-spacing;
+            box-shadow: 0 -5px 5px 3px $instant-purchase_order-detais-background;
+            background: $instant-purchase_order-detais-background;
+        }
+
+        &-label {
+            font-weight: 600;
+        }
+    }
+}

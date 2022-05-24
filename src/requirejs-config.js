@@ -15,6 +15,7 @@ var config = {
         ccProductsCarousel: 'js/products-carousel',
         ccProductFinder: 'js/product-finder',
         mgsSalebarWidget: 'js/salebar-widget',
+        mgsOffcanvas: 'js/offcanvas',
     },
     shim: {
         'mage/dataPost': ['js/uenc-updater'],

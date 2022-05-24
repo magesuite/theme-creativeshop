@@ -1,0 +1,417 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'components/pseudoicon/mixin';
+@import 'utils/visually-hidden';
+
+// Table
+$instant-purchase_order-background: $color_background-500 !default;
+$instant-purchase_product-background: $color_background-200 !default;
+$instant-purchase_products-table-padding: 3.6rem !default;
+$instant-purchase_order-toggle-include-default-pseudoicon: true !default;
+
+// fixed table cell width to avoid shifts, when order details is toggled
+$instant-purchase_cell-id-width: 10rem !default;
+$instant-purchase_cell-date-width: 20rem !default;
+$instant-purchase_cell-total-width: 15rem !default;
+$instant-purchase_cell-status-width: 15rem !default;
+$instant-purchase_cell-actions-width: 17rem !default;
+
+// Action buttons
+$instant-purchase_atc-button-type: 'secondary' !default;
+$instant-purchase_atc-button-icon-pos: 'no-icon' !default;
+$instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
+
+.#{$ns}instant-purchase-form {
+    $root: &;
+
+    &__form {
+        &--locked {
+            input[type='checkbox'] {
+                pointer-events: none;
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        width: 100%;
+        background: $color_background-200;
+
+        @include media('<#{$instant-purchase_actions-sticky-breakpoint}') {
+            position: fixed;
+            z-index: 10;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 2rem;
+            box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.27);
+            flex-flow: row wrap;
+        }
+
+        @include media('>=#{$instant-purchase_actions-sticky-breakpoint}') {
+            margin-bottom: 2rem;
+            justify-content: flex-end;
+        }
+
+        &--disabled {
+            button {
+                opacity: 0.7;
+                pointer-events: none;
+            }
+        }
+    }
+
+    &__action {
+        @include media('<#{$instant-purchase_actions-sticky-breakpoint}') {
+            width: 100%;
+
+            &:first-child {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @include media('>=#{$instant-purchase_actions-sticky-breakpoint}') {
+            &:first-child {
+                margin-right: 1.5rem;
+            }
+        }
+    }
+
+    &__add-to-cart {
+        @include button(
+            $type: $instant-purchase_atc-button-type,
+            $icon_pos: $instant-purchase_atc-button-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $instant-purchase_atc-button-type,
+                $icon_pos: $instant-purchase_atc-button-icon-pos
+            );
+        }
+
+        @include media('<laptop') {
+            width: 100%;
+        }
+    }
+
+    &__orders-table {
+        border-collapse: separate;
+
+        caption {
+            @include visually-hidden();
+        }
+
+        td,
+        th,
+        tbody {
+            @include media('<laptop') {
+                display: block;
+            }
+        }
+
+        thead {
+            @include media('<laptop') {
+                display: none;
+            }
+        }
+
+        td {
+            @include media('>=laptop') {
+                border-bottom: none;
+                vertical-align: middle;
+            }
+        }
+
+        .col.date {
+            text-align: center;
+        }
+
+        // fixed width to avoid shifts, when order details is toggled
+        th.col {
+            @include media('>=laptop') {
+                &.id {
+                    width: $instant-purchase_cell-id-width;
+                }
+
+                &.date {
+                    width: $instant-purchase_cell-date-width;
+                }
+
+                &.total {
+                    width: $instant-purchase_cell-total-width;
+                }
+
+                &.status {
+                    width: $instant-purchase_cell-status-width;
+                }
+
+                &.actions {
+                    min-width: $instant-purchase_cell-actions-width;
+                }
+            }
+        }
+
+        [data-th] {
+            &:before {
+                @include media('<laptop') {
+                    content: attr(data-th) ': ';
+                    color: $color_text-800;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .field.choice {
+            margin-bottom: 0;
+            width: auto;
+
+            .checkbox {
+                background-color: $color_background-200;
+            }
+        }
+    }
+
+    // Used to create outer padding effect in HTML table on desktop
+    &__table-side-cell {
+        @include media('>=laptop') {
+            width: $instant-purchase_products-table-padding;
+            max-width: $instant-purchase_products-table-padding;
+        }
+    }
+
+    &__order {
+        @include media('<laptop') {
+            border-top: 1px solid $color_border-500;
+            padding: 0.7rem 1rem 1rem;
+        }
+
+        &--visible {
+            background: $instant-purchase_order-background;
+        }
+    }
+
+    &__order-toggle {
+        &-text {
+            color: $link-color_base;
+
+            @include media('<laptop') {
+                &:before {
+                    margin-right: 0.4rem;
+                }
+            }
+
+            @include media('>=laptop') {
+                display: none;
+            }
+        }
+
+        @if ($instant-purchase_order-toggle-include-default-pseudoicon) {
+            @include pseudoicon(
+                $type: 'arrow',
+                $animated: 'true',
+                $color: $color_primary-500,
+                $color-hover: $color_primary-500,
+                $color-expanded: $color_primary-500,
+                $width: 1.1rem,
+                $height: 0.1rem,
+                $position-side-offset: 1rem,
+                $arrow-default: 'down',
+                $arrow-active: 'up',
+                $arrow-offset: 1.75rem,
+                $active-selector: '#{$root}__order--visible &'
+            );
+
+            @include media('<laptop') {
+                width: auto !important;
+
+                &:after {
+                    width: 0.8rem;
+                    right: -2.35rem;
+                }
+
+                &:before {
+                    right: -1.8rem;
+                    width: 0.8rem;
+                }
+            }
+        }
+    }
+
+    &__order-cell {
+        &-id {
+            font-weight: 600;
+        }
+    }
+
+    &__products-header {
+        display: none;
+
+        #{$root}__order--visible & {
+            @include media('>=laptop') {
+                display: table-row;
+            }
+        }
+
+        th:not(:last-child) {
+            border-top: 1px solid $color_border-500;
+        }
+    }
+
+    &__order-info {
+        cursor: pointer;
+
+        @include media('<laptop') {
+            position: relative;
+            display: flex;
+            flex-flow: row wrap;
+            padding-left: 3rem;
+
+            td {
+                width: 100%;
+                padding: 0.8rem 0;
+            }
+        }
+
+        td {
+            @include media('<laptop') {
+                width: 100%;
+
+                &:first-child {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: auto;
+                }
+            }
+
+            @include media('>=laptop') {
+                border-top: 1px solid $color_border-500;
+            }
+
+            &:first-child,
+            &:last-child {
+                @include media('>=laptop') {
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+
+    &__order-product {
+        display: none;
+        background: $instant-purchase_product-background;
+
+        #{$root}__order--visible & {
+            @include media('<laptop') {
+                display: grid;
+            }
+
+            @include media('>=laptop') {
+                display: table-row;
+            }
+        }
+
+        @include media('<laptop') {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            position: relative;
+            grid-template-areas:
+                'image details'
+                'image old-price'
+                'image current-price'
+                'image qty';
+            grid-template-columns: minmax(12rem, auto) 1fr;
+            grid-template-rows: (3, min-content) 1fr;
+        }
+
+        td {
+            @include media('<laptop') {
+                padding: 0.8rem 0;
+            }
+            @include media('>=laptop') {
+                border-bottom: solid 0.2rem $instant-purchase_order-background;
+            }
+        }
+
+        #{$root}__order &:last-child {
+            td {
+                @include media('>=laptop') {
+                    border-bottom-width: $instant-purchase_products-table-padding;
+                }
+            }
+        }
+    }
+
+    &__order-view {
+        @include media('<laptop') {
+            width: auto !important;
+            padding: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+
+    &__product-cell {
+        &-image {
+            position: relative;
+
+            @include media('<laptop') {
+                grid-area: image;
+            }
+
+            .field.choice {
+                position: absolute;
+                top: 0.8rem;
+                left: 0.8rem;
+            }
+        }
+
+        &-details {
+            @include media('<laptop') {
+                grid-area: details;
+            }
+        }
+
+        &-price {
+            @include media('<laptop') {
+                grid-area: old-price;
+            }
+        }
+
+        &-price-current {
+            @include media('<laptop') {
+                grid-area: current-price;
+            }
+        }
+
+        &-qty {
+            box-sizing: content-box;
+
+            @include media('<laptop') {
+                grid-area: qty;
+            }
+        }
+    }
+
+    &__product-image {
+        padding-left: 1rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 10rem;
+
+            @include media('<laptop') {
+                width: auto;
+            }
+        }
+    }
+
+    &__product-qty-input {
+        max-width: 3rem;
+    }
+}
