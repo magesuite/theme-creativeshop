@@ -3,12 +3,19 @@
 * Template overridden in order to:
 * - add custom pagination input
 * - add magesuite classes
+* - on cs-pagination__content element add data attribute for Load More button functionality
 */
 /** @see \Magento\Theme\Block\Html\Pager */
 ?>
+<?php
+    $numberOfReviews = $block->getCollection()->getSize();
+?>
 
-<?php if ($block->getCollection()->getSize()): ?>
-
+<?php if ($numberOfReviews): ?>
+    <?php
+        $nextPageUrl = $block->escapeUrl($block->getNextPageUrl());
+        $isLastPage = $block->isLastPage();
+    ?>
     <?php if ($block->getShowAmounts()): ?>
         <div class="cs-toolbar__item cs-toolbar__item--amount">
             <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')); ?>
@@ -22,10 +29,18 @@
             $displayPrevNextButtonsIfDisabled = $block->getVar('toolbar/pagination/display_prev_next_buttons_if_disabled', 'Magento_Theme');
             $lastPageNum = $block->getLastPageNum();
             $isFirstPage = $block->isFirstPage();
-            $isLastPage = $block->isLastPage();
+            $currentPage = $block->escapeHtmlAttr($block->getCurrentPage());
         ?>
         <div class="pages cs-pagination" role="navigation">
-            <div class="cs-pagination__content" role="menubar">
+            <div 
+                class="cs-pagination__content" 
+                role="menubar"
+                data-reviews-number="<?= $numberOfReviews ?>"
+                data-reviews-last-page-number="<?= $lastPageNum ?>"
+                data-reviews-next-url="<?= $nextPageUrl ?>"
+                data-reviews-current-page="<?= $currentPage ?>"
+                data-reviews-is-last-page="<?= $isLastPage ?>"
+            >
                 <?php if (!$isFirstPage || $isFirstPage && $displayPrevNextButtonsIfDisabled): ?>
                     <?php
                         $prevPageLabel = $block->getAnchorTextForPrevious() ?? __('Previous page');
