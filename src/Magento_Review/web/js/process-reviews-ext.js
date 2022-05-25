@@ -1,18 +1,71 @@
 /**
  * Instead of reviews pagination use "Load more reviews" button
  */
-
 define(['jquery', 'loader', 'mage/translate'], function($) {
     'use strict';
 
     return function() {
-        var reviewsCountForPage = 10;
-        var reviewsPages = [];
-        var pagesCount;
-        var allReviewsCount = $('#reviews .counter').length
-            ? parseInt($('#reviews .counter').text(), 10)
-            : null;
         var showMoreText = $.mage.__('Show %1 out of %2 reviews');
+        var reviewContainerSelector = '#product-review-container';
+        var reviewsCountSelectorClass = 'cs-reviews__count';
+        var processedReviewsCount = 0;
+        var $loadMoreReviewsButton;
+
+        var addLoadMoreButton = function(
+            nextPageUrl,
+            reviewsCountForPage,
+            numberOfReviews
+        ) {
+            $(reviewContainerSelector)
+                .append(
+                    '<div class="cs-reviews__button" id="load-more-reviews" data-next-url="' +
+                        nextPageUrl +
+                        '"><span>' +
+                        $.mage.__('Show more') +
+                        '<span class="count">' +
+                        reviewsCountForPage +
+                        '</span>' +
+                        '</span></div>'
+                )
+                .append(
+                    '<div class="' +
+                        reviewsCountSelectorClass +
+                        '">' +
+                        showMoreText
+                            .replace('%1', processedReviewsCount)
+                            .replace('%2', numberOfReviews) +
+                        '</div>'
+                );
+
+            $loadMoreReviewsButton = $('#load-more-reviews');
+            $loadMoreReviewsButton.loader();
+        };
+
+        var updateLoadMoreButton = function(
+            nextPageUrl,
+            reviewsPerPage,
+            numberOfReviews
+        ) {
+            $loadMoreReviewsButton.attr('data-next-url', nextPageUrl);
+
+            $loadMoreReviewsButton.find('.count').text(reviewsPerPage);
+            $('.' + reviewsCountSelectorClass).text(
+                showMoreText
+                    .replace('%1', processedReviewsCount)
+                    .replace('%2', numberOfReviews)
+            );
+
+            $loadMoreReviewsButton.loader('hide');
+        };
+
+        var attachLoadMoreButtonEvents = function() {
+            $loadMoreReviewsButton.on('click', function() {
+                var nextUrl = $(this).attr('data-next-url');
+                if (nextUrl) {
+                    processReviewsLoadMore(nextUrl, true);
+                }
+            });
+        };
 
         function processReviewsLoadMore(url, fromPages) {
             $.ajax({
@@ -21,107 +74,70 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
                 dataType: 'html',
                 showLoader: false,
                 loaderContext: $('.product.data.items'),
-            })
-                .done(function(data) {
-                    if (fromPages === true) {
-                        var $newReviews = $(data).find('.cs-reviews__item');
+            }).done(function(data) {
+                var $newReviews = $(data).find('.cs-reviews__item');
+                var reviewsPerPage = $newReviews.length;
+                processedReviewsCount += reviewsPerPage;
 
-                        if (reviewsPages.length === 1) {
-                            // If there are only 2 pages of reviews calculate remaining reviews count on the last page
-                            if (allReviewsCount) {
-                                var lastPageReviewsCount =
-                                    allReviewsCount -
-                                    (pagesCount - 1) * reviewsCountForPage;
-                                $('#load-more-reviews .count').text(
-                                    lastPageReviewsCount
-                                );
-                                $('.cs-reviews__count').text(
-                                    showMoreText
-                                        .replace('%1', lastPageReviewsCount)
-                                        .replace('%2', allReviewsCount)
-                                );
-                            }
-                        }
+                var $pagination = $(data).find('.cs-pagination__content');
+                var numberOfReviews = parseInt(
+                    $pagination.attr('data-reviews-number'),
+                    10
+                );
+                var nextPageUrl = $pagination.attr('data-reviews-next-url');
+                var lastPageNumber = parseInt(
+                    $pagination.attr('data-reviews-last-page-number'),
+                    10
+                );
+                var currentPage = parseInt(
+                    $pagination.attr('data-reviews-current-page'),
+                    10
+                );
+                var isLastPage = $pagination.attr('data-reviews-is-last-page');
 
-                        $('#product-review-container .cs-reviews__list')
-                            .append($newReviews)
-                            .trigger('contentUpdated');
+                // Penultimate page
+                if (lastPageNumber - currentPage === 1) {
+                    reviewsPerPage =
+                        numberOfReviews - currentPage * reviewsPerPage;
+                }
 
-                        if (!reviewsPages.length) {
-                            $('#load-more-reviews').remove();
-                            $('.cs-reviews__count').remove();
-                        }
-                    } else {
-                        $('#product-review-container')
-                            .append(data)
-                            .trigger('contentUpdated');
+                if (fromPages === true) {
+                    $('#product-review-container .cs-reviews__list')
+                        .append($newReviews)
+                        .trigger('contentUpdated');
 
-                        if (!$('#product-review-container .pages').length) {
-                            // There is only 10 or less reviews
-                            return;
-                        } else {
-                            $('.cs-reviews').addClass('cs-reviews--load-more');
-                            reviewsCountForPage = $(data).find(
-                                '.cs-reviews__item'
-                            ).length;
-                        }
-
-                        // Gather reviews pages then remove pagination
-                        $(
-                            '#product-review-container .pages .cs-pagination__number'
-                        ).each(function() {
-                            if ($(this).attr('href')) {
-                                reviewsPages.push($(this).attr('href'));
-                            }
-                        });
-                        pagesCount = $(
-                            '#product-review-container .pages .cs-pagination__number'
-                        ).length;
-                        $('#product-review-container .pages').remove();
-
-                        // If there are only 2 pages of reviews calculate remaining reviews count on the last page
-                        if (allReviewsCount && pagesCount === 2) {
-                            reviewsCountForPage =
-                                allReviewsCount - reviewsCountForPage;
-                        }
-
-                        // Append load more button and set action on click
-                        $('#product-review-container').append(
-                            '<div class="cs-reviews__button" id="load-more-reviews"><span>' +
-                                $.mage.__('Show more') +
-                                '<span class="count">' +
-                                reviewsCountForPage +
-                                '</span>' +
-                                '</span></div>'
-                        );
-
-                        $('#product-review-container').append(
-                            '<div class="cs-reviews__count">' +
-                                showMoreText
-                                    .replace('%1', reviewsCountForPage)
-                                    .replace('%2', allReviewsCount) +
-                                '</div>'
-                        );
-
-                        $('#load-more-reviews').loader();
-
-                        $('#load-more-reviews').on('click', function() {
-                            if (reviewsPages.length) {
-                                processReviewsLoadMore(reviewsPages[0], true);
-                                reviewsPages.shift();
-                            } else {
-                                $('#load-more-reviews').remove();
-                            }
-
-                            $('#load-more-reviews').loader('show');
-                        });
+                    if (isLastPage) {
+                        $loadMoreReviewsButton.remove();
+                        $('.' + reviewsCountSelectorClass).remove();
+                        return;
                     }
-                })
-                .complete(function() {
-                    if ($('#load-more-reviews').length) {
-                        $('#load-more-reviews').loader('hide');
+
+                    updateLoadMoreButton(
+                        nextPageUrl,
+                        reviewsPerPage,
+                        numberOfReviews
+                    );
+                } else {
+                    $('#product-review-container')
+                        .append(data)
+                        .trigger('contentUpdated');
+
+                    if (!$(reviewContainerSelector + ' .pages').length) {
+                        // There is only 10 or less reviews
+                        return;
                     }
-                });
+
+                    $('.cs-reviews').addClass('cs-reviews--load-more');
+                    $(reviewContainerSelector + ' .pages').remove();
+
+                    addLoadMoreButton(
+                        nextPageUrl,
+                        reviewsPerPage,
+                        numberOfReviews
+                    );
+                    attachLoadMoreButtonEvents();
+                }
+            });
         }
 
         return function(config) {
