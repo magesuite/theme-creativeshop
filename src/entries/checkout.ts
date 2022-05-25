@@ -93,5 +93,5 @@ import 'MageSuite_LoginOrGuestCheckoutStep';
 // import 'components/video-layer';
 // import 'MageSuite_PackstationDhl/web/css/source/module.scss';
 // import 'MageSuite_SuccessPageOrderDetails/web/css/last-order-details.scss';
-// import 'MageSuite_QuickReorder/instant-purchase';
+// import 'MageSuite_InstantPurchase';
 // import 'Mollie_Payment';

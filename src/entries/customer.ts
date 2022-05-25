@@ -93,5 +93,5 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
-// import 'MageSuite_QuickReorder/instant-purchase';
-// import 'MageSuite_QuickReorder/instant-purchase-user-area';
+// import 'MageSuite_InstantPurchase';
+// import 'MageSuite_InstantPurchase/user-area';
