@@ -95,13 +95,21 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     return this._super(images, context, isInProductView);
                 }
 
-                if (justAnImage && justAnImage.img) {
-                    // Fixed element extraction for our markup.
-                    this.element
-                        .parents(this.options.selectorProductTile)
-                        .find('.cs-product-tile__image')
-                        .attr('src', justAnImage.img)
-                        .attr('srcset', justAnImage.img);
+                // Fixed element extraction for our markup.
+                if (justAnImage) {
+                    // Use images with sizes for category_page_grid and category_page_grid_x2 if possible
+                    var imageSrcSet =
+                        justAnImage.tile && justAnImage.tile2x
+                            ? `${justAnImage.tile} 1x, ${justAnImage.tile2x} 2x`
+                            : justAnImage.img;
+
+                    if (imageSrcSet) {
+                        this.element
+                            .parents(this.options.selectorProductTile)
+                            .find('.cs-product-tile__image source')
+                            .attr('srcset', imageSrcSet)
+                            .attr('data-srcset', imageSrcSet);
+                    }
                 }
             },
             _RenderControls: function() {
