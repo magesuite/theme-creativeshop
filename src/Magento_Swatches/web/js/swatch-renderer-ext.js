@@ -10,10 +10,10 @@
  * - gallery is loaded, to keep correct gallery behaviour
  * - attributes config is prepared by widget logic
  */
-define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
+define(['jquery', 'underscore', 'mage/translate'], function ($, _, $t) {
     'use strict';
 
-    return function(swatchRenderer) {
+    return function (swatchRenderer) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
             options: {
                 selectorProductTile: '.cs-product-tile',
@@ -33,7 +33,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     pdpClass: 'cs-buybox',
                 },
             },
-            _init: function() {
+            _init: function () {
                 if (!this.options.$tileOrBuybox) {
                     var isPdp = this.element.parents(this.options.selectorPdp)
                         .length
@@ -60,13 +60,13 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
 
                 this._super();
             },
-            _onGalleryLoaded: function(gallery) {
+            _onGalleryLoaded: function (gallery) {
                 this._super(gallery);
 
                 // Add gallery loaded flag for selecting swatches reference
                 this._isGalleryLoaded = true;
             },
-            _determineProductData: function() {
+            _determineProductData: function () {
                 // Check if product is in a list of products.
                 var productId,
                     isInProductView = false;
@@ -88,23 +88,31 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     isInProductView: isInProductView,
                 };
             },
-            updateBaseImage: function(images, context, isInProductView) {
+            updateBaseImage: function (images, context, isInProductView) {
                 var justAnImage = images[0];
 
                 if (isInProductView) {
                     return this._super(images, context, isInProductView);
                 }
 
-                if (justAnImage && justAnImage.img) {
-                    // Fixed element extraction for our markup.
-                    this.element
-                        .parents(this.options.selectorProductTile)
-                        .find('.cs-product-tile__image')
-                        .attr('src', justAnImage.img)
-                        .attr('srcset', justAnImage.img);
+                // Fixed element extraction for our markup.
+                if (justAnImage) {
+                    // Use images with sizes for category_page_grid and category_page_grid_x2 if possible
+                    var imageSrcSet =
+                        justAnImage.tile && justAnImage.tile2x
+                            ? `${justAnImage.tile} 1x, ${justAnImage.tile2x} 2x`
+                            : justAnImage.img;
+
+                    if (imageSrcSet) {
+                        this.element
+                            .parents(this.options.selectorProductTile)
+                            .find('.cs-product-tile__image source')
+                            .attr('srcset', imageSrcSet)
+                            .attr('data-srcset', imageSrcSet);
+                    }
                 }
             },
-            _RenderControls: function() {
+            _RenderControls: function () {
                 this._super();
                 var _this = this;
                 var gallery = $(
@@ -117,43 +125,52 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                 if (_this._isGalleryLoaded === true) {
                     _this._SelectSwatchesBasedOnReferrer();
 
-                    $.each(_this.options.jsonConfig.attributes, function(
-                        index,
-                        item
-                    ) {
-                        if (item.options.length === 1) {
-                            _this._checkOption(item.code, item.options[0].id);
+                    $.each(
+                        _this.options.jsonConfig.attributes,
+                        function (index, item) {
+                            if (item.options.length === 1) {
+                                _this._checkOption(
+                                    item.code,
+                                    item.options[0].id
+                                );
+                            }
                         }
-                    });
+                    );
                 }
 
-                $(gallery).on('gallery:loaded', function() {
+                $(gallery).on('gallery:loaded', function () {
                     _this._SelectSwatchesBasedOnReferrer();
 
-                    var optionsWithoutDisabledProducts = _this.options.jsonConfig.attributes.map(
-                        function(currentValue, index, array) {
+                    var optionsWithoutDisabledProducts =
+                        _this.options.jsonConfig.attributes.map(function (
+                            currentValue,
+                            index,
+                            array
+                        ) {
                             currentValue.options = currentValue.options.filter(
-                                function(element, index, array) {
+                                function (element, index, array) {
                                     return element.products.length > 0;
                                 }
                             );
 
                             return currentValue;
-                        }
-                    );
+                        });
 
-                    var optionsWithSingleSwatch = optionsWithoutDisabledProducts.filter(
-                        function(element, index, array) {
+                    var optionsWithSingleSwatch =
+                        optionsWithoutDisabledProducts.filter(function (
+                            element,
+                            index,
+                            array
+                        ) {
                             return element.options.length === 1;
-                        }
-                    );
+                        });
 
-                    $.each(optionsWithSingleSwatch, function(index, item) {
+                    $.each(optionsWithSingleSwatch, function (index, item) {
                         _this._checkOption(item.code, item.options[0].id);
                     });
                 });
             },
-            _SelectSwatchesBasedOnReferrer: function() {
+            _SelectSwatchesBasedOnReferrer: function () {
                 var _this = this;
 
                 if (!_this.element.parents('.cs-buybox').length) {
@@ -176,7 +193,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
 
                 var searchParams = {};
 
-                $.each(referrerQueryString.split('&'), function(index, item) {
+                $.each(referrerQueryString.split('&'), function (index, item) {
                     var split = item.split('=');
                     var key = split[0] && decodeURIComponent(split[0]);
                     var value = split[1] && decodeURIComponent(split[1]);
@@ -186,10 +203,10 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
 
                 // Reduce swatches config to have just option labels and IDs
                 var swatches = _this.options.jsonConfig.attributes.reduce(
-                    function(acc, swatch) {
+                    function (acc, swatch) {
                         acc[swatch.code] = acc[swatch.code] || {};
 
-                        $.each(swatch.options, function(index, option) {
+                        $.each(swatch.options, function (index, option) {
                             acc[swatch.code][option.label] = option.id;
                         });
 
@@ -198,7 +215,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     {}
                 );
 
-                $.each(Object.keys(searchParams), function(index, key) {
+                $.each(Object.keys(searchParams), function (index, key) {
                     // Take the first value of the param
                     var value = searchParams[key][0];
 
@@ -215,7 +232,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                     _this._checkOption(key, optionId);
                 });
             },
-            _checkOption: function(key, optionId) {
+            _checkOption: function (key, optionId) {
                 var _this = this;
 
                 if (!_this.element.parents('.cs-buybox').length) {
@@ -253,7 +270,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
             /**
              * Change required message to more informative
              */
-            _RenderFormInput: function(config) {
+            _RenderFormInput: function (config) {
                 var originalHtml = this._super(config);
                 var validationMessage = $t('Please select %1').replace(
                     '%1',
@@ -267,7 +284,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                         '\'}}"'
                 );
             },
-            _UpdatePrice: function() {
+            _UpdatePrice: function () {
                 this._super();
                 var $widget = this;
                 var options = _.object(_.keys(this.optionsMap), {});
@@ -303,15 +320,16 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
                             this.options.classes.attributeClass +
                             '[option-selected]'
                     )
-                    .each(function() {
+                    .each(function () {
                         var attributeId = $(this).attr('attribute-id');
 
                         options[attributeId] = $(this).attr('option-selected');
                     });
 
-                var result = this.options.jsonConfig.optionPrices[
-                    _.findKey(this.options.jsonConfig.index, options)
-                ];
+                var result =
+                    this.options.jsonConfig.optionPrices[
+                        _.findKey(this.options.jsonConfig.index, options)
+                    ];
 
                 var $discounted =
                     typeof result !== 'undefined' &&
@@ -325,10 +343,9 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
             },
 
             // Toggle price labels
-            _UpdateTilePriceLabel: function() {
-                var swatchesAmount = this.options.$tileOrBuybox.find(
-                    '.swatch-attribute'
-                ).length;
+            _UpdateTilePriceLabel: function () {
+                var swatchesAmount =
+                    this.options.$tileOrBuybox.find('.swatch-attribute').length;
                 var swatchesSelected = this.options.$tileOrBuybox.find(
                     '.swatch-attribute[data-option-selected]'
                 ).length;
@@ -374,7 +391,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
              * To prevent not indented click on swatches that will lead to PDP we have disallow emulation of swatches select on tile
              * and allo it only on product-info-main area on PDP
              */
-            _EmulateSelected: function(selectedAttributes) {
+            _EmulateSelected: function (selectedAttributes) {
                 if (!this.element.closest('.product-info-main').length) {
                     return;
                 }
@@ -385,7 +402,7 @@ define(['jquery', 'underscore', 'mage/translate'], function($, _, $t) {
              * When below swatches there is an error after choosing a swatch it does not disapper
              * triggering validation remove error when swatch input has a value
              */
-            _OnClick: function($this, $widget) {
+            _OnClick: function ($this, $widget) {
                 this._super($this, $widget);
 
                 var $input = $this
