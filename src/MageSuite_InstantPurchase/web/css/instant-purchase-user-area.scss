@@ -9,13 +9,14 @@ $instant-purchase_order-background: $color_background-500 !default;
 $instant-purchase_product-background: $color_background-200 !default;
 $instant-purchase_products-table-padding: 3.6rem !default;
 $instant-purchase_order-toggle-include-default-pseudoicon: true !default;
+$instant-purchase_cell-spacing: 0.8rem !default;
 
 // fixed table cell width to avoid shifts, when order details is toggled
 $instant-purchase_cell-id-width: 10rem !default;
 $instant-purchase_cell-date-width: 20rem !default;
 $instant-purchase_cell-total-width: 15rem !default;
 $instant-purchase_cell-status-width: 15rem !default;
-$instant-purchase_cell-actions-width: 17rem !default;
+$instant-purchase_cell-actions-width: 19rem !default;
 
 // Action buttons
 $instant-purchase_atc-button-type: 'secondary' !default;
@@ -125,7 +126,9 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
         }
 
         .col.date {
-            text-align: center;
+            @include media('>laptop') {
+                text-align: center;
+            }
         }
 
         // fixed width to avoid shifts, when order details is toggled
@@ -169,6 +172,7 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
 
             .checkbox {
                 background-color: $color_background-200;
+                margin-top: -0.2rem !important;
             }
         }
     }
@@ -227,21 +231,37 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
                 width: auto !important;
 
                 &:after {
-                    width: 0.8rem;
+                    width: $instant-purchase_cell-spacing;
                     right: -2.35rem;
                 }
 
                 &:before {
                     right: -1.8rem;
-                    width: 0.8rem;
+                    width: $instant-purchase_cell-spacing;
                 }
             }
         }
     }
 
     &__order-cell {
+        &-checkbox {
+            @include media('<laptop') {
+                position: absolute;
+                top: -$instant-purchase_cell-spacing;
+                left: -1rem;
+                padding: 0 !important;
+                width: auto !important;
+            }
+        }
+
         &-id {
             font-weight: 600;
+        }
+    }
+
+    &__order-checkbox-label {
+        @include media('<laptop') {
+            padding: 1.4rem;
         }
     }
 
@@ -270,22 +290,11 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
 
             td {
                 width: 100%;
-                padding: 0.8rem 0;
+                padding: $instant-purchase_cell-spacing 0;
             }
         }
 
         td {
-            @include media('<laptop') {
-                width: 100%;
-
-                &:first-child {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: auto;
-                }
-            }
-
             @include media('>=laptop') {
                 border-top: 1px solid $color_border-500;
             }
@@ -315,7 +324,7 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
 
         @include media('<laptop') {
             margin-top: 1rem;
-            padding: 0.8rem;
+            padding: $instant-purchase_cell-spacing;
             position: relative;
             grid-template-areas:
                 'image details'
@@ -328,7 +337,7 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
 
         td {
             @include media('<laptop') {
-                padding: 0.8rem 0;
+                padding: $instant-purchase_cell-spacing 0;
             }
             @include media('>=laptop') {
                 border-bottom: solid 0.2rem $instant-purchase_order-background;
@@ -352,20 +361,41 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
             top: 0;
             right: 0;
         }
+
+        .action.view {
+            display: block;
+
+            @include media('<phoneLg') {
+                text-align: right;
+                max-width: 10rem;
+            }
+
+            @include media('<phone') {
+                max-width: 8rem;
+            }
+        }
     }
 
     &__product-cell {
         &-image {
-            position: relative;
-
             @include media('<laptop') {
                 grid-area: image;
+                padding: 0 !important;
+            }
+
+            @include media('>=laptop') {
+                position: relative;
             }
 
             .field.choice {
                 position: absolute;
-                top: 0.8rem;
-                left: 0.8rem;
+                top: 0;
+                left: 0;
+
+                @include media('>=laptop') {
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
             }
         }
 
@@ -396,8 +426,13 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
         }
     }
 
+    &__product-checkbox-label {
+        padding: $instant-purchase_cell-spacing $instant-purchase_cell-spacing
+            1.4rem;
+    }
+
     &__product-image {
-        padding-left: 1rem;
+        padding-left: 1.5rem;
         height: 100%;
         display: flex;
         align-items: center;

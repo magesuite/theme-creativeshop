@@ -6,13 +6,14 @@
 $instant-purchase_place-order-button-type: 'primary' !default;
 $instant-purchase_place-order-button-icon-pos: 'right' !default;
 $instant-purchase_offcanvas-product-image-max-height: 10rem !default;
+$instant-purchase_offcanvas-product-image-width: 10rem !default;
 $instant-purchase_offcanvas-spacing: 2rem !default;
 $instant-purchase_close-include-default-pseudoicon: true !default;
 $instant-purchase_order-detais-background: $color_background-500 !default;
 
 // Order details need to have fixed height to support slide up smooth animation and css grid.
 $instant-purchase_order-details-height: 10rem !default;
-$instant-purchase_order-details-visible-height: 26rem !default;
+$instant-purchase_order-details-visible-height: 31rem !default;
 
 .#{$ns}offcanvas--instant-purchase {
     z-index: 800;
@@ -28,6 +29,7 @@ $instant-purchase_order-details-visible-height: 26rem !default;
 .#{$ns}instant-purchase {
     $root: &;
     height: 100%;
+    width: 100%;
     display: grid;
     grid-template-rows: min-content 2fr auto min-content;
 
@@ -107,12 +109,17 @@ $instant-purchase_order-details-visible-height: 26rem !default;
             border-bottom: 1px solid $color_border-500;
         }
 
+        &-picture {
+            flex: 1 0 $instant-purchase_offcanvas-product-image-width;
+            min-width: $instant-purchase_offcanvas-product-image-width;
+        }
+
         &-image {
             max-height: $instant-purchase_offcanvas-product-image-max-height;
         }
 
         &-details {
-            flex: 1 0 auto;
+            flex: 1 1 auto;
             display: flex;
             flex-flow: row wrap;
             align-content: center;
@@ -198,6 +205,10 @@ $instant-purchase_order-details-visible-height: 26rem !default;
 
         &-label {
             font-weight: 600;
+
+            &:after {
+                content: ':';
+            }
         }
     }
 }

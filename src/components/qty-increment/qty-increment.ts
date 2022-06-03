@@ -151,15 +151,21 @@ export default class QtyIncrement {
 
         // Set 0 Qty when user click decrement with current minimum Qty value
         if (value === this._minValue || value === 0) {
-            newValue = 0;
+            newValue = this._minValue;
         }
 
         this.setValue(newValue);
     }
 
     protected _resetValue(): void {
-        if (this._$input.val() === '') {
+        const value = this._$input.val();
+
+        if (value === '') {
             this.setValue(this._initialValue);
+        } else if (value < this._minValue) {
+            this.setValue(this._minValue);
+        } else if (this._maxValue && value > this._maxValue) {
+            this.setValue(this._maxValue);
         }
     }
 
