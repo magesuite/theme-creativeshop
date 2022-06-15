@@ -2,6 +2,9 @@
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
 
+// Tile gallery will be displayed from this breakpoint
+$tile-gallery_breakpoint: 'laptop' !default;
+
 $tile-gallery_postion-left: 0 !default;
 $tile-gallery_postion-right: auto !default;
 $tile-gallery_postion-top: auto !default;
@@ -42,7 +45,7 @@ $tile-gallery_main-image-transition: transform 0.5s
     opacity: 0;
     transition: $tile-gallery_transition;
 
-    @include media('>=laptop') {
+    @include media('>=#{$tile-gallery_breakpoint}') {
         display: flex;
     }
 
@@ -52,7 +55,7 @@ $tile-gallery_main-image-transition: transform 0.5s
 
     &.active {
         .#{$ns}product-tile:hover & {
-            @include media('>=laptop') {
+            @include media('>=#{$tile-gallery_breakpoint}') {
                 opacity: 1;
             }
         }
@@ -92,17 +95,39 @@ $tile-gallery_main-image-transition: transform 0.5s
     }
 }
 
+// Product tile image requires absolute positioning to support image switching
 .#{$ns}product-tile {
-    &__image {
-        &--animatable {
-            opacity: $tile-gallery_main-image-animatable-opacity;
-            transform: $tile-gallery_main-image-animatable-transform;
-            transition: $tile-gallery_main-image-transition;
-        }
+    $root: &;
 
-        &--animate {
-            opacity: $tile-gallery_main-image-animate-opacity;
-            transform: $tile-gallery_main-image-animate-transform;
+    @include media('>=#{$tile-gallery_breakpoint}') {
+        &--grid {
+            #{$root}__thumbnail {
+                height: 100%;
+            }
+
+            #{$root}__figure {
+                position: relative;
+            }
+
+            #{$root}__image {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+
+                &--animatable {
+                    opacity: $tile-gallery_main-image-animatable-opacity;
+                    transform: $tile-gallery_main-image-animatable-transform;
+                    transition: $tile-gallery_main-image-transition;
+                }
+
+                &--animate {
+                    opacity: $tile-gallery_main-image-animate-opacity;
+                    transform: $tile-gallery_main-image-animate-transform;
+                }
+            }
         }
     }
 }
