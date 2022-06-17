@@ -37,6 +37,11 @@ interface DailydealOptions {
      */
     tileContainerSelector?: string;
     /**
+     * Tile element DOM selector
+     * @type {string}
+     */
+    tileSelector?: string;
+    /**
      * Tile price container DOM selector
      * @type {string}
      */
@@ -135,6 +140,7 @@ export default class Dailydeal {
     protected _template: string;
     protected _$countdown: JQuery;
     protected _countdownElements: any;
+    protected _$tile: JQuery;
     protected _$tilePriceContainer: JQuery;
     protected _$pdpPriceContainer: JQuery;
     protected _$badgeContainer: JQuery;
@@ -195,6 +201,9 @@ export default class Dailydeal {
         },
         get countdownSelector() {
             return `.${this.namespace}dailydeal__countdown`;
+        },
+        get tileSelector() {
+            return `.${this.namespace}product-tile`;
         },
         get tileContainerSelector() {
             return `.${this.namespace}product-tile__container`;
@@ -261,6 +270,9 @@ export default class Dailydeal {
         }
 
         // Containers (Prices & Badges)
+        this._$tile = this._$element
+            .closest(this._options.tileSelector)
+            .first();
         this._$pdpPriceContainer = this._$element
             .closest(this._options.pdpSaleBlockSelector)
             .find(this._options.pdpPriceContainerSelector);
@@ -335,6 +347,7 @@ export default class Dailydeal {
             $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
             $dailydealAmountBadge = this._$dailyDealAmountBadge;
             $defaultDiscountBadge = this._$defaultDiscountBadge;
+            $(this._$tile).addClass('cs-product-tile--dailydeal');
         } else {
             $dailydealPrice = this._$pdpDailyDealPrice;
             $defaultPrice = this._$pdpDefaultPrice;
@@ -378,6 +391,7 @@ export default class Dailydeal {
             $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
             $dailydealAmountBadge = this._$dailyDealAmountBadge;
             $defaultDiscountBadge = this._$defaultDiscountBadge;
+            $(this._$tile).removeClass('cs-product-tile--dailydeal');
         } else {
             $dailydealPrice = this._$pdpDailyDealPrice;
             $defaultPrice = this._$pdpDefaultPrice;

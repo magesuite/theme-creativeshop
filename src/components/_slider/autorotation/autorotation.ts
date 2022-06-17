@@ -15,11 +15,16 @@ export default class SliderAutorotation {
     public currentSlideIndex: number;
     protected _navigation: any;
     protected _rotator: ReturnType<typeof setInterval>;
-    protected _isNotTouch: MediaQueryList = window.matchMedia(
-        '(hover: hover) and (pointer: fine)'
+    protected _isTouchMq: MediaQueryList = window.matchMedia(
+        '(hover: none) and (pointer: coarse)'
     );
+    protected _touchstartX: number;
+    protected _touchendX: number;
+    protected _scrollableContainer: HTMLElement;
     protected boundMouseenterHandler: any;
     protected boundMouseleaveHandler: any;
+    protected boundTouchstartHandler: any;
+    protected boundTouchendHandler: any;
     protected canEnable: boolean;
 
     /**
@@ -38,7 +43,7 @@ export default class SliderAutorotation {
 
         this.canEnable =
             this.options.useAutorotationAlsoForTouchScreens ||
-            this._isNotTouch?.matches;
+            !this._isTouchMq?.matches;
 
         if (this.canEnable) {
             this._startAutorotate();
@@ -47,7 +52,9 @@ export default class SliderAutorotation {
     }
 
     /**
-     * Instrues navigation instance to switch slide to the next one (as long as root component instance wasn't interacted manually) and updates current index to know to which slide to scroll next upon next call
+     * Instrues navigation instance to switch slide to the next one,
+     * as long as root component instance wasn't interacted manually,
+     * and updates current index to know to which slide to scroll next upon next call
      */
     protected _scrollToNext(): void {
         if (
@@ -110,6 +117,20 @@ export default class SliderAutorotation {
             'mouseleave',
             this.boundMouseleaveHandler
         );
+
+        if (
+            this._isTouchMq?.matches &&
+            this.options.useAutorotationAlsoForTouchScreens
+        ) {
+            this._scrollableContainer.removeEventListener(
+                'touchstart',
+                this.boundTouchstartHandler
+            );
+            this._scrollableContainer.removeEventListener(
+                'touchend',
+                this.boundTouchendHandler
+            );
+        }
     }
 
     /**
@@ -123,6 +144,7 @@ export default class SliderAutorotation {
         ) {
             this.boundMouseenterHandler = this._stopAutorotate.bind(this);
             this.boundMouseleaveHandler = this._startAutorotate.bind(this);
+
             this.options.pauseNode?.addEventListener(
                 'mouseenter',
                 this.boundMouseenterHandler
@@ -131,14 +153,34 @@ export default class SliderAutorotation {
                 'mouseleave',
                 this.boundMouseleaveHandler
             );
+
+            if (
+                this._isTouchMq?.matches &&
+                this.options.useAutorotationAlsoForTouchScreens
+            ) {
+                this.boundTouchstartHandler = this._touchstartHandler.bind(
+                    this
+                );
+                this.boundTouchendHandler = this._touchendHandler.bind(this);
+                this._scrollableContainer = this.options.navInstance._scrollable;
+
+                this._scrollableContainer.addEventListener(
+                    'touchstart',
+                    this.boundTouchstartHandler
+                );
+                this._scrollableContainer.addEventListener(
+                    'touchend',
+                    this.boundTouchendHandler
+                );
+            }
         }
 
-        this._isNotTouch.addEventListener(
+        this._isTouchMq.addEventListener(
             'change',
             (): void => {
-                if (!this._isNotTouch?.matches && this._rotator != null) {
+                if (!this.canEnable && this._rotator != null) {
                     this._stopAutorotate();
-                } else if (this._isNotTouch?.matches && this._rotator == null) {
+                } else if (this.canEnable && this._rotator == null) {
                     this._startAutorotate();
                 }
             },
@@ -148,7 +190,7 @@ export default class SliderAutorotation {
         document.addEventListener(
             'visibilitychange',
             (): void => {
-                if (this._isNotTouch?.matches) {
+                if (!this._isTouchMq?.matches) {
                     if (document.visibilityState === 'hidden') {
                         this._stopAutorotate();
                     } else {
@@ -158,5 +200,46 @@ export default class SliderAutorotation {
             },
             false
         );
+    }
+
+    /**
+     * Checks offset and stops autorotation on user interaction
+     */
+    protected _handleGesture(
+        startX: number,
+        endX: number,
+        minSwipeLength: number
+    ): void {
+        // Check if swipe last at least for half of visible Slide / Check if slide changed
+        if (Math.abs(startX - endX) >= minSwipeLength) {
+            this._stopAutorotate();
+
+            this._scrollableContainer.removeEventListener(
+                'touchstart',
+                this._touchstartHandler
+            );
+            this._scrollableContainer.removeEventListener(
+                'touchend',
+                this._touchendHandler
+            );
+        }
+    }
+
+    /**
+     * Detects swiping start X coordinate
+     */
+    protected _touchstartHandler(e: TouchEvent): void {
+        this._touchstartX = e.changedTouches[0].screenX;
+    }
+
+    /**
+     * Detects swiping end X coordinate
+     */
+    protected _touchendHandler(e: TouchEvent): void {
+        this._touchendX = e.changedTouches[0].screenX;
+        const minSlideLength =
+            (this._scrollableContainer.offsetWidth * 5) / 100;
+
+        this._handleGesture(this._touchstartX, this._touchendX, minSlideLength);
     }
 }
