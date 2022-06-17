@@ -1,0 +1,18 @@
+<?php
+/**
+ * Template overridden due to avoid page builder template (disable Page Builder in admin panel doesn't work...)
+ */
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+/**
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+?>
+<?php if ($description = $block->getCurrentCategory()->getDescription()) :?>
+    <div class="cs-page-category__description">
+        <?= /* @noEscape */ $this->helper(Magento\Catalog\Helper\Output::class)->categoryAttribute(
+            $block->getCurrentCategory(),
+            $description,
+            'description'
+        ) ?>
+    </div>
+<?php endif; ?>
