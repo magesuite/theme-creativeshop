@@ -3,7 +3,7 @@ import * as $ from 'jquery';
 /**
  * Component options interface
  */
-interface TooltipOptions {
+export interface TooltipOptions {
     /**
      * Class of the single tooltip element
      * @default 'cs-tooltip'
@@ -144,38 +144,40 @@ export default class Tooltip {
     protected _setEvents(): void {
         const _obj: any = this;
 
-        $(document).on('click', `.${this._options.triggerClass}`, function(
-            e
-        ): void {
-            e.stopPropagation();
+        $(document).on(
+            'click',
+            `.${this._options.triggerClass}`,
+            function (e): void {
+                e.stopPropagation();
 
-            const $target: any = $(this).closest(
-                `.${_obj._options.tooltipClass}`
-            );
+                const $target: any = $(this).closest(
+                    `.${_obj._options.tooltipClass}`
+                );
 
-            if (!$target.length) {
-                return;
-            }
+                if (!$target.length) {
+                    return;
+                }
 
-            const isClickedActive: boolean = $target.hasClass(
-                `${_obj._options.tooltipClass}--active`
-            );
+                const isClickedActive: boolean = $target.hasClass(
+                    `${_obj._options.tooltipClass}--active`
+                );
 
-            if (isClickedActive) {
-                if (_obj._getCurrentScenario() === 'tooltip') {
-                    _obj._hideTooltip($target);
-                } else if (!_obj._$clone) {
+                if (isClickedActive) {
+                    if (_obj._getCurrentScenario() === 'tooltip') {
+                        _obj._hideTooltip($target);
+                    } else if (!_obj._$clone) {
+                        _obj._showTooltip($target);
+                    }
+                } else {
                     _obj._showTooltip($target);
                 }
-            } else {
-                _obj._showTooltip($target);
             }
-        });
+        );
 
         $(document).on(
             'click',
             `.${this._options.overlayClass}, .${this._options.tooltipClass}__close`,
-            function(): void {
+            function (): void {
                 if (_obj._$clone) {
                     _obj._hideTooltip(_obj._$clone);
                 }
@@ -186,7 +188,7 @@ export default class Tooltip {
     protected _setCloseListener(): void {
         const _obj: any = this;
 
-        $(document).on('click.hideTooltip', function(e: Event): void {
+        $(document).on('click.hideTooltip', function (e: Event): void {
             if (
                 !$(e.target).hasClass(`${_obj._options.tooltipClass}`) &&
                 !$(e.target).parents(`.${_obj._options.tooltipClass}`).length
