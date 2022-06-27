@@ -3,7 +3,7 @@ import * as $ from 'jquery';
 /**
  * Component options interface
  */
-interface TooltipOptions {
+export interface TooltipOptions {
     /**
      * Class of the single tooltip element
      * @default 'cs-tooltip'
