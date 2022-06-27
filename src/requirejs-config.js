@@ -76,14 +76,16 @@ var config = {
             'Magento_CheckoutAgreements/js/model/agreements-assigner': {
                 'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
             },
-            'Magento_Swatches/js/swatch-renderer': {
-                'Magento_Swatches/js/swatch-renderer-ext': true,
-            },
             'Magento_Catalog/js/validate-product': {
                 'Magento_Catalog/js/swatches-validation-ext': true,
             },
+            'Magento_Swatches/js/swatch-renderer': {
+                'Magento_Swatches/js/swatch-renderer-ext': true,
+                'Magento_Swatches/js/swatch-renderer-referrer-ext': false,
+            },
             'MageSuite_ServerSideSwatches/js/swatch-renderer': {
                 'Magento_Swatches/js/swatch-renderer-ext': true,
+                'Magento_Swatches/js/swatch-renderer-referrer-ext': false,
             },
             'PluginCompany_ContactForms/js/form': {
                 'PluginCompany_ContactForms/js/form-ext': true,
