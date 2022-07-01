@@ -141,57 +141,32 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
         }
 
         return function(config) {
-            var reviewTab = $(config.reviewsTabSelector);
-            var requiredReviewTabRole = 'tab';
-
-            if (
-                reviewTab.attr('role') === requiredReviewTabRole &&
-                reviewTab.hasClass('active')
-            ) {
-                processReviewsLoadMore(
-                    config.productReviewUrl,
-                    location.hash === '#reviews'
-                );
-            } else {
-                reviewTab.one('beforeOpen', function() {
-                    processReviewsLoadMore(config.productReviewUrl);
-                });
-            }
+            processReviewsLoadMore(config.productReviewUrl);
 
             $(function() {
-                $('.product-info-main .reviews-actions a').click(function(
-                    event
-                ) {
-                    var anchor;
-                    var addReviewBlock;
+                var $addReviewLinks = $('a[href="#reviews"]');
+                var reviewsSection = document.querySelector('#reviews');
 
-                    event.preventDefault();
-                    anchor = $(this)
-                        .attr('href')
-                        .replace(/^.*?(#|$)/, '');
-                    addReviewBlock = $('#' + anchor);
+                if ($addReviewLinks.length && reviewsSection) {
+                    var $collapsibleTrigger = $(reviewsSection).find(
+                        '[data-role="title"]'
+                    );
 
-                    if (addReviewBlock.length) {
-                        $('.product.data.items [data-role="content"]').each(
-                            function(index) {
-                                //eslint-disable-line
-                                if (this.id === 'reviews') {
-                                    //eslint-disable-line eqeqeq
-                                    $('.product.data.items').tabs(
-                                        'activate',
-                                        index
-                                    );
-                                }
-                            }
-                        );
-                        $('html, body').animate(
-                            {
-                                scrollTop: addReviewBlock.offset().top - 50,
-                            },
-                            300
-                        );
-                    }
-                });
+                    $addReviewLinks.on('click', function(e) {
+                        e.preventDefault();
+
+                        reviewsSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start',
+                        });
+                        if (
+                            $collapsibleTrigger.attr('aria-expanded') ===
+                            'false'
+                        ) {
+                            $collapsibleTrigger.trigger('click');
+                        }
+                    });
+                }
             });
         };
     };
