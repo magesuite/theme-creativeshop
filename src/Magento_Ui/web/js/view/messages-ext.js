@@ -5,12 +5,11 @@ define(['ko', 'jquery'], function(ko, $) {
     'use strict';
     return function(Messages) {
         return Messages.extend({
-            defaults: {
-                hideSpeed: 500,
-                hideTimeout: 30000,
-            },
             initialize: function() {
                 this._super();
+
+                this.hideSpeed = 500;
+                this.hideTimeout = 30000;
 
                 if (
                     this.index.indexOf(
