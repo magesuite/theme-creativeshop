@@ -56,7 +56,7 @@ import 'components/select';
 import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
+import 'components/pwa-guide';
 import 'components/google-recaptcha';
 
 // Carousels (navigation/pagination CSS)

@@ -57,7 +57,7 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/product-navigation';
-import 'components/pwa-notification';
+import 'components/pwa-guide';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 

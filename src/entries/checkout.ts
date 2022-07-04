@@ -58,7 +58,7 @@ import 'components/visually-hidden';
 import 'components/select';
 import 'components/toolbar';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
+import 'components/pwa-guide';
 import 'components/google-recaptcha';
 
 import 'components/non-critical';
