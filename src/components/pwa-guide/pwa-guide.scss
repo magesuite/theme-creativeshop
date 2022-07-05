@@ -7,9 +7,8 @@
 $pwa-guide_gutter: 0 1.5rem !default;
 $pwa-guide_background: $color_background_500 !default;
 $pwa-guide_border: none !default;
-$pwa-guide_border-radius: $border-radius_base !default;
+$pwa-guide_border-radius: 8px !default;
 $pwa-guide_box-shadow: none !default;
-$pwa-guide_padding: 1.2rem 1rem !default;
 $pwa-guide_margin: 1.5rem 0 !default;
 
 $pwa-guide_icon-status-width: 4.5rem !default;
@@ -43,33 +42,30 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
 
     &__wrapper {
         display: none;
-
-        &._active {
-            display: block;
-        }
     }
 
     &__content {
         position: relative;
         background: $pwa-guide_background;
-        padding: $pwa-guide_padding;
         border: $pwa-guide_border;
         border-radius: $pwa-guide_border-radius;
         box-shadow: $pwa-guide_box-shadow;
         margin: $pwa-guide_margin;
         display: flex;
         flex-wrap: wrap;
-        align-items: flex-start;
+        align-items: center;
+        padding: 1.2rem 1rem;
 
-        @include media('>=laptop') {
-            padding: 1.2rem 1rem 2rem;
+        @include media('>=tablet') {
+            padding: 2rem;
         }
     }
 
     &__icons {
-        margin: $pwa-guide_gutter;
+        margin: 0 0.5rem 0 1.5rem;
 
-        @include media('>=laptop') {
+        @include media('>=tablet') {
+            margin: 2.2rem $pwa-guide_gutter $pwa-guide_gutter;
             flex-basis: 10rem;
             display: flex;
             justify-content: center;
@@ -80,7 +76,7 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
         width: $pwa-guide_icon-status-width;
         height: $pwa-guide_icon-status-height;
 
-        @include media('>=laptop') {
+        @include media('>=tablet') {
             width: 5.9rem;
             height: 4.5rem;
         }
@@ -97,11 +93,6 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
     &__message-wrapper {
         margin: $pwa-guide_gutter;
         flex: 1;
-
-        @include media('<laptop') {
-            padding-right: 2 *
-                (get-value-from-list($pwa-guide_padding, 'right'));
-        }
     }
 
     &__message {
@@ -110,6 +101,7 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
         font-weight: $pwa-guide_message-description-font-weight;
         color: $pwa-guide_message-description-color;
         display: none;
+        position: relative;
 
         &._active {
             display: block;
@@ -120,52 +112,84 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
             font-size: $pwa-guide_message-title-font-size;
             font-weight: $pwa-guide_message-title-font-weight;
             color: $pwa-guide_message-title-color;
+            cursor: pointer;
+            padding-right: 2rem;
 
-            @include media('>=laptop') {
+            @include media('>=tablet') {
                 font-size: 2rem;
+            }
+
+            &[data-trigger='desktop'] {
+                @include media('>=tablet') {
+                    padding-right: 22rem;
+                }
             }
         }
 
         &-description {
             display: none;
-            transform: translateY(-1.5rem);
-            transition: transform 0.2s;
             margin-top: 1rem;
 
-            &._active {
-                display: block;
-                transform: translateY(0);
+            @include media('>=tablet') {
+                margin-top: 0.5rem;
             }
 
             #{$root}__message--desktop & {
                 display: block;
-                transform: translateY(0);
             }
         }
     }
 
+    &__install-icon {
+        display: inline-block;
+        margin: 0 0.2rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+
+        #{$root}__message--ios & {
+            width: 1.1em;
+            height: 1.8rem;
+            transform: translateY(2px);
+            background-image: url('../images/icons/pwa-guide/install.svg');
+        }
+
+        #{$root}__message--desktop & {
+            width: 1.8em;
+            height: 1.8rem;
+            margin: 0 0 0 0.2rem;
+            transform: translateY(3px);
+            background-image: url('../images/icons/pwa-guide/install-desktop.svg');
+        }
+    }
+
+    &__modal {
+        display: none;
+    }
+
     &__close,
     &__next {
-        margin: 0 0 0 get-value-from-list($pwa-guide_padding, 'right');
-        padding: get-value-from-list($pwa-guide_padding, 'right');
+        padding: 1rem;
         cursor: pointer;
         position: absolute;
-        right: get-value-from-list($pwa-guide_padding, 'right');
+        right: 1rem;
+
+        @include media('>=tablet') {
+            right: 2rem;
+        }
     }
 
     &__close {
         display: none;
-
-        @include media('<laptop') {
-            top: 1rem;
-        }
-
-        @include media('>=laptop') {
-            display: block;
-        }
+        top: 1rem;
 
         &._active {
             display: block;
+        }
+
+        @include media('>=tablet') {
+            display: block;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         &-icon {
@@ -186,7 +210,11 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
         top: 50%;
         transform: translateY(-50%);
 
-        @include media('>=laptop') {
+        @include media('>=tablet') {
+            display: none;
+        }
+
+        &._hidden {
             display: none;
         }
 
@@ -210,7 +238,9 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
 
         @include media('>=laptop') {
             align-self: center;
+            margin-top: 0;
             margin-right: 5rem;
+            display: block;
         }
 
         @include media('<laptop') {
@@ -240,6 +270,22 @@ $pwa-guide_button-decline-icon-pos: 'no-icon' !default;
                 $type: $pwa-guide_button-decline-type,
                 $icon_pos: $pwa-guide_button-decline-icon-pos
             );
+        }
+
+        &--showmore {
+            margin-top: 1rem;
+
+            @include media('>=tablet') {
+                position: absolute;
+                right: 4rem;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-top: 0;
+            }
+
+            @include media('>=laptop') {
+                right: 0;
+            }
         }
     }
 }
