@@ -6,9 +6,14 @@
 * - integrate with xml configuration: headline, icon, labels, input placeholder
 * - add checkout.cart.coupon.additional hotspot
 * TODO - verify if captcha should be removed and also functionality to open collapse if there is coupon already inserted (see newest Magento file)
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
+
+// phpcs:disable Generic.Files.LineLength.TooLong
 ?>
 <?php
+// We should use strlen function because coupon code could be "0", converted to bool will lead to false
+$hasCouponCode = $block->getCouponCode() !== null && strlen($block->getCouponCode()) > 0;
 $placeholder = $block->getInputPlaceholder();
 $inputLabel = $block->getInputLabel();
 $buttonApplyLabel = $block->getButtonApplyLabel();
@@ -37,7 +42,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                                                "applyButton": "#coupon_apply",
                                                "cancelButton": "#coupon_cancel"}}'
         >
-            <div class="fieldset coupon<?php strlen($block->getCouponCode()) ? ' applied' : ' ' ?>">
+            <div class="fieldset coupon<?= $hasCouponCode ? ' applied' : '' ?>">
                 <input type="hidden" name="remove" id="coupon_remove" value="0"/>
                 <div class="field">
                     <?php if(!empty($inputLabel)): ?>
@@ -58,7 +63,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                     </div>
                 </div>
                 <div class="actions-toolbar cs-discount__buttons">
-                    <?php if (!strlen($block->getCouponCode())): ?>
+                    <?php if (!$hasCouponCode): ?>
                         <button
                             class="action apply primary"
                             type="submit"

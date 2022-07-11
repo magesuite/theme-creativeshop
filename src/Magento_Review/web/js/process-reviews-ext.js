@@ -159,7 +159,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
             }
 
             $(function() {
-                $('.product-info-main .reviews-actions a').click(function(
+                $('.product-info-main .reviews-actions a').on('click', function(
                     event
                 ) {
                     var anchor;

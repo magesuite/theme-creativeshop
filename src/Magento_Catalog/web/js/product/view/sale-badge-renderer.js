@@ -49,7 +49,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
                 : $(document);
             var $productsIdsIndex = $rootElement
                 .find(this.options.productsIdsSelector)
-                .data('mageSwatchRenderer').options.jsonConfig.index;
+                .data('mage-SwatchRenderer').options.jsonConfig.index;
 
             var selectedProductDiscounts = _.filter(allDiscountsList, function(
                 key,
@@ -107,7 +107,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
 
             var $productsIdsIndex = this.$tileOrBuybox
                 .find(this.options.productsIdsSelector)
-                .data('mageSwatchRenderer').options.jsonConfig.index;
+                .data('mage-SwatchRenderer').options.jsonConfig.index;
 
             var productId;
 

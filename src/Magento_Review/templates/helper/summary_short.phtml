@@ -6,6 +6,7 @@
 * "Since 2.3.3 rating summary is being returned directly, not as an object."
 * However still there are rare cases when rating is return as an object
 * what results in critical error
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 
 /** @var \Magento\Review\Block\Product\ReviewRenderer $block */
@@ -15,8 +16,8 @@ $url = $block->getReviewsUrl() . '#reviews';
 $urlForm = $block->getReviewsUrl() . '#review-form';
 ?>
 <?php if ($block->isReviewEnabled() && $block->getReviewsCount()): ?>
-    <?php 
-        $rating = $block->getRatingSummary(); 
+    <?php
+        $rating = $block->getRatingSummary();
         // fix a case when $rating is an object
         if (is_object($rating)) {
             $rating = $rating->getRatingSummary();
