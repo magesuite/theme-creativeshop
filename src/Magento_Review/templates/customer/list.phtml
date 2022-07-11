@@ -1,6 +1,7 @@
 <?php
 /**
 * Template overridden to add Magesuite stars component include
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 
 /**
@@ -38,7 +39,8 @@ $reviewHelper = $block->getData('reviewHelper');
                     <?php if ($review->getSum()): ?>
                         <div class="rating-summary">
                             <span class="label"><span><?= $escaper->escapeHtml(__('Rating')) ?>:</span></span>
-                            <div class="rating-result">
+                            <div class="rating-result"
+                                 title="<?= /* @noEscape */ ((int)$review->getSum() / (int)$review->getCount()) ?>%">
                                 <?= $this->getLayout()
                                     ->createBlock(\Magento\Framework\View\Element\Template::class)
                                     ->setMaxStars(5)

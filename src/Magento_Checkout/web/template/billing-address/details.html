@@ -1,20 +1,22 @@
 <!--
 /**
  * Template overwrtiten to add Company Name
- * Update 3.12.2020 - adjust to changes in recent Magento versions (keep company modification)
+ * Aligned with Magento 2.4.4 at (31.05.2022)
  */
 -->
 <div if="isAddressDetailsVisible() && currentBillingAddress()" class="billing-address-details">
-    <text args="currentBillingAddress().prefix"/> <text args="currentBillingAddress().firstname"/> <text args="currentBillingAddress().middlename"/>
-    <text args="currentBillingAddress().lastname"/> <text args="currentBillingAddress().suffix"/><br/>
-    <text if="currentBillingAddress().company" args="currentBillingAddress().company"/><br if="currentBillingAddress().company"/>
-    <text args="_.values(currentBillingAddress().street).join(', ')"/><br/>
-    <text args="currentBillingAddress().city "/>, <span text="currentBillingAddress().region"></span> <text args="currentBillingAddress().postcode"/><br/>
-    <text args="getCountryName(currentBillingAddress().countryId)"/><br/>
+    <text args="currentBillingAddress().prefix"></text> <text args="currentBillingAddress().firstname"></text>
+    <text args="currentBillingAddress().middlename"></text>
+    <text args="currentBillingAddress().lastname"></text> <text args="currentBillingAddress().suffix"></text><br/>
+    <text if="currentBillingAddress().company" args="currentBillingAddress().company"></text><br if="currentBillingAddress().company"/>
+    <text args="currentBillingAddress().street.join(', ')"></text><br/>
+    <text args="currentBillingAddress().city "></text>, <span text="currentBillingAddress().region"></span>
+    <text args="currentBillingAddress().postcode"></text><br/>
+    <text args="getCountryName(currentBillingAddress().countryId)"></text><br/>
     <a if="currentBillingAddress().telephone" attr="'href': 'tel:' + currentBillingAddress().telephone" text="currentBillingAddress().telephone"></a><br if="currentBillingAddress().telephone" />
 
     <each args="data: currentBillingAddress().customAttributes, as: 'element'">
-        <text args="$parent.getCustomAttributeLabel(element)"/>
+        <text args="$parent.getCustomAttributeLabel(element)"></text>
         <br/>
     </each>
 

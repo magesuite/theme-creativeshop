@@ -4,8 +4,14 @@
 * - add custom pagination input
 * - add magesuite classes
 * - on cs-pagination__content element add data attribute for Load More button functionality
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 /** @see \Magento\Theme\Block\Html\Pager */
+
+/**
+ * @var \Magento\Theme\Block\Html\Pager $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
 ?>
 <?php
     $numberOfReviews = $block->getCollection()->getSize();
@@ -115,7 +121,12 @@
 
                         <?php if ($block->canShowPreviousJump()): ?>
                             <li class="item cs-pagination__item" role="none">
-                                <a class="page previous jump cs-pagination__number cs-pagination__number--jump" href="<?= $block->escapeUrl($block->getPreviousJumpUrl()) ?>" role="menuitem"><span>...</span></a>
+                                <a class="page previous jump cs-pagination__number cs-pagination__number--jump"
+                                   aria-label="<?= $escaper->escapeHtmlAttr(__('Skip to page %1', $block->getPreviousJumpPage())) ?>"
+                                   href="<?= $block->escapeUrl($block->getPreviousJumpUrl()) ?>"
+                                   role="menuitem">
+                                    <span>...</span>
+                                </a>
                             </li>
                         <?php endif;?>
 
@@ -136,7 +147,12 @@
 
                         <?php if ($block->canShowNextJump()): ?>
                             <li class="item cs-pagination__item" role="none">
-                                <a class="page next jump cs-pagination__number cs-pagination__number--jump" href="<?= $block->escapeUrl($block->getNextJumpUrl()) ?>" role="menuitem"><span>...</span></a>
+                                <a class="page next jump cs-pagination__number cs-pagination__number--jump"
+                                   aria-label="<?= $escaper->escapeHtmlAttr(__('Skip to page %1', $block->getNextJumpPage())) ?>"
+                                   href="<?= $block->escapeUrl($block->getNextJumpUrl()) ?>"
+                                   role="menuitem">
+                                    <span>...</span>
+                                </a>
                             </li>
                         <?php endif;?>
 

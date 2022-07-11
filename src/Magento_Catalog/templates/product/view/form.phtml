@@ -2,6 +2,7 @@
 /**
  * Template overridden in order to assure that product will be added to cart even if add to cart button
  * was clicked before scripts are loaded and initialized
+ * Aligned with Magento 2.4.4 at (31.05.2022)
  */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
@@ -14,7 +15,7 @@
 <?php $_product = $block->getProduct(); ?>
 
 <div class="product-add-form">
-    <form 
+    <form
         data-product-sku="<?= $block->escapeHtml($_product->getSku()) ?>"
         action="<?= $block->escapeUrl($block->getSubmitUrl($_product)) ?>" method="post"
         id="product_addtocart_form"<?php if ($_product->getOptions()) :?> enctype="multipart/form-data"<?php endif; ?>
@@ -62,7 +63,7 @@
                 function() {
                     form.removeAttribute('onsubmit');
                     addToCartButton.click();
-                }, 
+                },
                 1000
             );
         };

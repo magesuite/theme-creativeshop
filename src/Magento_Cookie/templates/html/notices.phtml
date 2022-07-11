@@ -1,11 +1,12 @@
-<?php 
-/** 
+<?php
+/**
 * Template originally overridden to implement BEM classes
 * - modification 14.08.2018 =>
 *      - Removed Magento's copyright notice;
 *      - Implementation of optional CMS Block for text => fallback left when CMS block is not available;
 *      - Cookie icon is now defined in XML;
 *      - "Allow cookie" buttons' text is now defined in XML;
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 
 /** @var \Magento\Cookie\Block\Html\Notices $block */
@@ -32,7 +33,7 @@ $cookieHelper = $block->getData('cookieHelper');
         <div class="cs-cookie-message__inner">
             <?= $block->getChildHtml('cookie_notices.block.icon'); ?>
             <div class="cs-cookie-message__text">
-                <?php if($cookieNoticeCmsBlock && $cookieNoticeCmsBlock != ''): 
+                <?php if($cookieNoticeCmsBlock && $cookieNoticeCmsBlock != ''):
                     echo $cookieNoticeCmsBlock;
                 else: ?>
                     <strong><?= $block->escapeHtml(__('We use cookies to make your experience better.')) ?></strong> <?php /* @escapeNotVerified */ echo __('To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies.') ?> <?php /* @escapeNotVerified */ echo __('<a href="%1">Learn more</a>.', $block->getPrivacyPolicyLink()) ?>

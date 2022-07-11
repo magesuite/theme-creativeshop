@@ -7,6 +7,7 @@
 * - integrate with xml configuration (dropdown/offcanvas)
 * - change tags from div into li
 *  * TODO - this is the only place when dropdownDialog is present, however some other scripts depend on dropdownDialog events
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
@@ -20,15 +21,15 @@ $offcanvasInitClass = $block->getOffcanvasInitClass();
 $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
 ?>
 
-<li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>"> 
+<li class="cs-header-user-nav__item <?= $block->getAdditionalCssClasses() ?>">
     <div class="cs-addtocart__minicart minicart-wrapper" data-block="minicart">
-        <a 
+        <a
             class="cs-header-user-nav__link cs-addtocart__minicart-link action <?= $actionClasses; ?>"
             href="<?= $block->escapeUrl($block->getShoppingCartUrl()) ?>"
             <?php if($isOffcanvas): ?>
-                aria-label="<?= __('Toggle offcanvas minicart'); ?>" 
+                aria-label="<?= __('Toggle offcanvas minicart'); ?>"
                 aria-expanded="false"
-            <?php endif; ?> 
+            <?php endif; ?>
             data-bind="scope: 'minicart_content'"
         >
             <div class="cs-header-user-nav__icon-wrapper" data-bind="css: { 'cs-header-user-nav__icon-wrapper--with-items': getCartParam('summary_count') > 0 }">
@@ -77,7 +78,7 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
     <?php else: ?>
         <?php $scriptString = <<<script
             require(['jquery'], function ($) {
-                $('a.action.showcart').click(function() {
+                $('a.action.showcart').on('click', function() {
                     $(document.body).trigger('processStart');
                 });
             });
