@@ -37,7 +37,6 @@ import 'components/free-shipping-indicator';
 import 'components/modal';
 import 'components/navigation';
 import 'components/newsletter';
-import 'components/notification-panel';
 import 'components/offcanvas-toggle';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
