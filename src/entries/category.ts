@@ -37,6 +37,7 @@ import 'components/free-shipping-indicator';
 import 'components/modal';
 import 'components/navigation';
 import 'components/newsletter';
+import 'components/notification-panel';
 import 'components/offcanvas-toggle';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
@@ -57,7 +58,6 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/ie11-modal';
-import 'components/pwa-a2hs-guide';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 
