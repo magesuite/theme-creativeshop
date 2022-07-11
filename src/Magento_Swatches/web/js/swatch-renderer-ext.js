@@ -31,9 +31,9 @@ define(['jquery', 'mage/translate'], function($, $t) {
 
                 return originalHtml.replace(
                     'data-validate="{required: true}"',
-                    'data-validate="{required: true, messages:{required:\'' +
+                    'data-validate="{required: true}" data-msg-required="' +
                         validationMessage +
-                        '\'}}"'
+                        '"'
                 );
             },
 
@@ -48,12 +48,12 @@ define(['jquery', 'mage/translate'], function($, $t) {
                     .parents('.' + $widget.options.classes.attributeClass)
                     .find('.' + $widget.options.classes.attributeInput);
 
-                // If swatch has error validate it to check if remove error if not necessary
-                if (
-                    !$this.hasClass('disabled') &&
-                    $input.hasClass('mage-error')
-                ) {
-                    $input.valid();
+                if ($input.valid()) {
+                    $input
+                        .removeClass('mage-error')
+                        .parent()
+                        .find('.mage-error')
+                        .remove();
                 }
             },
 
@@ -140,7 +140,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
                     // Fix updating image for our tile markup
                     if (imageSrcSet) {
                         this.element
-                            .parents(this.options.selectorProduct)
+                            .parents(this.options.selectorProductTile)
                             .find('.cs-product-tile__image source')
                             .attr('srcset', imageSrcSet)
                             .attr('data-srcset', imageSrcSet);

@@ -1,6 +1,7 @@
 <?php
 /**
 * Template overriden to add Magesuite stars component
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 
 /**
@@ -38,7 +39,8 @@ $product = $block->getProductData();
                 <?php if ($_rating->getPercent()): ?>
                     <?php $rating = ceil($_rating->getPercent()) ?>
                     <div class="rating-summary item">
-                        <div class="rating-result" title="<?= /* @noEscape */ $rating ?>%">
+                        <div class="rating-result <?= $block->escapeHtml($_rating->getRatingCode()) ?>"
+                             title="<?= /* @noEscape */ $rating ?>%">
                             <?= $this->getLayout()
                                     ->createBlock(\Magento\Framework\View\Element\Template::class)
                                     ->setMaxStars(5)

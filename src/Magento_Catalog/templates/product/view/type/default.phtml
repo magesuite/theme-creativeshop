@@ -3,16 +3,17 @@
 * Template overwritten to:
 * - add stock/out of stock icon
 * - add placeholder at the end ($block->getChildHtml())
+* Aligned with Magento 2.4.4 at (31.05.2022)
 */
 
 /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */
 ?>
-<?php 
+<?php
     $isAvailable = $block->getProduct()->isAvailable();
     $cssClass = $isAvailable ? 'available cs-buybox__stock--available' : 'unavailable cs-buybox__stock--unavailable';
     $text = $isAvailable ? __('In stock') : __('Out of stock');
     $iconEtcViewTarget = $isAvailable ? 'in_stock' : 'out_of_stock';
-    $icon = $block->getVar('stock_icons/display', 'Magento_Catalog') 
+    $icon = $block->getVar('stock_icons/display', 'Magento_Catalog')
         ? $this->getLayout()
              ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
              ->setIconUrl($block->getVar('stock_icons/'.$iconEtcViewTarget.'/icon_url', 'Magento_Catalog'))
