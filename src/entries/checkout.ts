@@ -38,7 +38,6 @@ import 'components/free-shipping-indicator';
 import 'components/modal';
 import 'components/navigation';
 import 'components/newsletter';
-import 'components/notification-panel';
 import 'components/offcanvas-toggle';
 import 'components/offcanvas-navigation';
 import 'components/offcanvas';
@@ -86,7 +85,6 @@ import 'MageSuite_LoginOrGuestCheckoutStep';
 // import 'components/ie11';
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
-// import 'components/pwa-a2hs-guide';
 // import 'components/reorder-banner';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
@@ -95,3 +93,7 @@ import 'MageSuite_LoginOrGuestCheckoutStep';
 // import 'MageSuite_SuccessPageOrderDetails/web/css/last-order-details.scss';
 // import 'MageSuite_InstantPurchase';
 // import 'Mollie_Payment';
+
+// PWA (add to homescreen, push notifications) connected modules
+// import 'components/pwa-a2hs-guide';
+// import 'components/notification-panel';
