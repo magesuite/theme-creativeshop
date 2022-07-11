@@ -57,7 +57,7 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/ie11-modal';
-import 'components/pwa-guide';
+import 'components/pwa-a2hs-guide';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 

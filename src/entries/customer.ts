@@ -46,7 +46,6 @@ import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
-import 'components/push-notification';
 import 'components/qty-increment';
 import 'components/slider';
 import 'components/social-media-list';
@@ -58,7 +57,6 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/ie11-modal';
-import 'components/pwa-guide';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 
