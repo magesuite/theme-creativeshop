@@ -1,0 +1,463 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+@import 'utils/get-value-from-list';
+@import 'components/button/mixin';
+
+$notification-panel_gutter: 0 !default;
+$notification-panel_background: $color_white !default;
+$notification-panel_border: none !default;
+$notification-panel_border-radius: $border-radius_base !default;
+$notification-panel_box-shadow: none !default;
+
+$notification-panel_padding: 0 !default;
+$notification-panel_margin: 1.5rem 0 !default;
+$notification-panel_display: block !default;
+
+$notification-panel_icon-status-width: 3.5rem !default;
+$notification-panel_icon-status-height: 3.5rem !default;
+$notification-panel_icon-status-animation: true !default;
+$notification-panel_icon-status-animation-repeat: 6s !default;
+
+$notification-panel_message-title-font-size: 2rem !default;
+$notification-panel_message-title-font-weight: 700 !default;
+$notification-panel_message-title-request-color: $color_black !default;
+$notification-panel_message-title-browser-color: $color_black !default;
+$notification-panel_message-title-enabled-color: $color_success-600 !default;
+
+$notification-panel_message-description-font-size: 1.4rem !default;
+$notification-panel_message-description-font-weight: 400 !default;
+$notification-panel_message-description-color: $color_text-400 !default;
+
+$notification-panel_actions-flex-justify: flex-start !default;
+
+$notification-panel_button-accept-type: 'secondary' !default;
+$notification-panel_button-accept-icon-pos: 'no-icon' !default;
+
+$notification-panel_button-decline-type: 'secondary' !default;
+$notification-panel_button-decline-icon-pos: 'no-icon' !default;
+
+$notification-panel_permission-border: none !default;
+$notification-panel_permission-border-radius: $border-radius_base !default;
+$notification-panel_permission-box-shadow: 2px 2px 5px rgba($color_black, 0.1),
+    -2px -2px 5px rgba($color_black, 0.1) !default;
+$notification-panel_permission-font-size: 1.2rem !default;
+$notification-panel_permission-padding: 1rem 2rem !default;
+$notification-panel_permission-color: $color_text-400 !default;
+$notification-panel_permission-button-font-size: 1.1rem !default;
+$notification-panel_permission-button-padding: 0.2rem 2rem !default;
+$notification-panel_permission-button-border: 1px solid $color_black !default;
+$notification-panel_permission-button-color: $color_black !default;
+$notification-panel_permission-icon-width: 1.2rem !default;
+$notification-panel_permission-icon-height: 1.2rem !default;
+
+$notification-panel_icon-close-width: 1.5rem !default;
+$notification-panel_icon-close-height: 1.5rem !default;
+$notification-panel_icon-close-color: $color_text-400 !default;
+$notification-panel_icon-close-color--hover: $color_black !default;
+
+// Slim variant
+$notification-panel--slim_gutter: 0 1.5rem !default;
+$notification-panel--slim_background: $color_background_500 !default;
+$notification-panel--slim_border-radius: 8px !default;
+$notification-panel--slim_box-shadow: none !default;
+$notification-panel--slim_padding: 2rem 1.5rem !default;
+$notification-panel--slim_display: flex !default;
+$notification-panel--slim_actions-flex-justify: flex-start !default;
+
+$notification-panel--slim_button-accept-type: $button_default-type !default;
+$notification-panel--slim_button-accept-icon-pos: 'no-icon' !default;
+
+$notification-panel--slim_icon-next-width: 1.5rem !default;
+$notification-panel--slim_icon-next-height: 1.5rem !default;
+$notification-panel--slim_icon-next-color: $color_primary-500 !default;
+$notification-panel--slim_icon-next-color--hover: $color_black !default;
+
+.#{$ns}notification-panel {
+    $root: &;
+
+    opacity: 0;
+    height: 0;
+    transform: translateY(-5rem);
+    transition: transform 0.3s;
+    overflow: hidden;
+
+    &._active {
+        opacity: 1;
+        transform: translateY(0);
+        height: auto;
+    }
+
+    &__content {
+        position: relative;
+        display: $notification-panel_display;
+        background: $notification-panel_background;
+        padding: $notification-panel_padding;
+        border: $notification-panel_border;
+        border-radius: $notification-panel_border-radius;
+        box-shadow: $notification-panel_box-shadow;
+        margin: $notification-panel_margin;
+
+        #{$root}--slim & {
+            display: $notification-panel--slim_display;
+            background: $notification-panel--slim_background;
+            flex-wrap: wrap;
+            box-shadow: $notification-panel--slim_box-shadow;
+            border-radius: $notification-panel--slim_border-radius;
+            padding: 1.2rem 1rem;
+
+            @include media('>=tablet') {
+                padding: 2rem;
+            }
+        }
+    }
+
+    &__icons {
+        margin: $notification-panel_gutter;
+
+        @include media('<phoneLg') {
+            display: none;
+        }
+
+        #{$root}--slim & {
+            margin: 0 0.5rem 0 1.5rem;
+            align-self: flex-start;
+
+            @include media('<phoneLg') {
+                display: block;
+            }
+
+            @include media('>=tablet') {
+                flex-basis: 10rem;
+                display: flex;
+                justify-content: center;
+                align-self: unset;
+            }
+        }
+    }
+
+    &__icon {
+        width: $notification-panel_icon-status-width;
+        height: $notification-panel_icon-status-height;
+
+        #{$root}--slim & {
+            @include media('>=tablet') {
+                width: 5.9rem;
+                height: 4.5rem;
+            }
+        }
+
+        &--animate {
+            @if $notification-panel_icon-status-animation {
+                animation: ringing
+                    $notification-panel_icon-status-animation-repeat
+                    infinite;
+            }
+        }
+    }
+
+    &__message-wrapper {
+        margin: $notification-panel_gutter;
+        flex: 1;
+
+        #{$root}--slim & {
+            margin: $notification-panel--slim_gutter;
+        }
+
+        @include media('<laptop') {
+            padding-right: 2 *
+                (get-value-from-list($notification-panel_padding, 'right'));
+        }
+    }
+
+    &__message {
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            font-size: $notification-panel_message-title-font-size;
+            font-weight: $notification-panel_message-title-font-weight;
+
+            #{$root}--slim & {
+                font-size: 1.4rem;
+                padding-right: 3rem;
+                cursor: pointer;
+
+                @include media('>=tablet') {
+                    font-size: 2rem;
+                    padding-right: 0;
+                }
+            }
+        }
+
+        &-description {
+            font-size: $notification-panel_message-description-font-size;
+            font-weight: $notification-panel_message-description-font-weight;
+            color: $notification-panel_message-description-color;
+
+            #{$root}--slim & {
+                padding-right: 3rem;
+                padding-bottom: 1rem;
+
+                @include media('>=tablet') {
+                    padding-right: 0;
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: $notification-panel_actions-flex-justify;
+        flex-wrap: wrap;
+
+        @include media('<laptop') {
+            flex: 1 1 100%;
+        }
+
+        @include media('>=phoneLg') {
+            flex-wrap: nowrap;
+        }
+
+        #{$root}--slim & {
+            justify-content: $notification-panel--slim_actions-flex-justify;
+            padding-left: 7rem;
+            gap: 1rem;
+            transition: height 0.3s 0.3s;
+            height: 0;
+            overflow: hidden;
+
+            &._active {
+                height: 4rem;
+            }
+
+            @include media('>=tablet') {
+                display: flex;
+            }
+
+            @include media('<phoneLg') {
+                flex-wrap: nowrap;
+            }
+
+            @include media('>=tablet') {
+                padding-left: 0;
+            }
+
+            @include media('>=laptop') {
+                height: 4rem;
+                margin-top: 0.5rem;
+            }
+        }
+    }
+
+    &__button {
+        @include media('<phoneLg') {
+            width: 100%;
+        }
+
+        &:first-of-type {
+            margin: 0 0 0.5rem;
+
+            @include media('>=phoneLg') {
+                margin: 0
+                    get-value-from-list($notification-panel_gutter, 'right') 0 0;
+            }
+        }
+
+        &--accept {
+            @include button(
+                $type: $notification-panel_button-accept-type,
+                $icon_pos: $notification-panel_button-accept-icon-pos
+            );
+
+            #{$root}__button-span {
+                @include button_span(
+                    $type: $notification-panel_button-accept-type,
+                    $icon_pos: $notification-panel_button-accept-icon-pos
+                );
+            }
+
+            #{$root}__button-icon {
+                @include button_icon(
+                    $type: $notification-panel_button-accept-type,
+                    $icon_pos: $notification-panel_button-accept-icon-pos
+                );
+            }
+
+            #{$root}--slim & {
+                @include button(
+                    $type: $notification-panel--slim_button-accept-type,
+                    $icon_pos: $notification-panel--slim_button-accept-icon-pos
+                );
+
+                #{$root}__button-span {
+                    @include button_span(
+                        $type: $notification-panel--slim_button-accept-type,
+                        $icon_pos:
+                            $notification-panel--slim_button-accept-icon-pos
+                    );
+                }
+
+                #{$root}__button-icon {
+                    @include button_icon(
+                        $type: $notification-panel--slim_button-accept-type,
+                        $icon_pos:
+                            $notification-panel--slim_button-accept-icon-pos
+                    );
+                }
+            }
+        }
+
+        &--decline {
+            @include button(
+                $type: $notification-panel_button-decline-type,
+                $icon_pos: $notification-panel_button-decline-icon-pos
+            );
+
+            #{$root}__button-span {
+                @include button_span(
+                    $type: $notification-panel_button-decline-type,
+                    $icon_pos: $notification-panel_button-decline-icon-pos
+                );
+            }
+
+            #{$root}__button-icon {
+                @include button_icon(
+                    $type: $notification-panel_button-decline-type,
+                    $icon_pos: $notification-panel_button-decline-icon-pos
+                );
+            }
+        }
+    }
+
+    &__permission {
+        display: flex;
+        flex-direction: column;
+        border: $notification-panel_permission-border;
+        border-radius: $notification-panel_permission-border-radius;
+        box-shadow: $notification-panel_permission-box-shadow;
+        font-size: $notification-panel_permission-font-size;
+        color: $notification-panel_permission-color;
+        padding: $notification-panel_permission-padding;
+
+        &-icon {
+            width: $notification-panel_permission-icon-width;
+            height: $notification-panel_permission-icon-height;
+            margin-right: 0.5rem;
+        }
+
+        &-button-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        &-button {
+            padding: $notification-panel_permission-button-padding;
+            margin: 0 0.2rem;
+            border: $notification-panel_permission-button-border;
+            color: $notification-panel_permission-button-color;
+            font-size: $notification-panel_permission-button-font-size;
+
+            &--block {
+                opacity: 0.3;
+            }
+        }
+    }
+
+    &__close {
+        margin: 0 0 0 get-value-from-list($notification-panel_padding, 'right');
+        padding: get-value-from-list($notification-panel_padding, 'right');
+
+        #{$root}--slim & {
+            padding: get-value-from-list(
+                $notification-panel--slim_padding,
+                'right'
+            );
+            display: none;
+
+            &._active {
+                display: block;
+            }
+        }
+
+        @include media('<laptop') {
+            position: absolute;
+            top: 1rem;
+            right: get-value-from-list($notification-panel_padding, 'right');
+
+            #{$root}--slim & {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+
+        @include media('>=tablet') {
+            #{$root}--slim & {
+                display: block;
+            }
+        }
+
+        &-icon {
+            display: block;
+            width: $notification-panel_icon-close-width;
+            height: $notification-panel_icon-close-height;
+            fill: $notification-panel_icon-close-color;
+        }
+
+        &:hover {
+            #{$root}__close-icon {
+                fill: $notification-panel_icon-close-color--hover;
+            }
+        }
+    }
+
+    &__next {
+        padding: 1rem;
+        cursor: pointer;
+        position: absolute;
+        right: 1rem;
+        top: 1.5rem;
+
+        @include media('>=tablet') {
+            display: none;
+        }
+
+        &._hidden {
+            display: none;
+        }
+
+        &-icon {
+            display: block;
+            width: $notification-panel--slim_icon-next-width;
+            height: $notification-panel--slim_icon-next-height;
+            fill: $notification-panel--slim_icon-next-color;
+        }
+
+        &:hover {
+            #{$root}__close-icon {
+                fill: $notification-panel--slim_icon-next-color--hover;
+            }
+        }
+
+        @include media('>=tablet') {
+            right: 2rem;
+        }
+    }
+}
+
+@keyframes ringing {
+    0%,
+    12% {
+        transform: scale(1) rotate(0deg);
+    }
+    3%,
+    7% {
+        transform: scale(1.3) rotate(27deg);
+    }
+    5%,
+    9% {
+        transform: scale(1.3) rotate(-27deg);
+    }
+}
