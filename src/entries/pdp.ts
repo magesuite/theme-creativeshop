@@ -93,3 +93,4 @@ import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
 // import 'components/tooltip';
 // import 'components/video-layer';
 // import 'MageSuite_InstantPurchase';
+// import 'components/product-details/attachments';
