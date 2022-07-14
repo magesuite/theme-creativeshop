@@ -1,0 +1,89 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/reset-list-style';
+@import 'components/typography/mixin';
+@import 'utils/uri-friendly-hex';
+
+$attachments_font-size: 1.4rem !default;
+$attachments_item-border-color: 1px solid $color_border-500 !default;
+$attachments_item-padding: 1.5rem !default;
+$attachments_thumbnail-shadow: 0 2px 6px 1px $color_border-500 !default;
+$attachments_thumbnail-width: 5.5rem !default;
+$attachments_thumbnail-height: 7.7rem !default;
+
+$attachments_download-icon: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{uri-friendly-hex($color_text-500)}'%3e%3cpath d='M2.475 16a2.476 2.476 0 0 1-2.473-2.473V10.37a.895.895 0 0 1 1.789 0v3.157a.688.688 0 0 0 .686.689h11.05a.687.687 0 0 0 .686-.689V10.37a.894.894 0 0 1 1.787 0v3.157A2.474 2.474 0 0 1 13.527 16Zm5.527-4.733h-.127a.861.861 0 0 1-.123-.026l-.031-.01-.019-.017a.118.118 0 0 1-.02-.007l-.025-.01h-.008a.9.9 0 0 1-.279-.188L3.42 7.055a.893.893 0 0 1 1.266-1.261l2.423 2.424V.9a.894.894 0 1 1 1.788 0v7.312l2.42-2.418a.894.894 0 0 1 1.268 1.261L8.633 11a.884.884 0 0 1-.492.25h-.139Z'/%3e%3c/svg%3e") !default;
+
+.#{$ns}attachments {
+    $root: &;
+
+    @include reset-list-style();
+
+    padding-bottom: 2rem;
+    font-size: $attachments_font-size;
+
+    @include media('>=tablet') {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    &__item {
+        border: $attachments_item-border-color;
+        padding: $attachments_item-padding;
+    }
+
+    &__link {
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    #{$root}__link {
+        @include link(
+            $color: $color_text-500,
+            $color-hover: $color_text-500,
+            $decoration: none,
+            $decoration-hover: none
+        );
+    }
+
+    &__thumbnail {
+        width: $attachments_thumbnail-width;
+        height: $attachments_thumbnail-height;
+        flex-shrink: 0;
+        box-shadow: $attachments_thumbnail-shadow;
+
+        &--placeholder {
+            padding: 1rem;
+        }
+    }
+
+    &__texts {
+        margin-left: 1.5rem;
+        display: block;
+        flex-basis: 100%;
+    }
+
+    &__name {
+        font-weight: 700;
+        display: block;
+        width: 100%;
+    }
+
+    &__description {
+        display: block;
+        width: 100%;
+    }
+
+    &__download {
+        display: block;
+        margin: 0 1.5rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        background-image: $attachments_download-icon;
+        background-repeat: no-repeat;
+        background-size: contain;
+        flex-shrink: 0;
+    }
+}
