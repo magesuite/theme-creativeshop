@@ -57,7 +57,6 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/select';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 

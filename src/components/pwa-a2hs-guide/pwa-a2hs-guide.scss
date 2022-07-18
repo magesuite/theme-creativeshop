@@ -1,0 +1,308 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+@import 'utils/get-value-from-list';
+@import 'components/button/mixin';
+
+$pwa-a2hs-guide_gutter: 0 1.5rem !default;
+$pwa-a2hs-guide_background: $color_background_500 !default;
+$pwa-a2hs-guide_border: none !default;
+$pwa-a2hs-guide_border-radius: 8px !default;
+$pwa-a2hs-guide_box-shadow: none !default;
+$pwa-a2hs-guide_margin: 1.5rem 0 !default;
+
+$pwa-a2hs-guide_icon-status-width: 4.5rem !default;
+$pwa-a2hs-guide_icon-status-height: 4rem !default;
+$pwa-a2hs-guide_icon-status-animation: true !default;
+$pwa-a2hs-guide_icon-status-animation-repeat: 6s !default;
+
+$pwa-a2hs-guide_message-title-font-weight: 700 !default;
+$pwa-a2hs-guide_message-title-color: $color_black !default;
+
+$pwa-a2hs-guide_message-description-font-size: 1.4rem !default;
+$pwa-a2hs-guide_message-description-font-weight: 400 !default;
+$pwa-a2hs-guide_message-description-color: $color_text-500 !default;
+
+$pwa-a2hs-guide_icon-close-width: 1.5rem !default;
+$pwa-a2hs-guide_icon-close-height: 1.5rem !default;
+$pwa-a2hs-guide_icon-close-color: $color_text-400 !default;
+$pwa-a2hs-guide_icon-close-color--hover: $color_black !default;
+
+$pwa-a2hs-guide_icon-next-width: 1.5rem !default;
+$pwa-a2hs-guide_icon-next-height: 1.5rem !default;
+$pwa-a2hs-guide_icon-next-color: $color_primary-500 !default;
+$pwa-a2hs-guide_icon-next-color--hover: $color_black !default;
+
+$pwa-a2hs-guide_button-decline-type: 'secondary' !default;
+$pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
+
+.#{$ns}pwa-a2hs-guide {
+    $root: &;
+
+    &__wrapper {
+        opacity: 0;
+        height: 0;
+        transform: translateY(-5rem);
+        transition: transform 0.3s;
+        overflow: hidden;
+
+        &._active {
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+        }
+    }
+
+    &__content {
+        position: relative;
+        background: $pwa-a2hs-guide_background;
+        border: $pwa-a2hs-guide_border;
+        border-radius: $pwa-a2hs-guide_border-radius;
+        box-shadow: $pwa-a2hs-guide_box-shadow;
+        margin: $pwa-a2hs-guide_margin;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 1.2rem 1rem;
+
+        @include media('>=tablet') {
+            padding: 2rem;
+        }
+    }
+
+    &__icons {
+        margin: 0 0 0 1rem;
+
+        @include media('>=tablet') {
+            flex-basis: 10rem;
+            display: flex;
+            justify-content: center;
+            margin: 0 0.5rem 0 1.5rem;
+        }
+    }
+
+    &__icon {
+        width: $pwa-a2hs-guide_icon-status-width;
+        height: $pwa-a2hs-guide_icon-status-height;
+
+        @include media('>=tablet') {
+            width: 5.9rem;
+            height: 4.5rem;
+        }
+
+        &--animate {
+            @if $pwa-a2hs-guide_icon-status-animation {
+                animation: ringing
+                    $pwa-a2hs-guide_icon-status-animation-repeat
+                    infinite;
+            }
+        }
+    }
+
+    &__message-wrapper {
+        margin: $pwa-a2hs-guide_gutter;
+        flex: 1;
+    }
+
+    &__message {
+        flex-direction: column;
+        font-size: $pwa-a2hs-guide_message-description-font-size;
+        font-weight: $pwa-a2hs-guide_message-description-font-weight;
+        color: $pwa-a2hs-guide_message-description-color;
+        display: none;
+
+        &._active {
+            display: block;
+        }
+
+        &-title {
+            display: block;
+            font-weight: $pwa-a2hs-guide_message-title-font-weight;
+            color: $pwa-a2hs-guide_message-title-color;
+            cursor: pointer;
+            font-size: 1.4rem;
+            padding-right: 2rem;
+            margin-top: 0.3rem;
+
+            @include media('>=tablet') {
+                font-size: 2rem;
+            }
+
+            &[data-modal-trigger='desktop'] {
+                @include media('>=tablet') {
+                    padding-right: 22rem;
+                }
+            }
+        }
+
+        &-description {
+            display: none;
+
+            #{$root}__message--desktop & {
+                display: block;
+            }
+        }
+    }
+
+    &__install-icon {
+        display: inline-block;
+        margin: 0 0.2rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+
+        #{$root}__message--ios & {
+            width: 1.1em;
+            height: 1.8rem;
+            transform: translateY(2px);
+            background-image: url('../images/icons/pwa-a2hs-guide/install.svg');
+        }
+
+        #{$root}__message--desktop & {
+            width: 1.8em;
+            height: 1.8rem;
+            margin: 0 0 0 0.2rem;
+            transform: translateY(3px);
+            background-image: url('../images/icons/pwa-a2hs-guide/install-desktop.svg');
+        }
+    }
+
+    &__modal {
+        display: none;
+    }
+
+    &__close,
+    &__next {
+        padding: 1rem;
+        cursor: pointer;
+        position: absolute;
+        right: 1rem;
+
+        @include media('>=tablet') {
+            right: 2rem;
+        }
+    }
+
+    &__close {
+        display: none;
+        top: 1rem;
+
+        &._active {
+            display: block;
+        }
+
+        @include media('>=tablet') {
+            display: block;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 2.5rem;
+        }
+
+        &-icon {
+            display: block;
+            width: $pwa-a2hs-guide_icon-close-width;
+            height: $pwa-a2hs-guide_icon-close-height;
+            fill: $pwa-a2hs-guide_icon-close-color;
+        }
+
+        &:hover {
+            #{$root}__close-icon {
+                fill: $pwa-a2hs-guide_icon-close-color--hover;
+            }
+        }
+    }
+
+    &__next {
+        top: 1.5rem;
+
+        @include media('>=tablet') {
+            display: none;
+        }
+
+        &._hidden {
+            display: none;
+        }
+
+        &-icon {
+            display: block;
+            width: $pwa-a2hs-guide_icon-next-width;
+            height: $pwa-a2hs-guide_icon-next-height;
+            fill: $pwa-a2hs-guide_icon-next-color;
+        }
+
+        &:hover {
+            #{$root}__close-icon {
+                fill: $pwa-a2hs-guide_icon-next-color--hover;
+            }
+        }
+    }
+
+    &__button-wrapper {
+        margin-top: 1rem;
+        display: none;
+
+        @include media('>=laptop') {
+            margin-right: 5rem;
+            margin-top: 0.7rem;
+            display: block;
+        }
+
+        @include media('<laptop') {
+            margin: 0 auto 0 8.5rem;
+        }
+
+        &._active {
+            display: block;
+        }
+    }
+
+    &__button {
+        @include button(
+            $type: $pwa-a2hs-guide_button-decline-type,
+            $icon_pos: $pwa-a2hs-guide_button-decline-icon-pos
+        );
+
+        #{$root}__button-span {
+            @include button_span(
+                $type: $pwa-a2hs-guide_button-decline-type,
+                $icon_pos: $pwa-a2hs-guide_button-decline-icon-pos
+            );
+        }
+
+        #{$root}__button-icon {
+            @include button_icon(
+                $type: $pwa-a2hs-guide_button-decline-type,
+                $icon_pos: $pwa-a2hs-guide_button-decline-icon-pos
+            );
+        }
+
+        &--showmore {
+            margin-top: 1rem;
+
+            @include media('>=tablet') {
+                position: absolute;
+                right: 4rem;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-top: 0;
+            }
+
+            @include media('>=laptop') {
+                right: 0;
+            }
+        }
+    }
+}
+
+@keyframes ringing {
+    0%,
+    12% {
+        transform: scale(1) rotate(0deg);
+    }
+    3%,
+    7% {
+        transform: scale(1.3) rotate(27deg);
+    }
+    5%,
+    9% {
+        transform: scale(1.3) rotate(-27deg);
+    }
+}
