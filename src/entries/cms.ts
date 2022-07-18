@@ -53,7 +53,6 @@ import 'components/typography';
 import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
 import 'components/dailydeal';
 import 'components/google-recaptcha';
 

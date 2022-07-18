@@ -46,7 +46,6 @@ import 'components/page-bottom';
 import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
-import 'components/push-notification';
 import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
@@ -58,7 +57,6 @@ import 'components/visually-hidden';
 import 'components/select';
 import 'components/toolbar';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
 import 'components/google-recaptcha';
 
 import 'components/non-critical';
@@ -95,3 +93,7 @@ import 'MageSuite_LoginOrGuestCheckoutStep';
 // import 'MageSuite_SuccessPageOrderDetails/web/css/last-order-details.scss';
 // import 'MageSuite_InstantPurchase';
 // import 'Mollie_Payment';
+
+// PWA (add to homescreen, push notifications) connected modules
+// import 'components/pwa-a2hs-guide';
+// import 'components/notification-panel';
