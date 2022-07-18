@@ -42,7 +42,6 @@ import 'components/typography';
 import 'components/video-teaser';
 import 'components/visually-hidden';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
 import 'components/google-recaptcha';
 import 'components/non-critical';
 import 'components/product-compare';

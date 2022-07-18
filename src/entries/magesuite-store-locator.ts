@@ -54,7 +54,6 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/select';
 import 'components/ie11-modal';
-import 'components/pwa-notification';
 
 import 'components/non-critical';
 
