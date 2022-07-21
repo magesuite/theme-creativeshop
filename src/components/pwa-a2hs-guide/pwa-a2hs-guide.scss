@@ -114,6 +114,19 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
             display: block;
         }
 
+        &--desktop {
+            @include media('>=tablet') {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                justify-content: space-between;
+
+                &._active {
+                    display: flex;
+                }
+            }
+        }
+
         &-title {
             display: block;
             font-weight: $pwa-a2hs-guide_message-title-font-weight;
@@ -125,12 +138,6 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
 
             @include media('>=tablet') {
                 font-size: 2rem;
-            }
-
-            &[data-modal-trigger='desktop'] {
-                @include media('>=tablet') {
-                    padding-right: 22rem;
-                }
             }
         }
 
@@ -191,6 +198,10 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
 
         @include media('>=tablet') {
             display: block;
+            right: 1rem;
+        }
+
+        @include media('>=laptop') {
             top: 50%;
             transform: translateY(-50%);
             right: 2.5rem;
@@ -212,6 +223,11 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
 
     &__next {
         top: 1.5rem;
+        pointer-events: none;
+
+        #{$root}__message-title {
+            pointer-events: initial;
+        }
 
         @include media('>=tablet') {
             display: none;
@@ -245,7 +261,7 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
             display: block;
         }
 
-        @include media('<laptop') {
+        @include media('<tablet') {
             margin: 0 auto 0 8.5rem;
         }
 
@@ -275,18 +291,16 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
         }
 
         &--showmore {
-            margin-top: 1rem;
+            display: none;
 
             @include media('>=tablet') {
-                position: absolute;
-                right: 4rem;
-                top: 50%;
-                transform: translateY(-50%);
-                margin-top: 0;
+                margin-top: 0.7rem;
+                margin-right: 5rem;
+                display: inline-block;
             }
 
             @include media('>=laptop') {
-                right: 0;
+                margin-right: 0;
             }
         }
     }
