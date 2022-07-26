@@ -48,7 +48,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
                     .parents('.' + $widget.options.classes.attributeClass)
                     .find('.' + $widget.options.classes.attributeInput);
 
-                if ($input.valid()) {
+                if ($input.length > 0 && $input.valid()) {
                     $input
                         .removeClass('mage-error')
                         .parent()
