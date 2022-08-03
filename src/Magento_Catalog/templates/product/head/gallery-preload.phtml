@@ -1,20 +1,14 @@
-<?php 
-/** 
+<?php
+/**
 * Custom template to preload category image in order to improve LCP
-* see https://web.dev/optimize-lcp/#preload-important-resources 
-*/ 
+* see https://web.dev/optimize-lcp/#preload-important-resources
+*/
 // @codingStandardsIgnoreFile
 /** @var $block \Magento\Catalog\Block\Product\View\Gallery */
 ?>
 <?php
     $galleryImagesJson = $block->getGalleryImagesJson();
     $galleryImages = json_decode($galleryImagesJson);
-    $firstImageUrl = array_shift($galleryImages)->img;
-
-    // Webp support
-    $imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
-    $isWebpSupported = $imageTypeHelper->supportsWebp($firstImageUrl);
-
-    $imgUrl = $isWebpSupported ? $firstImageUrl.'.webp' : $firstImageUrl;
+    $imgUrl = array_shift($galleryImages)->img;
 ?>
 <link rel="preload" href="<?= $imgUrl ?>" as="image">
