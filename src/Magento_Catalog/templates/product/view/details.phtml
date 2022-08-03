@@ -10,6 +10,7 @@
 <?php
 $layout = $block->getLayout();
 $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChildHtml') ?? [];
+$headlineTag = $block->getHeadlineTag() ?? 'h2';
 ?>
 <?php if (!empty($detailedInfoGroup)): ?>
 
@@ -41,9 +42,9 @@ $detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChild
             <div class="cs-container__inner">
                 <?php if (!empty($headline)): ?>
                     <header class="cs-product-details__headline" data-role="title">
-                        <h2 class="cs-product-details__headline-title">
+                        <<?= $headlineTag ?> class="cs-product-details__headline-title">
                             <?= /* @noEscape */ $headline; ?>
-                        </h2>
+                        </<?= $headlineTag ?>>
                         <?php if (!empty($subheadline)): ?>
                             <p class="cs-product-details__headline-subtitle">
                                 <?= /* @noEscape */ $subheadline; ?>
