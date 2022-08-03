@@ -1,15 +1,16 @@
-<?php 
-/** 
+<?php
+/**
 * Custom template to display main section of details
 * There is possibility to insert content inside one, or 2 columns and decide if given section should be collapsible
 * In magesuite product.info.description" and product.attributes are moved to product.info.details.main but other elements can be added in child projects
-*/ 
+*/
 ?>
 <?php
 $layout = $block->getLayout();
 $one_column = $block->getData('one_column');
 $column_left = $block->getGroupChildNames('column_left', 'getChildHtml') ?? [];
 $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? [];
+$headlineTag = $block->getHeadlineTag() ?? 'h3';
 ?>
 <?php if (!empty($column_left) || !empty($column_right)): ?>
 <div class="cs-product-details-main<?php if ($one_column): ?> cs-product-details-main--column<?php endif; ?>">
@@ -36,9 +37,9 @@ $column_right = $block->getGroupChildNames('column_right', 'getChildHtml') ?? []
             >
                 <?php if (!empty($label)): ?>
                     <header class="cs-product-details-main__headline" data-role="title">
-                        <h3 class="cs-product-details-main__headline-title">
+                        <<?= $headlineTag ?> class="cs-product-details-main__headline-title">
                             <?= /* @noEscape */ $label; ?>
-                        </h3>
+                        </<?= $headlineTag ?>>
                     </header>
                 <?php endif; ?>
                 <div class="cs-product-details-main__content" data-role="content">
