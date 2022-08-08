@@ -18,7 +18,7 @@ define([
                 return step.code === 'shipping';
             })[0];
 
-            return shipping ? shipping.isVisible() : ko.observable(false);
+            return shipping ? shipping.isVisible() : false;
         },
     });
 });
