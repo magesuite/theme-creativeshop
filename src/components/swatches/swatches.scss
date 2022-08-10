@@ -53,7 +53,7 @@ $swatches_swatch--text-disabled-color: $color_text-400 !default;
 $swatches_swatch--text-opacity: 0.65 !default;
 
 $swatches_swatch--backinstock-background: rgba($color_background-600, 0.55)
-    url(../images/icons/push-notification/icon_notification-outline.svg)
+    url(../images/icons/notification-panel/icon_notification-outline.svg)
     center/64% no-repeat !default;
 
 $swatches_swatch-outline-width: 1px !default;
@@ -111,51 +111,6 @@ $swatches_tooltip-thumbnail-height: #{map-get(
         $swatches_tooltip-thumbnail-data,
         height
     )} !default;
-
-// Container selector for swatches in tile and daily deal teaser.
-[class^='swatch-opt-'] {
-    font-size: $swatches--tile_font-size;
-    min-height: $swatches--tile_min-height;
-    opacity: 1;
-    transition: opacity 0.3s;
-    pointer-events: none;
-
-    @if $swatches--clickable {
-        @include media('>tablet') {
-            pointer-events: auto;
-        }
-    }
-
-    &:empty {
-        opacity: 0;
-    }
-}
-
-// Container selector for swatches on PDP
-.swatch-opt {
-    font-size: $swatches--pdp_font-size;
-
-    // Selector for error container when swatches are required but not selected.
-    .mage-error {
-        font-size: 1em;
-        width: 100%;
-        margin-left: calc(#{$swatches_label-width} + #{$swatches_label-gutter});
-
-        @if ($swatches_full-width-label == true) {
-            margin-left: 0;
-        }
-
-        @include media('>=laptop') {
-            margin-left: calc(
-                #{$swatches_label-width-laptop-up} + #{$swatches_label-gutter}
-            );
-
-            @if ($swatches_full-width-label == true) {
-                margin-left: 0;
-            }
-        }
-    }
-}
 
 .swatch-attribute {
     display: flex;
@@ -338,24 +293,6 @@ $swatches_tooltip-thumbnail-height: #{map-get(
         }
     }
 
-    &.back-in-stock-alert {
-        &:after {
-            background: $swatches_swatch--backinstock-background;
-            opacity: 1;
-        }
-
-        &.text {
-            padding-right: 2em;
-
-            &:after {
-                left: auto;
-                right: get-value-from-list($swatches_swatch-padding, 'right');
-                background-color: transparent;
-                transform: translateY(-50%);
-            }
-        }
-    }
-
     &:not(.disabled):not(.selected):not([disabled]),
     &.back-in-stock-alert {
         &:hover {
@@ -486,5 +423,97 @@ $swatches_tooltip-thumbnail-height: #{map-get(
         @media (hover:none) {            
             display: none !important;
         }
+    }
+}
+
+// Container selector for swatches on PDP
+.swatch-opt {
+    font-size: $swatches--pdp_font-size;
+
+    .swatch-option {
+        &.back-in-stock-alert {
+            &:after {
+                background: $swatches_swatch--backinstock-background;
+                opacity: 1;
+            }
+
+            &.text {
+                padding-right: 2em;
+
+                &:after {
+                    left: auto;
+                    right: get-value-from-list(
+                        $swatches_swatch-padding,
+                        'right'
+                    );
+                    background-color: transparent;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+
+    // Selector for error container when swatches are required but not selected.
+    .mage-error {
+        font-size: 1em;
+        width: 100%;
+        margin-left: calc(#{$swatches_label-width} + #{$swatches_label-gutter});
+
+        @if ($swatches_full-width-label == true) {
+            margin-left: 0;
+        }
+
+        @include media('>=laptop') {
+            margin-left: calc(
+                #{$swatches_label-width-laptop-up} + #{$swatches_label-gutter}
+            );
+
+            @if ($swatches_full-width-label == true) {
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+// Container selector for swatches in tile and daily deal teaser.
+[class^='swatch-opt-'] {
+    font-size: $swatches--tile_font-size;
+    min-height: $swatches--tile_min-height;
+    opacity: 1;
+    transition: opacity 0.3s;
+    pointer-events: none;
+
+    @if $swatches--clickable {
+        @include media('>tablet') {
+            pointer-events: auto;
+        }
+    }
+
+    .swatch-option {
+        &.disabled.back-in-stock-alert,
+        &[disabled].back-in-stock-alert {
+            cursor: not-allowed;
+
+            &.text {
+                opacity: $swatches_swatch--text-opacity;
+                color: $swatches_swatch--text-disabled-color;
+                background: $swatches_swatch--text-disabled-background;
+
+                &:before {
+                    border: $swatches_swatch--text-disabled-border;
+                }
+            }
+
+            &.image,
+            &.color {
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    &:empty {
+        opacity: 0;
     }
 }
