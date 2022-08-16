@@ -61,6 +61,9 @@ import 'components/google-recaptcha';
 
 import 'components/non-critical';
 
+// Carousels (navigation/pagination CSS)
+import 'components/_slider';
+
 // Checkout
 import 'pages/success';
 import 'pages/cart';
