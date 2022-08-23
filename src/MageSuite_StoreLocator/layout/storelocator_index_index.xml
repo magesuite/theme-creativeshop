@@ -1,13 +1,22 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
+        <css src="css/cms.css"/>
         <css src="css/magesuite-store-locator.css"/>
     </head>
-    <body>        
-        <!-- Attach correct js bundle for page type -->
-        <referenceBlock name="scripts">
-            <arguments>
-                <argument name="bundle_name" xsi:type="string">magesuite-store-locator</argument>
-            </arguments>
-        </referenceBlock>
+    <body>
+        <!-- Attach store-locator bundle in addition to default cms bundle -->
+        <referenceContainer name="before.body.end">
+            <referenceBlock name="scripts">
+                <arguments>
+                    <argument name="bundle_name" xsi:type="string">cms</argument>
+                </arguments>
+            </referenceBlock>
+            <block name="store-locator-scripts" template="Magento_Theme::html/scripts.phtml" after="scripts">
+                <arguments>
+                    <argument name="bundle_name" xsi:type="string">magesuite-store-locator</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
     </body>
-</page>        
+</page>

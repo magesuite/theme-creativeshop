@@ -1,1 +1,1 @@
-import 'MageSuite_BackInStock/web/css/product-stock-subscription.scss';
+import 'MageSuite_BackInStock';
