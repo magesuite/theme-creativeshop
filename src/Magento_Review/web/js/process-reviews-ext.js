@@ -107,8 +107,8 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
                         .trigger('contentUpdated');
 
                     if (isLastPage) {
-                        $loadMoreReviewsButton.remove();
-                        $('.' + reviewsCountSelectorClass).remove();
+                        $loadMoreReviewsButton.hide();
+                        $('.' + reviewsCountSelectorClass).hide();
                         return;
                     }
 
