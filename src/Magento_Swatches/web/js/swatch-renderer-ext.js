@@ -8,10 +8,10 @@
  * - update from price label depending on amount of options selected (as an option)
  * - update old price depending if product is discounted (as an option)
  */
-define(['jquery', 'mage/translate'], function($, $t) {
+define(['jquery', 'mage/translate'], function ($, $t) {
     'use strict';
 
-    return function(swatchRenderer) {
+    return function (swatchRenderer) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
             options: {
                 selectorProductTile: '.cs-product-tile',
@@ -22,7 +22,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
             /**
              * Change required message to more informative
              */
-            _RenderFormInput: function(config) {
+            _RenderFormInput: function (config) {
                 var originalHtml = this._super(config);
                 var validationMessage = $t('Please select %1').replace(
                     '%1',
@@ -41,7 +41,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
              * When below swatches there is an error after choosing a swatch it does not disapper
              * triggering validation remove error when swatch input has a value
              */
-            _OnClick: function($this, $widget) {
+            _OnClick: function ($this, $widget) {
                 this._super($this, $widget);
 
                 var $input = $this
@@ -60,7 +60,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
             /**
              * Extend to update price label depending on amount of options selected
              */
-            _UpdatePrice: function() {
+            _UpdatePrice: function () {
                 this._super();
                 this.updatePriceLabel();
             },
@@ -75,7 +75,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
              * - Toggling price label might be turned off for example if shops don't show this label at all ($configurable-products-show-from-price-label)
              * - toggleFromPriceLabel is an option
              */
-            updatePriceLabel: function() {
+            updatePriceLabel: function () {
                 var optionAmount = this.element.find(
                     '.' + this.options.classes.attributeClass
                 ).length;
@@ -123,7 +123,7 @@ define(['jquery', 'mage/translate'], function($, $t) {
              * @param {jQuery} context
              * @param {Boolean} isInProductView
              */
-            updateBaseImage: function(images, context, isInProductView) {
+            updateBaseImage: function (images, context, isInProductView) {
                 if (isInProductView) {
                     return this._super(images, context, isInProductView);
                 }

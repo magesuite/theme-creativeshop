@@ -3,13 +3,13 @@ define([
     'Magento_Checkout/js/model/quote',
     'Magento_Checkout/js/action/select-payment-method',
     'underscore',
-], function(wrapper, quote, selectPaymentMethod, _) {
+], function (wrapper, quote, selectPaymentMethod, _) {
     'use strict';
 
-    return function(PaymentService) {
+    return function (PaymentService) {
         var setPaymentMethods = wrapper.wrap(
             PaymentService.setPaymentMethods,
-            function(originalAction, methods) {
+            function (originalAction, methods) {
                 originalAction(methods);
 
                 if (
@@ -20,7 +20,7 @@ define([
                 ) {
                     var filteredMethods = _.without(
                         methods,
-                        _.find(methods, function(paymentMethod) {
+                        _.find(methods, function (paymentMethod) {
                             return paymentMethod.method === 'free';
                         })
                     );

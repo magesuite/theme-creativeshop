@@ -209,7 +209,7 @@ export default class StoreLocator {
                   }`,
             }),
             contentType: 'application/json',
-        }).done(response => {
+        }).done((response) => {
             if (response.data) {
                 this.stores = response.data.storePickupLocations.items;
             }
@@ -234,7 +234,7 @@ export default class StoreLocator {
 
         this._$searchForm.addClass('loading');
 
-        this.getCoordinatesFromQuery(query).then(response => {
+        this.getCoordinatesFromQuery(query).then((response) => {
             if (
                 response.data.addressLocation &&
                 response.data.addressLocation.latitude &&
@@ -367,7 +367,7 @@ export default class StoreLocator {
 
         this._$itemsList
             .find('.cs-store-locator__stores-more-wrapper')
-            .on('click', e => {
+            .on('click', (e) => {
                 this._$element.addClass('loading');
 
                 // Make sure that loading class is added before all stores start to render
@@ -385,7 +385,7 @@ export default class StoreLocator {
                 }, 3000);
             });
 
-        this._$element.find('.cs-store-locator__item').on('click', e => {
+        this._$element.find('.cs-store-locator__item').on('click', (e) => {
             if (
                 !$(e.target).hasClass('cs-store-locator__item-hours-trigger') &&
                 !$(e.target).hasClass(
@@ -411,7 +411,7 @@ export default class StoreLocator {
     public getFilteredStores(): any[] {
         const bounds = this.map.getBounds();
 
-        const isVisibleOnMap = store => {
+        const isVisibleOnMap = (store) => {
             return bounds.contains({
                 lat: parseFloat(store.latitude),
                 lng: parseFloat(store.longitude),
@@ -432,7 +432,7 @@ export default class StoreLocator {
      * If user was not localized before set distances for stores, and render items in the sidebar
      */
     public locationButtonClickHandler() {
-        this.getGeolocation().then(coordinates => {
+        this.getGeolocation().then((coordinates) => {
             if (!coordinates) {
                 return;
             }
@@ -496,7 +496,7 @@ export default class StoreLocator {
             );
             this._$itemsList
                 .find('.cs-store-locator__store-list-close')
-                .on('click', event => {
+                .on('click', (event) => {
                     this.closeMobileStores();
                 });
             const $emptyMessage = this._$element.find(
@@ -535,7 +535,7 @@ export default class StoreLocator {
 
         if (this.markers) {
             const marker = this.markers.find(
-                marker => marker.get('storeId') === id
+                (marker) => marker.get('storeId') === id
             );
 
             if (marker) {
@@ -570,7 +570,7 @@ export default class StoreLocator {
     public panToStore(id) {
         this._infoWindow.close(this.map, this._activeMarker);
 
-        const store = this.stores.find(store => store.sourceCode === id);
+        const store = this.stores.find((store) => store.sourceCode === id);
         const coordinates: Coordinates = {
             lat: store.latitude,
             lng: store.longitude,
@@ -681,13 +681,13 @@ export default class StoreLocator {
         return new Promise((resolve, reject) => {
             if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(
-                    position => {
+                    (position) => {
                         resolve({
                             lat: position.coords.latitude,
                             lng: position.coords.longitude,
                         });
                     },
-                    error => {
+                    (error) => {
                         reject(new Error('Geolocation not enabled'));
                     }
                 );
@@ -726,7 +726,7 @@ export default class StoreLocator {
     public filterItems(): void {
         const bounds = this.map.getBounds();
         let visibleStores: number = 0;
-        this._$element.find('.cs-store-locator__item').each(function() {
+        this._$element.find('.cs-store-locator__item').each(function () {
             if (
                 bounds.contains({
                     lat: parseFloat($(this).attr('data-lat')),
@@ -774,7 +774,7 @@ export default class StoreLocator {
      * @returns {Array} stores
      */
     public populateStoresDistance(stores, coordinates: Coordinates): object {
-        return stores.map(store => {
+        return stores.map((store) => {
             return {
                 ...store,
                 distance: this.calculateDistance(
@@ -792,7 +792,7 @@ export default class StoreLocator {
      * @param {String} id id of a store
      */
     public openMobilePopup(id) {
-        const store = this.stores.find(store => store.sourceCode === id);
+        const store = this.stores.find((store) => store.sourceCode === id);
 
         $('.cs-store-locator__store-details').append(
             this.getInfoWindowContent(store)
@@ -891,7 +891,7 @@ export default class StoreLocator {
         this._createMarkers();
 
         this.getGeolocation()
-            .then(coordinates => {
+            .then((coordinates) => {
                 // User location from geolocation service
                 this.setUserPositionAndPopulateDistance(
                     this.stores,
@@ -914,7 +914,7 @@ export default class StoreLocator {
                 this._attachMapListeners();
                 this.mapChangeHandler();
             })
-            .catch(error => {
+            .catch((error) => {
                 // We don't know users position
                 this.setUserPositionAndPopulateDistance(this.stores, null);
 
@@ -940,7 +940,7 @@ export default class StoreLocator {
 
         this._infoWindow = new google.maps.InfoWindow({});
 
-        this.markers = this.stores.map(store => {
+        this.markers = this.stores.map((store) => {
             const marker = new google.maps.Marker({
                 position: {
                     lat: store.latitude,
@@ -990,10 +990,11 @@ export default class StoreLocator {
             this._options.markerIcons.pinActive.sizes.x,
             this._options.markerIcons.pinActive.sizes.y
         );
-        this._options.markerIcons.userLocation.scaledSize = new google.maps.Size(
-            this._options.markerIcons.userLocation.sizes.x,
-            this._options.markerIcons.userLocation.sizes.y
-        );
+        this._options.markerIcons.userLocation.scaledSize =
+            new google.maps.Size(
+                this._options.markerIcons.userLocation.sizes.x,
+                this._options.markerIcons.userLocation.sizes.y
+            );
     }
 
     /**
@@ -1029,7 +1030,7 @@ export default class StoreLocator {
             'click',
             this.searchButtonClickHandler.bind(this)
         );
-        this._$searchForm.on('submit', e => {
+        this._$searchForm.on('submit', (e) => {
             e.preventDefault();
 
             const selectedSuggestion = $(
@@ -1045,7 +1046,7 @@ export default class StoreLocator {
             this.searchButtonClickHandler();
         });
 
-        this._$element.on('click', event => {
+        this._$element.on('click', (event) => {
             const $eventTarget = $(event.target);
             const isTrigger = $eventTarget.hasClass(
                 'cs-store-locator__item-hours-trigger'

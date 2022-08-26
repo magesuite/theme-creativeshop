@@ -3,11 +3,11 @@
  * before automatic suggestions are loaded.
  */
 
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
-    return function(quickSearch) {
+    return function (quickSearch) {
         $.widget('smileEs.quickSearch', quickSearch, {
-            _create: function() {
+            _create: function () {
                 var self = this;
                 this._super();
 
@@ -17,7 +17,7 @@ define(['jquery'], function($) {
                 this.element.off('blur');
                 this._blur();
 
-                $('body').on('click', function(event) {
+                $('body').on('click', function (event) {
                     if (!$(event.target).closest(this.autoComplete).length) {
                         self._resetResponseList(true);
                         self.autoComplete.hide();
@@ -33,7 +33,7 @@ define(['jquery'], function($) {
                     navigator.msMaxTouchPoints > 0
                 );
             },
-            _getSectionHeader: function(type, data) {
+            _getSectionHeader: function (type, data) {
                 var header = this._super(type, data);
 
                 if (type !== undefined) {
@@ -51,14 +51,14 @@ define(['jquery'], function($) {
              *
              * @private
              */
-            _validateElement: function(event) {
+            _validateElement: function (event) {
                 // Invoke original method only if autosuggest is already loaded.
                 if (this.responseList.selected) {
                     return this._super(event);
                 }
                 this.searchForm.trigger('submit');
             },
-            _resetResponseList: function(all) {
+            _resetResponseList: function (all) {
                 this._super(all);
 
                 var minWidth = all
@@ -86,15 +86,15 @@ define(['jquery'], function($) {
              * To close autocomplete on touch device click outside autocomplete can be used
              * as well as click on cs-header-search__close which hides whole search
              */
-            _blur: function() {
+            _blur: function () {
                 this.element.on(
                     'blur',
-                    $.proxy(function(e) {
+                    $.proxy(function (e) {
                         if (!this.searchLabel.hasClass('active')) {
                             return;
                         }
                         setTimeout(
-                            $.proxy(function() {
+                            $.proxy(function () {
                                 if (this.isTouchDevice) {
                                     this.setActiveState(true);
                                     return;

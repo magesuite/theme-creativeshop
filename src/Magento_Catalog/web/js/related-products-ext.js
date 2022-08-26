@@ -4,10 +4,10 @@
  * instead of related products block.
  */
 
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
-    return function(widget) {
+    return function (widget) {
         $.widget('mage.relatedProducts', widget, {
             options: {
                 selectAllLink: 'div.block.related[role="button"]',

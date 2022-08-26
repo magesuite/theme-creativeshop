@@ -1,4 +1,4 @@
-define(['Magento_Checkout/js/view/summary/abstract-total'], function(
+define(['Magento_Checkout/js/view/summary/abstract-total'], function (
     Component
 ) {
     'use strict';
@@ -8,7 +8,7 @@ define(['Magento_Checkout/js/view/summary/abstract-total'], function(
             template: 'Magento_Checkout/summary/grand-total-tax-note',
         },
 
-        isDisplayed: function() {
+        isDisplayed: function () {
             return this.isFullMode();
         },
     });

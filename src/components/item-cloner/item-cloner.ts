@@ -307,7 +307,7 @@ export default class ItemCloner {
             ? 'touchend touchcancel'
             : 'mouseleave';
 
-        this.$origins.stop().on(onEvents, function(event: Event): void {
+        this.$origins.stop().on(onEvents, function (event: Event): void {
             // Clone only if needed
             if (
                 (event.type === 'touchstart' && _this.settings.touch.enabled) ||
@@ -328,24 +328,24 @@ export default class ItemCloner {
         });
 
         // Run destroy menthod when mouse leaves the clone
-        this.$wrapper.stop().on(offEvents, function(event: Event): void {
+        this.$wrapper.stop().on(offEvents, function (event: Event): void {
             event.stopPropagation();
             _this.destroy();
         });
 
         // Run destroy menthod when called from outside
-        $(document).on('destroyItemClones', function(): void {
+        $(document).on('destroyItemClones', function (): void {
             _this.destroy();
         });
 
         // Run destroy menthod when browser changes focus mode
-        document.addEventListener('visibilitychange', function() {
+        document.addEventListener('visibilitychange', function () {
             _this.destroy();
         });
 
         // On touches destroy when touchstart anywhere in body but not on $wrapper
         if (this.settings.touch.enabled) {
-            $(document).on('touchstart', function(event: Event): void {
+            $(document).on('touchstart', function (event: Event): void {
                 if (
                     !$(event.target).hasClass(
                         `${_this.settings.clonerClass}`
@@ -363,7 +363,7 @@ export default class ItemCloner {
             this.settings.belowBreakpointClass &&
             this.settings.belowBreakpointClass !== ''
         ) {
-            $(window).on('resize', function(): void {
+            $(window).on('resize', function (): void {
                 clearTimeout(throttler);
                 throttler = setTimeout((): void => {
                     _this._setBelowBreakpointClass();

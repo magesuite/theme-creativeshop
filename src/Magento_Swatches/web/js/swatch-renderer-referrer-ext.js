@@ -7,19 +7,19 @@
  * This mixin has to be enabled in requirejs-config.js:
  * 'Magento_Swatches/js/swatch-renderer-referrer-ext': true
  */
-define(['jquery', 'underscore'], function($, _) {
+define(['jquery', 'underscore'], function ($, _) {
     'use strict';
 
-    return function(swatchRenderer) {
+    return function (swatchRenderer) {
         $.widget('mage.SwatchRenderer', swatchRenderer, {
-            _RenderControls: function() {
+            _RenderControls: function () {
                 this._super();
 
                 if (!this.inProductList) {
                     this.attachReferrerEvents();
                 }
             },
-            attachReferrerEvents: function() {
+            attachReferrerEvents: function () {
                 var gallery = $(this.options.mediaGallerySelector);
 
                 if (gallery.data('gallery')) {
@@ -28,14 +28,14 @@ define(['jquery', 'underscore'], function($, _) {
                 } else {
                     gallery.on(
                         'gallery:loaded',
-                        function() {
+                        function () {
                             this.selectSwatchesBasedOnReferrer();
                             this.handleDisabledAndSingleSwatches();
                         }.bind(this, gallery)
                     );
                 }
             },
-            selectSwatchesBasedOnReferrer: function() {
+            selectSwatchesBasedOnReferrer: function () {
                 var referrerQueryString = document.referrer.substring(
                     document.referrer.indexOf('?') + 1
                 );
@@ -52,7 +52,7 @@ define(['jquery', 'underscore'], function($, _) {
 
                 var searchParams = {};
 
-                $.each(referrerQueryString.split('&'), function(index, item) {
+                $.each(referrerQueryString.split('&'), function (index, item) {
                     var split = item.split('=');
                     var key = split[0] && decodeURIComponent(split[0]);
                     var value = split[1] && decodeURIComponent(split[1]);
@@ -62,10 +62,10 @@ define(['jquery', 'underscore'], function($, _) {
 
                 // Reduce swatches config to have just option labels and IDs
                 var swatches = this.options.jsonConfig.attributes.reduce(
-                    function(acc, swatch) {
+                    function (acc, swatch) {
                         acc[swatch.code] = acc[swatch.code] || {};
 
-                        $.each(swatch.options, function(index, option) {
+                        $.each(swatch.options, function (index, option) {
                             acc[swatch.code][option.label] = option.id;
                         });
 
@@ -76,7 +76,7 @@ define(['jquery', 'underscore'], function($, _) {
 
                 $.each(
                     Object.keys(searchParams),
-                    function(index, key) {
+                    function (index, key) {
                         // Take the first value of the param
                         var value = searchParams[key][0];
 
@@ -94,33 +94,39 @@ define(['jquery', 'underscore'], function($, _) {
                     }.bind(this)
                 );
             },
-            handleDisabledAndSingleSwatches: function() {
-                var optionsWithoutDisabledProducts = this.options.jsonConfig.attributes.map(
-                    function(currentValue, index, array) {
+            handleDisabledAndSingleSwatches: function () {
+                var optionsWithoutDisabledProducts =
+                    this.options.jsonConfig.attributes.map(function (
+                        currentValue,
+                        index,
+                        array
+                    ) {
                         currentValue.options = currentValue.options.filter(
-                            function(element, index, array) {
+                            function (element, index, array) {
                                 return element.products.length > 0;
                             }
                         );
 
                         return currentValue;
-                    }
-                );
+                    });
 
-                var optionsWithSingleSwatch = optionsWithoutDisabledProducts.filter(
-                    function(element, index, array) {
+                var optionsWithSingleSwatch =
+                    optionsWithoutDisabledProducts.filter(function (
+                        element,
+                        index,
+                        array
+                    ) {
                         return element.options.length === 1;
-                    }
-                );
+                    });
 
                 $.each(
                     optionsWithSingleSwatch,
-                    function(index, item) {
+                    function (index, item) {
                         this.checkOption(item.code, item.options[0].id);
                     }.bind(this)
                 );
             },
-            checkOption: function(key, optionId) {
+            checkOption: function (key, optionId) {
                 // Select swatches based on attributeCode and optionId
                 var $option = this.element.find(
                     '.' +

@@ -326,7 +326,7 @@ export default class SearchresultsSwitcher {
     protected _setEvents(): void {
         const _component: any = this;
 
-        this._$triggers.on('click', function(e: Event): void {
+        this._$triggers.on('click', function (e: Event): void {
             e.preventDefault();
             const isShowAll: boolean = $(this).attr('href') === '#all';
 

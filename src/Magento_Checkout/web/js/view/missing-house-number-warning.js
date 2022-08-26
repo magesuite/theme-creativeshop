@@ -1,4 +1,4 @@
-define(['uiComponent', 'uiRegistry', 'mage/translate'], function(
+define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
     Component,
     registry,
     $t
@@ -18,29 +18,29 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function(
                     'streetValueChanged',
             },
         },
-        initialize: function() {
+        initialize: function () {
             this._super();
             var self = this;
 
             registry.async(
                 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.street.0'
-            )(function(element) {
+            )(function (element) {
                 self.streetElement1 = element || null;
             });
 
             registry.async(
                 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.street.1'
-            )(function(element) {
+            )(function (element) {
                 self.streetElement2 = element || null;
             });
 
             registry.async(
                 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.street.2'
-            )(function(element) {
+            )(function (element) {
                 self.streetElement3 = element;
             });
         },
-        streetValueChanged: function(value) {
+        streetValueChanged: function (value) {
             var lastStreetElement;
             var combinedText = '';
 

@@ -40,7 +40,7 @@ const facebookPlayer = {
      * @param options
      * @param id
      */
-    render: function(url: string, options: FacebookPlayerOptions, id: string) {
+    render: function (url: string, options: FacebookPlayerOptions, id: string) {
         // Guard: prevent loading FB SKD without app id or version, it will fail
         if (!options.app_id || !options.app_version) {
             // Facebook application data not found
@@ -50,7 +50,7 @@ const facebookPlayer = {
         }
 
         prepareVideoData(url, options, id);
-        getSDK(SDK_URL, SDK_GLOBAL, SDK_GLOBAL_READY).then(FB => {
+        getSDK(SDK_URL, SDK_GLOBAL, SDK_GLOBAL_READY).then((FB) => {
             // Initialize main FB SDK once
             if (!this.isSDKLoaded) {
                 FB.init({
@@ -61,7 +61,7 @@ const facebookPlayer = {
                 this.isSDKLoaded = true;
             }
 
-            FB.Event.subscribe('xfbml.ready', msg => {
+            FB.Event.subscribe('xfbml.ready', (msg) => {
                 if (msg.type === 'video' && msg.id === id) {
                     this.players[id] = msg.instance;
 
@@ -96,7 +96,7 @@ const facebookPlayer = {
      * Play video for given player id
      * @param id
      */
-    play: function(id: string) {
+    play: function (id: string) {
         if (this.players[id]) {
             this.players[id].play();
         }
@@ -105,7 +105,7 @@ const facebookPlayer = {
      * Pause video for given player id
      * @param id
      */
-    pause: function(id: string) {
+    pause: function (id: string) {
         if (this.players[id]) {
             this.players[id].pause();
         }
@@ -114,7 +114,7 @@ const facebookPlayer = {
      * Destroy video for given player id
      * @param id
      */
-    destroy: function(id: string) {
+    destroy: function (id: string) {
         if (this.players[id]) {
             delete this.players[id];
             document.getElementById(id).remove();

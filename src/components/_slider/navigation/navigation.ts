@@ -74,9 +74,9 @@ export default class SliderNavigation {
                 .scrollPaddingInline;
 
             if (isNaN(computedScrollPadding)) {
-                computedScrollPadding = this._slides[
-                    this.currentIndex - 1
-                ].getBoundingClientRect().left;
+                computedScrollPadding =
+                    this._slides[this.currentIndex - 1].getBoundingClientRect()
+                        .left;
             }
         }
 
@@ -178,7 +178,7 @@ export default class SliderNavigation {
      */
     protected _observeLastItem(): void {
         const observer: IntersectionObserver = new IntersectionObserver(
-            entries =>
+            (entries) =>
                 entries.forEach((entry: IntersectionObserverEntry) => {
                     this._nextTrigger.disabled = entry.isIntersecting;
                     this._toggleVisibility();

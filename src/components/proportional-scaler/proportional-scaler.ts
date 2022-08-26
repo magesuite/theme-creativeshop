@@ -138,12 +138,11 @@ export default class ProportionalScaler {
         }
 
         this._isScaleScheduled = false;
-        this._scalableElement.style.fontSize = `${parseInt(
-            this._scalableElelementFontSize,
-            10
-        ) *
+        this._scalableElement.style.fontSize = `${
+            parseInt(this._scalableElelementFontSize, 10) *
             this._$element.outerWidth() *
-            this._ratio}px`;
+            this._ratio
+        }px`;
     }
 
     public _setEvents(): void {

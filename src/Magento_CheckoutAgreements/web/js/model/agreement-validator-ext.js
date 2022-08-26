@@ -1,12 +1,12 @@
 /* tslint:disable one-variable-per-declaration */
 
-define(['jquery', 'mage/validation'], function($) {
+define(['jquery', 'mage/validation'], function ($) {
     'use strict';
 
     // NOTE: Changes in comparison to source file:
     // - modified: agreementsInputPath,
 
-    return function(agreementValidator) {
+    return function (agreementValidator) {
         var checkoutConfig = window.checkoutConfig,
             agreementsConfig = checkoutConfig
                 ? checkoutConfig.checkoutAgreements
@@ -20,7 +20,7 @@ define(['jquery', 'mage/validation'], function($) {
          *
          * @returns {Boolean}
          */
-        agreementValidator.validate = function() {
+        agreementValidator.validate = function () {
             var isValid = true;
 
             if (
@@ -30,7 +30,7 @@ define(['jquery', 'mage/validation'], function($) {
                 return true;
             }
 
-            $(agreementsInputPath).each(function(index, element) {
+            $(agreementsInputPath).each(function (index, element) {
                 if (
                     !$.validator.validateSingleElement(element, {
                         errorElement: 'div',
