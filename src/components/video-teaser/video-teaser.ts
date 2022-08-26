@@ -97,7 +97,10 @@ export default class VideoTeaser {
             | YouTubePlayerOptions
             | VimeoPlayerOptions
             | FacebookPlayerOptions
-            | FilePlayerOptions = this._options[videoData.type];
+            | FilePlayerOptions = this.getVideoConfiguration(
+            videoTeaser,
+            videoData
+        );
         const consentStatus: boolean =
             videoData.type !== 'file'
                 ? consentManagement.checkConsent(videoData.type)
@@ -166,5 +169,23 @@ export default class VideoTeaser {
             distance.bottom >= 0 &&
             distance.right >= 0
         );
+    }
+
+    /**
+     * Return video configuration
+     *
+     * @param videoTeaser
+     * @param videoData
+     * @returns
+     */
+    public getVideoConfiguration(
+        videoTeaser,
+        videoData
+    ):
+        | YouTubePlayerOptions
+        | VimeoPlayerOptions
+        | FacebookPlayerOptions
+        | FilePlayerOptions {
+        return this._options[videoData.type];
     }
 }
