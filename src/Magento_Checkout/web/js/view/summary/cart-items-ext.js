@@ -1,4 +1,4 @@
-define(['jquery', 'mage/url', 'Magento_Checkout/js/model/sidebar'], function(
+define(['jquery', 'mage/url', 'Magento_Checkout/js/model/sidebar'], function (
     $,
     url,
     sidebarModel
@@ -7,12 +7,12 @@ define(['jquery', 'mage/url', 'Magento_Checkout/js/model/sidebar'], function(
 
     var mixin = {
         cartUrl: url.build('checkout/cart'),
-        setModalElement: function(element) {
+        setModalElement: function (element) {
             sidebarModel.setPopup($(element));
         },
     };
 
-    return function(target) {
+    return function (target) {
         // target default cart-items
         return target.extend(mixin); // new result that all other modules receive
     };

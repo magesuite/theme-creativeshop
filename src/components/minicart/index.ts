@@ -13,7 +13,7 @@ if (!$('.cs-minicart-offcanvas__wrapper').length) {
     $('.cs-minicart').on(
         'click touchend',
         '.cs-minicart__close, .cs-minicart__close-icon',
-        function() {
+        function () {
             if (!$('.cs-minicart__list-item').length) {
                 $('body').trigger('click');
             }

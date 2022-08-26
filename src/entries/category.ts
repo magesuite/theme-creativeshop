@@ -1,52 +1,56 @@
-// =============================================================================
-// Category page entry point
-// It imports all the components required by Category page.
-// Each page type has own entry point containing required components.
-// It allows optimizing bundles in webpack - which gathers common imports in separate package.
-// It is a job of every component to initilize itself.
+/**
+ * Category Page entry point.
+ * It imports all the components required by Category Page.
+ * Each page type has own entry point containing required components.
+ * It allows optimizing bundles in webpack - which gathers common imports in separate package.
+ * It is a job of every component to initilize itself.
+ */
 
 import 'config/base.scss';
-// TODO: Remove this file when possible
-import 'bundle.scss';
 
-// =============================================================================
-// Components
-// =============================================================================
-
-// Base components
-import 'components/authorization-link';
+/**
+ * Base components
+ */
+import 'Magento_Theme';
+import 'components/_slider';
 import 'components/addtocart';
-import 'components/autocomplete'; // Consider moving to ElasticSuite?
+import 'components/authorization-link';
+import 'components/autocomplete';
 import 'components/breadcrumbs';
 import 'components/button';
 import 'components/container';
 import 'components/cookie-message';
+import 'components/dailydeal';
 import 'components/display-controller';
 import 'components/dropdown-switcher';
-import 'components/field'; // ??
+import 'components/field';
 import 'components/footer';
-import 'components/headline';
+import 'components/free-shipping-indicator';
+import 'components/google-recaptcha';
 import 'components/header';
+import 'components/header/search';
+import 'components/header/user-nav';
+import 'components/headline';
 import 'components/lazyload';
-import 'components/links-block-addto'; // It is part of a navigation, why not there?
+import 'components/links-block-addto';
 import 'components/logo';
 import 'components/messages';
-import 'components/minicart';
 import 'components/minicart-product';
-import 'components/free-shipping-indicator';
+import 'components/minicart';
 import 'components/modal';
 import 'components/navigation';
 import 'components/newsletter';
-import 'components/offcanvas-toggle';
-import 'components/offcanvas-navigation';
-import 'components/offcanvas';
 import 'components/offcanvas-filters';
-import 'components/page-title';
+import 'components/offcanvas-navigation';
+import 'components/offcanvas-toggle';
+import 'components/offcanvas';
 import 'components/page-bottom';
+import 'components/page-title';
 import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
 import 'components/qty-increment';
+import 'components/select';
 import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
@@ -55,34 +59,30 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/video-teaser';
 import 'components/visually-hidden';
-import 'components/select';
-import 'components/ie11-modal';
-import 'components/dailydeal';
-import 'components/google-recaptcha';
 
-// Carousels (navigation/pagination CSS)
-import 'components/_slider';
-
-import 'components/non-critical';
-
-// Category page
+/**
+ * Category page specific components
+ */
 import 'pages/category';
-
 import 'components/aftersearch-nav';
-import 'components/toolbar';
-import 'components/tabs';
-import 'components/search-results-switcher';
 import 'components/search-results-cms';
+import 'components/search-results-switcher';
 import 'components/side-nav';
+import 'components/tabs';
+import 'components/toolbar';
 
-import 'customizations/plugincompany-contactforms/plugincompany-contactforms';
-
-// Optional components - can be imported in child theme entry
-// import 'Amazon_Pay/web/css/source/module.scss';
-// import 'components/ie11';
+/**
+ * Optional components - can be imported in child themes entries
+ */
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
 // import 'components/reorder-banner';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
+
+/**
+ * Optional components that require optional modules being installed
+ */
+// import 'Amazon_Pay';
+// import 'PluginCompany_ContactForms';

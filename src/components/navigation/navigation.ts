@@ -285,8 +285,9 @@ export default class Navigation {
         this._adjustFlyoutColumns($flyout);
 
         let alignTo: string = this._options.flyoutAlignTo;
-        const itemsLength: number = $(`.${this._options.itemClassName}--main`)
-            .length;
+        const itemsLength: number = $(
+            `.${this._options.itemClassName}--main`
+        ).length;
         const alignSwitch = this._options.flyoutAlignSwitch;
         const switchAt =
             alignSwitch > 0 ? alignSwitch : alignSwitch + itemsLength;
@@ -314,8 +315,9 @@ export default class Navigation {
 
         $flyoutExtras
             .css({
-                width: `${this._getContainerClientRect().width /
-                    flyoutMaxColumnCount}px`,
+                width: `${
+                    this._getContainerClientRect().width / flyoutMaxColumnCount
+                }px`,
             })
             .addClass(this._options.flyoutExtrasClassName);
     }
@@ -438,9 +440,10 @@ export default class Navigation {
 
         $element.css({
             'column-count': columnCount,
-            width: `${(this._getContainerClientRect().width /
-                flyoutMaxColumnCount) *
-                columnCount}px`,
+            width: `${
+                (this._getContainerClientRect().width / flyoutMaxColumnCount) *
+                columnCount
+            }px`,
         });
         this._triggerColumnsReflow($element);
     }
@@ -803,7 +806,7 @@ export default class Navigation {
         const viewportWidth = this._viewportWidth;
         const breakpoints = Object.keys(maxColumnCount);
         let columns = maxColumnCount[breakpoints[0]];
-        breakpoints.some(breakpoint => {
+        breakpoints.some((breakpoint) => {
             if (viewportWidth <= Number(breakpoint)) {
                 return true;
             }

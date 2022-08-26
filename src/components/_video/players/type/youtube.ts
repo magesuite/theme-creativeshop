@@ -6,7 +6,8 @@ const SDK_GLOBAL = 'YT';
 const SDK_GLOBAL_READY = 'onYouTubeIframeAPIReady';
 const MATCH_NOCOOKIE = /youtube-nocookie\.com/;
 const NOCOOKIE_HOST = 'https://www.youtube-nocookie.com';
-const MATCH_URL_YOUTUBE = /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
+const MATCH_URL_YOUTUBE =
+    /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 
 /**
  * Get YouTube video id
@@ -24,7 +25,7 @@ const youtubePlayer = {
      * @param options
      * @param id
      */
-    render: function(url: string, options: YouTubePlayerOptions, id: string) {
+    render: function (url: string, options: YouTubePlayerOptions, id: string) {
         const videoId = getVideoId(url);
 
         // Guard: prevent if there is no video id
@@ -32,7 +33,7 @@ const youtubePlayer = {
             return;
         }
 
-        getSDK(SDK_URL, SDK_GLOBAL, SDK_GLOBAL_READY).then(YT => {
+        getSDK(SDK_URL, SDK_GLOBAL, SDK_GLOBAL_READY).then((YT) => {
             this.players[id] = new YT.Player(id, {
                 width: options.width,
                 height: options.height,
@@ -43,11 +44,11 @@ const youtubePlayer = {
                 },
                 events: {
                     // Trigger manual play for mobile devices (iOS, Android)
-                    onReady: event => {
+                    onReady: (event) => {
                         event.target.playVideo();
                     },
                     // Trigger manual loop
-                    onStateChange: event => {
+                    onStateChange: (event) => {
                         if (options.loop && !options.player_vars.controls) {
                             const { ENDED } = window[SDK_GLOBAL].PlayerState;
 
@@ -66,7 +67,7 @@ const youtubePlayer = {
      * - additional check whether video is playing or paused
      * @param id
      */
-    play: function(id) {
+    play: function (id) {
         const { PAUSED } = window[SDK_GLOBAL].PlayerState;
 
         if (
@@ -81,7 +82,7 @@ const youtubePlayer = {
      * - additional check whether video is playing or paused
      * @param id
      */
-    pause: function(id) {
+    pause: function (id) {
         const { PLAYING } = window[SDK_GLOBAL].PlayerState;
 
         if (
@@ -95,7 +96,7 @@ const youtubePlayer = {
      * Destroy video for given player id
      * @param id
      */
-    destroy: function(id) {
+    destroy: function (id) {
         if (this.players[id]) {
             this.players[id].destroy();
         }

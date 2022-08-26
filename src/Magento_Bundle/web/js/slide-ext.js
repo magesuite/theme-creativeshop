@@ -4,12 +4,12 @@
  * Reasons:
  * - slide customize section a bit more down due to frequent sticky header - _show method overridden: '- 50' added
  */
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
-    return function(mageSlide) {
+    return function (mageSlide) {
         $.widget('mage.slide', mageSlide, {
-            _show: function() {
+            _show: function () {
                 $(this.options.bundleOptionsContainer).slideDown(800);
                 $('html, body').animate(
                     {

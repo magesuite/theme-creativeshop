@@ -14,9 +14,9 @@ const vimeoPlayer = {
      * @param options
      * @param id
      */
-    render: function(url: string, options: VimeoPlayerOptions, id: string) {
+    render: function (url: string, options: VimeoPlayerOptions, id: string) {
         getSDK(SDK_URL, SDK_GLOBAL, SDK_GLOBAL_READY, SDK_REQUIREJS).then(
-            Player => {
+            (Player) => {
                 this.players[id] = new Player(id, {
                     url,
                     ...options.player_vars,
@@ -37,9 +37,9 @@ const vimeoPlayer = {
      * - additional check whether video is playing or paused
      * @param id
      */
-    play: function(id) {
+    play: function (id) {
         if (this.players[id]) {
-            this.players[id].getPaused().then(paused => {
+            this.players[id].getPaused().then((paused) => {
                 if (paused) {
                     setTimeout(() => {
                         this.players[id].play();
@@ -53,9 +53,9 @@ const vimeoPlayer = {
      * - additional check whether video is playing or paused
      * @param id
      */
-    pause: function(id) {
+    pause: function (id) {
         if (this.players[id]) {
-            this.players[id].getPaused().then(paused => {
+            this.players[id].getPaused().then((paused) => {
                 if (!paused) {
                     this.players[id].pause();
                 }
@@ -66,7 +66,7 @@ const vimeoPlayer = {
      * Destroy video for given player id
      * @param id
      */
-    destroy: function(id) {
+    destroy: function (id) {
         if (this.players[id]) {
             this.players[id].destroy();
         }

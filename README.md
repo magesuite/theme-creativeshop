@@ -25,9 +25,24 @@ This this is our parent theme for shops based on Magento 2.
 
 ## First steps
 
-[Creativeshop](https://github.com/magesuite/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. This guide will show you how to setup your project with Creativeshop, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
+[Creativeshop](https://github.com/magesuite/theme-creativeshop) is a Magento 2 theme package that leverages all the functionality MageSuite has to offer. It relies on component-based development approach, so it can be easily customized and extended to your needs by adding new components or overriding existing ones. 
+
+This guide will show you how to setup your project with Creativeshop, explain recommended workflow and demonstrate how to use its best features, customize them and add new ones to suit your purpose.
 
 [Once you have MageSuite installed](https://github.com/magesuite/magesuite), you need to **build** Creativeshop and then create your own child theme. MageSuite does not rely on Magento for building the assets, it uses its own solution based on Webpack and Gulp instead. Thanks to it, you can maintain your theme repository with your own code only; rest is inherited in build process from Creativeshop.
+
+### Folder structure
+
+* src/config - basic variables and styles
+* src/utils - miscellaneous utitilties to be used in SCSS and JavaScript
+* src/vendors - external libs/tools
+* src/web - standard Magento folder
+* src/i18n - standard Magento folder
+* src/etc - standard Magento folder
+* src/pages - components related to specific pages as pdp or category page
+* src/components - contain all the components that can be used with basic magesuite package, including TypeScript and SCSS files
+* src/Vendor_ModuleName - except for the default Magento-related files as layouts, *.less, JS, templates they can also contain *.scss and *.ts files that we reference in entries. Creativeshop provides support not only for basic MageSuite package, but also for some modules that can be optionally installed and we don't want to include such components by default.
+* src/errors - contains templates that are used for maintenance pages displayed when shop is not reachable. 
 
 ### Building Creativeshop
 Before you start, make sure you have [Node.js](https://nodejs.org/en/) installed.

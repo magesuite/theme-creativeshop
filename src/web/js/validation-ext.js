@@ -1,10 +1,10 @@
 /* tslint:disable one-variable-per-declaration */
 
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
-    return function(mageValidation) {
-        $.fn.validateDelegate = function(delegate, type, handler) {
+    return function (mageValidation) {
+        $.fn.validateDelegate = function (delegate, type, handler) {
             /**
              * By default Magento allows events to be attached only to form fields while
              * all validation is registered for whole form elements. This prevents
@@ -16,7 +16,7 @@ define(['jquery'], function($) {
 
             return this.on(
                 type,
-                $.proxy(function(event) {
+                $.proxy(function (event) {
                     var target = $(event.target);
                     var form = target[0].form || target[0];
 
@@ -38,7 +38,7 @@ define(['jquery'], function($) {
                 // Restore default focusout validation.
                 onfocusout: $.validator.defaults.onfocusout,
                 // Validates on keyup but only when user corrects invalid field to give early feedback.
-                onkeyup: function(element, event) {
+                onkeyup: function (element, event) {
                     if (!element.classList.contains(this.settings.errorClass)) {
                         return;
                     }

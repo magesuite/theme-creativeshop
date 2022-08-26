@@ -5,18 +5,18 @@
 define([
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/customer-data',
-], function(quote, customerData) {
+], function (quote, customerData) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
 
-    return function(shippingInformation) {
+    return function (shippingInformation) {
         return shippingInformation.extend({
             /**
              * @param {*} countryId
              * @return {String}
              */
-            getCountryName: function(countryId) {
+            getCountryName: function (countryId) {
                 return countryData()[countryId] !== undefined
                     ? countryData()[countryId].name
                     : '';
@@ -25,7 +25,7 @@ define([
             /**
              * @return {Object}
              */
-            address: function() {
+            address: function () {
                 return quote.shippingAddress();
             },
         });
