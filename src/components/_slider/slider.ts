@@ -72,7 +72,7 @@ export default class Slider {
         this.navigation?.setItemsPerView(this.currentItemsPerView);
         this.pagination?.setItemsPerView(this.currentItemsPerView);
 
-        this._slideGroups.forEach(group => this.observer.unobserve(group[0]));
+        this._slideGroups.forEach((group) => this.observer.unobserve(group[0]));
         this._observe();
     }
 
@@ -92,9 +92,10 @@ export default class Slider {
      */
     protected _getCurrentItemsPerView(newBreakpoint?: number): number {
         if (this.options.columnsConfig) {
-            const ipv: number = +this.options.columnsConfig[
-                this._getCurrentBreakpointName(newBreakpoint)
-            ];
+            const ipv: number =
+                +this.options.columnsConfig[
+                    this._getCurrentBreakpointName(newBreakpoint)
+                ];
 
             if (ipv) {
                 return ipv;
@@ -122,14 +123,14 @@ export default class Slider {
     protected _getCurrentBreakpointName(newBreakpoint?: number): string {
         if (newBreakpoint) {
             return Object.keys(window.breakpoint).find(
-                key => window.breakpoint[key] === newBreakpoint
+                (key) => window.breakpoint[key] === newBreakpoint
             );
         }
 
         return Object.keys(
             Object.keys(window.breakpoint)
                 .filter(
-                    key =>
+                    (key) =>
                         key !== 'current' &&
                         window.breakpoint[key] === window.breakpoint.current
                 )
@@ -153,7 +154,7 @@ export default class Slider {
             window.matchMedia('(hover:hover)').matches &&
             !window.__smoothScrollPolyfilled
         ) {
-            import('smoothscroll-polyfill').then(smoothscroll => {
+            import('smoothscroll-polyfill').then((smoothscroll) => {
                 if (
                     smoothscroll &&
                     typeof smoothscroll.polyfill === 'function'
@@ -258,7 +259,7 @@ export default class Slider {
      */
     protected _setIntersectionObserver(): void {
         this.observer = new IntersectionObserver(
-            entries =>
+            (entries) =>
                 entries.forEach((entry: IntersectionObserverEntry) => {
                     if (entry.isIntersecting) {
                         if (this.navigation) {
@@ -290,7 +291,7 @@ export default class Slider {
                 )
         );
 
-        this._slideGroups.forEach(group => this.observer.observe(group[0]));
+        this._slideGroups.forEach((group) => this.observer.observe(group[0]));
     }
 
     /**

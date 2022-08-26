@@ -8,11 +8,11 @@ import 'components/indicators/free-shipping.scss';
 import 'components/indicators/recently-bought.scss';
 import 'components/indicators/expected-delivery.scss';
 
-$('.cs-indicator-fast-shipping').each(function(): void {
+$('.cs-indicator-fast-shipping').each(function (): void {
     new FastShipping($(this));
 });
 
 // Expected delivery date
-$('.cs-indicator-exp-delivery').each(function(): void {
+$('.cs-indicator-exp-delivery').each(function (): void {
     new ExpectedDeliveryDate($(this));
 });

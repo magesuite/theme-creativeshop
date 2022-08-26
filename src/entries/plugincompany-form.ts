@@ -1,1 +1,1 @@
-import 'PluginCompany_ContactForms/web/css/form.scss';
+import 'PluginCompany_ContactForms';

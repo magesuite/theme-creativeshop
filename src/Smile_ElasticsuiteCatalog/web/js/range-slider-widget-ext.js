@@ -3,9 +3,9 @@
  * synchronized with slider values to provide better UX.
  */
 
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
-    return function(rangeSlider) {
+    return function (rangeSlider) {
         $.widget('smileEs.rangeSlider', rangeSlider, {
             options: {
                 fromInput: '[data-role=from-input]',
@@ -14,7 +14,7 @@ define(['jquery'], function($) {
                 currencyField: '[data-role="currency"]',
                 maxLabelOffset: 0,
             },
-            _create: function() {
+            _create: function () {
                 this._super();
 
                 this._prepareInputs();
@@ -26,7 +26,7 @@ define(['jquery'], function($) {
             /**
              * Called when range slider changes, used to synchronize inputs' values.
              */
-            _refreshDisplay: function() {
+            _refreshDisplay: function () {
                 this._super();
 
                 var from = this.element.find(this.options.fromInput).val();
@@ -48,7 +48,7 @@ define(['jquery'], function($) {
                         );
                 }
             },
-            _prepareInputs: function() {
+            _prepareInputs: function () {
                 this.element
                     .find(this.options.fromInput)
                     .on('keyup blur', this._onInputsChange.bind(this));
@@ -60,7 +60,7 @@ define(['jquery'], function($) {
             /**
              * Called on blur or enter keyup event to normalize range and update the slider.
              */
-            _onInputsChange: function(event) {
+            _onInputsChange: function (event) {
                 var key = event.key || event.keyCode;
 
                 if (event.type === 'blur' || key === 'Enter' || key === 13) {
@@ -100,7 +100,7 @@ define(['jquery'], function($) {
              * Helper which properly transforms formatted string to float
              * @param {string} amount
              */
-            parseStringToFloat: function(amount) {
+            parseStringToFloat: function (amount) {
                 return parseFloat(
                     amount
                         .replace(this.options.fieldFormat.groupSymbol, '')
@@ -112,7 +112,7 @@ define(['jquery'], function($) {
              * @param {number} from Lower range value.
              * @param {number} to Upper range value.
              */
-            _updateRange: function(from, to) {
+            _updateRange: function (from, to) {
                 this.from = from;
                 this.to = to;
 

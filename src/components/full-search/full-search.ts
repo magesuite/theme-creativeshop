@@ -160,12 +160,8 @@ export default class FullSearch {
 
         this._eventListeners.clickOutside = (event: Event): void => {
             if (
-                !$(event.target)
-                    .closest(this._$fullSearchTrigger)
-                    .get(0) &&
-                !$(event.target)
-                    .closest(this._$headerSearch)
-                    .get(0) &&
+                !$(event.target).closest(this._$fullSearchTrigger).get(0) &&
+                !$(event.target).closest(this._$headerSearch).get(0) &&
                 this._$window.innerWidth() >= this._options.breakpoint
             ) {
                 this.hideFullSearch();

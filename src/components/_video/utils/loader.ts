@@ -30,11 +30,11 @@ const loadScript = (
     script.type = 'text/javascript';
     script.async = true;
     script.src = src;
-    script.onload = function() {
+    script.onload = function () {
         this.onerror = this.onload = null;
         callback(null, script);
     };
-    script.onerror = function() {
+    script.onerror = function () {
         this.onerror = this.onload = null;
         callback(new Error('Failed to load ' + this.src), script);
     };
@@ -73,15 +73,15 @@ const getSDK = (
 
         requests[url] = [{ resolve, reject }];
 
-        const onLoaded = sdk => {
+        const onLoaded = (sdk) => {
             // When loaded, resolve all pending request promises
-            requests[url].forEach(request => request.resolve(sdk));
+            requests[url].forEach((request) => request.resolve(sdk));
         };
 
         if (sdkReady) {
             const previousOnReady = window[sdkReady];
 
-            window[sdkReady] = function() {
+            window[sdkReady] = function () {
                 if (previousOnReady) {
                     previousOnReady();
                 }
@@ -93,25 +93,25 @@ const getSDK = (
         if (requireJsNeeded) {
             requirejs(
                 [url],
-                function(Player) {
+                function (Player) {
                     window[sdkGlobal] = Player;
                     onLoaded(window[sdkGlobal]);
                 },
-                err => {
+                (err) => {
                     if (err) {
                         // Loading the SDK failed – reject all requests and
                         // reset the array of requests for this SDK
-                        requests[url].forEach(request => request.reject(err));
+                        requests[url].forEach((request) => request.reject(err));
                         requests[url] = null;
                     }
                 }
             );
         } else {
-            loadScript(url, err => {
+            loadScript(url, (err) => {
                 if (err) {
                     // Loading the SDK failed – reject all requests and
                     // reset the array of requests for this SDK
-                    requests[url].forEach(request => request.reject(err));
+                    requests[url].forEach((request) => request.reject(err));
                     requests[url] = null;
                 } else if (!sdkReady) {
                     onLoaded(getGlobal(sdkGlobal));

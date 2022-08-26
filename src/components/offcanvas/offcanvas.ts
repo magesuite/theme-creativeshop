@@ -170,7 +170,7 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after overlay is shown.
      */
     protected _showOverlay(): Promise<Offcanvas> {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this._$topbar.css('z-index', 'auto');
             this._$overlay.addClass(`overlay--visible`);
             setTimeout(
@@ -184,7 +184,7 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is hidden.
      */
     protected _hideOverlay(): Promise<Offcanvas> {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this._$overlay.removeClass(`overlay--visible`);
             setTimeout(
                 () => resolve(this),
@@ -197,7 +197,7 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas drawer is shown.
      */
     protected _showDrawer(): Promise<Offcanvas> {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this._$drawer.addClass(`drawer--visible`);
             setTimeout(
                 () => resolve(this),
@@ -210,7 +210,7 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas drawer is hidden.
      */
     protected _hideDrawer(): Promise<Offcanvas> {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             this._$drawer.removeClass(`drawer--visible`);
             setTimeout(
                 () => resolve(this),

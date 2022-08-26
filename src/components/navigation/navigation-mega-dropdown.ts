@@ -153,9 +153,8 @@ export default class NavigationMegaDropdown extends Navigation {
             return;
         }
 
-        const activeCategoryId: number = $activeCategoryIndicator.data(
-            'active-category-id'
-        );
+        const activeCategoryId: number =
+            $activeCategoryIndicator.data('active-category-id');
         if (activeCategoryId) {
             const $activeCategoryEl: JQuery = this._$container.find(
                 `[data-category-id="${activeCategoryId}"]`

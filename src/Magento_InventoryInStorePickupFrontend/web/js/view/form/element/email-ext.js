@@ -8,10 +8,10 @@
 define([
     'jquery',
     'Magento_InventoryInStorePickupFrontend/js/view/store-pickup',
-], function($) {
+], function ($) {
     'use strict';
 
-    return function(EmailComponent) {
+    return function (EmailComponent) {
         return EmailComponent.extend({
             defaults: {
                 imports: {
@@ -22,7 +22,7 @@ define([
                 },
             },
 
-            isStorePickupEnabled: function() {
+            isStorePickupEnabled: function () {
                 return (
                     typeof this.isStorePickupAvailable === 'object' &&
                     this.isStorePickupAvailable !== null
@@ -34,7 +34,7 @@ define([
              * Therefore this method tries to validate undefined element.
              * This modification checks if form exists first. If not it tells that form is valid to allow checkout
              */
-            validateEmail: function(focused) {
+            validateEmail: function (focused) {
                 if (!$('form[data-role=email-with-possible-login]').length) {
                     return true;
                 }

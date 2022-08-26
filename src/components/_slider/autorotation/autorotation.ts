@@ -158,11 +158,11 @@ export default class SliderAutorotation {
                 this._isTouchMq?.matches &&
                 this.options.useAutorotationAlsoForTouchScreens
             ) {
-                this.boundTouchstartHandler = this._touchstartHandler.bind(
-                    this
-                );
+                this.boundTouchstartHandler =
+                    this._touchstartHandler.bind(this);
                 this.boundTouchendHandler = this._touchendHandler.bind(this);
-                this._scrollableContainer = this.options.navInstance._scrollable;
+                this._scrollableContainer =
+                    this.options.navInstance._scrollable;
 
                 this._scrollableContainer.addEventListener(
                     'touchstart',

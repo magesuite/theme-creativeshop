@@ -1,22 +1,22 @@
 /**
  * Provide additional methods to shipping step
  */
-define(['jquery', 'uiRegistry', 'knockout'], function($, registry, ko) {
+define(['jquery', 'uiRegistry', 'knockout'], function ($, registry, ko) {
     'use strict';
 
-    return function(Shipping) {
+    return function (Shipping) {
         return Shipping.extend({
             defaults: {
                 hasEmail: ko.observable(true),
             },
-            initialize: function() {
+            initialize: function () {
                 this._super();
 
                 var self = this;
 
                 registry.async(
                     'checkout.steps.login-or-guest.continue-as-guest.customer-email'
-                )(function(element) {
+                )(function (element) {
                     if (element) {
                         self.hasEmail(false);
                     }
@@ -24,13 +24,13 @@ define(['jquery', 'uiRegistry', 'knockout'], function($, registry, ko) {
 
                 return this;
             },
-            enableForm: function() {
+            enableForm: function () {
                 $('#co-shipping-form')
                     .removeClass('cs-form--disabled')
                     .find('input, select, button')
                     .removeAttr('disabled');
             },
-            disableForm: function() {
+            disableForm: function () {
                 $('#co-shipping-form')
                     .addClass('cs-form--disabled')
                     .find('input, select, button')

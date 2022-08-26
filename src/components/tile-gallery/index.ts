@@ -21,7 +21,7 @@ import 'components/tile-gallery/tile-gallery.scss';
 
 const $productTile: JQuery = $('.cs-product-tile');
 
-$productTile.each(function(): void {
+$productTile.each(function (): void {
     const $tile: JQuery<HTMLElement> = $(this);
     const $dailyDeal: JQuery<HTMLElement> = $tile.find(
         $('.cs-dailydeal--tile')

@@ -110,7 +110,7 @@ export default class OffcanvasNavigation {
         this._firstInit = false;
 
         this._getHtml()
-            .then(html => this._initHtml(html))
+            .then((html) => this._initHtml(html))
             .then(() =>
                 setTimeout(() => {
                     this._initSwitchers();
@@ -439,9 +439,8 @@ export default class OffcanvasNavigation {
         this._eventListeners.offcanvasHide = this._resetLevels.bind(this);
         $(document).on('offcanvas-hide', this._eventListeners.offcanvasHide);
 
-        this._eventListeners.parentLinkClick = this._handleParentLinkClick.bind(
-            this
-        );
+        this._eventListeners.parentLinkClick =
+            this._handleParentLinkClick.bind(this);
 
         this._$drawer.on(
             'click',
@@ -476,9 +475,8 @@ export default class OffcanvasNavigation {
             return;
         }
 
-        const activeCategoryId = this._activeCategoryPath[
-            this._activeCategoryPath.length - 1
-        ];
+        const activeCategoryId =
+            this._activeCategoryPath[this._activeCategoryPath.length - 1];
         const $activeCategoryLink = $(
             `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
         );
@@ -490,9 +488,8 @@ export default class OffcanvasNavigation {
         ) {
             this._showCategoryLevel(activeCategoryId);
         } else {
-            const parentCategoryId = this._activeCategoryPath[
-                this._activeCategoryPath.length - 2
-            ];
+            const parentCategoryId =
+                this._activeCategoryPath[this._activeCategoryPath.length - 2];
             this._showCategoryLevel(parentCategoryId);
         }
     }
@@ -502,9 +499,8 @@ export default class OffcanvasNavigation {
      */
     protected _highlightActiveCategoryItem(): void {
         if (this._activeCategoryPath.length) {
-            const activeCategoryId = this._activeCategoryPath[
-                this._activeCategoryPath.length - 1
-            ];
+            const activeCategoryId =
+                this._activeCategoryPath[this._activeCategoryPath.length - 1];
 
             $(
                 `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
@@ -513,9 +509,8 @@ export default class OffcanvasNavigation {
                 .addClass(this._options.activeCategoryHighlightClass);
         }
 
-        const activeCategoryId = this._activeCategoryPath[
-            this._activeCategoryPath.length - 1
-        ];
+        const activeCategoryId =
+            this._activeCategoryPath[this._activeCategoryPath.length - 1];
         const $activeCategoryLink = $(
             `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
         );
@@ -527,9 +522,8 @@ export default class OffcanvasNavigation {
         ) {
             this._showCategoryLevel(activeCategoryId);
         } else {
-            const parentCategoryId = this._activeCategoryPath[
-                this._activeCategoryPath.length - 2
-            ];
+            const parentCategoryId =
+                this._activeCategoryPath[this._activeCategoryPath.length - 2];
             this._showCategoryLevel(parentCategoryId);
         }
     }

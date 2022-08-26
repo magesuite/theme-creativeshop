@@ -89,7 +89,7 @@ export default class SalebarWidget {
 
             this._$window.on(
                 'resize orientationchange salebarLoaded breakpointChange',
-                e => this._resizeHandler(e)
+                (e) => this._resizeHandler(e)
             );
         }
 
@@ -120,7 +120,7 @@ export default class SalebarWidget {
      * and salebar height
      */
     protected _adjustRelatedElementsOffset(): void {
-        this._relatedElements.forEach(relatedElem => {
+        this._relatedElements.forEach((relatedElem) => {
             relatedElem.$element.css({ top: '' });
 
             // Double check if elements are fixed

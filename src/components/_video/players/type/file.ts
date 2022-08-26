@@ -8,7 +8,7 @@ const filePlayer = {
      * @param options
      * @param id
      */
-    render: function(url: string, options: FilePlayerOptions, id: string) {
+    render: function (url: string, options: FilePlayerOptions, id: string) {
         const video = document.createElement('video');
         video.id = id;
         video.src = url;
@@ -27,7 +27,7 @@ const filePlayer = {
      * Play video for given player id
      * @param id
      */
-    play: function(id) {
+    play: function (id) {
         if (this.players[id]) {
             this.players[id].play();
         }
@@ -36,7 +36,7 @@ const filePlayer = {
      * Pause video for given player id
      * @param id
      */
-    pause: function(id) {
+    pause: function (id) {
         if (this.players[id]) {
             this.players[id].pause();
         }
@@ -45,7 +45,7 @@ const filePlayer = {
      * Destroy video for given player id
      * @param id
      */
-    destroy: function(id) {
+    destroy: function (id) {
         if (this.players[id]) {
             delete this.players[id];
             document.getElementById(id).remove();

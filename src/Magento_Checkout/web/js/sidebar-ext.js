@@ -3,10 +3,10 @@ define([
     'Magento_Ui/js/modal/confirm',
     'Magento_Customer/js/model/authentication-popup',
     'Magento_Customer/js/customer-data',
-], function($, confirm, authenticationPopup, customerData) {
+], function ($, confirm, authenticationPopup, customerData) {
     'use strict';
 
-    return function(config) {
+    return function (config) {
         return $.widget('mage.sidebar', $.mage.sidebar, {
             options: {
                 item: {
@@ -18,7 +18,7 @@ define([
                 step: 1,
                 minValue: 1,
             },
-            _initContent: function() {
+            _initContent: function () {
                 var self = this;
                 var events = {};
 
@@ -27,12 +27,14 @@ define([
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['click ' + this.options.button.close] = function(event) {
+                events['click ' + this.options.button.close] = function (
+                    event
+                ) {
                     event.stopPropagation();
                     $(self.options.targetElement).dropdownDialog('close');
                 };
                 events['click ' + this.options.button.checkout] = $.proxy(
-                    function() {
+                    function () {
                         var cart = customerData.get('cart');
                         var customer = customerData.get('customer');
                         var element = $(this.options.button.checkout);
@@ -65,7 +67,7 @@ define([
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['click ' + this.options.button.remove] = function(
+                events['click ' + this.options.button.remove] = function (
                     event
                 ) {
                     var removedElementQtyInput = $(event.currentTarget)
@@ -82,14 +84,14 @@ define([
                         content: self.options.confirmMessage,
                         actions: {
                             /** @inheritdoc */
-                            confirm: function() {
+                            confirm: function () {
                                 self._removeItem($(event.currentTarget));
                             },
 
                             /** Add support for removing item by setting Qty = 0,
                              *  but set Qty = minVal if user decide to not remove the item on the level of modal confirmation
                              */
-                            cancel: function() {
+                            cancel: function () {
                                 if (
                                     removedElementQtyInput.val() <
                                     self.options.minValue
@@ -101,7 +103,7 @@ define([
                             },
 
                             /** @inheritdoc */
-                            always: function(e) {
+                            always: function (e) {
                                 e.stopImmediatePropagation();
                             },
                         },
@@ -111,21 +113,21 @@ define([
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['keyup ' + this.options.item.qty] = function(event) {
+                events['keyup ' + this.options.item.qty] = function (event) {
                     self._showItemButton($(event.target));
                 };
 
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['change ' + this.options.item.qty] = function(event) {
+                events['change ' + this.options.item.qty] = function (event) {
                     self._showItemButton($(event.target));
                 };
 
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['click ' + this.options.item.button] = function(event) {
+                events['click ' + this.options.item.button] = function (event) {
                     event.stopPropagation();
                     self._updateItemQty($(event.currentTarget));
                 };
@@ -133,7 +135,7 @@ define([
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['focusout ' + this.options.item.qty] = function(event) {
+                events['focusout ' + this.options.item.qty] = function (event) {
                     self._validateQty($(event.currentTarget));
                 };
 
@@ -147,16 +149,16 @@ define([
                     this._addQtyButtonsEvents();
                 }
             },
-            _addQtyButtonsEvents: function() {
+            _addQtyButtonsEvents: function () {
                 var events = {};
 
-                events['click ' + this.options.item.qtyDecrease] = function(
+                events['click ' + this.options.item.qtyDecrease] = function (
                     event
                 ) {
                     this._addQtyButtonAction(event, 'qtyDecrease');
                 };
 
-                events['click ' + this.options.item.qtyIncrease] = function(
+                events['click ' + this.options.item.qtyIncrease] = function (
                     event
                 ) {
                     this._addQtyButtonAction(event, 'qtyIncrease');
@@ -164,7 +166,7 @@ define([
 
                 this._on(this.element, events);
             },
-            _addQtyButtonAction: function(event, action) {
+            _addQtyButtonAction: function (event, action) {
                 event.stopPropagation();
                 var itemId = $(event.currentTarget).data('cart-item');
                 var qtyElement = $('#cart-item-' + itemId + '-qty');
@@ -189,7 +191,7 @@ define([
                 qtyElement.val(qtyValue).trigger('keyup');
             },
 
-            _validateQty: function(elem) {
+            _validateQty: function (elem) {
                 if (parseInt(elem.val(), 10) < this.options.minValue) {
                     this._triggerRemove($(elem));
 
@@ -199,7 +201,7 @@ define([
                 }
             },
 
-            _triggerRemove: function(elem) {
+            _triggerRemove: function (elem) {
                 const deleteTrigger = elem
                     .parents('.product-item')
                     .find('a.action.delete')
@@ -210,7 +212,7 @@ define([
                 }
             },
 
-            _showItemButton: function(elem) {
+            _showItemButton: function (elem) {
                 if (this.options.useDefaultQty === true) {
                     this._super(elem);
                 } else {
@@ -223,9 +225,9 @@ define([
                     );
 
                     if (that._isValidQty(itemQty, elem.val())) {
-                        setTimeout(function() {
+                        setTimeout(function () {
                             loadIndicator.show();
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 updateItemButton.click();
                                 loadIndicator.hide();
                             }, that.options.delay);

@@ -6,12 +6,12 @@
  * - Showing entire "State/Province" field when it is required.
  * - Hiding it when it is not.
  */
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
-    return function(regionUpdater) {
+    return function (regionUpdater) {
         return $.widget('mage.regionUpdater', regionUpdater, {
-            _updateRegion: function(country) {
+            _updateRegion: function (country) {
                 this._super(country);
 
                 var $regionInput = $(this.options.regionInputId);

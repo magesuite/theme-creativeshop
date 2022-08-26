@@ -42,8 +42,8 @@ export default class VideoTeaser {
      */
     protected addIntersectionObserver(): void {
         const io: IntersectionObserver = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
+            (entries) => {
+                entries.forEach((entry) => {
                     this.handleVideoTeaser(
                         entry.target,
                         entry.isIntersecting,
@@ -58,7 +58,7 @@ export default class VideoTeaser {
             }
         );
 
-        this._videoTeasers.forEach(el => io.observe(el));
+        this._videoTeasers.forEach((el) => io.observe(el));
     }
 
     /**
@@ -66,7 +66,7 @@ export default class VideoTeaser {
      */
     protected attachConsentEvents(): void {
         const callback = (): void => {
-            this._videoTeasers.forEach(el => {
+            this._videoTeasers.forEach((el) => {
                 this.handleVideoTeaser(
                     el,
                     this.isInViewPort(el),
@@ -118,9 +118,8 @@ export default class VideoTeaser {
                 if (hasPlayer) {
                     videoPlayer.play(videoTeaserId);
                 } else {
-                    const videoWrapper: HTMLDivElement = document.createElement(
-                        'div'
-                    );
+                    const videoWrapper: HTMLDivElement =
+                        document.createElement('div');
                     videoWrapper.id = videoTeaserId;
                     videoPlayerPlaceholder.prepend(videoWrapper);
 

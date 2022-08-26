@@ -13,11 +13,11 @@ const overlay: IOverlay = new Overlay({
     },
 });
 
-$('#show').on('click', function(): void {
+$('#show').on('click', function (): void {
     overlay.show();
 });
 
-$('.cs-overlay').on('click', function(): void {
+$('.cs-overlay').on('click', function (): void {
     overlay.hide();
 });
 
