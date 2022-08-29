@@ -76,7 +76,6 @@ import 'components/toolbar';
  */
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
-// import 'components/reorder-banner';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
@@ -86,3 +85,4 @@ import 'components/toolbar';
  */
 // import 'Amazon_Pay';
 // import 'PluginCompany_ContactForms';
+// import 'MageSuite_QuickReorder/reorder-banner';

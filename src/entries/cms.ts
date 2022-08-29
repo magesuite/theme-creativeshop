@@ -62,7 +62,6 @@ import 'components/visually-hidden';
  */
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
-// import 'components/reorder-banner';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
@@ -71,3 +70,4 @@ import 'components/visually-hidden';
  * Optional components that require optional modules being installed
  */
 // import 'Amazon_Pay';
+// import 'MageSuite_QuickReorder/reorder-banner';
