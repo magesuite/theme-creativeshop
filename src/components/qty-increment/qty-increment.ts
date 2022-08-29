@@ -45,6 +45,12 @@ interface QtyIncrementOptions {
      * @default cs-qty-increment__button--disabled
      */
     disabledButtonClassName?: string;
+
+    /**
+     * Name of the class for distinguishing cart-page view.
+     * @default checkout-cart-index
+     */
+    cartPageClassIdentifier?: string;
 }
 
 export default class QtyIncrement {
@@ -57,6 +63,7 @@ export default class QtyIncrement {
     protected _minValue: number;
     protected _maxValue: number;
     protected _step: number;
+    protected _isShoppingCart: boolean;
 
     protected _options: QtyIncrementOptions = {
         minValue: 1,
@@ -66,6 +73,7 @@ export default class QtyIncrement {
         incrementButtonClassName: 'cs-qty-increment__button--increment',
         decrementButtonClassName: 'cs-qty-increment__button--decrement',
         disabledButtonClassName: 'cs-qty-increment__button--disabled',
+        cartPageClassIdentifier: 'checkout-cart-index',
     };
 
     /**
@@ -100,6 +108,11 @@ export default class QtyIncrement {
 
         const step = this._$input.attr('step');
         this._step = step !== undefined ? Number(step) : this._options.step;
+
+        this._isShoppingCart =
+            document.body.classList.value.indexOf(
+                this._options.cartPageClassIdentifier
+            ) !== -1;
 
         this._attachEvents();
     }
@@ -146,20 +159,33 @@ export default class QtyIncrement {
 
         let newValue: number = Math.max(value - this._step, this._minValue);
 
-        // Set 0 Qty when user click decrement with current minimum Qty value
         if (value === this._minValue || value === 0) {
-            newValue = this._minValue;
+            /*
+             * Set Qty = 0 (remove product) when user click decrement with current minimum Qty value within cart-page view
+             */
+            !this._isShoppingCart
+                ? (newValue = this._minValue)
+                : (newValue = 0);
         }
 
         this.setValue(newValue);
     }
 
+    /**
+     * Reset values on input blur for scenarios:
+     * - if input is empty: set minimal value,
+     * - if input value < minimal value: set minimal value
+     *   or let pass the new value if in cart-page view to remove item,
+     * - if input value > maximal value: set the maximal value
+     *
+     * @protected
+     */
     protected _resetValue(): void {
         const value = this._$input.val();
 
         if (value === '') {
             this.setValue(this._initialValue);
-        } else if (value < this._minValue) {
+        } else if (value < this._minValue && !this._isShoppingCart) {
             this.setValue(this._minValue);
         } else if (this._maxValue && value > this._maxValue) {
             this.setValue(this._maxValue);
