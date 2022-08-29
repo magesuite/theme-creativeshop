@@ -154,21 +154,40 @@ A helper function 'get-gradient-angle' from 'components/teaser/functions.scss' w
 ## 'entires/product-compare.ts' has been changed, and imports only 'components/product-compare' instead of all the components.
 Product compare page now uses cms bundle + product compare component styles, see: 'catalog_product_compare_index.xml'
 It does not make sense to build whole entry as it only needs this one additional component in comparison to cms bundle.
-> Dev hint: Check if product-compare page is displayed properly in child project.
+> Dev hint: 
+> Check if product-compare page is displayed properly in child project.
+> generated product-compare.css is attached in xml by default, but if any component added to this page produces JS logic, it has to be attached additionally.
+> It can be added via xml, like we do for our base bundles (see "scripts" block in: `src/Magento_Theme/layout/default.xml`)
 
 <br/>
 
 ## 'entires/magesuite-brand-management.ts' has been changed, and imports only 'MageSuite_BrandManagement' instead of all the components.
 Brand management page now uses category bundle + magesuite-brand-management styles, see: 'brands_index_all.xml'
 It does not make sense to build whole entry as it only needs this one additional component in comparison to category bundle.
-> Dev hint: Check if brand page is displayed properly in child project.
+> Dev hint: 
+> Check if brand management page is displayed properly in child project.
+> generated magesuite-brand-management.css is attached in xml by default, but if any component added to this page produces JS logic, it has to be attached additionally.
+> It can be added via xml, like we do for our base bundles (see "scripts" block in: `src/Magento_Theme/layout/default.xml`)
 
 <br/>
 
 ## 'entires/magesuite-store-locator.ts' has been changed, and imports only 'MageSuite_StoreLocator' component instead of all the components.
 Store locator page now uses cms bundle + magesuite-store-locator bundle, see: 'storelocator_index_index.xml'
 It does not make sense to build whole entry as it only needs this one additional component in comparison to cms bundle.
-> Dev hint: Check if brand page is displayed properly in child project.
+> Dev hint: 
+> Check if store locator page is displayed properly in child project.
+> generated magesuite-store-locator.css is attached in xml by default, but if any component added to this page produces JS logic, it has to be attached additionally.
+> It can be added via xml, like we do for our base bundles (see "scripts" block in: `src/Magento_Theme/layout/default.xml`)
+
+<br/>
+
+## 'entires/contact.ts' has been changed, and imports only additional components instead of all the components.
+Store locator page now uses cms bundle + contact bundle, see: 'contact_index_index.xml' and 'contactforms_form_view.xml'
+It does not make sense to build whole entry as it only needs this one additional components in comparison to cms bundle.
+> Dev hint: 
+> Check if contact page is displayed properly in child project.
+> generated contact.css is attached in xml by default, but if any component added to this page produces JS logic, it has to be attached additionally.
+> It can be added via xml, like we do for our base bundles (see "scripts" block in: `src/Magento_Theme/layout/default.xml`)
 
 <br/>
 
