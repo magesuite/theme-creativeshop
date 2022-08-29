@@ -84,7 +84,6 @@ import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
  */
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
-// import 'components/reorder-banner';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
@@ -100,3 +99,4 @@ import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
 // import 'MageSuite_SuccessPageOrderDetails';
 // import 'Mollie_Payment';
 // import 'PluginCompany_ContactForms';
+// import 'MageSuite_QuickReorder/reorder-banner';
