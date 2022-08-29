@@ -80,6 +80,8 @@ export default class Cart {
     }
 
     protected _attachEvents(): void {
+        const _this = this;
+
         window.addEventListener('orientationchange', (): void => {
             const cartTableStyle: string = getComputedStyle(
                 this._cartTable
@@ -109,10 +111,12 @@ export default class Cart {
             (e): void => {
                 const newValue = $(e.target).val();
 
-                if (
-                    Number(newValue) < this._options.minQtyValue ||
-                    newValue === ''
-                ) {
+                // Don't perform any action when input is empty (e.g. when user hits backspace)
+                if (newValue === '') {
+                    return;
+                }
+
+                if (Number(newValue) < _this._options.minQtyValue) {
                     this._removeItem($(e.target));
                 } else {
                     this._triggerUpdate();
