@@ -57,9 +57,6 @@ var config = {
             'Magento_Checkout/js/model/step-navigator': {
                 'Magento_Checkout/js/model/step-navigator-ext': true,
             },
-            'Magento_PageCache/js/page-cache': {
-                'Magento_PageCache/js/submit-button-enabler': true,
-            },
             'Smile_ElasticsuiteCore/js/form-mini': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
             },
