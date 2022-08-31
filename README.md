@@ -342,7 +342,7 @@ Build files you can find in `app/design/frontend/creativestyle/theme-creativesho
 > Assume we have 2 entry points: *pdp.ts* and *category.ts*. Each of them imports components/product-tile plus its specific components, like `pages/pdp` and `pages/category`.
 > Based on that, Webpack creates commons.js and commons.css bundles containing the *product-tile* component logic and styling. But it also creates *pdp.js*/*pdp.css* and *category.js*/*category.css* bundles to be used for PDP or category page only.
 
-In ,theme-creativeshop/src/entries, you can find two types of entry points: **entries for pages** (ex. category.ts) and **entries for modules** (ex. magesuite-brand-management.ts). 
+In `theme-creativeshop/src/entries`, you can find two types of entry points: **entries for pages** (ex. category.ts) and **entries for modules** (ex. magesuite-brand-management.ts). 
 
 ### Base entries
 
@@ -380,7 +380,6 @@ Basically, the most important entries are:
 * `category.ts` - products overview page (category)
 * `checkout.ts` - checkout, cart pages
 * `customer.ts` - user area pages
-* `contact.ts` - contact page
 
 They are responsible for basic pages across the shop and contain all the components that are required for them.
 
@@ -390,7 +389,7 @@ By default, we use cms.js bundle as the base one.
 ### Entries for modules
 
 They can contain styles and logic used by the specific module. Bundles generated form them, we use only as an addition to the base bundles. 
-For example, the *magesuite-brand-management.ts* entry imports only styling for the brand list (`MageSuite_BrandManagement/web/css/brands-index.scss`).
+For example, the *magesuite-brand-management.ts* entry imports only styling for the brand list (`MageSuite_BrandManagement`).
 
 Brand page itself relies on category.js and category.css bundles but in addition, we attach magesuite-brand-management.css bundle to it
 

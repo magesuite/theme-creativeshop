@@ -96,7 +96,8 @@ import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
 // import 'MageSuite_PackstationDhl';
 // import 'MageSuite_Pwa';
 // import 'MageSuite_PwaNotifications';
+// import 'MageSuite_QuickReorder/reorder-banner';
 // import 'MageSuite_SuccessPageOrderDetails';
 // import 'Mollie_Payment';
 // import 'PluginCompany_ContactForms';
-// import 'MageSuite_QuickReorder/reorder-banner';
+// import 'Smile_ElasticsuiteInstantSearch';

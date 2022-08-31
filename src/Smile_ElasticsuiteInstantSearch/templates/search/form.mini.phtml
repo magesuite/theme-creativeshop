@@ -1,0 +1,73 @@
+<?php
+/**
+ * Original elasticsuite instant search template overwritten, to integrate MageSuite header functionallity
+ * For differences please refer to the original file.
+ * - added cs-header__search class name to wrapper
+ * - removed default block search wrappers
+ * - added close icons to support hiding search on mobile
+ *
+ * Note: Instant search renders saerch form as a react component, which reflects this html structure.
+ * There should not be any layout shifts when react component is initialized and replaces this markup.
+ *
+ * @var $block \Smile\ElasticsuiteInstantSearch\Block\Search\Form\Autocomplete
+ */
+?>
+<?php
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper('Magento\Search\Helper\Data');
+?>
+<div class="cs-header__search">
+    <form class="form minisearch cs-instant-search" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
+        <div class="field search">
+            <label class="label" for="search" data-role="minisearch-label">
+                <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+            </label>
+            <div class="control">
+                <input id="search"
+                       type="text"
+                       name="<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>"
+                       value="<?php /* @escapeNotVerified */ echo $helper->getEscapedQueryText() ?>"
+                       placeholder="<?php /* @escapeNotVerified */ echo __('Search entire store here...'); ?>"
+                       class="input-text"
+                       maxlength="<?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>"
+                       role="combobox"
+                       aria-haspopup="false"
+                       aria-autocomplete="both"
+                       autocomplete="off"
+                       data-block="autocomplete-form"/>
+                <div id="search_autocomplete" class="search-autocomplete"></div>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="submit"
+                    title="<?php echo $block->escapeHtml(__('Search')) ?>"
+                    class="action search">
+                <span><?php /* @escapeNotVerified */ echo __('Search'); ?></span>
+            </button>
+        </div>
+    </form>
+    <span class="cs-instant-search__close">
+        <?= $block->getChildHtml('top.instant-search.icon.close'); ?>
+        <span class="cs-instant-search__close-label"><?= /* @escapeNotVerified */ __('Close search'); ?></span>
+    </span>
+</div>
+<script>
+    window.ES_REACT_AUTOCOMPLETE_PROPS = {
+        formSelector:"search_mini_form",
+        url:"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
+        storeCode:"<?php /* @escapeNotVerified */ echo $block->getStoreCode(); ?>",
+        name:"<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>",
+        maxLength: <?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>,
+        placeholder:"<?php /* @escapeNotVerified */ echo __('Search entire store here...'); ?>",
+        title:"<?php echo $block->escapeHtml(__('Search')); ?>",
+        label:"<?php echo $block->escapeHtml(__('Search')); ?>",
+        submitButton:"<?php echo $block->escapeHtml(__('Search')); ?>",
+        templates: <?php /* @noEscape */ echo $block->getJsonSuggestRenderers();?>,
+        priceFormat : <?php /* @noEscape */ echo $block->getJsonPriceFormat();?>,
+        currencyCode : "<?php /* @noEscape */ echo $block->getCurrencyCode();?>",
+        dataProviders: <?php echo $block->getDataProvidersConfiguration(); ?>,
+        productTitle:"<?php echo $block->escapeHtml(__('Products')); ?>",
+        noResultTitle:"<?php echo $block->escapeHtml(__('No results')); ?>",
+        productInCategoryLabel:"<?php echo $block->escapeHtml(__('in')); ?>",
+    }
+</script>
