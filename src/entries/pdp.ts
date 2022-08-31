@@ -99,5 +99,6 @@ import 'components/toolbar';
 // import 'Amazon_Pay';
 // import 'MageSuite_InstantPurchase';
 // import 'MageSuite_PwaNotifications';
-// import 'PluginCompany_ContactForms';
 // import 'MageSuite_QuickReorder/reorder-banner';
+// import 'PluginCompany_ContactForms';
+// import 'Smile_ElasticsuiteInstantSearch';

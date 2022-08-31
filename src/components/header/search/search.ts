@@ -50,7 +50,6 @@ export default class HeaderSearch {
     protected _$trigger: JQuery<HTMLElement>;
     protected _$target: JQuery<HTMLElement>;
     protected _$closeBtn: JQuery<HTMLElement>;
-    protected _$searchBoxInput: JQuery<HTMLElement>;
     protected _isOpen: boolean;
 
     public constructor(options?: HeaderSearchOptions) {
@@ -77,9 +76,6 @@ export default class HeaderSearch {
         }
 
         this._$closeBtn = this._$target.find(this._options.closeButtonSelector);
-        this._$searchBoxInput = this._$target.find(
-            this._options.searchInputSelector
-        );
 
         this._attachEvents();
 
@@ -126,16 +122,13 @@ export default class HeaderSearch {
     }
 
     protected _resetInputValue(): void {
-        if (this._$searchBoxInput.val()) {
-            this._$searchBoxInput.val('');
-        }
-
+        this._getSearchBoxInput().val('');
         this._focusInputField();
     }
 
     protected _focusInputField(): void {
         if (this._options.searchInputFocus) {
-            this._$searchBoxInput.focus();
+            this._getSearchBoxInput().focus();
         }
     }
 
@@ -161,5 +154,9 @@ export default class HeaderSearch {
         this._$target.removeClass(this._options.targetActiveClass);
         $('body').removeClass('search-open');
         this._isOpen = false;
+    }
+
+    protected _getSearchBoxInput(): JQuery<HTMLElement> {
+        return this._$target.find(this._options.searchInputSelector);
     }
 }
