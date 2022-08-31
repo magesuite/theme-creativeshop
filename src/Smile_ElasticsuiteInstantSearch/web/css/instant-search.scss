@@ -1,0 +1,136 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+@import 'utils/get-value-from-list';
+@import 'components/field/mixin';
+@import 'components/button/mixin';
+
+// On iOS the search input has to be at least 16px large, otherwise it will trigger page zoom on focus.
+$header-search_font-size-mobile: 1.6rem !default;
+$header-search_font-size: 1.4rem !default;
+
+// Width of the search field. Works only for `$global_header-searchbox-as-layer-breakpoint` breakpoint, in other case it's always 100%
+$header-search-width-as-layer: 50% !default;
+$header-search_close-color: $color_text-400 !default;
+
+$header-search_button-type: $button_default-type !default;
+$header-search_button-width: 5rem !default;
+// Height set based on line height and padding, as it needs to match field height.
+$field_input-padding-top: get-value-from-list($field_input-padding, 'up');
+$header-search-button_height: calc(
+    #{$field_input-line-height} + 2 * #{$field_input-padding-top} + 2px
+);
+
+// Search icon as background because it needs to be applied to element rendered by react app
+$header-search-button_background: url(../images/icons/magnifier.svg) center
+    center/2.5rem 2.5rem no-repeat;
+
+.#{$ns}instant-search {
+    $root: &;
+
+    position: relative;
+    width: 100%;
+    font-size: $header-search_font-size-mobile;
+
+    @include media('>=phoneLg') {
+        font-size: $header-search_font-size;
+    }
+
+    @if ($global_header-searchbox-as-layer-breakpoint) {
+        @include media($global_header-searchbox-as-layer-breakpoint) {
+            width: $header-search-width-as-layer;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        right: $header-search_button-width + 1rem;
+        top: calc(1rem + #{$field_input-padding-top} + 2px);
+        font-size: $header-search_font-size-mobile;
+
+        @include media('>=phoneLg') {
+            font-size: $header-search_font-size;
+        }
+    }
+
+    &__close-label {
+        @include visually-hidden();
+    }
+
+    &__close-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 1rem;
+        display: block;
+        opacity: 0.6;
+        transition: opacity 0.3s linear;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        @if ($global_header-hide-search-item-trigger-breakpoint) {
+            @if ($global_header-hide-search-item-trigger-breakpoint == true) {
+                display: none;
+            } @else {
+                @include media(
+                    $global_header-hide-search-item-trigger-breakpoint
+                ) {
+                    display: none;
+                }
+            }
+        }
+
+        path {
+            fill: $header-search_close-color;
+        }
+    }
+
+    label[for='search'] {
+        @include visually-hidden();
+    }
+
+    .control {
+        padding: 0;
+    }
+
+    input#search {
+        @include field-input();
+        z-index: 210;
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    .actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 220;
+        border-top-right-radius: $border-radius_base;
+        border-bottom-right-radius: $border-radius_base;
+        overflow: hidden;
+        height: $header-search-button_height;
+    }
+
+    .action {
+        @include button(
+            $type: $header-search_button-type,
+            $icon_pos: 'only-icon'
+        );
+
+        width: $header-search_button-width;
+        height: 100%;
+        background: $header-search-button_background;
+        font-size: $header-search_font-size;
+
+        &[disabled] {
+            opacity: 1;
+        }
+
+        span {
+            @include visually-hidden();
+        }
+    }
+}

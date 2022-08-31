@@ -84,5 +84,6 @@ import 'components/toolbar';
  * Optional components that require optional modules being installed
  */
 // import 'Amazon_Pay';
-// import 'PluginCompany_ContactForms';
 // import 'MageSuite_QuickReorder/reorder-banner';
+// import 'PluginCompany_ContactForms';
+// import 'Smile_ElasticsuiteInstantSearch';

@@ -1,0 +1,155 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/field/mixin';
+
+$instant-search_list-background: $color_text-200 !default;
+$instant-search_list-border: none !default;
+$instant-search_list-border-radius: 3px !default;
+$instant-search_list-box-shadow: 0 0 10px 0 rgba($color_text-900, 0.17) !default;
+
+$instant-search_title-padding: 1.2rem 3rem 1rem 1rem !default;
+$instant-search_title-margin: 0 !default;
+$instant-search_title-border: none !default;
+$instant-search_title-color: $color_text-400 !default;
+$instant-search_title-font-size: 1.29rem !default;
+$instant-search_title-font-weight: 700 !default;
+
+$instant-search_item-border: 1px solid $color_border-500 !default;
+$instant-search_item-padding: 0.5rem 1rem !default;
+$instant-search_item-margin: 0 !default;
+$instant-search_item-border: 1px solid $color_border-500 !default;
+$instant-search_item-background: $instant-search_list-background !default;
+$instant-search_item-background-hover: $color_background-500 !default;
+$instant-search_item-thumbnail-width: 3.6rem !default;
+$instant-search_item-thumbnail-height: 4.5rem !default;
+$instant-search_item-font-size: 1.29rem !default;
+$instant-search_item-font-weight: 700 !default;
+$instant-search_item-name-color: $color_text-900 !default;
+$instant-search_item-name-color-hover: $color_text-900 !default;
+$instant-search_item-price-color: $color_primary-500 !default;
+$instant-search_item-price-font-weight: $instant-search_item-font-weight !default;
+
+.instant-search-result-box {
+    background-color: $instant-search_list-background;
+    border-radius: $instant-search_list-border-radius;
+    box-shadow: $instant-search_list-box-shadow;
+    border: $instant-search_list-border;
+
+    @include media('>=laptop') {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    @include media('<laptop') {
+        width: 100%;
+        min-width: 80%;
+        max-height: calc(
+            100vh - #{$global_header-height-tablet} - #{$field_select-line-height} -
+                7rem
+        );
+        overflow-y: auto;
+    }
+
+    @include media('<tablet') {
+        max-height: calc(
+            100vh - #{$global_header-height-mobile} - #{$field_select-line-height} -
+                7rem
+        );
+        top: 0;
+    }
+
+    dt {
+        padding: $instant-search_title-padding;
+        border-bottom: $instant-search_title-border;
+        color: $instant-search_title-color;
+        font-weight: $instant-search_title-font-weight;
+        text-transform: uppercase;
+        font-size: $instant-search_title-font-size;
+        letter-spacing: 1px;
+        margin: $instant-search_title-margin;
+    }
+
+    dd {
+        background: $instant-search_item-background;
+        padding: $instant-search_item-padding;
+        margin: $instant-search_item-margin;
+        border-bottom: $instant-search_item-border;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.15s linear;
+        font-size: $instant-search_item-font-size;
+        font-weight: $instant-search_item-font-weight;
+        overflow: hidden;
+
+        &:hover {
+            background-color: $instant-search_item-background-hover;
+            cursor: pointer;
+        }
+    }
+
+    dl {
+        padding: 0;
+        margin: -1px 0 1rem;
+
+        &.product {
+            margin-bottom: 0;
+
+            dd {
+                width: 100%;
+                display: block;
+            }
+        }
+
+        &:not(:first-child) {
+            border-top: $instant-search_item-border;
+        }
+
+        a:last-child {
+            dd {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+// Product
+.instant-search-result {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    &,
+    &:visited {
+        color: $instant-search_item-name-color;
+    }
+
+    &:hover,
+    &:visited:hover {
+        color: $instant-search_item-name-color-hover;
+    }
+
+    .thumbnail {
+        padding: 0;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            padding: 0;
+            width: $instant-search_item-thumbnail-width;
+            height: $instant-search_item-thumbnail-height;
+            overflow: hidden;
+        }
+    }
+
+    .info {
+        margin-left: 0;
+    }
+
+    .price {
+        color: $instant-search_item-price-color;
+        font-weight: $instant-search_item-price-font-weight;
+    }
+}
