@@ -1,5 +1,4 @@
 var config = {
-    deps: ['js/breakpoint'],
     paths: {
         dropdown: 'js/vendor/bootstrap-dropdown',
         selectpicker: 'js/vendor/bootstrap-select',
