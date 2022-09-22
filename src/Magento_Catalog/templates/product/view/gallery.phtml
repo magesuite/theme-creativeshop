@@ -1,43 +1,45 @@
 <?php
 /**
  * Override to display main image before gallery is loaded
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
  */
 // @codingStandardsIgnoreFile
 
 /**
-* Product media data template
-*
-* @var $block \Magento\Catalog\Block\Product\View\Gallery
-*/
+ * Product media data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ */
 ?>
+
 <?php
-    $galleryImagesJson = $block->getGalleryImagesJson();
-    // Extracting main image to show before JS gallery loads
-    $galleryImages = json_decode($galleryImagesJson);
-    $mainImageUrl  = '';
-    $mainImageAlt  = '';
+$galleryImagesJson = $block->getGalleryImagesJson();
+// Extracting main image to show before JS gallery loads
+$galleryImages = json_decode($galleryImagesJson);
+$mainImageUrl  = '';
+$mainImageAlt  = '';
 
-    $totalImages = count($galleryImages);
+$totalImages = count($galleryImages);
 
-    for ($imageIndex = 0; $imageIndex < $totalImages; $imageIndex++) {
-        $galleryImage = $galleryImages[$imageIndex];
-        if ($galleryImage->isMain) {
-            $mainImageUrl = $galleryImage->img;
-            $mainImageAlt = $galleryImage->caption;
-            break;
-        }
+for ($imageIndex = 0; $imageIndex < $totalImages; $imageIndex++) {
+    $galleryImage = $galleryImages[$imageIndex];
+    if ($galleryImage->isMain) {
+        $mainImageUrl = $galleryImage->img;
+        $mainImageAlt = $galleryImage->caption;
+        break;
     }
+}
 
-    // Fix for jumping content
-    $imageWidth = $block->getImageAttribute('product_page_image_medium', 'width');
-    $imageHeight = $block->getImageAttribute('product_page_image_medium', 'height');
+// Fix for jumping content
+$imageWidth = $block->getImageAttribute('product_page_image_medium', 'width');
+$imageHeight = $block->getImageAttribute('product_page_image_medium', 'height');
 
-    // Webp support
-    $imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
-    $imageMimeType = $imageTypeHelper->getMimeType($mainImageUrl);
+// Webp support
+$imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
+$imageMimeType = $imageTypeHelper->getMimeType($mainImageUrl);
 
-    $imgClass = $block->getImgClass();
+$imgClass = $block->getImgClass();
 ?>
 <div class="gallery-placeholder _block-content-loading cs-product-gallery<?= $totalImages === 1 ? ' cs-product-gallery--single' : ''?>" data-gallery-role="gallery-placeholder">
     <picture class="cs-product-gallery__placeholder-image gallery-placeholder__image">

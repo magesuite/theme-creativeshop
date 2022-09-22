@@ -3,7 +3,8 @@
  * Template overridden in order to:
  * - add magesuite classes
  * - add button icon
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
  */
 
 use Magento\Checkout\Block\Onepage\Link;
@@ -14,7 +15,7 @@ use Magento\Framework\Escaper;
  * @var Escaper $escaper
  */
 ?>
-<?php if ($block->isPossibleOnepageCheckout()):?>
+<?php if ($block->isPossibleOnepageCheckout()): ?>
     <button type="button"
             data-role="proceed-to-checkout"
             title="<?= $escaper->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
@@ -24,7 +25,9 @@ use Magento\Framework\Escaper;
                 }
             }'
             class="cs-cart-summary__to-checkout-button <?= ($block->isDisabled()) ? ' disabled' : '' ?>"
-            <?php if ($block->isDisabled()):?>disabled="disabled"<?php endif; ?>>
+            <?php if ($block->isDisabled()): ?>
+                disabled="disabled"
+            <?php endif; ?>>
             <span class="cs-cart-summary__to-checkout-button-span"><?= $escaper->escapeHtml(__('Proceed to Checkout')) ?></span>
             <?= $block->getChildHtml('checkout.cart.methods.onepage.bottom.button.icon'); ?>
     </button>

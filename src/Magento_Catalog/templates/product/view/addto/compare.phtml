@@ -1,23 +1,26 @@
 <?php
 /**
-* Template overridden to:
-* - add data-uenc-update="true"
-* - integrate with xml configuration
-* - add additional child block (placeholder)
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden to:
+ * - add data-uenc-update="true"
+ * - integrate with xml configuration
+ * - add additional child block (placeholder)
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
+ */
 
-/** @var $block \Magento\Catalog\Block\Catalog\Product\View\Addto\Compare */
+/** @var $block \Magento\Catalog\Block\Product\View\Addto\Compare */
 ?>
 
-<li class="cs-buybox__addto-item <?= $block->getAdditionalCssClasses() ?>">
-    <a href="#" data-post='<?= /* @noEscape */ $block->getPostDataParams() ?>'
-        data-uenc-update="true"
-        data-role="add-to-links"
-        title="<?= $block->getLinkLabel() ?? __('Add to compare') ?>"
-        class="action tocompare cs-buybox__addto-link cs-buybox__addto-link--compare">
-        <?= $block->getChildHtml(''); ?>
-        <span class="cs-buybox__addto-label"><?= $block->getLinkLabel() ?></span>
-    </a>
-</li>
-
+<?php $viewModel = $block->getData('addToCompareViewModel'); ?>
+<?php if ($viewModel->isAvailableForCompare($block->getProduct())) :?>
+    <li class="cs-buybox__addto-item <?= $block->getAdditionalCssClasses() ?>">
+        <a href="#" data-post='<?= /* @noEscape */ $block->getPostDataParams() ?>'
+            data-uenc-update="true"
+            data-role="add-to-links"
+            title="<?= $block->getLinkLabel() ?? $block->escapeHtml(__('Add to compare')) ?>"
+            class="action tocompare cs-buybox__addto-link cs-buybox__addto-link--compare">
+            <?= $block->getChildHtml(''); ?>
+            <span class="cs-buybox__addto-label"><?= $block->escapeHtml($block->getLinkLabel()) ?></span>
+        </a>
+    </li>
+<?php endif; ?>

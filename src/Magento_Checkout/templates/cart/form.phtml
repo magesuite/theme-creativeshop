@@ -1,16 +1,18 @@
 <?php
 /**
-* Template overwritten to:
-* - add magesuite classes
-* - hide .cart.main.actions element with cs-visually-hidden - we prefer to update cart automatically after user change qty or remove item from cart
-* There is a script prepared in: `components/cart/cart.ts` which shows loader and triggers click on hidden #update-cart-button button
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overwritten to:
+ * - add magesuite classes
+ * - hide .cart.main.actions element with cs-visually-hidden - we prefer to update cart automatically after user change qty or remove item from cart
+ * There is a script prepared in: `components/cart/cart.ts` which shows loader and triggers click on hidden #update-cart-button button
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
+ */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate
+
 /**  @var $block \Magento\Checkout\Block\Cart\Grid */
 ?>
-<?php $mergedCells = ($this->helper(\Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
+<?php $mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
 <?= $block->getChildHtml('form_before') ?>
 <form action="<?= $block->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>"
           method="post"
@@ -23,11 +25,13 @@
     <?= $block->getBlockHtml('formkey') ?>
     <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?> cs-cart-table-wrapper">
         <?php if ($block->getPagerHtml()): ?>
-            <div class="cart-products-toolbar cart-products-toolbar-top toolbar cs-cart-table__toolbar cs-cart-table__toolbar--top" data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?></div>
+            <div class="cart-products-toolbar cart-products-toolbar-top toolbar cs-cart-table__toolbar cs-cart-table__toolbar--top"
+                 data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?>
+            </div>
         <?php endif ?>
         <table id="shopping-cart-table"
                class="cart items data table cs-cart-table"
-               data-mage-init='{"shoppingCart":{"emptyCartButton": "action.clear",
+               data-mage-init='{"shoppingCart":{"emptyCartButton": ".action.clear",
                "updateCartActionContainer": "#update_cart_action_container"}}'>
             <caption class="table-caption cs-cart-table__caption"><?= $block->escapeHtml(__('Shopping Cart Items')) ?></caption>
             <thead class="cs-cart-table__head">
@@ -53,7 +57,9 @@
             <?php endforeach ?>
         </table>
         <?php if ($block->getPagerHtml()): ?>
-            <div class="cart-products-toolbar cart-products-toolbar-bottom toolbar cs-cart-table__toolbar cs-cart-table__toolbar--bottom" data-attribute="cart-products-toolbar-bottom"><?= $block->getPagerHtml() ?></div>
+            <div class="cart-products-toolbar cart-products-toolbar-bottom toolbar cs-cart-table__toolbar cs-cart-table__toolbar--bottom"
+                 data-attribute="cart-products-toolbar-bottom"><?= $block->getPagerHtml() ?>
+            </div>
         <?php endif ?>
     </div>
     <div class="cart main actions cs-visually-hidden">

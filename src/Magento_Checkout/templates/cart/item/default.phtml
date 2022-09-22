@@ -1,18 +1,20 @@
 <?php
 /**
-* Template overwritten to:
-* - add magesuite classes
-* - add different classes for options in case of bundle product
-* - add free badge if exists
-* - add checkout.cart.item.brand, checkout.cart.item.renderers.default.option.edit hotspots
-* - add qty-increment component instead of input
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overwritten to:
+ * - add magesuite classes
+ * - add different classes for options in case of bundle product
+ * - add free badge if exists
+ * - add checkout.cart.item.brand, checkout.cart.item.renderers.default.option.edit hotspots
+ * - add qty-increment component instead of input
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
+ */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate
 // phpcs:disable Generic.Files.LineLength
 
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+
 ?>
 <?php
 $_item = $block->getItem();
@@ -20,14 +22,14 @@ $product = $_item->getProduct();
 $productType = $product->getTypeId();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 /** @var \Magento\Msrp\Helper\Data $helper */
-$helper = $this->helper(\Magento\Msrp\Helper\Data::class);
+$helper = $this->helper(Magento\Msrp\Helper\Data::class);
 $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
 ?>
 <tbody class="cs-cart-table__body cart item">
     <tr class="cs-cart-item item-info">
         <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="cs-cart-table__col cs-cart-item__item col item">
             <div class="cs-cart-item__product">
-                <?php if ($block->hasProductUrl()):?>
+                <?php if ($block->hasProductUrl()): ?>
                     <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
                     title="<?= $block->escapeHtml($block->getProductName()) ?>"
                     tabindex="-1"
@@ -36,7 +38,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <span class="cs-cart-item__image product-item-photo">
                 <?php endif;?>
                 <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
-                <?php if ($block->hasProductUrl()):?>
+                <?php if ($block->hasProductUrl()): ?>
                     </a>
                 <?php else: ?>
                     </span>
@@ -50,40 +52,40 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif; ?>
                     <?= $block->getChildHtml('checkout.cart.item.brand.' . $_item->getProductType(), false); ?>
                     <strong class="cs-cart-item__name product-item-name">
-                        <?php if ($block->hasProductUrl()):?>
+                        <?php if ($block->hasProductUrl()): ?>
                             <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
                         <?php else: ?>
                             <?= $block->escapeHtml($block->getProductName()) ?>
                         <?php endif; ?>
                     </strong>
-                    <?php if ($_options = $block->getOptionList()):?>
+                    <?php if ($_options = $block->getOptionList()): ?>
                         <div class="<?= $productType == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                             <?php foreach ($_options as $_option) : ?>
-                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
-                                <a class="cs-cart-item__option-link"
-                                    href="<?= $block->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
-                                    title="<?= $block->escapeHtml(__('Edit item parameter')); ?>"
-                                >
-                            <?php endif; ?>
-                                <dl class="cs-cart-item__options-group item-options">
-                                    <dt class="cs-cart-item__options-label">
-                                        <?= $block->escapeHtml($_option['label']) ?>
-                                    </dt>
-                                    <dd class="cs-cart-item__options-value">
-                                        <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                            <?= $block->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
-                                        <?php else: ?>
-                                            <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
-                                        <?php endif; ?>
-                                        <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
-                                            <?= $block->getChildHtml('checkout.cart.item.renderers.default.option.edit'); ?>
-                                        <?php endif; ?>
-                                    </dd>
-                                </dl>
-                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
-                            </a>
-                            <?php endif; ?>
+                                <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                                <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                                    <a class="cs-cart-item__option-link"
+                                        href="<?= $block->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
+                                        title="<?= $block->escapeHtml(__('Edit item parameter')); ?>"
+                                    >
+                                <?php endif; ?>
+                                    <dl class="cs-cart-item__options-group item-options">
+                                        <dt class="cs-cart-item__options-label">
+                                            <?= $block->escapeHtml($_option['label']) ?>
+                                        </dt>
+                                        <dd class="cs-cart-item__options-value">
+                                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                                <?= $block->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
+                                            <?php else: ?>
+                                                <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
+                                            <?php endif; ?>
+                                            <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
+                                                <?= $block->getChildHtml('checkout.cart.item.renderers.default.option.edit'); ?>
+                                            <?php endif; ?>
+                                        </dd>
+                                    </dl>
+                                <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                                </a>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endif;?>
@@ -104,7 +106,16 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                 <span class="pricing msrp">
                     <span class="msrp notice"><?= $block->escapeHtml(__('See price before order confirmation.')) ?></span>
                     <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
-                    <a href="#" class="action help map" id="<?= $block->escapeHtmlAttr(($helpLinkId)) ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?= $block->escapeJs($block->escapeHtml($helpLinkId)) ?>","productName": "<?= $block->escapeJs($block->escapeHtml($product->getName())) ?>","showAddToCart": false}}'>
+                    <a href="#" class="action help map"
+                       id="<?= $block->escapeHtmlAttr(($helpLinkId)) ?>"
+                       data-mage-init='{"addToCart":{
+                                            "origin": "info",
+                                            "helpLinkId": "#<?= $block->escapeJs($block->escapeHtml($helpLinkId)) ?>",
+                                            "productName": "<?= $block->escapeJs($block->escapeHtml($product->getName())) ?>",
+                                            "showAddToCart": false
+                                            }
+                                        }'
+                    >
                         <span><?= $block->escapeHtml(__("What's this?")) ?></span>
                     </a>
                 </span>

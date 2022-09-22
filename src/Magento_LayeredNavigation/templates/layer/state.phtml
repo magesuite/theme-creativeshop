@@ -1,26 +1,28 @@
 <?php
 /**
-* Template overridden to:
-* - add magesuite classes
-* - add Remove all filters button
-* - remove "Now Shopping by" label
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
-
-/**
-* Category layered navigation state
-*
-* @var $block \Magento\LayeredNavigation\Block\Navigation\State
-*/
+ * Template overridden to:
+ * - add magesuite classes
+ * - add Remove all filters button
+ * - remove "Now Shopping by" label
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
+ */
 ?>
 <?php
-    $filters = $block->getActiveFilters();
-    $filtersCount = count($filters);
+/**
+ * Category layered navigation state
+ *
+ * @var $block \Magento\LayeredNavigation\Block\Navigation\State
+ */
 ?>
-<?php if (!empty($filters)): ?>
+<?php
+    $_filters = $block->getActiveFilters();
+    $filtersCount = count($_filters);
+?>
+<?php if (!empty($_filters)): ?>
     <div class="cs-aftersearch-nav__state cs-aftersearch-nav-state">
         <ol class="cs-aftersearch-nav-state__items items">
-            <?php foreach ($filters as $filter): ?>
+            <?php foreach ($_filters as $filter): ?>
                 <li class="cs-aftersearch-nav-state__item item">
                     <?php
                     $clearLinkUrl = $filter->getClearLinkUrl();

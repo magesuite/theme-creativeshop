@@ -1,15 +1,17 @@
 <?php
 /**
-* Template overridden in order to:
-* - add optional flag images (can be configured from xml)
-* - make labels optional (can be configured from xml)
-* - add icon for trigger
-* - add magesuite classes
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden in order to:
+ * - add optional flag images (can be configured from xml)
+ * - make labels optional (can be configured from xml)
+ * - add icon for trigger
+ * - add magesuite classes
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
+ */
+
 /** @var \Magento\Store\Block\Switcher $block */
 ?>
-<?php if (count($block->getGroups())>1): ?>
+<?php if (count($block->getGroups())>1) : ?>
 <?php
     $showFlags = $block->getShowFlags();
     $showLabels = $block->getShowLabels();
@@ -49,24 +51,24 @@
         <div class="cs-dropdown-switcher__list dropdown switcher-dropdown" data-target="dropdown">
             <ul class="cs-dropdown-switcher__list-inner">
                 <?php foreach ($block->getGroups() as $group): ?>
-                <?php if (!($group->getId() == $block->getCurrentGroupId())): ?>
-                <?php $name = $block->escapeHtml($group->getName()); ?>
-                    <li class=" cs-dropdown-switcher__list-item switcher-option">
-                        <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @noEscape */ $block->getTargetStorePostData($group->getDefaultStore()) ?>'>
-                            <?php if ($showFlags): ?>
-                                <?= $this->getLayout()
-                                    ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
-                                    ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($group->getCode())).'.svg')
-                                    ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($group->getCode()))
-                                    ->setAltText(__($name))
-                                    ->toHtml(); ?>
-                            <?php endif ?>
-                            <?php if ($showLabels): ?>
-                                <?= __($name) ?>
-                            <?php endif ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
+                    <?php if (!($group->getId() == $block->getCurrentGroupId())): ?>
+                        <?php $name = $block->escapeHtml($group->getName()); ?>
+                        <li class="cs-dropdown-switcher__list-item switcher-option">
+                            <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @noEscape */ $block->getTargetStorePostData($group->getDefaultStore()) ?>'>
+                                <?php if ($showFlags): ?>
+                                    <?= $this->getLayout()
+                                        ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
+                                        ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($group->getCode())).'.svg')
+                                        ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($group->getCode()))
+                                        ->setAltText(__($name))
+                                        ->toHtml(); ?>
+                                <?php endif ?>
+                                <?php if ($showLabels): ?>
+                                    <?= __($name) ?>
+                                <?php endif ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
         </div>

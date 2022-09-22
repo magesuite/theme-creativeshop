@@ -1,20 +1,20 @@
 <?php
 /**
-* Template has been overwritten in order to:
-* - remove sticky feature init,
-* - link stylesheet only when LAC notification is visible on frontend
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template has been overwritten in order to:
+ * - remove sticky feature init,
+ * - link stylesheet only when LAC notification is visible on frontend
+ *
+ * Aligned with Magento 2.4.5 at 09.2022
+ */
 
 /**
-* @var \Magento\Framework\View\Element\Template $block
-* @var \Magento\Framework\Escaper $escaper
-*/
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg');
 ?>
 <?php if ($block->getConfig()->isEnabled()): ?>
-    <link rel="stylesheet" type="text/css" href="<?= $block->getViewFileUrl('css/login-as-customer.css'); ?>"/>
-    <?php $viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg'); ?>
-
+    <link rel="stylesheet" type="text/css" href="<?= $block->getViewFileUrl('css/login-as-customer.css'); ?>" />
     <div class="lac-notification-sticky"
          data-bind="scope: 'loginAsCustomer'" >
         <div class="lac-notification clearfix" data-bind="visible: isVisible" style="display: none">
