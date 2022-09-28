@@ -53,7 +53,14 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         );
 
         &[disabled] {
-            opacity: 1;
+            /* 
+             * ATC btn. in buybox uses deferATCClick()
+             * as part of the `Faster Add To Cart` enahncement
+             * therefore it's appearance is set to normal all the time.
+             */
+            .#{$ns}buybox & {
+                opacity: 1;
+            }
         }
 
         &,
