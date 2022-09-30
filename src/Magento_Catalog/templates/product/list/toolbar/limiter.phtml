@@ -35,7 +35,8 @@
                     <?php if ($block->isLimitCurrent($_key)):?>
                         selected="selected"
                     <?php endif ?>>
-                    <?= $block->escapeHtml($localeFormatter->formatNumber((int) $_limit)) ?>
+                    <?php $limitLabel = is_numeric($_limit) ? $localeFormatter->formatNumber((int)$_limit) : $_limit; ?>
+                    <?=$block->escapeHtml($limitLabel) ?>
                 </option>
             <?php endforeach; ?>
         </select>
