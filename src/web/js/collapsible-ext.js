@@ -22,7 +22,6 @@ define(['jquery', 'matchMedia'], function ($, mediaCheck) {
                 /**
                  * Save original `active` option to another one as original widget operates on the original option. We want to recreate collapse with original settings passed to options
                  */
-
                 this.options.initialActiveOption = this.options.active;
 
                 // we only want to run _scopeToMediaQuery once if needed at all
