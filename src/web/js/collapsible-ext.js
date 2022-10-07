@@ -38,6 +38,8 @@ define(['jquery', 'matchMedia'], function ($, mediaCheck) {
                 } else {
                     this._scopeToMediaQuery();
                 }
+
+                return this;
             },
 
             /**
