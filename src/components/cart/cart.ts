@@ -20,6 +20,7 @@ export default class Cart {
     protected _cartTable: HTMLElement;
     protected _updateTimeout: any;
     protected _removeTimeout: any;
+    protected _initValue: number;
 
     public constructor(options?: CartOptions) {
         this._options = $.extend(
@@ -38,15 +39,18 @@ export default class Cart {
             `${this._options.cartTableSelector}`
         );
         this._updateTimeout = null;
+        this._initValue = 0;
 
         this._attachEvents();
     }
 
     protected _triggerUpdate(
+        item: JQuery = null,
         delay: number = this._options.updateCartActionTimeout
     ): void {
         this._destroyRunningTimeouts();
 
+        this._initValue = Number(item.val());
         this._updateTimeout = setTimeout((): void => {
             $(`${this._options.cartUpdateButtonSelector}`).trigger('click');
         }, delay);
@@ -101,7 +105,7 @@ export default class Cart {
                         .hasClass('cs-qty-increment__button--disabled') &&
                     !$(e.target).hasClass('cs-qty-increment__button--disabled')
                 ) {
-                    this._triggerUpdate();
+                    this._triggerUpdate($(e.target));
                 }
             }
         );
@@ -111,15 +115,18 @@ export default class Cart {
             (e): void => {
                 const newValue = $(e.target).val();
 
-                // Don't perform any action when input is empty (e.g. when user hits backspace)
-                if (newValue === '') {
+                // Don't perform any action when input is empty (e.g. when user hits backspace) or value doesn't change (to prevent duplicated error (NKD-3292))
+                if (
+                    newValue === '' ||
+                    Number(this._initValue) === Number(newValue)
+                ) {
                     return;
                 }
 
                 if (Number(newValue) < _this._options.minQtyValue) {
                     this._removeItem($(e.target));
                 } else {
-                    this._triggerUpdate();
+                    this._triggerUpdate($(e.target));
                 }
             }
         );
