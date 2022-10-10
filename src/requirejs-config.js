@@ -21,14 +21,23 @@ var config = {
     },
     config: {
         mixins: {
+            'collapsible': {
+                'js/collapsible-ext': true,
+            },
             'mage/collapsible': {
                 'js/collapsible-ext': true,
+            },
+            'dropdownDialog': {
+                'js/dropdown-ext': true,
             },
             'mage/dropdown': {
                 'js/dropdown-ext': true,
             },
             'mage/validation': {
                 'js/validation-ext': true,
+            },
+            'catalogAddToCart': {
+                'Magento_Catalog/js/catalog-add-to-cart-ext': true,
             },
             'Magento_Catalog/js/catalog-add-to-cart': {
                 'Magento_Catalog/js/catalog-add-to-cart-ext': true,
@@ -48,14 +57,23 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
+            'sidebar': {
+                'Magento_Checkout/js/sidebar-ext': true,
+            },
             'Magento_Checkout/js/sidebar': {
                 'Magento_Checkout/js/sidebar-ext': true,
+            },
+            'regionUpdater': {
+                'Magento_Checkout/js/region-updater-ext': true,
             },
             'Magento_Checkout/js/region-updater': {
                 'Magento_Checkout/js/region-updater-ext': true,
             },
             'Magento_Checkout/js/model/step-navigator': {
                 'Magento_Checkout/js/model/step-navigator-ext': true,
+            },
+            'quickSearch': {
+                'Smile_ElasticsuiteCore/js/form-mini-ext': true,
             },
             'Smile_ElasticsuiteCore/js/form-mini': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
@@ -65,6 +83,9 @@ var config = {
             },
             'Magento_CheckoutAgreements/js/view/checkout-agreements': {
                 'Magento_CheckoutAgreements/js/view/checkout-agreements-ext': true,
+            },
+            'rangeSlider': {
+                'Magento_CheckoutAgreements/js/model/agreement-validator-ext': true,
             },
             'Magento_CheckoutAgreements/js/model/agreement-validator': {
                 'Magento_CheckoutAgreements/js/model/agreement-validator-ext': true,
@@ -86,6 +107,9 @@ var config = {
             'PluginCompany_ContactForms/js/form': {
                 'PluginCompany_ContactForms/js/form-ext': true,
             },
+            'relatedProducts': {
+                'Magento_Catalog/js/related-products-ext': true,
+            },
             'Magento_Catalog/js/related-products': {
                 'Magento_Catalog/js/related-products-ext': true,
             },
@@ -100,6 +124,9 @@ var config = {
             },
             'Magento_Review/js/process-reviews': {
                 'Magento_Review/js/process-reviews-ext': true,
+            },
+            'slide': {
+                'Magento_Bundle/js/slide-ext': true,
             },
             'Magento_Bundle/js/slide': {
                 'Magento_Bundle/js/slide-ext': true,
