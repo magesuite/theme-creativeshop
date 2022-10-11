@@ -197,3 +197,12 @@ It does not support listening with jQuery anymore, use native addEventListener a
 > and event data is properly referenced (like event.detail.breakpointName)
 
 <br/>
+
+## Advanced tab has been created for teaser based CC components with index equals to 2.
+This tab provides additional options for teaser based CC components like possibility to set `fetchpriority` attribute as high, open CTA links in new tab
+and passing tracking ID value to teaser slide element as data attribute.
+> Dev hint:
+> Check if project theme implements any custom field within newly created tab with index equals 2, if so adjust index properly in order to not to override
+> advanced tab. 
+
+<br/>
