@@ -157,6 +157,7 @@ export default class Offcanvas {
         this._$trigger
             .removeClass(`${this._options.triggerClassName}--active`)
             .attr('aria-expanded', 'false');
+        $('body').removeClass(this._options.bodyOpenClass);
         return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
             () => {
                 this._$element.trigger('offcanvas-hide', this);
