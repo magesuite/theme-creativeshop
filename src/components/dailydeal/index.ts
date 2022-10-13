@@ -22,7 +22,7 @@ $(`.${ns}dailydeal--tile`).each(function (): void {
     setTimeout(() => {
         new Dailydeal($(this), {
             namespace: ns,
-            updateLabels: false,
+            updateLabels: true,
         });
     });
 });
