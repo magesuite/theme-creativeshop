@@ -1,13 +1,14 @@
 <?php
 /**
-* Template overriden to add Magesuite stars component
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overriden to add Magesuite stars component
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 /**
-* @var \Magento\Review\Block\Customer\View $block
-* @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
-*/
+ * @var \Magento\Review\Block\Customer\View $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
 
 $product = $block->getProductData();
 ?>
@@ -40,6 +41,7 @@ $product = $block->getProductData();
                     <?php $rating = ceil($_rating->getPercent()) ?>
                     <div class="rating-summary item">
                         <div class="rating-result <?= $block->escapeHtml($_rating->getRatingCode()) ?>"
+                             id="rating-div-<?= $block->escapeHtml($ratingId) ?>"
                              title="<?= /* @noEscape */ $rating ?>%">
                             <?= $this->getLayout()
                                     ->createBlock(\Magento\Framework\View\Element\Template::class)
@@ -51,6 +53,12 @@ $product = $block->getProductData();
                             ?>
                         </div>
                         <span class="cs-star-rating__text"><?= $block->escapeHtml($_rating->getRatingCode()) ?></span>
+                        <?= /* @noEscape */
+                            $secureRenderer->renderStyleAsTag(
+                                "width:" . /* @noEscape */ $rating . "%",
+                                'div#rating-div-'.$_rating->getRatingId().
+                                '>span:first-child'
+                            ) ?>
                     </div>
                 <?php endif; ?>
                 <?php endforeach; ?>
@@ -58,15 +66,20 @@ $product = $block->getProductData();
         <?php endif; ?>
 
         <div class="review-title"><?= $block->escapeHtml($block->getReviewData()->getTitle()) ?></div>
-        <div class="review-content"><?= /* @noEscape */ nl2br($block->escapeHtml($block->getReviewData()->getDetail())) ?></div>
+        <div class="review-content">
+            <?= /* @noEscape */ nl2br($block->escapeHtml($block->getReviewData()->getDetail())) ?>
+        </div>
         <div class="review-date">
-            <?= $block->escapeHtml(__('Submitted on %1', '<time class="date">' . $block->dateFormat($block->getReviewData()->getCreatedAt()) . '</time>'), ['time']) ?>
+            <?= $block->escapeHtml(__('Submitted on %1', '<time class="date">' .
+                $block->dateFormat($block->getReviewData()->getCreatedAt()) . '</time>'), ['time']) ?>
         </div>
     </div>
 </div>
 <div class="actions-toolbar">
     <div class="secondary">
-        <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>"><span><?= $block->escapeHtml(__('Back to My Reviews')) ?></span></a>
+        <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+            <span><?= $block->escapeHtml(__('Back to My Reviews')) ?></span>
+        </a>
     </div>
 </div>
 <?php endif; ?>

@@ -3,15 +3,16 @@
  * Override to adjust table:
  * - implementation of qty-increment component instead of native input
  * - copied back in stock modifications from magesuite-back-in-stock/view/frontend/templates/product/view/type/grouped/grouped.phtml
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
  */
 
 /**
-* Grouped product data template
-*
-* @var $block \Magento\Catalog\Block\Product\View\BaseImage
-* @var $block \Magento\GroupedProduct\Block\Product\View\Type\Grouped
-*/
+ * Grouped product data template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\BaseImage
+ * @var $block \Magento\GroupedProduct\Block\Product\View\Type\Grouped
+ */
 ?>
 <?php $block->setPreconfiguredValue(); ?>
 <?php $_product = $block->getProduct(); ?>
@@ -21,7 +22,7 @@
 <div class="table-wrapper grouped">
     <table class="table data grouped"
            id="super-product-table"
-           data-mage-init='{"Magento_GroupedProduct/js/product-ids-resolver": {}}'>
+           data-mage-init='{ "Magento_GroupedProduct/js/product-ids-resolver": {} }'>
         <caption class="table-caption"><?= $block->escapeHtml(__('Grouped product items')) ?></caption>
         <thead>
         <tr>
@@ -49,14 +50,14 @@
                 <?php if ($_item->isSaleable()) : ?>
                     <div class="control qty">
                         <?= $this->getLayout()
-                              ->createBlock('Magento\Framework\View\Element\Template')
-                              ->setInputName('super_group['.$block->escapeHtmlAttr($_item->getId()).']')
-                              ->setInputInitialValue($_item->getQty() * 1)
-                              ->setInputAdditionalParams('data-selector="super_group['.$block->escapeHtmlAttr($_item->getId()).']" data-validate="{\'validate-grouped-qty\':\'#super-product-table\'}"  data-errors-message-box="#validation-message-box" min="0" data-min-value="0" data-update-instances-under-parent="#super-product-table"')
-                              ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
-                              ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
-                              ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
-                              ->toHtml(); ?>
+                            ->createBlock('Magento\Framework\View\Element\Template')
+                            ->setInputName('super_group['.$block->escapeHtmlAttr($_item->getId()).']')
+                            ->setInputInitialValue($_item->getQty() * 1)
+                            ->setInputAdditionalParams('data-selector="super_group['.$block->escapeHtmlAttr($_item->getId()).']" data-validate="{\'validate-grouped-qty\':\'#super-product-table\'}"  data-errors-message-box="#validation-message-box" min="0" data-min-value="0" data-update-instances-under-parent="#super-product-table"')
+                            ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
+                            ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
+                            ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+                            ->toHtml(); ?>
                     </div>
                 <?php else : ?>
                     <div class="stock unavailable" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
@@ -84,11 +85,11 @@
             <?php endif; ?>
         <?php endforeach; ?>
         </tbody>
-        <?php else: ?>
+        <?php else : ?>
         <tbody>
             <tr>
                 <td class="unavailable"
-                    colspan="<?php if ($_product->isSaleable()): ?>4<?php else : ?>3<?php endif; ?>">
+                    colspan="<?php if ($_product->isSaleable()) : ?>4<?php else : ?>3<?php endif; ?>">
                     <?= $block->escapeHtml(__('No options of this product are available.')) ?>
                 </td>
             </tr>

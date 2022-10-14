@@ -1,19 +1,20 @@
 <?php
 /**
-* Template overwritten to:
-* - integrate xml configuration
-* - add qty-increment
-* - remove addtocart button which has a separate template in magesuite (addtocart/button.phtml)
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overwritten to:
+ * - integrate xml configuration
+ * - add qty-increment
+ * - remove addtocart button which has a separate template in magesuite (addtocart/button.phtml)
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
 <?php
-    $product = $block->getProduct();
+    $_product = $block->getProduct();
 ?>
 
-<?php if ($product->isSaleable()): ?>
+<?php if ($_product->isSaleable()): ?>
     <div class="box-tocart cs-buybox__addtocart <?= $block->getAdditionalCssClasses() ?>">
         <div class="cs-buybox__addtocart-fieldset">
             <?php if ($block->shouldRenderQuantity()): ?>
@@ -43,7 +44,6 @@
         </div>
     </div>
 <?php endif; ?>
-
 <script type="text/x-magento-init">
     {
         "#product_addtocart_form": {

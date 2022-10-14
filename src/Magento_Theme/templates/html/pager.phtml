@@ -4,14 +4,18 @@
 * - add custom pagination input
 * - add magesuite classes
 * - on cs-pagination__content element add data attribute for Load More button functionality
-* Aligned with Magento 2.4.4 at (31.05.2022)
+* Aligned with Magento 2.4.5 at 09/2022
 */
 /** @see \Magento\Theme\Block\Html\Pager */
 
 /**
+ * Pager template
+ *
  * @var \Magento\Theme\Block\Html\Pager $block
  * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\Locale\LocaleFormatter $localeFormatter
  */
+
 ?>
 <?php
     $numberOfReviews = $block->getCollection()->getSize();
@@ -115,14 +119,19 @@
                     <ul class="items pages-items cs-pagination__items" role="none">
                         <?php if ($block->canShowFirst()): ?>
                             <li class="item cs-pagination__item cs-pagination__item--first-page" role="none">
-                                <a class="page first cs-pagination__number cs-pagination__number--first-page" href="<?= $block->escapeUrl($block->getFirstPageUrl()) ?>" role="menuitem"><span>1</span></a>
+                                <a class="page first cs-pagination__number cs-pagination__number--first-page" href="<?= $block->escapeUrl($block->getFirstPageUrl()) ?>" role="menuitem">
+                                    <span><?= $block->escapeHtml($localeFormatter->formatNumber(1)) ?></span>
+                                </a>
                             </li>
                         <?php endif;?>
 
                         <?php if ($block->canShowPreviousJump()): ?>
                             <li class="item cs-pagination__item" role="none">
                                 <a class="page previous jump cs-pagination__number cs-pagination__number--jump"
-                                   aria-label="<?= $escaper->escapeHtmlAttr(__('Skip to page %1', $block->getPreviousJumpPage())) ?>"
+                                   aria-label="<?= $escaper->escapeHtmlAttr(__(
+                                        'Skip to page %1',
+                                        $localeFormatter->formatNumber($block->getPreviousJumpPage())
+                                    )) ?>"
                                    href="<?= $block->escapeUrl($block->getPreviousJumpUrl()) ?>"
                                    role="menuitem">
                                     <span>...</span>
@@ -132,15 +141,17 @@
 
                         <?php foreach ($block->getFramePages() as $page): ?>
                             <?php if ($block->isPageCurrent($page)): ?>
-                                <li class="item current cs-pagination__item cs-pagination__item--current" role="none">
+                                <li class="item current cs-pagination__item cs-pagination__item--current">
                                     <span class="cs-pagination__number cs-pagination__number--current">
                                         <span class="label cs-visually-hidden"><?= $block->escapeHtml(__('You\'re currently reading page')) ?> </span>
-                                        <span><?= $block->escapeHtml($page) ?></span>
+                                        <span><?= $block->escapeHtml($localeFormatter->formatNumber($page)) ?></span>
                                     </span>
                                 </li>
                             <?php else: ?>
                                 <li class="item cs-pagination__item" role="none">
-                                    <a href="<?= $block->escapeUrl($block->getPageUrl($page)) ?>" class="page cs-pagination__number" role="menuitem"><span><?= /* @escapeNotVerified */ $page; ?></span></a>
+                                    <a href="<?= $block->escapeUrl($block->getPageUrl($page)) ?>" class="page cs-pagination__number">
+                                        <span><?= $block->escapeHtml($localeFormatter->formatNumber($page)) ?></span>
+                                    </a>
                                 </li>
                             <?php endif;?>
                         <?php endforeach;?>
@@ -148,9 +159,12 @@
                         <?php if ($block->canShowNextJump()): ?>
                             <li class="item cs-pagination__item" role="none">
                                 <a class="page next jump cs-pagination__number cs-pagination__number--jump"
-                                   aria-label="<?= $escaper->escapeHtmlAttr(__('Skip to page %1', $block->getNextJumpPage())) ?>"
-                                   href="<?= $block->escapeUrl($block->getNextJumpUrl()) ?>"
-                                   role="menuitem">
+                                   title=""
+                                   aria-label="<?= $escaper->escapeHtmlAttr(__(
+                                        'Skip to page %1',
+                                        $localeFormatter->formatNumber($block->getNextJumpPage())
+                                    )) ?>"
+                                   href="<?= $block->escapeUrl($block->getNextJumpUrl()) ?>">
                                     <span>...</span>
                                 </a>
                             </li>
@@ -158,7 +172,9 @@
 
                         <?php if ($block->canShowLast()): ?>
                             <li class="item cs-pagination__item cs-pagination__item--last-page" role="none">
-                                <a class="page last cs-pagination__number cs-pagination__number--last-page" href="<?= $block->escapeUrl($block->getLastPageUrl()) ?>" role="menuitem"><span><?= $block->escapeHtml($block->getLastPageNum()) ?></span></a>
+                                <a class="page last cs-pagination__number cs-pagination__number--last-page" href="<?= $block->escapeUrl($block->getLastPageUrl()) ?>" role="menuitem">
+                                    <span><?= $block->escapeHtml($localeFormatter->formatNumber($block->getLastPageNum())) ?></span>
+                                </a>
                             </li>
                         <?php endif;?>
                     </ul>
@@ -203,9 +219,10 @@
         <strong class="limiter-label"><?= $block->escapeHtml(__('Show')) ?></strong>
             <select id="limiter" data-mage-init='{"redirectUrl": {"event":"change"}}' class="limiter-options">
                 <?php foreach ($block->getAvailableLimit() as $_key => $_limit): ?>
-                    <option value="<?= $block->escapeUrl($block->getLimitUrl($_key)) ?>"<?php if ($block->isLimitCurrent($_key)): ?>
+                    <option value="<?= $block->escapeUrl($block->getLimitUrl($_key)) ?>"
+                        <?php if ($block->isLimitCurrent($_key)): ?>
                         selected="selected"<?php endif ?>>
-                        <?= $block->escapeHtml($_limit) ?>
+                        <?= $block->escapeHtml($localeFormatter->formatNumber((int) $_limit)) ?>
                     </option>
                 <?php endforeach; ?>
             </select>

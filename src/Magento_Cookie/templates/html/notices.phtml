@@ -1,13 +1,14 @@
 <?php
 /**
-* Template originally overridden to implement BEM classes
-* - modification 14.08.2018 =>
-*      - Removed Magento's copyright notice;
-*      - Implementation of optional CMS Block for text => fallback left when CMS block is not available;
-*      - Cookie icon is now defined in XML;
-*      - "Allow cookie" buttons' text is now defined in XML;
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden to:
+ * - add MageSuite classes
+ * - Removed Magento's copyright notice;
+ * - Implementation of optional CMS Block for text => fallback left when CMS block is not available;
+ * - Cookie icon is now defined in XML;
+ * - "Allow cookie" buttons' text is now defined in XML;
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 /** @var \Magento\Cookie\Block\Html\Notices $block */
 /** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
@@ -19,7 +20,7 @@ $cookieHelper = $block->getData('cookieHelper');
 <?php if ($cookieHelper->isCookieRestrictionModeEnabled()): ?>
     <?php
         /** @var \MageSuite\Frontend\Helper\Store $storeHelper */
-        $storeHelper = $this->helper('MageSuite\Frontend\Helper\Store');
+        $storeHelper = $this->helper(\MageSuite\Frontend\Helper\Store::class);
         $currentStoreId = $storeHelper->getCurrentStoreId();
         $cookieNoticeBlockId = $block->getNoticeCmsBlockId();
         $cookieNoticeCmsBlock = $this->getLayout()

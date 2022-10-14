@@ -1,15 +1,20 @@
 <?php
 /**
-* Template overridden to:
-* - add xml configuration (etc/view.xml) with possibility to hide some toolbar elements
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
-
-/** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */
+ * Template overridden to:
+ * - add xml configuration (etc/view.xml) with possibility to hide some toolbar elements
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 ?>
-<?php if ($block->getCollection()->getSize()): ?>
-    <?php
-        $widget = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonDecode($block->getWidgetOptionsJson());
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+?>
+<?php if ($block->getCollection()->getSize()) :?>
+    <?php $widget = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonDecode($block->getWidgetOptionsJson());
         $widgetOptions = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($widget['productListToolbarForm']);
     ?>
     <div

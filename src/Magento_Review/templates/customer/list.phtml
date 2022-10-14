@@ -1,14 +1,15 @@
 <?php
 /**
-* Template overridden to add Magesuite stars component include
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden to add Magesuite stars component include
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 /**
-* @var \Magento\Review\Block\Customer\ListCustomer $block
-* @var \Magento\Framework\Escaper $escaper
-* @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
-*/
+ * @var \Magento\Review\Block\Customer\ListCustomer $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
 
 /** @var \Magento\Review\Helper\Data $reviewHelper */
 $reviewHelper = $block->getData('reviewHelper');
@@ -29,10 +30,14 @@ $reviewHelper = $block->getData('reviewHelper');
             <tbody>
                 <?php foreach ($block->getReviews() as $review): ?>
                 <tr>
-                    <td data-th="<?= $escaper->escapeHtml(__('Created')) ?>" class="col date"><?= $escaper->escapeHtml($block->dateFormat($review->getReviewCreatedAt())) ?></td>
+                    <td data-th="<?= $escaper->escapeHtml(__('Created')) ?>"
+                        class="col date"><?= $escaper->escapeHtml($block->dateFormat($review->getReviewCreatedAt())) ?>
+                    </td>
                     <td data-th="<?= $escaper->escapeHtml(__('Product Name')) ?>" class="col item">
                         <strong class="product-name">
-                            <a href="<?= $escaper->escapeUrl($block->getProductUrl($review)) ?>"><?= $escaper->escapeHtml($review->getName()) ?></a>
+                            <a href="<?= $escaper->escapeUrl($block->getProductUrl($review)) ?>">
+                                <?= $escaper->escapeHtml($review->getName()) ?>
+                            </a>
                         </strong>
                     </td>
                     <td data-th="<?= $escaper->escapeHtml(__('Rating')) ?>" class="col summary">
@@ -40,6 +45,7 @@ $reviewHelper = $block->getData('reviewHelper');
                         <div class="rating-summary">
                             <span class="label"><span><?= $escaper->escapeHtml(__('Rating')) ?>:</span></span>
                             <div class="rating-result"
+                                 id="rating-result_<?= /* @noEscape */ $block->escapeHtml($review->getId()) ?>"
                                  title="<?= /* @noEscape */ ((int)$review->getSum() / (int)$review->getCount()) ?>%">
                                 <?= $this->getLayout()
                                     ->createBlock(\Magento\Framework\View\Element\Template::class)
@@ -52,6 +58,12 @@ $reviewHelper = $block->getData('reviewHelper');
                                 ?>
                             </div>
                         </div>
+                        <?= /* @noEscape */
+                        $secureRenderer->renderStyleAsTag(
+                            "width:" . /* @noEscape */ ((int)$review->getSum() / (int)$review->getCount()) . "%;",
+                            'div.rating-summary div.rating-result>span.rating_' .
+                                            $escaper->escapeUrl($review->getReviewId())
+                        ) ?>
                     <?php endif; ?>
                     </td>
                     <td data-th="<?= $escaper->escapeHtmlAttr(__('Review')) ?>" class="col description">

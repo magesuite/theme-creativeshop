@@ -1,11 +1,13 @@
 <?php
 /**
-* Template override:
-* - move print option inside table
-* - display additional information: star ratings, addtocart & addto wishlist components
-* - change remove link to button
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template override:
+ * - move print option inside table
+ * - display additional information: star ratings, addtocart & addto wishlist components
+ * - change remove link to button
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
+
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 // phpcs:disable PSR2.ControlStructures.SwitchDeclaration
 // phpcs:disable Generic.WhiteSpace.ScopeIndent
@@ -31,7 +33,7 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
             <thead>
             <tr>
                 <?php $index = 0; ?>
-                <?php $helper = $this->helper(Magento\Catalog\Helper\Output::class); ?>
+                <?php $helper = $this->helper(\Magento\Catalog\Helper\Output::class); ?>
                 <?php /** @var $item \Magento\Catalog\Model\Product */ ?>
                 <?php foreach ($block->getItems() as $item) :?>
                     <?php if ($index++ == 0) :?>
@@ -55,7 +57,7 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                     <?php endif; ?>
                     <td data-th="<?= $block->escapeHtmlAttr(__('Product')) ?>" class="cell product info">
                         <div class="cs-product-compare__product">
-                            <?php if ($this->helper(Magento\Wishlist\Helper\Data::class)->isAllow()) :?>
+                            <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow()) :?>
                                 <div class="secondary-addto-links" data-role="add-to-links">
                                     <ul class="cs-links-block-addto">
                                         <li class="cs-links-block-addto__item cs-links-block-addto__item--wishlist">
@@ -133,7 +135,7 @@ $csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
                                 </div>
                             <?php endif; ?>
                             <div class="actions-secondary">
-                                <?php $compareHelper = $this->helper(Magento\Catalog\Helper\Product\Compare::class);?>
+                                <?php $compareHelper = $this->helper(\Magento\Catalog\Helper\Product\Compare::class);?>
                                 <a href="#" data-post='<?= /* @noEscape */ $compareHelper->getPostDataRemove($item) ?>' class="cs-product-compare__remove action delete" title="<?= $block->escapeHtmlAttr(__('Remove Product')) ?>">
                                     <span class="cs-product-compare__remove-text"><?= $block->escapeHtml(__('Remove Product')) ?></span>
                                     <?= $block->getChildHtml('catalog.compare.list.icon.remove'); ?>

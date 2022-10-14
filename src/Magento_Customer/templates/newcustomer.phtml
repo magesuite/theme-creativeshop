@@ -3,31 +3,28 @@
  * Template overridden to:
  * - make title configurable from xml
  * - make block content configurable in static block
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
  */
 
 /** @var \Magento\Customer\Block\Form\Login\Info $block */
 ?>
-<?php if ($block->getRegistration()->isAllowed()): ?>
+<?php if ($block->getRegistration()->isAllowed()) : ?>
 <div class="block block-new-customer">
     <div class="block-title">
         <strong id="block-new-customer-heading" role="heading" aria-level="2"><?= $block->escapeHtml(__($block->getBlockTitle())) ?></strong>
     </div>
-
     <div class="block-content" aria-labelledby="block-new-customer-heading">
-
-        <?php echo $this->getLayout()
+        <?= $this->getLayout()
         ->createBlock(\MageSuite\ThemeHelpers\Block\Cms\CacheableBlock::class)
         ->setBlockId('login-page-create-account')
         ->toHtml();
         ?>
-
         <div class="actions-toolbar">
             <div class="primary">
                 <a href="<?= $block->escapeUrl($block->getCreateAccountUrl()) ?>" class="action create primary"><span><?= $block->escapeHtml(__('Create an Account')) ?></span></a>
             </div>
         </div>
     </div>
-
 </div>
 <?php endif; ?>

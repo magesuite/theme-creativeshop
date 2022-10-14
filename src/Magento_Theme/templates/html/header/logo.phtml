@@ -1,27 +1,28 @@
 <?php
 /**
-* Template overridden in order to:
-* - add possibility to define mobile logo
-* - add magesuite classes
-* - do not wrap logo with link tag if it is homepage
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden in order to:
+ * - add possibility to define mobile logo
+ * - add magesuite classes
+ * - do not wrap logo with link tag if it is homepage
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 /**
-* @var \Magento\Theme\Block\Html\Header\Logo $block
-*/
-    $mobileLogoPath = $block->getVar('header/mobile_logo_path', 'Magento_Theme');
-    $mobileLogoWidth = $block->getVar('header/mobile_logo_width', 'Magento_Theme');
-    $mobileLogoHeight = $block->getVar('header/mobile_logo_height', 'Magento_Theme');
-    /**
-     * @var \Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolverInterface|null $logoSizeResolver
-     */
-    $logoSizeResolver = $block->getLogoSizeResolver();
-    $logoWidth = $logoSizeResolver !== null && $logoSizeResolver->getWidth()
-        ? $logoSizeResolver->getWidth()
-        : $block->getLogoWidth();
-    $logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
-        ? $logoSizeResolver->getHeight()
-        : $block->getLogoHeight();
+ * @var \Magento\Theme\Block\Html\Header\Logo $block
+ */
+$mobileLogoPath = $block->getVar('header/mobile_logo_path', 'Magento_Theme');
+$mobileLogoWidth = $block->getVar('header/mobile_logo_width', 'Magento_Theme');
+$mobileLogoHeight = $block->getVar('header/mobile_logo_height', 'Magento_Theme');
+/**
+ * @var \Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolverInterface|null $logoSizeResolver
+ */
+$logoSizeResolver = $block->getLogoSizeResolver();
+$logoWidth = $logoSizeResolver !== null && $logoSizeResolver->getWidth()
+    ? $logoSizeResolver->getWidth()
+    : $block->getLogoWidth();
+$logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
+    ? $logoSizeResolver->getHeight()
+    : $block->getLogoHeight();
 ?>
 <?php $storeName = $block->getThemeName() ? $block->getThemeName() : $block->getLogoAlt();?>
 <div class="cs-header__logo">
