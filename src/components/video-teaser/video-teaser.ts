@@ -119,7 +119,9 @@ export default class VideoTeaser {
         if (consentStatus) {
             if (isVisible) {
                 if (hasPlayer) {
-                    videoPlayer.play(videoTeaserId);
+                    if (videoTypeConfig.player_vars.autoplay) {
+                        videoPlayer.play(videoTeaserId);
+                    }
                 } else {
                     const videoWrapper: HTMLDivElement =
                         document.createElement('div');
