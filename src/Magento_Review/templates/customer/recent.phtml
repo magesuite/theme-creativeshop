@@ -1,41 +1,48 @@
 <?php
 /**
-* Template overridden to add Magesuite stars component include
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden to add Magesuite stars component include
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 /**
-* @var \Magento\Review\Block\Customer\Recent $block
-* @var \Magento\Framework\Escaper $escaper
-* @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
-*/
+ * @var \Magento\Review\Block\Customer\Recent $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
 ?>
 <?php if ($block->getReviews() && count($block->getReviews())): ?>
 <div class="block block-reviews-dashboard">
     <div class="block-title">
         <strong><?= $escaper->escapeHtml(__('My Recent Reviews')) ?></strong>
-        <a class="action view" href="<?= $escaper->escapeUrl($block->getAllReviewsUrl()) ?>"><span><?= $escaper->escapeHtml(__('View All')) ?></span></a>
+        <a class="action view" href="<?= $escaper->escapeUrl($block->getAllReviewsUrl()) ?>">
+            <span><?= $escaper->escapeHtml(__('View All')) ?></span>
+        </a>
     </div>
     <div class="block-content">
         <ol class="items">
-        <?php foreach ($block->getReviews() as $review): ?>
+        <?php foreach ($block->getReviews() as $_review): ?>
             <li class="item">
-                <strong class="product-name"><a href="<?= $escaper->escapeUrl($block->getReviewUrl($review->getReviewId())) ?>"><?= $block->escapeHtml($review->getName()) ?></a></strong>
-                <?php if ($review->getSum()): ?>
+                <strong class="product-name">
+                    <a href="<?= $escaper->escapeUrl($block->getReviewUrl($_review->getReviewId())) ?>">
+                        <?= $escaper->escapeHtml($_review->getName()) ?>
+                    </a>
+                </strong>
+                <?php if ($_review->getSum()): ?>
                 <?php
-                    $review_count = $review->getCount();
-                    $rating = $review->getSum() / $review_count;
+                    $review_count = $_review->getCount();
+                    $rating = $_review->getSum() / $review_count;
                     $dividedRating = floor(($rating / 20) * 2) / 2;
                 ?>
-                    <?= $this->getLayout()
-                            ->createBlock(\Magento\Framework\View\Element\Template::class)
-                            ->setMaxStars(5)
-                            ->setActiveStars($dividedRating)
-                            ->setReviewsCount($dividedRating)
-                            ->setHideReviewsCount(true)
-                            ->setTemplate('Magento_Review::rating-stars.phtml')
-                            ->toHtml();
-                    ?>
+                <?= $this->getLayout()
+                        ->createBlock(\Magento\Framework\View\Element\Template::class)
+                        ->setMaxStars(5)
+                        ->setActiveStars($dividedRating)
+                        ->setReviewsCount($dividedRating)
+                        ->setHideReviewsCount(true)
+                        ->setTemplate('Magento_Review::rating-stars.phtml')
+                        ->toHtml();
+                ?>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>

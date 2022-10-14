@@ -1,23 +1,26 @@
 <?php
 /**
-* Template overridden ir order to change $colspan from 3 to 4
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden ir order to change $colspan from 3 to 4
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
-/** @see \Magento\Checkout\Block\Cart\Totals */
+/**
+ * @see \Magento\Checkout\Block\Cart\Totals
+ */
 ?>
-<?php if ($block->getTotals()): ?>
-    <?php $colspan = 4; ?>
-    <?= /* @noEscape */ $block->renderTotals(null, $colspan); ?>
-    <?= /* @noEscape */ $block->renderTotals('footer', $colspan); ?>
+<?php if ($block->getTotals()) : ?>
+    <?php $_colspan = 4; ?>
+    <?= /* @noEscape */ $block->renderTotals(null, $_colspan) ?>
+    <?= /* @noEscape */ $block->renderTotals('footer', $_colspan) ?>
     <?php if ($block->needDisplayBaseGrandtotal()) : ?>
-        <tr class="totals charge">
-            <th class="mark" colspan="<?= /* @noEscape */ $colspan; ?>" scope="row">
-                <?= $block->escapeHtml(__('Your credit card will be charged for')) ?>
-            </th>
-            <td class="amount" data-th="<?= $block->escapeHtml(__('Your credit card will be charged for')) ?>">
-                <?= /* @noEscape */ $block->displayBaseGrandtotal() ?>
-            </td>
-        </tr>
+    <tr class="totals charge">
+        <th class="mark" colspan="<?= /* @noEscape */ $_colspan ?>" scope="row">
+            <?= $block->escapeHtml(__('Your credit card will be charged for')) ?>
+        </th>
+        <td class="amount" data-th="<?= $block->escapeHtml(__('Your credit card will be charged for')) ?>">
+            <?= /* @noEscape */ $block->displayBaseGrandtotal() ?>
+        </td>
+    </tr>
     <?php endif?>
 <?php endif; ?>

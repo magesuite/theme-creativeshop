@@ -2,7 +2,7 @@
 /**
  * Template has to be overriden in order to always show "Edit cart link" and in order to remove collapse
  * Also modal is moved from sidebar.html template
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ * Aligned with Magento 2.4.5 at 09/2022
  */
 -->
 <div
@@ -26,7 +26,7 @@ data-bind="afterRender:setModalElement, mageInit: {
             <strong role="heading">
                 <translate args="maxCartItemsToDisplay" if="maxCartItemsToDisplay < getCartLineItemsCount()"></translate>
                 <translate args="'of'" if="maxCartItemsToDisplay < getCartLineItemsCount()"></translate>
-                <span data-bind="text: getCartSummaryItemsCount()"></span>
+                <span data-bind="text: getCartSummaryItemsCount().toLocaleString(window.LOCALE)"></span>
                 <translate args="'Item in Cart'" if="getCartSummaryItemsCount() === 1"></translate>
                 <translate args="'Items in Cart'" if="getCartSummaryItemsCount() > 1"></translate>
             </strong>
@@ -44,10 +44,10 @@ data-bind="afterRender:setModalElement, mageInit: {
                 </ol>
             </div>
         </div>
-        <div class="actions-toolbar">
+        <div class="actions-toolbar" if="maxCartItemsToDisplay < getCartLineItemsCount()">
             <div class="secondary">
                 <a class="action viewcart" data-bind="attr: {href: cartUrl}">
-                    <span translate="'Edit'"></span>
+                    <span data-bind="i18n: 'Edit'"></span>
                 </a>
             </div>
         </div>

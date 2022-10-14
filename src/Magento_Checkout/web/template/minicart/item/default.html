@@ -6,7 +6,7 @@
  * - add SVG for See Details
  * - add conditions for boolean variables from XML
  * - add original price (old price - item.row_total_product_original_price) in case there is a special price
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ * Aligned with Magento 2.4.5 at 09/2022
  */
 -->
 
@@ -15,16 +15,14 @@
         <!-- ko if: product_has_url -->
         <a data-bind="attr: {href: product_url, title: product_name}" tabindex="-1" class="product-item-photo cs-minicart-product__image-container">
             <!-- ko foreach: $parent.getRegion('itemImage') -->
-            <!-- ko template: {name: getTemplate(), data: item.product_image} -->
-            <!-- /ko -->
+                <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
             <!-- /ko -->
         </a>
         <!-- /ko -->
         <!-- ko ifnot: product_has_url -->
         <span class="product-item-photo cs-minicart-product__image-container">
             <!-- ko foreach: $parent.getRegion('itemImage') -->
-            <!-- ko template: {name: getTemplate(), data: item.product_image} -->
-            <!-- /ko -->
+                <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
             <!-- /ko -->
         </span>
         <!-- /ko -->
@@ -32,29 +30,28 @@
             <div class="cs-minicart-product__overview">
                 <div class="cs-minicart-product__name-wrapper">
                     <!-- ko if: $data.product_brand -->
-                    <div class="cs-minicart-product__brand-wrapper">
-                        <span class="cs-minicart-product__brand" data-bind="text: product_brand"></span>
-                    </div>
-                    <!-- /ko -->
-                    <!-- ko if: product_has_url -->
-                    <a class="product-item-name cs-minicart-product__name" data-bind="attr: {href: product_url}, html: product_name"></a>
-                    <!-- /ko -->
-                    <!-- ko ifnot: product_has_url -->
-                    <!-- ko text: product_name -->
-                    <!-- /ko -->
+                        <div class="cs-minicart-product__brand-wrapper">
+                            <span class="cs-minicart-product__brand" data-bind="text: product_brand"></span>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: product_has_url -->
+                        <a class="product-item-name cs-minicart-product__name" data-bind="attr: {href: product_url}, html: product_name"></a>
+                        <!-- /ko -->
+                        <!-- ko ifnot: product_has_url -->
+                        <!-- ko text: product_name -->
+                        <!-- /ko -->
                     <!-- /ko -->
                 </div>
                 <div data-bind="attr: {class: item.row_total_product_original_price ? 'product-item-pricing cs-minicart-product__item-pricing cs-minicart-product__item-pricing--with-special' : 'product-item-pricing cs-minicart-product__item-pricing'}">
                     <!-- ko if: canApplyMsrp -->
-                    <div class="details-map">
-                        <span class="label" data-bind="i18n: 'Price'"></span>
-                        <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
-                    </div>
+                        <div class="details-map">
+                            <span class="label" data-bind="i18n: 'Price'"></span>
+                            <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
+                        </div>
                     <!-- /ko -->
                     <!-- ko ifnot: canApplyMsrp -->
                     <!-- ko foreach: $parent.getRegion('priceSidebar') -->
-                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} -->
-                    <!-- /ko -->
+                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
                     <!-- /ko -->
                     <!-- /ko -->
                     <span if="item.row_total_product_original_price" data-bind="html: item.row_total_product_original_price" class="old-price"></span>

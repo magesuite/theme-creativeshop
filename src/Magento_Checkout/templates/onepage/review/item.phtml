@@ -1,78 +1,80 @@
 <?php
 /**
-* Template overridden to:
-* - add magesuite classes
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden to:
+ * - add magesuite classes
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate
+
 /** @var $block Magento\Checkout\Block\Cart\Item\Renderer */
-?>
-<?php
-$item = $block->getItem();
+
+$_item = $block->getItem();
 $taxDataHelper = $this->helper(\Magento\Tax\Helper\Data::class);
 ?>
 <tbody>
+    <tr class="cs-cart-item cs-cart-item--no-icons">
+        <td class="col cs-cart-item__item | item" data-th="<?= $block->escapeHtml(__('Product Name')); ?>">
+            <div class="cs-cart-item__product">
+                <div class="cs-cart-item__image">
+                <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
+                </div>
+                <div class="cs-cart-item__details">
 
-<tr class="cs-cart-item cs-cart-item--no-icons">
-    <td class="col cs-cart-item__item | item" data-th="<?= $block->escapeHtml(__('Product Name')); ?>">
-        <div class="cs-cart-item__product">
-            <div class="cs-cart-item__image">
-            <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
+                    <span class="cs-cart-item__name"><?= $block->escapeHtml($block->getProductName()) ?></span>
+
+                    <?php if ($options = $block->getOptionList()):?>
+                        <div class="cs-cart-item__options">
+                            <?php foreach ($options as $option) : ?>
+                                <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
+                                <dl class="cs-cart-item__options-group">
+                                    <dt class="cs-cart-item__options-label">
+                                    <?= $block->escapeHtml($option['label']) ?>
+                                    </dt>
+                                    <dd class="cs-cart-item__options-value">
+                                        <?php if (isset($formatedOptionValue['full_view'])): ?>
+                                            <?= /* @noEscape */ $formatedOptionValue['full_view'] ?>
+                                        <?php else: ?>
+                                            <?= /* @noEscape */ $formatedOptionValue['value'] ?>
+                                        <?php endif; ?>
+                                    </dd>
+                                </dl>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif;?>
+                    <?php if ($addtInfoBlock = $block->getProductAdditionalInformationBlock()):?>
+                    <?= $addtInfoBlock->setItem($_item)->toHtml() ?>
+                    <?php endif;?>
+                </div>
             </div>
-            <div class="cs-cart-item__details">
-
-                <span class="cs-cart-item__name"><?= $block->escapeHtml($block->getProductName()) ?></span>
-
-                <?php if ($options = $block->getOptionList()):?>
-                    <div class="cs-cart-item__options">
-                        <?php foreach ($options as $option) : ?>
-                            <?php $formatedOptionValue = $block->getFormatedOptionValue($option) ?>
-                            <dl class="cs-cart-item__options-group">
-                                <dt class="cs-cart-item__options-label">
-                                <?= $block->escapeHtml($option['label']) ?>
-                                </dt>
-                                <dd class="cs-cart-item__options-value">
-                                    <?php if (isset($formatedOptionValue['full_view'])): ?>
-                                    <?= /* @noEscape */ $formatedOptionValue['full_view'] ?>
-                                    <?php else: ?>
-                                    <?= /* @noEscape */ $formatedOptionValue['value'] ?>
-                                    <?php endif; ?>
-                                </dd>
-                            </dl>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif;?>
-                <?php if ($addtInfoBlock = $block->getProductAdditionalInformationBlock()):?>
-                <?= $addtInfoBlock->setItem($item)->toHtml() ?>
-                <?php endif;?>
-            </div>
-        </div>
-    </td>
-    <td class="col | cs-cart-item__price" data-th="<?= $block->escapeHtml(__('Price'));?>">
-        <?php if ($taxDataHelper->displayCartPriceInclTax() || $taxDataHelper->displayCartBothPrices()) :?>
-            <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax')) ?>">
-            <?= $block->getUnitPriceInclTaxHtml($item) ?>
+        </td>
+        <td class="col | cs-cart-item__price" data-th="<?= $block->escapeHtml(__('Price'));?>">
+            <?php if ($taxDataHelper->displayCartPriceInclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+                <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax')) ?>">
+                <?= $block->getUnitPriceInclTaxHtml($_item) ?>
                 </span>
-        <?php endif; ?>
-        <?php if ($taxDataHelper->displayCartPriceExclTax() || $taxDataHelper->displayCartBothPrices()) :?>
-            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
-            <?= $block->getUnitPriceExclTaxHtml($item) ?>
+            <?php endif; ?>
+            <?php if ($taxDataHelper->displayCartPriceExclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+                <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
+                <?= $block->getUnitPriceExclTaxHtml($_item) ?>
                 </span>
-        <?php endif; ?>
-    </td>
-    <td class="col | cs-cart-item__qty" data-th="<?= $block->escapeHtml(__('Qty'));?>"><span class="cs-cart-item__qty-input"><?= $item->getQty() ?></span></td>
-    <td class="col | cs-cart-item__subtotal | subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
-        <?php if ($taxDataHelper->displayCartPriceInclTax() || $taxDataHelper->displayCartBothPrices()) :?>
-            <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax')) ?>">
-                <?= $block->getRowTotalInclTaxHtml($item) ?>
-            </span>
-        <?php endif; ?>
-        <?php if ($taxDataHelper->displayCartPriceExclTax() || $taxDataHelper->displayCartBothPrices()) :?>
-            <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
-                <?= $block->getRowTotalExclTaxHtml($item) ?>
-            </span>
-        <?php endif; ?>
-    </td>
-</tr>
+            <?php endif; ?>
+        </td>
+        <td class="col cs-cart-item__qty" data-th="<?= $block->escapeHtml(__('Qty'));?>">
+            <span class="cs-cart-item__qty-input"><?= $_item->getQty() ?></span>
+        </td>
+        <td class="col subtotal cs-cart-item__subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
+            <?php if ($taxDataHelper->displayCartPriceInclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+                <span class="price-including-tax" data-label="<?= $block->escapeHtml(__('Incl. Tax')) ?>">
+                    <?= $block->getRowTotalInclTaxHtml($_item) ?>
+                </span>
+            <?php endif; ?>
+            <?php if ($taxDataHelper->displayCartPriceExclTax() || $taxDataHelper->displayCartBothPrices()) :?>
+                <span class="price-excluding-tax" data-label="<?= $block->escapeHtml(__('Excl. Tax')) ?>">
+                    <?= $block->getRowTotalExclTaxHtml($_item) ?>
+                </span>
+            <?php endif; ?>
+        </td>
+    </tr>
 </tbody>

@@ -4,7 +4,7 @@
  * - add total items counter
  * - add condition for showTotalItems (var in XML)
  * - add empty class if there are not items in minicart
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ * Aligned with Magento 2.4.5 at 09/2022
  */
 -->
 <div
@@ -40,7 +40,7 @@
             <!-- ko if: maxItemsToDisplay < getCartLineItemsCount() --><!-- ko i18n: 'of' --><!-- /ko --><!-- /ko -->
             <span
                 class="count"
-                data-bind="text: getCartParam('summary_count')"
+                data-bind="text: getCartParam('summary_count').toLocaleString(window.LOCALE)"
             ></span>
             <!-- ko if: (getCartParam('summary_count') === 1) -->
             <span data-bind="i18n: 'item'"></span>

@@ -1,28 +1,29 @@
 <?php
 /**
-* Template overridden in order to:
-* - move list-item into separate phtml file
-* - add magesuite classes
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden in order to:
+ * - move list-item into separate phtml file
+ * - add magesuite classes
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 use Magento\Review\Block\Product\View\ListView;
 
 /** @var Escaper $escaper */
 
-$items = $block->getReviewsCollection()->getItems();
+$_items = $block->getReviewsCollection()->getItems();
 $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 ?>
-<?php if (count($items)): ?>
+<?php if (count($_items)): ?>
     <div class="cs-reviews__content" id="customer-reviews">
         <ol class="cs-reviews__list">
             <?php
 
-            foreach ($items as $review): ?>
+            foreach ($_items as $_review): ?>
 
                 <?php
-                $createdAt = $review->getCreatedAt();
-                $ratingVotes = $review->getRatingVotes();
+                $createdAt = $_review->getCreatedAt();
+                $ratingVotes = $_review->getRatingVotes();
                 $ratingCategoriesCount = count($ratingVotes);
                 $compoundRatings = [];
                 $overallScore = null;
@@ -50,16 +51,16 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                     <?= $this->getLayout()
                              ->createBlock(\Magento\Framework\View\Element\Template::class)
                              ->setTemplate('Magento_Review::product/view/list-item.phtml')
-                             ->setTitle($block->escapeHtml($review->getTitle()))
+                             ->setTitle($block->escapeHtml($_review->getTitle()))
                              ->setRatingData([
                                 "maxStars" => 5,
                                 "overallScore" => $overallScore,
                                 "compoundRatings" => $compoundRatings
                              ])
-                             ->setReviewConfigurationData($review->getData('review_configuration_data'))
-                             ->setAuthor($block->escapeHtml($review->getNickname()))
+                             ->setReviewConfigurationData($_review->getData('review_configuration_data'))
+                             ->setAuthor($block->escapeHtml($_review->getNickname()))
                              ->setDate($block->formatDate($createdAt, $format))
-                             ->setContent(nl2br($block->escapeHtml($review->getDetail())))
+                             ->setContent(nl2br($block->escapeHtml($_review->getDetail())))
                              ->toHtml();
                     ?>
                 </li>

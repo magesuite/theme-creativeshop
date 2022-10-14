@@ -1,42 +1,60 @@
 <?php
 /**
- * Aligned with Magento 2.4.4 at (31.05.2022)
+ * Template overwritten to improve UX.
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
  */
-
-/**
-* @var $block \Magento\Framework\View\Element\Template
-* @var $helper \Magento\Search\Helper\Data
-*/
-$helper = $this->helper('Magento\Search\Helper\Data');
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $escaper \Magento\Framework\Escaper */
+/** @var $configProvider \Magento\Search\ViewModel\ConfigProvider */
+$configProvider = $block->getData('configProvider');
+/** @var $versionManager \Magento\Search\ViewModel\AdditionalSearchFormData */
+$additionalSearchFormData = $block->getData('additionalSearchFormData');
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $configProvider->getSearchHelperData();
+$allowedSuggestion = $configProvider->isSuggestionsAllowed();
+$quickSearchUrl = $allowedSuggestion ? $escaper->escapeUrl($helper->getSuggestUrl()) : '';
 ?>
 
 <div class="cs-header__search">
-    <form role="search" class="cs-header-search" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get" id="cs-header-search">
+    <form role="search" class="cs-header-search" id="cs-header-search"
+              action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>" method="get">
+            <?php  if (!empty($queryParams = $additionalSearchFormData->getFormData())): ?>
+                <?php foreach ($queryParams as $param): ?>
+                    <input type="hidden" name="<?= $escaper->escapeHtmlAttr($param['name']) ?>"
+                           value="<?= $escaper->escapeHtmlAttr($param['value']) ?>"/>
+                <?php endforeach; ?>
+            <?php endif; ?>
         <label class="label cs-header-search__label" for="search" data-role="minisearch-label">
-            <span><?= $block->escapeHtml(__('Search')) ?></span>
+            <span><?= $escaper->escapeHtml(__('Search')) ?></span>
         </label>
-        <input
-            class="cs-header-search__input"
+        <input id="search"
             data-mage-init='{
                 "quickSearch":{
                     "formSelector":"#cs-header-search",
-                    "url":"<?= /* @escapeNotVerified */ $block->getUrl('search/ajax/suggest', ['_secure' => $block->getRequest()->isSecure()]); ?>",
-                    "destinationSelector":"#cs-header-search__autocomplete"
+                    "url": "<?= /* @noEscape */ $quickSearchUrl ?>",
+                    "destinationSelector":"#cs-header-search__autocomplete",
+                    "minSearchLength": "<?= $escaper->escapeHtml($helper->getMinQueryLength()) ?>"
                 }
             }'
             type="search"
-            name="<?= /* @escapeNotVerified */ $helper->getQueryParamName() ?>"
-            value="<?= /* @escapeNotVerified */ $helper->getEscapedQueryText() ?>"
-            placeholder="<?= /* @escapeNotVerified */ $block->getSearchPlaceholder(); ?>"
-            maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength();?>"
+            name="<?= $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+            value="<?= /* @noEscape */ $helper->getEscapedQueryText() ?>"
+            placeholder="<?= $escaper->escapeHtmlAttr($block->getSearchPlaceholder()) ?>"
+            class="cs-header-search__input"
+            maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
+            role="combobox"
             aria-haspopup="false"
             aria-autocomplete="both"
+            aria-expanded="false"
             autocomplete="off">
         <div class="cs-header-search__autocomplete" id="cs-header-search__autocomplete"></div>
         <div class="cs-header-search__action">
             <span class="cs-header-search__close">
                 <?= $block->getChildHtml('top.search.icon.close'); ?>
-                <span class="cs-header-search__close-label"><?= /* @escapeNotVerified */ __('Close search'); ?></span>
+                <span class="cs-header-search__close-label"><?= /* @noEscape */ __('Close search'); ?></span>
             </span>
             <button class="cs-header-search__button" type="submit">
                 <span class="cs-header-search__button-container cs-header-search__button-container--search">
@@ -45,7 +63,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                 <span class="cs-header-search__button-container cs-header-search__button-container--loader">
                     <?= $block->getChildHtml('top.search.icon.loader'); ?>
                 </span>
-                <span class="cs-header-search__button-label"><?= /* @escapeNotVerified */ __('Search'); ?></span>
+                <span class="cs-header-search__button-label"><?= /* @noEscape */ __('Search'); ?></span>
             </button>
         </div>
     </form>

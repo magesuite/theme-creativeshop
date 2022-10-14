@@ -1,29 +1,35 @@
 <?php
 /**
-* Template overridden in order to:
-* - render products as product tile
-* - add magesuite classes
-* - add hotspots
-* - add retina images - category_page_grid_x2
-* - add css/grid-layout.css in case of grid layout
-* - add toolbar at the bottom of list
-* - remove initialization of catalogAddToCart
-* - add empty.category.message child block
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overridden in order to:
+ * - render products as product tiles
+ * - add magesuite classes
+ * - add hotspots
+ * - add retina images - category_page_grid_x2
+ * - add css/grid-layout.css in case of grid layout
+ * - add toolbar at the bottom of list
+ * - remove initialization of catalogAddToCart
+ * - add empty.category.message child block
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
+use Magento\Framework\App\Action\Action;
 
+?>
+<?php
 /**
- * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
  */
 // @codingStandardsIgnoreFile
-$productCollection = $block->getLoadedProductCollection();
-$productCollection->addMediaGalleryData();
+$_productCollection = $block->getLoadedProductCollection();
+$_productCollection->addMediaGalleryData();
 $teasersHelper = $block->getTeasersHelperPath() ? $this->helper($block->getTeasersHelperPath()) : null;
 $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\TeaserCss');
 ?>
 
-<?php if (!$productCollection->count()): ?>
-    <?= $block->getChildHtml('empty.category.message') ?>
+<?php if (!$_productCollection->count()): ?>
+    <?= /* @noEscape */ $block->getChildHtml('empty.category.message') ?>
 <?php else: ?>
     <?= $block->getAdditionalHtml() ?>
 
@@ -36,7 +42,7 @@ $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\Te
     <?= $block->getChildHtml('state'); ?>
 
     <?php
-    if ($block->getMode() == 'grid') {
+    if ($block->getMode() === 'grid') {
         $viewMode = 'grid';
         $viewModeClass = $block->getGridComponentClass();
         $viewModeAdditionalClass = $block->hasAdditionalGridComponentClass() ? ' ' .$block->getAdditionalGridComponentClass() : '';
@@ -75,7 +81,7 @@ $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\Te
 
             <ol class="products list items product-items <?= $viewModeListClass ?>">
                 <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
-                <?php foreach ($productCollection as $product): ?>
+                <?php foreach ($_productCollection as $product): ?>
                     <li class="<?= $viewModeListItemClass ?>">
                         <?= $this->getLayout()
                             ->createBlock(\MageSuite\ProductTile\Block\Tile::class)
@@ -96,7 +102,7 @@ $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\Te
             <?php if($viewMode == 'grid' && $teasersCss = $block->getChildBlock('grid.teasers.css')): ?>
                 <?= $teasersCss
                     ->setTeasersSetId($teasersSetRandId)
-                    ->setProductsCount($productCollection->count())
+                    ->setProductsCount($_productCollection->count())
                     ->setIsProductsGrid(false)
                     ->setUseTeasers(true)
                     ->toHtml(); ?>

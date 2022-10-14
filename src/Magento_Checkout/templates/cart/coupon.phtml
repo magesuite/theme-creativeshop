@@ -1,17 +1,20 @@
 <?php
 /**
-* Template overwritten to:
-* - add magesuite classes
-* - make collapse optional
-* - integrate with xml configuration: headline, icon, labels, input placeholder
-* - add checkout.cart.coupon.additional hotspot
-* TODO - verify if captcha should be removed and also functionality to open collapse if there is coupon already inserted (see newest Magento file)
-* Aligned with Magento 2.4.4 at (31.05.2022)
-*/
+ * Template overwritten to:
+ * - add magesuite classes
+ * - make collapse optional
+ * - integrate with xml configuration: headline, icon, labels, input placeholder
+ * - add checkout.cart.coupon.additional hotspot
+ *
+ * Aligned with Magento 2.4.5 at 09/2022
+ */
 
 // phpcs:disable Generic.Files.LineLength.TooLong
-?>
-<?php
+
+/**
+ * @var \Magento\Framework\View\Element\AbstractBlock $block
+ */
+
 // We should use strlen function because coupon code could be "0", converted to bool will lead to false
 $hasCouponCode = $block->getCouponCode() !== null && strlen($block->getCouponCode()) > 0;
 $placeholder = $block->getInputPlaceholder();
@@ -20,7 +23,6 @@ $buttonApplyLabel = $block->getButtonApplyLabel();
 $buttonCancelLabel = $block->getButtonCancelLabel();
 $collapseOptions = $block->getCollapsibleWidgetOptions();
 ?>
-
 <div class="block discount cs-discount <?= $block->getAdditionalCssClasses() ?>" id="block-discount"
     <?php if($block->getIsCollapsible()): ?>
         data-mage-init='{"collapsible":<?= !empty($collapseOptions) ? json_encode($collapseOptions) : '{}' ?>}'
@@ -35,7 +37,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
     <div class="content cs-discount__content" data-role="content" aria-labelledby="block-discount-heading">
         <form
             id="discount-coupon-form"
-            action="<?php /* @escapeNotVerified */ echo $block->getUrl('checkout/cart/couponPost') ?>"
+            action="<?= $block->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
             method="post"
             data-mage-init='{"discountCode":{"couponCodeSelector": "#coupon_code",
                                                "removeCouponSelector": "#coupon_remove",
@@ -58,6 +60,9 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                             name="coupon_code"
                             value="<?= $block->escapeHtmlAttr($block->getCouponCode()) ?>"
                             <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtmlAttr($placeholder); ?>"<?php endif; ?>
+                            <?php if ($hasCouponCode): ?>
+                                disabled="disabled"
+                            <?php endif; ?>
                         />
                         <?= $block->getChildHtml('checkout.cart.coupon.additional'); ?>
                     </div>
