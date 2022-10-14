@@ -1,16 +1,16 @@
 /* tslint:disable one-variable-per-declaration */
 
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
     // NOTE: Changes in comparison to source file:
     // - modified: agreementForm,
 
-    return function(agreementsAssigner) {
+    return function (agreementsAssigner) {
         var agreementsConfig = window.checkoutConfig.checkoutAgreements;
 
         /** Override default place order action and add agreement_ids to request */
-        return function(paymentData) {
+        return function (paymentData) {
             var agreementForm, agreementData, agreementIds;
 
             if (!agreementsConfig.isEnabled) {
@@ -24,7 +24,7 @@ define(['jquery'], function($) {
             agreementData = agreementForm.serializeArray();
             agreementIds = [];
 
-            agreementData.forEach(function(item) {
+            agreementData.forEach(function (item) {
                 agreementIds.push(item.value);
             });
 

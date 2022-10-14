@@ -4,7 +4,7 @@ define([
     'Magento_Search/js/form-mini',
     'jquery-ui-modules/widget',
     'mage/translate',
-], function($, _, quickSearch) {
+], function ($, _, quickSearch) {
     'use strict';
 
     /**
@@ -20,7 +20,7 @@ define([
     function highlightMatchesInString(string, query) {
         // The completed string will be itself if already set, otherwise, the string that was passed in
         var completedString = completedString || string;
-        query.forEach(function(item) {
+        query.forEach(function (item) {
             var reg = '(' + item + ')(?![^<]*>|[^<>]*</)'; // explanation: http://stackoverflow.com/a/18622606/1147859
             var regex = new RegExp(reg, 'i');
             // If the regex doesn't match the string just exit
@@ -44,19 +44,19 @@ define([
     }
 
     $.widget('magesuite.quickSearch', $.mage.quickSearch, {
-        _create: function() {
+        _create: function () {
             this._super();
 
             var _this = this;
 
-            this.element.on('blur', function() {
-                setTimeout(function() {
+            this.element.on('blur', function () {
+                setTimeout(function () {
                     _this._resetResponseList(true);
                     _this.autoComplete.hide();
                 }, 500);
             });
 
-            this.element.on('keydown', function(e) {
+            this.element.on('keydown', function (e) {
                 var keyCode = e.keyCode || e.which;
 
                 if (keyCode === $.ui.keyCode.ENTER) {
@@ -77,7 +77,7 @@ define([
          *
          * @private
          */
-        _onPropertyChange: function() {
+        _onPropertyChange: function () {
             var _this = this;
             var searchField = this.element;
             var clonePosition = {
@@ -102,14 +102,14 @@ define([
                             '", ) {items {description}}}',
                     }),
                     contentType: 'application/json',
-                }).done(function(response) {
+                }).done(function (response) {
                     if (
                         response.data.addressAutocomplete &&
                         response.data.addressAutocomplete.items.length
                     ) {
                         var data = response.data.addressAutocomplete.items;
 
-                        $.each(data, function(index, element) {
+                        $.each(data, function (index, element) {
                             var html;
 
                             element.index = index;
@@ -144,7 +144,7 @@ define([
                         _this.responseList.indexList
                             .on(
                                 'click',
-                                function(e) {
+                                function (e) {
                                     _this.responseList.selected = $(
                                         e.currentTarget
                                     );
@@ -160,7 +160,7 @@ define([
                             )
                             .on(
                                 'mouseenter mouseleave',
-                                function(e) {
+                                function (e) {
                                     if (_this.responseList.indexList) {
                                         _this.responseList.indexList.removeClass(
                                             _this.options.selectClass
@@ -180,7 +180,7 @@ define([
                             )
                             .on(
                                 'mouseout',
-                                function(e) {
+                                function (e) {
                                     if (_this.responseList.indexList) {
                                         if (
                                             !_this._getLastElement() &&

@@ -52,7 +52,7 @@ export default class ProductTile {
     protected _attachEvent() {
         let $target: any;
 
-        $(document).on('click', this._options.tileModifier, event => {
+        $(document).on('click', this._options.tileModifier, (event) => {
             event.stopPropagation();
             $target = $(event.target);
 

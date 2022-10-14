@@ -2,7 +2,7 @@ define([
     'jquery',
     'ko',
     'Magento_CheckoutAgreements/js/model/agreements-modal',
-], function($, ko, agreementsModal) {
+], function ($, ko, agreementsModal) {
     'use strict';
 
     var mixin = {
@@ -13,7 +13,7 @@ define([
         checkboxState: ko.observableArray(false),
 
         // Allows using "merged" T&Cs - documentation and examples on confluence
-        showContent: function(element, event) {
+        showContent: function (element, event) {
             this.modalTitle(element.checkboxText);
             this.modalContent(
                 '<div class="agreements-modal-content">' +
@@ -48,7 +48,7 @@ define([
         },
     };
 
-    return function(target) {
+    return function (target) {
         return target.extend(mixin);
     };
 });

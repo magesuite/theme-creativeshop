@@ -18,7 +18,7 @@ setTimeout(() => {
 });
 
 // Carousels, categories, grids
-$(`.${ns}dailydeal--tile`).each(function(): void {
+$(`.${ns}dailydeal--tile`).each(function (): void {
     setTimeout(() => {
         new Dailydeal($(this), {
             namespace: ns,

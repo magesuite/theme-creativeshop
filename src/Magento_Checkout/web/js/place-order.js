@@ -6,7 +6,7 @@ define([
     'uiComponent',
     'Magento_Checkout/js/model/step-navigator',
     'Magento_Checkout/js/model/quote',
-], function(ko, _, $, Component, stepNavigator, quote) {
+], function (ko, _, $, Component, stepNavigator, quote) {
     'use strict';
     return Component.extend({
         defaults: {
@@ -21,17 +21,17 @@ define([
             placeOrderButtonSelector:
                 '.payment-method._active .action.checkout[type="submit"]:visible',
         },
-        isPlaceOrderActionAllowed: ko.computed(function() {
+        isPlaceOrderActionAllowed: ko.computed(function () {
             return quote.billingAddress() && quote.paymentMethod();
         }),
-        isVisible: ko.computed(function() {
+        isVisible: ko.computed(function () {
             var payment = _.findWhere(stepNavigator.steps(), {
                 code: 'payment',
             });
 
             return payment ? payment.isVisible : ko.observable(false);
         }),
-        placeOrder: function() {
+        placeOrder: function () {
             $(this.placeOrderButtonSelector).trigger('click');
         },
     });

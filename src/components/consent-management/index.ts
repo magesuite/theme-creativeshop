@@ -22,7 +22,7 @@ const consentManagement = {
      * @param service
      * @returns
      */
-    checkConsent: function(service: string): boolean {
+    checkConsent: function (service: string): boolean {
         if (!this.vendor || !this.mapVendors[this.vendor]) {
             return this.defaultValue;
         }
@@ -36,7 +36,7 @@ const consentManagement = {
      * @param callback
      * @returns
      */
-    initializeEvent: function(callback: () => void): void {
+    initializeEvent: function (callback: () => void): void {
         if (!this.vendor || !this.mapVendors[this.vendor]) {
             return;
         }
@@ -48,7 +48,7 @@ const consentManagement = {
      * @param callback
      * @returns
      */
-    changeEvent: function(callback: () => void): void {
+    changeEvent: function (callback: () => void): void {
         if (!this.vendor || !this.mapVendors[this.vendor]) {
             return;
         }

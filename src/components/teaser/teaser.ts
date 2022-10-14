@@ -13,7 +13,7 @@ import requireAsync from 'utils/require-async';
  * @param  {Object} settings Custom settings that will be passed along to Swiper.
  * @return {Object} New teaser object instance.
  */
-const csTeaser: any = function($element: any, settings: any): void {
+const csTeaser: any = function ($element: any, settings: any): void {
     /**
      * Required variables initialization.
      */
@@ -27,9 +27,10 @@ const csTeaser: any = function($element: any, settings: any): void {
     const paginationName: string = settings.paginationName
         ? settings.paginationName
         : `${teaserName}__pagination`;
-    const fractionPaginationSeparator: string = settings.fractionPaginationSeparator
-        ? settings.fractionPaginationSeparator
-        : '/';
+    const fractionPaginationSeparator: string =
+        settings.fractionPaginationSeparator
+            ? settings.fractionPaginationSeparator
+            : '/';
     const scrollbarName: string = settings.scrollbarName
         ? settings.scrollbarName
         : `${teaserName}__scrollbar`;
@@ -90,8 +91,9 @@ const csTeaser: any = function($element: any, settings: any): void {
             el: $element.find(`.${paginationName}`),
             renderBullet: (index: number, className: string): {} => `
                 <li class="${className}">
-                    <button class="${paginationName}-button">${index +
-                1}</button>
+                    <button class="${paginationName}-button">${
+                index + 1
+            }</button>
                 </li>
             `,
             renderFraction: (
@@ -184,7 +186,8 @@ const csTeaser: any = function($element: any, settings: any): void {
     };
 
     if (dynamicNumOfSlides && currentSettings.calculateSlides) {
-        currentSettings.slidesPerView = currentSettings.slidesPerGroup = calculateSlidesNumber();
+        currentSettings.slidesPerView = currentSettings.slidesPerGroup =
+            calculateSlidesNumber();
     }
 
     /**
@@ -196,7 +199,8 @@ const csTeaser: any = function($element: any, settings: any): void {
             dynamicNumOfSlides &&
             currentSettings.calculateSlides
         ) {
-            currentSettings.slidesPerView = currentSettings.slidesPerGroup = calculateSlidesNumber();
+            currentSettings.slidesPerView = currentSettings.slidesPerGroup =
+                calculateSlidesNumber();
 
             swiperInstance.params = $.extend(
                 true,

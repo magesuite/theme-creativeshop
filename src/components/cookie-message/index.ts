@@ -152,7 +152,7 @@ export default class CookieMessage {
         const $btn: any = this.$wrapper.find('button');
 
         if ($btn.length) {
-            $btn.on('click', function(): void {
+            $btn.on('click', function (): void {
                 _this._setCookie();
                 _this.destroyMessage($btn);
             });

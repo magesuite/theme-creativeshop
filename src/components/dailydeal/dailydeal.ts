@@ -695,9 +695,7 @@ export default class Dailydeal {
             .split(' ')
             .pop();
         if ($(`.${countdownsUniqueClass}`).length > 1) {
-            $(`.${countdownsUniqueClass}`)
-                .last()
-                .html(this._$countdown.html());
+            $(`.${countdownsUniqueClass}`).last().html(this._$countdown.html());
         }
 
         this._daysLeft(timeRemaining.days);

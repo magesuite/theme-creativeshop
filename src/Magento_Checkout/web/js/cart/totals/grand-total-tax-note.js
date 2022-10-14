@@ -1,4 +1,4 @@
-define(['Magento_Checkout/js/view/summary/abstract-total'], function(
+define(['Magento_Checkout/js/view/summary/abstract-total'], function (
     Component
 ) {
     'use strict';
@@ -11,7 +11,7 @@ define(['Magento_Checkout/js/view/summary/abstract-total'], function(
         isTaxDisplayedInGrandTotal:
             window.checkoutConfig.includeTaxInGrandTotal || false,
 
-        isDisplayed: function() {
+        isDisplayed: function () {
             return this.isFullMode();
         },
     });

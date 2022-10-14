@@ -1,8 +1,8 @@
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
     $.widget('magesuite.historyNavigation', {
-        _create: function() {
+        _create: function () {
             this._super();
 
             var actionsMapping = {
@@ -10,11 +10,11 @@ define(['jquery'], function($) {
             };
             var options = this.options;
 
-            $(this.element).on('click', function() {
+            $(this.element).on('click', function () {
                 actionsMapping[options.action]();
             });
         },
-        goBack: function() {
+        goBack: function () {
             window.history.back();
         },
     });

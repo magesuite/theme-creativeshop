@@ -1,17 +1,17 @@
 /**
  * Instead of reviews pagination use "Load more reviews" button
  */
-define(['jquery', 'loader', 'mage/translate'], function($) {
+define(['jquery', 'loader', 'mage/translate'], function ($) {
     'use strict';
 
-    return function() {
+    return function () {
         var showMoreText = $.mage.__('Show %1 out of %2 reviews');
         var reviewContainerSelector = '#product-review-container';
         var reviewsCountSelectorClass = 'cs-reviews__count';
         var processedReviewsCount = 0;
         var $loadMoreReviewsButton;
 
-        var addLoadMoreButton = function(
+        var addLoadMoreButton = function (
             nextPageUrl,
             reviewsCountForPage,
             numberOfReviews
@@ -41,7 +41,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
             $loadMoreReviewsButton.loader();
         };
 
-        var updateLoadMoreButton = function(
+        var updateLoadMoreButton = function (
             nextPageUrl,
             reviewsPerPage,
             numberOfReviews
@@ -58,8 +58,8 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
             $loadMoreReviewsButton.loader('hide');
         };
 
-        var attachLoadMoreButtonEvents = function() {
-            $loadMoreReviewsButton.on('click', function() {
+        var attachLoadMoreButtonEvents = function () {
+            $loadMoreReviewsButton.on('click', function () {
                 var nextUrl = $(this).attr('data-next-url');
                 if (nextUrl) {
                     processReviewsLoadMore(nextUrl, true);
@@ -74,7 +74,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
                 dataType: 'html',
                 showLoader: false,
                 loaderContext: $('.product.data.items'),
-            }).done(function(data) {
+            }).done(function (data) {
                 var $newReviews = $(data).find('.cs-reviews__item');
                 var reviewsPerPage = $newReviews.length;
                 processedReviewsCount += reviewsPerPage;
@@ -140,10 +140,10 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
             });
         }
 
-        return function(config) {
+        return function (config) {
             processReviewsLoadMore(config.productReviewUrl);
 
-            $(function() {
+            $(function () {
                 var $addReviewLinks = $('a[href="#reviews"]');
                 var reviewsSection = document.querySelector('#reviews');
 
@@ -152,7 +152,7 @@ define(['jquery', 'loader', 'mage/translate'], function($) {
                         '[data-role="title"]'
                     );
 
-                    $addReviewLinks.on('click', function(e) {
+                    $addReviewLinks.on('click', function (e) {
                         e.preventDefault();
 
                         reviewsSection.scrollIntoView({

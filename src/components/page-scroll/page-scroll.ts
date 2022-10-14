@@ -110,7 +110,7 @@ export default class PageScroll {
      * Set & enable observer
      */
     protected _setObserver(): void {
-        this._observer = new IntersectionObserver(e => {
+        this._observer = new IntersectionObserver((e) => {
             !e[0].isIntersecting ? this._showButton() : this._hideButton();
         }, this._options.observerOptions);
 

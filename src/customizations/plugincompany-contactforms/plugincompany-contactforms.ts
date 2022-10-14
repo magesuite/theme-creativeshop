@@ -11,11 +11,9 @@ function inputStatus(inputType: string): void {
         const $element: JQuery = $pccfItem.find('input[type="radio"]');
     }
 
-    $element.each(function(): void {
+    $element.each(function (): void {
         if ($(this).prop('checked') === true) {
-            $(this)
-                .parent()
-                .addClass('checked');
+            $(this).parent().addClass('checked');
         }
     });
 }
@@ -25,12 +23,10 @@ function createNewsletterCheckboxLabel(): void {
         '.newsletter-checkbox input[type="checkbox"]'
     );
 
-    $element.each(function(): void {
+    $element.each(function (): void {
         const inputId: string = $(this).attr('id');
         const helpParagraph: JQuery = $(this).next('p');
-        const helpText: string = $(this)
-            .next('p')
-            .text();
+        const helpText: string = $(this).next('p').text();
         let defaultLabelText: string = `${$.mage.__(
             'Subscribe to our newsletter'
         )}`;
@@ -50,7 +46,7 @@ function inputToggler(inputType: string): void {
         const $element: JQuery = $pccfItem.find('input[type="radio"]');
     }
 
-    $element.on('change', function(): void {
+    $element.on('change', function (): void {
         if (inputType === 'radio') {
             const inputName: string = $(this).attr('name');
         }
@@ -60,14 +56,10 @@ function inputToggler(inputType: string): void {
                     .parent('label')
                     .removeClass('checked');
             }
-            $(this)
-                .parent()
-                .addClass('checked');
+            $(this).parent().addClass('checked');
         } else {
             if (inputType !== 'radio') {
-                $(this)
-                    .parent()
-                    .removeClass('checked');
+                $(this).parent().removeClass('checked');
             }
         }
     });

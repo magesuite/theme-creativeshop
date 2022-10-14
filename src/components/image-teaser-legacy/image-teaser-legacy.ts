@@ -146,13 +146,13 @@ export default class ImageTeaserLegacy {
                 loadOnTransitionStart: true,
             },
             on: {
-                init: function() {
+                init: function () {
                     /**
                      * "this" in swiper events refers to the swiper instance
                      */
                     _this._fireCallback('onInit', this);
                 },
-                lazyImageReady: function(slide, image) {
+                lazyImageReady: function (slide, image) {
                     const swiperInstance = this;
                     _this._handleLazyImageReadyEvent(swiperInstance, image);
                 },
@@ -183,7 +183,7 @@ export default class ImageTeaserLegacy {
 
             this._toggleMobileTeaser();
 
-            $(window).on('resize', function(): void {
+            $(window).on('resize', function (): void {
                 _this._toggleMobileTeaser();
             });
         }
@@ -308,7 +308,7 @@ export default class ImageTeaserLegacy {
                 }
             };
 
-            const resizeListener: any = function(): void {
+            const resizeListener: any = function (): void {
                 clearTimeout(throttler);
                 throttler = setTimeout(setNavButtonsPosition, 250);
             };

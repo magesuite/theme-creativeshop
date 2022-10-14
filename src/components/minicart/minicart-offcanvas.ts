@@ -351,7 +351,7 @@ export default class Minicart {
      * - puts markup to the componentClass element defined in options
      */
     protected _runProductFetch(): void {
-        this._getCartData().then(productId => {
+        this._getCartData().then((productId) => {
             const $carouselWrapper: JQuery = this._$minicart.find(
                 `.${this._productsCarouselOptions.componentWrapperClass}`
             );
@@ -401,9 +401,8 @@ export default class Minicart {
                                     ...this._productsCarouselSettings,
                                 };
 
-                                carouselSettings = JSON.stringify(
-                                    carouselSettings
-                                );
+                                carouselSettings =
+                                    JSON.stringify(carouselSettings);
 
                                 $(
                                     `.${this._productsCarouselOptions.carouselClass}`,
@@ -451,7 +450,7 @@ export default class Minicart {
      */
     protected _getCartData(): any {
         const deferred: JQueryDeferred<any> = jQuery.Deferred();
-        requirejs(['Magento_Customer/js/customer-data'], customerData => {
+        requirejs(['Magento_Customer/js/customer-data'], (customerData) => {
             customerData.get('cart').subscribe((data: any): void => {
                 if (Array.isArray(data.items) && data.items.length) {
                     deferred.resolve(data.items[0].product_id);
@@ -466,7 +465,7 @@ export default class Minicart {
      * @return  Resolved promise with URL for carousel endpoint
      */
     protected _setEndpointUrl() {
-        requirejs(['mage/url'], mageUrl => {
+        requirejs(['mage/url'], (mageUrl) => {
             mageUrl.setBaseUrl(window.BASE_URL);
 
             this._endpointUrl.resolve(
@@ -483,7 +482,7 @@ export default class Minicart {
      * @return {string} AJAX response with html markup of products
      */
     protected _getProductsCarousel(productId: any): any {
-        return this._endpointUrl.then(endpointUrl => {
+        return this._endpointUrl.then((endpointUrl) => {
             return $.get(endpointUrl, {
                 id: productId,
                 relation_type: this._productsCarouselOptions.relationType,

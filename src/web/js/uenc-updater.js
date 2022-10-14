@@ -3,13 +3,13 @@
  * Modification type: dependency
  * Reason: a need to make redirects based on "uenc" property work with full page cache, mainly in tile and offcanvas navigation.
  */
-define(['jquery'], function($) {
+define(['jquery'], function ($) {
     'use strict';
 
     var uenc = btoa(window.location.href);
     var triggers = 'a[data-post], button[data-post], span[data-post]';
 
-    $(triggers).each(function(index, element) {
+    $(triggers).each(function (index, element) {
         var $element = $(element);
         var elementData = $element.data('post');
         var shouldUpdate =

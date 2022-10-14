@@ -90,7 +90,7 @@ export default class VideoLayer {
                 }
             );
 
-            element.addEventListener('click', event => {
+            element.addEventListener('click', (event) => {
                 event.preventDefault();
                 this.attachEvent(element, videoPlayerId, videoModalId);
             });
@@ -103,9 +103,8 @@ export default class VideoLayer {
      * @param videoModalId
      */
     protected prepareModalWrapper(videoPlayerId, videoModalId): void {
-        const videoWrapperElement: HTMLDivElement = document.createElement(
-            'div'
-        );
+        const videoWrapperElement: HTMLDivElement =
+            document.createElement('div');
         videoWrapperElement.id = videoModalId;
         videoWrapperElement.className = 'cs-video-layer__wrapper';
 

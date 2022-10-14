@@ -8,12 +8,12 @@ define([
     'Magento_Ui/js/modal/modal',
     'mage/validation/validation',
     'jquery-ui-modules/widget',
-], function($, _, modal) {
+], function ($, _, modal) {
     'use strict';
 
-    return function(productValidate) {
+    return function (productValidate) {
         $.widget('mage.validation', $.mage.validation, {
-            listenFormValidateHandler: function(event, validation) {
+            listenFormValidateHandler: function (event, validation) {
                 this._super(event, validation);
 
                 var $form = $(this);
@@ -37,7 +37,7 @@ define([
                             autoOpen: true,
                             focus: 'none',
                             actions: {
-                                cancel: function() {
+                                cancel: function () {
                                     $form.appendTo(
                                         '.cs-buybox__section--product-form'
                                     );
@@ -52,7 +52,7 @@ define([
                     var $clonedForm = $form.clone();
                     $formParent.css('height', $formParent.innerHeight());
 
-                    $('#missing-swatches-modal').on('modalclosed', function() {
+                    $('#missing-swatches-modal').on('modalclosed', function () {
                         $clonedForm.remove();
                         $formParent.prepend($form);
                         $form.find('.product-options-bottom').show();
@@ -60,7 +60,7 @@ define([
                         $formParent.css('height', '');
                     });
 
-                    $('#missing-swatches-modal').on('modalopened', function() {
+                    $('#missing-swatches-modal').on('modalopened', function () {
                         $form.find('.product-options-bottom').hide();
                         $form.appendTo(
                             '.missing-swatches-modal .modal-content'
@@ -69,7 +69,7 @@ define([
 
                         $form
                             .find('input, select')
-                            .on('change.addToCart', function() {
+                            .on('change.addToCart', function () {
                                 if ($form.validation('isValid')) {
                                     $form.trigger('processStart');
 

@@ -317,7 +317,7 @@ export default class AddToCart {
      */
     protected _getCartData(): any {
         const deferred: JQueryDeferred<any> = jQuery.Deferred();
-        requirejs(['Magento_Customer/js/customer-data'], customerData => {
+        requirejs(['Magento_Customer/js/customer-data'], (customerData) => {
             customerData.get('cart').subscribe((data: any): void => {
                 deferred.resolve(data.summary_count);
             });
@@ -337,7 +337,7 @@ export default class AddToCart {
             (this._minicartOffcanvasSettings.enabled &&
                 !this._minicartOffcanvasSettings.open_on_product_added)
         ) {
-            this._getCartData().then(newQty => {
+            this._getCartData().then((newQty) => {
                 if (
                     !isNaN(newQty) &&
                     $(`.${this._options.minicartClass}`).length
@@ -391,9 +391,8 @@ export default class AddToCart {
         );
 
         if ($minicartDialog.length) {
-            const mageDropdownDialog: any = $minicartDialog.data(
-                'mageDropdownDialog'
-            );
+            const mageDropdownDialog: any =
+                $minicartDialog.data('mageDropdownDialog');
 
             if (typeof mageDropdownDialog !== 'undefined') {
                 mageDropdownDialog.close();
@@ -471,7 +470,8 @@ export default class AddToCart {
             return;
         }
 
-        const startingPosition: any = $startingRelation[0].getBoundingClientRect();
+        const startingPosition: any =
+            $startingRelation[0].getBoundingClientRect();
         const $clone: JQuery<HTMLElement> = $badge.clone();
         const $clonedQtyHolder: JQuery<HTMLElement> = $clone.find(
             `.${this._options.minicartQtyTextClass}`

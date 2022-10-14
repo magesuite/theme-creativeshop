@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
+define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function ($, _) {
     'use strict';
 
     $.widget('magesuite.saleBadgeRenderer', {
@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
 
         $tileOrBuybox: null,
 
-        _create: function() {
+        _create: function () {
             this._super();
 
             this.$tileOrBuybox = this.element; //by default we are in buybox
@@ -33,16 +33,17 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             this.renderSaleBadge();
         },
 
-        renderSaleBadge: function() {
+        renderSaleBadge: function () {
             // Change event is triggered by swatch-renderer.js after proper attributes setup
             this._on(this.$tileOrBuybox, {
-                'change input.swatch-input.super-attribute-select': function() {
-                    this.updateSaleBadge();
-                },
+                'change input.swatch-input.super-attribute-select':
+                    function () {
+                        this.updateSaleBadge();
+                    },
             });
         },
 
-        updateSaleBadge: function() {
+        updateSaleBadge: function () {
             var allDiscountsList = this.options.discountsList;
             var $rootElement = this.options.isInTile
                 ? this.$tileOrBuybox
@@ -51,12 +52,12 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
                 .find(this.options.productsIdsSelector)
                 .data('mageSwatchRenderer').options.jsonConfig.index;
 
-            var selectedProductDiscounts = _.filter(allDiscountsList, function(
-                key,
-                value
-            ) {
-                return $productsIdsIndex[value];
-            });
+            var selectedProductDiscounts = _.filter(
+                allDiscountsList,
+                function (key, value) {
+                    return $productsIdsIndex[value];
+                }
+            );
 
             var maximumDiscount = Math.max.apply(
                 null,
@@ -99,7 +100,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             );
         },
 
-        getSelectedProductId: function() {
+        getSelectedProductId: function () {
             var selectedOptions = {};
             var $attributesList = this.$tileOrBuybox.find(
                 this.options.attributesSelector
@@ -113,7 +114,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
 
             selectedOptions = this.getSelectedOptions($attributesList);
 
-            productId = _.findKey($productsIdsIndex, function(value) {
+            productId = _.findKey($productsIdsIndex, function (value) {
                 return _.isEqual(value, selectedOptions);
             });
 
@@ -122,7 +123,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
                 : parseInt(productId, 10);
         },
 
-        getSelectedOptions: function(attributesList) {
+        getSelectedOptions: function (attributesList) {
             var selectedOptions = {};
             var $attributesList = $(attributesList);
 
@@ -136,7 +137,7 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function($, _) {
             } else {
                 $attributesList
                     .filter('[data-option-selected]')
-                    .each(function() {
+                    .each(function () {
                         var $attribute = $(this);
                         var attributeId = $attribute.attr('data-attribute-id');
 

@@ -56,7 +56,7 @@ export default class SliderPagination {
             if (this._bullets == null) {
                 this.rebuild();
             } else {
-                this._bullets.forEach(bullet =>
+                this._bullets.forEach((bullet) =>
                     bullet?.classList.remove('current')
                 );
                 this._bullets

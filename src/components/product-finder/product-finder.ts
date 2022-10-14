@@ -218,9 +218,8 @@ export default class ProductFinder {
         });
 
         // Ignore all attributes if last option had category_only option set to true.
-        const $lastStep: JQuery = this._visitedSteps[
-            this._visitedSteps.length - 1
-        ];
+        const $lastStep: JQuery =
+            this._visitedSteps[this._visitedSteps.length - 1];
         if (
             $lastStep
                 .find(`.${this._options.optionClassName}--checked`)
@@ -245,7 +244,7 @@ export default class ProductFinder {
 
         $.each(configuredData.attributes, (attributeCode, attributeOptions) => {
             if (Array.isArray(attributeOptions.range)) {
-                attributeOptions.range.forEach(attributeValue => {
+                attributeOptions.range.forEach((attributeValue) => {
                     const $attributeField: JQuery = $(
                         `<input type="hidden" name="attributes[${attributeCode}][range][]" value="${attributeValue}"></input>`
                     );
@@ -253,7 +252,7 @@ export default class ProductFinder {
                 });
             }
             if (Array.isArray(attributeOptions.values)) {
-                attributeOptions.values.forEach(attributeValue => {
+                attributeOptions.values.forEach((attributeValue) => {
                     const $attributeField: JQuery = $(
                         `<input type="hidden" name="attributes[${attributeCode}][values][]" value="${attributeValue}"></input>`
                     );
@@ -271,11 +270,10 @@ export default class ProductFinder {
     protected _attachEvents(): void {
         this._eventListeners.resizeListener = this._updateSizes.bind(this);
 
-        this._eventListeners.backButtonClickListener = this._goToPreviousStep.bind(
-            this
-        );
+        this._eventListeners.backButtonClickListener =
+            this._goToPreviousStep.bind(this);
 
-        this._eventListeners.optionClickListener = event => {
+        this._eventListeners.optionClickListener = (event) => {
             const $clickedOption: JQuery = $(event.target).closest(
                 `.${this._options.optionClassName}`
             );
