@@ -28,6 +28,7 @@ export interface OffcanvasNavigationOptions {
     activeCategoryHighlightClass?: string;
     headerSearchOptions?: HeaderSearchOptions;
     onNavigationRender?: () => void; // Callback to fire when navigation is rendered
+    offcanvasMaxBreakpoint: number;
 }
 
 interface MainNavigationCacheInfo {
@@ -51,6 +52,7 @@ export default class OffcanvasNavigation {
         offcanvasHide?: (event: JQuery.Event) => void;
         parentLinkClick?: (event: JQuery.Event) => void;
         returnLinkClick?: (event: JQuery.Event) => void;
+        initOffcanvasNav?: (event: JQuery.Event) => void;
     } = {};
 
     /**
@@ -78,11 +80,13 @@ export default class OffcanvasNavigation {
                     searchInputSelector: '#search-offcanvas',
                     closeElementToggleSearch: false,
                 },
+                offcanvasMaxBreakpoint: breakpoint.tablet,
             },
             options
         );
 
         this._$drawer = $(`.${this._options.drawerClassName}`);
+
         if (!this._$drawer.length) {
             return;
         }
@@ -93,8 +97,10 @@ export default class OffcanvasNavigation {
             'activeCategoryPath'
         )}`.split('/');
 
-        // Prefetch mobile navigation when browser becomes idle.
-        idleDeferred().then(() => this._init());
+        // Prefetch mobile navigation when browser becomes idle (only for mobile devices).
+        if (breakpoint.current <= this._options.offcanvasMaxBreakpoint) {
+            idleDeferred().then(() => this._init());
+        }
 
         this._addEventListeners();
     }
@@ -108,6 +114,12 @@ export default class OffcanvasNavigation {
         }
 
         this._firstInit = false;
+
+        // Disable orientation change event if initialization is already ongoing
+        $(document).off(
+            'breakpointChange',
+            this._eventListeners.initOffcanvasNav
+        );
 
         this._getHtml()
             .then((html) => this._initHtml(html))
@@ -454,6 +466,23 @@ export default class OffcanvasNavigation {
             `.${this._options.className}__link--return`,
             this._eventListeners.returnLinkClick
         );
+
+        // Check for orientation change and initialize mobile nav if needed
+        this._eventListeners.initOffcanvasNav =
+            this._dynamicOffcanvasInit.bind(this);
+        $(document).on(
+            'breakpointChange',
+            this._eventListeners.initOffcanvasNav
+        );
+    }
+
+    /**
+     * Check and initialize offcanvas navigation if needed
+     */
+    protected _dynamicOffcanvasInit(): void {
+        if (breakpoint.current <= this._options.offcanvasMaxBreakpoint) {
+            idleDeferred().then(() => this._init());
+        }
     }
 
     /**
