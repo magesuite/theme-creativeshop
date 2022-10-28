@@ -657,6 +657,11 @@ $product-tile-magento-catalog-image-height: to-number(
             #{$root}__badge-text {
                 @include badge_span('popular');
             }
+
+            .product-items &:not(.visible) {
+                // Initially hide popular badge on category products list. Rhe logic for showing the badge is placed in magesuite-product-positive-indicators/view/frontend/web/js/tile-badge-shower.js
+                @include visually-hidden();
+            }
         }
 
         &--dailydeal {
