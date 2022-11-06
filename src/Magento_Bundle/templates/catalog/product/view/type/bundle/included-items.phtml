@@ -13,7 +13,13 @@ $options = $block->decorateArray($block->getOptions($stripSelection));
 <?php if (count($options)) : ?>
     <ul class="cs-buybox__bundle-items">
         <?php foreach ($options as $option) : ?>
-            <?php $selections = $option->getSelections() ?>
+            <?php
+                $selections = $option->getSelections();
+
+                if(!is_array($selections) && !is_object($selections)) {
+                    continue;
+                }
+            ?>
             <?php foreach ($selections as $selection) : ?>
                 <?php
                     if (!$option->getSelections()) {
