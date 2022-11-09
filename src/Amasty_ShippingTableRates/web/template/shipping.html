@@ -62,10 +62,10 @@
 
         <div class="cs-checkout__shipping-method-wrapper">
 
-            <h2 class="step-title" translate="'Shipping Address'" data-role="title" />
+            <h2 class="step-title" translate="'Shipping Address'" data-role="title"></h2>
 
-            <each args="getRegion('address-list')" render="" />
-            <each args="getRegion('address-list-additional-addresses')" render="" />
+            <each args="getRegion('address-list')" render="" ></each>
+            <each args="getRegion('address-list-additional-addresses')" render=""></each>
 
             <!-- Address form pop up -->
             <if args="!isFormInline">
@@ -73,17 +73,17 @@
                         class="action action-show-popup"
                         click="showFormPopUp"
                         visible="!isNewAddressAdded()">
-                    <span translate="'New Address'" />
+                    <span translate="'New Address'" ></span>
                 </button>
                 <div id="opc-new-shipping-address"
                         visible="isFormPopUpVisible()"
-                        render="shippingFormTemplate" />
+                        render="shippingFormTemplate"></div>
             </if>
 
-            <each args="getRegion('before-form')" render="" />
+            <each args="getRegion('before-form')" render=""></each>
 
             <!-- Inline address form -->
-            <render if="isFormInline" args="shippingFormTemplate" />
+            <render if="isFormInline" args="shippingFormTemplate"></render>
         </div>
 
 
@@ -98,9 +98,9 @@
     <div class="checkout-shipping-method cs-checkout__shipping-method">
         <h2 class="step-title"
                 translate="'Shipping Methods'"
-                data-role="title" />
+                data-role="title"></h2>
 
-        <each args="getRegion('before-shipping-method-form')" render="" />
+        <each args="getRegion('before-shipping-method-form')" render=""></each>
 
         <div id="checkout-step-shipping_method"
                 class="step-content"
@@ -114,27 +114,27 @@
                     submit="setShippingInformation"
                     novalidate="novalidate">
 
-                <render args="shippingMethodListTemplate"/>
+                <render args="shippingMethodListTemplate"></render>
 
                 <div id="onepage-checkout-shipping-method-additional-load">
-                    <each args="getRegion('shippingAdditional')" render="" />
+                    <each args="getRegion('shippingAdditional')" render=""></each>
                 </div>
                 <div role="alert"
                         if="errorValidationMessage().length"
                         class="message notice">
-                    <span text="errorValidationMessage()" />
+                    <span text="errorValidationMessage()"></span>
                 </div>
                 <div class="actions-toolbar" id="shipping-method-buttons-container">
                     <div class="primary">
                         <button data-role="opc-continue" type="submit" class="button action continue primary">
-                            <span translate="'Next'" />
+                            <span translate="'Next'"></span>
                         </button>
                     </div>
                 </div>
             </form>
             <div class="no-quotes-block"
                     ifnot="rates().length > 0"
-                    translate="'Sorry, no quotes are available for this order at this time'" />
+                    translate="'Sorry, no quotes are available for this order at this time'"></div>
         </div>
     </div>
 </li>
