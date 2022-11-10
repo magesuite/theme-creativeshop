@@ -481,7 +481,7 @@ export default class OffcanvasNavigation {
      */
     protected _dynamicOffcanvasInit(): void {
         if (breakpoint.current <= this._options.offcanvasMaxBreakpoint) {
-            idleDeferred().then(() => this._init());
+            this._init();
         }
     }
 
