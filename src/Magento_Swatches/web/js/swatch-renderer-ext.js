@@ -48,12 +48,12 @@ define(['jquery', 'mage/translate'], function ($, $t) {
                     .parents('.' + $widget.options.classes.attributeClass)
                     .find('.' + $widget.options.classes.attributeInput);
 
-                // If swatch has error validate it to check if remove error if not necessary
-                if (
-                    !$this.hasClass('disabled') &&
-                    $input.hasClass('mage-error')
-                ) {
-                    $input.valid();
+                if ($input.length > 0 && $input.valid()) {
+                    $input
+                        .removeClass('mage-error')
+                        .parent()
+                        .find('.mage-error')
+                        .remove();
                 }
             },
 
