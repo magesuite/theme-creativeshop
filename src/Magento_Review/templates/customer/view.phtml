@@ -1,8 +1,10 @@
 <?php
 /**
- * Template overriden to add Magesuite stars component
+ * Template override:
+ * - add Magesuite stars component
+ * - remove rating label
  *
- * Aligned with Magento 2.4.5 at 09/2022
+ * Aligned with Magento 2.4.5 at 11/2022
  */
 
 /**
@@ -37,23 +39,24 @@ $product = $block->getProductData();
             </div>
             <div class="customer-review-rating">
                 <?php foreach ($block->getRating() as $_rating): ?>
-                <?php if ($_rating->getPercent()): ?>
-                    <?php $rating = ceil($_rating->getPercent()) ?>
-                    <div class="rating-summary item">
-                        <div class="rating-result <?= $block->escapeHtml($_rating->getRatingCode()) ?>"
-                             id="rating-div-<?= $block->escapeHtml($ratingId) ?>"
-                             title="<?= /* @noEscape */ $rating ?>%">
-                            <?= $this->getLayout()
-                                    ->createBlock(\Magento\Framework\View\Element\Template::class)
-                                    ->setMaxStars(5)
-                                    ->setActiveStars($rating/20)
-                                    ->setHideReviewsCount(false)
-                                    ->setTemplate('Magento_Review::rating-stars.phtml')
-                                    ->toHtml();
-                            ?>
-                        </div>
-                        <span class="cs-star-rating__text"><?= $block->escapeHtml($_rating->getRatingCode()) ?></span>
-                        <?= /* @noEscape */
+                    <?php if ($_rating->getPercent()): ?>
+                        <?php $rating = ceil($_rating->getPercent()) ?>
+                        <?php $ratingId = $_rating->getRatingId() ?>
+                        <div class="rating-summary item">
+                            <div class="rating-result <?= $block->escapeHtml($_rating->getRatingCode()) ?>"
+                                 id="rating-div-<?= $block->escapeHtml($ratingId) ?>"
+                                 title="<?= /* @noEscape */ $rating ?>%">
+                                <?= $this->getLayout()
+                                        ->createBlock(\Magento\Framework\View\Element\Template::class)
+                                        ->setMaxStars(5)
+                                        ->setActiveStars($rating/20)
+                                        ->setHideReviewsCount(false)
+                                        ->setTemplate('Magento_Review::rating-stars.phtml')
+                                        ->toHtml();
+                                ?>
+                            </div>
+                            <span class="cs-star-rating__text"><?= $block->escapeHtml($_rating->getRatingCode()) ?></span>
+                            <?= /* @noEscape */
                             $secureRenderer->renderStyleAsTag(
                                 "width:" . /* @noEscape */ $rating . "%",
                                 'div#rating-div-'.$_rating->getRatingId().
