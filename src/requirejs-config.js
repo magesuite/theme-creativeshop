@@ -15,6 +15,7 @@ var config = {
         ccProductFinder: 'js/product-finder',
         mgsSalebarWidget: 'js/salebar-widget',
         mgsOffcanvas: 'js/offcanvas',
+        instantProductFinder: 'js/instant-product-finder',
     },
     shim: {
         'mage/dataPost': ['js/uenc-updater'],
