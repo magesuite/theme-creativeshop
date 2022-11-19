@@ -104,11 +104,8 @@ $instant-product-finder_products-count-bg: $color_primary-500 !default;
             }
         }
 
-        #{$root}__step.required
-            + #{$root}__step[data-finder-step-type='separated']
-            &,
         #{$root}__step.query
-            + #{$root}__step[data-finder-step-type='separated']
+            + #{$root}__step
             & {
             opacity: 1;
             cursor: pointer;
@@ -133,6 +130,10 @@ $instant-product-finder_products-count-bg: $color_primary-500 !default;
         padding-top: 3rem;
 
         #{$root}--loading & {
+            display: none;
+        }
+
+        #{$root}__step.required:not(.filled) ~ & {
             display: none;
         }
     }
