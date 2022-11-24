@@ -83,6 +83,7 @@ import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
  * Optional components - can be imported in child themes entries
  */
 // import 'components/page-scroll';
+// import 'components/password-strength-meter';
 // import 'components/product-tile-list';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
