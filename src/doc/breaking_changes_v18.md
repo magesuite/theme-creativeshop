@@ -206,3 +206,9 @@ and passing tracking ID value to teaser slide element as data attribute.
 > advanced tab. 
 
 <br/>
+
+## submit-button-enabler mixin has been removed
+submit-button-enabler.js mixin has been removed as the same function has been introduced in Magento v2.4.x 
+within Magento/Catalog/view/frontend/web/js/catalog-add-to-cart.js
+> Dev hint:
+> Check if project extends this logic and adjust or remove.
