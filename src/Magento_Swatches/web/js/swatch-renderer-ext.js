@@ -38,22 +38,24 @@ define(['jquery', 'mage/translate'], function ($, $t) {
             },
 
             /**
-             * When below swatches there is an error after choosing a swatch it does not disapper
-             * triggering validation remove error when swatch input has a value
+             * After cliking on addtocart button without choosing all swatches an error appears
+             * It does not disappear immediately after swatch is clicked.
+             * To remove error trigger validation on swatches input
+             * Return if click is performed on disabled swatch (in case back-in-stock module is enabled)
              */
             _OnClick: function ($this, $widget) {
                 this._super($this, $widget);
+
+                if ($this.hasClass('disabled')) {
+                    return;
+                }
 
                 var $input = $this
                     .parents('.' + $widget.options.classes.attributeClass)
                     .find('.' + $widget.options.classes.attributeInput);
 
-                if ($input.length > 0 && $input.valid()) {
-                    $input
-                        .removeClass('mage-error')
-                        .parent()
-                        .find('.mage-error')
-                        .remove();
+                if ($input.length) {
+                    $input.valid();
                 }
             },
 
