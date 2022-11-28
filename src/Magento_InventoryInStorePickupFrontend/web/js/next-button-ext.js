@@ -11,7 +11,6 @@ define([
             // Need to import isStorePickupAvailable and isStorePickupSelected  to know when to disable "Next" button.
             // It should be disabled when StorePickup is selected as shipping method but no store has been chosen from the list of stores
             defaults: {
-                isDisabled: false,
                 isStorePickupSelectedSelf: ko.observable(false),
                 isLocationSelected: ko.observable(false),
                 pickInStoreButtonSelector:
@@ -33,18 +32,6 @@ define([
             initialize: function () {
                 this._super();
 
-                this.isDisabled = ko.computed(function () {
-                    if (
-                        typeof this.isStorePickupAvailable === 'object' &&
-                        this.isStorePickupAvailable !== null &&
-                        this.isStorePickupSelectedSelf()
-                    ) {
-                        return !this.isLocationSelected();
-                    }
-
-                    return shippingService.isLoading();
-                }, this);
-
                 // Subscribe to location selection observable to make sure store is chosen
                 pickupLocationsService.selectedLocation.subscribe(function (
                     storeData
@@ -60,13 +47,25 @@ define([
                 this.isStorePickupSelectedSelf(isSelected);
             },
 
+            canContinueToPayment: function () {
+                if (
+                    typeof this.isStorePickupAvailable === 'object' &&
+                    this.isStorePickupAvailable !== null &&
+                    this.isStorePickupSelectedSelf()
+                ) {
+                    return !this.isLocationSelected();
+                }
+
+                return this._super();
+            },
+
             // Modified to trigger click of the correct button because store pickup has dedicated "Next", different from the shipping form
             continueToPayment: function () {
-                var $nextButton = this.isStorePickupSelectedSelf()
-                    ? $(this.pickInStoreButtonSelector)
-                    : $(this.nextButtonSelector);
-
-                $nextButton.trigger('click');
+                if (this.isStorePickupSelectedSelf()) {
+                    $(this.pickInStoreButtonSelector).trigger('click');
+                } else {
+                    this._super();
+                }
             },
         });
     };
