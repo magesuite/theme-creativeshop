@@ -15,7 +15,15 @@ define([
             nextButtonSelector:
                 '#co-shipping-method-form [data-role="opc-continue"]',
         },
-        isDisabled: shippingService.isLoading,
+        isDisabled: false,
+        initialize: function () {
+            this._super();
+
+            // isDisabled must become computed because it checks multiple observables.
+            this.isDisabled = ko.computed(function () {
+                return !this.canContinueToPayment();
+            }, this);
+        },
         isVisible: ko.computed(function () {
             var shipping = _.findWhere(stepNavigator.steps(), {
                 code: 'shipping',
@@ -23,6 +31,9 @@ define([
 
             return shipping ? shipping.isVisible : ko.observable(false);
         }),
+        canContinueToPayment: function () {
+            return !shippingService.isLoading();
+        },
         continueToPayment: function () {
             $(this.nextButtonSelector).trigger('click');
         },

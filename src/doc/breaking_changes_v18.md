@@ -207,8 +207,21 @@ and passing tracking ID value to teaser slide element as data attribute.
 
 <br/>
 
+## Checkout "Next button" logic was refactored in order to make it more extensible.
+Next button script was refactored in odrer to allow to add own logic for enabling/disabling the button in child themes and modules.
+In "theme-creativeshop/src/Magento_Checkout/web/js/next-button.js" method called "canContinueToPayment" was added. 
+"isDisabled" property, which was an observable before, became computed because it checks multiple observables. Now it returns !this.canContinueToPayment()
+> Dev hint:
+> Check if project theme adds a mixin to next-button.js, if so move disabling/enambil logic to canContinueToPayment method. Do not forget to return parent method at the end: "return this._super();"
+> Do not reinitialize "isDisabled" in mixin
+> Heavy test checkout if you use packstation dhl module or pick in store.
+
+<br/>
+
 ## submit-button-enabler mixin has been removed
 submit-button-enabler.js mixin has been removed as the same function has been introduced in Magento v2.4.x 
 within Magento/Catalog/view/frontend/web/js/catalog-add-to-cart.js
 > Dev hint:
 > Check if project extends this logic and adjust or remove.
+
+<br/>
