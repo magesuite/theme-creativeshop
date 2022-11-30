@@ -21,6 +21,10 @@ var config = {
     },
     config: {
         mixins: {
+            /**
+             * Some of the mixins point to full path + module aliases. It solves the issue:
+             * https://github.com/magento/magento2/issues/33593#issuecomment-1040116318
+             */
             'collapsible': {
                 'js/collapsible-ext': true,
             },
@@ -130,6 +134,9 @@ var config = {
             },
             'Magento_Bundle/js/slide': {
                 'Magento_Bundle/js/slide-ext': true,
+            },
+            'Magento_PageCache/js/page-cache': {
+                'Magento_PageCache/js/submit-button-enabler': true,
             },
         },
     },
