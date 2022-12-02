@@ -594,7 +594,6 @@ export default class StoreLocator {
 
     /**
      * Return custom html template for sidebar store info box.
-     * TODO For now there is no route link in response
      */
     public getInfoWindowContent(store): string {
         const storePostCode = store.postCode ? `${store.postCode} ` : '';

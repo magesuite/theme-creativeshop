@@ -1,4 +1,4 @@
-import { SalebarWidget } from 'components/salebar-widget';
+import { SalebarWidget } from 'MageSuite_WidgetSalebar';
 import * as $ from 'jquery';
 
 export function mgsSalebarWidget(config, element) {

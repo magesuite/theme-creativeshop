@@ -106,6 +106,22 @@ Additionally, latest-products-purchased component is optional now, previously it
 
 <br/>
 
+## Moved 'components/product-variants' to 'MageSuite_ProductVariants' folder.
+Optional import should look like:
+`import 'MageSuite_ProductVariants'` instead of `import 'components/product-variants'`
+> Dev Hint: If 'components/product-variants' has been overwritten in project, please move files accordingly and adjust imports/paths.
+
+<br/>
+
+## Introduced 'MageSuite_WidgetSalebar' folder and moved 'components/salebar-widget' there.
+import should look like:
+`import 'MageSuite_WidgetSalebar'` instead of `import 'components/salebar-widget'`
+
+> Dev Hint: 
+> If 'components/salebar-widget' or 'entires/salebar-widget' has been overwritten in project, please move files accordingly and adjust imports.
+
+<br/>
+
 ## moved plugincompany-contactform component, from customization/plugincompany-contactform, to module folder 'PluginCompany_ContactForms'.
 Also, it is an OPTIONAL component now, so make sure you import it in entries when project is using it.
 > Dev Hint: 
@@ -218,10 +234,33 @@ In "theme-creativeshop/src/Magento_Checkout/web/js/next-button.js" method called
 
 <br/>
 
-## submit-button-enabler mixin has been removed
-submit-button-enabler.js mixin has been removed as the same function has been introduced in Magento v2.4.x 
-within Magento/Catalog/view/frontend/web/js/catalog-add-to-cart.js
+
+## Remove dependency to a module MageSuite_ShippingAddons and moved related component 'components/free-shipping-indicator' to 'MageSuite_ShippingAddons' folder
+We introduced 'MageSuite_ShippingAddons' folder and moved 'components/free-shipping-indicator' there, module is no longer in dependencies of theme - can be installed if needed and import in entry is commented out.
 > Dev hint:
-> Check if project extends this logic and adjust or remove.
+> Check if project uses this component and if so, add it to globabl project dependencies, 
+> import related component in your entries and adjust paths, as component was moved to 'src/MageSuite_ShippingAddons/web/css/free-shipping-indicator.scss' folder.
 
 <br/>
+
+## Removed old relict - 'components/full-search'. 
+> Dev hint:
+> Check if project uses this component and if so, recreate it in project.
+
+<br/>
+
+## Removed old relict 'components/title-block'.
+> Dev hint:
+> Check if project uses this component and if so, recreate it in project.
+
+<br/>
+
+## Removed 'components/proportional-scaler' as it was an old relict
+> Dev hint:
+> Check if project uses this component and if so, recreate it in project.
+
+<br/>
+
+## module MageSuite_LoginOrGuestCheckoutStep commmented out as optional.
+> Dev hint:
+> Check if project uses this component and if so, import it in  the project.

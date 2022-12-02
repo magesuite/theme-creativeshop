@@ -25,7 +25,6 @@ import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';
 import 'components/footer';
-import 'components/free-shipping-indicator';
 import 'components/google-recaptcha';
 import 'components/header';
 import 'components/header/search';
@@ -84,6 +83,7 @@ import 'components/toolbar';
  * Optional components that require optional modules being installed
  */
 // import 'Amazon_Pay';
+// import 'MageSuite_ShippingAddons';
 // import 'MageSuite_QuickReorder/reorder-banner';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
