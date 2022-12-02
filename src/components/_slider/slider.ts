@@ -295,8 +295,8 @@ export default class Slider {
     }
 
     /**
-     * Listens to 'breakpointChange' event. When emitted, checks if 'currentItemsPerView' should be updated and updates if so. Afterwards it calls Navigation and Pagination API to set new items per view value and update those modules.
-     * @TODO: get rid of jquery
+     * Listens to 'breakpointChange' event. When emited, checks if 'currentItemsPerView' should be updated and updates if so.
+     * Afterwards it calls Navigation and Pagination API to set new items per view value and update those modules.
      */
     protected _watchBreakpointChanges(): void {
         document.addEventListener(
