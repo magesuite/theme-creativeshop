@@ -24,7 +24,6 @@ import 'components/display-controller';
 import 'components/dropdown-switcher';
 import 'components/field';
 import 'components/footer';
-import 'components/free-shipping-indicator';
 import 'components/google-recaptcha';
 import 'components/header';
 import 'components/header/search';
@@ -98,6 +97,7 @@ import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
 // import 'MageSuite_Pwa';
 // import 'MageSuite_PwaNotifications';
 // import 'MageSuite_QuickReorder/reorder-banner';
+// import 'MageSuite_ShippingAddons';
 // import 'MageSuite_SuccessPageOrderDetails';
 // import 'Mollie_Payment';
 // import 'PluginCompany_ContactForms';
