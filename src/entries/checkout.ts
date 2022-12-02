@@ -76,7 +76,6 @@ import 'components/qty-increment';
 import 'components/sticky-block';
 import 'components/table';
 import 'components/tabs';
-import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
 
 /**
  * Optional components - can be imported in child themes entries
@@ -93,6 +92,7 @@ import 'MageSuite_LoginOrGuestCheckoutStep'; // ?? Shouldn't it be optional?
  */
 // import 'Amazon_Pay';
 // import 'MageSuite_InstantPurchase';
+// import 'MageSuite_LoginOrGuestCheckoutStep';
 // import 'MageSuite_PackstationDhl';
 // import 'MageSuite_Pwa';
 // import 'MageSuite_PwaNotifications';

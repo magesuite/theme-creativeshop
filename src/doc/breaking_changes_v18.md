@@ -255,6 +255,12 @@ We introduced 'MageSuite_ShippingAddons' folder and moved 'components/free-shipp
 
 <br/>
 
-## Removed 'components/proportional-saler' as it was an old relict
+## Removed 'components/proportional-scaler' as it was an old relict
 > Dev hint:
 > Check if project uses this component and if so, recreate it in project.
+
+<br/>
+
+## module MageSuite_LoginOrGuestCheckoutStep commmented out as optional.
+> Dev hint:
+> Check if project uses this component and if so, import it in  the project.
