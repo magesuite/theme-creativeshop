@@ -18,7 +18,7 @@ $instant-product-finder_products-count-bg: $color_primary-500 !default;
     position: relative;
     background-color: $instant-product-finder_bg-color;
     width: 100%;
-    min-height: 100vh;
+    overflow: hidden;
 
     &__step {
         position: relative;
@@ -29,7 +29,8 @@ $instant-product-finder_products-count-bg: $color_primary-500 !default;
         border-bottom: 1px solid $color_border-500;
 
         &--0,
-        .visible + &,
+        &.query.visible,
+        .visible:not(.required) + &,
         .filled + & {
             height: auto;
             opacity: 1;
@@ -63,6 +64,13 @@ $instant-product-finder_products-count-bg: $color_primary-500 !default;
         @include media('>=tablet') {
             font-size: 3.5rem;
         }
+    }
+
+    &__query-next-button {
+        @include button($type: 'primary', $icon_pos: 'no-icon');
+
+        margin: 4rem auto 0;
+        display: block;
     }
 
     &__clear {

@@ -3,39 +3,7 @@ import 'mage/translate';
 import { productTemplate } from './product-template';
 
 /**
- * Product finder instantly displays products based on the user's choice of attribute options
- *
- * How it works:
- * In the corresponding template, finder steps are defined. Every step display one attribute with all its options
- * After all query options are checked by a user request to the backend is performed and products are fetched and rendered (but not displayed)
- *
- * There can be different kinds of attributes.
- * Filter (attribute) types:
- *
- * - query - these are base filters, which selection is required to fetch the products. It is only possible to select one of the options for the query filter (e.g. either cat or dog).. Query filters are always required
- * TODO With the current logic it should be possible to not have any query filters and perform requests at the beginning. It should be even possible to render the tile server side (only SKU as tile ID needed). However, I was not able to check this.
- * - combined - filter products to show only these, that contain all the selected options - e.g allergens in food filter, in which you select that a product should not contain both, sesame and soya.
- * - separated - they filter products, that fulfil some of the selected options (like yellow and orange for a shirt colour).
- * - combined and separate filters can be additionally marked as required or optional. Required filter means that next steps and products won't be shown after at least one option is checked for this step. Not required filters can stay unchecked. It is important to place required filters first, and not required filters should follow.
- *
- * Product finder has 2 main phases:
- *
- * 1. Gathering query values - by choosing some initial (query) options user defines the initial scope of products he's interested in.
- * 2. Filtering the results - after the user checks the following filters, active/available/disabled options are recalculated and filters state is updated as well as all the products that meet the criteria are shown.
- *
- * After a response with data is received from BE, the following data structures are prepared:
- *
- * - _allAttributes - Set of all attributes that exist for fetched products
- * - _mappedOptionsToProducts - Object with option ids as keys and array of product SKUs as value
- * - _mappedProductsToOptions - Object with product SKUs as key and array of option IDs as value
- *
- * Every time when filter option is checked/unchecked the following data structures are updated
- *
- * - _activeCombinedOptions - Set with all options id that are either initial(query) or comes from combined attributes(steps)
- * - _activeSeparateOptions - Object with names of steps as keys and set of active options ad value
- * - _activeProducts - Set of products to be shown
- *
- * The other part of the logic is related to the visual effects - scrolling to the current step, showing the next step, etc.
+ * Documentation for the moduel: https://creativestyle.atlassian.net/wiki/spaces/MGSDEV/pages/2283962862/InstantProductFinder+optional+private
  */
 
 interface ISelectors {
@@ -47,6 +15,7 @@ interface ISelectors {
     attributes: string;
     clear: string;
     reset: string;
+    queryNextButton: string;
 }
 
 export default class InstantProductFinder {
@@ -72,10 +41,12 @@ export default class InstantProductFinder {
         attributes: '*[data-finder-role="attributes"]',
         clear: '*[data-finder-role="clear"]',
         reset: '*[data-finder-role="reset"]',
+        queryNextButton: '.cs-instant-product-finder__query-next-button',
     };
-    private _endpoints: { fetchProducts: string } = {
-        fetchProducts: window.BASE_URL + 'ipf/product/json',
+    public endpoints: { fetchProducts: string } = {
+        fetchProducts: window.BASE_URL + 'instant_product_finder/product/json',
     };
+    public scrollToStep: Boolean = false;
 
     /**
      * Create Instant Product Finder Instance and setEvents
@@ -88,7 +59,7 @@ export default class InstantProductFinder {
             .forEach((element: HTMLElement) => {
                 this._initialQuery[
                     element.getAttribute('data-finder-step-attribute-code')
-                ] = '';
+                ] = new Set();
             });
         this._currentQuery = this._initialQuery;
 
@@ -102,7 +73,17 @@ export default class InstantProductFinder {
     protected _fetchProducts(): void {
         let query = '';
         for (const [key, value] of Object.entries(this._currentQuery)) {
-            query = `${query}/${key}/${value}`;
+            query = `${query}/${key}/`;
+
+            let i = 0;
+            value.forEach((option: string) => {
+                if (i < value.size - 1) {
+                    query = `${query}${option},`;
+                } else {
+                    query = `${query}${option}`;
+                }
+                i++;
+            });
         }
 
         this._isLoading = true;
@@ -110,7 +91,7 @@ export default class InstantProductFinder {
 
         $.ajax({
             method: 'GET',
-            url: `${this._endpoints.fetchProducts}${query}`,
+            url: `${this.endpoints.fetchProducts}${query}`,
             cache: true,
         })
             .done((response) => {
@@ -134,8 +115,8 @@ export default class InstantProductFinder {
         this._renderProducts(response).then(() => {
             this._hideUnusedOptions();
             this._updateState();
-            this._element.classList.remove(this._selectors.elementLoadingClass);
             this._handleStepsVisibility();
+            this._element.classList.remove(this._selectors.elementLoadingClass);
         });
     }
 
@@ -195,7 +176,7 @@ export default class InstantProductFinder {
     }
 
     /**
-     * Update state based on: this._currentQuery, this._activeCombinedOptions
+     * Update state.
      */
     protected _updateState(): void {
         this._prepareFiltersAndProductsState();
@@ -257,34 +238,32 @@ export default class InstantProductFinder {
     }
 
     /**
-     * Check if product must has all active combined attributes
+     * Check if product has all active combined attributes
      */
     protected _productHasAllCombinedOptions(attributes: Set<string>): boolean {
-        let productHasAllCombinedOptions = true;
-
-        this._activeCombinedOptions.forEach((option: string) => {
-            if (!attributes.has(option)) {
-                productHasAllCombinedOptions = false;
-                return;
-            }
-        });
-
-        return productHasAllCombinedOptions;
+        if (this._activeCombinedOptions.size) {
+            return Array.from(this._activeCombinedOptions).every(
+                (option: string) => {
+                    return attributes.has(option);
+                }
+            );
+        } else {
+            return true;
+        }
     }
 
-    protected _updateActiveFiltersSets(e: Event): void {
-        const target: HTMLElement = e.target as HTMLElement;
-        const optionId = target.id.split('-')[1];
+    protected _updateActiveFiltersSets(button: HTMLElement): void {
+        const optionId = button.getAttribute('data-finder-value');
         const filterType = encodeURIComponent(
-            target.getAttribute('data-finder-filter-type')
+            button.getAttribute('data-finder-filter-type')
         );
 
-        if (filterType === 'combined' || filterType === 'query') {
+        if (filterType === 'combined') {
             !this._activeCombinedOptions.has(optionId)
                 ? this._activeCombinedOptions.add(optionId)
                 : this._activeCombinedOptions.delete(optionId);
-        } else if (filterType === 'separated') {
-            const currentStepId = target.closest(this._selectors.step).id;
+        } else if (filterType === 'separated' || filterType === 'query') {
+            const currentStepId = button.closest(this._selectors.step).id;
 
             if (!this._activeSeparateOptions[currentStepId]) {
                 this._activeSeparateOptions[currentStepId] = new Set();
@@ -307,9 +286,7 @@ export default class InstantProductFinder {
         let showAllSteps = false;
 
         if (e) {
-            const currentStep = (e.target as HTMLElement).closest(
-                this._selectors.step
-            );
+            const currentStep = e.target.closest(this._selectors.step);
 
             currentStep.classList.add('filled', 'visible');
 
@@ -327,7 +304,7 @@ export default class InstantProductFinder {
             showAllSteps = true;
         }
 
-        if (showAllSteps) {
+        if (showAllSteps && this._productsAreFetched) {
             const steps: NodeListOf<Element> = this._element.querySelectorAll(
                 this._selectors.step
             );
@@ -436,39 +413,72 @@ export default class InstantProductFinder {
     }
 
     /**
+     *
+     */
+    protected _handleQueryClickAfterProductsAreFetched(e: Event): void {
+        const target: HTMLElement = e.target;
+        const currentValue = encodeURIComponent(
+            target.getAttribute('data-finder-value')
+        );
+        const targetIsActive: boolean = target.classList.contains('active');
+        const step: HTMLElement = target.closest(this._selectors.step);
+        const code: string = step.getAttribute(
+            'data-finder-step-attribute-code'
+        );
+        const lastQuery: object = this._currentQuery;
+
+        this._resetFinder();
+
+        Object.values(lastQuery).forEach((step) => {
+            step.forEach((id: string) => {
+                const button: HTMLElement = this._element.querySelector(
+                    `#option-${id}`
+                );
+                this._updateActiveFiltersSets(button);
+                button.classList.add('active');
+            });
+        });
+
+        if (!targetIsActive) {
+            this._currentQuery[code].add(currentValue);
+            target.classList.add('active');
+        } else {
+            this._currentQuery[code].delete(currentValue);
+            target.classList.remove('active');
+        }
+
+        this._element
+            .querySelectorAll(this._selectors.step + '.query')
+            .forEach((step) => {
+                step.classList.add('visible');
+            });
+    }
+
+    /**
      * Handle filters check on initial(query) steps
      */
     protected _handleQueryFiltersClick(e: Event): void {
-        const target: HTMLElement = e.target as HTMLElement;
-
         if (this._productsAreFetched) {
-            this._resetFinder();
-            target.click();
+            this._handleQueryClickAfterProductsAreFetched(e);
+            return;
         }
 
+        const target: HTMLElement = e.target;
         const attributeCode: string = encodeURIComponent(
             target
                 .closest(this._selectors.step)
                 .getAttribute('data-finder-step-attribute-code')
         );
+        const currentValue = encodeURIComponent(
+            target.getAttribute('data-finder-value')
+        );
 
         if (attributeCode) {
+            !this._currentQuery[attributeCode].has(currentValue)
+                ? this._currentQuery[attributeCode].add(currentValue)
+                : this._currentQuery[attributeCode].delete(currentValue);
+
             target.classList.toggle('active');
-            target.closest(this._selectors.step).classList.toggle('filled');
-
-            this._currentQuery[attributeCode] = encodeURIComponent(
-                target.getAttribute('data-finder-value')
-            );
-        }
-
-        const allQueryValuesArePresent = Object.values(
-            this._currentQuery
-        ).every((value) => {
-            return value;
-        });
-
-        if (allQueryValuesArePresent) {
-            this._fetchProducts();
         }
     }
 
@@ -497,6 +507,10 @@ export default class InstantProductFinder {
     }
 
     protected _scrollToStep(step: number): void {
+        if (!this.scrollToStep) {
+            return;
+        }
+
         let scrollToElement: HTMLElement = this._element.querySelector(
             `#step${step}`
         );
@@ -545,6 +559,42 @@ export default class InstantProductFinder {
         this._setProductsCount();
     }
 
+    protected _handleQueryNextButtonClick(e: Event): void {
+        const target: HTMLElement = e.target;
+        const step: HTMLElement = target.closest(this._selectors.step);
+        const id: number = parseInt(
+            target.closest(this._selectors.step).id.replace('step', ''),
+            10
+        );
+        const code: string = step.getAttribute(
+            'data-finder-step-attribute-code'
+        );
+
+        if (
+            !this._currentQuery[code] ||
+            (this._currentQuery[code] && !this._currentQuery[code].size)
+        ) {
+            return;
+        }
+
+        step.classList.toggle('filled');
+        step.classList.toggle('visible');
+
+        this._scrollToStep(id + 1);
+
+        const allQueryValuesArePresent = Object.values(
+            this._currentQuery
+        ).every((value) => {
+            return value.size;
+        });
+
+        if (allQueryValuesArePresent) {
+            this._fetchProducts();
+        }
+
+        this._handleStepsVisibility(e);
+    }
+
     /**
      * Set events
      */
@@ -553,10 +603,7 @@ export default class InstantProductFinder {
             .querySelectorAll(`${this._selectors.clear}`)
             .forEach((element: HTMLElement) => {
                 const stepId: number = parseInt(
-                    (element as HTMLElement).parentElement.id.replace(
-                        'step',
-                        ''
-                    ),
+                    element.parentElement.id.replace('step', ''),
                     10
                 );
 
@@ -574,31 +621,41 @@ export default class InstantProductFinder {
             });
 
         this._element
+            .querySelectorAll(`${this._selectors.queryNextButton}`)
+            .forEach((element: HTMLElement) => {
+                element.addEventListener('click', (e: Event) => {
+                    this._handleQueryNextButtonClick(e);
+                });
+            });
+
+        this._element
             .querySelectorAll(this._selectors.filter)
             .forEach((element: HTMLElement) => {
                 element.addEventListener('click', (e: Event) => {
-                    this._updateActiveFiltersSets(e);
+                    this._updateActiveFiltersSets(e.target);
 
                     if (
-                        !this._productsAreFetched ||
                         e.target.getAttribute('data-finder-filter-type') ===
-                            'query'
+                        'query'
                     ) {
                         this._handleQueryFiltersClick(e);
                     } else {
                         this._updateState();
+                        this._handleStepsVisibility(e);
+
+                        const id: number = parseInt(
+                            element
+                                .closest(this._selectors.step)
+                                .id.replace('step', ''),
+                            10
+                        );
+
+                        if (e.target.classList.contains('active')) {
+                            this._scrollToStep(id + 1);
+                        }
                     }
 
-                    const id: number = parseInt(
-                        element
-                            .closest(this._selectors.step)
-                            .id.replace('step', ''),
-                        10
-                    );
-
                     element.blur();
-                    this._handleStepsVisibility(e);
-                    this._scrollToStep(id + 1);
                 });
             });
     }
