@@ -1,6 +1,6 @@
 /**
  * Checkout entry point.
- * It imports all the components required by Checkout.
+ * It imports all the components required by Checkout, Cart and the Success Page.
  * Each page type has own entry point containing required components.
  * It allows optimizing bundles in webpack - which gathers common imports in separate package.
  * It is a job of every component to initilize itself.
