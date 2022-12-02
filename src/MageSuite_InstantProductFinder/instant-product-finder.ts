@@ -46,7 +46,7 @@ export default class InstantProductFinder {
     public endpoints: { fetchProducts: string } = {
         fetchProducts: window.BASE_URL + 'instant_product_finder/product/json',
     };
-    public scrollToStep: Boolean = false;
+    public scrollToStep: boolean = false;
 
     /**
      * Create Instant Product Finder Instance and setEvents
@@ -77,11 +77,10 @@ export default class InstantProductFinder {
 
             let i = 0;
             value.forEach((option: string) => {
-                if (i < value.size - 1) {
-                    query = `${query}${option},`;
-                } else {
-                    query = `${query}${option}`;
-                }
+                query =
+                    i < value.size - 1
+                        ? `${query}${option},`
+                        : (query = `${query}${option}`);
                 i++;
             });
         }
