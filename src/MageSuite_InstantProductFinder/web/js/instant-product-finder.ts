@@ -3,7 +3,7 @@ import 'mage/translate';
 import { productTemplate } from './product-template';
 
 /**
- * Documentation for the moduel: https://creativestyle.atlassian.net/wiki/spaces/MGSDEV/pages/2283962862/InstantProductFinder+optional+private
+ * Documentation for the module: https://creativestyle.atlassian.net/wiki/spaces/MGSDEV/pages/2283962862/InstantProductFinder+optional+private
  */
 
 interface ISelectors {
