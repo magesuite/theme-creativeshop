@@ -22,9 +22,11 @@ $itemIdentifier = $item->getIdentifier() ?? '';
             </span>
         </a>
     </li>
-    <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--all-products">
-        <a class="cs-offcanvas-navigation__link" href="<?= $itemUrl; ?>"><?= __('All products'); ?></a>
-    </li>
+    <?php if (!$item->isUrlDisabled()) : ?>
+        <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--all-products">
+            <a class="cs-offcanvas-navigation__link" href="<?= $itemUrl; ?>"><?= __('All products'); ?></a>
+        </li>
+    <?php endif; ?>
 <?php
 foreach($item->getSubItems() as $subItem):
     $subItem = $subItem;
