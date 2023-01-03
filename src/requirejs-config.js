@@ -139,6 +139,9 @@ var config = {
             'Magento_PageCache/js/page-cache': {
                 'Magento_PageCache/js/submit-button-enabler': true,
             },
+            'Magento_Customer/js/change-email-password': {
+                'Magento_Customer/js/change-email-password-ext': true,
+            },
         },
     },
 };
