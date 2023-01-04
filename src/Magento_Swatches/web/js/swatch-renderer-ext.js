@@ -38,29 +38,6 @@ define(['jquery', 'mage/translate'], function ($, $t) {
             },
 
             /**
-             * After clicking on addtocart button without choosing all swatches an error appears
-             * It does not disappear immediately after swatch is clicked.
-             * To remove error trigger validation on swatches input
-             * Return if click is performed on disabled swatch (in case back-in-stock module is enabled)
-             * (This additional validation is not required on product tile)
-             */
-            _OnClick: function ($this, $widget) {
-                this._super($this, $widget);
-
-                if ($this.hasClass('disabled')) {
-                    return;
-                }
-
-                var $input = $this
-                    .parents('.' + $widget.options.classes.attributeClass)
-                    .find('.' + $widget.options.classes.attributeInput);
-
-                if ($input.length && !this.inProductList) {
-                    $input.valid();
-                }
-            },
-
-            /**
              * Extend to update price label depending on amount of options selected
              */
             _UpdatePrice: function () {
