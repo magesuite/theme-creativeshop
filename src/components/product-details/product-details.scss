@@ -2,7 +2,6 @@
 @import 'components/headline/mixin';
 @import 'components/pseudoicon/mixin';
 @import 'utils/visually-hidden';
-@import 'utils/component-spacing';
 
 $product-description_item-background-mobile: $color_background-200 !default;
 $product-description_item-background-desktop: linear-gradient(
@@ -79,7 +78,11 @@ $product-description_headline-cc-visible: false !default;
 
         &--content-constructor,
         &--symbol-cms {
-            @include component-spacing-on-top();
+            margin-top: 3rem;
+
+            @include media('>=tablet') {
+                margin-top: 4rem;
+            }
 
             #{$root}__headline {
                 @if ($product-description_headline-cc-visible == false) {
