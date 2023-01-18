@@ -33,8 +33,8 @@ export interface OffcanvasNavigationOptions {
 
 interface MainNavigationCacheInfo {
     url: string;
-    key: string;
-    generationTime: number;
+    cache_key: string;
+    generation_time: number;
 }
 
 /**
@@ -290,7 +290,10 @@ export default class OffcanvasNavigation {
 
         $.get({
             url: cacheInfo.url,
-            data: { cache_key: cacheInfo.key },
+            data: {
+                cache_key: cacheInfo.cache_key,
+                generation_time: cacheInfo.generation_time,
+            },
             cache: true,
         }).then((html: string) => {
             deferred.resolve(html);
@@ -304,8 +307,8 @@ export default class OffcanvasNavigation {
 
         return {
             url: $navigation.data('mobile-endpoint-url'),
-            key: $navigation.data('cache-key'),
-            generationTime: $navigation.data('cache-generation-time'),
+            cache_key: $navigation.data('cache-key'),
+            generation_time: $navigation.data('cache-generation-time'),
         };
     }
 
