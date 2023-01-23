@@ -267,6 +267,7 @@ export default class Minicart {
         }
 
         if (this._options.isMessagesOffcanvas) {
+            this._clearGlobalMessage();
             this._clearMinicartMessage();
             requireAsync(['Magento_Ui/js/lib/view/utils/async']).then(
                 (): void => {
@@ -342,6 +343,20 @@ export default class Minicart {
         );
         if (this._$minicartMessageContainer.length) {
             this._$minicartMessageContainer.empty();
+        }
+    }
+
+    /**
+     * Clear global message if exist.
+     */
+    protected _clearGlobalMessage(): void {
+        this._$message = this._$messagesContainer.find(
+            `.${this._options.messageWrapperClass}`
+        );
+
+        // Clear main message wrapper
+        if (this._$message.length) {
+            this._$message.empty();
         }
     }
 
