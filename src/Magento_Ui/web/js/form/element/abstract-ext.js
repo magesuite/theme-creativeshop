@@ -13,6 +13,7 @@ define(['ko', 'underscore'], function (ko, _) {
             initialize: function () {
                 this._super();
                 this.initializeSuccess();
+                this.initializeEditingState();
                 return this;
             },
             /**
@@ -22,6 +23,33 @@ define(['ko', 'underscore'], function (ko, _) {
                 this.success = ko.observable('');
                 this.observe('success');
                 this.additionalClasses._success = this.success;
+            },
+            /**
+             * Initialize under editing state
+             */
+            initializeEditingState: function () {
+                const self = this;
+
+                this.editing = ko.observable('');
+                this.observe('editing');
+                this.additionalClasses._editing = this.editing;
+
+                if (this.getInitialValue()) {
+                    self.editing(false);
+                }
+
+                this.on('value', () => {
+                    if (self.editing() === '') {
+                        self.editing(true);
+                    }
+                });
+
+                this.on(
+                    'value',
+                    _.debounce(function () {
+                        self.editing(false);
+                    }, 500)
+                );
             },
             /**
              * When validate field (it happens when 'value' property is updated) update success observable
