@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="bundle.options.container" htmlClass="cs-container cs-container--page-pdp-bundle-config cs-bundle-box">
+            <container name="bundle.options.container.content" htmlTag="div" htmlClass="cs-container--page-pdp-bundle-config-content">
+                <container name="bundle.options.container.inner" htmlTag="div" htmlClass="cs-container__inner" />
+            </container>
+        </referenceContainer>
+
+        <referenceBlock name="product.info.addtocart.bundle">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string">cs-bundle-box__addtocart</argument>
+            </arguments>
+
+            <block class="Magento\Framework\View\Element\Template"
+                   name="product.info.addtocart.bundle.button"
+                   template="Magento_Catalog::addtocart/button.phtml">
+                <arguments>
+                    <argument xsi:type="string" name="button_class">cs-addtocart__button cs-bundle-box__addtocart-button</argument>
+                    <argument xsi:type="string" name="button_params"><![CDATA[disabled="disabled"]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceBlock name="product.info.addto.bundle" display="false" /> 
+
+        <move element="bundle.options.container" destination="content" after="product.pdptop.container" />
+        <move element="product.info" destination="bundle.options.container.inner" />
+        <move element="customize.button" destination="product.info.main.section.form" before="-" />
+        <move element="product.info.addtocart.bundle" destination="bundle.summary" after="-" />
+    </body>
+</page>
