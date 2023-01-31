@@ -54,6 +54,7 @@ import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/swatches';
+import 'components/tabs';
 import 'components/topbar';
 import 'components/typography';
 import 'components/video-teaser';
@@ -78,7 +79,6 @@ import 'components/review';
 import 'components/reviews-summary';
 import 'components/reviews';
 import 'components/table';
-import 'components/tabs';
 import 'components/toolbar';
 
 /**
