@@ -4,105 +4,104 @@
  */
 ?>
 <?php
-/** @var $block \Magento\Catalog\Block\Product\AbstractProduct */
-$csProductHelper = $this->helper('MageSuite\Frontend\Helper\Product');
+/** @var $block \Magento\Catalog\Block\Product\View */
+$csProductHelper = $this->helper(\MageSuite\Frontend\Helper\Product::class);
 $rating = $csProductHelper->getReviewSummary($block->getProduct(), true);
-$ratingData = $rating["data"];
-$votes = $rating["data"]["votes"];
+$ratingData = $rating['data'];
+$votes = $rating['data']['votes'];
 $allVotes = array_sum($votes);
 ?>
 
-<?php if($allVotes > 0): ?>
-<div class="cs-reviews-summary">
-    <div class="cs-reviews-summary__stars">
-        <div class="cs-reviews-summary__note">
-            <span class="cs-reviews-summary__note-left"><?= $ratingData['activeStars'] ?></span>
-            <span class="cs-reviews-summary__note-right"> / <?= $ratingData['maxStars'] ?></span>
+<?php if ($allVotes > 0): ?>
+    <div class="cs-reviews-summary">
+        <div class="cs-reviews-summary__stars">
+            <div class="cs-reviews-summary__note">
+                <span class="cs-reviews-summary__note-left"><?= $ratingData['activeStars'] ?></span>
+                <span class="cs-reviews-summary__note-right"> / <?= $ratingData['maxStars'] ?></span>
+            </div>
+
+            <?= $this->getLayout()
+                ->createBlock(\Magento\Framework\View\Element\Template::class)
+                ->setMaxStars($ratingData['maxStars'])
+                ->setActiveStars($ratingData['activeStars'])
+                ->setReviewsCount($allVotes)
+                ->setHideReviewsCount(true)
+                ->setAdditionalClasses('cs-star-rating--summary')
+                ->setTemplate('Magento_Review::rating-stars.phtml')
+                ->toHtml();
+            ?>
         </div>
 
-        <?= $this->getLayout()
-                 ->createBlock(\Magento\Framework\View\Element\Template::class)
-                 ->setMaxStars($ratingData['maxStars'])
-                 ->setActiveStars($ratingData['activeStars'])
-                 ->setReviewsCount($allVotes)
-                 ->setHideReviewsCount(true)
-                 ->setAdditionalClasses('cs-star-rating--summary')
-                 ->setTemplate('Magento_Review::rating-stars.phtml')
-                 ->toHtml();
-        ?>
-    </div>
+        <?php if ($block->getShowAllReviewsCount()): ?>
+            <div class="cs-reviews-summary__all-count">
+                <?= $allVotes == 1 ? __('Based on %1 review', $allVotes) : __('Based on %1 reviews', $allVotes) ?>
+            </div>
+        <?php endif; ?>
 
-    <?php if($block->getShowAllReviewsCount()): ?>
-        <div class="cs-reviews-summary__all-count">
-            <?= $allVotes == 1 ? __('Based on %1 review', $allVotes) : __('Based on %1 reviews', $allVotes) ?>
-        </div>
-    <?php endif; ?>
+        <ul class="cs-reviews-summary__bars">
+            <?php for ($ratingIndex = count($votes), $ratingSteps = 1; $ratingIndex >= $ratingSteps; $ratingIndex--):
+                $ratingLabel = $ratingIndex;
 
-    <ul class="cs-reviews-summary__bars">
-        <?php for ($ratingIndex = count($votes), $ratingSteps = 1; $ratingIndex >= $ratingSteps; $ratingIndex--):
-            $ratingLabel = $ratingIndex;
+                if ($block->getShowFullStarsLabel()) {
+                    $ratingLabel .= ' ' . ($ratingIndex == 1 ? __('star') : __('stars'));
+                }
 
-            if($block->getShowFullStarsLabel()) {
-                $ratingLabel .= ' ' . ($ratingIndex == 1 ? __('star') : __('stars'));
-            }
-
-            $numOfVotes = $votes[$ratingIndex];
-            $votesPercentage = ceil($numOfVotes * 100 / $allVotes);
-        ?>
-            <li class="cs-reviews-summary__bar">
-                <span class="cs-reviews-summary__bar-label"><?= $ratingLabel; ?></span>
-                <span class="cs-reviews-summary__bar-progress">
+                $numOfVotes = $votes[$ratingIndex];
+                $votesPercentage = ceil($numOfVotes * 100 / $allVotes);
+                ?>
+                <li class="cs-reviews-summary__bar">
+                    <span class="cs-reviews-summary__bar-label"><?= $ratingLabel; ?></span>
+                    <span class="cs-reviews-summary__bar-progress">
                     <span class="cs-reviews-summary__bar-progress-inner" style="width:<?= $votesPercentage; ?>%;"></span>
                 </span>
-                <span class="cs-reviews-summary__bar-count"><?= $numOfVotes; ?></span>
-            </li>
-        <?php endfor; ?>
-    </ul>
-    <?php if(count($ratingData["ratings"]) > 1): ?>
-    <ul class="cs-reviews-summary__ratings-averages">
-        <?php foreach($ratingData["ratings"] as $subRating): ?>
-            <li class="cs-reviews-summary__ratings-averages-item">
-                <span class="cs-star-rating__label cs-star-rating__label"><?= $subRating['label'] ?></span>
-                <?= $this->getLayout()
-                         ->createBlock(\Magento\Framework\View\Element\Template::class)
-                         ->setMaxStars($ratingData['maxStars'])
-                         ->setActiveStars($subRating['starsAmount'])
-                         ->setHideReviewsCount(true)
-                         ->setAdditionalClasses('cs-star-rating--ratings-averages')
-                         ->setTemplate('Magento_Review::rating-stars.phtml')
-                         ->toHtml();
-                ?>
-            </li>
-        <?php endforeach ?>
-    </ul>
-    <?php endif; ?>
-    <div class="cs-reviews-summary__button-wrapper">
-        <button class="cs-reviews-summary__button">
-            <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */ __('Add Review') ?></span>
-            <?= $block->getChildHtml('reviews.summary.button.icon'); ?>
-        </button>
+                    <span class="cs-reviews-summary__bar-count"><?= $numOfVotes; ?></span>
+                </li>
+            <?php endfor; ?>
+        </ul>
+        <?php if (count($ratingData["ratings"]) > 1): ?>
+            <ul class="cs-reviews-summary__ratings-averages">
+                <?php foreach ($ratingData["ratings"] as $subRating): ?>
+                    <li class="cs-reviews-summary__ratings-averages-item">
+                        <span class="cs-star-rating__label cs-star-rating__label"><?= $subRating['label'] ?></span>
+                        <?= $this->getLayout()
+                            ->createBlock(\Magento\Framework\View\Element\Template::class)
+                            ->setMaxStars($ratingData['maxStars'])
+                            ->setActiveStars($subRating['starsAmount'])
+                            ->setHideReviewsCount(true)
+                            ->setAdditionalClasses('cs-star-rating--ratings-averages')
+                            ->setTemplate('Magento_Review::rating-stars.phtml')
+                            ->toHtml();
+                        ?>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        <?php endif; ?>
+        <div class="cs-reviews-summary__button-wrapper">
+            <button class="cs-reviews-summary__button">
+                <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */__('Add Review') ?></span>
+                <?= $block->getChildHtml('reviews.summary.button.icon'); ?>
+            </button>
+        </div>
     </div>
-</div>
 
-<script>
-    require([
-        'jquery'
-    ], function($) {
-        $('.cs-reviews-summary__button').on('click', function(event) {
-            event.preventDefault();
-            var href = $(this).find('a').attr('href');
-            var target = ('#review-form');
-            if ($(window).width() < 1024) {
-                $('html, body').animate({
-                    scrollTop: $(target).offset().top - $('.cs-header__content').height()
-                }, 350);
-            } else {
-                $('html, body').animate( {
-                    scrollTop: $(target).offset().top
-                }, 350);
-            }
+    <script>
+        require([
+            'jquery'
+        ], function ($) {
+            $('.cs-reviews-summary__button').on('click', function (event) {
+                event.preventDefault();
+                var href = $(this).find('a').attr('href');
+                var target = ('#review-form');
+                if ($(window).width() < 1024) {
+                    $('html, body').animate({
+                        scrollTop: $(target).offset().top - $('.cs-header__content').height()
+                    }, 350);
+                } else {
+                    $('html, body').animate({
+                        scrollTop: $(target).offset().top
+                    }, 350);
+                }
+            });
         });
-    });
-</script>
-
+    </script>
 <?php endif; ?>
