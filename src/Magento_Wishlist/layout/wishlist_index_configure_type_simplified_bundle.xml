@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="wishlist-index-configure-type-simplified-bundle"/>
+
+        <move element="product.info" destination="product.info.main.section.form" before="-" />
+
+        <referenceBlock name="product.info.addtocart.bundle">
+            <arguments>
+                <argument name="additional_css_classes" xsi:type="string">cs-bundle-box__addtocart</argument>
+            </arguments>
+
+            <block name="product.info.addtocart.bundle.button"
+                   template="Magento_Catalog::addtocart/button.phtml">
+                <arguments>
+                    <argument xsi:type="string" name="button_class">cs-addtocart__button cs-bundle-box__addtocart-button</argument>
+                    <argument xsi:type="string" name="button_params"><![CDATA[disabled="disabled"]]></argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="bundle.summary" template="Magento_Bundle::catalog/product/view/simplified-summary.phtml" />
+
+        <referenceBlock name="product.info.details.main">
+            <block class="Magento\Bundle\Block\Catalog\Product\View\Type\Bundle" name="product.info.bundle.included.items" template="Magento_Bundle::catalog/product/view/type/bundle/included-items.phtml" group="column_right" >
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Contains</argument>
+                    <argument name="contain_content" xsi:type="boolean">true</argument>
+                    <argument name="sort_order" xsi:type="string">15</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceBlock name="product.price.render.bundle.customization" display="false" /> 
+        <referenceBlock name="customize.button" display="false" />
+        <referenceBlock name="product.info.form.options">
+            <container name="bundle.product.options.wrapper" htmlTag="div" htmlClass="bundle-options-wrapper cs-visually-hidden"/>
+        </referenceBlock>
+        <move element="product.info.options.wrapper" destination="bundle.product.options.wrapper" />
+    </body>
+</page>
