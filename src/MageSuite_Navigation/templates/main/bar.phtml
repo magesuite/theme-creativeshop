@@ -43,8 +43,7 @@ $imageTeaserConfig = $block->getData('imageTeaserConfig');
                 data-category-id="<?= $itemId; ?>"
                 data-category-identifier="<?= $itemIdentifier ?>"
             >
-                <a
-                    href="<?= $itemUrl; ?>"
+                <<?= !$item->isUrlDisabled() ? "a href='$itemUrl'" : 'span' ?>
                     class="cs-navigation__link cs-navigation__link--main<?= $itemCategoryIcon ? ' cs-navigation__link--with-icon' : ''; ?>"
                 >
                     <?php if ($itemCategoryIcon): ?>
@@ -67,7 +66,7 @@ $imageTeaserConfig = $block->getData('imageTeaserConfig');
                     <?php if ($itemNumberOfProducts): ?>
                         <span class="cs-navigation__products-qty"><?= $itemNumberOfProducts; ?></span>
                     <?php endif; ?>
-                </a>
+                </<?= !$item->isUrlDisabled() ? 'a' : 'span' ?>>
                 <?php
                     if ($hasFlyout) {
                         echo $this->getLayout()

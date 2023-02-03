@@ -51,6 +51,7 @@ import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/swatches';
+import 'components/tabs';
 import 'components/toolbar';
 import 'components/topbar';
 import 'components/typography';
@@ -75,7 +76,6 @@ import 'components/progress-bar';
 import 'components/qty-increment';
 import 'components/sticky-block';
 import 'components/table';
-import 'components/tabs';
 
 /**
  * Optional components - can be imported in child themes entries

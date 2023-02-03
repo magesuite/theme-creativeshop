@@ -6,31 +6,27 @@
  */
 ?>
 <?php
-$reviewsCount = $block->getReviewsCount();
-$ratingSummary = $block->getRatingSummary();
-// Since 2.3.3 rating summary is being returned directly, not as an object.
-if (is_object($ratingSummary)) {
-    $reviewsCount = $ratingSummary->getReviewsCount();
-    $ratingSummary = $ratingSummary->getRatingSummary();
-}
+/** @var $block \Magento\Review\Block\Product\ReviewRenderer */
+$csProductHelper = $this->helper(MageSuite\Frontend\Helper\Product::class);
+$rating = $csProductHelper->getReviewSummary($block->getProduct(), true);
+$ratingData = $rating['data'];
+$votes = $rating['data']['votes'];
+$allVotes = array_sum($votes);
 ?>
-<?php if ($reviewsCount): ?>
+<?php if ($allVotes > 0): ?>
 
-        <?php
-            // Transforms rating summary (0..100) into star count (0..5, with a step of a 0.5)
-            $activeStars = round($ratingSummary / 10) / 2;
-
-            echo $this->getLayout()
-                    ->createBlock(\Magento\Framework\View\Element\Template::class)
-                    ->setMaxStars(5)
-                    ->setActiveStars($activeStars)
-                    ->setReviewsCount($reviewsCount)
-                    ->setHideReviewsCount(false)
-                    ->setReviewsLink(true)
-                    ->setShowNumericalScore($block->getShowNumericalScore())
-                    ->setTemplate('Magento_Review::rating-stars.phtml')
-                    ->toHtml();
-        ?>
+    <?php
+    echo $this->getLayout()
+        ->createBlock(\Magento\Framework\View\Element\Template::class)
+        ->setMaxStars($ratingData['maxStars'])
+        ->setActiveStars($ratingData['activeStars'])
+        ->setReviewsCount($allVotes)
+        ->setHideReviewsCount(false)
+        ->setReviewsLink(true)
+        ->setShowNumericalScore($block->getShowNumericalScore())
+        ->setTemplate('Magento_Review::rating-stars.phtml')
+        ->toHtml();
+    ?>
 
 <?php elseif ($block->isReviewEnabled() && $block->getDisplayIfEmpty()): ?>
 

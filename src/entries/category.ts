@@ -54,6 +54,7 @@ import 'components/slider';
 import 'components/social-media-list';
 import 'components/star-rating';
 import 'components/swatches';
+import 'components/tabs';
 import 'components/topbar';
 import 'components/typography';
 import 'components/video-teaser';
@@ -67,7 +68,6 @@ import 'components/aftersearch-nav';
 import 'components/search-results-cms';
 import 'components/search-results-switcher';
 import 'components/side-nav';
-import 'components/tabs';
 import 'components/toolbar';
 
 /**
