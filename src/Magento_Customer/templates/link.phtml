@@ -15,15 +15,18 @@
         <div class="cs-header-user-nav__icon-wrapper">
             <?php if ($isLoggedIn): ?>
                 <?= $block->getChildHtml('my-account-link.icon.logged-in'); ?>
-                <?php if (!empty($labelLogIn)): ?>
-                    <span class="cs-header-user-nav__label"><?= $labelLogIn ?></span>
-                <?php endif; ?>
             <?php else: ?>
                 <?= $block->getChildHtml('my-account-link.icon.logged-out'); ?>
-                <?php if (!empty($labelLogOut)): ?>
-                    <span class="cs-header-user-nav__label"><?= $labelLogOut ?></span>
-                <?php endif; ?>
             <?php endif; ?>
         </div>
+        <?php if ($isLoggedIn): ?>
+            <?php if (!empty($labelLogIn)): ?>
+                <span class="cs-header-user-nav__label"><?= $labelLogIn ?></span>
+            <?php endif; ?>
+        <?php else: ?>
+            <?php if (!empty($labelLogOut)): ?>
+                <span class="cs-header-user-nav__label"><?= $labelLogOut ?></span>
+            <?php endif; ?>
+        <?php endif; ?>
     </a>
 </li>
