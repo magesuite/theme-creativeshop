@@ -18,6 +18,7 @@ export default class Slider {
         paginationOptions: {
             fractionBreakpoint: 10,
             fractionTemplate: '<span class="current">%c</span> / %a',
+            visibleSlideIntersection: 0.5,
         },
         navigationOptions: {},
         itemsCount: 1,
@@ -258,6 +259,10 @@ export default class Slider {
      * Creates intersection observer and handles intersecting callbacks by distributing it to sub-modules
      */
     protected _setIntersectionObserver(): void {
+        const threshold = parseFloat(
+            this.options.paginationOptions.visibleSlideIntersection
+        );
+
         this.observer = new IntersectionObserver(
             (entries) =>
                 entries.forEach((entry: IntersectionObserverEntry) => {
@@ -272,7 +277,7 @@ export default class Slider {
                 }),
             {
                 root: this.slides[0].parentNode as HTMLElement,
-                threshold: 0.5,
+                threshold: threshold || 0.5,
             }
         );
     }

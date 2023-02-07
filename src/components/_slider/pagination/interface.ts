@@ -32,6 +32,12 @@ export default interface ISliderPagination {
      */
     fractionTemplate?: string;
     /**
+     * Number which indicates at what percentage of the slides's visibility the pagination observer's callback should be executed
+     * and slide should be considered as in viewport.
+     * @default 0.5
+     */
+    visibleSlideIntersection?: number | string;
+    /**
      * Selector of the wrapper of slides (scrollable element)
      * @default '.cs-image-teaser__slides'
      */
