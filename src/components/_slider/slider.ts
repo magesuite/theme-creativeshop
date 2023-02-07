@@ -53,7 +53,6 @@ export default class Slider {
         this._instanceNode = element;
         this.currentItemsPerView = this._getCurrentItemsPerView();
         this.slides = element.querySelectorAll(this.options.slideSelector);
-        console.log(this.options);
 
         this._setIntersectionObserver();
         this._observe();
