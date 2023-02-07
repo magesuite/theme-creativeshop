@@ -13,6 +13,7 @@ export default class SliderPagination {
             '<span class="current">%currentSlide</span> / %allSlides',
         slidesWrapperSelector: '.cs-image-teaser__slides',
         slideSelector: '.cs-image-teaser__slide',
+        visibleSlideIntersection: 0.5,
     };
     public bulletsCount: number;
     public currentBulletIndex: number;

@@ -398,6 +398,8 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
     // Icon component
     &--icon {
+        --base-size: calc(100% - 8.5rem);
+
         @include media('>=tablet', '<laptop') {
             @include slider-mobile(
                 $m-gap: $it--slider_mobile-gap,
@@ -409,7 +411,7 @@ $it--icon_items-in-view-till-laptop: deep-get(
         @each $breakpoint, $itemsPerRow in $it--icon_items-in-view-till-laptop {
             @include media('>=#{$breakpoint}', '<laptop') {
                 --size: calc(
-                    var(--base-size) / #{$itemsPerRow} - ((
+                    calc(100% - 8.5rem) / #{$itemsPerRow} - ((
                                     #{$itemsPerRow - 1} * var(--gap)
                                 ) / #{$itemsPerRow})
                 ) !important;

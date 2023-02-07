@@ -62,6 +62,7 @@ export default class ImageTeaser {
         paginationOptions: {
             fractionBreakpoint: 10,
             fractionTemplate: '<span class="current">%c</span> / %a',
+            visibleSlideIntersection: 0.5,
         },
         navigationOptions: {},
         itemsCount: 1,
