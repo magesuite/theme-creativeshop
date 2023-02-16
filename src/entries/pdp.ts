@@ -99,6 +99,7 @@ import 'components/toolbar';
 // import 'MageSuite_ProductVariants';
 // import 'MageSuite_PwaNotifications';
 // import 'MageSuite_ShippingAddons';
+// import 'MageSuite_ProductSlideGallery';
 // import 'MageSuite_QuickReorder/reorder-banner';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
