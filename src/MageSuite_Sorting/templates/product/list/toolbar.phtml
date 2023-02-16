@@ -10,7 +10,7 @@
 <?php if ($block->getCollection()->getSize()): ?>
     <div class="toolbar toolbar-products cs-toolbar <?= $block->getAdditionalCssClasses() ?>" data-mage-init='<?= /* @escapeNotVerified */ $block->getWidgetOptionsJson() ?>'>
         <?php if ($block->getVar('toolbar/filters_offcanvas_button/display', 'Magento_Catalog')): ?>
-            <div class="cs-toolbar__item cs-toolbar__item--offcanvas">
+            <div class="cs-toolbar__item cs-toolbar__item--offcanvas <?php if ($block->getCollection()->getSize() <= 1): ?>cs-toolbar__item--hide<?php endif ?>">
                 <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/filters-button.phtml')); ?>
             </div>
         <?php endif; ?>
@@ -22,7 +22,7 @@
         <?php endif; ?>
 
         <?php if ($block->isExpanded() && $block->getVar('toolbar/sorter/display', 'Magento_Catalog') && $block->getVar('toolbar/sorter/display_area', 'Magento_Catalog') != 'filters'): ?>
-            <div class="cs-toolbar__item cs-toolbar__item--sorter">
+            <div class="cs-toolbar__item cs-toolbar__item--sorter <?php if ($block->getCollection()->getSize() <= 1): ?>cs-toolbar__item--hide<?php endif ?>">
                 <?php include ($block->getTemplateFile('MageSuite_Sorting::product/list/toolbar/sorter.phtml')); ?>
             </div>
         <?php endif; ?>
