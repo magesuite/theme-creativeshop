@@ -14,17 +14,17 @@ import VideoTeaserOptions, {
 export default class VideoTeaser {
     public _options: VideoTeaserOptions;
     public _videoTeasers: NodeListOf<HTMLDivElement>;
+    public _videoTeaserSelector: string;
 
     /**
      * Creates VideoTeaser component
      */
-    public constructor() {
-        this._options = deepGet(
-            viewXml,
-            'vars.MageSuite_ContentConstructorFrontend.video_teaser'
-        );
+    public constructor(
+        viewXmlConfigPath = 'vars.MageSuite_ContentConstructorFrontend.video_teaser'
+    ) {
+        this._options = deepGet(viewXml, viewXmlConfigPath);
         this._videoTeasers = document.querySelectorAll(
-            '.cs-image-teaser__slide--has-video-teaser'
+            this._options.videoSelector
         );
 
         if (this._videoTeasers?.length > 0) {

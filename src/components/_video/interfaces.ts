@@ -72,6 +72,7 @@ interface FilePlayerParameters {
  * Video Teaser Interface
  */
 export default interface VideoTeaserOptions {
+    videoSelector: string;
     youtube: YouTubePlayerOptions;
     vimeo: VimeoPlayerOptions;
     facebook: FacebookPlayerOptions;
