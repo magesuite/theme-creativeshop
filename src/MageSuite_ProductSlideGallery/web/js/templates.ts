@@ -1,11 +1,11 @@
 export const slideTemplate = `
-    <% _.each(images, function(image) { %>
+    <% _.each(images, function(image, i) { %>
         <% if (image.type === 'video') { %>
             <li class="cs-slide-gallery__slide cs-slide-gallery__slide--video">
                 <div class="cs-slide-gallery__picture-wrapper">
                     <picture class="cs-slide-gallery__picture cs-slide-gallery__picture--video">
                         <div data-video-teaser='{"url": "<%= image.videoUrl %>","type": "youtube"}'></div>
-                        <img type="<%= imageParams.imageMimeType %>" src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img" <% if (image.i > 3) { %>loading="lazy"<% } %> ></img>
+                        <img type="<%= imageParams.imageMimeType %>" src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img" <% if (i > 3) { %>loading="lazy"<% } %> ></img>
                     </picture>
                 </div>
             </li>
@@ -13,10 +13,10 @@ export const slideTemplate = `
             <li class="cs-slide-gallery__slide">
                 <div class="cs-slide-gallery__picture-wrapper">
                     <div class="cs-slide-gallery__picture cs-slide-gallery__picture--base">
-                        <% if (image.i < 2) { %>
+                        <% if (i < 2) { %>
                             <img type="<%= imageParams.imageMimeType %>" src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img"></img>
                         <% } else { %>
-                            <img type="<%= imageParams.imageMimeType %>" src="<%= image.loaderImage %>" data-src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img lazyload"></img>
+                            <img type="<%= imageParams.imageMimeType %>" src="<%= imageParams.loaderImage %>" data-src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img lazyload"></img>
                         <% } %>
                     </div>
                     <div class="cs-slide-gallery__picture cs-slide-gallery__picture--full">
