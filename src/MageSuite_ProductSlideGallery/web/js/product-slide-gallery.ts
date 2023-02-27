@@ -5,6 +5,7 @@ import VideoTeaser from 'components/video-teaser/video-teaser';
 declare global {
     interface Window {
         __smoothScrollPolyfilled: boolean;
+        breakpoint: any;
     }
 }
 
@@ -43,6 +44,9 @@ export interface SlideGalleryOptions {
     slideSelector?: string;
     slideActiveClass?: string;
     thumbSelector?: string;
+    thumbNavSelector?: string;
+    thumbPrevButtonSelector?: string;
+    thumbNextButtonSelector?: string;
     thumbActiveClass?: string;
     imageSelector?: string;
     zoomImageSelector?: string;
@@ -72,8 +76,11 @@ export default class SlideGallery {
     protected _zoomVisible: boolean = false;
     protected _$component: JQuery;
     protected _scrollable: HTMLElement;
+    protected _paginationScrollable: HTMLElement;
     protected _$prevButton: JQuery;
     protected _$nextButton: JQuery;
+    protected _$thumbPrevButton: JQuery;
+    protected _$thumbNextButton: JQuery;
     protected _$zoomButton: JQuery;
     protected _$unzoomButton: JQuery;
     protected _$closeButton: JQuery;
@@ -89,6 +96,9 @@ export default class SlideGallery {
     protected _observer: IntersectionObserver;
     protected _currentImages: any[] = [];
     public videoSlideInstance;
+    protected _verticalThumbNav: boolean = false;
+    protected _scrollTillEnd: boolean = false;
+    protected _scrollBehavior: ScrollBehavior = 'smooth';
 
     protected _options: SlideGalleryOptions = {
         viewXmlConfigPath: 'vars.MageSuite_ProductSlideGallery.video_slide',
@@ -105,6 +115,9 @@ export default class SlideGallery {
             slideSelector: '.cs-slide-gallery__slide',
             slideImageSelector: '.cs-slide-gallery__img',
             thumbSelector: '.cs-slide-gallery__thumb',
+            thumbNavSelector: '.cs-slide-gallery__thumb-nav',
+            thumbPrevButtonSelector: '.cs-slide-gallery__thumb-nav--prev',
+            thumbNextButtonSelector: '.cs-slide-gallery__thumb-nav--next',
             imageSelector: '.cs-slide-gallery__picture--base',
             zoomImageSelector: '.cs-slide-gallery__picture--full',
             videoSlideSelector: '.cs-slide-gallery__slide--video',
@@ -162,7 +175,7 @@ export default class SlideGallery {
         this._attachControlEvents();
         this._attachSlidesEvents();
         this._setActiveThumb(0);
-        this._setObserver();
+        this._initGalleryApi();
 
         this.videoSlideInstance = new VideoTeaser(
             this._options.viewXmlConfigPath
@@ -173,6 +186,28 @@ export default class SlideGallery {
 
         // Load base images when browser becomes idle.
         idleDeferred().then(() => this._loadAllBaseImages());
+
+        if (this._$slides.length > 1) {
+            this._setObserver();
+            this._initThumbNavButtons();
+        }
+    }
+
+    /**
+     * Update gallery
+     */
+    protected _initGalleryApi(): void {
+        const galleryApi = {
+            returnCurrentImages: () => {
+                return this._currentImages;
+            },
+            seek: (index) => {
+                this.scrollToIndex(index);
+                this.scrollPaginationToIndex(index);
+            },
+        };
+
+        this._$component.data('gallery', galleryApi);
     }
 
     /**
@@ -203,12 +238,22 @@ export default class SlideGallery {
             this._options.selectors.scrollableElementSelector
         )[0];
 
+        this._paginationScrollable = this._$component.find(
+            this._options.selectors.paginationElementSelector
+        )[0];
+
         // Buttons
         this._$prevButton = this._$component.find(
             this._options.selectors.prevButtonSelector
         );
         this._$nextButton = this._$component.find(
             this._options.selectors.nextButtonSelector
+        );
+        this._$thumbPrevButton = this._$component.find(
+            this._options.selectors.thumbPrevButtonSelector
+        );
+        this._$thumbNextButton = this._$component.find(
+            this._options.selectors.thumbNextButtonSelector
         );
         this._$zoomButton = this._$component.find(
             this._options.selectors.zoomButtonSelector
@@ -264,6 +309,7 @@ export default class SlideGallery {
                     currentIndex - 1 > 0 ? currentIndex - 1 : 0;
 
                 this.scrollToIndex(activeIndex);
+                this.scrollPaginationToIndex(activeIndex);
             });
         }
 
@@ -277,6 +323,7 @@ export default class SlideGallery {
                         : this._$slides.length - 1;
 
                 this.scrollToIndex(activeIndex);
+                this.scrollPaginationToIndex(activeIndex);
             });
         }
 
@@ -302,6 +349,32 @@ export default class SlideGallery {
                     this._closeZoom(null);
                 }
                 this._toggleFullscreen();
+            });
+        }
+
+        if (this._$thumbPrevButton.length) {
+            this._$thumbPrevButton.on('click', (): void => {
+                this.scrollPaginationBackward();
+                setTimeout((): void => {
+                    this._toggleThumbNavButtons();
+                }, 500);
+            });
+        }
+
+        if (this._$thumbNextButton.length) {
+            this._$thumbNextButton.on('click', (): void => {
+                this.scrollPaginationForward();
+                setTimeout((): void => {
+                    this._toggleThumbNavButtons();
+                }, 500);
+            });
+        }
+
+        if ($(this._paginationScrollable).length) {
+            $(this._paginationScrollable).on('scroll', (): void => {
+                setTimeout((): void => {
+                    this._toggleThumbNavButtons();
+                }, 500);
             });
         }
     }
@@ -346,6 +419,48 @@ export default class SlideGallery {
                     }
                 });
             });
+        }
+    }
+
+    /**
+     * Hide unnecessary thumbnails buttons on init
+     */
+    protected _initThumbNavButtons(): void {
+        const thumbnailsWidth: number =
+            this._$thumbs.length *
+            ($(this._$thumbs[0]).outerWidth() +
+                parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+
+        this._$thumbPrevButton.prop('disabled', true);
+
+        if (this._$thumbs.length > 1) {
+            this._$thumbNextButton.prop(
+                'disabled',
+                thumbnailsWidth <= $(this._paginationScrollable).outerWidth()
+            );
+        } else {
+            this._$thumbNextButton.prop('disabled', true);
+        }
+    }
+
+    /**
+     * Hide unnecessary thumbnails buttons on fullscreen init
+     */
+    protected _initThumbNavButtonsFullscreen(): void {
+        const thumbnailsHeight: number =
+            this._$thumbs.length *
+            ($(this._$thumbs[0]).outerHeight() +
+                parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+
+        this._$thumbPrevButton.prop('disabled', true);
+
+        if (this._$thumbs.length > 1) {
+            this._$thumbNextButton.prop(
+                'disabled',
+                thumbnailsHeight <= $(this._paginationScrollable).outerHeight()
+            );
+        } else {
+            this._$thumbNextButton.prop('disabled', true);
         }
     }
 
@@ -487,11 +602,12 @@ export default class SlideGallery {
                 this._updateIndex(activeElementIndex);
                 this._toggleNavButtons();
 
-                if (window.innerWidth < breakpoint.tablet) {
+                if (window.innerWidth < window.breakpoint.tablet) {
                     this._setActiveThumb(activeElementIndex, true);
                 }
 
                 $(entry.target).trigger('slide:changed');
+                this._$component.trigger('gallery:updated');
             }
         });
     }
@@ -538,6 +654,61 @@ export default class SlideGallery {
     }
 
     /**
+     * Toggles the visibility of thumbnails navigation buttons
+     * based on current slider position.
+     */
+    protected _toggleThumbNavButtons(): void {
+        if (window.breakpoint.current >= window.breakpoint.tablet) {
+            if (this._verticalThumbNav) {
+                const thumbnailHeight: number =
+                    $(this._$thumbs[0]).outerHeight() +
+                    parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
+                const thumbnailsHeight: number =
+                    this._$thumbs.length * thumbnailHeight;
+                const paginationScrollTop: number =
+                    this._paginationScrollable.scrollTop;
+
+                this._$thumbPrevButton.prop(
+                    'disabled',
+                    paginationScrollTop === 0
+                );
+                this._$thumbNextButton.prop(
+                    'disabled',
+                    thumbnailsHeight -
+                        paginationScrollTop -
+                        parseInt(
+                            $(this._$thumbs[0]).css('margin-bottom'),
+                            10
+                        ) <=
+                        $(this._paginationScrollable).outerHeight()
+                );
+            } else {
+                const thumbnailMargin: number = parseInt(
+                    $(this._$thumbs[0]).css('margin-right'),
+                    10
+                );
+                const thumbnailWidth: number =
+                    $(this._$thumbs[0]).outerWidth() + thumbnailMargin;
+                const thumbnailsWidth: number =
+                    this._$thumbs.length * thumbnailWidth;
+                const paginationScrollLeft: number =
+                    this._paginationScrollable.scrollLeft;
+
+                this._$thumbPrevButton.prop(
+                    'disabled',
+                    paginationScrollLeft === 0
+                );
+                this._$thumbNextButton.prop(
+                    'disabled',
+                    thumbnailsWidth - paginationScrollLeft <=
+                        $(this._paginationScrollable).outerWidth() +
+                            thumbnailMargin
+                );
+            }
+        }
+    }
+
+    /**
      * Scrolls gallery to element based on given index value param.
      */
     public scrollToIndex(
@@ -563,12 +734,113 @@ export default class SlideGallery {
             behavior: behavior,
         });
 
-        if (window.innerWidth >= breakpoint.tablet) {
+        if (window.innerWidth >= window.breakpoint.tablet) {
             this._setActiveThumb(activeIndex);
         }
 
         if (this._zoomVisible) {
             this._closeZoom(null); // Close zoom when transition to prev/next slide in fullScreen mode
+        }
+    }
+
+    /**
+     * Scrolls thumbnails to element based on given index value param.
+     */
+    public scrollPaginationToIndex(activeIndex: number): void {
+        if (this._$thumbs[activeIndex]) {
+            if (window.breakpoint.current >= window.breakpoint.desktop) {
+                if (this._verticalThumbNav) {
+                    this._paginationScrollable.scrollTo({
+                        top:
+                            this._$thumbs[activeIndex].offsetTop -
+                            parseInt(
+                                $(this._$thumbs[activeIndex]).css('padding'),
+                                10
+                            ) -
+                            parseInt(
+                                $(this._$thumbs[activeIndex]).css('margin'),
+                                10
+                            ),
+                        behavior: this._scrollBehavior,
+                    });
+                } else {
+                    this._paginationScrollable.scrollTo({
+                        left:
+                            this._$thumbs[activeIndex].offsetLeft -
+                            parseInt(
+                                $(this._$thumbs[activeIndex]).css('padding'),
+                                10
+                            ) -
+                            parseInt(
+                                $(this._$thumbs[activeIndex]).css('margin'),
+                                10
+                            ),
+                        behavior: this._scrollBehavior,
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * Scrolls thumbnails forward.
+     */
+    public scrollPaginationForward(): void {
+        if (window.breakpoint.current >= window.breakpoint.tablet) {
+            if (this._verticalThumbNav) {
+                const thumbFullHeight =
+                    $(this._$thumbs[0]).outerWidth() +
+                    parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
+
+                this._paginationScrollable.scrollBy({
+                    top: this._scrollTillEnd
+                        ? this._$thumbs.length * thumbFullHeight
+                        : thumbFullHeight,
+                    behavior: this._scrollBehavior,
+                });
+            } else {
+                const thumbFullWidth =
+                    $(this._$thumbs[0]).outerWidth() +
+                    parseInt($(this._$thumbs[0]).css('margin-right'), 10);
+
+                this._paginationScrollable.scrollBy({
+                    left: this._scrollTillEnd
+                        ? this._$thumbs.length * thumbFullWidth
+                        : thumbFullWidth,
+                    behavior: this._scrollBehavior,
+                });
+            }
+        }
+    }
+
+    /**
+     * Scrolls thumbnails backward.
+     */
+    public scrollPaginationBackward(): void {
+        if (window.breakpoint.current >= window.breakpoint.tablet) {
+            if (this._verticalThumbNav) {
+                const thumbFullHeight =
+                    $(this._$thumbs[0]).outerWidth() +
+                    parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
+
+                this._paginationScrollable.scrollBy({
+                    top: -(this._scrollTillEnd
+                        ? this._$thumbs.length * thumbFullHeight
+                        : thumbFullHeight),
+                    behavior: this._scrollBehavior,
+                });
+            } else {
+                const thumbFullWidth =
+                    $(this._$thumbs[0]).outerWidth() +
+                    parseInt($(this._$thumbs[0]).css('margin-right'), 10);
+
+                this._paginationScrollable.scrollBy({
+                    left: -(this._scrollTillEnd
+                        ? this._$thumbs.length * thumbFullWidth
+                        : thumbFullWidth),
+                    behavior: this._scrollBehavior,
+                });
+            }
         }
     }
 
@@ -699,6 +971,12 @@ export default class SlideGallery {
 
         this._setFullImages();
         this.scrollToIndex(this._getCurrentIndex(), 'auto');
+
+        if (this._fullscreenVisible) {
+            this._initThumbNavButtons();
+        } else {
+            this._initThumbNavButtonsFullscreen();
+        }
 
         this._fullscreenVisible = !this._fullscreenVisible;
     }
