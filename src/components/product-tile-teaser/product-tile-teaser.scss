@@ -1,0 +1,338 @@
+@import 'components/product-tile/product-tile';
+
+// General
+$product-teaser_general-elements-gutter: 2rem !default;
+$product-teaser_padding: 1.5rem 0 !default;
+$product-teaser_one-column-breakpoint: 'tablet' !default;
+
+// Name
+$product-teaser_product-name-margin: 0 !default;
+
+// Badges
+$product-teaser_badges-margin: 0 0 #{$product-teaser_general-elements-gutter / 2}
+    0 !default;
+$product-teaser_badges-item-margin: 0 #{$product-teaser_general-elements-gutter /
+    2} 0.3rem 0 !default;
+
+// Swatches
+$product-teaser_swatches-margin: 0rem !default;
+
+// Description
+$product-teaser_description-text-align: left !default;
+
+// Brand
+$product-teaser_brand-alignment: left !default;
+$product-teaser_brand-margin: 0 !default;
+
+// Review
+$product-teaser_review-margin: 0 !default;
+
+// Addto
+$product-teaser_addto-margin: 0 !default;
+
+// Addtocart
+$product-teaser_addtocart-margin: #{$product-teaser_general-elements-gutter / 4}
+    0 0 !default;
+
+// Stock
+$product-teaser_stock-margin: 0 #{$product-teaser_general-elements-gutter / 2} 0
+    0 !default;
+
+// Daily Deal
+$product-teaser_dailydeal-margin: #{$product-teaser_general-elements-gutter / 2}
+    0 0 0 !default;
+
+// Thumbnail
+$product-teaser_thumbnail-max-height: 24rem !default;
+$product-teaser_thumbnail-box-width: 10rem !default;
+$product-teaser_thumbnail-box-width-mobile: 10rem !default;
+
+// Prices
+$product-teaser_prices-direction: 'vertical' !default; // vertical or horizontal
+$product-teaser_prices-margin: 0 0 1rem !default;
+$product-teaser_display-old-price-first: true !default;
+
+.#{$ns}product-tile {
+    $root: &;
+
+    &--teaser {
+        aspect-ratio: initial;
+
+        @include media('>=tablet') {
+            aspect-ratio: initial;
+        }
+
+        &:hover {
+            border: $product-tile_initial-border;
+        }
+
+        #{$root}__container {
+            flex-direction: row;
+            padding: #{$product-teaser_general-elements-gutter} 0;
+        }
+
+        #{$root}__link {
+            display: flex;
+            width: 100%;
+            height: auto;
+        }
+
+        #{$root}__thumbnail-link {
+            padding: 0;
+            height: 100%;
+            flex-grow: initial;
+            width: auto;
+            max-height: $product-teaser_thumbnail-max-height;
+
+            @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                padding: 0;
+            }
+
+            @include media('<phoneLg') {
+                width: $product-teaser_thumbnail-box-width-mobile;
+            }
+        }
+
+        #{$root}__figure {
+            align-items: flex-start;
+
+            &:before {
+                content: none;
+            }
+        }
+
+        #{$root}__image {
+            max-height: 100%;
+            position: relative !important;
+            margin-top: 0;
+            top: auto;
+            left: auto;
+        }
+
+        #{$root}__gallery {
+            display: none !important;
+        }
+
+        #{$root}__content {
+            padding: 0 0 0 #{$product-teaser_general-elements-gutter};
+            height: auto;
+        }
+
+        #{$root}__main {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: min-content;
+
+            grid-template-areas:
+                'brand brand'
+                'name name'
+                'review review'
+                'description description'
+                'price stock'
+                'dailydeal dailydeal'
+                'swatches swatches'
+                'addto addtocart';
+
+            @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                grid-template-columns: 1fr 1fr 2fr;
+
+                grid-template-areas:
+                    'brand brand brand'
+                    'name name name'
+                    'review review review'
+                    'description description description'
+                    'swatches dailydeal dailydeal'
+                    'price addto addtocart';
+            }
+        }
+
+        #{$root}__badges {
+            margin: $product-teaser_badges-margin;
+        }
+
+        #{$root}__badge-item {
+            margin: $product-teaser_badges-item-margin;
+        }
+
+        #{$root}__swatches {
+            width: 100%;
+            margin: $product-teaser_swatches-margin;
+
+            &:empty {
+                display: none;
+            }
+
+            &,
+            .swatch-attribute-options {
+                justify-content: flex-start;
+            }
+        }
+
+        #{$root}__brand {
+            margin: $product-teaser_brand-margin;
+            text-align: $product-teaser_brand-alignment;
+        }
+
+        #{$root}__name {
+            margin: $product-teaser_product-name-margin;
+        }
+
+        #{$root}__description {
+            display: block;
+            width: 100%;
+
+            &:empty {
+                display: none;
+            }
+        }
+
+        #{$root}__addto {
+            margin: $product-teaser_addto-margin;
+            align-self: center;
+            position: static;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            .#{$ns}links-block-addto__link-label {
+                @include visually-visible();
+            }
+
+            .#{$ns}links-block-addto__item + .#{$ns}links-block-addto__item {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+        }
+
+        #{$root}__review {
+            margin: $product-teaser_review-margin;
+
+            &:empty {
+                margin: 0 !important;
+            }
+        }
+
+        #{$root}__stock {
+            grid-area: dailydeal;
+            margin: $product-teaser_stock-margin;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+
+            @at-root #{$root}--dailydeal & {
+                display: none !important;
+            }
+        }
+
+        #{$root}__price {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            // .price-box {
+            //     justify-content: flex-start;
+            //     text-align: left;
+
+            //     .price-wrapper {
+            //         justify-content: flex-start;
+            //     }
+
+            //     @if ($product-teaser_display-old-price-first) {
+            //         .old-price {
+            //             order: -1;
+            //         }
+            //     }
+
+            //     @if ($product-teaser_prices-direction == 'vertical') {
+            //         flex-direction: column;
+
+            //         .price-from {
+            //             margin-right: 0;
+            //         }
+
+            //         .minimal-price {
+            //             flex-direction: column;
+            //         }
+            //     } @else {
+            //         align-items: center;
+
+            //         @if ($product-teaser_display-old-price-first) {
+            //             .old-price {
+            //                 .price {
+            //                     margin-right: $price-box_space-between-prices;
+            //                 }
+            //             }
+
+            //             .minimal-price {
+            //                 .old-price {
+            //                     .price {
+            //                         margin-right: $price-box_space-between-prices;
+            //                     }
+            //                 }
+
+            //                 > .price-container {
+            //                     .price {
+            //                         margin-right: 0;
+            //                     }
+            //                 }
+            //             }
+            //         } @else {
+            //             .special-price {
+            //                 .price {
+            //                     margin-right: $price-box_space-between-prices;
+            //                 }
+            //             }
+
+            //             .minimal-price {
+            //                 .price-container {
+            //                     .price {
+            //                         margin-right: $price-box_space-between-prices;
+            //                     }
+            //                 }
+
+            //                 .old-price {
+            //                     .price {
+            //                         margin-right: 0;
+            //                     }
+            //                 }
+            //             }
+            //         }
+
+            //         .price-from,
+            //         .price-to {
+            //             .price-container {
+            //                 display: flex;
+            //                 flex-direction: column;
+
+            //                 .price {
+            //                     margin-right: 0;
+            //                 }
+            //             }
+
+            //             .price-label {
+            //                 margin-right: 0;
+            //             }
+            //         }
+            //     }
+            // }
+        }
+
+        #{$root}__addtocart {
+            // margin: $product-teaser_addtocart-margin;
+            align-self: center;
+            opacity: 1;
+        }
+
+        #{$root}__addtocart-button {
+            width: 100%;
+        }
+
+        #{$root}__wishlist-comment {
+            @include visually-hidden();
+        }
+
+        // Daily Deal styling
+        #{$root}__dailydeal {
+            position: static;
+        }
+    }
+}
