@@ -260,6 +260,7 @@ export default class Dailydeal {
         if ($element.length === 0) {
             return;
         }
+
         this._$element = $element;
         this._options = $.extend({}, this._options, options);
         this._$countdown = this._$element.find(this._options.countdownSelector);
