@@ -8,8 +8,6 @@
 
 import 'Magento_Customer/web/css/source/module.scss';
 
-import 'config/base.scss';
-
 /**
  * Base components
  */

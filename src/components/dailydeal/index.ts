@@ -29,6 +29,8 @@ $(`.${ns}dailydeal--tile`).each(function (): void {
 
 const $minicartCarousel = $('.cs-minicart__carousel');
 
+// Minicart carousel is initialised after ajax call.
+// In order to initialize daily deal feature properly, the initialization must take place after contentUpdated event
 if ($minicartCarousel.length) {
     $minicartCarousel.on('contentUpdated', function () {
         $minicartCarousel.find(`.${ns}dailydeal--tile`).each(function (): void {
