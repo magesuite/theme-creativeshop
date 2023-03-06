@@ -6,7 +6,7 @@
  * It is a job of every component to initilize itself.
  */
 
-import 'Magento_Customer/web/css/source/module.scss';
+import 'config/base.scss';
 
 /**
  * Base components
