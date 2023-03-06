@@ -6,14 +6,13 @@
  * It is a job of every component to initilize itself.
  */
 
-import 'Magento_Customer/web/css/source/module.scss';
-
 import 'config/base.scss';
 
 /**
  * Base components
  */
 import 'Magento_Theme';
+import 'Magento_Customer';
 import 'components/_slider';
 import 'components/addtocart';
 import 'components/authorization-link';
