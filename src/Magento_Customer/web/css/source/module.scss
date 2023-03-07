@@ -1,0 +1,174 @@
+// Styles moved fron magento blsnk theme: Magento_Customer/web/css/source/_module.less
+// in order to have better control over them and be able to import them only inside customer.ts entry
+
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+
+.login-container .block-new-customer .actions-toolbar {
+    margin-top: 2.5rem;
+}
+
+.login-container .block .block-title {
+    font-size: 1.8rem;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
+}
+
+.login-container .fieldset:after {
+    margin: 1rem 0 0;
+    content: attr(data-hasrequired);
+    display: block;
+    letter-spacing: normal;
+    word-spacing: normal;
+    color: #e02b27;
+    font-size: 1.2rem;
+}
+
+.block-addresses-list .items.addresses > .item {
+    margin-bottom: 2rem;
+}
+
+.block-addresses-list .items.addresses > .item:last-child {
+    margin-bottom: 0;
+}
+
+.form-address-edit .region_id {
+    display: none;
+}
+
+.form-address-edit .actions-toolbar .action.primary {
+    font-size: 1.8rem;
+}
+
+.form-edit-account .fieldset.password {
+    display: none;
+}
+
+.box-billing-address .box-content,
+.box-shipping-address .box-content,
+.box-information .box-content,
+.box-newsletter .box-content {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 2.6rem;
+}
+
+.field.password .control {
+    display: flex;
+    flex-direction: column;
+}
+
+.field.password .control .mage-error {
+    order: 2;
+}
+
+.field.password .control .input-text {
+    order: 0;
+    z-index: 2;
+}
+
+.fieldset .fullname.field {
+    > .label {
+        @include visually-hidden;
+
+        + .control {
+            width: 100%;
+        }
+    }
+}
+
+.field.street {
+    .field {
+        .label {
+            @include visually-hidden;
+        }
+    }
+}
+
+.control.captcha-image {
+    margin-top: 1rem;
+}
+
+.control.captcha-image .captcha-img {
+    vertical-align: middle;
+}
+
+@media only screen and (max-width: 639px) {
+    .account .column.main,
+    .account .sidebar-additional {
+        margin: 0;
+    }
+}
+
+@include media('<tablet') {
+    .login-container .fieldset:after {
+        text-align: center;
+    }
+
+    .control.captcha-image .captcha-img {
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .form.search.advanced .field.price .with-addon .input-text {
+        flex-basis: auto;
+        width: 100%;
+    }
+}
+
+@include media('>=tablet') {
+    .login-container .block .login .actions-toolbar > .primary {
+        margin-bottom: 0;
+        margin-right: 3rem;
+    }
+
+    .login-container .block .login .actions-toolbar > .secondary {
+        float: left;
+    }
+
+    .fieldset .fullname .field .label {
+        padding: 6px 15px 0 0;
+        text-align: right;
+        width: 25.8%;
+        box-sizing: border-box;
+        float: left;
+    }
+
+    .fieldset .fullname .field .control {
+        width: 74.2%;
+        float: left;
+    }
+
+    .block-addresses-list .items.addresses {
+        font-size: 0;
+    }
+
+    .block-addresses-list .items.addresses > .item {
+        display: inline-block;
+        font-size: 1.4rem;
+        margin-bottom: 2rem;
+        vertical-align: top;
+        width: 48.8%;
+    }
+
+    .block-addresses-list .items.addresses > .item:nth-last-child(1),
+    .block-addresses-list .items.addresses > .item:nth-last-child(2) {
+        margin-bottom: 0;
+    }
+
+    .block-addresses-list .items.addresses > .item:nth-child(even) {
+        margin-left: 2.4%;
+    }
+
+    .control.captcha-image .captcha-img {
+        margin: 0 1rem 1rem 0;
+    }
+
+    .dashboard-welcome-toggler {
+        @include visually-hidden;
+    }
+}

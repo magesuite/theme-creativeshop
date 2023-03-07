@@ -12,6 +12,7 @@ import 'config/base.scss';
  * Base components
  */
 import 'Magento_Theme';
+import 'Magento_Customer';
 import 'components/_slider';
 import 'components/addtocart';
 import 'components/authorization-link';
