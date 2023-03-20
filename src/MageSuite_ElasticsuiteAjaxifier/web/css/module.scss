@@ -1,0 +1,52 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+
+$infinite-scroll_area-padding: 2rem !default;
+
+$infinite-scroll_btn-margin: 2rem auto !default;
+$infinite-scroll_button-type: $button_default-type !default;
+
+$infinite-scroll_product-tile-overlay-backdrop-filter: blur(6px) !default;
+$infinite-scroll_product-tile-overlay-background: rgba(
+    255,
+    255,
+    255,
+    0.8
+) !default;
+
+$infinite-scroll_indicator-padding: 2rem !default;
+
+.#{$ns}infinite-scroll {
+    &__area {
+        padding: $infinite-scroll_area-padding;
+        text-align: center;
+    }
+
+    &__button {
+        @include button($type: $infinite-scroll_button-type);
+
+        display: block;
+        margin: $infinite-scroll_btn-margin;
+    }
+
+    &__product-tile-overlay {
+        align-items: center;
+        backdrop-filter: $infinite-scroll_product-tile-overlay-backdrop-filter;
+        background: $infinite-scroll_product-tile-overlay-background;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        left: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    &__indicator {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        padding: $infinite-scroll_indicator-padding;
+    }
+}

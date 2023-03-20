@@ -223,10 +223,16 @@ define([
                     var loadIndicator = $(
                         '.cs-minicart__content .load.indicator'
                     );
+                    var $qtyIncrementButtons = $(
+                        '.cs-qty-increment__button[data-cart-item="' +
+                            itemId +
+                            '"]'
+                    );
 
                     if (that._isValidQty(itemQty, elem.val())) {
                         setTimeout(function () {
                             loadIndicator.show();
+                            $qtyIncrementButtons.css('pointerEvents', 'none');
                             setTimeout(function () {
                                 updateItemButton.click();
                                 loadIndicator.hide();
