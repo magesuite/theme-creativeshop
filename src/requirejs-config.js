@@ -41,6 +41,9 @@ var config = {
             'mage/validation': {
                 'js/validation-ext': true,
             },
+            'Magento_Ui/js/modal/modal': {
+                'js/modal-ext': true,
+            },
             'catalogAddToCart': {
                 'Magento_Catalog/js/catalog-add-to-cart-ext': true,
             },
