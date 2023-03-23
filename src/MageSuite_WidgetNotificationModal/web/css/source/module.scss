@@ -4,9 +4,12 @@
 $notification-modal_no-spaces-background-color: transparent !default;
 $notification-modal_close-btn-background: rgba(255, 255, 255, 0.4) !default;
 $notification-modal_close-btn-height: 4rem !default;
-$notification-modal_coupon-code-image: url('../images/icons/copy.svg') !default;
-$notification-modal_coupon-code-image-light: url('../images/icons/copy-white.svg') !default;
-$notification-modal_coupon-code-image-size: 1.7rem !default;
+$notification-modal_coupon-code-image: url('../images/icons/notification-modal/copy.svg') !default;
+$notification-modal_coupon-code-image-light: url('../images/icons/notification-modal/copy-light.svg') !default;
+$notification-modal_coupon-code-image-copied: url('../images/icons/notification-modal/check.svg') !default;
+$notification-modal_coupon-code-image-copied-light: url('../images/icons/notification-modal/check-light.svg') !default;
+$notification-modal_coupon-code-image-size-mobile: 2rem !default;
+$notification-modal_coupon-code-image-size-desktop: 1.7rem !default;
 
 .#{$ns}notification-modal {
     &__modal {
@@ -109,20 +112,35 @@ $notification-modal_coupon-code-image-size: 1.7rem !default;
             margin: 0;
         }
 
-        .coupon-code {
+        .coupon-code,
+        .copy-coupon-code {
             &.with-icon {
                 background-image: $notification-modal_coupon-code-image;
                 background-repeat: no-repeat;
                 background-position: right center;
-                background-size: $notification-modal_coupon-code-image-size;
-                padding-right: 2.5rem;
+                background-size: $notification-modal_coupon-code-image-size-mobile;
+                padding-right: 3rem;
+
+                @include media('>=tablet') {
+                    background-size: $notification-modal_coupon-code-image-size-desktop;
+                    padding-right: 2.5rem;
+                }
+            }
+
+            &.with-icon.copied {
+                background-image: $notification-modal_coupon-code-image-copied;
             }
         }
 
         .#{$ns}image-teaser__slide--scheme-light {
-            .coupon-code {
+            .coupon-code,
+            .copy-coupon-code {
                 &.with-icon {
                     background-image: $notification-modal_coupon-code-image-light;
+                }
+
+                &.with-icon.copied {
+                    background-image: $notification-modal_coupon-code-image-copied-light;
                 }
             }
         }
