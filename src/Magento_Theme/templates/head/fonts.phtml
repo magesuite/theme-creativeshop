@@ -1,11 +1,13 @@
 <?php
 /**
  * Custom template
- * Font loading based on https://dev.to/masakudamatsu/loading-google-fonts-and-any-other-web-fonts-as-fast-as-possible-in-early-2021-4f5o
+ * Font loading based on https://web.dev/preload-critical-assets/
  */
 
 $webFonts = $block->getWebFonts();
 $localFonts = $block->getLocalFonts();
+$localFontsFile = $block->getLocalFontsFile();
+$localFontsExt = $block->getLocalFontsExt() ?? 'woff2';
 
 if (!empty($webFonts)):
     /**
@@ -23,16 +25,39 @@ if (!empty($webFonts)):
     endforeach;
 endif;
 
-if (!empty($localFonts)):
+if (!empty($localFontsFile)):
     /**
-     * Loop through all local fonts defined in XML
+     * Loop through all local fonts files defined in XML
      */
-    foreach ($localFonts as $url):
-        if (!empty($url)):
-            $localFontUrl = $this->getViewFileUrl($url); ?>
-            <link rel="preload" as="style" href="<?= $localFontUrl ?>">
-            <link rel="stylesheet" href="<?= $localFontUrl ?>" media="print" onload="this.media='all'">
-            <noscript><link rel="stylesheet" href="<?= $localFontUrl ?>"></noscript>
+    foreach ($localFontsFile as $fontFile):
+        if (!empty($fontFile)):
+            $localFontUrl = $this->getViewFileUrl($fontFile); ?>
+            <link rel="preload" href="<?= $localFontUrl; ?>" as="font" type="font/<?= $localFontsExt; ?>" crossorigin> 
         <?php endif;
     endforeach;
-endif; ?>
+endif; 
+
+if (!empty($localFonts)):
+    /**
+     * Loop through all fonts CSS files defined in XML
+     * TODO: Temporary backward compability solution. Cleanup conditions on new major release of theme-creative shop
+     */
+    if (!empty($localFontsFile)) {
+        foreach ($localFonts as $fontCSS):
+            if (!empty($fontCSS)):
+                $localFontUrl = $this->getViewFileUrl($fontCSS); ?>
+                <link rel="stylesheet" href="<?= $localFontUrl ?>" as="style">
+            <?php endif;
+        endforeach;
+    } else {
+        foreach ($localFonts as $fontCSS):
+            if (!empty($fontCSS)):
+                $localFontUrl = $this->getViewFileUrl($fontCSS); ?>
+                <link rel="preload" as="style" href="<?= $localFontUrl ?>">
+                <link rel="stylesheet" href="<?= $localFontUrl ?>" media="print" onload="this.media='all'">
+                <noscript><link rel="stylesheet" href="<?= $localFontUrl ?>"></noscript>
+            <?php endif;
+        endforeach;
+    }
+endif; 
+?>
