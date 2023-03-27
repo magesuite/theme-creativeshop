@@ -65,6 +65,8 @@ export interface SlideGalleryOptions {
     galleryFullscreenClass?: string;
     galleryFullscreenVisibleClass?: string;
     galleryFullscreenImagesClass?: string;
+    verticalThumbNav?: boolean;
+    scrollTillEnd?: boolean;
 }
 
 /**
@@ -96,11 +98,9 @@ export default class SlideGallery {
     protected _observer: IntersectionObserver;
     protected _currentImages: any[] = [];
     public videoSlideInstance;
-    protected _verticalThumbNav: boolean = false;
-    protected _scrollTillEnd: boolean = false;
     protected _scrollBehavior: ScrollBehavior = 'smooth';
 
-    protected _options: SlideGalleryOptions = {
+    protected _defaultOptions: SlideGalleryOptions = {
         viewXmlConfigPath: 'vars.MageSuite_ProductSlideGallery.video_slide',
         zoom3Steps: false,
         selectors: {
@@ -142,22 +142,20 @@ export default class SlideGallery {
             threshold: 0.75,
         },
         scrollToFirstImageOnUpdate: true,
+        verticalThumbNav: false,
+        scrollTillEnd: false,
     };
 
     /**
      * Slide gallery component constructor
-     * @param  {IGalleryImageParams} options Image params
+     * @param  {SlideGalleryOptions} options Image params
      */
     public constructor(
         element?: HTMLDivElement,
-        options?: IGalleryImageParams
+        options?: SlideGalleryOptions
     ) {
-        this._options = {
-            ...this._options,
-            imageParams: options,
-        };
+        this._defaultOptions = $.extend(true, this._defaultOptions, options);
         this._$component = $(element);
-
         this.init();
     }
 
@@ -178,7 +176,7 @@ export default class SlideGallery {
         this._initGalleryApi();
 
         this.videoSlideInstance = new VideoTeaser(
-            this._options.viewXmlConfigPath
+            this._defaultOptions.viewXmlConfigPath
         );
 
         this._$component.addClass('loaded');
@@ -190,6 +188,9 @@ export default class SlideGallery {
         if (this._$slides.length > 1) {
             this._setObserver();
             this._initThumbNavButtons();
+        } else {
+            this._$prevButton.prop('disabled', true);
+            this._$nextButton.prop('disabled', true);
         }
     }
 
@@ -235,34 +236,34 @@ export default class SlideGallery {
      */
     protected _assignControls(): void {
         this._scrollable = this._$component.find(
-            this._options.selectors.scrollableElementSelector
+            this._defaultOptions.selectors.scrollableElementSelector
         )[0];
 
         this._paginationScrollable = this._$component.find(
-            this._options.selectors.paginationElementSelector
+            this._defaultOptions.selectors.paginationElementSelector
         )[0];
 
         // Buttons
         this._$prevButton = this._$component.find(
-            this._options.selectors.prevButtonSelector
+            this._defaultOptions.selectors.prevButtonSelector
         );
         this._$nextButton = this._$component.find(
-            this._options.selectors.nextButtonSelector
+            this._defaultOptions.selectors.nextButtonSelector
         );
         this._$thumbPrevButton = this._$component.find(
-            this._options.selectors.thumbPrevButtonSelector
+            this._defaultOptions.selectors.thumbPrevButtonSelector
         );
         this._$thumbNextButton = this._$component.find(
-            this._options.selectors.thumbNextButtonSelector
+            this._defaultOptions.selectors.thumbNextButtonSelector
         );
         this._$zoomButton = this._$component.find(
-            this._options.selectors.zoomButtonSelector
+            this._defaultOptions.selectors.zoomButtonSelector
         );
         this._$unzoomButton = this._$component.find(
-            this._options.selectors.unzoomButtonSelector
+            this._defaultOptions.selectors.unzoomButtonSelector
         );
         this._$closeButton = this._$component.find(
-            this._options.selectors.closeButtonSelector
+            this._defaultOptions.selectors.closeButtonSelector
         );
     }
 
@@ -272,28 +273,28 @@ export default class SlideGallery {
     protected _assignSlides(): void {
         // General slide elements
         this._$slides = this._$component
-            .find(this._options.selectors.listElementSelector)
-            .children(this._options.selectors.slideSelector);
+            .find(this._defaultOptions.selectors.listElementSelector)
+            .children(this._defaultOptions.selectors.slideSelector);
 
         this._$thumbs = this._$component.find(
-            this._options.selectors.thumbSelector
+            this._defaultOptions.selectors.thumbSelector
         );
         this._$images = this._$component.find(
-            this._options.selectors.imageSelector
+            this._defaultOptions.selectors.imageSelector
         );
         this._$zoomImages = this._$component.find(
-            this._options.selectors.zoomImageSelector
+            this._defaultOptions.selectors.zoomImageSelector
         );
 
         // Video slide element
         this._$videoSlide = this._$component.find(
-            this._options.selectors.videoSlideSelector
+            this._defaultOptions.selectors.videoSlideSelector
         );
 
         // Update images
         if (!this._currentImages.length) {
             this._currentImages =
-                this._options.imageParams.initialGalleryImages;
+                this._defaultOptions.imageParams.initialGalleryImages;
         }
     }
 
@@ -434,10 +435,24 @@ export default class SlideGallery {
         this._$thumbPrevButton.prop('disabled', true);
 
         if (this._$thumbs.length > 1) {
-            this._$thumbNextButton.prop(
-                'disabled',
-                thumbnailsWidth <= $(this._paginationScrollable).outerWidth()
-            );
+            if (this._defaultOptions.verticalThumbNav) {
+                const thumbnailsHeight: number =
+                    this._$thumbs.length *
+                    ($(this._$thumbs[0]).outerHeight() +
+                        parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+
+                this._$thumbNextButton.prop(
+                    'disabled',
+                    thumbnailsHeight <=
+                        $(this._paginationScrollable).outerHeight()
+                );
+            } else {
+                this._$thumbNextButton.prop(
+                    'disabled',
+                    thumbnailsWidth <=
+                        $(this._paginationScrollable).outerWidth()
+                );
+            }
         } else {
             this._$thumbNextButton.prop('disabled', true);
         }
@@ -483,10 +498,10 @@ export default class SlideGallery {
             this._setObserver();
 
             this.videoSlideInstance = new VideoTeaser(
-                this._options.viewXmlConfigPath
+                this._defaultOptions.viewXmlConfigPath
             );
 
-            if (this._options.scrollToFirstImageOnUpdate) {
+            if (this._defaultOptions.scrollToFirstImageOnUpdate) {
                 this.scrollToIndex(0);
             }
 
@@ -500,7 +515,7 @@ export default class SlideGallery {
      * @param value
      */
     protected _toggleLoader(value) {
-        $(this._options.selectors.loaderSelector).toggle(value);
+        $(this._defaultOptions.selectors.loaderSelector).toggle(value);
     }
 
     /**
@@ -529,7 +544,7 @@ export default class SlideGallery {
         return requireAsync(['mage/template']).then(([mageTemplate]) => {
             const templateOptions = {
                 images: this._currentImages,
-                imageParams: this._options.imageParams,
+                imageParams: this._defaultOptions.imageParams,
             };
             const slideMarkup = mageTemplate(slideTemplate, templateOptions);
             const thumbnailMarkup = mageTemplate(
@@ -537,8 +552,10 @@ export default class SlideGallery {
                 templateOptions
             );
 
-            $(this._options.selectors.listElementSelector).html(slideMarkup);
-            $(this._options.selectors.paginationElementSelector).html(
+            $(this._defaultOptions.selectors.listElementSelector).html(
+                slideMarkup
+            );
+            $(this._defaultOptions.selectors.paginationElementSelector).html(
                 thumbnailMarkup
             );
         });
@@ -566,18 +583,18 @@ export default class SlideGallery {
     }
 
     /**
-     * Sets `IntersectionObserver` with options defined in `_options` object
+     * Sets `IntersectionObserver` with options defined in `_defaultOptions` object
      * in order to observe slides intersecting with their container which
      * results in invoking observer's callback method `_onSlideChange`.
      */
     protected _setObserver(): void {
         const $slideElements: NodeListOf<Element> = document.querySelectorAll(
-            this._options.selectors.observeElementSelector
+            this._defaultOptions.selectors.observeElementSelector
         );
 
         this._observer = new IntersectionObserver(
             this._onSlideChange.bind(this),
-            this._options.observerOptions
+            this._defaultOptions.observerOptions
         );
 
         $slideElements.forEach((element) => {
@@ -591,7 +608,8 @@ export default class SlideGallery {
      * visibility, setting active thumbnail and triggers `slide:changed` custom event.
      */
     protected _onSlideChange(entries): void {
-        const slideActive: string = this._options.classNames.slideActiveClass;
+        const slideActive: string =
+            this._defaultOptions.classNames.slideActiveClass;
 
         entries.forEach((entry) => {
             entry.target.classList.toggle(slideActive, entry.isIntersecting);
@@ -621,7 +639,9 @@ export default class SlideGallery {
         activeIndex: number,
         transition: boolean = false
     ): void {
-        this._$thumbs.removeClass(this._options.classNames.thumbActiveClass);
+        this._$thumbs.removeClass(
+            this._defaultOptions.classNames.thumbActiveClass
+        );
 
         if (transition) {
             let transitionTimeout: ReturnType<typeof setTimeout> = null;
@@ -630,12 +650,12 @@ export default class SlideGallery {
             transitionTimeout = setTimeout((): void => {
                 this._$thumbs
                     .eq(this._getCurrentIndex())
-                    .addClass(this._options.classNames.thumbActiveClass);
+                    .addClass(this._defaultOptions.classNames.thumbActiveClass);
             }, transitionTimeoutDelay);
         } else {
             this._$thumbs
                 .eq(activeIndex)
-                .addClass(this._options.classNames.thumbActiveClass);
+                .addClass(this._defaultOptions.classNames.thumbActiveClass);
         }
     }
 
@@ -659,7 +679,7 @@ export default class SlideGallery {
      */
     protected _toggleThumbNavButtons(): void {
         if (window.breakpoint.current >= window.breakpoint.tablet) {
-            if (this._verticalThumbNav) {
+            if (this._defaultOptions.verticalThumbNav) {
                 const thumbnailHeight: number =
                     $(this._$thumbs[0]).outerHeight() +
                     parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
@@ -717,12 +737,12 @@ export default class SlideGallery {
     ): void {
         if (behavior === 'auto') {
             this._$component.addClass(
-                this._options.classNames.galleryAutoScrollClass
+                this._defaultOptions.classNames.galleryAutoScrollClass
             );
 
             setTimeout((): void => {
                 this._$component.removeClass(
-                    this._options.classNames.galleryAutoScrollClass
+                    this._defaultOptions.classNames.galleryAutoScrollClass
                 );
             }, 1000);
         }
@@ -749,7 +769,7 @@ export default class SlideGallery {
     public scrollPaginationToIndex(activeIndex: number): void {
         if (this._$thumbs[activeIndex]) {
             if (window.breakpoint.current >= window.breakpoint.desktop) {
-                if (this._verticalThumbNav) {
+                if (this._defaultOptions.verticalThumbNav) {
                     this._paginationScrollable.scrollTo({
                         top:
                             this._$thumbs[activeIndex].offsetTop -
@@ -787,13 +807,13 @@ export default class SlideGallery {
      */
     public scrollPaginationForward(): void {
         if (window.breakpoint.current >= window.breakpoint.tablet) {
-            if (this._verticalThumbNav) {
+            if (this._defaultOptions.verticalThumbNav) {
                 const thumbFullHeight =
                     $(this._$thumbs[0]).outerWidth() +
                     parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
 
                 this._paginationScrollable.scrollBy({
-                    top: this._scrollTillEnd
+                    top: this._defaultOptions.scrollTillEnd
                         ? this._$thumbs.length * thumbFullHeight
                         : thumbFullHeight,
                     behavior: this._scrollBehavior,
@@ -804,7 +824,7 @@ export default class SlideGallery {
                     parseInt($(this._$thumbs[0]).css('margin-right'), 10);
 
                 this._paginationScrollable.scrollBy({
-                    left: this._scrollTillEnd
+                    left: this._defaultOptions.scrollTillEnd
                         ? this._$thumbs.length * thumbFullWidth
                         : thumbFullWidth,
                     behavior: this._scrollBehavior,
@@ -818,13 +838,13 @@ export default class SlideGallery {
      */
     public scrollPaginationBackward(): void {
         if (window.breakpoint.current >= window.breakpoint.tablet) {
-            if (this._verticalThumbNav) {
+            if (this._defaultOptions.verticalThumbNav) {
                 const thumbFullHeight =
                     $(this._$thumbs[0]).outerWidth() +
                     parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
 
                 this._paginationScrollable.scrollBy({
-                    top: -(this._scrollTillEnd
+                    top: -(this._defaultOptions.scrollTillEnd
                         ? this._$thumbs.length * thumbFullHeight
                         : thumbFullHeight),
                     behavior: this._scrollBehavior,
@@ -835,7 +855,7 @@ export default class SlideGallery {
                     parseInt($(this._$thumbs[0]).css('margin-right'), 10);
 
                 this._paginationScrollable.scrollBy({
-                    left: -(this._scrollTillEnd
+                    left: -(this._defaultOptions.scrollTillEnd
                         ? this._$thumbs.length * thumbFullWidth
                         : thumbFullWidth),
                     behavior: this._scrollBehavior,
@@ -856,11 +876,11 @@ export default class SlideGallery {
         let left: number;
 
         const currentSlide: HTMLElement = this._$component.find(
-            this._options.selectors.slideSelector
+            this._defaultOptions.selectors.slideSelector
         )[this._getCurrentIndex()];
 
         const currentFullImg = this._$component.find(
-            `${this._options.selectors.scrollableElementSelector} ${this._options.selectors.zoomImageSelector} ${this._options.selectors.slideImageSelector}`
+            `${this._defaultOptions.selectors.scrollableElementSelector} ${this._defaultOptions.selectors.zoomImageSelector} ${this._defaultOptions.selectors.slideImageSelector}`
         )[this._getCurrentIndex()] as HTMLImageElement;
 
         if (e) {
@@ -878,12 +898,12 @@ export default class SlideGallery {
         const centerImages = (e): void => {
             // Center current image if zoom was triggered by click/touch event
             this._$component.addClass(
-                this._options.classNames.galleryAutoScrollClass
+                this._defaultOptions.classNames.galleryAutoScrollClass
             );
 
             setTimeout((): void => {
                 this._$component.removeClass(
-                    this._options.classNames.galleryAutoScrollClass
+                    this._defaultOptions.classNames.galleryAutoScrollClass
                 );
             }, 1000);
 
@@ -912,13 +932,13 @@ export default class SlideGallery {
             centerImages(e);
         } else {
             this._$component.addClass(
-                this._options.classNames.galleryLoadingClass
+                this._defaultOptions.classNames.galleryLoadingClass
             );
             centerImages(e);
 
             setTimeout((): void => {
                 this._$component.removeClass(
-                    this._options.classNames.galleryLoadingClass
+                    this._defaultOptions.classNames.galleryLoadingClass
                 );
             }, 1000);
         }
@@ -929,7 +949,7 @@ export default class SlideGallery {
      */
     protected _loadAllBaseImages(): void {
         this._$slides
-            .find(`${this._options.selectors.imageSelector} img`)
+            .find(`${this._defaultOptions.selectors.imageSelector} img`)
             .each((index, baseImage): void => {
                 // First 2 images already have eager
                 if (index > 1) {
@@ -943,7 +963,7 @@ export default class SlideGallery {
      */
     protected _setFullImages(): void {
         this._$component.toggleClass(
-            this._options.classNames.galleryFullscreenImagesClass
+            this._defaultOptions.classNames.galleryFullscreenImagesClass
         );
 
         if (this._fullImagesLoaded) {
@@ -951,7 +971,7 @@ export default class SlideGallery {
         }
 
         this._$slides
-            .find(`${this._options.selectors.zoomImageSelector} img`)
+            .find(`${this._defaultOptions.selectors.zoomImageSelector} img`)
             .each((index, fullImage): void => {
                 $(fullImage).attr('src', $(fullImage).attr('data-src'));
             });
@@ -963,10 +983,10 @@ export default class SlideGallery {
      */
     protected _toggleFullscreen(): void {
         this._$component.toggleClass(
-            this._options.classNames.galleryFullscreenClass
+            this._defaultOptions.classNames.galleryFullscreenClass
         );
         $('body, html').toggleClass(
-            this._options.classNames.galleryFullscreenVisibleClass
+            this._defaultOptions.classNames.galleryFullscreenVisibleClass
         );
 
         this._setFullImages();
@@ -986,13 +1006,15 @@ export default class SlideGallery {
      */
     protected _closeZoom(e: JQuery.Event): void {
         $('body, html').removeClass(
-            this._options.classNames.galleryZoomVisibleClass
+            this._defaultOptions.classNames.galleryZoomVisibleClass
         );
-        this._$component.removeClass(this._options.classNames.galleryZoomClass);
+        this._$component.removeClass(
+            this._defaultOptions.classNames.galleryZoomClass
+        );
 
-        if (this._options.zoom3Steps) {
+        if (this._defaultOptions.zoom3Steps) {
             this._$component.removeClass(
-                `${this._options.classNames.galleryZoomClass}-1 ${this._options.classNames.galleryZoomClass}-2 ${this._options.classNames.galleryZoomClass}-3`
+                `${this._defaultOptions.classNames.galleryZoomClass}-1 ${this._defaultOptions.classNames.galleryZoomClass}-2 ${this._defaultOptions.classNames.galleryZoomClass}-3`
             );
         }
 
@@ -1007,12 +1029,12 @@ export default class SlideGallery {
      */
     protected _zoom(e: JQuery.Event): void {
         let currentPicture: HTMLElement = this._$component.find(
-            this._options.selectors.imageSelector
+            this._defaultOptions.selectors.imageSelector
         )[this._getCurrentIndex()];
 
         if (this._fullImagesLoaded) {
             currentPicture = this._$component.find(
-                this._options.selectors.zoomImageSelector
+                this._defaultOptions.selectors.zoomImageSelector
             )[this._getCurrentIndex()];
         }
 
@@ -1024,17 +1046,19 @@ export default class SlideGallery {
         const currentPictureHeight: number = currentPicture.clientHeight;
 
         $('body, html').addClass(
-            this._options.classNames.galleryZoomVisibleClass
+            this._defaultOptions.classNames.galleryZoomVisibleClass
         );
-        this._$component.addClass(this._options.classNames.galleryZoomClass);
+        this._$component.addClass(
+            this._defaultOptions.classNames.galleryZoomClass
+        );
 
-        if (this._options.zoom3Steps && this._zoomStep < 3) {
+        if (this._defaultOptions.zoom3Steps && this._zoomStep < 3) {
             this._$component.removeClass(
-                `${this._options.classNames.galleryZoomClass}-${this._zoomStep}`
+                `${this._defaultOptions.classNames.galleryZoomClass}-${this._zoomStep}`
             );
             this._zoomStep++;
             this._$component.addClass(
-                `${this._options.classNames.galleryZoomClass}-${this._zoomStep}`
+                `${this._defaultOptions.classNames.galleryZoomClass}-${this._zoomStep}`
             );
         }
 
@@ -1047,33 +1071,33 @@ export default class SlideGallery {
      * Decrease zoom value.
      */
     protected _unzoom(): void {
-        if (this._options.zoom3Steps && this._zoomStep > 1) {
+        if (this._defaultOptions.zoom3Steps && this._zoomStep > 1) {
             this._$component.removeClass(
-                `${this._options.classNames.galleryZoomClass}-${this._zoomStep}`
+                `${this._defaultOptions.classNames.galleryZoomClass}-${this._zoomStep}`
             );
             this._zoomStep--;
             this._$component.addClass(
-                `${this._options.classNames.galleryZoomClass}-${this._zoomStep}`
+                `${this._defaultOptions.classNames.galleryZoomClass}-${this._zoomStep}`
             );
             this._centerImage(null);
-        } else if (this._options.zoom3Steps && this._zoomStep === 1) {
+        } else if (this._defaultOptions.zoom3Steps && this._zoomStep === 1) {
             this._$component.removeClass(
-                `${this._options.classNames.galleryZoomClass}-${this._zoomStep}`
+                `${this._defaultOptions.classNames.galleryZoomClass}-${this._zoomStep}`
             );
             this._zoomStep--;
             $('body, html').removeClass(
-                this._options.classNames.galleryZoomVisibleClass
+                this._defaultOptions.classNames.galleryZoomVisibleClass
             );
             this._$component.removeClass(
-                this._options.classNames.galleryZoomClass
+                this._defaultOptions.classNames.galleryZoomClass
             );
             this._zoomVisible = false;
-        } else if (!this._options.zoom3Steps) {
+        } else if (!this._defaultOptions.zoom3Steps) {
             $('body, html').removeClass(
-                this._options.classNames.galleryZoomVisibleClass
+                this._defaultOptions.classNames.galleryZoomVisibleClass
             );
             this._$component.removeClass(
-                this._options.classNames.galleryZoomClass
+                this._defaultOptions.classNames.galleryZoomClass
             );
             this._zoomVisible = false;
         }
@@ -1120,7 +1144,9 @@ export default class SlideGallery {
         }
 
         if (this._isVideo()) {
-            $(this._options.selectors.slideSelector).off('slide:changed');
+            $(this._defaultOptions.selectors.slideSelector).off(
+                'slide:changed'
+            );
         }
     }
 }
