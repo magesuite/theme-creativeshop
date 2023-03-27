@@ -11,5 +11,7 @@ if (galleryElement) {
     const imageParams: IGalleryImageParams = JSON.parse(
         galleryElement.dataset.imageParams
     );
-    new SlideGallery(galleryElement, imageParams);
+    new SlideGallery(galleryElement, {
+        imageParams,
+    });
 }
