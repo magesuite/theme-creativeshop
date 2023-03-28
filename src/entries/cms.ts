@@ -61,7 +61,7 @@ import 'components/visually-hidden';
  */
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
-import 'components/tile-gallery';
+// import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
 

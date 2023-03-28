@@ -1,4 +1,5 @@
 @import 'components/product-tile/product-tile';
+@import 'utils/deep-get/deep-get.scss';
 
 // General
 $product-teaser_general-elements-gutter: 2rem !default;
@@ -6,9 +7,7 @@ $product-teaser_padding: 1.5rem 0 !default;
 $product-teaser_one-column-breakpoint: 'tablet' !default;
 
 // Thumbnail
-$product-teaser_thumbnail-max-height: unset !default;
-$product-teaser_thumbnail-box-width: 10rem !default;
-$product-teaser_thumbnail-box-width-mobile: 10rem !default;
+$product-teaser_thumbnail-max-height-mobile: 36rem !default;
 
 // Badges
 $product-teaser_badges-margin: 0 0 #{$product-teaser_general-elements-gutter / 2}
@@ -17,19 +16,17 @@ $product-teaser_badges-item-margin: 0 #{$product-teaser_general-elements-gutter 
     2} 0.3rem 0 !default;
 
 // Daily Deal
-$product-teaser_dailydeal-margin: #{$product-teaser_general-elements-gutter / 2}
-    0 0 0 !default;
+$product-teaser_dailydeal-margin: 0 0 $product-teaser_general-elements-gutter !default;
 
 // Swatches
-$product-teaser_swatches-margin: 0rem !default;
+$product-teaser_swatches-margin: $product-teaser_general-elements-gutter 0 #{$product-teaser_general-elements-gutter /
+    2} !default;
 
 // Review
 $product-teaser_review-margin: 0 !default;
 
 // Description
-$product-teaser_description-text-align: left !default;
-$product-teaser_description-margin: $product-teaser_general-elements-gutter 0 #{$product-teaser_general-elements-gutter /
-    2} !default;
+$product-teaser_description-margin: $product-teaser_general-elements-gutter 0 !default;
 
 // Brand
 $product-teaser_brand-alignment: left !default;
@@ -81,6 +78,10 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             margin: $product-teaser_product-name-margin;
             white-space: initial;
             height: auto;
+
+            @include media('<tablet') {
+                margin-top: 0;
+            }
         }
 
         #{$root}__thumbnail {
@@ -88,6 +89,8 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 flex-basis: 40%;
+                height: unset;
+                aspect-ratio: #{$product-tile-magento-catalog-image-width}/#{$product-tile-magento-catalog-image-height};
             }
         }
 
@@ -96,35 +99,35 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             height: 100%;
             flex-grow: initial;
             width: auto !important;
-            max-height: $product-teaser_thumbnail-max-height;
+            max-height: $product-teaser_thumbnail-max-height-mobile;
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 padding: 0;
-            }
-
-            @include media('<phoneLg') {
-                width: $product-teaser_thumbnail-box-width-mobile;
+                max-height: unset;
             }
         }
 
         #{$root}__figure {
-            align-items: flex-start;
+            height: 100%;
 
-            &:before {
-                content: none;
+            @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                max-height: unset;
+                aspect-ratio: #{$product-tile-magento-catalog-image-width}/#{$product-tile-magento-catalog-image-height};
             }
         }
 
         #{$root}__image {
             max-height: 100%;
-            position: relative !important;
-            margin-top: 0;
-            top: auto;
-            left: auto;
+
+            @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                width: 100%;
+            }
         }
 
         #{$root}__gallery {
-            display: none !important;
+            @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                opacity: 1;
+            }
         }
 
         #{$root}__content {
@@ -136,6 +139,7 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 padding: 0 0 0 #{$product-teaser_general-elements-gutter};
+                flex-basis: 100%;
             }
         }
 
@@ -146,22 +150,24 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             grid-template-rows: min-content;
 
             grid-template-areas:
-                'dailydeal dailydeal'
-                'swatches swatches'
-                'description description'
-                'review review'
-                'name name'
-                'price price'
-                'addtocart addtocart';
+                'dailydeal'
+                'swatches'
+                'description'
+                'review'
+                'brand'
+                'name'
+                'price'
+                'addtocart';
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 grid-template-columns: 2fr 1fr;
 
                 grid-template-areas:
                     'dailydeal dailydeal'
-                    'swatches swatches'
                     'description description'
+                    'swatches swatches'
                     'review review'
+                    'brand brand'
                     'name addtocart'
                     'price addtocart';
             }
@@ -184,9 +190,17 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
                 display: none;
             }
 
+            @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                margin-top: 0;
+            }
+
             &,
             .swatch-attribute-options {
-                justify-content: flex-start;
+                justify-content: center;
+
+                @include media('>=#{$product-teaser_one-column-breakpoint}') {
+                    justify-content: flex-start;
+                }
             }
         }
 
@@ -199,16 +213,24 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             display: block;
             width: 100%;
             margin: $product-teaser_description-margin;
+            border-bottom: 1px solid $color_border-500;
+            padding-bottom: $product-teaser_general-elements-gutter;
 
             &:empty {
-                display: none;
+                margin-top: 0;
+                padding-bottom: 0;
+            }
+
+            p {
+                &:last-child {
+                    margin-bottom: 0;
+                }
             }
         }
 
         #{$root}__review {
             margin: $product-teaser_review-margin;
             padding-bottom: $product-teaser_general-elements-gutter;
-            border-bottom: 1px solid $color_border-500;
         }
 
         #{$root}__price {
@@ -232,9 +254,10 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             @include visually-hidden();
         }
 
-        // Daily Deal styling
         #{$root}__dailydeal {
             position: static;
+            max-width: 30rem;
+            margin: $product-teaser_dailydeal-margin;
         }
     }
 }

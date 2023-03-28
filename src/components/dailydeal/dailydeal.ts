@@ -474,8 +474,13 @@ export default class Dailydeal {
      * Check if dailydeal has been initialized for tile
      */
     protected _isTile(): boolean {
-        return this._$element.hasClass(
-            `${this._options.namespace}dailydeal--tile`
+        return (
+            this._$element.hasClass(
+                `${this._options.namespace}dailydeal--tile`
+            ) ||
+            this._$element.hasClass(
+                `${this._options.namespace}dailydeal--tile-teaser`
+            )
         );
     }
 

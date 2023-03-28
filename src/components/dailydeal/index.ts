@@ -27,6 +27,16 @@ $(`.${ns}dailydeal--tile`).each(function (): void {
     });
 });
 
+// Product teaser
+$(`.${ns}dailydeal--tile-teaser`).each(function (): void {
+    setTimeout(() => {
+        new Dailydeal($(this), {
+            namespace: ns,
+            updateLabels: true,
+        });
+    });
+});
+
 // Multiple carousels are rendered dinamically.
 // In order to initialise daily deal feature properly, the initialization must take place after contentUpdated event
 
