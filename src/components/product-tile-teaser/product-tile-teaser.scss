@@ -5,9 +5,11 @@
 $product-teaser_general-elements-gutter: 2rem !default;
 $product-teaser_padding: 1.5rem 0 !default;
 $product-teaser_one-column-breakpoint: 'tablet' !default;
+$product-teaser_content-flex-basis-desktop: 60% !default;
 
 // Thumbnail
 $product-teaser_thumbnail-max-height-mobile: 36rem !default;
+$product-teaser_thumbnail-flex-basis-desktop: 40% !default;
 
 // Badges
 $product-teaser_badges-margin: 0 0 #{$product-teaser_general-elements-gutter / 2}
@@ -27,6 +29,7 @@ $product-teaser_review-margin: 0 !default;
 
 // Description
 $product-teaser_description-margin: $product-teaser_general-elements-gutter 0 !default;
+$product-teaser_description-separator: 1px solid $color_border-500 0 !default;
 
 // Brand
 $product-teaser_brand-alignment: left !default;
@@ -87,7 +90,7 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             flex-basis: 100%;
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
-                flex-basis: 40%;
+                flex-basis: $product-teaser_thumbnail-flex-basis-desktop;
                 height: unset;
                 aspect-ratio: #{$product-tile-magento-catalog-image-width}/#{$product-tile-magento-catalog-image-height};
             }
@@ -138,14 +141,14 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 padding: 0 0 0 #{$product-teaser_general-elements-gutter};
-                flex-basis: 100%;
+                flex-basis: $product-teaser_content-flex-basis-desktop;
             }
         }
 
         #{$root}__main {
             height: auto;
             flex-basis: 100%;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: minmax(0, 1fr);
             grid-template-rows: min-content;
 
             grid-template-areas:
@@ -212,7 +215,7 @@ $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
             display: block;
             width: 100%;
             margin: $product-teaser_description-margin;
-            border-bottom: 1px solid $color_border-500;
+            border-bottom: $product-teaser_description-separator;
             padding-bottom: $product-teaser_general-elements-gutter;
 
             &:empty {
