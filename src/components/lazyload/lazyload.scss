@@ -14,3 +14,10 @@
     opacity: 1;
     transition: opacity 0.2s;
 }
+
+// Image teaser images get 100% even before loading,
+// which results in big placeholder image and empty space below teaser
+// To prevent big placeholder images 1px height is forced on not yest loaded images
+.cs-image-teaser__image.lazyload:not(.lazyloaded) {
+    height: 1px;
+}
