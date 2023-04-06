@@ -36,13 +36,15 @@ const minicartCarousel = '.cs-minicart__carousel'; // mgs carousel
 const visitorRecommender = '[id^="elasticsuite-recommender-container"]'; // elastic widget
 const comparedProductsarousel = '.widget.block-compared-products-grid'; // elastic widget
 const viewedProductsarousel = '.admin__data-grid-outer-wrap'; // magento widget
+const crosssellProductscarousel = '.block.products-crosssell'; // elastic widget
 const carouselsRenderedDynamically: any = [];
 
 carouselsRenderedDynamically.push(
     minicartCarousel,
     visitorRecommender,
     comparedProductsarousel,
-    viewedProductsarousel
+    viewedProductsarousel,
+    crosssellProductscarousel
 );
 
 $(carouselsRenderedDynamically).each(function (i, element) {
