@@ -17,15 +17,17 @@ setTimeout(() => {
     });
 });
 
-// Carousels, categories, grids
-$(`.${ns}dailydeal--tile`).each(function (): void {
-    setTimeout(() => {
-        new Dailydeal($(this), {
-            namespace: ns,
-            updateLabels: true,
+// Carousels, categories, grids and Product teaser
+$(`.${ns}dailydeal--tile, .${ns}dailydeal--tile-teaser`).each(
+    function (): void {
+        setTimeout(() => {
+            new Dailydeal($(this), {
+                namespace: ns,
+                updateLabels: true,
+            });
         });
-    });
-});
+    }
+);
 
 // Multiple carousels are rendered dinamically.
 // In order to initialise daily deal feature properly, the initialization must take place after contentUpdated event
