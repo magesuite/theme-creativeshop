@@ -71,6 +71,7 @@ import 'components/cart/cart-item';
 import 'components/cart/cart-summary';
 import 'components/cart/cart-table';
 import 'components/checkout';
+import 'components/dailydeal';
 import 'components/discount';
 import 'components/form';
 import 'components/progress-bar';
