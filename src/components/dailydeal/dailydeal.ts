@@ -60,7 +60,12 @@ interface DailydealOptions {
      * Discount badge container DOM selector
      * @type {string}
      */
-    badgeContainerSelector?: string;
+    tileBadgeContainerSelector?: string;
+    /**
+     * Default discount badge DOM selector
+     * @type {string}
+     */
+    pdpBadgeContainerSelector?: string;
     /**
      * Default discount badge DOM selector
      * @type {string}
@@ -143,7 +148,8 @@ export default class Dailydeal {
     protected _$tile: JQuery;
     protected _$tilePriceContainer: JQuery;
     protected _$pdpPriceContainer: JQuery;
-    protected _$badgeContainer: JQuery;
+    protected _$tileBadgeContainer: JQuery;
+    protected _$pdpBadgeContainer: JQuery;
     protected _$tileDefaultPrice: JQuery;
     protected _$tileDailyDealPrice: JQuery;
     protected _$pdpDefaultPrice: JQuery;
@@ -212,10 +218,10 @@ export default class Dailydeal {
             return `.${this.namespace}product-tile__main`;
         },
         get pdpPriceContainerSelector() {
-            return `.${this.namespace}price--pdp`;
+            return `.${this.namespace}buybox__price`;
         },
         get pdpSaleBlockSelector() {
-            return `.${this.namespace}product-sale-block`;
+            return `.${this.namespace}buybox`;
         },
         get defaultPriceSelector() {
             return `.price-final_price_without_daily_deal`;
@@ -223,8 +229,11 @@ export default class Dailydeal {
         get dailyDealPriceSelector() {
             return `.price-final_price`;
         },
-        get badgeContainerSelector() {
+        get tileBadgeContainerSelector() {
             return `.${this.namespace}product-tile__badges`;
+        },
+        get pdpBadgeContainerSelector() {
+            return `.${this.namespace}page-product__badges`;
         },
         get defaultDiscountBadgeSelector() {
             return `.${this.namespace}dailydeal__badge--discount`;
@@ -279,9 +288,10 @@ export default class Dailydeal {
         this._$tilePriceContainer = this._$element
             .closest(this._options.tileContainerSelector)
             .find(this._options.tilePriceContainerSelector);
-        this._$badgeContainer = this._$element
+        this._$pdpBadgeContainer = $(this._options.pdpBadgeContainerSelector);
+        this._$tileBadgeContainer = this._$element
             .closest(this._options.tileContainerSelector)
-            .find(this._options.badgeContainerSelector);
+            .find(this._options.tileBadgeContainerSelector);
         // Prices (@Tiles & PDP).parent
         this._$tileDefaultPrice = this._$tilePriceContainer
             .find(this._options.defaultPriceSelector)
@@ -296,13 +306,13 @@ export default class Dailydeal {
             .find(this._options.dailyDealPriceSelector)
             .first();
         // Badges (@Tiles)
-        this._$defaultDiscountBadge = this._$badgeContainer.find(
+        this._$defaultDiscountBadge = this._$tileBadgeContainer.find(
             this._options.defaultDiscountBadgeSelector
         );
-        this._$dailyDealDiscountBadge = this._$badgeContainer.find(
+        this._$dailyDealDiscountBadge = this._$tileBadgeContainer.find(
             this._options.dailyDealDiscountBadgeSelector
         );
-        this._$dailyDealAmountBadge = this._$badgeContainer.find(
+        this._$dailyDealAmountBadge = this._$tileBadgeContainer.find(
             this._options.dailyDealAmountBadgeSelector
         );
 
@@ -335,18 +345,14 @@ export default class Dailydeal {
      * Show dailydeal countdown and display proper price element
      */
     protected _showDailydeal(): void {
-        let $dailydealDiscountBadge: JQuery = null;
-        let $dailydealAmountBadge: JQuery = null;
-        let $defaultDiscountBadge: JQuery = null;
         let $dailydealPrice: JQuery = null;
         let $defaultPrice: JQuery = null;
+
 
         if (this._isTile()) {
             $dailydealPrice = this._$tileDailyDealPrice;
             $defaultPrice = this._$tileDefaultPrice;
-            $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
-            $dailydealAmountBadge = this._$dailyDealAmountBadge;
-            $defaultDiscountBadge = this._$defaultDiscountBadge;
+
             $(this._$tile).addClass('cs-product-tile--dailydeal');
         } else {
             $dailydealPrice = this._$pdpDailyDealPrice;
@@ -360,15 +366,7 @@ export default class Dailydeal {
         $dailydealPrice.addClass('price-box--visible');
         $defaultPrice.hide();
 
-        // Check if discount badges exists.
-        if ($dailydealDiscountBadge && $defaultDiscountBadge) {
-            // Toggle discount badges.
-            $dailydealDiscountBadge.css('display', '');
-            $defaultDiscountBadge.hide();
-        }
-        if ($dailydealAmountBadge && $dailydealAmountBadge.length) {
-            $dailydealAmountBadge.css('display', '');
-        }
+        this._toggleBadges(true);
     }
 
     /**
@@ -379,18 +377,14 @@ export default class Dailydeal {
      *                       (final-price).
      */
     protected _hideDailydeal(showFinalPrice = false): void {
-        let $dailydealDiscountBadge: JQuery = null;
-        let $dailydealAmountBadge: JQuery = null;
-        let $defaultDiscountBadge: JQuery = null;
+
         let $dailydealPrice: JQuery = null;
         let $defaultPrice: JQuery = null;
 
         if (this._isTile()) {
             $dailydealPrice = this._$tileDailyDealPrice;
             $defaultPrice = this._$tileDefaultPrice;
-            $dailydealDiscountBadge = this._$dailyDealDiscountBadge;
-            $dailydealAmountBadge = this._$dailyDealAmountBadge;
-            $defaultDiscountBadge = this._$defaultDiscountBadge;
+
             $(this._$tile).removeClass('cs-product-tile--dailydeal');
         } else {
             $dailydealPrice = this._$pdpDailyDealPrice;
@@ -402,7 +396,7 @@ export default class Dailydeal {
 
         // Toggle price elment's.
         $dailydealPrice.removeClass('price-box--visible').hide();
-        $defaultPrice.addClass('price-box--visible');
+        $defaultPrice.addClass('price-box--visible').show();
 
         if (!this._isTile() && showFinalPrice) {
             // Dailydeal has expired but it's still rendered on PDP with single
@@ -410,14 +404,34 @@ export default class Dailydeal {
             $dailydealPrice.addClass('price-box--visible');
         }
 
+        this._toggleBadges(false);
+    }
+
+    /**
+     * Show/hide badges
+     */
+    protected _toggleBadges(ddEnabled: boolean): void {
+        const $badgeContainer: JQuery = this._isTile() ? this._$tileBadgeContainer : this._$pdpBadgeContainer;
+
+        const $defaultDiscountBadge = $badgeContainer.find(
+            this._options.defaultDiscountBadgeSelector
+        );
+        const $dailydealDiscountBadge = $badgeContainer.find(
+            this._options.dailyDealDiscountBadgeSelector
+        );
+        const $dailydealAmountBadge = $badgeContainer.find(
+            this._options.dailyDealAmountBadgeSelector
+        );
+
         // Check if discount badges exists.
         if ($dailydealDiscountBadge && $defaultDiscountBadge) {
             // Toggle discount badges.
-            $dailydealDiscountBadge.hide();
-            $defaultDiscountBadge.css('display', '');
+            $dailydealDiscountBadge.css('display', ddEnabled ? '' : 'none');
+            $defaultDiscountBadge.css('display', ddEnabled ? 'none' : '');
+
         }
         if ($dailydealAmountBadge && $dailydealAmountBadge.length) {
-            $dailydealAmountBadge.hide();
+            $dailydealAmountBadge.css('display', ddEnabled ? '' : 'none');
         }
     }
 
@@ -451,7 +465,7 @@ export default class Dailydeal {
      * Update PDP badge container with class
      */
     protected _updateBadgeContainer(): void {
-        const $badgeContainer: JQuery = this._$badgeContainer;
+        const $badgeContainer: JQuery = this._isTile() ? this._$tileBadgeContainer : this._$pdpBadgeContainer;
         if (
             this._isTile() &&
             $badgeContainer.find(
