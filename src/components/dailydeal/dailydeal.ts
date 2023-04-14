@@ -57,12 +57,12 @@ interface DailydealOptions {
      */
     pdpSaleBlockSelector?: string;
     /**
-     * Discount badge container DOM selector
+     * Discount badge container PDP DOM selector
      * @type {string}
      */
     tileBadgeContainerSelector?: string;
     /**
-     * Default discount badge DOM selector
+     * Default discount badge tile DOM selector
      * @type {string}
      */
     pdpBadgeContainerSelector?: string;
@@ -348,7 +348,6 @@ export default class Dailydeal {
         let $dailydealPrice: JQuery = null;
         let $defaultPrice: JQuery = null;
 
-
         if (this._isTile()) {
             $dailydealPrice = this._$tileDailyDealPrice;
             $defaultPrice = this._$tileDefaultPrice;
@@ -377,7 +376,6 @@ export default class Dailydeal {
      *                       (final-price).
      */
     protected _hideDailydeal(showFinalPrice = false): void {
-
         let $dailydealPrice: JQuery = null;
         let $defaultPrice: JQuery = null;
 
@@ -411,7 +409,9 @@ export default class Dailydeal {
      * Show/hide badges
      */
     protected _toggleBadges(ddEnabled: boolean): void {
-        const $badgeContainer: JQuery = this._isTile() ? this._$tileBadgeContainer : this._$pdpBadgeContainer;
+        const $badgeContainer: JQuery = this._isTile()
+            ? this._$tileBadgeContainer
+            : this._$pdpBadgeContainer;
 
         const $defaultDiscountBadge = $badgeContainer.find(
             this._options.defaultDiscountBadgeSelector
@@ -428,7 +428,6 @@ export default class Dailydeal {
             // Toggle discount badges.
             $dailydealDiscountBadge.css('display', ddEnabled ? '' : 'none');
             $defaultDiscountBadge.css('display', ddEnabled ? 'none' : '');
-
         }
         if ($dailydealAmountBadge && $dailydealAmountBadge.length) {
             $dailydealAmountBadge.css('display', ddEnabled ? '' : 'none');
@@ -465,7 +464,9 @@ export default class Dailydeal {
      * Update PDP badge container with class
      */
     protected _updateBadgeContainer(): void {
-        const $badgeContainer: JQuery = this._isTile() ? this._$tileBadgeContainer : this._$pdpBadgeContainer;
+        const $badgeContainer: JQuery = this._isTile()
+            ? this._$tileBadgeContainer
+            : this._$pdpBadgeContainer;
         if (
             this._isTile() &&
             $badgeContainer.find(
