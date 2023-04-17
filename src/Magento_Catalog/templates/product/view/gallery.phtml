@@ -35,19 +35,10 @@ for ($imageIndex = 0; $imageIndex < $totalImages; $imageIndex++) {
 $imageWidth = $block->getImageAttribute('product_page_image_medium', 'width');
 $imageHeight = $block->getImageAttribute('product_page_image_medium', 'height');
 
-// Webp support
-$imageTypeHelper = $this->helper('MageSuite\ThemeHelpers\Helper\ImageType');
-$imageMimeType = $imageTypeHelper->getMimeType($mainImageUrl);
-
 $imgClass = $block->getImgClass();
 ?>
 <div class="gallery-placeholder _block-content-loading cs-product-gallery<?= $totalImages === 1 ? ' cs-product-gallery--single' : ''?>" data-gallery-role="gallery-placeholder">
     <picture class="cs-product-gallery__placeholder-image gallery-placeholder__image">
-        <source
-            type="<?= $imageMimeType ?>"
-            srcset="<?= $mainImageUrl ?>"
-            alt="<?= $mainImageAlt ?>"
-        >
         <img
             type="<?= $imageMimeType ?>"
             src="<?= $mainImageUrl ?>"

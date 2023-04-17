@@ -5,7 +5,7 @@
  * - add qty-increment
  * - remove addtocart button which has a separate template in magesuite (addtocart/button.phtml)
  *
- * Aligned with Magento 2.4.5 at 09/2022
+ * Aligned with Magento 2.4.6 at 04/2023
  */
 
 /** @var $block \Magento\Catalog\Block\Product\View */
@@ -29,7 +29,7 @@
                               ->createBlock(Magento\Framework\View\Element\Template::class)
                               ->setInputName('qty')
                               ->setInputInitialValue($block->getProductDefaultQty() * 1)
-                              ->setInputAdditionalParams('id="qty" data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="'.$qtyValidators["validate-item-quantity"]["minAllowed"].'" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
+                              ->setInputAdditionalParams('id="qty" data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="0" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
                               ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
                               ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
                               ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
