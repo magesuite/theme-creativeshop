@@ -4,7 +4,7 @@
  * - add stock/out of stock icon
  * - add placeholder at the end ($block->getChildHtml())
  *
- * Aligned with Magento 2.4.5 at 09/2022
+ * Aligned with Magento 2.4.6 at 04/2023
  */
 ?>
 <?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
@@ -29,7 +29,7 @@
 <?php if ($block->displayProductStockStatus()): ?>
     <div class="stock cs-buybox__stock <?= $cssClass ?>" title="<?= $block->escapeHtmlAttr(__('Availability')) ?>">
         <?= $icon ?>
-        <span class="cs-buybox__stock-text"><?= $text ?></span>
+        <span class="cs-buybox__stock-text"><?= $block->escapeHtml($text) ?></span>
     </div>
 <?php endif; ?>
 <?= $block->getChildHtml() ?>
