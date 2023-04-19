@@ -4,7 +4,7 @@
  * - add total items counter
  * - add condition for showTotalItems (var in XML)
  * - add empty class if there are not items in minicart
- * Aligned with Magento 2.4.5 at 09/2022
+ * Aligned with Magento 2.4.6 at 04/2023
  */
 -->
 <div
@@ -126,13 +126,10 @@
                 </a>
             </div>
             <!-- /ko -->
-            <div
-                id="minicart-widgets"
-                class="minicart-widgets cs-minicart__widgets"
-            >
-                <!-- ko foreach: getRegion('promotion') --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->
+            <div id="minicart-widgets" class="minicart-widgets cs-minicart__widgets" if="regionHasElements('promotion')">
+                <each args="getRegion('promotion')" render=""></each>
             </div>
         </div>
     </div>
-    <!-- ko foreach: getRegion('sign-in-popup') --><!-- ko template: getTemplate() --><!-- /ko --><!-- /ko -->
 </div>
+<each args="getRegion('sign-in-popup')" render=""></each>
