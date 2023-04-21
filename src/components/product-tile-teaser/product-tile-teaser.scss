@@ -1,5 +1,7 @@
-@import 'components/product-tile/product-tile';
+@import 'config/variables';
+@import 'vendors/include-media';
 @import 'utils/deep-get/deep-get.scss';
+@import 'utils/visually-hidden';
 
 // General
 $product-teaser_general-elements-gutter: 2rem !default;
@@ -29,7 +31,7 @@ $product-teaser_review-margin: 0 !default;
 
 // Description
 $product-teaser_description-margin: $product-teaser_general-elements-gutter 0 !default;
-$product-teaser_description-separator: 1px solid $color_border-500 0 !default;
+$product-teaser_description-separator: 1px solid $color_border-500 !default;
 
 // Brand
 $product-teaser_brand-alignment: left !default;
@@ -46,11 +48,20 @@ $product-teaser_price-margin: 0 !default;
 $product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
     $product-teaser_general-elements-gutter !default;
 
-// Add to (wishlist, compare) list
-$product-teaser_addto-is-visible: false !default;
-
-// Stock
-$product-teaser_stock-is-visible: false !default;
+// Image sizes
+$product-tile-teaser-magento-catalog-image: deep-get(
+    $view-xml,
+    media,
+    images,
+    image,
+    category_page_grid
+);
+$product-tile-teaser-magento-catalog-image-width: to-number(
+    #{map-get($product-tile-teaser-magento-catalog-image, width)}
+);
+$product-tile-teaser-magento-catalog-image-height: to-number(
+    #{map-get($product-tile-teaser-magento-catalog-image, height)}
+);
 
 .#{$ns}product-tile {
     $root: &;
@@ -61,10 +72,6 @@ $product-teaser_stock-is-visible: false !default;
 
         @include media('>=tablet') {
             aspect-ratio: initial;
-        }
-
-        &:hover {
-            border: $product-tile_initial-border;
         }
 
         #{$root}__container {
@@ -98,7 +105,7 @@ $product-teaser_stock-is-visible: false !default;
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 flex-basis: $product-teaser_thumbnail-flex-basis-desktop;
                 height: unset;
-                aspect-ratio: #{$product-tile-magento-catalog-image-width}/#{$product-tile-magento-catalog-image-height};
+                aspect-ratio: #{$product-tile-teaser-magento-catalog-image-width}/#{$product-tile-teaser-magento-catalog-image-height};
             }
         }
 
@@ -120,7 +127,7 @@ $product-teaser_stock-is-visible: false !default;
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 max-height: unset;
-                aspect-ratio: #{$product-tile-magento-catalog-image-width}/#{$product-tile-magento-catalog-image-height};
+                aspect-ratio: #{$product-tile-teaser-magento-catalog-image-width}/#{$product-tile-teaser-magento-catalog-image-height};
             }
         }
 
@@ -165,8 +172,7 @@ $product-teaser_stock-is-visible: false !default;
                 'brand'
                 'name'
                 'price'
-                'addtocart'
-                'addto';
+                'addtocart';
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 grid-template-columns: 2fr 1fr;
@@ -177,10 +183,8 @@ $product-teaser_stock-is-visible: false !default;
                     'swatches swatches'
                     'review review'
                     'brand brand'
-                    'stock stock'
                     'name addtocart'
-                    'price addtocart'
-                    'addto addto';
+                    'price addtocart';
             }
         }
 
@@ -269,18 +273,6 @@ $product-teaser_stock-is-visible: false !default;
             position: static;
             max-width: 30rem;
             margin: $product-teaser_dailydeal-margin;
-        }
-
-        #{$root}__addto {
-            @if not $product-teaser_addto-is-visible {
-                display: none;
-            }
-        }
-
-        #{$root}__stock {
-            @if not $product-teaser_stock-is-visible {
-                display: none;
-            }
         }
     }
 }
