@@ -418,6 +418,14 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
         position: relative;
         z-index: 10;
 
+        // Fix for too tall carousel tiles on tablets
+        @include media('<laptopLg') {
+            @media screen and (max-height: 900px) {
+                max-width: 60rem;
+                margin: 0 auto;
+            }
+        }
+
         &-container {
             opacity: 0;
             transition: $minicart_offcanvas-carousel-transition;
