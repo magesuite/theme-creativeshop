@@ -26,6 +26,9 @@ var config = {
              * Some of the mixins point to full path + module aliases. It solves the issue:
              * https://github.com/magento/magento2/issues/33593#issuecomment-1040116318
              */
+            jquery: {
+                'js/jquery-ext': true,
+            },
             'collapsible': {
                 'js/collapsible-ext': true,
             },
