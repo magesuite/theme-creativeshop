@@ -3,13 +3,13 @@
 // Custom stock indicator template, overriden completely
 ?>
 <?php /* @var $block \Magento\Catalog\Block\Product\View\AbstractView */?>
-<?php 
+<?php
     $associatedProducts = $block->getAssociatedProducts();
     $isAvailable = $block->getProduct()->isAvailable() && count($associatedProducts) > 0;
     $cssClass = $isAvailable ? 'available cs-buybox__stock--available' : 'unavailable cs-buybox__stock--unavailable';
     $text = $isAvailable ? __('In stock') : __('Out of stock');
     $iconEtcViewTarget = $isAvailable ? 'in_stock' : 'out_of_stock';
-    $icon = $block->getVar('stock_icons/display', 'Magento_Catalog') 
+    $icon = $block->getVar('stock_icons/display', 'Magento_Catalog')
         ? $this->getLayout()
              ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
              ->setIconUrl($block->getVar('stock_icons/'.$iconEtcViewTarget.'/icon_url', 'Magento_Catalog'))

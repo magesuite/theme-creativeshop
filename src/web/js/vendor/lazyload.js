@@ -1,6 +1,6 @@
 /**
  * @see https://cdn.jsdelivr.net/npm/vanilla-lazyload@12.4.0/dist/lazyload.js
- * 
+ *
  * Script adjusted at the bottom to:
  * - Change class from .lazy to .lazyload.
  * - Add reacting to DOM changes via Mutation Observer.
@@ -75,7 +75,7 @@ var LazyLoad = function () {
 
     window.dispatchEvent(event);
   };
-  /* Auto initialization of one or more instances of lazyload, depending on the 
+  /* Auto initialization of one or more instances of lazyload, depending on the
       options passed in (plain object or an array) */
 
 
