@@ -45,8 +45,11 @@ $product-teaser_product-name-margin: 2rem 0 #{$product-teaser_general-elements-g
 $product-teaser_price-margin: 0 !default;
 
 // Addtocart
-$product-teaser_addtocart-margin: $product-teaser_general-elements-gutter 0 0
-    $product-teaser_general-elements-gutter !default;
+$product-teaser_addtocart-margin: 0 0 0 $product-teaser_general-elements-gutter !default;
+
+// Stock
+$product-teaser_product-stock-margin: #{$product-teaser_general-elements-gutter /
+    2} 0 0 !default;
 
 // Image sizes
 $product-tile-teaser-magento-catalog-image: deep-get(
@@ -69,14 +72,22 @@ $product-tile-teaser-magento-catalog-image-height: to-number(
     &--teaser {
         aspect-ratio: initial;
         background-color: transparent;
+        border: none;
 
         @include media('>=tablet') {
             aspect-ratio: initial;
         }
 
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                border: none;
+            }
+        }
+
         #{$root}__container {
             flex-direction: row;
             flex-wrap: wrap;
+            padding: 0;
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 flex-wrap: nowrap;
@@ -90,6 +101,8 @@ $product-tile-teaser-magento-catalog-image-height: to-number(
         }
 
         #{$root}__name {
+            font-size: $font-size_headline-2;
+            line-height: normal;
             margin: $product-teaser_product-name-margin;
             white-space: initial;
             height: auto;
@@ -153,7 +166,7 @@ $product-tile-teaser-magento-catalog-image-height: to-number(
             background-color: transparent;
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
-                padding: 0 0 0 #{$product-teaser_general-elements-gutter};
+                padding: 0 0 0 #{$product-teaser_general-elements-gutter * 2};
                 flex-basis: $product-teaser_content-flex-basis-desktop;
             }
         }
@@ -165,26 +178,28 @@ $product-tile-teaser-magento-catalog-image-height: to-number(
             grid-template-rows: min-content;
 
             grid-template-areas:
+                'name'
                 'dailydeal'
                 'swatches'
                 'description'
                 'review'
                 'brand'
-                'name'
                 'price'
-                'addtocart';
+                'addtocart'
+                'stock';
 
             @include media('>=#{$product-teaser_one-column-breakpoint}') {
                 grid-template-columns: 2fr 1fr;
 
                 grid-template-areas:
                     'dailydeal dailydeal'
+                    'name name'
                     'description description'
                     'swatches swatches'
                     'review review'
                     'brand brand'
-                    'name addtocart'
-                    'price addtocart';
+                    'price addtocart'
+                    'stock addtocart';
             }
         }
 
@@ -263,6 +278,10 @@ $product-tile-teaser-magento-catalog-image-height: to-number(
 
         #{$root}__addtocart-button {
             width: 100%;
+        }
+
+        #{$root}__stock {
+            margin: $product-teaser_product-stock-margin;
         }
 
         #{$root}__wishlist-comment {
