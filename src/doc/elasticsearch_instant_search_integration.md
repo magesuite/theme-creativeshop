@@ -1,13 +1,13 @@
-# Elasticsearch Instant Search integration with MageSuite. 
+# Elasticsearch Instant Search integration with MageSuite.
 
-MageSuite now supports Elastic Search premium feature - Instant Search, by integrating it into MageSuite CI and UX. 
-Integration consists of: 
+MageSuite now supports Elastic Search premium feature - Instant Search, by integrating it into MageSuite CI and UX.
+Integration consists of:
 * overwritten elastic search form template to provide proper structure and classnames used in our components
 * optional component providing CSS & JS scripts to make search integrated with MageSuite header
 
 ## How to use the integration:
 
-In all the basic page entries (where the search is used), import of `components/header/search` shall be removed 
+In all the basic page entries (where the search is used), import of `components/header/search` shall be removed
 and `Smile_ElasticsuiteInstantSearch` should be imported instead.
 
 By default default page entries are:
@@ -30,7 +30,6 @@ import 'Creativeshop/entries/cms';
 import 'components/amgdprcookie';
 ```
 
-Recreate the whole entry by copying theme-creativeshop origina entry content to project's `entires/cms.ts` entry and add your additional components. 
+Recreate the whole entry by copying theme-creativeshop origina entry content to project's `entires/cms.ts` entry and add your additional components.
 
 > This practice is recommended anyway, as this way all the redundant components (not used by the project) can be skipped (what decreases page load and increases performance)
-
