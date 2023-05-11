@@ -99,7 +99,7 @@ var LazyLoad = function () {
 
     window.dispatchEvent(event);
   };
-  /* Auto initialization of one or more instances of lazyload, depending on the 
+  /* Auto initialization of one or more instances of lazyload, depending on the
       options passed in (plain object or an array) */
 
 
@@ -689,7 +689,7 @@ var LazyLoad = function () {
 
   var onEnter = function onEnter(element, entry, settings, instance) {
     var dontLoad = hadStartedLoading(element);
-    /* Save status 
+    /* Save status
     before setting it, to prevent loading it again. Fixes #526. */
 
     setStatus(element, statusEntered);
