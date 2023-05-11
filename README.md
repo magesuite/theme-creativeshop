@@ -66,7 +66,7 @@ You have installed and built your first Creativeshop-based theme. How about addi
 
 ## Adding new component
 
-Creating new components is the core of the development process with Creativeshop. It's the first thing you should do if you want to customize existing component as well as write yours from scratch. 
+Creating new components is the core of the development process with Creativeshop. It's the first thing you should do if you want to customize existing component as well as write yours from scratch.
 
 Creativeshop incorporates something which may be called *component inheritance*. Once you have created your child theme properly, it can inherit all the parent components. You can do whathever you want with those inherited components - modify them to any degree or just use them without any changes. It's a powerful tool for building your theme out of curated ready to use and easily customizable parts.
 
@@ -86,7 +86,7 @@ Components are stored in `~Creativeshop/src/components/<component>` directory. W
 
 Not all of the files listed above are neccessary. Technically, functional creativeshop component is nothing more than a TypeScript module importing needed files and exporting them for Webpack consume.
 
-For now, let's create `addtocart` folder in your `~Creativeshop/src/components`. Note that path of your new component must match path of the parent component. 
+For now, let's create `addtocart` folder in your `~Creativeshop/src/components`. Note that path of your new component must match path of the parent component.
 
 ### Entry file
 
@@ -106,7 +106,7 @@ Responsibilities of this file are as follows:
 You may notice that many Creativeshop components imports and uses jQuery. You can import any other third party library installed in `node_modules`. It's also frequent to import other Creativeshop components as dependencies.
 
 If your new component serves only the purpose of customizing existing parent component - that's it! From now on you can insert any file into your component directory, and will it override the coresponding file from parent theme. It's as easy as that. However, bear in mind that **if your component is not just for customizing purposes, additional steps are needed** to make it work. You will learn about it later.
- 
+
 You've just learned about inner workings of a Creativeshop component and added your first customization component. How about customizing some styles?
 
 ## Styles customization
@@ -128,7 +128,7 @@ Creativeshop handles that issue in elegant way by allowing you to directly overr
 * Assign color name variables to theme variables in `src/config/variables`
 * Add/modify component variables in `<your-theme>/src/components/component.scss`
 
-Those dependencies allow us to change whole theme colors set up very fast, by only adjusting variables. 
+Those dependencies allow us to change whole theme colors set up very fast, by only adjusting variables.
 
 ### Customization of `<your-theme>/src/config`
 
@@ -141,17 +141,17 @@ Those dependencies allow us to change whole theme colors set up very fast, by on
 > Snippet from `src/config/colors`
 ```scss
 @import '~Creativeshop/config/colors';
- 
+
 $color_monza: #da001a;
 $color_monza--hover: #ce0019;
- 
+
 $color_lochinvar: #2b827c; //$color_secondary-500, $color_secondary-200
- 
+
 $color_desert-storm: #f3f3f2; // $color_background-500, grey backgrounds
 $color_alto: #dcdcdc; // $color_border-200, $color_background-600, light border, teh same as magesuite
- 
+
 $color_gray-nurse: #e6e7e5; // $color_background-800
- 
+
 $color_dust-gray: #9b9b9b; // $color_text-400, $color_border-500, $color_border-700, light texts, inputs(basic) borders
 $color_pumice: #bfc0bf; // color_border-500
 ```
@@ -167,26 +167,26 @@ $color_pumice: #bfc0bf; // color_border-500
 > Snippet from `src/config/variables`
 ```scss
 @import '~Creativeshop/config/variables';
- 
+
 $color_text-400: $color_dust-gray; //light gray
 $color_text-500: $color_abbey;
 $color_text-600: $color_abbey;
- 
+
 $price_color: $color_primary-500;
 $price_special-color: $color_primary-500;
- 
+
 $global_header-height-mobile: 5.5rem;
- 
+
 $border-radius_base: 5px;
- 
+
 $global_header-hide-search-item-trigger-breakpoint: '>=laptop';
 ```
 
-All the variables in theme-creativeshop are marked as `!default`. This means that they are taken by default, but if you create a variable with the same name, you will overwrite it and the new variable will be taken into account. 
+All the variables in theme-creativeshop are marked as `!default`. This means that they are taken by default, but if you create a variable with the same name, you will overwrite it and the new variable will be taken into account.
 
-`src/config/base` - basic styling of basic components, such as body, buttons, etc. 
+`src/config/base` - basic styling of basic components, such as body, buttons, etc.
 
-`src/config/breakpoints` - this is where the breakpoints structure is set; likely, you won't have to make any changes to this file. 
+`src/config/breakpoints` - this is where the breakpoints structure is set; likely, you won't have to make any changes to this file.
 
 #### Variables naming convention
 
@@ -195,19 +195,19 @@ All the variables in theme-creativeshop are marked as `!default`. This means tha
 > Snippet from `your-theme/src/components/footer/footer.scss`
 ```scss
 @import 'config/variables';
- 
+
 $footer_background: $color_background-550;
- 
+
 $footer_section-title-color: $color_text-200;
 $footer_section-title-font-size: 1.4em;
- 
+
 $footer_section-separator-border: 1px solid $color_border-400;
- 
+
 $footer_section-plus-include: false;
 $footer_section-dropdown-width: 1.6rem;
 $footer_section-dropdown-height: 1rem;
 $footer_section-dropdown-color: $color_primary-500;
- 
+
 $footer_logo-width: 13.5em;
 $footer_logo-height: 2.3em;
 ```
@@ -216,13 +216,13 @@ $footer_logo-height: 2.3em;
 
 * The styling takes place in component (`<your-theme>/src/components/component`).
 * To customize each component, create a component under the same directory in your theme and import the original component into it.
-* Do not change anything in theme-creativeshop, but make all the changes in your theme, creating the same structure of components. 
+* Do not change anything in theme-creativeshop, but make all the changes in your theme, creating the same structure of components.
 
-Once the configuration folder is ready, you can start customizing the components. A simple component includes: 
+Once the configuration folder is ready, you can start customizing the components. A simple component includes:
 
 * `new-component.ts` - contains the definition of the component
 * `new-component.scss` - contains styling of the component
-* `index.ts` - imports the component styles and initializes it. 
+* `index.ts` - imports the component styles and initializes it.
 
 Some of them contain subfolders or additional files.
 
@@ -236,12 +236,12 @@ Don't forget to import the component from theme-creativeshop to be able ro reuse
 ```scss
 @import 'config/variables';
 @import 'vendors/include-media';
- 
+
 @import '~Creativeshop/components/container/container.scss';
- 
+
 .#{$ns}container {
     $root: &;
- 
+
     &--page-pdp-details-main {
         @include media('<tablet') {
             padding: 0;
@@ -258,51 +258,51 @@ Sometimes there are subfolders in the component. During the customization proces
 
 * We use SASS mixins to make our code reusable and more versatile.
 * You will find mixins files created for components that can have different variants - e.g. buttons, teasers, badges, etc.
-* Use the hook files to modify mixins - it is always empty in theme-creativeshop and you can overwrite this file by creating it in your theme to modify a specific mixin. 
-* If you want to overwrite the variables declared in the mixin file, do so in the appropriate mixin file in your theme. 
+* Use the hook files to modify mixins - it is always empty in theme-creativeshop and you can overwrite this file by creating it in your theme to modify a specific mixin.
+* If you want to overwrite the variables declared in the mixin file, do so in the appropriate mixin file in your theme.
 
 > Snippet from `your-theme/src/components/badge/mixin.scss`
 ```scss
 @import 'config/variables';
 @import 'components/badge/hook';
- 
+
 $badge_height: 2.1rem;
 $badge_padding: 0.5rem 1.2rem;
 $badge_border-radius: 0;
- 
+
 $badge--new-background: $color_background-700;
 $badge--new-color: $color_white;
- 
+
 $badge--sale-background: $color_primary-500;
 $badge--discount-background: transparent;
- 
+
 $badge--free-shipping-background: $color_background-700;
 $badge--popular-background: $color_background-700;
- 
+
 @import '~Creativeshop/components/badge/mixin.scss';
 ```
 
 Below snippet from `your-theme/src/components/badge/hook.scss`
 ```scss
 @import 'utils/get-value-from-list';
- 
+
 /* stylelint-disable block-no-empty  */
 @mixin badge_hook($type) {
     display: flex;
     flex-direction: column;
     min-width: 5rem;
- 
+
     &:before {
         content: none;
     }
 }
- 
+
 @mixin badge_type-hook($type) {
     @if ($type == 'is_advertised') {
         background-color: $color_background-900;
         color: $color_white;
     }
- 
+
     @if ($type == 'discount') {
         min-width: 4.8rem;
         padding: 0 ;
@@ -312,7 +312,7 @@ Below snippet from `your-theme/src/components/badge/hook.scss`
 
 #### Utils
 
-There are additional useful functions here, often imported in components. It is good to familiarize yourself with them to be able to use them.  
+There are additional useful functions here, often imported in components. It is good to familiarize yourself with them to be able to use them.
 
 You've just learned about good style customization practices. It's time to find out how to add your own brand new component!
 
@@ -327,7 +327,7 @@ Build files you can find in `app/design/frontend/creativestyle/theme-creativesho
 > Assume we have 2 entry points: *pdp.ts* and *category.ts*. Each of them imports components/product-tile plus its specific components, like `pages/pdp` and `pages/category`.
 > Based on that, Webpack creates commons.js and commons.css bundles containing the *product-tile* component logic and styling. But it also creates *pdp.js*/*pdp.css* and *category.js*/*category.css* bundles to be used for PDP or category page only.
 
-In ,theme-creativeshop/src/entries, you can find two types of entry points: **entries for pages** (ex. category.ts) and **entries for modules** (ex. magesuite-brand-management.ts). 
+In ,theme-creativeshop/src/entries, you can find two types of entry points: **entries for pages** (ex. category.ts) and **entries for modules** (ex. magesuite-brand-management.ts).
 
 ### Base entries
 
@@ -374,14 +374,14 @@ By default, we use cms.js bundle as the base one.
 
 ### Entries for modules
 
-They can contain styles and logic used by the specific module. Bundles generated form them, we use only as an addition to the base bundles. 
+They can contain styles and logic used by the specific module. Bundles generated form them, we use only as an addition to the base bundles.
 For example, the *magesuite-brand-management.ts* entry imports only styling for the brand list (`MageSuite_BrandManagement/web/css/brands-index.scss`).
 
 Brand page itself relies on category.js and category.css bundles but in addition, we attach magesuite-brand-management.css bundle to it
 
 ### Adding components to entries
 
-To add a new component, you have to import it in every entry where you want it. 
+To add a new component, you have to import it in every entry where you want it.
 For example, if you want to add some "special-product-promo" component, which will be used on category page and PDP only, you have to add below code to the pdp.ts and category.ts entries.
 
 ```javascript
