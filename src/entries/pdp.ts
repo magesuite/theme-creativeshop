@@ -62,6 +62,13 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 
 /**
+ * Content Constructor components styles included in bundles
+ */
+import 'components/paragraph/paragraph.scss';
+import 'components/separator/separator.scss';
+import 'components/image-teaser/image-teaser.scss';
+
+/**
  * PDP specific components
  */
 import 'pages/product';
