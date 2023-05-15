@@ -96,4 +96,4 @@ import 'components/toolbar';
 // import 'MageSuite_QuickReorder/reorder-banner';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
-// import 'MageSuite_PWA';
+// import 'MageSuite_Pwa';
