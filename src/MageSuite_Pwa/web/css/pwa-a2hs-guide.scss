@@ -359,6 +359,15 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
         font-size: 1.3rem;
         text-align: center;
         z-index: 1200;
+        transition: width 0.3s;
+
+        @include media('>=tablet') {
+            bottom: auto;
+            top: 2rem;
+            left: auto;
+            right: 3rem;
+            width: 32rem;
+        }
 
         &:before,
         &:after {
@@ -378,9 +387,21 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
             right: auto;
             bottom: auto;
             margin-top: 0;
-            border-color: transparent;
-            border-right-color: $color_background-200;
             border-top-color: $color_background-200;
+
+            @include media('>=tablet') {
+                transform: translateX(-50%);
+                bottom: calc(100% - 2px);
+                left: 71.5%;
+                top: auto;
+                margin-top: 0;
+                border-color: transparent;
+                border-bottom-color: $color_background-200;
+            }
+
+            @include media('>=laptop') {
+                left: 63%;
+            }
         }
 
         &:before {
@@ -394,7 +415,21 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
             transform: translateX(-50%) rotate(45deg);
             right: auto;
             bottom: auto;
-            transition: width 0.3s;
+
+            @include media('>=tablet') {
+                bottom: calc(100% - 1rem);
+                transform: translateX(-50%) rotate(45deg);
+                left: 71.5%;
+                top: auto;
+                border-left: 1px solid $color_border-700;
+                border-top: 1px solid $color_border-700;
+                border-right: none;
+                border-bottom: none;
+            }
+
+            @include media('>=laptop') {
+                left: 63%;
+            }
         }
 
         &.minimized {
@@ -412,6 +447,11 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
             &:before,
             &:after {
                 display: none;
+            }
+
+            @include media('>=tablet') {
+                left: auto;
+                right: 1rem;
             }
         }
     }
