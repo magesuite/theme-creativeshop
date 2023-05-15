@@ -72,3 +72,4 @@ import 'components/visually-hidden';
 // import 'MageSuite_ShippingAddons';
 // import 'MageSuite_QuickReorder/reorder-banner';
 // import 'Smile_ElasticsuiteInstantSearch';
+// import 'MageSuite_Pwa';
