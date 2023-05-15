@@ -5,6 +5,7 @@ $infinite-scroll_area-padding: 2rem !default;
 
 $infinite-scroll_btn-margin: 2rem auto !default;
 $infinite-scroll_button-type: $button_default-type !default;
+$infinite-scroll_button-icon-pos: 'no-icon' !default;
 
 $infinite-scroll_product-tile-overlay-backdrop-filter: blur(6px) !default;
 $infinite-scroll_product-tile-overlay-background: rgba(
@@ -23,10 +24,27 @@ $infinite-scroll_indicator-padding: 2rem !default;
     }
 
     &__button {
-        @include button($type: $infinite-scroll_button-type);
+        @include button(
+            $type: $infinite-scroll_button-type,
+            $icon_pos: $infinite-scroll_button-icon-pos
+        );
 
         display: block;
         margin: $infinite-scroll_btn-margin;
+
+        &-span {
+            @include button_span(
+                $type: $infinite-scroll_button-type,
+                $icon_pos: $infinite-scroll_button-icon-pos
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $infinite-scroll_button-type,
+                $icon_pos: $infinite-scroll_button-icon-pos
+            );
+        }
     }
 
     &__product-tile-overlay {
