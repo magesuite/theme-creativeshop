@@ -57,6 +57,14 @@ import 'components/video-teaser';
 import 'components/visually-hidden';
 
 /**
+ * Content Constructor components styles included in bundles
+ */
+import 'components/image-teaser/image-teaser.scss';
+import 'components/products-carousel/products-carousel.scss';
+import 'components/paragraph/paragraph.scss';
+import 'components/separator/separator.scss';
+
+/**
  * Optional components - can be imported in child themes entries
  */
 // import 'components/page-scroll';
