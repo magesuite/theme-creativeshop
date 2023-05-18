@@ -94,6 +94,7 @@ var config = {
             },
             'rangeSlider': {
                 'Magento_CheckoutAgreements/js/model/agreement-validator-ext': true,
+                'Smile_ElasticsuiteCatalog/js/range-slider-widget-ext': true,
             },
             'Magento_CheckoutAgreements/js/model/agreement-validator': {
                 'Magento_CheckoutAgreements/js/model/agreement-validator-ext': true,
