@@ -96,3 +96,4 @@ import 'components/toolbar';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_ElasticsuiteAjaxifier';
+// import 'MageSuite_Pwa';

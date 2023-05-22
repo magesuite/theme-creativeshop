@@ -159,11 +159,16 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
         background-size: contain;
         background-repeat: no-repeat;
 
-        #{$root}__message--ios & {
+        #{$root}__message--ios &,
+        #{$root}--ios-prompt & {
             width: 1.1em;
             height: 1.8rem;
             transform: translateY(2px);
             background-image: url('../images/icons/pwa-a2hs-guide/install.svg');
+        }
+
+        #{$root}--ios-prompt & {
+            background-image: url('../images/icons/pwa-a2hs-guide/install-blue.svg');
         }
 
         #{$root}__message--desktop & {
@@ -221,6 +226,37 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
             #{$root}__close-icon {
                 fill: $pwa-a2hs-guide_icon-close-color--hover;
             }
+        }
+
+        #{$root}--ios-prompt & {
+            display: block;
+            width: 2.2rem;
+            height: 2.2rem;
+            right: 0;
+            top: 0;
+            padding: 0.5rem;
+
+            &:before,
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 50%;
+                left: 0.5rem;
+                width: 1.2rem;
+                height: 1px;
+                background-color: $color_border-700;
+                transform: rotate(45deg);
+                pointer-events: none;
+            }
+
+            &:after {
+                transform: rotate(-45deg);
+            }
+        }
+
+        .minimized & {
+            display: none;
         }
     }
 
@@ -304,6 +340,118 @@ $pwa-a2hs-guide_button-decline-icon-pos: 'no-icon' !default;
 
             @include media('>=laptop') {
                 margin-right: 0;
+            }
+        }
+    }
+
+    &--ios-prompt {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-width: min(86vw, 36rem);
+        margin: 0 auto 2rem;
+        border: 1px solid $color_border-700;
+        border-radius: 0.8rem;
+        padding: 1.2rem 1.8rem;
+        background-color: $color_background-200;
+        color: $color_text-800;
+        font-size: 1.3rem;
+        text-align: center;
+        z-index: 1200;
+        transition: width 0.3s;
+
+        @include media('>=tablet') {
+            bottom: auto;
+            top: 2rem;
+            left: auto;
+            right: 3rem;
+            width: 32rem;
+        }
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+        }
+
+        &:after {
+            border: solid transparent;
+            height: 0;
+            width: 0;
+            border-width: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            top: calc(100% - 2px);
+            right: auto;
+            bottom: auto;
+            margin-top: 0;
+            border-top-color: $color_background-200;
+
+            @include media('>=tablet') {
+                transform: translateX(-50%);
+                bottom: calc(100% - 2px);
+                left: 71.5%;
+                top: auto;
+                margin-top: 0;
+                border-color: transparent;
+                border-bottom-color: $color_background-200;
+            }
+
+            @include media('>=laptop') {
+                left: 63%;
+            }
+        }
+
+        &:before {
+            height: 2rem;
+            width: 2rem;
+            border-right: 1px solid $color_border-700;
+            border-bottom: 1px solid $color_border-700;
+            z-index: -1;
+            top: calc(100% - 1rem);
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            right: auto;
+            bottom: auto;
+
+            @include media('>=tablet') {
+                bottom: calc(100% - 1rem);
+                transform: translateX(-50%) rotate(45deg);
+                left: 71.5%;
+                top: auto;
+                border-left: 1px solid $color_border-700;
+                border-top: 1px solid $color_border-700;
+                border-right: none;
+                border-bottom: none;
+            }
+
+            @include media('>=laptop') {
+                left: 63%;
+            }
+        }
+
+        &.minimized {
+            left: 1rem;
+            right: auto;
+            font-size: 0;
+            width: 5rem;
+            height: 5rem;
+            padding: 1rem;
+            background-image: url('../Magento_Theme/favicon-32x32.png');
+            background-size: 3rem;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            &:before,
+            &:after {
+                display: none;
+            }
+
+            @include media('>=tablet') {
+                left: auto;
+                right: 1rem;
             }
         }
     }
