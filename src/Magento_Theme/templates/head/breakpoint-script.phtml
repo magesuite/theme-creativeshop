@@ -2,7 +2,7 @@
 /**
  * Custom template
  */
-    $bpConfig = json_encode($block->getVar('breakpoints', 'Magento_Theme'));
+$bpConfig = json_encode($block->getVar('breakpoints', 'Magento_Theme'));
 ?>
 
 <script data-defer-ignore="true">
@@ -21,11 +21,11 @@
         for (let i = 0; i < bpConfigEntries.length; i++) {
             let mq;
             if (i === 0) {
-                mq = window.matchMedia(`screen and (max-width: ${bpConfigEntries[i+1][1]}px)`);
+                mq = window.matchMedia(`screen and (max-width: ${bpConfigEntries[i+1][1] - 0.1}px)`);
             } else if (i === bpConfigEntries.length - 1) {
                 mq = window.matchMedia(`screen and (min-width: ${bpConfigEntries[i][1]}px)`);
             } else {
-                mq = window.matchMedia(`screen and (min-width: ${bpConfigEntries[i][1]}px) and (max-width: ${bpConfigEntries[i+1][1]}px)`);
+                mq = window.matchMedia(`screen and (min-width: ${bpConfigEntries[i][1]}px) and (max-width: ${bpConfigEntries[i+1][1] - 0.1}px)`);
             }
 
             if (mq && mq.matches) {
