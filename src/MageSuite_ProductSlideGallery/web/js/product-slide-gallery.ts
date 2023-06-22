@@ -994,8 +994,10 @@ export default class SlideGallery {
 
         if (this._fullscreenVisible) {
             this._initThumbNavButtons();
+            this._$component.trigger('gallery:fullscreenclose');
         } else {
             this._initThumbNavButtonsFullscreen();
+            this._$component.trigger('gallery:fullscreenopen');
         }
 
         this._fullscreenVisible = !this._fullscreenVisible;
