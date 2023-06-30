@@ -5,6 +5,7 @@ $level = 0;
 $nextIcon = $block->getChildHtml('navigation.offcanvas.icon.next');
 $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
+$showParentOnReturnLink = $block->getShowParentOnReturnLink();
 ?>
 <nav class="cs-offcanvas-navigation" aria-label="<?= /* @escapeNotVerified */ __('Mobile Navigation'); ?>">
     <?= $block->getChildHtml('navigation.offcanvas.search'); ?>
@@ -40,10 +41,12 @@ $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
                             ->createBlock(Magento\Framework\View\Element\Template::class)
                             ->setTemplate("MageSuite_Navigation::offcanvas/list.phtml")
                             ->setItem($item)
+                            ->setParent(false)
                             ->setLevel($level + 1)
                             ->setNextIcon($nextIcon)
                             ->setPrevIcon($prevIcon)
                             ->setShowCategoryIconSubcats($showCategoryIconSubcats)
+                            ->setShowParentOnReturnLink($showParentOnReturnLink)
                             ->toHtml();
                     }
                     ?>

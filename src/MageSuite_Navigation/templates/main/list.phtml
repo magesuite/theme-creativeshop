@@ -108,4 +108,13 @@ foreach($subItems as $subItemIndex => $subItem):
     </li>
     <?php break; endif; ?>
 <?php endforeach; ?>
+<?php if ($level === 1 && !$isAllCategories && !$item->isUrlDisabled()): ?>
+    <li
+        class="cs-navigation__item cs-navigation__item--level_<?= $level; ?> cs-navigation__item--all <?= $itemHasCustomUrl ? ' cs-navigation__item--custom' : '' ?>"
+    >
+        <a href="<?= $itemUrl; ?>" class="cs-navigation__link cs-navigation__link--level_<?= $level; ?> cs-navigation__link--touch">
+            <?= __("See all %1", lcfirst($itemLabel)); ?>
+        </a>
+    </li>
+<?php endif; ?>
 </ul>
