@@ -53,7 +53,7 @@ define([
                     this.isStorePickupAvailable !== null &&
                     this.isStorePickupSelectedSelf()
                 ) {
-                    return !this.isLocationSelected();
+                    return this.isLocationSelected();
                 }
 
                 return this._super();
