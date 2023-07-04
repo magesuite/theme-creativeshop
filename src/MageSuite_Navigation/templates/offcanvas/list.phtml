@@ -5,17 +5,26 @@ $level = $block->getLevel();
 $nextIcon = $block->getNextIcon();
 $prevIcon = $block->getPrevIcon();
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
+$showParentOnReturnLink = $block->getShowParentOnReturnLink();
 
 $item = $block->getItem();
 $itemUrl = $item->getUrl();
 $itemLabel = $item->getLabel();
 $itemIdentifier = $item->getIdentifier() ?? '';
+
+$parent = $block->getParent();
+$parentLabel = $parent ? $parent->getLabel() : false;
 ?>
 <ul class="cs-offcanvas-navigation__list cs-offcanvas-navigation__list--level_<?= $level; ?>">
     <li class="cs-offcanvas-navigation__item"<?php if($itemIdentifier): ?> data-category-identifier="<?= $itemIdentifier; ?>"<?php endif; ?>>
         <a class="cs-offcanvas-navigation__link cs-offcanvas-navigation__link--return<?= !$prevIcon ? ' cs-offcanvas-navigation__link--prev' : '' ?>" href="<?= $itemUrl; ?>">
             <?php if ($prevIcon) : ?>
                 <?= $prevIcon ?>
+            <?php endif; ?>
+            <?php if ($showParentOnReturnLink && $parentLabel) : ?>
+                <span class="cs-offcanvas-navigation__text-parent">
+                    <?= $parentLabel ?>
+                </span>
             <?php endif; ?>
             <span class="cs-offcanvas-navigation__text">
                 <?= $itemLabel; ?>
@@ -70,10 +79,12 @@ foreach($item->getSubItems() as $subItem):
                     ->createBlock(Magento\Framework\View\Element\Template::class)
                     ->setTemplate("MageSuite_Navigation::offcanvas/list.phtml")
                     ->setItem($subItem)
+                    ->setParent($item)
                     ->setLevel($level + 1)
                     ->setNextIcon($block->getNextIcon())
                     ->setPrevIcon($block->getPrevIcon())
                     ->setShowCategoryIconSubcats($showCategoryIconSubcats)
+                    ->setShowParentOnReturnLink($showParentOnReturnLink)
                     ->toHtml();
             }
         ?>
