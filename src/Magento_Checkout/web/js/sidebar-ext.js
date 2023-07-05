@@ -81,6 +81,7 @@ define([
 
                     event.stopPropagation();
                     confirm({
+                        modalClass: 'confirm minicart-remove-item',
                         content: self.options.confirmMessage,
                         actions: {
                             /** @inheritdoc */
