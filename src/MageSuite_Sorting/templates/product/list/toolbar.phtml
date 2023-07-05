@@ -9,6 +9,8 @@
 ?>
 <?php if ($block->getCollection()->getSize()): ?>
     <div class="toolbar toolbar-products cs-toolbar <?= $block->getAdditionalCssClasses() ?>" data-mage-init='<?= /* @escapeNotVerified */ $block->getWidgetOptionsJson() ?>'>
+        <?= $block->getChildHtml('hotspot.after.toolbar.start')?>
+
         <?php if ($block->getVar('toolbar/filters_offcanvas_button/display', 'Magento_Catalog')): ?>
             <div class="cs-toolbar__item cs-toolbar__item--offcanvas <?php if ($block->getCollection()->getSize() <= 1): ?>cs-toolbar__item--hide<?php endif ?>">
                 <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/filters-button.phtml')); ?>
@@ -44,5 +46,7 @@
                 <?= $block->getPagerHtml(); ?>
             </div>
         <?php endif; ?>
+
+        <?= $block->getChildHtml('hotspot.before.toolbar.end')?>
     </div>
 <?php endif ?>
