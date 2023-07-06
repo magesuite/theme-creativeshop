@@ -538,7 +538,7 @@ export default class SlideGallery {
     protected async _renderSlides() {
         const { default: requireAsync } = await import('utils/require-async');
         const { slideTemplate, thumbnailTemplate } = await import(
-            './templates'
+            'MageSuite_ProductSlideGallery/web/js/templates'
         );
 
         return requireAsync(['mage/template']).then(([mageTemplate]) => {
