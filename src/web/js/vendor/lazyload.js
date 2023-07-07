@@ -70,7 +70,7 @@ var LazyLoad = function () {
     callback_finish: null,
     callback_cancel: null,
     use_native: false,
-    restore_on_error: false
+    restore_on_error: false,
   };
   var getExtendedSettings = function getExtendedSettings(customSettings) {
     return _extends({}, defaultSettings, customSettings);
@@ -136,7 +136,11 @@ var LazyLoad = function () {
   var dataPrefix = "data-";
   var statusDataName = "ll-status";
 
-  // Escape unsecure characters before DOM modification
+  /**
+   * Optional sanitization added by Creativestyle - Escape unsecure characters before DOM modification
+   * override file and set flag to true if needed.
+   */
+  const sanitizationEnabled = false;
   const sanitize = string => {
     const map = {
         '&': '&amp;',
@@ -162,7 +166,7 @@ var LazyLoad = function () {
       return;
     }
 
-    element.setAttribute(attrName, sanitize(value));
+    element.setAttribute(attrName, sanitizationEnabled ? sanitize(value) : value);
   };
   var getStatus = function getStatus(element) {
     return getData(element, statusDataName);
@@ -383,7 +387,7 @@ var LazyLoad = function () {
       return;
     }
 
-    element.setAttribute(attrName, sanitize(value));
+    element.setAttribute(attrName, sanitizationEnabled ? sanitize(value): value);
   };
   var setImageAttributes = function setImageAttributes(element, settings) {
     setAttributeIfValue(element, SIZES, getData(element, settings.data_sizes));
