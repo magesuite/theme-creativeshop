@@ -99,6 +99,7 @@ import 'components/toolbar';
 // import 'Amazon_Pay';
 // import 'MageSuite_InstantPurchase';
 // import 'MageSuite_InstantPurchase/user-area';
+// import 'MageSuite_MultipleProductInserter';
 // import 'MageSuite_ShippingAddons';
 // import 'MageSuite_QuickReorder/latest-purchased-products';
 // import 'MageSuite_QuickReorder/reorder-banner';

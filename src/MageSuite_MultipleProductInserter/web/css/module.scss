@@ -1,0 +1,164 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+@import 'components/typography/mixin';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+@import 'utils/reset-list-style';
+
+$product-inserter_background: $color_background-500 !default;
+$product-inserter_border: none !default;
+$product-inserter_border-radius: $border-radius_base !default;
+$product-inserter_padding: 2rem !default;
+$product-inserter_padding-tablet: 3rem !default;
+$product-inserter_wide-layout-breakpoint: '>=laptopLg' !default;
+
+$product-inserter_title-heading-border-botton: 0 !default;
+$product-inserter_title-heading-font-size: 1.5rem !default;
+$product-inserter_title-heading-margin: 0 0 1.6rem !default;
+$product-inserter_title-heading-padding: 0 !default;
+
+$product-inserter_uploader-label-btn-type: $button_default-type !default;
+$product-inserter_uploader-label-icon-pos: $button_default-icon-pos !default;
+
+$product-inserter_uploader-file-item-font-size: 1.2rem !default;
+$product-inserter_uploader-file-item-margin: 1rem 0 0 !default;
+
+$product-inserter_submit-btn-type: $button_default-type !default;
+$product-inserter_submit-icon-pos: $button_default-icon-pos !default;
+
+.#{$ns}product-inserter {
+    $root: &;
+
+    background: $product-inserter_background;
+    border: $product-inserter_border;
+    border-radius: $product-inserter_border-radius;
+    padding: $product-inserter_padding;
+
+    @include media('>=tablet') {
+        padding: $product-inserter_padding-tablet;
+    }
+
+    &__title {
+        @include headline($level: $product-inserter_title-heading-font-size);
+
+        border-bottom: $product-inserter_title-heading-border-botton;
+        margin: $product-inserter_title-heading-margin;
+        padding: $product-inserter_title-heading-padding;
+    }
+
+    &__messages {
+        display: none;
+
+        &._active {
+            display: block;
+        }
+    }
+
+    &__section {
+        &--uploader {
+            margin-bottom: 2rem;
+
+            @include media($product-inserter_wide-layout-breakpoint) {
+                align-items: flex-start;
+                display: flex;
+                margin-bottom: 3rem;
+            }
+        }
+    }
+
+    &__uploader-field {
+        @include media($product-inserter_wide-layout-breakpoint) {
+            flex: 0 0 35%;
+        }
+    }
+
+    &__uploader-label {
+        @include button(
+            $type: $product-inserter_uploader-label-btn-type,
+            $icon_pos: $product-inserter_uploader-label-icon-pos
+        );
+
+        &-span {
+            @include button_span(
+                $type: $product-inserter_uploader-label-btn-type,
+                $icon_pos: $product-inserter_uploader-label-icon-pos
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $product-inserter_uploader-label-btn-type,
+                $icon_pos: $product-inserter_uploader-label-icon-pos
+            );
+        }
+    }
+
+    &__uploader-input {
+        @include visually-hidden();
+    }
+
+    &__uploader-files {
+        @include reset-list-style();
+
+        li {
+            font-size: $product-inserter_uploader-file-item-font-size;
+            margin: $product-inserter_uploader-file-item-margin;
+        }
+    }
+
+    &__example-files {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        padding-top: 1.6rem;
+
+        @include media($product-inserter_wide-layout-breakpoint) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            flex: 0 0 65%;
+            gap: 0;
+            justify-content: flex-end;
+            padding-top: 0;
+        }
+    }
+
+    &__example-file {
+        align-items: center;
+        display: inline-flex;
+
+        @include media($product-inserter_wide-layout-breakpoint) {
+            padding: $button_padding;
+        }
+
+        &-icon {
+            margin-right: 0.8rem;
+        }
+    }
+
+    &__textarea {
+        margin-bottom: 1.6rem;
+        resize: vertical;
+        width: 100%;
+    }
+
+    &__submit-button {
+        @include button(
+            $type: $product-inserter_submit-btn-type,
+            $icon_pos: $product-inserter_submit-icon-pos
+        );
+
+        &-span {
+            @include button_span(
+                $type: $product-inserter_submit-btn-type,
+                $icon_pos: $product-inserter_submit-icon-pos
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $product-inserter_submit-btn-type,
+                $icon_pos: $product-inserter_submit-icon-pos
+            );
+        }
+    }
+}
