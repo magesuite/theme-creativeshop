@@ -103,6 +103,7 @@ import 'components/separator/separator.scss';
 // import 'Amazon_Pay';
 // import 'MageSuite_InstantPurchase';
 // import 'MageSuite_LoginOrGuestCheckoutStep';
+// import 'MageSuite_MultipleProductInserter';
 // import 'MageSuite_PackstationDhl';
 // import 'MageSuite_Pwa';
 // import 'MageSuite_PwaNotifications';
