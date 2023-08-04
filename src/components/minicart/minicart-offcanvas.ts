@@ -72,6 +72,13 @@ export interface MinicartOptions {
      * @type {string}
      */
     minicartTriggerClassName?: string;
+
+    /**
+     * Additional condition to check if minicart should be open after products being added
+     * @default {null}
+     * @type {function}
+     */
+    shouldOpenOnProductAdded?: () => boolean;
 }
 
 interface IProductsCarouselOptions {
@@ -257,7 +264,17 @@ export default class Minicart {
             .on('openMinicart', (): void => this.openMinicart());
 
         if (this._xmlSettings.open_on_product_added) {
-            this._$minicart.on('productAdded', (): void => this.openMinicart());
+            this._$minicart.on('productAdded', (): void => {
+                if (
+                    typeof this._options.shouldOpenOnProductAdded === 'function'
+                ) {
+                    if (this._options.shouldOpenOnProductAdded() === true) {
+                        this.openMinicart();
+                    }
+                } else {
+                    this.openMinicart();
+                }
+            });
         }
     }
 
