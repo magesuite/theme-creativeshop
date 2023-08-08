@@ -11,11 +11,16 @@ $product-inserter_border-radius: $border-radius_base !default;
 $product-inserter_padding: 2rem !default;
 $product-inserter_padding-tablet: 3rem !default;
 $product-inserter_wide-layout-breakpoint: '>=laptopLg' !default;
+$product-inserter_sections-gap: 2rem !default;
 
 $product-inserter_title-heading-border-botton: 0 !default;
 $product-inserter_title-heading-font-size: 1.5rem !default;
 $product-inserter_title-heading-margin: 0 0 1.6rem !default;
 $product-inserter_title-heading-padding: 0 !default;
+
+$product-inserter_section-title-font-size: 1.6rem !default;
+$product-inserter_section-title-margin: 0 0 1.6rem !default;
+$product-inserter_section-description-margin: 0 0 0.8rem !default;
 
 $product-inserter_uploader-label-btn-type: $button_default-type !default;
 $product-inserter_uploader-label-icon-pos: $button_default-icon-pos !default;
@@ -54,22 +59,37 @@ $product-inserter_submit-icon-pos: $button_default-icon-pos !default;
         }
     }
 
+    &__form {
+        display: flex;
+        flex-flow: column;
+        gap: $product-inserter_sections-gap;
+
+        @include media($product-inserter_wide-layout-breakpoint) {
+            flex-flow: row wrap;
+        }
+    }
+
     &__section {
         &--uploader {
-            margin-bottom: 2rem;
-
             @include media($product-inserter_wide-layout-breakpoint) {
-                align-items: flex-start;
-                display: flex;
-                margin-bottom: 3rem;
+                flex: 1 1 calc(50% - #{$product-inserter_sections-gap} / 2);
+            }
+        }
+
+        &--textarea {
+            @include media($product-inserter_wide-layout-breakpoint) {
+                flex: 1 1 calc(50% - #{$product-inserter_sections-gap} / 2);
             }
         }
     }
 
-    &__uploader-field {
-        @include media($product-inserter_wide-layout-breakpoint) {
-            flex: 0 0 35%;
-        }
+    &__section-title {
+        font-size: $product-inserter_section-title-font-size;
+        margin: $product-inserter_section-title-margin;
+    }
+
+    &__section-description {
+        margin: $product-inserter_section-description-margin;
     }
 
     &__uploader-label {
@@ -110,25 +130,12 @@ $product-inserter_submit-icon-pos: $button_default-icon-pos !default;
         display: flex;
         flex-direction: column;
         gap: 1.6rem;
-        padding-top: 1.6rem;
-
-        @include media($product-inserter_wide-layout-breakpoint) {
-            flex-direction: row;
-            flex-wrap: wrap;
-            flex: 0 0 65%;
-            gap: 0;
-            justify-content: flex-end;
-            padding-top: 0;
-        }
+        margin-bottom: 1.6rem;
     }
 
     &__example-file {
         align-items: center;
         display: inline-flex;
-
-        @include media($product-inserter_wide-layout-breakpoint) {
-            padding: $button_padding;
-        }
 
         &-icon {
             margin-right: 0.8rem;
@@ -136,7 +143,7 @@ $product-inserter_submit-icon-pos: $button_default-icon-pos !default;
     }
 
     &__textarea {
-        margin-bottom: 1.6rem;
+        margin: 0;
         resize: vertical;
         width: 100%;
     }
