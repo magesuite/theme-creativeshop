@@ -104,6 +104,17 @@ export default class Tooltip {
         const $clone = $tooltip
             .clone()
             .addClass(`${this._options.tooltipClass}--clone`);
+
+        // Force LazyLoad to process images in cloned
+        // content one more time in order to set proper
+        // class and attributes
+        const llImgs = $clone.find('[data-ll-status]');
+        if (llImgs) {
+            $(llImgs).each(function (idx) {
+                $(this).removeAttr('data-ll-status');
+            });
+        }
+
         $('body').append($clone);
         $clone
             .find(`.${this._options.contentClass}`)
