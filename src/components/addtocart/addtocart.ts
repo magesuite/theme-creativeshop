@@ -121,6 +121,13 @@ interface IAddToCartSettings {
      * @type {string}
      */
     minicartDialogSelector?: string;
+
+    /**
+     * Decides if page should be reloaded when add to cart happens on the cart page
+     * @default {true}
+     * @type {boolean}
+     */
+    reloadPageOnProductsAddedInCart?: boolean;
 }
 
 interface IOffcanvasMinicartXmlSettings {
@@ -133,15 +140,14 @@ interface IOffcanvasMinicartXmlSettings {
  * Clone resides on the bottom of the DOM tree and is positioned absolutely with height z-index ( defined in options )
  */
 export default class AddToCart {
-    private _$source: JQuery<HTMLElement>;
-    private _$component: JQuery<HTMLElement>;
-    private _$button: JQuery<HTMLElement>;
-    private _animationTimeout: ReturnType<typeof setTimeout>;
-    private _visibilityTimeout: ReturnType<typeof setTimeout>;
-    private _allDoneTimeout: ReturnType<typeof setTimeout>;
-    private _isMinicartSticky: boolean;
-    private _minicartOffcanvasSettings: IOffcanvasMinicartXmlSettings;
-    private _options?: IAddToCartSettings;
+    protected _$button: JQuery<HTMLElement>;
+    protected _animationTimeout: ReturnType<typeof setTimeout>;
+    protected _visibilityTimeout: ReturnType<typeof setTimeout>;
+    protected _allDoneTimeout: ReturnType<typeof setTimeout>;
+    protected _isMinicartSticky: boolean;
+    protected _minicartOffcanvasSettings: IOffcanvasMinicartXmlSettings;
+    protected _options?: IAddToCartSettings;
+    protected _$component: JQuery<HTMLElement>;
 
     /**
      * Creates and initiates new AddToCart component with given settings.
@@ -169,6 +175,7 @@ export default class AddToCart {
                 qtyBadgeStartPositionRelationSelector:
                     '.cs-addtocart__button-icon',
                 minicartDialogSelector: '.block-minicart',
+                reloadPageOnProductsAddedInCart: true,
             },
             options
         );
@@ -243,6 +250,11 @@ export default class AddToCart {
             ajaxRes.response.backUrl || ajaxRes.response.messages;
 
         if (!actionFailed) {
+            if (this._shouldReloadPage(ajaxRes)) {
+                $('body').trigger('processStart');
+                window.location.reload();
+                return;
+            }
             $("[data-block='minicart']").trigger('productAdded', [ajaxRes]);
         }
 
@@ -545,5 +557,21 @@ export default class AddToCart {
             this._options.doneEvent,
             (e: JQuery.Event, ajaxRes: any): void => this._onDone(e, ajaxRes)
         );
+    }
+
+    /**
+     * Checks if page should be reloaded on add to cart action
+     * @param ajaxResponse - add to cart response
+     * @return boolean
+     */
+    protected _shouldReloadPage(ajaxResponse): boolean {
+        if (
+            this._options.reloadPageOnProductsAddedInCart &&
+            window.location.href.includes('checkout/cart')
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
