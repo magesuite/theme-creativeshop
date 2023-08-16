@@ -146,7 +146,6 @@ interface IProductsCarouselOptions {
 interface IXmlSettings {
     enabled: boolean;
     open_on_product_added: boolean;
-    reload_on_product_added_in_cart: boolean;
     products_carousel: {
         enabled: boolean;
         relation_type: boolean;
@@ -266,15 +265,6 @@ export default class Minicart {
 
         if (this._xmlSettings.open_on_product_added) {
             this._$minicart.on('productAdded', (): void => {
-                if (
-                    this._xmlSettings.reload_on_product_added_in_cart &&
-                    window.location.href.includes('checkout/cart')
-                ) {
-                    $('body').trigger('processStart');
-                    window.location.reload();
-                    return;
-                }
-
                 if (
                     typeof this._options.shouldOpenOnProductAdded === 'function'
                 ) {
