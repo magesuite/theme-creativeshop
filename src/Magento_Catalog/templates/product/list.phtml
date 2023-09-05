@@ -74,6 +74,14 @@ $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\Te
         <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
         <script defer-ignore></script>
     <?php endif ?>
+    <?php if($viewMode == 'grid' && $teasersCss = $block->getChildBlock('grid.teasers.css')): ?>
+        <?= $teasersCss
+            ->setTeasersSetId($teasersSetRandId)
+            ->setProductsCount($_productCollection->count())
+            ->setIsProductsGrid(false)
+            ->setUseTeasers(true)
+            ->toHtml(); ?>
+    <?php endif; ?>
 
     <div class="products wrapper <?= $viewMode ?> products-<?= $viewMode ?> cs-page-category__products-wrapper">
 
@@ -82,6 +90,12 @@ $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\Te
             <?= $block->getChildHtml('hotspot.before.list') ?>
 
             <ol class="products list items product-items <?= $viewModeListClass ?>">
+                <?php if($viewMode == 'grid' && $teasers = $block->getChildBlock('category.teasers')): ?>
+                    <?= $teasers
+                        ->setTeasersSetId($teasersSetRandId)
+                        ->toHtml(); ?>
+                <?php endif; ?>
+
                 <?php /** @var $product \Magento\Catalog\Model\Product */ ?>
                 <?php foreach ($_productCollection as $product): ?>
                     <li class="<?= $viewModeListItemClass ?>">
@@ -95,21 +109,7 @@ $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\Te
                     </li>
                     <?php $iterator++; ?>
                 <?php endforeach; ?>
-                <?php if($viewMode == 'grid' && $teasers = $block->getChildBlock('category.teasers')): ?>
-                    <?= $teasers
-                        ->setTeasersSetId($teasersSetRandId)
-                        ->toHtml(); ?>
-                <?php endif; ?>
             </ol>
-            <?php if($viewMode == 'grid' && $teasersCss = $block->getChildBlock('grid.teasers.css')): ?>
-                <?= $teasersCss
-                    ->setTeasersSetId($teasersSetRandId)
-                    ->setProductsCount($_productCollection->count())
-                    ->setIsProductsGrid(false)
-                    ->setUseTeasers(true)
-                    ->toHtml(); ?>
-            <?php endif; ?>
-
             <?= $block->getChildHtml('hotspot.after.list') ?>
         </div>
     </div>
