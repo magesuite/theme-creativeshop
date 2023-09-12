@@ -1,0 +1,313 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$pwa-guide_transition: all 0.2s !default;
+$pwa-guide-tab-item_font-size: $font-size_headline-3 !default;
+$pwa-guide-tab-item_font-weight: 700 !default;
+$pwa-guide-tab-item_padding-bottom: 1.6rem !default;
+
+$pwa-guide-tab-item-color: $color_text-900 !default;
+$pwa-guide-tab-item-active_color: $color_text-500 !default;
+$pwa-guide-tab-item_border-bottom: 2px solid transparent !default;
+$pwa-guide-tab-item-active_border-bottom: 2px solid
+    $pwa-guide-tab-item-active_color !default;
+
+$pwa-guide_header-height: $global_header-height-mobile +
+    $pwa-guide-tab-item_padding-bottom + $pwa-guide-tab-item_font-size !default;
+
+$pwa-guide-picture-background_color: $color_background-500 !default;
+$pwa-guide-picture-background_border-radius: $border-radius_base !default;
+$pwa-guide-picture_padding-offset: 3rem !default;
+$pwa-guide-picture-background_box-shadow: inset 0px -18px 15px -21px
+    rgba(0, 0, 0, 0.25) !default;
+
+$pwa-guide-headline-color: $color_text-800 !default;
+$pwa-guide-headline-counter_size: 5.6rem !default;
+$pwa-guide-headline-counter_color: $color_text-900 !default;
+$pwa-guide-headline-counter_background-color: $color_background-500 !default;
+$pwa-guide-headline-counter_font-size: $font-size_headline-3 !default;
+
+$pwa-guide-slogan_font-size: $font-size_headline-3 !default;
+$pwa-guide-description_color: $color_text-800 !default;
+$pwa-guide-description_font-size: $font-size_paragraph !default;
+$pwa-guide-description-installation_font-size: $pwa-guide-slogan_font-size !default;
+
+.#{$ns}pwa-guide {
+    &__desktop-cover {
+        display: none;
+
+        @include media('>=tablet') {
+            display: block;
+            position: absolute;
+            top: $global_header-height-mobile;
+            left: 0;
+            width: 100vw;
+            height: calc(100% - #{$global_header-height-mobile});
+            padding-top: 8rem;
+            font-size: $pwa-guide-slogan_font-size;
+            text-align: center;
+            background-color: $color_background-200;
+            z-index: 800;
+        }
+    }
+
+    &__tabs {
+        &-wrapper {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            color: $pwa-guide-tab-item-color;
+        }
+
+        &-item {
+            padding: 0 0 $pwa-guide-tab-item_padding-bottom;
+            font-size: $pwa-guide-tab-item_font-size;
+            text-transform: uppercase;
+            line-height: 1em;
+            font-weight: $pwa-guide-tab-item_font-weight;
+            color: $pwa-guide-tab-item-color;
+            border-bottom: $pwa-guide-tab-item_border-bottom;
+            transition: $pwa-guide_transition;
+
+            &:visited:hover,
+            &:hover {
+                color: inherit;
+            }
+
+            &__active,
+            &__active:hover,
+            &__active:active,
+            &__active:active:hover,
+            &__active:visited,
+            &__active:visited:hover {
+                color: $pwa-guide-tab-item-active_color;
+                border-bottom: $pwa-guide-tab-item-active_border-bottom;
+            }
+        }
+    }
+
+    &__content {
+        .#{$ns}image-teaser {
+            &__figure {
+                display: flex;
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+
+            &__picture-wrapper {
+                width: calc(100% - (2 * #{$page_edge-gutter}));
+
+                @include media('>=phoneLg') {
+                    width: 100%;
+                }
+
+                + .#{$ns}image-teaser__content-wrapper--over {
+                    position: static;
+                    padding: 2rem 2rem 3.2rem 2rem;
+
+                    @include media('>=phoneLg') {
+                        padding: 2rem 0 3.2rem 0;
+                    }
+                }
+            }
+
+            &__picture {
+                aspect-ratio: auto !important;
+                display: flex;
+                justify-content: center;
+                background: $pwa-guide-picture-background_color;
+                border-radius: $pwa-guide-picture-background_border-radius;
+                padding: 0 0 $pwa-guide-picture_padding-offset;
+                box-shadow: $pwa-guide-picture-background_box-shadow;
+            }
+
+            &__image {
+                max-width: 25rem;
+            }
+
+            &__slogan,
+            &__slogan small,
+            &__slogan big {
+                font-size: $pwa-guide-slogan_font-size;
+                line-height: 2.6rem;
+                color: $pwa-guide-headline-color;
+            }
+
+            &__description {
+                font-size: $pwa-guide-description_font-size;
+            }
+        }
+
+        &-installation {
+            .#{$ns}image-teaser__slide {
+                &:nth-last-child(-n + 2) {
+                    .#{$ns}image-teaser__picture {
+                        padding-top: $pwa-guide-picture_padding-offset;
+                    }
+                }
+            }
+
+            .#{$ns}image-teaser__slides {
+                counter-reset: headlines;
+            }
+
+            .#{$ns}image-teaser {
+                &__slogan {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    position: relative;
+                    align-items: center;
+
+                    &::before {
+                        counter-increment: headlines;
+                        content: counter(headlines);
+                        font-size: $pwa-guide-headline-counter_font-size;
+                        font-weight: 700;
+                        padding: 1rem;
+                        line-height: 110%;
+                        border-radius: 50%;
+                        color: $pwa-guide-headline-counter_color;
+                        background-color: $pwa-guide-headline-counter_background-color;
+                        width: $pwa-guide-headline-counter_size;
+                        height: $pwa-guide-headline-counter_size;
+                        margin-right: 1.4rem;
+                        text-align: center;
+                        flex: 1 0 auto;
+                    }
+                }
+
+                &__description {
+                    font-weight: 700;
+                    font-size: $pwa-guide-description-installation_font-size;
+                    margin-top: 0;
+                    color: $pwa-guide-headline-color;
+                }
+            }
+
+            &--android {
+                .#{$ns}image-teaser__slide {
+                    &:first-child {
+                        .#{$ns}image-teaser__picture {
+                            padding-top: $pwa-guide-picture_padding-offset;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        .#{$ns}image-teaser__picture {
+                            padding-top: $pwa-guide-picture_padding-offset;
+                            padding-bottom: 0;
+                            box-shadow: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        &-benefits {
+            .#{$ns}image-teaser {
+                &__figure {
+                    flex-direction: column;
+                }
+
+                &__picture-wrapper {
+                    width: 100%;
+
+                    @include media('>=phoneLg') {
+                        width: calc(100% + (2 * #{$page_edge-gutter}));
+                    }
+                }
+
+                &__picture {
+                    border-radius: 0;
+                    box-shadow: none;
+                    padding: 0;
+                }
+
+                &__slogan,
+                &__slogan small,
+                &__slogan big {
+                    font-size: 2.2rem;
+                }
+
+                &__description {
+                    color: $pwa-guide-description_color;
+                }
+
+                &__slide {
+                    &:first-child,
+                    &:nth-child(3) {
+                        .#{$ns}image-teaser__picture {
+                            padding: $pwa-guide-picture_padding-offset 0 0;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        .#{$ns}image-teaser__picture {
+                            padding: 1rem 0 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .#{$ns}headline__title {
+            font-size: 3rem;
+            color: $pwa-guide-headline-color;
+            letter-spacing: 0px;
+        }
+    }
+
+    &__footer-container {
+        @include media('>=tablet') {
+            display: none;
+        }
+    }
+
+    &-icon {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0 0.3rem;
+        margin: 0px 0.4rem;
+        height: 1.2em;
+        background-size: cover;
+
+        &__android {
+            background-image: url('../images/icons/pwa/icon_settings_android.svg');
+            width: 0.6rem;
+        }
+
+        &__ios {
+            background-image: url('../images/icons/pwa/icon_share_ios.svg');
+            width: 2.4rem;
+        }
+    }
+}
+
+.pwa-guide-landingpage {
+    .#{$ns}header {
+        height: $pwa-guide_header-height;
+
+        &__content {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            height: $pwa-guide_header-height;
+        }
+    }
+
+    .column.main {
+        padding-top: 3rem;
+
+        .#{$ns}container {
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
+    }
+}
+
+#benefits,
+#installation {
+    position: relative;
+    top: -$pwa-guide_header-height - 1.5; // 15px/1.5rem of additional offset
+    visibility: hidden;
+}
