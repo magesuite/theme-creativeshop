@@ -14,7 +14,7 @@
     $_product = $block->getProduct();
 ?>
 
-<?php if ($_product->isSaleable()): ?>
+<?php if ($_product->isSaleable() && !$_product->getHasAllChildrenNotSalable()): ?>
     <div class="box-tocart cs-buybox__addtocart <?= $block->getAdditionalCssClasses() ?>">
         <div class="cs-buybox__addtocart-fieldset">
             <?php if ($block->shouldRenderQuantity()): ?>
