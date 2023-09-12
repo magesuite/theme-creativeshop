@@ -281,7 +281,7 @@ export default class OffcanvasNavigation {
 
         if (!cacheInfo.url) {
             /* tslint:disable */
-            console.error(
+            console.warn(
                 `Main navigation is missing "data-mobile-endpoint-url" attribute, please make sure its template is up to date.`
             );
             /* tslint:enable */
