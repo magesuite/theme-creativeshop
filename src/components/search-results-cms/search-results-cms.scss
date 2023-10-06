@@ -9,7 +9,11 @@ $search-results-cms_icon-fill: $color_text-400 !default;
 $search-results-cms_title-color: $color_primary-500 !default;
 $search-results-cms_title-gutter: $page_edge-gutter !default;
 
+$search-results-cms_related-terms_flex-flow: row wrap !default;
+$search-results-cms_related-terms_flex-gap: 0.8rem 1.6rem !default;
 $search-results-cms_related-terms_title_headline-level: $font-size_headline-3 !default;
+$search-results-cms_related-terms_title_margin: 0 !default;
+$search-results-cms_related-terms_item_margin: 0 !default;
 
 .#{$ns}search-results-cms {
     $root: &;
@@ -44,9 +48,21 @@ $search-results-cms_related-terms_title_headline-level: $font-size_headline-3 !d
 }
 
 .catalogsearch-result-index {
+    dl.block {
+        display: flex;
+        flex-flow: $search-results-cms_related-terms_flex-flow;
+        gap: $search-results-cms_related-terms_flex-gap;
+    }
+
     dt.title {
         @include headline(
             $level: $search-results-cms_related-terms_title_headline-level
         );
+
+        margin: $search-results-cms_related-terms_title_margin;
+    }
+
+    dd.item {
+        margin: $search-results-cms_related-terms_item_margin;
     }
 }
