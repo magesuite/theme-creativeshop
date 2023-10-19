@@ -21,6 +21,18 @@ $viewModel = $block->getViewModel();
     $isCollapsibleMobile = $block->getIsCollapsibleMobile();
     $offcanvasMobileEnabled = $block->getVar('offcanvas_filters_enabled/mobile', 'Magento_Catalog');
     $offcanvasDesktopEnabled = $block->getVar('offcanvas_filters_enabled/desktop', 'Magento_Catalog');
+
+    $initialActiveFiltersAmount = count(json_decode($block->getActiveFilters()));
+    $isSortingInFilters = $block->getVar('toolbar/sorter/display', 'Magento_Catalog') && $block->getVar('toolbar/sorter/display_area', 'Magento_Catalog') == 'filters';
+    $isSortingActive = false;
+
+    if ($isSortingInFilters && $initialActiveFiltersAmount > 0) {
+        $isSortingActive = true;
+        $activeFiltersAmount = $initialActiveFiltersAmount - 1;
+    } else {
+        $activeFiltersAmount = $initialActiveFiltersAmount;
+    }
+
 ?>
     <?php if (!empty($filters)): ?>
         <?php if ($offcanvasMobileEnabled || $offcanvasDesktopEnabled): ?>
@@ -54,15 +66,15 @@ $viewModel = $block->getViewModel();
                     data-role="content"
                     data-mage-init='{ "accordion": { "openedState": "active", "collapsible": true, "active": <?= $openedFilters; ?>, "multipleCollapsible": <?= $isFiltersLayoutHorizontal ? 'false' : 'true' ?> } }'
                 >
-                <?php if ($block->getVar('toolbar/sorter/display', 'Magento_Catalog') && $block->getVar('toolbar/sorter/display_area', 'Magento_Catalog') == 'filters'): ?>
+                <?php if ($isSortingInFilters): ?>
                     <li
                         data-role="collapsible"
-                        class="cs-aftersearch-nav__filter cs-aftersearch-nav__filter--sorter filter-options-item"
+                        class="cs-aftersearch-nav__filter cs-aftersearch-nav__filter--sorter filter-options-item<?= $isSortingActive ? ' filter-attribute-active' : ''; ?>"
                     >
                         <?= $block->getChildHtml('sorter'); ?>
                     </li>
                 <?php endif; ?>
-                <?php foreach ($filters as $filter):
+                <?php foreach ($filters as $key=>$filter):
                     $filterIsChecked = in_array($filter->getRequestVar(), $selectedRequestVars);
                     $filterDisplaySearchbox = true;
                     $filterAttributeClass = '';
@@ -78,6 +90,10 @@ $viewModel = $block->getViewModel();
 
                     if ($isCategoryFilterHidden && $filterAttributeClass == $categoryFilterName) {
                         continue;
+                    }
+
+                    if ($key + 1 <= $activeFiltersAmount) {
+                        $filterAttributeClass = $filterAttributeClass . ' filter-attribute-active';
                     }
                 ?>
                     <li
