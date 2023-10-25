@@ -1,67 +1,41 @@
 import * as $ from 'jquery';
-
+import deepGet from 'utils/deep-get/deep-get';
+import viewXml from 'etc/view';
 import Dailydeal from 'components/dailydeal/dailydeal';
 import 'components/dailydeal/dailydeal.scss';
 
-const ns: string = 'cs-';
-
 /**
- * Dailydeal component initialization
+ * Dailydeal component initialization for static elements: Product Tiles, Product Tile-Teaser and PDP
  */
-
-// PDP sale block
 setTimeout(() => {
-    new Dailydeal($(`.product-info-main .${ns}dailydeal`), {
-        namespace: ns,
-        updateLabels: true,
+    $(`
+        .cs-dailydeal--tile,
+        .cs-dailydeal--tile-teaser,
+        .product-info-main .cs-dailydeal
+    `).each((i, ddElement) => {
+        new Dailydeal($(ddElement));
     });
 });
 
-// Carousels, categories, grids and Product teaser
-$(`.${ns}dailydeal--tile, .${ns}dailydeal--tile-teaser`).each(
-    function (): void {
+/**
+ * Some components using product tiles are rendered dinamically.
+ * In order to initialise daily deal feature properly, the initialization must take place on contentUpdated event
+ * triggered on these containers. Selectors List is defined and extensible in view.xml.
+ */
+const dynamicContainers = Object.values(
+    deepGet(viewXml, 'vars.MageSuite_DailyDeal.dynamic_containers')
+);
+
+$(dynamicContainers).each((i, container) => {
+    $('body').on('contentUpdated', container, function () {
         setTimeout(() => {
-            new Dailydeal($(this), {
-                namespace: ns,
-                updateLabels: true,
-            });
-        });
-    }
-);
-
-// Multiple carousels are rendered dinamically.
-// In order to initialise daily deal feature properly, the initialization must take place after contentUpdated event
-
-const minicartCarousel = '.cs-minicart__carousel'; // mgs carousel
-const visitorRecommender = '[id^="elasticsuite-recommender-container"]'; // elastic widget
-const comparedProductsarousel = '.widget.block-compared-products-grid'; // elastic widget
-const viewedProductsarousel = '.admin__data-grid-outer-wrap'; // magento widget
-const crosssellProductscarousel = '.block.products-crosssell'; // elastic widget
-const carouselsRenderedDynamically: any = [];
-
-carouselsRenderedDynamically.push(
-    minicartCarousel,
-    visitorRecommender,
-    comparedProductsarousel,
-    viewedProductsarousel,
-    crosssellProductscarousel
-);
-
-$(carouselsRenderedDynamically).each(function (i, element) {
-    if ($(element).length) {
-        $(element).on('contentUpdated', function () {
-            $(element)
-                .find(`.${ns}dailydeal--tile`)
-                .each(function (): void {
-                    setTimeout(() => {
-                        new Dailydeal($(this), {
-                            namespace: ns,
-                            updateLabels: true,
-                        });
-                    });
+            $(this)
+                .find(`.cs-dailydeal--tile`)
+                .each((i, ddElement) => {
+                    new Dailydeal($(ddElement));
                 });
         });
-    }
+    });
 });
 
 export { Dailydeal };
