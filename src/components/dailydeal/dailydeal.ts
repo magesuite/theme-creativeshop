@@ -256,7 +256,7 @@ export default class Dailydeal {
             second: 'Sec',
             seconds: 'Sec',
         },
-        updateLabels: false,
+        updateLabels: true,
     };
 
     /**
