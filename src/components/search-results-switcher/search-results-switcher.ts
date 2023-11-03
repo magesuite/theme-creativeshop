@@ -241,14 +241,14 @@ export default class SearchresultsSwitcher {
                     `a[href="${sectionName}"]`
                 );
 
+                this._$component.show();
                 if ($trigger.length) {
                     this.openTab($trigger);
                 }
             } else {
+                this._$component.show();
                 this.showContents();
             }
-
-            this._$component.show();
         }
     }
 
