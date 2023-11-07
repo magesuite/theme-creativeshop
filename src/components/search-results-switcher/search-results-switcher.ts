@@ -229,6 +229,7 @@ export default class SearchresultsSwitcher {
         } else {
             this._setResultsCount();
             this._setEvents();
+            this._$component.show();
 
             if (
                 this._options.saveStateInSession &&
@@ -241,12 +242,10 @@ export default class SearchresultsSwitcher {
                     `a[href="${sectionName}"]`
                 );
 
-                this._$component.show();
                 if ($trigger.length) {
                     this.openTab($trigger);
                 }
             } else {
-                this._$component.show();
                 this.showContents();
             }
         }
