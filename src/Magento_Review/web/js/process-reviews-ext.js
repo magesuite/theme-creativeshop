@@ -155,10 +155,14 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
                     $addReviewLinks.on('click', function (e) {
                         e.preventDefault();
 
-                        reviewsSection.scrollIntoView({
+                        window.scrollTo({
+                            top:
+                                reviewsSection.getBoundingClientRect().top +
+                                window.scrollY -
+                                90,
                             behavior: 'smooth',
-                            block: 'start',
                         });
+
                         if (
                             $collapsibleTrigger.attr('aria-expanded') ===
                             'false'
