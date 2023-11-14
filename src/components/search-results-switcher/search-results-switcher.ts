@@ -230,7 +230,7 @@ export default class SearchresultsSwitcher {
             this._setResultsCount();
             this._setEvents();
             this._$component.show();
-            
+
             if (
                 this._options.saveStateInSession &&
                 sessionStorage.getItem('searchresultsSwitcher')
