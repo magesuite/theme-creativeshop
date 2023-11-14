@@ -229,7 +229,8 @@ export default class SearchresultsSwitcher {
         } else {
             this._setResultsCount();
             this._setEvents();
-
+            this._$component.show();
+            
             if (
                 this._options.saveStateInSession &&
                 sessionStorage.getItem('searchresultsSwitcher')
@@ -247,8 +248,6 @@ export default class SearchresultsSwitcher {
             } else {
                 this.showContents();
             }
-
-            this._$component.show();
         }
     }
 
