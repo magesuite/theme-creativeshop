@@ -18,7 +18,7 @@ define([
                 if (!$.mage.cookies.get(this.options.cookieName)) {
                     this.element.show();
                 }
-                
+
                 $(this.options.cookieAllowButtonSelector).on('click', $.proxy(function () {
                     const cookieExpires = new Date(new Date().getTime() + this.options.cookieLifetime * 1000);
 
