@@ -149,6 +149,9 @@ var config = {
             'Magento_Customer/js/change-email-password': {
                 'Magento_Customer/js/change-email-password-ext': true,
             },
+            'Magento_Cookie/js/notices': {
+                'Magento_Cookie/js/notices-ext': true,
+            },
         },
     },
 };
