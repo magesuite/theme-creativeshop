@@ -16,15 +16,18 @@ define([
             listenFormValidateHandler: function (event, validation) {
                 this._super(event, validation);
 
+                // Skip for Bundle or Giftcard products
+                if (
+                    document.body.classList.contains('page-product-bundle') ||
+                    document.body.classList.contains('page-product-giftcard')
+                ) {
+                    return;
+                }
+
                 var $form = $(this);
 
                 // Skip for other than addtocart form
                 if ($form.prop('id') !== 'product_addtocart_form') {
-                    return;
-                }
-
-                // Skip for Bundle products
-                if (document.body.classList.contains('page-product-bundle')) {
                     return;
                 }
 
