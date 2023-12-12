@@ -79,16 +79,18 @@ $stack-nav_delimiter-disabled: false !default;
     }
 
     &__nav {
-        @include media('<tablet') {
-            display: none;
+        &--collapsible {
+            @include media('<tablet') {
+                display: none;
 
-            #{$root}__trigger[aria-expanded='true'] & {
+                #{$root}__trigger[aria-expanded='true'] & {
+                    display: block;
+                }
+            }
+
+            @include media('>=tablet') {
                 display: block;
             }
-        }
-
-        @include media('>=tablet') {
-            display: block;
         }
 
         #{$root}__list li {
