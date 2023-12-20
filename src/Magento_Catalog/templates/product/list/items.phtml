@@ -3,6 +3,7 @@
  * Template overridden to:
  * - get rid of hardcoded products template -> use Content Constructor Products Carousel instead
  * - change headline wordings
+ * - allow to change headline tag with xml
  *
  * Aligned with Magento 2.4.5 at 09/2022
  */
@@ -11,6 +12,8 @@
 ?>
 
 <?php
+$headlineTag = $block->getHeadlineTag() ?? 'h1';
+
 switch ($type = $block->getType()) {
 
     case 'related-rule':
@@ -186,7 +189,8 @@ switch ($type = $block->getType()) {
                     'section' => 'content',
                     'type' => 'headline',
                     'data' => [
-                        'title' => $title
+                        'title' => $title,
+                        'tag' => $headlineTag
                     ]
                 ],
             ]
