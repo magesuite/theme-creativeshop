@@ -19,7 +19,10 @@ define([
                 // Skip for Bundle or Giftcard products
                 if (
                     document.body.classList.contains('page-product-bundle') ||
-                    document.body.classList.contains('page-product-giftcard')
+                    document.body.classList.contains('page-product-giftcard') ||
+                    document.body.classList.contains(
+                        'page-product--no-missing-swatches-modal'
+                    )
                 ) {
                     return;
                 }
