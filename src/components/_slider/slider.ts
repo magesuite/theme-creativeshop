@@ -242,7 +242,7 @@ export default class Slider {
                 itemsPerView: this.currentItemsPerView,
                 navInstance: this.navigation,
                 pauseNode: this._instanceNode.querySelector(
-                    '.cs-image-teaser__slides-wrapper'
+                    this.options.slidesWrapperSelector
                 ),
                 delay: 6000,
             },
