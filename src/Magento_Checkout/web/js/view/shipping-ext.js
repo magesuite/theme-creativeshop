@@ -1,7 +1,12 @@
 /**
  * Provide additional methods to shipping step
  */
-define(['jquery', 'uiRegistry', 'knockout'], function ($, registry, ko) {
+define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
+    $,
+    registry,
+    ko,
+    $t
+) {
     'use strict';
 
     return function (Shipping) {
@@ -35,6 +40,33 @@ define(['jquery', 'uiRegistry', 'knockout'], function ($, registry, ko) {
                     .addClass('cs-form--disabled')
                     .find('input, select, button')
                     .attr('disabled', 'disabled');
+            },
+            validateShippingInformation: function () {
+                const $customerTab = $('#tab-customer');
+                const isLoginTabVisible = $customerTab.is(':visible');
+
+                if (isLoginTabVisible) {
+                    registry.get(
+                        'checkout.steps.shipping-step.shippingAddress.authentication-tab.errors',
+                        (messagesInstance) => {
+                            if (messagesInstance?.messageContainer) {
+                                messagesInstance.messageContainer.addErrorMessage(
+                                    {
+                                        message: $t(
+                                            'Please log in to continue.'
+                                        ),
+                                    }
+                                );
+                            }
+                        }
+                    );
+
+                    $customerTab.get(0).scrollIntoView({ behavior: 'smooth' });
+
+                    return false;
+                }
+
+                return this._super();
             },
         });
     };
