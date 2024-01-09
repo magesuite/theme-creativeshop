@@ -4,27 +4,86 @@
  * Aligned with Magento 2.4.6 at 04/2023
  */
 ?>
-<div data-bind="scope: 'messages'" class="cs-messages">
-    <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
-    <div aria-atomic="true" role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages cs-messages__inner">
-        <div data-bind="attr: {
-            class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type,
-            'data-ui-id': 'message-' + message.type
-        }">
-            <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
+<?php
+    $hasCloseButton = $block->getVar('global_messages/has_close_button', 'Magento_Theme')
+?>
+<div data-bind="scope: 'messages'">
+    <div data-bind="attr: {
+    class: (cookieMessages && cookieMessages.length > 0) || (messages().messages && messages().messages.length > 0)
+        ? 'cs-messages cs-messages--active'
+        : 'cs-messages'
+    }">
+        <!-- ko if: cookieMessages && cookieMessages.length > 0 -->
+        <div aria-atomic="true" role="alert" data-bind="foreach: { data: cookieMessages, as: 'message' }" class="messages cs-messages__inner">
+            <div data-bind="attr: {
+                class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type + ' cs-messages__message--cm-idx-' + $index(),
+                'data-ui-id': 'message-' + message.type
+                }
+                <?php if ($hasCloseButton): ?>
+                ,
+                afterRender: function() {
+                    if (message.type === 'success') {
+                        setTimeout(function() {
+                            $element.querySelector('.cs-messages__close').click();
+                        }, 5000);
+                    }
+                }
+                <?php endif; ?>
+                ">
+                <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
+                <?php if ($hasCloseButton): ?>
+                    <button type="button" class="action small cs-messages__close" data-bind="
+                        click: function() {
+                            document.querySelector('.cs-messages__message--cm-idx-'+$index()).classList.add('cs-messages__message--read');
+                            if (document.querySelectorAll('.page.messages .cs-messages__message:not(.cs-messages__message--read)').length === 0) {
+                                setTimeout(function() {
+                                    document.querySelector('.cs-messages').classList.remove('cs-messages--active');
+                                }, 550);
+                            }
+                        }"
+                    >
+                        <span class="cs-messages__close-span"><?= __('Close'); ?></span>
+                    </button>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
-    <!-- /ko -->
-    <!-- ko if: messages().messages && messages().messages.length > 0 -->
-    <div aria-atomic="true" role="alert" data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages cs-messages__inner">
-        <div data-bind="attr: {
-            class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type,
-            'data-ui-id': 'message-' + message.type
-        }">
-            <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
+        <!-- /ko -->
+        <!-- ko if: messages().messages && messages().messages.length > 0 -->
+        <div aria-atomic="true" role="alert" data-bind="foreach: { data: messages().messages, as: 'message' }" class="messages cs-messages__inner">
+            <div data-bind="attr: {
+                class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type + ' cs-messages__message--cm-idx-' + $index(),
+                'data-ui-id': 'message-' + message.type
+                }
+                <?php if ($hasCloseButton): ?>
+                ,
+                afterRender: function() {
+                    if (message.type === 'success') {
+                        setTimeout(function() {
+                            $element.querySelector('.cs-messages__close').click();
+                        }, 5000);
+                    }
+                }
+                <?php endif; ?>
+                ">
+                <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
+                <?php if ($hasCloseButton): ?>
+                    <button type="button" class="action small cs-messages__close" data-bind="
+                        click: function() {
+                            document.querySelector('.cs-messages__message--cm-idx-'+$index()).classList.add('cs-messages__message--read');
+                            if (document.querySelectorAll('.page.messages .cs-messages__message:not(.cs-messages__message--read)').length === 0) {
+                                setTimeout(function() {
+                                    document.querySelector('.cs-messages').classList.remove('cs-messages--active');
+                                }, 550);
+                            }
+                        }"
+                    >
+                        <span class="cs-messages__close-span"><?= __('Close'); ?></span>
+                    </button>
+                <?php endif; ?>
+            </div>
         </div>
+        <!-- /ko -->
     </div>
-    <!-- /ko -->
 </div>
 <script type="text/x-magento-init">
     {

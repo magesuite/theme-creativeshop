@@ -1,5 +1,9 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'utils/deep-get/deep-get.scss';
+@import 'components/button/mixin';
+@import 'utils/visually-hidden';
+@import 'components/pseudoicon/mixin';
 
 $messages_success-background-color: $color_success-200 !default;
 $messages_info-background-color: $color_warning-200 !default;
@@ -17,6 +21,25 @@ $messages_text-color: $color_text-500 !default;
 $message_icon-width: 2rem !default;
 $message_icon-height: $message_icon-width !default;
 
+$message_close-button-width: 1.2rem !default;
+$message_close-button-height: $message_close-button-width !default;
+
+$messages_is-fixed: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    global_messages,
+    is_fixed
+) !default;
+
+$messages_has-close-button: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    global_messages,
+    has_close_button
+) !default;
+
 .messages {
     max-width: $page_max-width;
     margin: 0 auto;
@@ -31,6 +54,11 @@ $message_icon-height: $message_icon-width !default;
     background-position: 1.2rem center;
     background-size: $message_icon-width $message_icon-height;
     padding-left: 4.3rem;
+
+    @if ($messages_has-close-button) {
+        padding-right: 4.5rem;
+        position: relative;
+    }
 }
 
 .#{$ns}messages__message--success,
@@ -73,5 +101,47 @@ $message_icon-height: $message_icon-width !default;
 
     &--space-top {
         margin-top: 1.5rem;
+    }
+
+    @if ($messages_is-fixed) {
+        .page.messages & {
+            position: fixed;
+            bottom: 1rem;
+            left: 2rem;
+            width: 0;
+            max-width: min(calc(100vw - 4rem), 50rem);
+            z-index: -4;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        &--active,
+        &[data-role='checkout-messages'] {
+            opacity: 1 !important;
+            width: 100% !important;
+            z-index: 999999 !important;
+            overflow: visible !important;
+        }
+    }
+
+    @if ($messages_has-close-button) {
+        &__close {
+            width: $message_close-button-width;
+            height: $message_close-button-height;
+            border: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%) rotate(90deg);
+            background: transparent url('../images/icons/close.svg') no-repeat;
+            background-size: contain;
+            cursor: pointer;
+
+            &-span {
+                @include visually-hidden;
+            }
+        }
     }
 }
