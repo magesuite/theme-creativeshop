@@ -90,6 +90,7 @@ import 'components/separator/separator.scss';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/authentication-modal';
 // import 'components/page-scroll';
 // import 'components/password-strength-meter';
 // import 'components/product-tile-list';

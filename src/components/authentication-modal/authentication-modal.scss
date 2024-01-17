@@ -1,0 +1,117 @@
+/**
+ * Authentication modal appearance.
+ * It's visible if customer clicks proceed to checkout button and is not logged in when downloadables are in cart.
+ */
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/dashboard/dashboard';
+
+$popup-authentication_modal-max-width: 100rem;
+
+$popup-authentication_blocks-spaces: $dashboard_space-between-boxes;
+$popup-authentication_blocks-separator: $dashboard_login-sections-separator;
+
+$popup-authentication_headline-border: $dashboard_headline-border;
+$popup-authentication_headline-margin-bottom: $dashboard_headline-margin-bottom;
+$popup-authentication_headline-padding-bottom: $dashboard_headline-padding-bottom;
+$popup-authentication_headline-font-weight: $dashboard_headline-font-weight;
+$popup-authentication_headline-font-size: $dashboard_headline-font-size;
+$popup-authentication_hide-titles-separators: $dashboard_hide-titles-separators;
+
+$popup-authentication_login-button-type: $button_default-type;
+$popup-authentication_login-button-icon-pos: 'no-icon';
+
+$popup-authentication_register-button-type: $button_default-type;
+$popup-authentication_register-button-icon-pos: 'no-icon';
+
+.popup-authentication {
+    .modal-inner-wrap {
+        max-width: $popup-authentication_modal-max-width;
+    }
+
+    .block-authentication {
+        display: flex;
+        flex-flow: column;
+
+        @include media('>=tablet') {
+            flex-flow: row;
+        }
+
+        .block {
+            flex: 1 1 100%;
+        }
+    }
+
+    .block-customer-login {
+        order: -1;
+        margin-bottom: #{2 * $popup-authentication_blocks-spaces};
+
+        @include media('>=tablet') {
+            margin-bottom: 0;
+            padding-right: $popup-authentication_blocks-spaces;
+
+            @if ($popup-authentication_blocks-separator != false) {
+                border-right: $popup-authentication_blocks-separator;
+            }
+        }
+    }
+
+    .block-new-customer {
+        @include media('>=tablet') {
+            padding-left: $popup-authentication_blocks-spaces;
+        }
+    }
+
+    .block-title {
+        border-bottom: $popup-authentication_headline-border;
+        margin-bottom: $popup-authentication_headline-margin-bottom;
+        padding-bottom: $popup-authentication_headline-padding-bottom;
+        font-weight: $popup-authentication_headline-font-weight;
+        font-size: $popup-authentication_headline-font-size;
+        width: 100%;
+
+        @if ($popup-authentication_hide-titles-separators == true) {
+            border-bottom: none;
+        }
+
+        strong {
+            font-weight: inherit;
+        }
+    }
+
+    .actions-toolbar {
+        margin-top: 1em;
+    }
+
+    .action-login {
+        @include button(
+            $type: $popup-authentication_login-button-type,
+            $icon_pos: $popup-authentication_login-button-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $popup-authentication_login-button-type,
+                $icon_pos: $popup-authentication_login-button-icon-pos
+            );
+        }
+    }
+
+    .action-register {
+        @include button(
+            $type: $popup-authentication_register-button-type,
+            $icon_pos: $popup-authentication_register-button-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $popup-authentication_register-button-type,
+                $icon_pos: $popup-authentication_register-button-icon-pos
+            );
+        }
+    }
+
+    .secondary {
+        margin-top: 0.7rem;
+    }
+}

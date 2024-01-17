@@ -92,6 +92,7 @@ import 'components/toolbar';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/authentication-modal';
 // import 'components/page-scroll';
 // import 'components/product-details/attachments';
 // import 'components/product-tile-list';

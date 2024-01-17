@@ -67,6 +67,7 @@ import 'components/separator/separator.scss';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/authentication-modal';
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
 // import 'components/tile-gallery';
