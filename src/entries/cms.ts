@@ -55,6 +55,7 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/video-teaser';
 import 'components/visually-hidden';
+import 'components/redirect-progress-bar';
 
 /**
  * Content Constructor components styles included in bundles

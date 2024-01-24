@@ -1,0 +1,92 @@
+// Component to show fixed progress bar on top of the page during page redirect.
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$redirect-progress-bar_enabled: deep-get(
+    $view-xml,
+    vars,
+    Magento_Theme,
+    redirect_progress_bar,
+    enabled
+) !default;
+$redirect-progress-bar_color-background: $color_white !default; // used for shadow and background
+$redirect-progress-bar_color-main: $color_success-500 !default; // used for progress bar
+$redirect-progress-bar_color-error: $color_error-500 !default; // used for blinking animation
+$redirect-progress-bar_height: 6px !default;
+
+// Redirect progress bar shown with JS on the onbeforeunload event.
+// It is animated in 4 steps:
+// 1. From 0% to 50% width within first 300ms
+// 2. From 50% to 90% width within next 1500ms with logarithmic easing
+// 3. From 90% to 100% width within next 10000ms with linear easing
+// 4. At the end - blinking "error" animation to indicate loading issue
+
+@if ($redirect-progress-bar_enabled) {
+    .cs-redirect-progress-bar {
+        display: none;
+
+        @include media('>=laptop') {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            font-size: 0;
+            height: $redirect-progress-bar_height;
+            background-color: $redirect-progress-bar_color-main;
+            box-shadow: inset -80px 0px 38px -70px
+                $redirect-progress-bar_color-background;
+            animation: redirectProgressAnimationStep1 300ms linear forwards,
+                redirectProgressAnimationStep2 1500ms cubic-bezier(0.8, 1, 1, 1)
+                    300ms forwards,
+                redirectProgressAnimationStep3 10000ms linear 1800ms forwards,
+                redirectProgressAnimationStep4 1000ms ease-in-out 11800ms
+                    infinite;
+            z-index: 9999999;
+            transform: scaleX(0);
+            transform-origin: left;
+        }
+    }
+
+    @keyframes redirectProgressAnimationStep1 {
+        0% {
+            transform: scaleX(0);
+        }
+        100% {
+            transform: scaleX(0.5);
+        }
+    }
+
+    @keyframes redirectProgressAnimationStep2 {
+        0% {
+            transform: scaleX(0.5);
+        }
+        100% {
+            transform: scaleX(0.9);
+        }
+    }
+
+    @keyframes redirectProgressAnimationStep3 {
+        0% {
+            transform: scaleX(0.9);
+        }
+        100% {
+            transform: scaleX(1);
+        }
+    }
+
+    // Blinking animation
+    @keyframes redirectProgressAnimationStep4 {
+        0% {
+            background-color: $redirect-progress-bar_color-error;
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.4;
+        }
+        100% {
+            background-color: $redirect-progress-bar_color-error;
+            opacity: 1;
+        }
+    }
+}
