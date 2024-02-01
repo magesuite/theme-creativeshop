@@ -8,10 +8,17 @@
             document.body.prepend(progressElement);
         });
 
-        // Remove indicator after 40 seconds
+        // Remove indicator after 30 seconds
         setTimeout(() => {
             progressElement.remove();
-        }, 40000);
+        }, 30000);
+
+        // Remove the element when the page is hidden (handle back/forward cache)
+        window.addEventListener('pagehide', function() {
+            if (progressElement) {
+                progressElement.remove();
+            }
+        });
 
         return null;
     };
