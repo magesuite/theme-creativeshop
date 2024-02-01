@@ -58,6 +58,7 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/video-teaser';
 import 'components/visually-hidden';
+import 'components/redirect-progress-bar';
 
 /**
  * Checkout specific components
@@ -90,6 +91,7 @@ import 'components/separator/separator.scss';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/authentication-modal';
 // import 'components/page-scroll';
 // import 'components/password-strength-meter';
 // import 'components/product-tile-list';

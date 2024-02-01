@@ -55,6 +55,7 @@ import 'components/topbar';
 import 'components/typography';
 import 'components/video-teaser';
 import 'components/visually-hidden';
+import 'components/redirect-progress-bar';
 
 /**
  * Content Constructor components styles included in bundles
@@ -67,6 +68,7 @@ import 'components/separator/separator.scss';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/authentication-modal';
 // import 'components/page-scroll';
 // import 'components/product-tile-list';
 // import 'components/tile-gallery';
