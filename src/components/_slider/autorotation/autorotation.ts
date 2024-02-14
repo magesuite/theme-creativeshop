@@ -51,6 +51,10 @@ export default class SliderAutorotation {
         this._attachEvents();
     }
 
+    public destroy(): void {
+        this._detachEvents();
+    }
+
     /**
      * Instrues navigation instance to switch slide to the next one,
      * as long as root component instance wasn't interacted manually,
