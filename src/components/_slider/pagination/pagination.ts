@@ -43,6 +43,14 @@ export default class SliderPagination {
     }
 
     /**
+     * Destroys component's instance
+     */
+    public destroy(): void {
+        this._bullets = null;
+        this._paginationWrapper.innerHTML = '';
+    }
+
+    /**
      * Updates state of the component. Deselectes all bullets and selects current on, or, in case of fraction pagination - replaces old current index with the new one
      * @param newIndex new index of the bullet
      */

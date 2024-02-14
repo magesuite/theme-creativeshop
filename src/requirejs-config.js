@@ -16,6 +16,7 @@ var config = {
         mgsSalebarWidget: 'js/salebar-widget',
         mgsOffcanvas: 'js/offcanvas',
         mgsInstantProductFinder: 'js/instant-product-finder',
+        mgsSlider: 'js/slider',
     },
     shim: {
         'mage/dataPost': ['js/uenc-updater'],

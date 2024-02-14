@@ -90,6 +90,17 @@ export default class SliderNavigation {
         this._togglePrevButtonLock();
     }
 
+    public destroy(): void {
+        this._prevTrigger?.removeEventListener(
+            'click',
+            this._handleSlideToPrev
+        );
+        this._nextTrigger?.removeEventListener(
+            'click',
+            this._handleSlideToNext
+        );
+    }
+
     /**
      * Exposes method for parent component to update itemsPerView whenever it's needed (f.e. breakpoint changes)
      * @param itemsPerView {number} new itemx per view value

@@ -63,6 +63,8 @@ export default class Slider {
             this._initPagination();
         }
 
+        this._breakpointChangeHandler =
+            this._breakpointChangeHandler.bind(this);
         this._watchBreakpointChanges();
     }
 
@@ -84,6 +86,20 @@ export default class Slider {
     public setCurrentItemsPerView(itemsPerView: number): void {
         this.currentItemsPerView = itemsPerView;
         this.rebuild();
+    }
+
+    /**
+     * Destroys module and all children modules
+     */
+    public destroy(): void {
+        this.observer.disconnect();
+        this.navigation?.destroy();
+        this.pagination?.destroy();
+        this.autorotation?.destroy();
+        document.removeEventListener(
+            'breakpointChange',
+            this._breakpointChangeHandler
+        );
     }
 
     /**
@@ -306,27 +322,29 @@ export default class Slider {
     protected _watchBreakpointChanges(): void {
         document.addEventListener(
             'breakpointChange',
-            (e: CustomEvent): void => {
-                const newItemsPerView: number = this._getCurrentItemsPerView(
-                    e.detail?.breakpoint
-                );
-
-                if (this.currentItemsPerView !== newItemsPerView) {
-                    this.currentItemsPerView = newItemsPerView;
-
-                    this.rebuild();
-                }
-
-                if (
-                    this.options.useAutorotation &&
-                    this._checkTouch() &&
-                    this._instanceNode.offsetParent != null &&
-                    !this.autorotation
-                ) {
-                    this._initAutorotation();
-                }
-            },
+            this._breakpointChangeHandler,
             false
         );
+    }
+
+    protected _breakpointChangeHandler(e: CustomEvent): void {
+        const newItemsPerView: number = this._getCurrentItemsPerView(
+            e.detail?.breakpoint
+        );
+
+        if (this.currentItemsPerView !== newItemsPerView) {
+            this.currentItemsPerView = newItemsPerView;
+
+            this.rebuild();
+        }
+
+        if (
+            this.options.useAutorotation &&
+            this._checkTouch() &&
+            this._instanceNode.offsetParent != null &&
+            !this.autorotation
+        ) {
+            this._initAutorotation();
+        }
     }
 }
