@@ -413,7 +413,9 @@ export default class SlideGallery {
                     if (this._fullscreenVisible) {
                         if (
                             !this._zoomVisible ||
-                            (this._zoomVisible && this._defaultOptions.zoom3Steps && this._zoomStep < 3)
+                            (this._zoomVisible &&
+                                this._defaultOptions.zoom3Steps &&
+                                this._zoomStep < 3)
                         ) {
                             this._zoom(e);
                         } else if (this._zoomVisible) {
@@ -509,6 +511,10 @@ export default class SlideGallery {
 
             this._$component.trigger('gallery:reloaded');
             this._toggleLoader(false);
+            $(this._$component).attr(
+                'data-item-count',
+                this._currentImages.length
+            );
         });
     }
 
