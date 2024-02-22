@@ -37,7 +37,8 @@ define(['jquery'], function ($) {
             _canAppplyNoScroll: function () {
                 return !(
                     $('.minicart-offcanvas-open').length ||
-                    $('.navigation-offcanvas-open').length
+                    $('.navigation-offcanvas-open').length ||
+                    this._getVisibleCount()
                 );
             },
         });
