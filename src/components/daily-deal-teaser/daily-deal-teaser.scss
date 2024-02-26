@@ -82,6 +82,8 @@ $daily-deal-teaser_price-final-font-size: 2.2rem !default;
 
 $daily-deal-teaser_addtocart-button-type: $button_default-type !default;
 $daily-deal-teaser_addtocart-button-icon-pos: $button_default-icon-pos !default;
+$daily-deal-teaser_addtocart-product-link-button-type: $daily-deal-teaser_addtocart-button-type !default;
+$daily-deal-teaser_addtocart-product-link-button-icon-pos: 'no-icon' !default;
 $daily-deal-teaser_addtocart-margin-top: 1.5rem !default;
 $daily-deal-teaser_addtocart-min-width-mobile: 20rem !default;
 $daily-deal-teaser_addtocart-min-width: 17rem !default;
@@ -322,6 +324,35 @@ $daily-deal-teaser_product-dd-counter-min-height: $daily-deal-teaser_addtocart-m
 
         @include media('>=laptopLg') {
             padding-left: $daily-deal-teaser_sections-gutter-tablet-up;
+        }
+    }
+
+    &__product-link-button {
+        @include button(
+            $type: $daily-deal-teaser_addtocart-product-link-button-type,
+            $icon_pos: $daily-deal-teaser_addtocart-product-link-button-icon-pos
+        );
+
+        width: 100%;
+
+        @include media('>=tablet') {
+            width: auto;
+        }
+
+        &-span {
+            @include button_span(
+                $type: $daily-deal-teaser_addtocart-product-link-button-type,
+                $icon_pos:
+                    $daily-deal-teaser_addtocart-product-link-button-icon-pos
+            );
+        }
+
+        &-icon {
+            @include button_icon(
+                $type: $daily-deal-teaser_addtocart-product-link-button-type,
+                $icon_pos:
+                    $daily-deal-teaser_addtocart-product-link-button-icon-pos
+            );
         }
     }
 

@@ -4,7 +4,7 @@ import 'mage/translate';
 /**
  * Daily Deal component options interface.
  */
-interface DailydealOptions {
+export interface DailydealOptions {
     /**
      * Component's namespace
      * @type {string}
