@@ -77,6 +77,13 @@ $minicart-offcanvas-carousel_item-per-row: deep-get(
     columnsConfig
 ) !default;
 
+$minicart_message-type: deep-get(
+    $view-xml,
+    vars,
+    Magento_Checkout,
+    minicart_messages
+) !default;
+
 $minicart-offcanvas-carousel_mobile-gap: 0.8rem !default;
 $minicart-offcanvas-carousel_desktop-gap: 0.8rem !default;
 $minicart-offcanvas-carousel_next-slide-visible: 0.8rem !default;
@@ -404,6 +411,17 @@ $minicart_button-carousel-icon-pos: $button_default-icon-pos !default;
 
     &__messages {
         padding: 0 2rem;
+
+        @if ($minicart_message-type == 'hidden') {
+            display: none !important;
+        }
+
+        @if ($minicart_message-type == 'fixed') {
+            position: fixed;
+            top: 4rem;
+            left: 0;
+            z-index: 9999;
+        }
     }
 
     &-offcanvas__wrapper {
