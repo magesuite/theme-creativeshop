@@ -48,6 +48,7 @@ define(['jquery', 'mage/translate'], function ($, $t) {
              * Magento overwrite
              * - We don't want to show oldPrice and style it as special price at all times
              * - Show oldPrice and toggle special-price class only if product is discounted and all options are selected
+             * - products with active DailyDeal are excluded from special-price toggle
              * - showOldPrice is an option
              *
              * MageSuite feature
@@ -72,6 +73,9 @@ define(['jquery', 'mage/translate'], function ($, $t) {
                 var isDiscounted =
                     typeof result !== 'undefined' &&
                     result.oldPrice.amount !== result.finalPrice.amount;
+                var isDDActive = $product
+                    .find('.product-info-price')
+                    .hasClass('cs-price--pdp_dailydeal-countdown');
 
                 $product
                     .find(this.options.slyOldPriceSelector)
@@ -85,7 +89,9 @@ define(['jquery', 'mage/translate'], function ($, $t) {
                     .find('span:first')
                     .toggleClass(
                         'special-price',
-                        isDiscounted && isSimpleProductSelected
+                        isDDActive
+                            ? true
+                            : isDiscounted && isSimpleProductSelected
                     );
                 $product
                     .find('.normal-price .price-label')
