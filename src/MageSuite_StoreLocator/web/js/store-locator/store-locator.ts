@@ -476,6 +476,8 @@ export default class StoreLocator {
                     icon: this._options.markerIcons.userLocation,
                 });
             }
+
+            this._$element.removeClass('loading');
         });
     }
 
@@ -677,6 +679,9 @@ export default class StoreLocator {
      * Get user location from based on window navigator
      */
     public getGeolocation(): Promise<object> {
+        this._$element.addClass('loading');
+        $('.cs-store-locator__empty-message--geolocation-disabled').remove();
+
         return new Promise((resolve, reject) => {
             if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(
@@ -687,13 +692,24 @@ export default class StoreLocator {
                         });
                     },
                     (error) => {
+                        this.geolocationErrorHandler();
                         reject(new Error('Geolocation not enabled'));
                     }
                 );
             } else {
+                this.geolocationErrorHandler();
                 reject(new Error('Geolocation not supported'));
             }
         });
+    }
+
+    public geolocationErrorHandler() {
+        this._$itemsList.prepend(
+            `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--geolocation-disabled"><span>${$.mage.__(
+                'Unfortunately geolocation is not enabled on your device or browser.'
+            )}</div>`
+        );
+        this._$element.removeClass('loading');
     }
 
     /**
@@ -912,6 +928,7 @@ export default class StoreLocator {
                 this.renderItems(this.getFilteredStores(), false);
                 this._attachMapListeners();
                 this.mapChangeHandler();
+                this._$element.removeClass('loading');
             })
             .catch((error) => {
                 // We don't know users position
@@ -919,6 +936,7 @@ export default class StoreLocator {
 
                 this.renderItems(this.stores, false);
                 this._attachMapListeners();
+                this._$element.removeClass('loading');
             });
     }
 
