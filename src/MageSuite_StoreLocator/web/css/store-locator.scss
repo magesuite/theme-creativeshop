@@ -88,6 +88,7 @@ $store-locator_close-color: $color_text-400 !default;
         z-index: 1;
         background: $store-locator_sidebar-background;
         box-shadow: $store-locator_sidebar-box-shadow;
+        position: relative;
 
         @include media('>=laptop') {
             display: flex;
@@ -104,10 +105,6 @@ $store-locator_close-color: $color_text-400 !default;
 
         &--closed {
             transform: translateX(-$store-locator_sidebar-width - 3rem);
-        }
-
-        #{$root}--mobile-stores-open & {
-            flex: 1;
         }
     }
 
@@ -354,10 +351,6 @@ $store-locator_close-color: $color_text-400 !default;
         @include media('>=laptop') {
             height: 100%;
         }
-
-        #{$root}--mobile-stores-open & {
-            flex: 0;
-        }
     }
 
     &__map {
@@ -375,15 +368,16 @@ $store-locator_close-color: $color_text-400 !default;
     &__stores-list {
         margin: 0;
         padding: 0;
-        position: relative;
         list-style-type: none;
         display: none;
         flex: 1;
         overflow-y: auto;
         background: $store-locator_stores-list-background;
         max-height: calc(100vh - 15rem);
+        position: absolute;
 
         @include media('>=laptop') {
+            position: relative;
             display: block;
             max-height: calc(100vh - 28rem);
         }
