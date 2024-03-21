@@ -33,12 +33,13 @@
 
         <div class="cs-reviews__options">
             <?= $block->getChildHtml('form_fields_before')?>
+            <?php $ratings = $block->getRatings(); ?>
 
-            <?php if ($block->getRatings() && $block->getRatings()->getSize()): ?>
+            <?php if ($ratings && $ratings->getSize()): ?>
                 <div class="cs-reviews__ratings" data-hasrequired="<?php __('* Required Fields'); ?>">
                     <div id="input-message-box"></div>
                     <div class="cs-reviews__rating" id="product-review-table">
-                        <?php foreach ($block->getRatings() as $rating): ?>
+                        <?php foreach ($ratings as $rating): ?>
                             <div class="cs-reviews__rating-item">
                                 <div class="cs-field required">
                                     <?php
@@ -48,7 +49,7 @@
                                     ?>
                                     <!-- Rating code name should be translated in admin panel Stores > Rating, not in this template -->
                                     <label class="cs-field__label">
-                                        <span><?= /* @escapeNotVerified */ count($block->getRatings()) == 1 ? __("Your rating") : $rating->getRatingCode(); ?>:</span>
+                                        <span><?= /* @escapeNotVerified */ count($ratings) == 1 ? __("Your rating") : $rating->getRatingCode(); ?>:</span>
                                     </label>
                                 </div>
                                 <div class="cs-reviews__rating-control | review-control-vote">
