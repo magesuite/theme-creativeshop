@@ -704,11 +704,16 @@ export default class StoreLocator {
     }
 
     public geolocationErrorHandler() {
-        this._$itemsList.prepend(
-            `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--geolocation-disabled"><span>${$.mage.__(
-                'Unfortunately geolocation is not enabled on your device or browser.'
-            )}</div>`
-        );
+        const geolocationMessage = `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--geolocation-disabled"><span>${$.mage.__(
+            'Unfortunately geolocation is not enabled on your device or browser.'
+        )}</div>`;
+
+        if (breakpoint.current < breakpoint.laptop) {
+            $('.cs-store-locator__search').append(geolocationMessage);
+        } else {
+            this._$itemsList.prepend(geolocationMessage);
+        }
+
         this._$element.removeClass('loading');
     }
 
