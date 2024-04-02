@@ -126,7 +126,9 @@ export default class SliderNavigation {
      * Disables/enables prev/next button
      */
     protected _togglePrevButtonLock(): void {
-        this._prevTrigger.disabled = this.currentIndex <= 1;
+        if (this._prevTrigger) {
+            this._prevTrigger.disabled = this.currentIndex <= 1;
+        }
     }
 
     /**
@@ -134,11 +136,19 @@ export default class SliderNavigation {
      */
     protected _toggleVisibility(): void {
         if (this.options.itemsPerView >= this._slides.length) {
-            this._prevTrigger.style.display = 'none';
-            this._nextTrigger.style.display = 'none';
+            if (this._prevTrigger) {
+                this._prevTrigger.style.display = 'none';
+            }
+            if (this._nextTrigger) {
+                this._nextTrigger.style.display = 'none';
+            }
         } else {
-            this._prevTrigger.style.display = '';
-            this._nextTrigger.style.display = '';
+            if (this._prevTrigger) {
+                this._prevTrigger.style.display = '';
+            }
+            if (this._nextTrigger) {
+                this._nextTrigger.style.display = '';
+            }
         }
     }
 
