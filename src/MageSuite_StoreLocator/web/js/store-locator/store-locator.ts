@@ -196,6 +196,17 @@ export default class StoreLocator {
             this._options.mapOptions
         );
 
+        // Send graphql request for stores and initialize map
+        this._prepareMap();
+
+        // Attach events to elements that are not directly connected to the map
+        this._attachEvents();
+    }
+
+    /**
+     * Send graphql request for stores, hide loader and then initialize map
+     */
+    public _prepareMap() {
         // Send graphql request for stores
         $.post({
             url: this._basePath + 'graphql',
@@ -217,8 +228,6 @@ export default class StoreLocator {
             this._$element.removeClass('loading');
             this._initMap();
         });
-
-        this._attachEvents();
     }
 
     /**
