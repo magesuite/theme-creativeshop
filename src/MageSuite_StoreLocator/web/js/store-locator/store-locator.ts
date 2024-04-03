@@ -7,19 +7,19 @@ import MarkerClusterer from './markerclusterer'; // The library creates and mana
 /**
  * Store locator component options interface.
  */
-interface StoreLocatorOptions {
+export interface StoreLocatorOptions {
     mapOptions?: any;
     basicZoom?: number;
     basicZoomSmallDesktop?: number;
     basicZoomMobile?: number;
-    useDefaultMapStyles: boolean;
+    useDefaultMapStyles?: boolean;
     markerIcons?: object;
     clusterStyles?: object;
     limitOfShopsInitiallyDisplayed?: number;
     storeData?: string;
 }
 
-interface Coordinates {
+export interface Coordinates {
     lat: number;
     lng: number;
 }
