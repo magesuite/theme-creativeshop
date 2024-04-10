@@ -32,6 +32,11 @@ export interface DailydealOptions {
      */
     dailyDealPriceSelector?: string;
     /**
+     * Dailydeal price DOM selector for configurable product
+     * @type {string}
+     */
+    dailyDealConfigProductPriceSelector?: string;
+    /**
      * Tile container DOM selector
      * @type {string}
      */
@@ -154,6 +159,8 @@ export default class Dailydeal {
     protected _$tileDailyDealPrice: JQuery;
     protected _$pdpDefaultPrice: JQuery;
     protected _$pdpDailyDealPrice: JQuery;
+    protected _$tileDailyDealConfigProductPrice: JQuery<HTMLElement>;
+    protected _$pdpDailyDealConfigProductPrice: JQuery<HTMLElement>;
     protected _$defaultDiscountBadge: JQuery;
     protected _$dailyDealDiscountBadge: JQuery;
     protected _$dailyDealAmountBadge: JQuery;
@@ -229,6 +236,9 @@ export default class Dailydeal {
         get dailyDealPriceSelector() {
             return `.price-final_price`;
         },
+        get dailyDealConfigProductPriceSelector() {
+            return `.price-configurable_offer_price`;
+        },
         get tileBadgeContainerSelector() {
             return `.${this.namespace}product-tile__badges`;
         },
@@ -299,11 +309,17 @@ export default class Dailydeal {
         this._$tileDailyDealPrice = this._$tilePriceContainer
             .find(this._options.dailyDealPriceSelector)
             .first();
+        this._$tileDailyDealConfigProductPrice = this._$tilePriceContainer
+            .find(this._options.dailyDealConfigProductPriceSelector)
+            .first();
         this._$pdpDefaultPrice = this._$pdpPriceContainer
             .find(this._options.defaultPriceSelector)
             .first();
         this._$pdpDailyDealPrice = this._$pdpPriceContainer
             .find(this._options.dailyDealPriceSelector)
+            .first();
+        this._$pdpDailyDealConfigProductPrice = this._$pdpPriceContainer
+            .find(this._options.dailyDealConfigProductPriceSelector)
             .first();
         // Badges (@Tiles)
         this._$defaultDiscountBadge = this._$tileBadgeContainer.find(
@@ -349,12 +365,16 @@ export default class Dailydeal {
         let $defaultPrice: JQuery = null;
 
         if (this._isTile()) {
-            $dailydealPrice = this._$tileDailyDealPrice;
+            $dailydealPrice = this._isConfigProduct(this._$tilePriceContainer)
+                ? this._$tileDailyDealConfigProductPrice
+                : this._$tileDailyDealPrice;
             $defaultPrice = this._$tileDefaultPrice;
 
             $(this._$tile).addClass('cs-product-tile--dailydeal');
         } else {
-            $dailydealPrice = this._$pdpDailyDealPrice;
+            $dailydealPrice = this._isConfigProduct(this._$pdpPriceContainer)
+                ? this._$pdpDailyDealConfigProductPrice
+                : this._$pdpDailyDealPrice;
             $defaultPrice = this._$pdpDefaultPrice;
         }
 
@@ -380,12 +400,16 @@ export default class Dailydeal {
         let $defaultPrice: JQuery = null;
 
         if (this._isTile()) {
-            $dailydealPrice = this._$tileDailyDealPrice;
+            $dailydealPrice = this._isConfigProduct(this._$tilePriceContainer)
+                ? this._$tileDailyDealConfigProductPrice
+                : this._$tileDailyDealPrice;
             $defaultPrice = this._$tileDefaultPrice;
 
             $(this._$tile).removeClass('cs-product-tile--dailydeal');
         } else {
-            $dailydealPrice = this._$pdpDailyDealPrice;
+            $dailydealPrice = this._isConfigProduct(this._$pdpPriceContainer)
+                ? this._$pdpDailyDealConfigProductPrice
+                : this._$pdpDailyDealPrice;
             $defaultPrice = this._$pdpDefaultPrice;
         }
 
@@ -497,6 +521,18 @@ export default class Dailydeal {
                 `${this._options.namespace}dailydeal--tile-teaser`
             )
         );
+    }
+
+    /**
+     * Check if dailydeal has been initialized for config. product
+     *
+     * @param priceContainer Container in which price selector for config. products is searched for
+     * @returns boolean
+     */
+    protected _isConfigProduct(priceContainer: JQuery<HTMLElement>): boolean {
+        return !!priceContainer
+            .find(this._options.dailyDealConfigProductPriceSelector)
+            .first().length;
     }
 
     /**
