@@ -1,7 +1,7 @@
 import * as $ from 'jquery';
 import 'mage/translate';
 
-import mapStyles from './map-style'; // custom styles for google map
+import mapStyles from 'MageSuite_StoreLocator/web/js/store-locator/map-style'; // custom styles for google map
 import MarkerClusterer from './markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 
 /**
@@ -256,7 +256,7 @@ export default class StoreLocator {
 
                 this.map.panTo(coordinates);
 
-                const windowWidth = $(window).width();
+                const windowWidth = window.innerWidth;
 
                 if (windowWidth < breakpoint.laptop) {
                     this.map.setZoom(11);
@@ -278,7 +278,7 @@ export default class StoreLocator {
                     coordinates
                 );
 
-                if ($(window).width() < breakpoint.laptop) {
+                if (windowWidth < breakpoint.laptop) {
                     this.renderMobileStoresList();
                 } else {
                     this.renderItems(this.getFilteredStores(), false);
@@ -301,7 +301,7 @@ export default class StoreLocator {
                 )}</div>`
                 );
 
-                if ($(window).width() < breakpoint.laptop) {
+                if (window.innerWidth < breakpoint.laptop) {
                     this.openMobileStores();
                 }
 
@@ -311,7 +311,7 @@ export default class StoreLocator {
                     $('.cs-store-locator__empty-message--nolocation')
                         .slideUp()
                         .remove();
-                    if ($(window).width() < breakpoint.laptop) {
+                    if (window.innerWidth < breakpoint.laptop) {
                         this.closeMobileStores();
                     }
                 }, 5000);
@@ -347,7 +347,7 @@ export default class StoreLocator {
     public renderItems(stores, renderAllStores): void {
         if (
             this._allItemsRendered &&
-            !($(window).width() < breakpoint.laptop)
+            !(window.innerWidth < breakpoint.laptop)
         ) {
             return;
         }
@@ -448,7 +448,7 @@ export default class StoreLocator {
 
             this.map.panTo(coordinates);
 
-            const windowWidth = $(window).width();
+            const windowWidth = window.innerWidth;
 
             if (windowWidth < breakpoint.laptop) {
                 this.map.setZoom(this._options.basicZoomMobile);
@@ -530,7 +530,7 @@ export default class StoreLocator {
 
         this._activeStoreId = storeId;
 
-        if ($(window).width() < breakpoint.laptop) {
+        if (window.innerWidth < breakpoint.laptop) {
             this.closeMobilePopup();
             this.openMobilePopup(this._activeStoreId);
         }
@@ -557,7 +557,7 @@ export default class StoreLocator {
         this.panToStore(id);
         this._activeStoreId = id;
 
-        if ($(window).width() < breakpoint.laptop) {
+        if (window.innerWidth < breakpoint.laptop) {
             this.closeMobileStores();
             this.openMobilePopup(id);
         }
@@ -594,7 +594,7 @@ export default class StoreLocator {
             this.map.setZoom(this._options.basicZoom);
         }
 
-        if ($(window).width() >= breakpoint.laptop && !this._sidebarClosed) {
+        if (window.innerWidth >= breakpoint.laptop && !this._sidebarClosed) {
             this.map.panBy(-sidebarWidth / 2, 0);
         }
 
@@ -847,7 +847,7 @@ export default class StoreLocator {
     }
 
     public windowResizeHandler(): void {
-        if ($(window).width() >= breakpoint.laptop) {
+        if (window.innerWidth >= breakpoint.laptop) {
             this.closeMobilePopup();
         }
     }
@@ -856,7 +856,7 @@ export default class StoreLocator {
      * This is an important method responsible for displaying in the sidebar only store that are currently visible on the map.
      */
     public mapChangeHandler() {
-        if ($(window).width() < breakpoint.laptop) {
+        if (window.innerWidth < breakpoint.laptop) {
             return;
         }
 
