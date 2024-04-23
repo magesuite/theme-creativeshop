@@ -17,14 +17,17 @@ define(['jquery'], function ($) {
                 this.element.off('blur');
                 this._blur();
 
-                $('body').on('click', function (event) {
-                    if (!$(event.target).closest(this.autoComplete).length) {
-                        self._resetResponseList(true);
-                        self.autoComplete.hide();
-                    }
-                });
+                this._resetFormOnOuterClick =
+                    this._resetFormOnOuterClick.bind(this);
+                $('body').on('click', this._resetFormOnOuterClick);
 
                 this.isTouchDevice = this._isTouchDevice();
+            },
+            _resetFormOnOuterClick: function (event) {
+                if (!$(event.target).closest(this.autoComplete).length) {
+                    this._resetResponseList(true);
+                    this.autoComplete.hide();
+                }
             },
             _isTouchDevice() {
                 return (
@@ -71,12 +74,12 @@ define(['jquery'], function ($) {
 
                 this.searchForm.toggleClass(
                     'active-popup',
-                    Boolean(!all && this.responseList.indexList.length)
+                    Boolean(!all && this.responseList.indexList?.length)
                 );
 
                 $('html').toggleClass(
                     'autocomplete-dropdown-visible',
-                    Boolean(!all && this.responseList.indexList.length)
+                    Boolean(!all && this.responseList.indexList?.length)
                 );
             },
             /**
