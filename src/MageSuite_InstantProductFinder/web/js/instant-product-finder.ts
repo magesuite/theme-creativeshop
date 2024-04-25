@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
 import 'mage/translate';
-import { productTemplate } from './product-template';
+import { productTemplate } from 'MageSuite_InstantProductFinder/web/js/product-template';
 
 /**
  * Documentation for the module: https://creativestyle.atlassian.net/wiki/spaces/MGSDEV/pages/2283962862/InstantProductFinder+optional+private
@@ -126,9 +126,9 @@ export default class InstantProductFinder {
      */
     protected _prepareData(data: object[]): void {
         data.forEach((product: object) => {
-            if (product.sku.includes("/")) {
-                product.sku = product.sku.replace(/\//g, "-")
-            };
+            if (product.sku.includes('/')) {
+                product.sku = product.sku.replace(/\//g, '-');
+            }
 
             product.options.forEach((option) => {
                 this._allAttributes.add(option);
