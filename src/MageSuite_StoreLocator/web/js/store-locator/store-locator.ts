@@ -4,6 +4,12 @@ import 'mage/translate';
 import mapStyles from 'MageSuite_StoreLocator/web/js/store-locator/map-style'; // custom styles for google map
 import MarkerClusterer from './markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 
+declare global {
+    interface Window {
+        breakpoint: any;
+    }
+}
+
 /**
  * Store locator component options interface.
  */
@@ -12,6 +18,7 @@ export interface StoreLocatorOptions {
     basicZoom?: number;
     basicZoomSmallDesktop?: number;
     basicZoomMobile?: number;
+    showNearestStoreWhenNotFound?: boolean;
     useDefaultMapStyles?: boolean;
     markerIcons?: object;
     clusterStyles?: object;
@@ -73,7 +80,8 @@ export default class StoreLocator {
         },
         basicZoom: 13, // basic zoom (also for small desktop/tablet and mobile - see 2 options below) is set when the map center on specific location (for example when the user is geolocalized or when we pan to a specific store or a location)
         basicZoomSmallDesktop: 12,
-        basicZoomMobile: 12,
+        basicZoomMobile: 11,
+        showNearestStoreWhenNotFound: false, // when set to true and no stores are found in the current zoom and location, show the nearest store
         useDefaultMapStyles: false, // when set to true default google maps styles are used. If not, styles from store-locator/ map-style.js file are used
         markerIcons: {
             // sizes for markers in px
@@ -239,85 +247,94 @@ export default class StoreLocator {
      * If backend does not return coordinates prepare and display message nolocation for 5s
      */
     public searchButtonClickHandler() {
-        const query: string = $('.cs-store-locator__search-input').val();
+        const query: string | number | string[] = $(
+            '.cs-store-locator__search-input'
+        ).val();
 
         this._$searchForm.addClass('loading');
 
-        this.getCoordinatesFromQuery(query).then((response) => {
-            if (
-                response.data.addressLocation &&
-                response.data.addressLocation.latitude &&
-                response.data.addressLocation.longitude
-            ) {
-                const coordinates: Coordinates = {
-                    lat: response.data.addressLocation.latitude,
-                    lng: response.data.addressLocation.longitude,
-                };
-
-                this.map.panTo(coordinates);
-
-                const windowWidth = window.innerWidth;
-
-                if (windowWidth < breakpoint.laptop) {
-                    this.map.setZoom(11);
-                } else if (
-                    windowWidth >= breakpoint.laptop &&
-                    windowWidth < breakpoint.laptopLg
+        return this.getCoordinatesFromQuery(query as string).then(
+            (response) => {
+                if (
+                    response.data.addressLocation &&
+                    response.data.addressLocation.latitude &&
+                    response.data.addressLocation.longitude
                 ) {
-                    this.map.setZoom(this._options.basicZoomSmallDesktop);
+                    const coordinates: Coordinates = {
+                        lat: response.data.addressLocation.latitude,
+                        lng: response.data.addressLocation.longitude,
+                    };
+
+                    this.map.panTo(coordinates);
+
+                    const windowWidth = window.breakpoint.current;
+
+                    if (windowWidth < window.breakpoint.laptop) {
+                        this.map.setZoom(this._options.basicZoomMobile);
+                    } else if (
+                        windowWidth >= window.breakpoint.laptop &&
+                        windowWidth < window.breakpoint.laptopLg
+                    ) {
+                        this.map.setZoom(this._options.basicZoomSmallDesktop);
+                    } else {
+                        this.map.setZoom(this._options.basicZoom);
+                    }
+
+                    this.setUserPositionAndPopulateDistance(
+                        this.stores,
+                        coordinates
+                    );
+
+                    if (
+                        this._options.showNearestStoreWhenNotFound &&
+                        !this.getFilteredStores().length
+                    ) {
+                        this.showNearestStoreView(coordinates);
+                    }
+
+                    if (windowWidth < window.breakpoint.laptop) {
+                        this.renderMobileStoresList();
+                    } else {
+                        this.renderItems(this.getFilteredStores(), false);
+                    }
+
+                    if (this._locationMarker) {
+                        this._locationMarker.setMap(null);
+                    }
+                    this._locationMarker = new google.maps.Marker({
+                        position: coordinates,
+                        map: this.map,
+                        icon: this._options.markerIcons.userLocation,
+                    });
                 } else {
-                    this.map.setZoom(this._options.basicZoom);
-                }
-
-                if (coordinates === this._userPosition) {
-                    return;
-                }
-
-                this.setUserPositionAndPopulateDistance(
-                    this.stores,
-                    coordinates
-                );
-
-                if (windowWidth < breakpoint.laptop) {
-                    this.renderMobileStoresList();
-                } else {
-                    this.renderItems(this.getFilteredStores(), false);
-                }
-
-                if (this._locationMarker) {
-                    this._locationMarker.setMap(null);
-                }
-                this._locationMarker = new google.maps.Marker({
-                    position: coordinates,
-                    map: this.map,
-                    icon: this._options.markerIcons.userLocation,
-                });
-            } else {
-                $('.cs-store-locator__empty-message--nolocation').remove();
-                this._$itemsList.prepend(
-                    `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">
+                    $('.cs-store-locator__empty-message--nolocation').remove();
+                    this._$itemsList.prepend(
+                        `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">
                 ${$.mage.__(
                     'Unfortunately we were not able to find this location.'
                 )}</div>`
-                );
+                    );
 
-                if (window.innerWidth < breakpoint.laptop) {
-                    this.openMobileStores();
-                }
-
-                $('.cs-store-locator__empty-message--nolocation').show();
-
-                setTimeout(() => {
-                    $('.cs-store-locator__empty-message--nolocation')
-                        .slideUp()
-                        .remove();
-                    if (window.innerWidth < breakpoint.laptop) {
-                        this.closeMobileStores();
+                    if (window.breakpoint.current < window.breakpoint.laptop) {
+                        this.openMobileStores();
                     }
-                }, 5000);
+
+                    $('.cs-store-locator__empty-message--nolocation').show();
+
+                    setTimeout(() => {
+                        $('.cs-store-locator__empty-message--nolocation')
+                            .slideUp()
+                            .remove();
+                        if (
+                            window.breakpoint.current < window.breakpoint.laptop
+                        ) {
+                            this.closeMobileStores();
+                        }
+                    }, 5000);
+                }
+                this._$searchForm.removeClass('loading');
             }
-            this._$searchForm.removeClass('loading');
-        });
+        );
     }
 
     /**
@@ -347,7 +364,7 @@ export default class StoreLocator {
     public renderItems(stores, renderAllStores): void {
         if (
             this._allItemsRendered &&
-            !(window.innerWidth < breakpoint.laptop)
+            !(window.breakpoint.current < window.breakpoint.laptop)
         ) {
             return;
         }
@@ -441,24 +458,31 @@ export default class StoreLocator {
      * If user was not localized before set distances for stores, and render items in the sidebar
      */
     public locationButtonClickHandler() {
-        this.getGeolocation().then((coordinates) => {
+        this.getGeolocation().then((coordinates: Coordinates) => {
             if (!coordinates) {
                 return;
             }
 
             this.map.panTo(coordinates);
 
-            const windowWidth = window.innerWidth;
+            const windowWidth = window.breakpoint.current;
 
-            if (windowWidth < breakpoint.laptop) {
+            if (windowWidth < window.breakpoint.laptop) {
                 this.map.setZoom(this._options.basicZoomMobile);
             } else if (
-                windowWidth >= breakpoint.laptop &&
-                windowWidth < breakpoint.laptopLg
+                windowWidth >= window.breakpoint.laptop &&
+                windowWidth < window.breakpoint.laptopLg
             ) {
                 this.map.setZoom(this._options.basicZoomSmallDesktop);
             } else {
                 this.map.setZoom(this._options.basicZoom);
+            }
+
+            if (
+                this._options.showNearestStoreWhenNotFound &&
+                !this.getFilteredStores().length
+            ) {
+                this.showNearestStoreView(coordinates);
             }
 
             if (coordinates !== this._userPosition) {
@@ -470,7 +494,7 @@ export default class StoreLocator {
                     coordinates
                 );
 
-                if (windowWidth < breakpoint.laptop) {
+                if (windowWidth < window.breakpoint.laptop) {
                     this.renderMobileStoresList();
                 } else {
                     this.renderItems(this.getFilteredStores(), false);
@@ -530,7 +554,7 @@ export default class StoreLocator {
 
         this._activeStoreId = storeId;
 
-        if (window.innerWidth < breakpoint.laptop) {
+        if (window.breakpoint.current < window.breakpoint.laptop) {
             this.closeMobilePopup();
             this.openMobilePopup(this._activeStoreId);
         }
@@ -557,7 +581,7 @@ export default class StoreLocator {
         this.panToStore(id);
         this._activeStoreId = id;
 
-        if (window.innerWidth < breakpoint.laptop) {
+        if (window.breakpoint.current < window.breakpoint.laptop) {
             this.closeMobileStores();
             this.openMobilePopup(id);
         }
@@ -594,7 +618,10 @@ export default class StoreLocator {
             this.map.setZoom(this._options.basicZoom);
         }
 
-        if (window.innerWidth >= breakpoint.laptop && !this._sidebarClosed) {
+        if (
+            window.breakpoint.current >= window.breakpoint.laptop &&
+            !this._sidebarClosed
+        ) {
             this.map.panBy(-sidebarWidth / 2, 0);
         }
 
@@ -717,7 +744,7 @@ export default class StoreLocator {
             'Unfortunately geolocation is not enabled on your device or browser.'
         )}</div>`;
 
-        if (breakpoint.current < breakpoint.laptop) {
+        if (window.breakpoint.current < window.breakpoint.laptop) {
             $('.cs-store-locator__search').append(geolocationMessage);
         } else {
             this._$itemsList.prepend(geolocationMessage);
@@ -847,7 +874,7 @@ export default class StoreLocator {
     }
 
     public windowResizeHandler(): void {
-        if (window.innerWidth >= breakpoint.laptop) {
+        if (window.breakpoint.current >= window.breakpoint.laptop) {
             this.closeMobilePopup();
         }
     }
@@ -856,7 +883,7 @@ export default class StoreLocator {
      * This is an important method responsible for displaying in the sidebar only store that are currently visible on the map.
      */
     public mapChangeHandler() {
-        if (window.innerWidth < breakpoint.laptop) {
+        if (window.breakpoint.current < window.breakpoint.laptop) {
             return;
         }
 
@@ -898,6 +925,39 @@ export default class StoreLocator {
         return Number((R * c).toFixed(2));
     }
 
+    /**
+     * Method takes current coordinates and finds the nearest store
+     * to center the map between it and a current location.
+     */
+    public showNearestStoreView(currentCoordinates: Coordinates): void {
+        const closest: { store: any; distance: number } = this.stores.reduce(
+            (closestStore, store) => {
+                const distance = this.calculateDistance(
+                    currentCoordinates.lat,
+                    currentCoordinates.lng,
+                    store.latitude,
+                    store.longitude
+                );
+                return !closestStore || distance < closestStore.distance
+                    ? { store, distance }
+                    : closestStore;
+            },
+            null
+        );
+
+        const bounds = new google.maps.LatLngBounds();
+        bounds.extend({
+            lat: currentCoordinates.lat,
+            lng: currentCoordinates.lng,
+        });
+        bounds.extend({
+            lat: closest.store.latitude,
+            lng: closest.store.longitude,
+        });
+
+        this.map.fitBounds(bounds);
+    }
+
     public isIE() {
         const ua = window.navigator.userAgent; // Check the userAgent property of the window.navigator object
         const msie = ua.indexOf('MSIE '); // IE 10 or older
@@ -920,7 +980,7 @@ export default class StoreLocator {
         this._createMarkers();
 
         this.getGeolocation()
-            .then((coordinates) => {
+            .then((coordinates: Coordinates) => {
                 // User location from geolocation service
                 this.setUserPositionAndPopulateDistance(
                     this.stores,
@@ -938,6 +998,13 @@ export default class StoreLocator {
 
                 this.map.panTo(coordinates);
                 this.map.setZoom(this._options.basicZoom);
+
+                if (
+                    this._options.showNearestStoreWhenNotFound &&
+                    !this.getFilteredStores().length
+                ) {
+                    this.showNearestStoreView(coordinates);
+                }
 
                 this.renderItems(this.getFilteredStores(), false);
                 this._attachMapListeners();
