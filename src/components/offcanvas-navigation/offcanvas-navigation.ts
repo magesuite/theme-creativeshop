@@ -176,7 +176,10 @@ export default class OffcanvasNavigation {
 
         this._fixSwitcherLinks($offcanvasCurrencySwitcher);
 
-        requireAsync(['mage/apply/main']).then(([mage]) => mage.apply());
+        requireAsync(['mage/apply/main', 'ko']).then(([mage, ko]) => {
+            mage.apply();
+            ko.applyBindings(null, this._$element.get(0));
+        });
     }
 
     /**
