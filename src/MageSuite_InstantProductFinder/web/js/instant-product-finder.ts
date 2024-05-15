@@ -265,16 +265,21 @@ export default class InstantProductFinder {
             !this._activeCombinedOptions.has(optionId)
                 ? this._activeCombinedOptions.add(optionId)
                 : this._activeCombinedOptions.delete(optionId);
-        } else if (filterType === 'separated' || filterType === 'query') {
+        } else if (filterType === 'separated' || filterType === 'query' || filterType === 'single') {
             const currentStepId = button.closest(this._selectors.step).id;
 
             if (!this._activeSeparateOptions[currentStepId]) {
                 this._activeSeparateOptions[currentStepId] = new Set();
             }
 
-            !this._activeSeparateOptions[currentStepId].has(optionId)
-                ? this._activeSeparateOptions[currentStepId].add(optionId)
-                : this._activeSeparateOptions[currentStepId].delete(optionId);
+            if (!this._activeSeparateOptions[currentStepId].has(optionId)) {
+                if (filterType === 'single' && this._activeSeparateOptions[currentStepId].size >= 1) {
+                    return;
+                }
+                this._activeSeparateOptions[currentStepId].add(optionId)
+            } else {
+                this._activeSeparateOptions[currentStepId].delete(optionId)
+            }
 
             if (this._activeSeparateOptions[currentStepId].size === 0) {
                 delete this._activeSeparateOptions[currentStepId];
@@ -384,6 +389,10 @@ export default class InstantProductFinder {
             ) {
                 button.classList.remove('disabled');
             } else {
+                button.classList.add('disabled');
+            }
+
+            if ((button.getAttribute('data-finder-filter-type') === 'single') && $(button).siblings('.active').length) {
                 button.classList.add('disabled');
             }
         });
