@@ -44,6 +44,10 @@ $it_text-shadow-offset--dark: 0 0 2.5rem !default;
 $it_text-shadow-step--light: 5 !default;
 $it_text-shadow-step--dark: 5 !default;
 
+// instagram feed
+$it_instagram-images-keep-ratio: true !default;
+$it_instagram-images-background-color: $color_background-500 !default;
+
 // icon component
 /**
  * This components is sort of unique because it's items-per-row configuration is only available for tablet+
@@ -479,6 +483,20 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
             #{$root}__slide {
                 flex: 0 0 100%;
+            }
+        }
+    }
+
+    // Instagram feed
+    &--instagram-feed {
+        #{$root}__picture {
+            height: 100%;
+        }
+
+        @if ($it_instagram-images-keep-ratio) {
+            #{$root}__image {
+                object-fit: contain;
+                background-color: $it_instagram-images-background-color;
             }
         }
     }
