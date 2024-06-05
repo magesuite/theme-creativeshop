@@ -13,10 +13,13 @@ define([
 
     return function (productValidate) {
         $.widget('mage.validation', $.mage.validation, {
+            /**
+             * Method overwritten completely, as we change validation flow for swatches.
+             * We do not need a scroll to error from the original method,
+             * we show a modal with missing swatches instead. (related issue: NKD-4228)
+             */
             listenFormValidateHandler: function (event, validation) {
-                this._super(event, validation);
-
-                // Skip for Bundle or Giftcard products
+                // Skip for Bundle, Giftcard or pages containing defined classname
                 if (
                     document.body.classList.contains('page-product-bundle') ||
                     document.body.classList.contains('page-product-giftcard') ||
