@@ -1,3 +1,7 @@
+/**
+ * New methods and some adjustments connected with qty increment
+ * Aligned with Magento 2.4.7 in 04/2024
+ */
 define([
     'jquery',
     'Magento_Ui/js/modal/confirm',

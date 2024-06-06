@@ -1,10 +1,12 @@
+/**
+ * Changes in comparison to source file:
+ * - modified: agreementForm,
+ * Aligned with Magento 2.4.7 in 04/2024
+ */
 /* tslint:disable one-variable-per-declaration */
 
 define(['jquery'], function ($) {
     'use strict';
-
-    // NOTE: Changes in comparison to source file:
-    // - modified: agreementForm,
 
     return function (agreementsAssigner) {
         var agreementsConfig = window.checkoutConfig.checkoutAgreements;

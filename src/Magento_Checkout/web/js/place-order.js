@@ -1,3 +1,6 @@
+/**
+ * Custom
+ */
 /*global define*/
 define([
     'ko',

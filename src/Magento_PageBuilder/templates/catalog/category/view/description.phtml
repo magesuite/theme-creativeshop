@@ -3,19 +3,21 @@
  * Magento Commerce feature
  * Template overridden due to avoid page builder template (even with disabled PageBuilder the template is displayed)
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
 /**
+ * Category view template
+ *
  * @var $block \Magento\Catalog\Block\Category\View
  */
 ?>
-<?php if ($description = $block->getCurrentCategory()->getDescription()) :?>
+<?php if ($description = $block->getCurrentCategory()->getDescription()):?>
     <div class="cs-page-category__description">
-        <?= /* @noEscape */ $this->helper(\Magento\Catalog\Helper\Output::class)->categoryAttribute(
+        <?= /* @noEscape */ $this->helper(Magento\Catalog\Helper\Output::class)->categoryAttribute(
             $block->getCurrentCategory(),
             $description,
             'description'
-        ) ?>
+        );?>
     </div>
 <?php endif; ?>

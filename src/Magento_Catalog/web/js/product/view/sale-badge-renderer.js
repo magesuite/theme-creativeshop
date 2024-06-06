@@ -1,4 +1,12 @@
-define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function ($, _) {
+/**
+ *  Custom
+ */
+define([
+    'jquery',
+    'underscore',
+    'mgsGetJqueryWidgetInstance',
+    'jquery-ui-modules/widget',
+], function ($, _, getJqueryWidgetInstance) {
     'use strict';
 
     $.widget('magesuite.saleBadgeRenderer', {
@@ -34,23 +42,34 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function ($, _) {
         },
 
         renderSaleBadge: function () {
-            // Change event is triggered by swatch-renderer.js after proper attributes setup
-            this._on(this.$tileOrBuybox, {
-                'change input.swatch-input.super-attribute-select':
-                    function () {
-                        this.updateSaleBadge();
-                    },
-            });
+            this.$tileOrBuybox.on(
+                'change',
+                'input.swatch-input.super-attribute-select',
+                () => {
+                    this.updateSaleBadge();
+                }
+            );
         },
 
-        updateSaleBadge: function () {
+        updateSaleBadge: async function () {
             var allDiscountsList = this.options.discountsList;
             var $rootElement = this.options.isInTile
                 ? this.$tileOrBuybox
                 : $(document);
-            var $productsIdsIndex = $rootElement
-                .find(this.options.productsIdsSelector)
-                .data('mage-SwatchRenderer').options.jsonConfig.index;
+            let swatchRendererElement = $rootElement.find(
+                this.options.productsIdsSelector
+            );
+
+            let swatchWidget = await getJqueryWidgetInstance(
+                {
+                    element: swatchRendererElement,
+                    widgetName: 'mage-SwatchRenderer',
+                    widgetCreateEventName: 'swatchrenderercreate',
+                },
+                true
+            );
+
+            var $productsIdsIndex = swatchWidget.options.jsonConfig.index;
 
             var selectedProductDiscounts = _.filter(
                 allDiscountsList,
@@ -64,7 +83,8 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function ($, _) {
                 selectedProductDiscounts
             );
 
-            var selectedProductId = this.getSelectedProductId();
+            var selectedProductId =
+                this.getSelectedProductId($productsIdsIndex);
 
             var $discountBadge = $rootElement.find(
                 this.options.discountBadgeSelector
@@ -100,21 +120,16 @@ define(['jquery', 'underscore', 'jquery-ui-modules/widget'], function ($, _) {
             );
         },
 
-        getSelectedProductId: function () {
+        getSelectedProductId: function (productsIdsIndex) {
             var selectedOptions = {};
             var $attributesList = this.$tileOrBuybox.find(
                 this.options.attributesSelector
             );
-
-            var $productsIdsIndex = this.$tileOrBuybox
-                .find(this.options.productsIdsSelector)
-                .data('mage-SwatchRenderer').options.jsonConfig.index;
-
             var productId;
 
             selectedOptions = this.getSelectedOptions($attributesList);
 
-            productId = _.findKey($productsIdsIndex, function (value) {
+            productId = _.findKey(productsIdsIndex, function (value) {
                 return _.isEqual(value, selectedOptions);
             });
 

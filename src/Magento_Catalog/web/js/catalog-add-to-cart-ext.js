@@ -5,6 +5,7 @@
  * which hardcodes options we need to use in order to properly animate/process AJAX add-to-cart action
  * and receive/provide feedback directly on the button.This is why we decided to set default options to the ones we need,
  * instead of overriding product validator widget and possibly some other in the future.
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 define(['jquery'], function ($) {
     'use strict';

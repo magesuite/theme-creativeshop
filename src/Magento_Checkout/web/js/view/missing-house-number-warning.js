@@ -1,3 +1,6 @@
+/**
+ * Custom
+ */
 define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
     Component,
     registry,

@@ -1,12 +1,14 @@
 <?php
 /**
  * Template overridden to use custom rating-stars.phtml template
- *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
-?>
-<?php
-/** @var $block \Magento\Review\Block\Product\ReviewRenderer */
+
+/**
+ * @var \Magento\Review\Block\Product\ReviewRenderer $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
 $csProductHelper = $this->helper(MageSuite\Frontend\Helper\Product::class);
 $rating = $csProductHelper->getReviewSummary($block->getProduct(), true);
 $ratingData = $rating['data'];
@@ -14,9 +16,7 @@ $votes = $rating['data']['votes'];
 $allVotes = array_sum($votes);
 ?>
 <?php if ($allVotes > 0): ?>
-
-    <?php
-    echo $this->getLayout()
+    <?php echo $this->getLayout()
         ->createBlock(\Magento\Framework\View\Element\Template::class)
         ->setMaxStars($ratingData['maxStars'])
         ->setActiveStars($ratingData['activeStars'])
@@ -27,11 +27,8 @@ $allVotes = array_sum($votes);
         ->setTemplate('Magento_Review::rating-stars.phtml')
         ->toHtml();
     ?>
-
 <?php elseif ($block->isReviewEnabled() && $block->getDisplayIfEmpty()): ?>
-
     <div class="cs-buybox__no-review">
         <a class="cs-buybox__no-review-link" href="#reviews"><?= $block->escapeHtml(__('Be the first to review this product')) ?></a>
     </div>
-
 <?php endif; ?>

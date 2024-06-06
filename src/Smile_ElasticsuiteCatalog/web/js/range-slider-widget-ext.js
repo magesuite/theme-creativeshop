@@ -1,6 +1,7 @@
 /**
  * Default range slider extension which adds support for "from" and "to" inputs
  * synchronized with slider values to provide better UX.
+ * Aligned with Smile_ElasticsuiteCatalog in 04/2024
  */
 
 define(['jquery'], function ($) {
@@ -48,6 +49,9 @@ define(['jquery'], function ($) {
                         );
                 }
             },
+            /**
+             * Custom method
+             */
             _prepareInputs: function () {
                 this.element
                     .find(this.options.fromInput)
@@ -58,7 +62,7 @@ define(['jquery'], function ($) {
                     .on('keyup blur', this._onInputsChange.bind(this));
             },
             /**
-             * Called on blur or enter keyup event to normalize range and update the slider.
+             * Custom method
              */
             _onInputsChange: function (event) {
                 var key = event.key || event.keyCode;
@@ -97,6 +101,7 @@ define(['jquery'], function ($) {
                 }
             },
             /**
+             * Custom method
              * Helper which properly transforms formatted string to float
              * @param {string} amount
              */
@@ -108,6 +113,7 @@ define(['jquery'], function ($) {
                 );
             },
             /**
+             * Custom method
              * Updates slider widget with new values.
              * @param {number} from Lower range value.
              * @param {number} to Upper range value.

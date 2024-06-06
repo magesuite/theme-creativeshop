@@ -1,4 +1,5 @@
 /**
+ * Custom
  * Provides logic to hide/show agreements only on the last step of checkout
  */
 define([

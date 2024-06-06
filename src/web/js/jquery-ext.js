@@ -3,6 +3,7 @@
  * Modification type: extend
  * Reasons:
  * - enable scroll passive for mobile scrolling performance
+ * Aligned with Magento 2.4.7 in 04/2024
  * Ref: https://github.com/magento/magento2/pull/35613
  */
 define([], function () {

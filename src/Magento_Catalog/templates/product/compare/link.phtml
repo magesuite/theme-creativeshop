@@ -1,12 +1,14 @@
 <?php
 /**
- * Template override:
- * - possibility to define icon through XML
+ * Template overridden in order to:
+ * - add possibility to define icon through XML
  * - display counter, icon and label in the same way for each `header-user-nav` items
  * - display in counter only value, without label
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
+
+/** @var $block Magento\Framework\View\Element\Template */
 // @codingStandardsIgnoreFile
 $label = $block->getXmlLabel();
 ?>
@@ -31,9 +33,5 @@ $label = $block->getXmlLabel();
     </a>
 </li>
 <script type="text/x-magento-init">
-    {
-        "[data-role=compare-products-link]": {
-            "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
-        }
-    }
+{"[data-role=compare-products-link]": {"Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>}}
 </script>

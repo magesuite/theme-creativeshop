@@ -8,7 +8,7 @@
  * - change tags from div into li
  *  * TODO - this is the only place when dropdownDialog is present, however some other scripts depend on dropdownDialog events
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
@@ -45,7 +45,7 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
             <?php endif; ?>
         </a>
     </div>
-    <?php if ($block->getIsNeedToDisplaySideBar()): ?>
+    <?php if ($block->getIsNeedToDisplaySideBar()):?>
         <div class="block block-minicart empty"
              id="block-minicart"
              data-role="dropdownDialog"
@@ -58,8 +58,7 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
                 "closeOnEscape": true,
                 "triggerClass":"active",
                 "parentClass":"active",
-                "buttons":[]}}'
-        >
+                "buttons":[]}}'>
             <?php if($isOffcanvas): ?>
             <div class="cs-offcanvas cs-offcanvas--side_right <?= $offcanvasInitClass; ?>">
                 <div class="cs-offcanvas__overlay overlay"></div>

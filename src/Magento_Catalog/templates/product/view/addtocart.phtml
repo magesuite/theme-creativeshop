@@ -5,44 +5,40 @@
  * - add qty-increment
  * - remove addtocart button which has a separate template in magesuite (addtocart/button.phtml)
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
-<?php
-    $_product = $block->getProduct();
-?>
+<?php $_product = $block->getProduct(); ?>
+<?php if ($_product->isSaleable() && !$_product->getHasAllChildrenNotSalable()) :?>
+<div class="box-tocart cs-buybox__addtocart <?= $block->getAdditionalCssClasses() ?>">
+    <div class="cs-buybox__addtocart-fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+            <div class="cs-buybox__qty-wrapper">
+                <?php if (!empty($block->getQtyLabel())): ?>
+                    <label class="cs-label cs-buybox__qty-label" for="qty"><?= $block->getQtyLabel() ?></label>
+                <?php endif; ?>
 
-<?php if ($_product->isSaleable() && !$_product->getHasAllChildrenNotSalable()): ?>
-    <div class="box-tocart cs-buybox__addtocart <?= $block->getAdditionalCssClasses() ?>">
-        <div class="cs-buybox__addtocart-fieldset">
-            <?php if ($block->shouldRenderQuantity()): ?>
-                <div class="cs-buybox__qty-wrapper">
-                    <?php if (!empty($block->getQtyLabel())): ?>
-                        <label class="cs-label cs-buybox__qty-label" for="qty"><?= $block->getQtyLabel() ?></label>
-                    <?php endif; ?>
-
-                    <div class="cs-buybox__qty-increment">
-                        <?php $qtyValidators = $block->getQuantityValidators(); ?>
-                        <?= $this->getLayout()
-                              ->createBlock(Magento\Framework\View\Element\Template::class)
-                              ->setInputName('qty')
-                              ->setInputInitialValue($block->getProductDefaultQty() * 1)
-                              ->setInputAdditionalParams('id="qty" data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="0" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
-                              ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
-                              ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
-                              ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
-                              ->toHtml(); ?>
-                    </div>
+                <div class="cs-buybox__qty-increment">
+                    <?php $qtyValidators = $block->getQuantityValidators(); ?>
+                    <?= $this->getLayout()
+                          ->createBlock(Magento\Framework\View\Element\Template::class)
+                          ->setInputName('qty')
+                          ->setInputInitialValue($block->getProductDefaultQty() * 1)
+                          ->setInputAdditionalParams('id="qty" data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="0" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
+                          ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
+                          ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
+                          ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+                          ->toHtml(); ?>
                 </div>
-            <?php endif; ?>
-
-            <div class="cs-buybox__addtocart-actions cs-addtocart">
-                <?= $block->getChildHtml('', true) ?>
             </div>
+        <?php endif; ?>
+        <div class="cs-buybox__addtocart-actions cs-addtocart">
+            <?= $block->getChildHtml('', true) ?>
         </div>
     </div>
+</div>
 <?php endif; ?>
 <script type="text/x-magento-init">
     {

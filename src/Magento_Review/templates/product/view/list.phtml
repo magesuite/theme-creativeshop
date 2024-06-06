@@ -4,12 +4,18 @@
  * - move list-item into separate phtml file
  * - add magesuite classes
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Magento\Review\Block\Product\View\ListView;
 
-/** @var Escaper $escaper */
+/**
+ * @var ListView $block
+ * @var SecureHtmlRenderer $secureRenderer
+ * @var Escaper $escaper
+ */
 
 $_items = $block->getReviewsCollection()->getItems();
 $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
@@ -17,10 +23,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
 <?php if (count($_items)): ?>
     <div class="cs-reviews__content" id="customer-reviews">
         <ol class="cs-reviews__list">
-            <?php
-
-            foreach ($_items as $_review): ?>
-
+            <?php  foreach ($_items as $_review): ?>
                 <?php
                 $createdAt = $_review->getCreatedAt();
                 $ratingVotes = $_review->getRatingVotes();

@@ -7,6 +7,7 @@
  * - update error message to be more informative and handle clearing this message
  * - update from price label depending on amount of options selected (as an option)
  * - update old price depending if product is discounted (as an option)
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 define(['jquery', 'mage/translate'], function ($, $t) {
     'use strict';

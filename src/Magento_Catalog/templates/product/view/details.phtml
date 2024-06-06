@@ -5,10 +5,11 @@
  * - make collapse option - can be configured via xml
  * - add $containContent - if set to false in xml content is not rendered
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 /** @var \Magento\Catalog\Block\Product\View\Details $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
 ?>
 <?php
 $layout = $block->getLayout();
@@ -19,14 +20,13 @@ $headlineTag = $block->getHeadlineTag() ?? 'h2';
 
 <div class="cs-product-details">
 
-<?php foreach ($detailedInfoGroup as $blockName):
-    $html = trim($layout->renderElement($blockName));
-
-    if (empty($html)) {
+<?php foreach ($detailedInfoGroup as $name):
+    $html = $layout->renderElement($name);
+    if (!$html || !trim($html)) {
         continue;
     }
 
-    $alias = $layout->getElementAlias($blockName);
+    $alias = $layout->getElementAlias($name);
     $headline = __($block->getChildData($alias, 'title'))->render();
     $subheadline = __($block->getChildData($alias, 'subtitle'))->render();
     $id = str_replace('.', '-', $block->escapeHtmlAttr($alias));

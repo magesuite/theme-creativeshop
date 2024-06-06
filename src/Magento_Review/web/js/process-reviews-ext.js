@@ -1,5 +1,6 @@
 /**
  * Instead of reviews pagination use "Load more reviews" button
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 define(['jquery', 'loader', 'mage/translate'], function ($) {
     'use strict';

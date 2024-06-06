@@ -10,7 +10,7 @@
  * - remove initialization of catalogAddToCart
  * - add empty.category.message child block
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 use Magento\Framework\App\Action\Action;
 
@@ -20,14 +20,16 @@ use Magento\Framework\App\Action\Action;
  * Product list template
  *
  * @var $block \Magento\Catalog\Block\Product\ListProduct
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
-// @codingStandardsIgnoreFile
+?>
+<?php
 $_productCollection = $block->getLoadedProductCollection();
 $_productCollection->addMediaGalleryData();
 $teasersHelper = $block->getTeasersHelperPath() ? $this->helper($block->getTeasersHelperPath()) : null;
 $teaserCssHelper = $this->helper('MageSuite\ContentConstructorFrontend\Helper\TeaserCss');
 ?>
-
 <?php if (!$_productCollection->count()): ?>
     <?= /* @noEscape */ $block->getChildHtml('empty.category.message') ?>
 <?php else: ?>

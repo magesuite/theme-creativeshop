@@ -4,15 +4,20 @@
  * - add magesuite classes
  * - introduce xml configuration (etc/view.xml)
  * - add icons
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
-
-/** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */
 ?>
-<?php if ($block->isEnabledViewSwitcher()): ?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+?>
+<?php if ($block->isEnabledViewSwitcher()) :?>
     <div class="modes cs-viewmode-switcher">
-        <?php $modes = $block->getModes(); ?>
-        <?php if ($modes && count($modes) > 1): ?>
+        <?php $_modes = $block->getModes(); ?>
+        <?php if ($_modes && count($_modes) > 1) :?>
             <?php
                 $prefixLabel = $block->getVar('toolbar/viewmode_switcher/prefix_label', 'Magento_Catalog')
             ?>
@@ -22,11 +27,11 @@
             <?php endif; ?>
 
             <ul class="cs-viewmode-switcher__modes">
-                <?php foreach ($block->getModes() as $code => $label): ?>
-                    <?php $codeLowercase = strtolower($code) ?>
-                    <?php if ($block->isModeActive($code)): ?>
+                <?php foreach ($block->getModes() as $_code => $_label) :?>
+                    <?php $codeLowercase = strtolower($_code) ?>
+                    <?php if ($block->isModeActive($_code)) :?>
                         <li class="cs-viewmode-switcher__mode cs-viewmode-switcher__mode--current">
-                            <span title="<?= $block->escapeHtmlAttr($label) ?>"
+                            <span title="<?= $block->escapeHtmlAttr($_label) ?>"
                                 class="modes-mode active mode-<?= $block->escapeHtmlAttr($codeLowercase) ?> cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--<?= $block->escapeHtmlAttr($codeLowercase) ?>"
                                 data-value="<?= $block->escapeHtmlAttr($codeLowercase) ?>">
                                 <?php if($block->getVar('toolbar/viewmode_switcher/display_modes_icons', 'Magento_Catalog')): ?>
@@ -38,13 +43,13 @@
                                          ->setLazyLoaded(false)
                                          ->toHtml(); ?>
                                 <?php endif; ?>
-                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= $block->escapeHtml($label) ?></span>
+                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= $block->escapeHtml($_label) ?></span>
                             </span>
                         </li>
-                    <?php else: ?>
+                    <?php else :?>
                         <li class="cs-viewmode-switcher__mode">
                             <a class="modes-mode mode-<?= $block->escapeHtmlAttr($codeLowercase) ?> cs-viewmode-switcher__mode-action cs-viewmode-switcher__mode-action--<?= $block->escapeHtmlAttr($codeLowercase) ?>"
-                               title="<?= $block->escapeHtmlAttr($label) ?>"
+                               title="<?= $block->escapeHtmlAttr($_label) ?>"
                                href="#"
                                data-role="mode-switcher"
                                data-value="<?= $block->escapeHtmlAttr($codeLowercase) ?>"
@@ -59,7 +64,7 @@
                                          ->setLazyLoaded(false)
                                          ->toHtml(); ?>
                                 <?php endif; ?>
-                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= $block->escapeHtml($label) ?></span>
+                                <span class="cs-viewmode-switcher__mode-label<?php if(!$block->getVar('toolbar/viewmode_switcher/display_modes_labels', 'Magento_Catalog')): ?> cs-visually-hidden<?php endif; ?>"><?= $block->escapeHtml($_label) ?></span>
                             </a>
                         </li>
                     <?php endif; ?>

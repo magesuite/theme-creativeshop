@@ -3,7 +3,7 @@
  * Template overridden to:
  * - add xml configuration (etc/view.xml) with possibility to hide some toolbar elements
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 ?>
 <?php
@@ -17,12 +17,8 @@
     <?php $widget = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonDecode($block->getWidgetOptionsJson());
         $widgetOptions = $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($widget['productListToolbarForm']);
     ?>
-    <div
-        class="toolbar toolbar-products cs-toolbar <?= $block->getAdditionalCssClasses() ?>"
-        data-mage-init='<?= /* @noEscape */ $widgetOptions ?>'
-    >
+    <div class="toolbar toolbar-products cs-toolbar <?= $block->getAdditionalCssClasses() ?>" data-mage-init='<?= /* @noEscape */ $widgetOptions ?>'>
         <?= $block->getChildHtml('hotspot.after.toolbar.start')?>
-
         <?php if ($block->getVar('toolbar/filters_offcanvas_button/display', 'Magento_Catalog')): ?>
             <div class="cs-toolbar__item cs-toolbar__item--offcanvas">
                 <?= $block->fetchView($block->getTemplateFile('Magento_Catalog::product/list/toolbar/filters-button.phtml')); ?>

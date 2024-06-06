@@ -2,8 +2,9 @@
 /**
  * Template overwritten to improve UX.
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
+
 ?>
 <?php
 /** @var $block \Magento\Framework\View\Element\Template */
@@ -17,7 +18,6 @@ $helper = $configProvider->getSearchHelperData();
 $allowedSuggestion = $configProvider->isSuggestionsAllowed();
 $quickSearchUrl = $allowedSuggestion ? $escaper->escapeUrl($helper->getSuggestUrl()) : '';
 ?>
-
 <div class="cs-header__search">
     <form role="search" class="cs-header-search" id="cs-header-search"
               action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>" method="get">
@@ -27,44 +27,44 @@ $quickSearchUrl = $allowedSuggestion ? $escaper->escapeUrl($helper->getSuggestUr
                            value="<?= $escaper->escapeHtmlAttr($param['value']) ?>"/>
                 <?php endforeach; ?>
             <?php endif; ?>
-        <label class="label cs-header-search__label" for="search" data-role="minisearch-label">
-            <span><?= $escaper->escapeHtml(__('Search')) ?></span>
-        </label>
-        <input id="search"
-            data-mage-init='{
-                "quickSearch":{
-                    "formSelector":"#cs-header-search",
-                    "url": "<?= /* @noEscape */ $quickSearchUrl ?>",
-                    "destinationSelector":"#cs-header-search__autocomplete",
-                    "minSearchLength": "<?= $escaper->escapeHtml($helper->getMinQueryLength()) ?>"
-                }
-            }'
-            type="search"
-            name="<?= $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
-            value="<?= /* @noEscape */ $helper->getEscapedQueryText() ?>"
-            placeholder="<?= $escaper->escapeHtmlAttr($block->getSearchPlaceholder()) ?>"
-            class="cs-header-search__input"
-            maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
-            role="combobox"
-            aria-haspopup="false"
-            aria-autocomplete="both"
-            aria-expanded="false"
-            autocomplete="off">
-        <div class="cs-header-search__autocomplete" id="cs-header-search__autocomplete"></div>
-        <div class="cs-header-search__action">
-            <span class="cs-header-search__close">
-                <?= $block->getChildHtml('top.search.icon.close'); ?>
-                <span class="cs-header-search__close-label"><?= /* @noEscape */ __('Close search'); ?></span>
-            </span>
-            <button class="cs-header-search__button" type="submit">
-                <span class="cs-header-search__button-container cs-header-search__button-container--search">
-                    <?= $block->getChildHtml('top.search.icon.submit'); ?>
+            <label class="label cs-header-search__label" for="search" data-role="minisearch-label">
+                <span><?= $escaper->escapeHtml(__('Search')) ?></span>
+            </label>
+            <input id="search"
+                data-mage-init='{
+                    "quickSearch": {
+                        "formSelector": "#cs-header-search",
+                        "url": "<?= /* @noEscape */ $quickSearchUrl ?>",
+                        "destinationSelector": "#cs-header-search__autocomplete",
+                        "minSearchLength": "<?= $escaper->escapeHtml($helper->getMinQueryLength()) ?>"
+                    }
+                }'
+                type="search"
+                name="<?= $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+                value="<?= /* @noEscape */ $helper->getEscapedQueryText() ?>"
+                placeholder="<?= $escaper->escapeHtmlAttr($block->getSearchPlaceholder()) ?>"
+                class="cs-header-search__input"
+                maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
+                role="combobox"
+                aria-haspopup="false"
+                aria-autocomplete="both"
+                aria-expanded="false"
+                autocomplete="off">
+            <div class="cs-header-search__autocomplete" id="cs-header-search__autocomplete"></div>
+            <div class="cs-header-search__action">
+                <span class="cs-header-search__close">
+                    <?= $block->getChildHtml('top.search.icon.close'); ?>
+                    <span class="cs-header-search__close-label"><?= /* @noEscape */ __('Close search'); ?></span>
                 </span>
-                <span class="cs-header-search__button-container cs-header-search__button-container--loader">
-                    <?= $block->getChildHtml('top.search.icon.loader'); ?>
-                </span>
-                <span class="cs-header-search__button-label"><?= /* @noEscape */ __('Search'); ?></span>
-            </button>
-        </div>
+                <button class="cs-header-search__button" type="submit">
+                    <span class="cs-header-search__button-container cs-header-search__button-container--search">
+                        <?= $block->getChildHtml('top.search.icon.submit'); ?>
+                    </span>
+                    <span class="cs-header-search__button-container cs-header-search__button-container--loader">
+                        <?= $block->getChildHtml('top.search.icon.loader'); ?>
+                    </span>
+                    <span class="cs-header-search__button-label"><?= /* @noEscape */ __('Search'); ?></span>
+                </button>
+            </div>
     </form>
 </div>

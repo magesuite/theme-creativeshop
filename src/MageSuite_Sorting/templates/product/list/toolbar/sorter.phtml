@@ -1,4 +1,12 @@
-<?php /** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */ ?>
+<?php
+/**
+ * Template overridden to:
+ * - add support for customizable sorting label
+ * - change classes
+ * Aligned with MageSuite_Sorting v1.2.1 in 04/2024
+ */
+/** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */
+?>
 <?php
     $sorterLabel = $block->getVar('toolbar/sorter/label', 'Magento_Catalog');
 ?>
@@ -9,10 +17,10 @@
     <select id="sorter" data-role="sorter" class="sorter-options cs-select cs-sorter__select">
         <?php foreach ($block->getAvailableOrders() as $identifier => $label): ?>
             <?php
-                $identifier = ($identifier == 'relevance') ? 'relevance_direction_asc' : $identifier;
+            $identifier = ($identifier == 'relevance') ? 'relevance_direction_asc' : $identifier;
 
-                list($field, $direction) = explode('_direction_', $identifier);
-                $selected = ($block->getCurrentOrder() == $field and $block->getCurrentDirection() == $direction) ? 'selected="selected"' : '';
+            list($field, $direction) = explode('_direction_', $identifier);
+            $selected = ($block->getCurrentOrder() == $field and $block->getCurrentDirection() == $direction) ? 'selected="selected"' : '';
             ?>
 
             <option value="<?=$field?>" data-direction="<?=$direction?>" <?=$selected?>><?= $label?></option>

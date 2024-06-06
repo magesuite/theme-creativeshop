@@ -5,7 +5,7 @@
  * - add Remove all filters button
  * - remove "Now Shopping by" label
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 ?>
 <?php
@@ -19,55 +19,55 @@
     $_filters = $block->getActiveFilters();
     $filtersCount = count($_filters);
 ?>
-<?php if (!empty($_filters)): ?>
-    <div class="cs-aftersearch-nav__state cs-aftersearch-nav-state">
-        <ol class="cs-aftersearch-nav-state__items items">
-            <?php foreach ($_filters as $filter): ?>
-                <li class="cs-aftersearch-nav-state__item item">
-                    <?php
-                    $clearLinkUrl = $filter->getClearLinkUrl();
-                    $currentFilterName = $block->escapeHtml(__($filter->getName())) . " " . $block->escapeHtml($block->stripTags($filter->getLabel()));
-                    if ($clearLinkUrl):
-                        ?>
-                        <a class="action previous" href="<?= $block->escapeUrl($filter->getRemoveUrl()) ?>"
-                           title="<?= $block->escapeHtmlAttr(__('Previous')) ?>">
-                            <span><?= $block->escapeHtml(__('Previous')) ?></span>
-                        </a>
-                        <a class="action remove cs-aftersearch-nav-state__link"
-                           title="<?= $block->escapeHtmlAttr($filter->getFilter()->getClearLinkText()) ?>"
-                           href="<?= $block->escapeUrl($clearLinkUrl)
-                            ?>"
-                           aria-label="<?= /* @noEscape */ __('Remove This Item') ?>"
-                        >
-                            <?= $block->getChildHtml('catalog.navigation.state.remove.icon'); ?>
-                            <span class="cs-aftersearch-nav-state__text">
-                                <span class="cs-aftersearch-nav-state__label filter-label"><?= $block->escapeHtml($filter->getFilter()->getClearLinkText()) ?></span>
-                            </span>
-                        </a>
-                    <?php else: ?>
-                        <a
-                            class="cs-aftersearch-nav-state__link action remove" href="<?= $block->escapeUrl($filter->getRemoveUrl()) ?>"
-                            title="<?= $block->escapeHtmlAttr(__('Remove')) . " " . $currentFilterName;?>"
-                            aria-label="<?= /* @noEscape */ __('Remove This Item') ?>"
-                        >
-                            <?= $block->getChildHtml('catalog.navigation.state.remove.icon'); ?>
-                            <span class="cs-aftersearch-nav-state__text">
-                                <span class="cs-aftersearch-nav-state__label filter-label"><?= $block->escapeHtml(__($filter->getName())); ?></span>
-                                <span class="cs-aftersearch-nav-state__value filter-value"><?= $block->escapeHtml($block->stripTags($filter->getLabel())) ?></span>
-                            </span>
-                        </a>
-                    <?php endif; ?>
-                </li>
-            <?php endforeach; ?>
-            <li class="cs-aftersearch-nav-state__item cs-aftersearch-nav-state__item--clear item">
-                <a class="cs-aftersearch-nav-state__link action remove" href="<?= $block->escapeUrl($block->getClearUrl()) ?>" title="<?= $block->escapeHtmlAttr(__('Clear all filters')) ?>">
-                    <?= $block->getChildHtml('catalog.navigation.state.remove.icon'); ?>
-                    <span class="cs-aftersearch-nav-state__text">
-                        <span class="cs-aftersearch-nav-state__label filter-label"><?= /* @noEscape */ __('Clear all filters') ?></span>
-                        <span class="cs-aftersearch-nav-state__value filter-value"><?= $block->escapeHtml($filtersCount) ?></span>
-                    </span>
-                </a>
+<?php if (!empty($_filters)) : ?>
+<div class="cs-aftersearch-nav__state cs-aftersearch-nav-state">
+    <ol class="cs-aftersearch-nav-state__items items">
+        <?php foreach ($_filters as $_filter) : ?>
+            <li class="cs-aftersearch-nav-state__item item">
+                <?php
+                $clearLinkUrl = $_filter->getClearLinkUrl();
+                $currentFilterName = $block->escapeHtml(__($_filter->getName())) . " " . $block->escapeHtml($block->stripTags($_filter->getLabel()));
+                if ($clearLinkUrl):
+                    ?>
+                    <a class="action previous" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
+                       title="<?= $block->escapeHtmlAttr(__('Previous')) ?>">
+                        <span><?= $block->escapeHtml(__('Previous')) ?></span>
+                    </a>
+                    <a class="action remove cs-aftersearch-nav-state__link"
+                       title="<?= $block->escapeHtmlAttr($_filter->getFilter()->getClearLinkText()) ?>"
+                       href="<?= $block->escapeUrl($clearLinkUrl)
+                        ?>"
+                       aria-label="<?= /* @noEscape */ __('Remove This Item') ?>"
+                    >
+                        <?= $block->getChildHtml('catalog.navigation.state.remove.icon'); ?>
+                        <span class="cs-aftersearch-nav-state__text">
+                            <span class="cs-aftersearch-nav-state__label filter-label"><?= $block->escapeHtml($_filter->getFilter()->getClearLinkText()) ?></span>
+                        </span>
+                    </a>
+                <?php else : ?>
+                    <a
+                        class="cs-aftersearch-nav-state__link action remove" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
+                        title="<?= $block->escapeHtmlAttr(__('Remove')) . " " . $currentFilterName ?>"
+                        aria-label="<?= /* @noEscape */ __('Remove This Item') ?>"
+                    >
+                        <?= $block->getChildHtml('catalog.navigation.state.remove.icon'); ?>
+                        <span class="cs-aftersearch-nav-state__text">
+                            <span class="cs-aftersearch-nav-state__label filter-label"><?= $block->escapeHtml(__($_filter->getName())); ?></span>
+                            <span class="cs-aftersearch-nav-state__value filter-value"><?= $block->escapeHtml($block->stripTags($_filter->getLabel())) ?></span>
+                        </span>
+                    </a>
+                <?php endif; ?>
             </li>
-        </ol>
-    </div>
+        <?php endforeach; ?>
+        <li class="cs-aftersearch-nav-state__item cs-aftersearch-nav-state__item--clear item">
+            <a class="cs-aftersearch-nav-state__link action remove" href="<?= $block->escapeUrl($block->getClearUrl()) ?>" title="<?= $block->escapeHtmlAttr(__('Clear all filters')) ?>">
+                <?= $block->getChildHtml('catalog.navigation.state.remove.icon'); ?>
+                <span class="cs-aftersearch-nav-state__text">
+                    <span class="cs-aftersearch-nav-state__label filter-label"><?= /* @noEscape */ __('Clear all filters') ?></span>
+                    <span class="cs-aftersearch-nav-state__value filter-value"><?= $block->escapeHtml($filtersCount) ?></span>
+                </span>
+            </a>
+        </li>
+    </ol>
+</div>
 <?php endif; ?>

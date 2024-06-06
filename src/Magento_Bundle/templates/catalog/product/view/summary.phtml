@@ -6,15 +6,13 @@
  * - remove stock info
  * - add placeholder area at the end of the file
  * - change slide speed to 300ms
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 // phpcs:disable PHPCompatibility.Miscellaneous.RemovedAlternativePHPTags.MaybeASPOpenTagFound
+$_product = $block->getProduct();
 ?>
-<?php
-    $product = $block->getProduct();
-?>
-<?php if ($product->isSaleable() && $block->hasOptions()): ?>
+<?php if ($_product->isSaleable() && $block->hasOptions()) : ?>
 <div id="bundleSummary"
      class="block-bundle-summary cs-bundle-box__summary"
      data-mage-init='{"sticky":{"container": ".product-add-form"}}'>
@@ -22,8 +20,8 @@
         <div class="bundle-info cs-bundle-box__summary-section cs-bundle-box__summary-section--product-details">
             <p class="title cs-bundle-box__summary-title"><?= $block->escapeHtml(__('Your Customization')) ?></p>
             <div class="cs-bundle-box__summary-product-details">
-                <?= $block->getImage($product, 'bundled_product_customization_page')->toHtml() ?>
-                <p class="product name cs-bundle-box__summary-product-name"><?= $block->escapeHtml($product->getName()) ?></p>
+                <?= $block->getImage($_product, 'bundled_product_customization_page')->toHtml() ?>
+                <p class="product name cs-bundle-box__summary-product-name"><?= $block->escapeHtml($_product->getName()) ?></p>
             </div>
         </div>
         <div class="bundle-info cs-bundle-box__summary-section cs-bundle-box__summary-section--addtocart">
@@ -55,7 +53,7 @@
                 "slideBackSelector": ".action.customization.back",
                 "bundleProductSelector": "#bundleProduct",
                 "bundleOptionsContainer": ".cs-container--page-pdp-bundle-config"
-                <?php if ($block->isStartCustomization()): ?>
+                <?php if ($block->isStartCustomization()) : ?>
                 ,"autostart": true
                 <?php endif;?>
             }
