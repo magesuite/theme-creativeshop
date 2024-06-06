@@ -4,45 +4,41 @@
  * - add magesuite classes
  * - replace input with qty-increment component
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 /** @var $block \Magento\Catalog\Block\Product\View */
 ?>
-<?php
-    $product = $block->getProduct();
-    $buttonTitle = __('Update Cart');
-?>
-<?php if ($product->isSaleable()): ?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Update Cart'); ?>
+<?php if ($_product->isSaleable()) :?>
     <div class="box-tocart cs-buybox__addtocart | update <?= $block->getAdditionalCssClasses() ?>">
         <div class="cs-buybox__addtocart-fieldset">
-            <?php if ($block->shouldRenderQuantity()): ?>
-                <div class="cs-buybox__qty-wrapper">
-                    <?php if(!empty($block->getQtyLabel())): ?>
-                        <label class="cs-label cs-buybox__qty-label" for="qty"><?= $block->getQtyLabel() ?></label>
-                    <?php endif; ?>
+            <?php if ($block->shouldRenderQuantity()) :?>
+            <div class="cs-buybox__qty-wrapper">
+                <?php if(!empty($block->getQtyLabel())) :?>
+                    <label class="cs-label cs-buybox__qty-label" for="qty"><?= $block->getQtyLabel() ?></label>
+                <?php endif; ?>
 
-                    <div class="cs-buybox__qty-increment">
-                        <?php $qtyValidators = $block->getQuantityValidators(); ?>
-                        <?= $this->getLayout()
-                              ->createBlock(\Magento\Framework\View\Element\Template::class)
-                              ->setInputName('qty')
-                              ->setInputInitialValue($block->getProductDefaultQty() * 1)
-                              ->setInputAdditionalParams('data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="0" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
-                              ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
-                              ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
-                              ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
-                              ->toHtml(); ?>
-                    </div>
+                <div class="cs-buybox__qty-increment">
+                    <?php $qtyValidators = $block->getQuantityValidators(); ?>
+                    <?= $this->getLayout()
+                          ->createBlock(\Magento\Framework\View\Element\Template::class)
+                          ->setInputName('qty')
+                          ->setInputInitialValue($block->getProductDefaultQty() * 1)
+                          ->setInputAdditionalParams('data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="0" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
+                          ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
+                          ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
+                          ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
+                          ->toHtml(); ?>
                 </div>
+            </div>
             <?php endif; ?>
             <div class="cs-buybox__addtocart-actions">
-                <button
-                    type="submit"
+                <button type="submit"
                     title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
                     class="action primary tocart cs-buybox__update"
-                    id="product-updatecart-button"
-                >
+                    id="product-updatecart-button">
                     <span class="cs-buybox__update-span"><?= $block->escapeHtml($buttonTitle) ?></span>
                     <?= $this->getLayout()
                         ->createBlock('MageSuite\ThemeHelpers\Block\Icon')

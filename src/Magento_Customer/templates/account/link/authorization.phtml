@@ -1,12 +1,12 @@
 <?php
 /**
- * Aligned with Magento 2.4.6 at 04/2023
+ * Template overrridden in order to:
+ * - adjust html structure
+ * Aligned with Magento 2.4.7 in 04/2024
  *
  * @var \Magento\Customer\Block\Account\AuthorizationLink $block
  * @var \Magento\Framework\Escaper $escaper
  */
-
-// @codingStandardsIgnoreFile
 $dataPostParam = '';
 $isLoggedIn = $block->isLoggedIn();
 $htmlTag = $block->getHtmlTag() ?? 'div';
@@ -14,11 +14,11 @@ if ($isLoggedIn) {
     $dataPostParam = sprintf("data-post='%s' data-uenc-update='true'", $block->getPostParams());
 }
 ?>
-    <<?= $htmlTag ?> class="authorization-link cs-authorization-link <?= $block->getAdditionalCssClasses() ?>" data-label="<?= $block->escapeHtmlAttr(__('or')) ?>">
-        <a <?= /* @noEscape */ $block->getLinkAttributes() ?><?= /* @noEscape */ $dataPostParam ?> class="cs-authorization-link__link">
-            <?= $block->getChildHtml($isLoggedIn ? 'authorization-link.icon.logout' : 'authorization-link.icon.login'); ?>
-            <span class="cs-authorization-link__label">
-                <?= $block->escapeHtml($block->getLabel()); ?>
-            </span>
-        </a>
-    </<?= $htmlTag ?>>
+<<?= $htmlTag ?> class="authorization-link cs-authorization-link <?= $block->getAdditionalCssClasses() ?>" data-label="<?= $escaper->escapeHtmlAttr(__('or')) ?>">
+    <a <?= /* @noEscape */ $block->getLinkAttributes() ?><?= /* @noEscape */ $dataPostParam ?> class="cs-authorization-link__link">
+        <?= $block->getChildHtml($isLoggedIn ? 'authorization-link.icon.logout' : 'authorization-link.icon.login'); ?>
+        <span class="cs-authorization-link__label">
+            <?= $escaper->escapeHtml($block->getLabel()); ?>
+        </span>
+    </a>
+</<?= $htmlTag ?>>

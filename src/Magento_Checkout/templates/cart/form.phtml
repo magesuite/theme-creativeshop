@@ -5,14 +5,14 @@
  * - hide .cart.main.actions element with cs-visually-hidden - we prefer to update cart automatically after user change qty or remove item from cart
  * There is a script prepared in: `components/cart/cart.ts` which shows loader and triggers click on hidden #update-cart-button button
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate
 
 /**  @var $block \Magento\Checkout\Block\Cart\Grid */
 ?>
-<?php $mergedCells = ($this->helper(\Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
+<?php $mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
 <?= $block->getChildHtml('form_before') ?>
 <form action="<?= $block->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>"
           method="post"

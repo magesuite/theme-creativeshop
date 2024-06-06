@@ -6,7 +6,7 @@
  * - add icon for trigger
  * - add magesuite classes
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 /** @var \Magento\Store\Block\Switcher $block */
@@ -19,9 +19,9 @@
 <div class="switcher store switcher-store cs-dropdown-switcher cs-dropdown-switcher--stores" id="switcher-store">
     <strong class="cs-visually-hidden label switcher-label"><span><?= $block->escapeHtml(__('Select Store')) ?></span></strong>
     <div class="actions dropdown options switcher-options">
-        <?php foreach ($block->getGroups() as $group): ?>
-        <?php if ($group->getId() == $block->getCurrentGroupId()): ?>
-        <?php $name = $block->escapeHtml($group->getName()); ?>
+        <?php foreach ($block->getGroups() as $_group): ?>
+        <?php if ($_group->getId() == $block->getCurrentGroupId()): ?>
+        <?php $name = $block->escapeHtml($_group->getName()); ?>
             <div
                 class="action toggle switcher-trigger cs-dropdown-switcher__trigger"
                 role="button"
@@ -35,7 +35,7 @@
                     <?php if ($showFlags): ?>
                         <?= $this->getLayout()
                             ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
-                            ->setIconUrl('images/icons/flag_'.strtolower($group->getCode().'.svg'))
+                            ->setIconUrl('images/icons/flag_'.strtolower($_group->getCode().'.svg'))
                             ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--active')
                             ->setAltText(__($name))
                             ->toHtml(); ?>
@@ -50,16 +50,16 @@
         <?php endforeach; ?>
         <div class="cs-dropdown-switcher__list dropdown switcher-dropdown" data-target="dropdown">
             <ul class="cs-dropdown-switcher__list-inner">
-                <?php foreach ($block->getGroups() as $group): ?>
-                    <?php if (!($group->getId() == $block->getCurrentGroupId())): ?>
-                        <?php $name = $block->escapeHtml($group->getName()); ?>
+                <?php foreach ($block->getGroups() as $_group) : ?>
+                    <?php if (!($_group->getId() == $block->getCurrentGroupId())) : ?>
+                        <?php $name = $block->escapeHtml($_group->getName()); ?>
                         <li class="cs-dropdown-switcher__list-item switcher-option">
-                            <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @noEscape */ $block->getTargetStorePostData($group->getDefaultStore()) ?>'>
+                            <a class="cs-dropdown-switcher__list-item-link" href="#" data-post='<?= /* @noEscape */ $block->getTargetStorePostData($_group->getDefaultStore()) ?>'>
                                 <?php if ($showFlags): ?>
                                     <?= $this->getLayout()
                                         ->createBlock(MageSuite\ThemeHelpers\Block\Icon::class)
-                                        ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($group->getCode())).'.svg')
-                                        ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($group->getCode()))
+                                        ->setIconUrl('images/icons/flag_'.strtolower($block->escapeHtml($_group->getCode())).'.svg')
+                                        ->setCssClass('cs-dropdown-switcher__option-icon cs-dropdown-switcher__option-icon--'.strtolower($_group->getCode()))
                                         ->setAltText(__($name))
                                         ->toHtml(); ?>
                                 <?php endif ?>

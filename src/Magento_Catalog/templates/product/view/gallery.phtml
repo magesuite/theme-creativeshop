@@ -1,15 +1,16 @@
 <?php
 /**
- * Override to display main image before gallery is loaded
+ * Tempate overridden to:
+ * - display main image before gallery is loaded
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
-// @codingStandardsIgnoreFile
 
 /**
  * Product media data template
  *
  * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ * @var $escaper \Magento\Framework\Escaper
  */
 ?>
 
@@ -37,6 +38,7 @@ $imageHeight = $block->getImageAttribute('product_page_image_medium', 'height');
 
 $imgClass = $block->getImgClass();
 ?>
+
 <div class="gallery-placeholder _block-content-loading cs-product-gallery<?= $totalImages === 1 ? ' cs-product-gallery--single' : ''?>" data-gallery-role="gallery-placeholder">
     <picture class="cs-product-gallery__placeholder-image gallery-placeholder__image">
         <img
@@ -48,7 +50,7 @@ $imgClass = $block->getImgClass();
         >
     </picture>
 </div>
-
+<?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
 <script type="text/x-magento-init">
     {
         "[data-gallery-role=gallery-placeholder]": {

@@ -1,3 +1,6 @@
+/**
+ * Aligned with Magento 2.4.7 in 04/2024
+ */
 define([
     'mage/utils/wrapper',
     'Magento_Checkout/js/model/quote',

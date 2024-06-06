@@ -4,6 +4,7 @@
  * So when store pickup is available we replace original tabs with "Shipping"/"Store Pickup"
  * In this case to keep original mopdification too, it has been moved to content and is now displayed as text. Either "I have an account. {link}Log in{/link}" or "{link}I'm new here{/link}".
  * Links toggle shipping form fields as in original modification
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 define([
     'jquery',

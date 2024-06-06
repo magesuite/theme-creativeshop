@@ -1,10 +1,12 @@
+/**
+ * Changes in comparison to source file:
+ * - modified: agreementsInputPath,
+ * Aligned with Magento 2.4.7 in 04/2024
+ */
 /* tslint:disable one-variable-per-declaration */
 
 define(['jquery', 'mage/validation'], function ($) {
     'use strict';
-
-    // NOTE: Changes in comparison to source file:
-    // - modified: agreementsInputPath,
 
     return function (agreementValidator) {
         var checkoutConfig = window.checkoutConfig,

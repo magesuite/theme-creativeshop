@@ -3,21 +3,22 @@
  * Template overwritten to:
  * - Remove schema attribute
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
-/** @var $block \Magento\Framework\Pricing\Render\Amount */
 ?>
 
+<?php /** @var $block \Magento\Framework\Pricing\Render\Amount */ ?>
+
 <span class="price-container <?= $block->escapeHtmlAttr($block->getAdjustmentCssClasses()) ?>">
-    <?php if ($block->getDisplayLabel()): ?>
+    <?php if ($block->getDisplayLabel()) :?>
         <span class="price-label"><?= $block->escapeHtml($block->getDisplayLabel()) ?></span>
     <?php endif; ?>
     <span <?php if ($block->getPriceId()) :?> id="<?= $block->escapeHtmlAttr($block->getPriceId()) ?>"<?php endif;?>
         <?= ($block->getPriceDisplayLabel()) ? 'data-label="' . $block->escapeHtmlAttr($block->getPriceDisplayLabel() . $block->getPriceDisplayInclExclTaxes()) . '"' : '' ?>
-            data-price-amount="<?= $block->escapeHtmlAttr($block->getDisplayValue()) ?>"
-            data-price-type="<?= $block->escapeHtmlAttr($block->getPriceType()) ?>"
-            class="price-wrapper <?= $block->escapeHtmlAttr($block->getPriceWrapperCss()) ?>"
-        ><?= $block->escapeHtml($block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()), ['span']) ?></span>
+        data-price-amount="<?= $block->escapeHtmlAttr($block->getDisplayValue()) ?>"
+        data-price-type="<?= $block->escapeHtmlAttr($block->getPriceType()) ?>"
+        class="price-wrapper <?= $block->escapeHtmlAttr($block->getPriceWrapperCss()) ?>"
+    ><?= $block->escapeHtml($block->formatCurrency($block->getDisplayValue(), (bool)$block->getIncludeContainer()), ['span']) ?></span>
     <?php if ($block->hasAdjustmentsHtml()) :?>
         <?= $block->getAdjustmentsHtml() ?>
     <?php endif; ?>

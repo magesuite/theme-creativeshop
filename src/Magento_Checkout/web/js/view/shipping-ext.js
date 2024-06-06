@@ -1,5 +1,6 @@
 /**
  * Provide additional methods to shipping step
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
     $,

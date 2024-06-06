@@ -3,6 +3,7 @@
  * Modification type: extend
  * Reasons:
  * - close dropdown when navigation flyout is opened
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 define(['jquery', 'matchMedia'], function ($, mediaCheck) {
     'use strict';

@@ -3,10 +3,12 @@
  * - add magesuite classes - cs-cms-block class allows to use general typography styles
  * - assign current category to a variable
  *
- * Aligned with Magento 2.4.6 at 4/2023
+ * Aligned with Magento 2.4.7 in 4/2024
  */
-
+?>
+<?php
 // phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
 /**
  * Category view template
  *
@@ -14,11 +16,11 @@
  */
 ?>
 <?php $currentCategory = $block->getCurrentCategory() ?>
-<?php if ($description = $currentCategory->getDescription()): ?>
+<?php if ($_description = $currentCategory->getDescription()) :?>
     <div class="cs-cms-block | cs-page-category__description">
         <?= /* @noEscape */ $this->helper(\Magento\Catalog\Helper\Output::class)->categoryAttribute(
             $currentCategory,
-            $description,
+            $_description,
             'description'
         ) ?>
     </div>

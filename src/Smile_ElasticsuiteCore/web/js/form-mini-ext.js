@@ -1,6 +1,7 @@
 /**
  * Elasticsuite search autocomplete extension that allows to search for a phrase
  * before automatic suggestions are loaded.
+ * Aligned with Smile_ElasticSuiteCore in 04/2024
  */
 
 define(['jquery'], function ($) {
@@ -109,7 +110,7 @@ define(['jquery'], function ($) {
                                     this.element.trigger('focus');
                                 }
                                 this.autoComplete.hide();
-                                $('#search').blur();
+                                $('#search').trigger('blur');
                                 this._updateAriaHasPopup(false);
                             }, this),
                             250

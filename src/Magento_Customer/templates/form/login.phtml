@@ -3,14 +3,12 @@
  * Template overridden to:
  * - make title configurable from xml
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 
 /** @var \Magento\Customer\Block\Form\Login $block */
-/** @var \Magento\Customer\ViewModel\LoginButton $loginButtonViewModel */
-$loginButtonViewModel = $block->getData('login_button_view_model');
 ?>
 <div class="block block-customer-login">
     <div class="block-title">
@@ -53,7 +51,11 @@ $loginButtonViewModel = $block->getData('login_button_view_model');
                 </div>
                 <?= $block->getChildHtml('form_additional_info') ?>
                 <div class="actions-toolbar">
-                    <div class="primary"><button type="submit" class="action login primary" name="send" id="send2" <?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" <?php endif; ?>><span><?= $block->escapeHtml(__('Sign In')) ?></span></button></div>
+                    <div class="primary">
+                        <button type="submit" class="action login primary" name="send" id="send2" <?php if ($block->getButtonLockManager()->isDisabled('customer_login_form_submit')): ?> disabled="disabled" <?php endif; ?>>
+                            <span><?= $block->escapeHtml(__('Sign In')) ?></span>
+                        </button>
+                    </div>
                     <div class="secondary"><a class="action remind" href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>"><span><?= $block->escapeHtml(__('Forgot Your Password?')) ?></span></a></div>
                 </div>
             </fieldset>

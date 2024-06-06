@@ -1,13 +1,12 @@
 <?php
 /**
- * template overridden to:
+ * Template overridden to:
  * - add magesuite classes
  * - add icon to button
  *
- * Aligned with Magento 2.4.6 at 04/2022
+ * Aligned with Magento 2.4.7 in 04/2024
  */
-?>
-<?php
+
 /** @var \Magento\Captcha\Block\Captcha\DefaultCaptcha $block */
 
 /** @var \Magento\Captcha\Model\DefaultModel $captcha */
@@ -20,7 +19,9 @@ $note = $block->escapeHtml(__('<strong>Attention</strong>: Captcha is case sensi
 ?>
 <div class="cs-form__field cs-input cs-captcha<?php if ($validationEnabled): ?> required<?php endif; ?>"
      role="<?= $block->escapeHtmlAttr($block->getFormId()) ?>">
-    <label class="cs-input__label" for="captcha_<?= $block->escapeHtmlAttr($block->getFormId()) ?>"><span><?= $block->escapeHtml(__('Please type the letters and numbers below')) ?></span></label>
+    <label class="cs-input__label" for="captcha_<?= $block->escapeHtmlAttr($block->getFormId()) ?>">
+        <span><?= $block->escapeHtml(__('Please type the letters and numbers below')) ?></span>
+    </label>
     <div class="cs-captcha__wrapper">
         <input
             name="<?= /* @noEscape */ $inputName ?>[<?= $block->escapeHtmlAttr($block->getFormId()) ?>]"

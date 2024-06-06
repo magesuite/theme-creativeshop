@@ -1,3 +1,11 @@
+/**
+ * T&C checkboxes with the same ID are linked by "checked" binding.
+ * Clicking on visible one, selects also hidden one.
+ * Checkout has duplicated T&C blocks which are displayed
+ * according to current view (desktop, mobile).
+ * Allows using "merged" T&Cs - documentation and examples on confluence
+ * Aligned with Magento 2.4.7 in 04/2024
+ */
 define([
     'jquery',
     'ko',
@@ -6,13 +14,8 @@ define([
     'use strict';
 
     var mixin = {
-        // T&C checkboxes with the same ID are linked by "checked" binding.
-        // Clicking on visible one, selects also hidden one.
-        // NOTE: Checkout has duplicated T&C blocks which are displayed
-        // according to current view (desktop, mobile).
         checkboxState: ko.observableArray(false),
 
-        // Allows using "merged" T&Cs - documentation and examples on confluence
         showContent: function (element, event) {
             this.modalTitle(element.checkboxText);
             this.modalContent(

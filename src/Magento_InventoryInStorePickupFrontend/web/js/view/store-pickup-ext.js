@@ -1,3 +1,6 @@
+/**
+ * Aligned with Magento 2.4.7 in 04/2024
+ */
 define([], function () {
     'use strict';
 
