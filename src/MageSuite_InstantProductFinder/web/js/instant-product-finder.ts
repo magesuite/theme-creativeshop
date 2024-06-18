@@ -306,8 +306,7 @@ export default class InstantProductFinder {
         }
 
         if (
-            !this._element.querySelectorAll(this._selectors.step + '.required')
-                .length
+            !this._element.querySelectorAll(this._selectors.step + '.required:not(.query)').length
         ) {
             showAllSteps = true;
         }
@@ -434,6 +433,7 @@ export default class InstantProductFinder {
         );
         const targetIsActive: boolean = target.classList.contains('active');
         const step: HTMLElement = target.closest(this._selectors.step);
+        const currentStepId = target.closest(this._selectors.step).id;
         const code: string = step.getAttribute(
             'data-finder-step-attribute-code'
         );
@@ -452,9 +452,11 @@ export default class InstantProductFinder {
         });
 
         if (!targetIsActive) {
+            this._activeSeparateOptions[currentStepId].add(currentValue)
             this._currentQuery[code].add(currentValue);
             target.classList.add('active');
         } else {
+            this._activeSeparateOptions[currentStepId].delete(currentValue)
             this._currentQuery[code].delete(currentValue);
             target.classList.remove('active');
         }
@@ -562,6 +564,7 @@ export default class InstantProductFinder {
         this._mappedProductsToOptions = {};
         this._activeCombinedOptions.clear();
         this._activeProductsAllAttrs.clear();
+        this._activeProducts.clear();
         this._activeSeparateOptions = {};
         this._activeCombinedOptions.clear();
         this._productsAreFetched = false;
