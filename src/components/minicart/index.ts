@@ -4,7 +4,9 @@ import * as $ from 'jquery';
 
 import Minicart from 'components/minicart/minicart-offcanvas';
 
-new Minicart({});
+new Minicart({
+    isMessagesOffcanvas: false,
+});
 
 // In case of dropdown-minicart minicart functionalities are initialize only after minicart with products is shown
 // Empty dropdown-minicart cannot be closed by clicking on X icon as events are nit attached yet.

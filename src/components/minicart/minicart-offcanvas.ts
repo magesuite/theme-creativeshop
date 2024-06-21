@@ -280,7 +280,9 @@ export default class Minicart {
 
     public openMinicart(): void {
         if (!this._isMinicartOpen()) {
-            this._offcanvasMinicart.show();
+            setTimeout(() => {
+                this._offcanvasMinicart.show();
+            }, 800);
         }
 
         if (this._options.isMessagesOffcanvas) {
