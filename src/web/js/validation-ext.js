@@ -1,6 +1,6 @@
 /* tslint:disable one-variable-per-declaration */
 
-define(['jquery'], function ($) {
+define(['jquery', 'jquery-ui-modules/widget'], function ($) {
     'use strict';
 
     return function (mageValidation) {
@@ -33,7 +33,7 @@ define(['jquery'], function ($) {
             );
         };
 
-        $.widget('mage.validation', mageValidation, {
+        $.widget('mage.validation', $.mage.validation, {
             options: {
                 // Restore default focusout validation.
                 onfocusout: $.validator.defaults.onfocusout,
