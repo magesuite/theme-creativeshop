@@ -2,10 +2,18 @@ import 'components/minicart/minicart.scss';
 
 import * as $ from 'jquery';
 
+import viewXml from 'etc/view';
+import deepGet from 'utils/deep-get/deep-get';
+
 import Minicart from 'components/minicart/minicart-offcanvas';
 
+const minicartMessageSetting = deepGet(
+    viewXml,
+    'vars.Magento_Checkout.minicart_messages'
+);
+
 new Minicart({
-    isMessagesOffcanvas: false,
+    isMessagesOffcanvas: minicartMessageSetting === 'page' ? false : true,
 });
 
 // In case of dropdown-minicart minicart functionalities are initialize only after minicart with products is shown
