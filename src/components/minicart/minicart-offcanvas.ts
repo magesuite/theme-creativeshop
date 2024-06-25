@@ -12,6 +12,7 @@ import 'mage/translate';
 export interface MinicartOptions {
     /**
      * Defines if messages should be displayed in minicart-offcanvas
+     * Please note that if vars.Magento_Checkout.minicart_messages is set to 'page' this option is always false
      * @default {true}
      * @type {boolean}
      */
@@ -206,10 +207,17 @@ export default class Minicart {
             options
         );
 
-        this._xmlSettings = deepGet(
+        const minicartMessageSetting = deepGet(
             viewXml,
-            'vars.Magento_Checkout.minicart_offcanvas'
+            'vars.Magento_Checkout.minicart_messages'
         );
+
+        (this._options.isMessagesOffcanvas =
+            minicartMessageSetting === 'page' ? false : true),
+            (this._xmlSettings = deepGet(
+                viewXml,
+                'vars.Magento_Checkout.minicart_offcanvas'
+            ));
 
         if (!this._xmlSettings.enabled) {
             return;
