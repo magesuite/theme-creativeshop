@@ -212,12 +212,13 @@ export default class Minicart {
             'vars.Magento_Checkout.minicart_messages'
         );
 
-        (this._options.isMessagesOffcanvas =
-            minicartMessageSetting === 'page' ? false : true),
-            (this._xmlSettings = deepGet(
-                viewXml,
-                'vars.Magento_Checkout.minicart_offcanvas'
-            ));
+        this._options.isMessagesOffcanvas =
+            minicartMessageSetting === 'page' ? false : true;
+
+        this._xmlSettings = deepGet(
+            viewXml,
+            'vars.Magento_Checkout.minicart_offcanvas'
+        );
 
         if (!this._xmlSettings.enabled) {
             return;
