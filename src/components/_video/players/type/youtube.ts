@@ -45,7 +45,9 @@ const youtubePlayer = {
                 events: {
                     // Trigger manual play for mobile devices (iOS, Android)
                     onReady: (event) => {
-                        event.target.playVideo();
+                        if (options.player_vars.autoplay) {
+                            event.target.playVideo();
+                        }
                     },
                     // Trigger manual loop
                     onStateChange: (event) => {
