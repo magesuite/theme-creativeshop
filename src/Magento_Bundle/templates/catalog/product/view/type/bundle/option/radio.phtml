@@ -3,94 +3,86 @@
  * - add magesuite classes
  * - show qty-increment only when qty can change
  *
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 07/2024
  */
-?>
-<?php
-    /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio */
-    $option = $block->getOption();
-    $selections  = $option->getSelections();
-    $default     = $option->getDefaultSelection();
-    list($defaultQty, $canChangeQty) = $block->getDefaultValues();
-?>
 
-<div class="field option <?= ($option->getRequired()) ? ' required': '' ?> cs-bundle-box__field">
+// phpcs:disable Generic.Files.LineLength.TooLong
+?>
+<?php /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Radio */ ?>
+<?php $_option = $block->getOption(); ?>
+<?php $_selections  = $_option->getSelections(); ?>
+<?php $_default     = $_option->getDefaultSelection(); ?>
+<?php list($_defaultQty, $_canChangeQty) = $block->getDefaultValues(); ?>
+
+<div class="field option <?= ($_option->getRequired()) ? ' required': '' ?> cs-bundle-box__field">
     <label class="label cs-bundle-box__product-name">
-        <?= $block->escapeHtml($option->getTitle()) ?>
+        <?= $block->escapeHtml($_option->getTitle()) ?>
     </label>
     <div class="control cs-bundle-box__options-list">
         <div class="nested options-list">
             <?php if ($block->showSingle()): ?>
-                <?= /* @noEscape */ $block->getSelectionTitlePrice($selections[0]) ?>
-                <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selections[0]) ?>
-                <input
-                    type="hidden"
-                    class="bundle-option-<?= (int)$option->getId() ?>  product bundle option"
-                    name="bundle_option[<?= (int)$option->getId() ?>]"
-                    value="<?= (int)$selections[0]->getSelectionId() ?>"
-                    id="bundle-option-<?= (int)$option->getId() ?>-<?= (int)$selections[0]->getSelectionId() ?>"
-                    checked="checked"
-                    />
-            <?php else:?>
-                <?php if (!$option->getRequired()): ?>
+                <?= /* @noEscape */ $block->getSelectionTitlePrice($_selections[0]) ?>
+                <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selections[0]) ?>
+                <input type="hidden"
+                       class="bundle-option-<?= (int)$_option->getId() ?>  product bundle option"
+                       name="bundle_option[<?= (int)$_option->getId() ?>]"
+                       value="<?= (int)$_selections[0]->getSelectionId() ?>"
+                       id="bundle-option-<?= (int)$_option->getId() ?>-<?= (int)$_selections[0]->getSelectionId() ?>"
+                       checked="checked"
+                />
+            <?php else: ?>
+                <?php if (!$_option->getRequired()): ?>
                     <div class="field choice cs-bundle-box__option">
-                        <input
-                            type="radio"
-                            class="radio product bundle option"
-                            id="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>"
-                            name="bundle_option[<?= $block->escapeHtmlAttr($option->getId()) ?>]"
-                            data-selector="bundle_option[<?= $block->escapeHtmlAttr( $option->getId()) ?>]"
-                            <?= ($default && $default->isSalable())?'':' checked="checked" ' ?>
-                            value=""
-                        />
-                        <label
-                            class="label cs-bundle-box__product-option-name"
-                            for="bundle-option-<?= $block->escapeHtmlAttr( $option->getId()) ?>"
-                        >
+                        <input type="radio"
+                               class="radio product bundle option"
+                               id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>"
+                               name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                               data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                            <?= ($_default && $_default->isSalable())?'':' checked="checked" ' ?>
+                               value=""/>
+                        <label class="label cs-bundle-box__product-option-name" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>">
                             <span><?= $block->escapeHtml(__('None')) ?></span>
                         </label>
                     </div>
                 <?php endif; ?>
-                <?php foreach ($selections as $selection): ?>
+                <?php foreach ($_selections as $_selection): ?>
                     <div class="cs-bundle-box__option">
-                        <input
-                            type="radio"
-                            class="radio product bundle option change-container-classname"
-                            id="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>-<?= $block->escapeHtmlAttr($selection->getSelectionId()) ?>"
-                            <?php if ($option->getRequired()) echo 'data-validate="{\'validate-one-required-by-name\':true}"'?>
-                            name="bundle_option[<?= $block->escapeHtmlAttr($option->getId()) ?>]"
-                            data-selector="bundle_option[<?= $block->escapeHtmlAttr($option->getId()) ?>]"
-                            <?php if ($block->isSelected($selection)) echo ' checked="checked"' ?>
-                            <?php if (!$selection->isSaleable()) echo ' disabled="disabled"' ?>
-                            value="<?= $block->escapeHtmlAttr($selection->getSelectionId()) ?>"
-                        />
-                        <label
-                            class="label cs-bundle-box__product-option-name"
-                            for="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>-<?= $block->escapeHtmlAttr($selection->getSelectionId()) ?>"
-                        >
-                            <span><?= /* @noEscape */ $block->getSelectionTitlePrice($selection) ?></span>
-                            <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
+                        <input type="radio"
+                               class="radio product bundle option change-container-classname"
+                               id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
+                            <?php if ($_option->getRequired()) {
+                                echo 'data-validate="{\'validate-one-required-by-name\':true}"';
+                            } ?>
+                               name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                               data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                            <?php if ($block->isSelected($_selection)) { echo ' checked="checked"'; } ?>
+                            <?php if (!$_selection->isSaleable()) { echo ' disabled="disabled"'; } ?>
+                               value="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"/>
+                        <label class="label cs-bundle-box__product-option-name"
+                               for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>">
+                            <span><?= /* @noEscape */ $block->getSelectionTitlePrice($_selection) ?></span>
+                            <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selection) ?>
                         </label>
                     </div>
                 <?php endforeach; ?>
-                <div id="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>-container"></div>
+                <div id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container"></div>
             <?php endif; ?>
         </div>
 
-        <?php if($canChangeQty): ?>
+        <?php if($_canChangeQty): ?>
             <div class="field qty qty-holder cs-bundle-box__qty cs-box-addtocart__qty-wrapper">
-                <label class="cs-box-addtocart__label" for="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>-qty-input">
+                <label class="cs-box-addtocart__label" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-qty-input">
                     <span><?= $block->escapeHtml(__('Qty')) ?></span>
                 </label>
                 <div class="control cs-box-addtocart__qty-increment">
-                    <?php $disabled = !$canChangeQty ? ' disabled="disabled"' : ''; ?>
+                    <?php $disabled = !$_canChangeQty ? ' disabled="disabled"' : ''; ?>
 
                     <?= $this->getLayout()
                           ->createBlock('Magento\Framework\View\Element\Template')
-                          ->setInputName('bundle_option_qty['.$block->escapeHtmlAttr($option->getId()).']')
-                          ->setAdditionalInputCssClasses($canChangeQty ? ' input-text qty' : ' input-text qty qty-disabled')
-                          ->setInputInitialValue($block->escapeHtmlAttr($defaultQty))
-                          ->setInputAdditionalParams('id="bundle-option-'.$block->escapeHtmlAttr($option->getId()).'-qty-input" data-selector="bundle_option_qty['.$option->getId().']" data-min-value="1" min="1"'.$disabled)
+                          ->setInputName('bundle_option_qty['.$block->escapeHtmlAttr($_option->getId()).']')
+                          ->setAdditionalInputCssClasses($_canChangeQty ? ' input-text qty' : ' input-text qty qty-disabled')
+                          ->setInputInitialValue($block->escapeHtmlAttr($_defaultQty))
+                          ->setInputAdditionalParams('id="bundle-option-'.$block->escapeHtmlAttr($_option->getId()).'-qty-input" data-selector="bundle_option_qty['.$_option->getId().']" data-min-value="1" min="1"'.$disabled)
                           ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
                           ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
                           ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
