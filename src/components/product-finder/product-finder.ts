@@ -240,7 +240,7 @@ export default class ProductFinder {
         const $categoryField: JQuery = $(
             `<input type="hidden" name="category_id" value="${configuredData.category_id}"></input>`
         );
-        this._$form.append($categoryField);
+        this._$form.empty().append($categoryField);
 
         $.each(configuredData.attributes, (attributeCode, attributeOptions) => {
             if (Array.isArray(attributeOptions.range)) {
