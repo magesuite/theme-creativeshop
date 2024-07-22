@@ -2,6 +2,7 @@
 @import 'vendors/include-media';
 @import 'components/button/mixin';
 @import 'components/pseudoicon/mixin';
+@import 'components/field/mixin';
 @import 'utils/visually-hidden';
 
 // Table
@@ -303,6 +304,18 @@ $instant-purchase_actions-sticky-breakpoint: 'tablet' !default;
             &:last-child {
                 @include media('>=laptop') {
                     vertical-align: top;
+                }
+            }
+        }
+
+        .field.choice {
+            .checkbox {
+                #{$root}__order--has-selected & {
+                    background-image: $field_radio-background-image-checked;
+
+                    &:checked {
+                        background-image: $field_checkbox-background-image-checked;
+                    }
                 }
             }
         }
