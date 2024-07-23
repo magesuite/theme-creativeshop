@@ -199,16 +199,23 @@ export default class StoreLocator {
         this._$element.addClass('loading');
 
         // Mount map
-        this.map = new google.maps.Map(
-            document.getElementById('store-locator-map'),
-            this._options.mapOptions
-        );
+        this._mountMap();
 
         // Send graphql request for stores and initialize map
         this._prepareMap();
 
         // Attach events to elements that are not directly connected to the map
         this._attachEvents();
+    }
+
+    /**
+     * Mount map on the DOM element with `store-locator-map` ID
+     */
+    public _mountMap() {
+        this.map = new google.maps.Map(
+            document.getElementById('store-locator-map'),
+            this._options.mapOptions
+        );
     }
 
     /**
