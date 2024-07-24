@@ -52,24 +52,26 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         <span class="cs-instant-search__close-label"><?= /* @escapeNotVerified */ __('Close search'); ?></span>
     </span>
 </div>
-<script>
+<?php $scriptString = <<<script
     window.ES_REACT_AUTOCOMPLETE_PROPS = {
         formSelector:"search_mini_form",
-        url:"<?php /* @escapeNotVerified */ echo $block->getUrl('search/ajax/suggest'); ?>",
-        storeCode:"<?php /* @escapeNotVerified */ echo $block->getStoreCode(); ?>",
-        name:"<?php /* @escapeNotVerified */ echo $helper->getQueryParamName() ?>",
-        maxLength: <?php /* @escapeNotVerified */ echo $helper->getMaxQueryLength();?>,
-        placeholder:"<?php /* @escapeNotVerified */ echo __('Search entire store here...'); ?>",
-        title:"<?php echo $block->escapeHtml(__('Search')); ?>",
-        label:"<?php echo $block->escapeHtml(__('Search')); ?>",
-        submitButton:"<?php echo $block->escapeHtml(__('Search')); ?>",
-        templates: <?php /* @noEscape */ echo $block->getJsonSuggestRenderers();?>,
-        priceFormat : <?php /* @noEscape */ echo $block->getJsonPriceFormat();?>,
-        currencyCode : "<?php /* @noEscape */ echo $block->getCurrencyCode();?>",
-        dataProviders: <?php echo $block->getDataProvidersConfiguration(); ?>,
-        productTitle:"<?php echo $block->escapeHtml(__('Products')); ?>",
-        noResultTitle:"<?php echo $block->escapeHtml(__('No results')); ?>",
-        productInCategoryLabel:"<?php echo $block->escapeHtml(__('in')); ?>",
-        translations: <?= json_encode($block->getTranslationsConfig()); ?>
+        url:"{$block->getUrl('search/ajax/suggest')}",
+        storeCode:"{$block->getStoreCode()}",
+        name:"{$helper->getQueryParamName()}",
+        maxLength: {$helper->getMaxQueryLength()},
+        placeholder:"{$block->escapeHtml(__('Search entire store here...'))}",
+        title:"{$block->escapeHtml(__('Search'))}",
+        label:"{$block->escapeHtml(__('Search'))}",
+        submitButton:"{$block->escapeHtml(__('Search'))}",
+        templates: {$block->getJsonSuggestRenderers()},
+        priceFormat : {$block->getJsonPriceFormat()},
+        currencyCode : "{$block->getCurrencyCode()}",
+        dataProviders: {$block->getDataProvidersConfiguration()},
+        productTitle:"{$block->escapeHtml(__('Products'))}",
+        noResultTitle:"{$block->escapeHtml(__('No results'))}",
+        productInCategoryLabel:"{$block->escapeHtml(__('in'))}",
+        translations: JSON.stringify({$block->getTranslationsConfig()})
     }
-</script>
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>

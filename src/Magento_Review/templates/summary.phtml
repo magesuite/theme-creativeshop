@@ -52,8 +52,9 @@ $allVotes = array_sum($votes);
                 <li class="cs-reviews-summary__bar">
                     <span class="cs-reviews-summary__bar-label"><?= $ratingLabel; ?></span>
                     <span class="cs-reviews-summary__bar-progress">
-                    <span class="cs-reviews-summary__bar-progress-inner" style="width:<?= $votesPercentage; ?>%;"></span>
-                </span>
+                        <span class="cs-reviews-summary__bar-progress-inner cs-reviews-summary__bar-progress-inner-<?= $ratingIndex; ?>"></span>
+                        <?= /* @noEscape */ $secureRenderer->renderStyleAsTag('width:' . $votesPercentage . '%', 'span.cs-reviews-summary__bar-progress-inner-' . $ratingIndex) ?>
+                    </span>
                     <span class="cs-reviews-summary__bar-count"><?= $numOfVotes; ?></span>
                 </li>
             <?php endfor; ?>
@@ -84,7 +85,7 @@ $allVotes = array_sum($votes);
         </div>
     </div>
 
-    <script>
+    <?php $scriptString = <<<script
         require([
             'jquery'
         ], function ($) {
@@ -103,5 +104,7 @@ $allVotes = array_sum($votes);
                 }
             });
         });
-    </script>
+    script;
+    ?>
+    <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>
 <?php endif; ?>

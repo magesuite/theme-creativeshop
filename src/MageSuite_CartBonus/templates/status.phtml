@@ -66,8 +66,9 @@ if ($allBonusesCount):
                         <?php if ($wasAwarded || $isCurrent): ?>
                             <div
                                 class="cs-cart-bonus__progress-done<?= $wasAwarded ? ' cs-cart-bonus__progress-done--awarded' : ''; ?>"
-                                style="transform: scaleX(<?= $wasAwarded ? 1 : $progressToNextBonusPercentage / 100; ?>)"
                             ></div>
+                            <?php $tranformStyle = $wasAwarded ? 'transform: scaleX(1);' : 'transform: scaleX(' . $progressToNextBonusPercentage / 100 . ');'; ?>
+                            <?= /* @noEscape */ $secureRenderer->renderStyleAsTag($tranformStyle, 'div.cs-cart-bonus__progress-done') ?>
                             <div class="cs-cart-bonus__progress-possible">
                                 <?php if ($isCurrent):
                                     $tooltipExtraClasses = '';
@@ -78,11 +79,12 @@ if ($allBonusesCount):
                                         $tooltipExtraClasses .=  ' cs-cart-bonus__tooltip--edge_right';
                                     }
                                 ?>
-                                    <div class="cs-cart-bonus__tooltip<?= $tooltipExtraClasses; ?>" style="left: <?= $progressToNextBonusPercentage; ?>%">
+                                    <div class="cs-cart-bonus__tooltip<?= $tooltipExtraClasses; ?>">
                                         <div class="cs-cart-bonus__tooltip-content">
                                             <strong class="cs-cart-bonus__amount"><?= $amountToNextLevel ?></strong><?= __(' more'); ?>
                                         </div>
                                     </div>
+                                    <?= /* @noEscape */ $secureRenderer->renderStyleAsTag('left:' . $progressToNextBonusPercentage . '%', 'div.cs-cart-bonus__tooltip') ?>
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>

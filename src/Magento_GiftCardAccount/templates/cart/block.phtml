@@ -24,10 +24,16 @@
     </div>
     <div data-role="content" class="content cs-discount__content" aria-labelledby="block-giftcard-heading">
         <div id="giftcard-balance-lookup"></div>
-        <span id="gc-please-wait" class="please-wait load indicator" style="display: none;"
-              data-text="<?= $block->escapeHtmlAttr(__('This won\'t take long . . .')) ?>">
+        <span id="gc-please-wait" class="please-wait load indicator"
+              data-text="<?= $block->escapeHtml(__('This won\'t take long . . .')) ?>">
             <span><?= $block->escapeHtml(__('This won\'t take long . . .')) ?></span>
         </span>
+        <?= /* @noEscape */ $secureRenderer->renderTag(
+            'style',
+            [],
+            '#gc-please-wait { display: none;}',
+            false
+        ); ?>
         <form class="form giftcard add" id="giftcard-form"
               action="<?= $block->escapeUrl($block->getUrl('magento_giftcardaccount/cart/add')) ?>" method="post"
               data-mage-init='{"validation": {},"giftCard": {

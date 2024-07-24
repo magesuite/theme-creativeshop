@@ -54,7 +54,7 @@
         }
     }
 </script>
-<script>
+<?php $scriptString = <<<script
     function deferATCClick() {
         var addToCartButton = document.querySelector('#product_addtocart_form .cs-addtocart__button');
         var form = document.querySelector('#product_addtocart_form');
@@ -75,4 +75,6 @@
     window.onload = function() {
         document.querySelector('#product_addtocart_form').removeAttribute('onsubmit');
     };
-</script>
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>

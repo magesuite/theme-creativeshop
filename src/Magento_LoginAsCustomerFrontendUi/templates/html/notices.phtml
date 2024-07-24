@@ -17,7 +17,7 @@ $viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images
     <link rel="stylesheet" type="text/css" href="<?= $block->getViewFileUrl('css/login-as-customer.css'); ?>" />
     <div class="lac-notification-sticky"
          data-bind="scope: 'loginAsCustomer'" >
-        <div class="lac-notification clearfix" data-bind="visible: isVisible" style="display: none">
+        <div class="lac-notification clearfix" data-bind="visible: isVisible">
             <div class="top-container">
                 <div class="lac-notification-icon wrapper">
                     <img class="logo-img"  src="<?= $escaper->escapeUrl($viewFileUrl) ?>" alt="Magento" />
@@ -30,6 +30,7 @@ $viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images
                 </div>
             </div>
         </div>
+        <?= /* @noEscape */ $secureRenderer->renderStyleAsTag('display: none;', 'div.lac-notification.clearfix') ?>
     </div>
     <script type="text/x-magento-init">
     {

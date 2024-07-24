@@ -5,7 +5,7 @@
  */
 ?>
 <?php if ($block->getVar('redirect_progress_bar/enabled', 'Magento_Theme')) : ?>
-<script data-defer-ignore="true">
+<?php $scriptString = <<<script
     window.addEventListener('beforeunload', function() {
         const progressElement = document.createElement("div")
         progressElement.classList.add("cs-redirect-progress-bar");
@@ -28,5 +28,7 @@
 
         return null;
     });
-</script>
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', ['data-defer-ignore'=>'true'], $scriptString, false); ?>
 <?php endif; ?>
