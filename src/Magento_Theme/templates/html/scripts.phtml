@@ -3,6 +3,8 @@
  * Custom template for initializing scripts.
  */
 ?>
-<script>
-    require(['js/<?= $block->getBundleName()?>'], function(){});
-</script>
+<?php $scriptString = <<<script
+    require(['js/{$block->getBundleName()}'], function(){});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false); ?>

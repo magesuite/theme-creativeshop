@@ -22,7 +22,8 @@ $wishlistGridLayoutSettings = json_encode($block->getVar('grid_layout/wishlist/j
 <?php if ($wishlistHelper->isAllow()) : ?>
     <?php if ($viewMode == 'grid'): ?>
         <link rel="stylesheet" href="<?= $block->getViewFileUrl('css/grid-layout.css'); ?>"/>
-        <script defer-ignore></script>
+        <?php $scriptString = "/* defer-ignore */"; ?>
+        <?= /* @noEscape */ $secureRenderer->renderTag('script', ['defer-ignore'=>''], $scriptString, false); ?>
     <?php endif ?>
     <div
         class="block block-wishlist"

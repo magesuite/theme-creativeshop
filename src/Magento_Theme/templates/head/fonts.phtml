@@ -18,9 +18,10 @@ if (!empty($webFonts)):
             <?php if (strpos($url, 'fonts.googleapis') !== false): ?>
                 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
             <?php endif; ?>
-            <link rel="preload" as="style" href="<?= $url ?>">
-            <link rel="stylesheet" href="<?= $url ?>" media="print" onload="this.onload=null;this.media='all'">
-            <noscript><link rel="stylesheet" href="<?= $url ?>"></noscript>
+            <link rel="preload" as="style" href="<?= $escaper->escapeUrl($url) ?>">
+            <link id="font_webfont" rel="stylesheet" href="<?= $escaper->escapeUrl($url) ?>" media="print">
+            <?= $secureRenderer->renderEventListenerAsTag('onload', "this.onload=null;this.media='all'", '#font_webfont'); ?>
+            <noscript><link rel="stylesheet" href="<?= $escaper->escapeUrl($url) ?>"></noscript>
         <?php endif;
     endforeach;
 endif;
@@ -32,7 +33,7 @@ if (!empty($localFontsFile)):
     foreach ($localFontsFile as $fontFile):
         if (!empty($fontFile)):
             $localFontUrl = $this->getViewFileUrl($fontFile); ?>
-            <link rel="preload" href="<?= $localFontUrl; ?>" as="font" type="font/<?= $localFontsExt; ?>" crossorigin>
+            <link rel="preload" href="<?= $escaper->escapeUrl($localFontUrl); ?>" as="font" type="font/<?= $localFontsExt; ?>" crossorigin>
         <?php endif;
     endforeach;
 endif;
@@ -46,16 +47,17 @@ if (!empty($localFonts)):
         foreach ($localFonts as $fontCSS):
             if (!empty($fontCSS)):
                 $localFontUrl = $this->getViewFileUrl($fontCSS); ?>
-                <link rel="stylesheet" href="<?= $localFontUrl ?>" as="style">
+                <link rel="stylesheet" href="<?= $escaper->escapeUrl($localFontUrl) ?>" as="style">
             <?php endif;
         endforeach;
     } else {
         foreach ($localFonts as $fontCSS):
             if (!empty($fontCSS)):
                 $localFontUrl = $this->getViewFileUrl($fontCSS); ?>
-                <link rel="preload" as="style" href="<?= $localFontUrl ?>">
-                <link rel="stylesheet" href="<?= $localFontUrl ?>" media="print" onload="this.media='all'">
-                <noscript><link rel="stylesheet" href="<?= $localFontUrl ?>"></noscript>
+                <link rel="preload" as="style" href="<?= $escaper->escapeUrl($localFontUrl) ?>">
+                <link id="font_localfont" rel="stylesheet" href="<?= $escaper->escapeUrl($localFontUrl) ?>" media="print">
+                <?= $secureRenderer->renderEventListenerAsTag('onload', "this.media='all'", '#font_localfont'); ?>
+                <noscript><link rel="stylesheet" href="<?= $escaper->escapeUrl($localFontUrl) ?>"></noscript>
             <?php endif;
         endforeach;
     }

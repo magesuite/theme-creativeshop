@@ -10,3 +10,11 @@ const $paginationInput: JQuery<HTMLInputElement> = $(
 $paginationInput.each(function () {
     new Pagination($(this));
 });
+
+$('.cs-limiter__pagination-number').on('click', function() {
+    var $limiter = $('.cs-limiter select');
+    var chosenVal = $(this).data('value');
+    if (/^([1-9]\d*|all)$/.test(chosenVal)) {
+        $limiter.val(chosenVal).trigger('change');
+    }
+});
