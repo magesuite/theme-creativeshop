@@ -21,6 +21,7 @@ export interface StoreLocatorOptions {
     showNearestStoreWhenNotFound?: boolean;
     useDefaultMapStyles?: boolean;
     markerIcons?: object;
+    clusterOptions?: object;
     clusterStyles?: object;
     limitOfShopsInitiallyDisplayed?: number;
     storeData?: string;
@@ -1066,6 +1067,7 @@ export default class StoreLocator {
 
         this.cluster = new MarkerClusterer(this.map, this.markers, {
             styles: [this._options.clusterStyles],
+            ...this._options.clusterOptions,
         });
     }
 
