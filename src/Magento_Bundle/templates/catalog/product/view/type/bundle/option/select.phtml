@@ -2,75 +2,69 @@
 /** Template overridden to:
  * - add magesuite classes
  * - show qty-increment only when qty can change
- * Aligned with Magento 2.4.6 at 04/2023
+ * Aligned with Magento 2.4.7 in 04/2024
  */
 ?>
 
-<?php
-    /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select */
-    $option      = $block->getOption();
-    $selections  = $option->getSelections();
-    $default     = $option->getDefaultSelection();
-    list($defaultQty, $canChangeQty) = $block->getDefaultValues();
-?>
+<?php /* @var $block \Magento\Bundle\Block\Catalog\Product\View\Type\Bundle\Option\Select */ ?>
+<?php $_option      = $block->getOption(); ?>
+<?php $_selections  = $_option->getSelections(); ?>
+<?php $_default     = $_option->getDefaultSelection(); ?>
+<?php list($_defaultQty, $_canChangeQty) = $block->getDefaultValues(); ?>
 
-<div class="field option <?= ($option->getRequired()) ? ' required': ''; ?> cs-bundle-box__field">
-    <label class="label cs-bundle-box__product-name" for="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>">
-        <?= $block->escapeHtml($option->getTitle()) ?>
+<div class="field option <?= ($_option->getRequired()) ? ' required': ''; ?> cs-bundle-box__field">
+    <label class="label cs-bundle-box__product-name" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>">
+        <?= $block->escapeHtml($_option->getTitle()) ?>
     </label>
     <div class="control cs-bundle-box__options-list">
-        <?php if ($block->showSingle()): ?>
-            <?= /* @noEscape */ $block->getSelectionTitlePrice($selections[0]) ?>
-            <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selections[0]) ?>
-            <input
-                type="hidden"
-                class="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>  product bundle option"
-                name="bundle_option[<?= $block->escapeHtmlAttr($option->getId()) ?>]"
-                value="<?= $block->escapeHtmlAttr($selections[0]->getSelectionId()) ?>"
-                />
-        <?php else:?>
-            <select
-                id="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>"
-                name="bundle_option[<?= $block->escapeHtmlAttr($option->getId()) ?>]"
-                data-selector="bundle_option[<?= $block->escapeHtmlAttr($option->getId()) ?>]"
-                class="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?> product bundle option bundle-option-select change-container-classname cs-select"
-                <?php if ($option->getRequired()) echo 'data-validate = {required:true}' ?>
-                >
-                <option value=""><?= $block->escapeHtmlAttr(__('Choose a selection...')) ?></option>
-                <?php foreach ($selections as $selection): ?>
-                    <option value="<?= $block->escapeHtmlAttr($selection->getSelectionId()) ?>"
-                        <?php if ($block->isSelected($selection)) echo ' selected="selected"' ?>
-                        <?php if (!$selection->isSaleable()) echo ' disabled="disabled"' ?>>
-                        <?= /* @noEscape */ $block->getSelectionTitlePrice($selection, false) ?>
+        <?php if ($block->showSingle()) : ?>
+            <?= /* @noEscape */ $block->getSelectionTitlePrice($_selections[0]) ?>
+            <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selections[0]) ?>
+            <input type="hidden"
+                   class="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>  product bundle option"
+                   name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                   value="<?= $block->escapeHtmlAttr($_selections[0]->getSelectionId()) ?>"/>
+        <?php else :?>
+            <select id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>"
+                    name="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                    data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
+                    class="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?> product bundle option bundle-option-select change-container-classname cs-select"
+                <?php if ($_option->getRequired()) { echo 'data-validate = {required:true}'; } ?>>
+                <option value=""><?= $block->escapeHtml(__('Choose a selection...')) ?></option>
+                <?php foreach ($_selections as $_selection) : ?>
+                    <option value="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
+                        <?php if ($block->isSelected($_selection)) { echo ' selected="selected"'; } ?>
+                        <?php if (!$_selection->isSaleable()) { echo ' disabled="disabled"'; } ?>>
+                        <?= /* @noEscape */ $block->getSelectionTitlePrice($_selection, false) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
-            <div id="option-tier-prices-<?= $block->escapeHtmlAttr($option->getId()) ?>" class="option-tier-prices">
-                <?php foreach ($selections as $selection) : ?>
+            <div id="option-tier-prices-<?= $block->escapeHtmlAttr($_option->getId()) ?>" class="option-tier-prices">
+                <?php foreach ($_selections as $_selection) : ?>
                     <div data-role="selection-tier-prices"
-                         data-selection-id="<?= $block->escapeHtmlAttr($selection->getSelectionId()) ?>"
+                         data-selection-id="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
                          class="selection-tier-prices">
-                        <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($selection) ?>
+                        <?= /* @noEscape */ $block->getTierPriceRenderer()->renderTierPrice($_selection) ?>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
 
-        <?php if($canChangeQty): ?>
+        <?php if($_canChangeQty): ?>
             <div class="field qty qty-holder cs-bundle-box__qty cs-box-addtocart__qty-wrapper">
-                <label class="label cs-box-addtocart__label" for="bundle-option-<?= $block->escapeHtmlAttr($option->getId()) ?>-qty-input">
+                <label class="label cs-box-addtocart__label" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-qty-input">
                     <span><?= $block->escapeHtml(__('Qty')) ?></span>
                 </label>
 
                 <div class="control cs-box-addtocart__qty-increment">
-                    <?php $disabled = !$canChangeQty ? ' disabled="disabled"' : ''; ?>
+                    <?php $disabled = !$_canChangeQty ? ' disabled="disabled"' : ''; ?>
 
                     <?= $this->getLayout()
                           ->createBlock('Magento\Framework\View\Element\Template')
-                          ->setInputName('bundle_option_qty['.$block->escapeHtmlAttr($option->getId()).']')
-                          ->setAdditionalInputCssClasses($canChangeQty ? ' input-text qty' : ' input-text qty qty-disabled')
-                          ->setInputInitialValue($block->escapeHtmlAttr($defaultQty))
-                          ->setInputAdditionalParams('id="bundle-option-'.$block->escapeHtmlAttr($option->getId()).'-qty-input" data-selector="bundle_option_qty['.$option->getId().']" data-min-value="1" min="1"'.$disabled)
+                          ->setInputName('bundle_option_qty['.$block->escapeHtmlAttr($_option->getId()).']')
+                          ->setAdditionalInputCssClasses($_canChangeQty ? ' input-text qty' : ' input-text qty qty-disabled')
+                          ->setInputInitialValue($block->escapeHtmlAttr($_defaultQty))
+                          ->setInputAdditionalParams('id="bundle-option-'.$block->escapeHtmlAttr($_option->getId()).'-qty-input" data-selector="bundle_option_qty['.$_option->getId().']" data-min-value="1" min="1"'.$disabled)
                           ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
                           ->setIncrementIconUrl($block->getVar('qty_increment/icons/increment', 'MageSuite_ThemeHelpers'))
                           ->setTemplate($block->getVar('qty_increment/template', 'MageSuite_ThemeHelpers'))
