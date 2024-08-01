@@ -5,7 +5,8 @@
  * - add magesuite classes
  * - add minicart offcanvas as option
  * - integrate with xml configuration (dropdown/offcanvas)
- * - change tags from div into li
+ * - change tags from div into li,
+ * - move minicart.addons container into minicart-content-wrapper element
  *  * TODO - this is the only place when dropdownDialog is present, however some other scripts depend on dropdownDialog events
  *
  * Aligned with Magento 2.4.6 at 04/2023
@@ -68,8 +69,8 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
             <?php endif; ?>
                             <div id="minicart-content-wrapper" class="cs-minicart" data-bind="scope: 'minicart_content'">
                                 <!-- ko template: getTemplate() --><!-- /ko -->
+                                <?= $block->getChildHtml('minicart.addons') ?>
                             </div>
-                            <?= $block->getChildHtml('minicart.addons') ?>
             <?php if($isOffcanvas): ?>
                     </div>
                 </div>
