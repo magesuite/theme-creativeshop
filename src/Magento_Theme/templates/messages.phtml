@@ -19,14 +19,16 @@
                 class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type + ' cs-messages__message--cm-idx-' + $index(),
                 'data-ui-id': 'message-' + message.type
                 }
+                <?php if ($hasCloseButton): ?>
                 ,
                 afterRender: function() {
                     if (message.type === 'success') {
                         setTimeout(function() {
-                            $element.closest('.cs-messages').classList.remove('cs-messages--active');
+                            $element.querySelector('.cs-messages__close').click();
                         }, 5000);
                     }
                 }
+                <?php endif; ?>
                 ">
                 <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
                 <?php if ($hasCloseButton): ?>
@@ -52,14 +54,16 @@
                 class: 'message-' + message.type + ' ' + message.type + ' message cs-messages__message cs-messages__message--' + message.type + ' cs-messages__message--cm-idx-' + $index(),
                 'data-ui-id': 'message-' + message.type
                 }
+                <?php if ($hasCloseButton): ?>
                 ,
                 afterRender: function() {
                     if (message.type === 'success') {
                         setTimeout(function() {
-                            $element.closest('.cs-messages').classList.remove('cs-messages--active');
+                            $element.querySelector('.cs-messages__close').click();
                         }, 5000);
                     }
                 }
+                <?php endif; ?>
                 ">
                 <div data-bind="html: $parent.prepareMessageForHtml(message.text)" class="cs-messages__text"></div>
                 <?php if ($hasCloseButton): ?>
