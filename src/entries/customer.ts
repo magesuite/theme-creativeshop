@@ -107,3 +107,4 @@ import 'components/toolbar';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_Pwa';
+// import 'MageSuite_ProductNotification';

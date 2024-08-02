@@ -1,0 +1,171 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+@import 'components/field/mixin';
+@import 'vendors/include-media';
+
+$product-notification_vertical-space: 1.2rem !default;
+$product-notification_button-type: 'secondary' !default;
+$product-notification_default-border: 1px solid $color_border-500 !default;
+$product-notification_to-offcanvas-breakpoint: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ProductNotification,
+    offcanvas_breakpoint
+) !default;
+$product-notification_notice-icon-width: 1.4rem !default;
+$product-notification_notice-icon-height: $product-notification_notice-icon-width !default;
+$product-notification_notice-icon-success-color: $color_success-500 !default;
+$product-notification_notice-icon-error-color: $color_error-500 !default;
+
+$product-notification_modal-trigger-icon-width: 2.2rem !default;
+$product-notification_modal-trigger-icon-height: 2rem !default;
+
+.#{$ns}product-notification {
+    $root: &;
+
+    // Styles related to subscription form (POP & user-area)
+    &__box {
+        border-bottom: $product-notification_default-border;
+        padding: $product-notification_vertical-space 0 0;
+        margin: 0 0 $product-notification_vertical-space;
+
+        @include media('>=#{$product-notification_to-offcanvas-breakpoint}') {
+            border-bottom: none;
+        }
+
+        &#{$root}__box--offcanvas-mobile {
+            @include media(
+                '>=#{$product-notification_to-offcanvas-breakpoint}'
+            ) {
+                display: block !important; // Override inline styles preventing CLS on mobiles
+            }
+        }
+
+        .#{$ns}page-category__sidebar & {
+            padding: calc(#{$product-notification_vertical-space} * 2) 0 0;
+        }
+
+        .modals-wrapper & {
+            border-bottom: none;
+        }
+
+        .#{$ns}dashboard & {
+            padding: 0;
+            margin: 0;
+        }
+
+        select {
+            @include field-select();
+        }
+
+        &-type-select,
+        &-condition-select,
+        &-title,
+        &-info {
+            margin: 0 0 $product-notification_vertical-space;
+        }
+
+        &-title {
+            .#{$ns}dashboard & {
+                display: none;
+            }
+        }
+
+        &-button-login,
+        &-submit {
+            @include button($product-notification_button-type);
+
+            margin: 0 0 $product-notification_vertical-space;
+
+            .modals-wrapper & {
+                display: block;
+                margin-left: auto;
+            }
+        }
+
+        &-modal-trigger {
+            @include button($product-notification_button-type, 'only-icon');
+
+            @include media(
+                '>=#{$product-notification_to-offcanvas-breakpoint}'
+            ) {
+                display: none;
+            }
+
+            svg {
+                width: $product-notification_modal-trigger-icon-width;
+                height: $product-notification_modal-trigger-icon-height;
+                margin-bottom: -0.2rem;
+            }
+        }
+    }
+
+    // User-area specific styles
+    &__list {
+        &-frequency-switcher {
+            display: inline-flex;
+        }
+
+        &-item-prop {
+            button {
+                @include button('link');
+            }
+        }
+    }
+
+    &__notice {
+        padding: 0 1rem;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        opacity: 0;
+        transition: opacity $transition-default-time
+            $transition-easing_slowdown-900;
+        min-width: 16rem;
+
+        &.success,
+        &.error {
+            opacity: 1;
+        }
+
+        &.error {
+            #{$root}__notice-icon {
+                * {
+                    fill: $product-notification_notice-icon-error-color;
+                }
+            }
+        }
+
+        &.success {
+            #{$root}__notice-icon {
+                * {
+                    fill: $product-notification_notice-icon-success-color;
+                }
+            }
+        }
+
+        &-icon {
+            width: $product-notification_notice-icon-width;
+            height: $product-notification_notice-icon-height;
+            flex-shrink: 0;
+        }
+
+        &-content {
+            padding-left: calc(#{$product-notification_notice-icon-width} / 2);
+            font-weight: 500;
+        }
+    }
+}
+
+// Styles related to modal trigger for mobile devices
+.#{$ns}page-category {
+    &__headline-with-trigger {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+
+    .#{$ns}page-title {
+        padding-right: 1rem;
+    }
+}
