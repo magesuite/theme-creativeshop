@@ -99,3 +99,4 @@ import 'components/toolbar';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_ElasticsuiteAjaxifier';
 // import 'MageSuite_Pwa';
+// import 'MageSuite_ProductNotification';
