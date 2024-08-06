@@ -86,7 +86,7 @@ export default class VideoTeaser {
      * @param isVisible
      * @param index
      */
-    protected handleVideoTeaser(videoTeaser, isVisible, index): void {
+    protected async handleVideoTeaser(videoTeaser, isVisible, index): void {
         const videoPlayerPlaceholder = videoTeaser.querySelector(
             '[data-video-teaser]'
         );
@@ -103,7 +103,7 @@ export default class VideoTeaser {
         );
         const consentStatus: boolean =
             videoData.type !== 'file'
-                ? consentManagement.checkConsent(videoData.type)
+                ? await consentManagement.checkConsent(videoData.type)
                 : true;
         const hasPlayer: boolean =
             videoPlayerPlaceholder.querySelector('iframe') !== null ||
