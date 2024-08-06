@@ -125,8 +125,8 @@ export default class VideoLayer {
      * @param videoPlayerId
      * @param videoModalId
      */
-    protected attachEvent(element, videoPlayerId, videoModalId): void {
-        if (consentManagement.checkConsent('youtube')) {
+    protected async attachEvent(element, videoPlayerId, videoModalId): void {
+        if (await consentManagement.checkConsent('youtube')) {
             const hasPlayer: boolean =
                 this.getIframePlayer(videoPlayerId) !== null;
 
