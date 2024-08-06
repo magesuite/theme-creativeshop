@@ -8,7 +8,7 @@ const usercentrics = {
         try {
             if (window['__ucCmp']) {
                 const isInitialized = await window['__ucCmp'].isInitialized();
-    
+
                 if (isInitialized) {
                     const data = await window['__ucCmp'].getConsentDetails();
                     const service = Object.values(data?.services ?? []).find(service => service.name === serviceName);
