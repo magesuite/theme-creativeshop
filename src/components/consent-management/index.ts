@@ -1,8 +1,12 @@
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 import usercentrics from 'components/consent-management/vendor/usercentrics';
+import usercentricsv3 from 'components/consent-management/vendor/usercentricsv3';
 import amasty from 'components/consent-management/vendor/amasty';
 
+const usercentricsVersion = document
+    .querySelector('[data-usercentrics-version]')
+    ?.getAttribute('data-usercentrics-version');
 const consentManagement = {
     vendor: deepGet(viewXml, 'vars.Magento_Theme.consent_management.vendor'),
     services: deepGet(
@@ -14,7 +18,8 @@ const consentManagement = {
         'vars.Magento_Theme.consent_management.default_value'
     ),
     mapVendors: {
-        usercentrics: usercentrics,
+        usercentrics:
+            usercentricsVersion === 'v3' ? usercentricsv3 : usercentrics,
         amasty: amasty,
     },
     /**
