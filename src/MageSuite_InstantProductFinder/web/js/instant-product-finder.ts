@@ -61,7 +61,8 @@ export default class InstantProductFinder {
                     element.getAttribute('data-finder-step-attribute-code')
                 ] = new Set();
             });
-        this._currentQuery = this._initialQuery;
+
+        this._restoreCurrentQueryToInitialValue();
 
         this._setEvents();
         this._element.classList.remove(this._selectors.elementLoadingClass);
@@ -265,7 +266,11 @@ export default class InstantProductFinder {
             !this._activeCombinedOptions.has(optionId)
                 ? this._activeCombinedOptions.add(optionId)
                 : this._activeCombinedOptions.delete(optionId);
-        } else if (filterType === 'separated' || filterType === 'query' || filterType === 'single') {
+        } else if (
+            filterType === 'separated' ||
+            filterType === 'query' ||
+            filterType === 'single'
+        ) {
             const currentStepId = button.closest(this._selectors.step).id;
 
             if (!this._activeSeparateOptions[currentStepId]) {
@@ -273,12 +278,15 @@ export default class InstantProductFinder {
             }
 
             if (!this._activeSeparateOptions[currentStepId].has(optionId)) {
-                if (filterType === 'single' && this._activeSeparateOptions[currentStepId].size >= 1) {
+                if (
+                    filterType === 'single' &&
+                    this._activeSeparateOptions[currentStepId].size >= 1
+                ) {
                     return;
                 }
-                this._activeSeparateOptions[currentStepId].add(optionId)
+                this._activeSeparateOptions[currentStepId].add(optionId);
             } else {
-                this._activeSeparateOptions[currentStepId].delete(optionId)
+                this._activeSeparateOptions[currentStepId].delete(optionId);
             }
 
             if (this._activeSeparateOptions[currentStepId].size === 0) {
@@ -306,7 +314,9 @@ export default class InstantProductFinder {
         }
 
         if (
-            !this._element.querySelectorAll(this._selectors.step + '.required:not(.query)').length
+            !this._element.querySelectorAll(
+                this._selectors.step + '.required:not(.query)'
+            ).length
         ) {
             showAllSteps = true;
         }
@@ -391,7 +401,10 @@ export default class InstantProductFinder {
                 button.classList.add('disabled');
             }
 
-            if ((button.getAttribute('data-finder-filter-type') === 'single') && $(button).siblings('.active').length) {
+            if (
+                button.getAttribute('data-finder-filter-type') === 'single' &&
+                $(button).siblings('.active').length
+            ) {
                 button.classList.add('disabled');
             }
         });
@@ -437,9 +450,12 @@ export default class InstantProductFinder {
         const code: string = step.getAttribute(
             'data-finder-step-attribute-code'
         );
-        const lastQuery: object = this._currentQuery;
+
+        const lastQuery: object = { ...this._currentQuery };
 
         this._resetFinder();
+
+        this._currentQuery = { ...lastQuery };
 
         Object.values(lastQuery).forEach((step) => {
             step.forEach((id: string) => {
@@ -452,11 +468,11 @@ export default class InstantProductFinder {
         });
 
         if (!targetIsActive) {
-            this._activeSeparateOptions[currentStepId].add(currentValue)
+            this._activeSeparateOptions[currentStepId].add(currentValue);
             this._currentQuery[code].add(currentValue);
             target.classList.add('active');
         } else {
-            this._activeSeparateOptions[currentStepId].delete(currentValue)
+            this._activeSeparateOptions[currentStepId].delete(currentValue);
             this._currentQuery[code].delete(currentValue);
             target.classList.remove('active');
         }
@@ -551,7 +567,7 @@ export default class InstantProductFinder {
      * fullReset resets also animal species (dog/cat)
      */
     protected _resetFinder(): void {
-        this._currentQuery = this._initialQuery;
+        this._restoreCurrentQueryToInitialValue();
         this._element
             .querySelectorAll(this._selectors.step)
             .forEach((element) =>
@@ -673,5 +689,14 @@ export default class InstantProductFinder {
                     element.blur();
                 });
             });
+    }
+
+    /**
+     * Restore currentQuery to initial value
+     */
+    protected _restoreCurrentQueryToInitialValue(): void {
+        Object.keys(this._initialQuery).forEach((key) => {
+            this._currentQuery[key] = new Set(this._initialQuery[key]);
+        });
     }
 }
