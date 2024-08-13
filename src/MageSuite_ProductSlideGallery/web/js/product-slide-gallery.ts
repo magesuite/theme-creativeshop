@@ -776,7 +776,7 @@ export default class SlideGallery {
      */
     public scrollPaginationToIndex(activeIndex: number): void {
         if (this._$thumbs[activeIndex]) {
-            if (window.breakpoint.current >= window.breakpoint.desktop) {
+            if (window.breakpoint.current >= window.breakpoint.tablet) {
                 if (this._defaultOptions.verticalThumbNav) {
                     this._paginationScrollable.scrollTo({
                         top:
