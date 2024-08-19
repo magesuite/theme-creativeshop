@@ -178,7 +178,15 @@ export default class OffcanvasNavigation {
 
         requireAsync(['mage/apply/main', 'ko']).then(([mage, ko]) => {
             mage.apply();
-            ko.applyBindings(null, this._$element.get(0));
+            // Check if first element child is not bound to KO, if not apply bindings.
+            this._$element.find('[data-bind]').each((index, element) => {
+                if (
+                    element.firstElementChild &&
+                    !ko.dataFor(element.firstElementChild)
+                ) {
+                    ko.applyBindings(null, element);
+                }
+            });
         });
     }
 
