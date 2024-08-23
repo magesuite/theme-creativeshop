@@ -13,6 +13,11 @@ export interface NavigationOptions {
      * Navigation list item element. It is used to enhance keyboard accessability.
      */
     itemClassName?: string;
+
+    /**
+     * Navigation list item link element
+     */
+    itemLinkClassName?: string;
     /**
      * Navigation flyout class name.
      */
@@ -132,6 +137,7 @@ export default class Navigation {
     protected _options: NavigationOptions = {
         containerClassName: 'cs-navigation__list--main',
         itemClassName: 'cs-navigation__item',
+        itemLinkClassName: 'cs-navigation__link',
         flyoutClassName: 'cs-navigation__flyout',
         flyoutColumnsClassName: 'cs-navigation__list--level_1',
         flyoutExtrasClassName: 'cs-navigation__extras',
@@ -231,7 +237,7 @@ export default class Navigation {
                 ? activeCategoryPath[activeCategoryPath.length - 1]
                 : null;
 
-        if (activeCategoryId) {
+        if (activeCategoryId && activeCategoryId !== '0') {
             const $activeCategoryEl: JQuery = this._$container.find(
                 `[data-category-id="${activeCategoryId}"]`
             );
@@ -254,6 +260,19 @@ export default class Navigation {
                         );
                 }
             }
+        } else {
+            const currentUrl = window.location.href;
+            const $rootItemsLinks: JQuery = $(
+                `.${this._options.itemLinkClassName}--main`
+            );
+
+            $rootItemsLinks.each((index: number, element: HTMLElement) => {
+                if (element.getAttribute('href') === currentUrl) {
+                    element.parentElement.classList.add(
+                        this._options.activeCategoryClassName
+                    );
+                }
+            });
         }
     }
 
