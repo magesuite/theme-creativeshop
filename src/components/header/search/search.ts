@@ -77,6 +77,10 @@ export default class HeaderSearch {
 
         this._$closeBtn = this._$target.find(this._options.closeButtonSelector);
 
+        this._init();
+    }
+
+    protected _init(): void {
         this._attachEvents();
 
         // Hide search and autocomplete list when minicart/offcanvas navigation is opened
