@@ -52,6 +52,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         <span class="cs-instant-search__close-label"><?= /* @escapeNotVerified */ __('Close search'); ?></span>
     </span>
 </div>
+<?php $translations = json_encode($block->getTranslationsConfig()); ?>
 <?php $scriptString = <<<script
     window.ES_REACT_AUTOCOMPLETE_PROPS = {
         formSelector:"search_mini_form",
@@ -70,7 +71,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         productTitle:"{$block->escapeHtml(__('Products'))}",
         noResultTitle:"{$block->escapeHtml(__('No results'))}",
         productInCategoryLabel:"{$block->escapeHtml(__('in'))}",
-        translations: JSON.stringify({$block->getTranslationsConfig()})
+        translations: {$translations}
     }
 script;
 ?>
