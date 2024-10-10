@@ -22,6 +22,7 @@ $navigation_link-icon-size-height: $navigation_link-icon-size-width !default;
 // works only for svg icons
 $navigation_link-icon-color: $color_text-600 !default;
 $navigation_link-icon-color--hover: $color_primary-500 !default;
+$navigation_link-icon-keep-original-color: false !default;
 
 .#{$ns}navigation {
     $root: &;
@@ -165,8 +166,10 @@ $navigation_link-icon-color--hover: $color_primary-500 !default;
             color: $navigation_link-color-hover;
 
             #{$root}__link-icon--svg {
-                path {
-                    fill: $navigation_link-icon-color--hover;
+                @if ($navigation_link-icon-keep-original-color == false) {
+                    path {
+                        fill: $navigation_link-icon-color--hover;
+                    }
                 }
             }
         }
@@ -222,9 +225,11 @@ $navigation_link-icon-color--hover: $color_primary-500 !default;
                 margin-top: -0.5rem;
             }
 
-            &--svg {
-                path {
-                    fill: $navigation_link-icon-color;
+            @if ($navigation_link-icon-keep-original-color == false) {
+                &--svg {
+                    path {
+                        fill: $navigation_link-icon-color;
+                    }
                 }
             }
         }
