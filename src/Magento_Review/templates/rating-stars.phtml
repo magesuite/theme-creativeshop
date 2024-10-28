@@ -23,23 +23,49 @@
                     for ($starIndex = 0; $starIndex < $maxStars; $starIndex++) {
 
                         $iconStatus = '';
-                        if ($activeStars > $starIndex) {
-                            $iconStatus = ' ' . $iconClass . '--half-active';
-                        }
 
                         if (floor($activeStars) > $starIndex) {
-                            $iconStatus = ' ' . $iconClass . '--active';
-                        }
 
-                        echo(
-                            $this->getLayout()
-                                ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                ->setIconUrl('images/icons/reviews/star.svg')
-                                ->setCssClass($iconClass . $iconStatus)
-                                ->setAltText(__('star'))
-                                ->setInlined(true)
-                                ->toHtml()
-                        );
+                            if (!isset($ratingStarIconActive)) {
+                                $iconStatusActive = ' ' . $iconClass . '--active';
+                                $ratingStarIconActive = $this->getLayout()
+                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                    ->setIconUrl('images/icons/reviews/star.svg')
+                                    ->setCssClass($iconClass . $iconStatusActive)
+                                    ->setAltText(__('star'))
+                                    ->setInlined(true)
+                                    ->toHtml();
+                            }
+
+                            echo $ratingStarIconActive;
+                        } else if ($activeStars > $starIndex) {
+
+                            if (!isset($ratingStarIconHalfActive)) {
+                                $iconStatusHalfActive = ' ' . $iconClass . '--half-active';
+                                $ratingStarIconHalfActive = $this->getLayout()
+                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                    ->setIconUrl('images/icons/reviews/star.svg')
+                                    ->setCssClass($iconClass . $iconStatusHalfActive)
+                                    ->setAltText(__('star'))
+                                    ->setInlined(true)
+                                    ->toHtml();
+                            }
+
+                            echo $ratingStarIconHalfActive;
+                        } else {
+
+                            if (!isset($ratingStarIconNotActive)) {
+                                $ratingStarIconNotActive = $this->getLayout()
+                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                    ->setIconUrl('images/icons/reviews/star.svg')
+                                    ->setCssClass($iconClass)
+                                    ->setAltText(__('star'))
+                                    ->setInlined(true)
+                                    ->toHtml();
+                            }
+
+                            echo $ratingStarIconNotActive;
+                        }
                     }
                 ?>
             </div>
