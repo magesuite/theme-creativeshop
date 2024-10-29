@@ -1,6 +1,8 @@
 <?php
 /**
  * Custom template
+ * 
+ * @var $escaper Magento\Framework\Escaper
  */
 $collection = $block->getItems();
 
@@ -8,8 +10,8 @@ if (!empty($collection)): ?>
     <ul class="cs-social-media-list">
         <?php foreach ($collection as $item):
             if (!empty($item) && isset($item['url']) && !empty($item['url'])): ?>
-                <li class="cs-social-media-list__item <?= isset($item['additional_css_classes']) ? $item['additional_css_classes'] : '' ?>">
-                    <a href="<?= $item['url'] ?>" class="cs-social-media-list__link" rel="nofollow noopener" target="_blank">
+                <li class="cs-social-media-list__item <?= $escaper->escapeHtmlAttr(isset($item['additional_css_classes']) ? $item['additional_css_classes'] : '') ?>">
+                    <a href="<?= $item['url'] ?>" class="cs-social-media-list__link" rel="<?= isset($item['link_rel']) ? $item['link_rel'] : 'nofollow noopener' ?>" target="_blank">
                         <?php if(isset($item['icon']) && !empty($item['icon'])): ?>
                             <?= $this->getLayout()
                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
