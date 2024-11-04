@@ -1724,6 +1724,25 @@
                     <overview>Bumped frontend builder to v4</overview>
                 </entry>
             </tag>
+            <tag version="20.4.1" date="2024-11-04">
+                <entry>
+                    <type>FIX</type>
+                    <overview>Switch to touchend event as trigger event to open minicart</overview>
+                    <description>
+                        In order to fix the issue with warning message coming from  google page speed audit:
+                        "Does not use passive listeners to improve scrolling performance", we've introduced
+                        a small mixin for jquery which sets event listener, for some selected events (including touchstart),
+                        in passive mode. This indicates that the function specified by listener will never call preventDefault().
+                        If a passive listener calls preventDefault(), nothing will happen and a console warning may be generated.
+                        Nevertheless minicart (NOT offcanvas) still uses touchstart event in order to open minicart
+                        on mobile devices. When combined with the fix we've introduced it creates an issue
+                        after touching minicart icon on mobile devices. It simply ignores preventDefault() method.
+                        In result, redirect to cart page occur instead of minicart being opened.
+                        In order to fix that simple change of event is required.
+                    </description>
+                    <ticket_id>SCAFA-1168</ticket_id>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
