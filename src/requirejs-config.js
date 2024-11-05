@@ -150,6 +150,9 @@ var config = {
             'Magento_Customer/js/change-email-password': {
                 'Magento_Customer/js/change-email-password-ext': true,
             },
+            'Magento_Theme/js/view/messages': {
+                'Magento_Theme/js/view/messages-ext': true
+            }
         },
     },
 };

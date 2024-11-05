@@ -5,7 +5,8 @@
  */
 ?>
 <?php
-    $hasCloseButton = $block->getVar('global_messages/has_close_button', 'Magento_Theme')
+    $hasCloseButton = $block->getVar('global_messages/has_close_button', 'Magento_Theme');
+    $messageVisibilityTime = $block->getVar('global_messages/message_visibility_time', 'Magento_Theme');
 ?>
 <div data-bind="scope: 'messages'">
     <div data-bind="attr: {
@@ -25,7 +26,7 @@
                     if (message.type === 'success') {
                         setTimeout(function() {
                             $element.querySelector('.cs-messages__close').click();
-                        }, 5000);
+                        }, <?= $escaper->escapeJs($messageVisibilityTime); ?>);
                     }
                 }
                 <?php endif; ?>
@@ -60,7 +61,7 @@
                     if (message.type === 'success') {
                         setTimeout(function() {
                             $element.querySelector('.cs-messages__close').click();
-                        }, 5000);
+                        }, <?= $escaper->escapeJs($messageVisibilityTime); ?>);
                     }
                 }
                 <?php endif; ?>
