@@ -65,6 +65,9 @@ var config = {
             'Magento_Checkout/js/view/shipping': {
                 'Magento_Checkout/js/view/shipping-ext': true,
             },
+            'Magento_Checkout/js/view/shipping-information': {
+                'Magento_Checkout/js/view/shipping-information-ext': true,
+            },
             'sidebar': {
                 'Magento_Checkout/js/sidebar-ext': true,
             },
