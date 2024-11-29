@@ -178,6 +178,13 @@ export default class OffcanvasNavigation {
 
         requireAsync(['mage/apply/main', 'ko']).then(([mage, ko]) => {
             mage.apply();
+            if (
+                !this._$element.find(
+                    '[type="text/x-magento-init"], [data-mage-init]'
+                )?.length
+            ) {
+                return;
+            }
             // Check if first element child is not bound to KO, if not apply bindings.
             this._$element.find('[data-bind]').each((index, element) => {
                 if (
