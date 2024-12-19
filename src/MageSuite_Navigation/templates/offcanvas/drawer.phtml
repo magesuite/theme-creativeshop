@@ -1,21 +1,27 @@
 <?php
 // @codingStandardsIgnoreFile
-/** @var \MageSuite\Navigation\Block\Navigation $block */
+/**
+ * @var \MageSuite\Navigation\Block\Navigation $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
 $level = 0;
 $nextIcon = $block->getChildHtml('navigation.offcanvas.icon.next');
 $prevIcon = $block->getChildHtml('navigation.offcanvas.icon.prev');
+$showCategoryIcon = $block->getShowCategoryIcon();
 $showCategoryIconSubcats = $block->getShowCategoryIconSubcats();
 $showParentOnReturnLink = $block->getShowParentOnReturnLink();
+$showIconOnReturnLink = $block->getShowIconOnReturnLink();
 ?>
-<nav class="cs-offcanvas-navigation" aria-label="<?= /* @escapeNotVerified */ __('Mobile Navigation'); ?>">
+<nav class="cs-offcanvas-navigation" aria-label="<?= $escaper->escapeHtml(__('Mobile Navigation')); ?>">
     <?= $block->getChildHtml('navigation.offcanvas.search'); ?>
-    <ul class="cs-offcanvas-navigation__list cs-offcanvas-navigation__list--current cs-offcanvas-navigation__list--level_<?= $level; ?>">
+    <ul class="cs-offcanvas-navigation__list cs-offcanvas-navigation__list--current cs-offcanvas-navigation__list--level_<?= $escaper->escapeHtmlAttr($level); ?>">
         <?php foreach ($block->getItems() as $item) :
             $itemUrl = $item->getUrl();
             $itemId = $item->getId();
             $itemLabel = $item->getLabel();
             $itemIdentifier = $item->getIdentifier() ?? '';
             $itemHasSubitems = $item->hasSubItems();
+            $itemCategoryIcon = $showCategoryIcon ? $item->getCategoryIcon() : '';
             $itemNextAdditionalClasses = '';
 
             if ($itemHasSubitems) {
@@ -26,13 +32,25 @@ $showParentOnReturnLink = $block->getShowParentOnReturnLink();
                 }
             }
             ?>
-            <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--level_<?= $level; ?>"<?php if($itemIdentifier): ?> data-category-identifier="<?= $itemIdentifier; ?>"<?php endif; ?>>
-                <a class="cs-offcanvas-navigation__link<?= $itemNextAdditionalClasses; ?>" href="<?= $itemUrl; ?>" data-category-id="<?= $itemId ?>">
+            <li class="cs-offcanvas-navigation__item cs-offcanvas-navigation__item--level_<?= $escaper->escapeHtmlAttr($level); ?>"
+                <?php if ($itemIdentifier) : ?>
+                    data-category-identifier="<?= $escaper->escapeHtmlAttr($itemIdentifier); ?>"
+                <?php endif; ?>
+            >
+                <a class="cs-offcanvas-navigation__link<?= $escaper->escapeHtmlAttr($itemNextAdditionalClasses); ?>"
+                   href="<?= $escaper->escapeUrl($itemUrl); ?>"
+                   data-category-id="<?= $escaper->escapeHtmlAttr($itemId) ?>"
+                >
                     <?php if ($itemHasSubitems && $nextIcon) : ?>
                         <?= $nextIcon ?>
                     <?php endif; ?>
+                    <?php if ($itemCategoryIcon) : ?>
+                        <span class="cs-offcanvas-navigation__category-icon-wrapper">
+                            <img src="<?= $escaper->escapeUrl($itemCategoryIcon); ?>" alt="<?= $escaper->escapeHtmlAttr($itemLabel); ?>" class="cs-offcanvas-navigation__category-icon">
+                        </span>
+                    <?php endif; ?>
                     <span class="cs-offcanvas-navigation__text">
-                        <?= $itemLabel; ?>
+                        <?= $escaper->escapeHtml($itemLabel); ?>
                     </span>
                 </a>
                 <?php
@@ -47,6 +65,7 @@ $showParentOnReturnLink = $block->getShowParentOnReturnLink();
                             ->setPrevIcon($prevIcon)
                             ->setShowCategoryIconSubcats($showCategoryIconSubcats)
                             ->setShowParentOnReturnLink($showParentOnReturnLink)
+                            ->setShowIconOnReturnLink($showIconOnReturnLink)
                             ->toHtml();
                     }
                     ?>
