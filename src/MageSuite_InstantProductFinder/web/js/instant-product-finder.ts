@@ -663,11 +663,12 @@ export default class InstantProductFinder {
             .querySelectorAll(this._selectors.filter)
             .forEach((element: HTMLElement) => {
                 element.addEventListener('click', (e: Event) => {
-                    this._updateActiveFiltersSets(e.target);
+                    this._updateActiveFiltersSets(e.currentTarget);
 
                     if (
-                        e.target.getAttribute('data-finder-filter-type') ===
-                        'query'
+                        e.currentTarget.getAttribute(
+                            'data-finder-filter-type'
+                        ) === 'query'
                     ) {
                         this._handleQueryFiltersClick(e);
                     } else {
@@ -681,7 +682,7 @@ export default class InstantProductFinder {
                             10
                         );
 
-                        if (e.target.classList.contains('active')) {
+                        if (e.currentTarget.classList.contains('active')) {
                             this._scrollToStep(id + 1);
                         }
                     }
