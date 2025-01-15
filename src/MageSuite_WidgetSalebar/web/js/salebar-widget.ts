@@ -139,7 +139,6 @@ export default class SalebarWidget {
      */
     protected _initTimer(): void {
         this._renderTimer();
-        this._$element.addClass('cs-salebar-widget--loaded');
         this._timerInterval = setInterval(this._renderTimer.bind(this), 1000);
     }
 
