@@ -209,6 +209,10 @@ export default class Slider {
                 scrollableElementSelector: this.options.slidesWrapperSelector,
                 slideSelector: this.options.slideSelector,
                 useWholeScreen: this.options.useWholeScreen,
+                maxContentWidth: this.options.maxContentWidth,
+                pageEdgeGutter: this.options.pageEdgeGutter,
+                visibleSlideIntersection:
+                    this.options.paginationOptions.visibleSlideIntersection,
             },
             ...this.options.navigationOptions,
         };
@@ -308,7 +312,10 @@ export default class Slider {
             {
                 root: this.slides[0].parentNode as HTMLElement,
                 rootMargin,
-                threshold: threshold || 0.5,
+                threshold:
+                    parseFloat(
+                        this.options.paginationOptions.visibleSlideIntersection
+                    ) || 0.5,
             }
         );
     }
