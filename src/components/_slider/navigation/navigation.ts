@@ -7,6 +7,9 @@ export default class SliderNavigation {
         slideSelector: '.cs-image-teaser__slide',
         prevButtonSelector: '.cs-slider-navigation--prev',
         nextButtonSelector: '.cs-slider-navigation--next',
+        maxContentWidth: '0',
+        pageEdgeGutter: '0',
+        visibleSlideIntersection: 0.5,
     };
     public currentIndex: number = 1;
     public interacted: boolean = false;
@@ -198,6 +201,20 @@ export default class SliderNavigation {
      * Observes last slide item to disable/enable "next" button
      */
     protected _observeLastItem(): void {
+        const threshold = parseFloat(this.options.visibleSlideIntersection);
+
+        let rootMargin;
+        const contentWidth: number =
+            parseInt(this.options.maxContentWidth) +
+            2 * parseInt(this.options.pageEdgeGutter);
+
+        if (this.options.useWholeScreen && contentWidth < window.innerWidth) {
+            const margin = (window.innerWidth - contentWidth) / 2;
+            rootMargin = `0px -${margin}px 0px -${margin}px`;
+        } else {
+            rootMargin = '0px 0px 0px 0px';
+        }
+
         const observer: IntersectionObserver = new IntersectionObserver(
             (entries) =>
                 entries.forEach((entry: IntersectionObserverEntry) => {
@@ -206,7 +223,8 @@ export default class SliderNavigation {
                 }),
             {
                 root: this._scrollable as HTMLElement,
-                threshold: 0.5,
+                rootMargin,
+                threshold: threshold ? threshold : 0.5,
             }
         );
 

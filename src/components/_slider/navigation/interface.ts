@@ -47,4 +47,16 @@ export default interface ISliderNavigation {
      * @default false
      */
     useWholeScreen?: boolean;
+    /**
+     * Defines max container width for the slider
+     */
+    maxContentWidth?: string;
+    /**
+     * Defines page edge gutter
+     */
+    pageEdgeGutter?: string;
+    /**
+     * Defines intersection observer threshold
+     */
+    visibleSlideIntersection?: number | string;
 }

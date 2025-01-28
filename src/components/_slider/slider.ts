@@ -28,6 +28,8 @@ export default class Slider {
         autorotationOptions: {},
         useWholeScreen: false,
         componentType: 'image_teaser',
+        maxContentWidth: '0',
+        pageEdgeGutter: '0',
     };
     public currentItemsPerView: number;
     public slides: NodeListOf<HTMLElement>;
@@ -207,6 +209,10 @@ export default class Slider {
                 scrollableElementSelector: this.options.slidesWrapperSelector,
                 slideSelector: this.options.slideSelector,
                 useWholeScreen: this.options.useWholeScreen,
+                maxContentWidth: this.options.maxContentWidth,
+                pageEdgeGutter: this.options.pageEdgeGutter,
+                visibleSlideIntersection:
+                    this.options.paginationOptions.visibleSlideIntersection,
             },
             ...this.options.navigationOptions,
         };
@@ -279,6 +285,18 @@ export default class Slider {
             this.options.paginationOptions.visibleSlideIntersection
         );
 
+        let rootMargin;
+        const contentWidth: number =
+            parseInt(this.options.maxContentWidth) +
+            2 * parseInt(this.options.pageEdgeGutter);
+
+        if (this.options.useWholeScreen && contentWidth < window.innerWidth) {
+            const margin = (window.innerWidth - contentWidth) / 2;
+            rootMargin = `0px -${margin}px 0px -${margin}px`;
+        } else {
+            rootMargin = '0px 0px 0px 0px';
+        }
+
         this.observer = new IntersectionObserver(
             (entries) =>
                 entries.forEach((entry: IntersectionObserverEntry) => {
@@ -293,7 +311,11 @@ export default class Slider {
                 }),
             {
                 root: this.slides[0].parentNode as HTMLElement,
-                threshold: threshold || 0.5,
+                rootMargin,
+                threshold:
+                    parseFloat(
+                        this.options.paginationOptions.visibleSlideIntersection
+                    ) || 0.5,
             }
         );
     }

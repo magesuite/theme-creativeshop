@@ -63,4 +63,12 @@ export default interface ISlider {
      * Tells which CC component the instance is (image_teaser, hero_carouel, brand_carousel, products_carousel...)
      */
     componentType: string;
+    /**
+     * Defines max container width for the slider
+     */
+    maxContentWidth: string;
+    /**
+     * Defines page edge gutter
+     */
+    pageEdgeGutter: string;
 }
