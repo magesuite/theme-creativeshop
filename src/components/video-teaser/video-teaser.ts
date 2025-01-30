@@ -117,6 +117,8 @@ export default class VideoTeaser {
         }
 
         if (consentStatus) {
+            videoPlayerPlaceholder.dataset.consent = 'true';
+
             if (isVisible) {
                 if (hasPlayer) {
                     if (videoTypeConfig.player_vars.autoplay) {
@@ -140,6 +142,8 @@ export default class VideoTeaser {
                 }
             }
         } else {
+            videoPlayerPlaceholder.dataset.consent = 'false';
+
             if (isVisible && hasPlayer) {
                 videoPlayer.destroy(videoTeaserId);
 
