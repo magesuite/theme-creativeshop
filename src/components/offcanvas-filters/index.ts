@@ -1,4 +1,4 @@
-import Offcanvas from 'components/offcanvas/offcanvas';
+import Offcanvas from 'components/offcanvas-filters/offcanvas-filters';
 import 'components/offcanvas-filters/offcanvas-filters.scss';
 
 /**

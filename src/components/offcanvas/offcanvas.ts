@@ -87,6 +87,8 @@ export default class Offcanvas {
                 this.hide();
             }
         });
+
+        this._$drawer.attr('inert', '');
     }
     /**
      * Toggles offcanvas visibility depending on its current state.
@@ -200,6 +202,7 @@ export default class Offcanvas {
     protected _showDrawer(): Promise<Offcanvas> {
         return new Promise((resolve) => {
             this._$drawer.addClass(`drawer--visible`);
+            this._$drawer.removeAttr('inert');
             setTimeout(
                 () => resolve(this),
                 this._options.drawerTransitionDuration
@@ -213,6 +216,7 @@ export default class Offcanvas {
     protected _hideDrawer(): Promise<Offcanvas> {
         return new Promise((resolve) => {
             this._$drawer.removeClass(`drawer--visible`);
+            this._$drawer.attr('inert', true);
             setTimeout(
                 () => resolve(this),
                 this._options.drawerTransitionDuration
