@@ -16,6 +16,7 @@ export interface OffcanvasOptions {
     closeButtonClassName?: string; // Optional, additional close button name.
     offcanvasShowTriggerEvent?: string; // Adds event to be listened to on body, that will trigger ofcanvas open.
     offcanvasHideTriggerEvent?: string; // Adds event to be listened to on body, that will trigger ofcanvas close.
+    isInertDisabled?: () => boolean; // Function that will remove inert attribute on drawer when true is returned.
 }
 
 /**
@@ -88,7 +89,14 @@ export default class Offcanvas {
             }
         });
 
-        this._$drawer.attr('inert', '');
+        if (
+            typeof this._options.isInertDisabled === 'function' &&
+            this._options.isInertDisabled()
+        ) {
+            return;
+        } else {
+            this._$drawer.attr('inert', '');
+        }
     }
     /**
      * Toggles offcanvas visibility depending on its current state.
