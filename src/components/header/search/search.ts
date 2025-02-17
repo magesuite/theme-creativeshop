@@ -127,12 +127,14 @@ export default class HeaderSearch {
 
     protected _resetInputValue(): void {
         this._getSearchBoxInput().val('');
-        this._focusInputField();
+        setTimeout(() => {
+            this._focusInputField();
+        }, 300);
     }
 
     protected _focusInputField(): void {
         if (this._options.searchInputFocus) {
-            this._getSearchBoxInput().focus();
+            this._getSearchBoxInput().trigger('focus');
         }
     }
 
