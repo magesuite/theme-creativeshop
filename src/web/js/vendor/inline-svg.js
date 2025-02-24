@@ -41,12 +41,12 @@
         // in fact inlined, might be useful to know
         svg.className += ' ' + 'inlined-svg';
 
-        // Add in some accessibility quick wins
-        svg.setAttribute('role', 'img');
-
         // Use the `alt` attribute if one exists
-        if (attributes.alt) {
+        if (attributes.alt?.value?.length) {
+            svg.setAttribute('role', 'img');
             svg.setAttribute('aria-label', attributes.alt.value);
+        } else {
+            svg.setAttribute('aria-hidden', 'true');
         }
 
         // Replace the image with the SVG
