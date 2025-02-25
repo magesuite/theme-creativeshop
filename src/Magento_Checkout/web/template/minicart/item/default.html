@@ -99,8 +99,11 @@
             <div class="product actions cs-minicart-product__actions">
                 <!-- ko if: $parent.useDefaultQty -->
                 <div class="details-qty qty cs-minicart-product__qty">
-                    <label class="label cs-minicart-product__qty-label" data-bind="i18n: 'Qty', attr: {
-                            for: 'cart-item-'+item_id+'-qty'}"></label>
+                    <label class="label cs-minicart-product__qty-label" data-bind="attr: {
+                        for: 'cart-item-'+item_id+'-qty'}">
+                        <!-- ko i18n: 'Qty' --><!-- /ko -->
+                        <span class="cs-visually-hidden" data-bind="text: product_sku"></span>
+                    </label>
                     <input data-bind="attr: {
                             id: 'cart-item-'+item_id+'-qty',
                             'data-cart-item': item_id,
