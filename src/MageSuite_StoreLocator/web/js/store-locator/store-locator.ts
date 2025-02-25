@@ -633,9 +633,11 @@ export default class StoreLocator {
             this.map.panBy(-sidebarWidth / 2, 0);
         }
 
-        this._infoWindowOpened = true;
-        this._infoWindow.setContent(this.getInfoWindowContent(store));
-        this._infoWindow.open(this.map, this._activeMarker);
+        if (window.breakpoint.current >= window.breakpoint.laptop) {
+            this._infoWindowOpened = true;
+            this._infoWindow.setContent(this.getInfoWindowContent(store));
+            this._infoWindow.open(this.map, this._activeMarker);
+        }
     }
 
     /**
