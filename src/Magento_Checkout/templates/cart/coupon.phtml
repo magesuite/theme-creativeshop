@@ -34,7 +34,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
         </span>
         <?= $block->getChildHtml('checkout.cart.coupon.icon'); ?>
     </div>
-    <div class="content cs-discount__content" data-role="content" aria-labelledby="block-discount-heading">
+    <div class="content cs-discount__content" data-role="content">
         <form
             id="discount-coupon-form"
             action="<?= $block->escapeUrl($block->getUrl('checkout/cart/couponPost')) ?>"
@@ -57,6 +57,7 @@ $collapseOptions = $block->getCollapsibleWidgetOptions();
                             class="input-text"
                             id="coupon_code"
                             name="coupon_code"
+                            autocomplete="off"
                             value="<?= $block->escapeHtmlAttr($block->getCouponCode()) ?>"
                             <?php if(!empty($placeholder)): ?>placeholder="<?= $block->escapeHtmlAttr($placeholder); ?>"<?php endif; ?>
                             <?php if ($hasCouponCode): ?>

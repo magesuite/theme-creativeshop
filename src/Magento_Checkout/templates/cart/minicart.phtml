@@ -4,6 +4,7 @@
  * - add EventTrigger to dropdown
  * - add magesuite classes
  * - add minicart offcanvas as option
+ * - add hidden <span /> element with 'data-labelledby' attribue to be used as dropdown label (ref: theme-creativeshop/src/web/js/dropdown-ext.js)
  * - integrate with xml configuration (dropdown/offcanvas)
  * - change tags from div into li
  *  * TODO - this is the only place when dropdownDialog is present, however some other scripts depend on dropdownDialog events
@@ -61,8 +62,9 @@ $actionClasses = $isOffcanvas ? $block->getOffcanvasTriggerClass() : 'showcart';
                 "triggerClass":"active",
                 "parentClass":"active",
                 "buttons":[]}}'>
-            <?php if($isOffcanvas): ?>
+            <?php if($isOffcanvas): ?> 
             <div class="cs-offcanvas cs-offcanvas--side_right <?= $escaper->escapeHtmlAttr($offcanvasInitClass) ?>">
+                <span data-labelledby="true" id="minicart-content-wrapper-label" class="cs-visually-hidden"><?= $escaper->escapeHtml(__("Minicart")); ?></span>
                 <div class="cs-offcanvas__overlay overlay"></div>
                 <div class="cs-offcanvas__drawer drawer">
                     <div class="cs-minicart-offcanvas__wrapper">
