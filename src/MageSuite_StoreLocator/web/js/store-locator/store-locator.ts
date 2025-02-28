@@ -1076,14 +1076,14 @@ export default class StoreLocator {
      * More info: https://developers.google.com/maps/documentation/javascript/reference
      */
     protected _setMarkerIcons(): void {
-        const path = this._$element.attr('data-image-path');
+        const modulePath = 'MageSuite_StoreLocator/images/store-locator';
 
-        this._options.markerIcons.pin.url = path + '/icon-pin.png';
-        this._options.markerIcons.pinAlt.url = path + '/icon-pin-alt.png';
-        this._options.markerIcons.pinActive.url = path + '/icon-pin-active.png';
+        this._options.markerIcons.pin.url = require.toUrl( modulePath + '/icon-pin.png');
+        this._options.markerIcons.pinAlt.url = require.toUrl( modulePath + '/icon-pin-alt.png');
+        this._options.markerIcons.pinActive.url = require.toUrl( modulePath + '/icon-pin-active.png');
         this._options.markerIcons.userLocation.url =
-            path + '/icon-user-marker.png';
-        this._options.clusterStyles.url = path + '/icon-cluster.png';
+            require.toUrl( modulePath + '/icon-user-marker.png');
+        this._options.clusterStyles.url = require.toUrl( modulePath + '/icon-cluster.png');
 
         this._options.markerIcons.pin.scaledSize = new google.maps.Size(
             this._options.markerIcons.pin.sizes.x,
