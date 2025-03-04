@@ -7,8 +7,8 @@ export default class SliderNavigation {
         slideSelector: '.cs-image-teaser__slide',
         prevButtonSelector: '.cs-slider-navigation--prev',
         nextButtonSelector: '.cs-slider-navigation--next',
-        maxContentWidth: '0',
-        pageEdgeGutter: '0',
+        rootMargin: '0',
+        wholeScreenUsed: false,
         visibleSlideIntersection: 0.5,
     };
     public currentIndex: number = 1;
@@ -72,7 +72,7 @@ export default class SliderNavigation {
     ): void {
         let computedScrollPadding: number = 0;
 
-        if (this.options.useWholeScreen) {
+        if (this.options.useWholeScreen && this.options.wholeScreenUsed) {
             computedScrollPadding = +getComputedStyle(this._scrollable)
                 .scrollPaddingInline;
 
@@ -202,18 +202,7 @@ export default class SliderNavigation {
      */
     protected _observeLastItem(): void {
         const threshold = parseFloat(this.options.visibleSlideIntersection);
-
-        let rootMargin;
-        const contentWidth: number =
-            parseInt(this.options.maxContentWidth) +
-            2 * parseInt(this.options.pageEdgeGutter);
-
-        if (this.options.useWholeScreen && contentWidth < window.innerWidth) {
-            const margin = (window.innerWidth - contentWidth) / 2;
-            rootMargin = `0px -${margin}px 0px -${margin}px`;
-        } else {
-            rootMargin = '0px 0px 0px 0px';
-        }
+        const rootMargin = this.options.rootMargin;
 
         const observer: IntersectionObserver = new IntersectionObserver(
             (entries) =>
