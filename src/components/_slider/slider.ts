@@ -27,9 +27,11 @@ export default class Slider {
         useAutorotation: false,
         autorotationOptions: {},
         useWholeScreen: false,
+        wholeScreenUsed: false,
         componentType: 'image_teaser',
         maxContentWidth: '0',
         pageEdgeGutter: '0',
+        rootMargin: '0',
     };
     public currentItemsPerView: number;
     public slides: NodeListOf<HTMLElement>;
@@ -209,10 +211,10 @@ export default class Slider {
                 scrollableElementSelector: this.options.slidesWrapperSelector,
                 slideSelector: this.options.slideSelector,
                 useWholeScreen: this.options.useWholeScreen,
-                maxContentWidth: this.options.maxContentWidth,
-                pageEdgeGutter: this.options.pageEdgeGutter,
+                wholeScreenUsed: this.options.wholeScreenUsed,
                 visibleSlideIntersection:
                     this.options.paginationOptions.visibleSlideIntersection,
+                rootMargin: this.options.rootMargin,
             },
             ...this.options.navigationOptions,
         };
@@ -290,12 +292,33 @@ export default class Slider {
             parseInt(this.options.maxContentWidth) +
             2 * parseInt(this.options.pageEdgeGutter);
 
-        if (this.options.useWholeScreen && contentWidth < window.innerWidth) {
+        //addional check if slider is indeed using use_whole_screen option as intended
+        //(sometimes silders have full width limited with css, but still have use_whole_screen option enabled globally)
+        const container = this.slides[0].parentNode as HTMLElement;
+        const containerStyle = window.getComputedStyle(container);
+        const containerWidth =
+            container.clientWidth -
+            (parseFloat(containerStyle.paddingLeft) +
+                parseFloat(containerStyle.paddingRight));
+
+        const containerParent = container.parentNode as HTMLElement;
+
+        if (containerWidth < containerParent.offsetWidth) {
+            this.options.wholeScreenUsed = true;
+        }
+
+        if (
+            this.options.useWholeScreen &&
+            this.options.wholeScreenUsed &&
+            contentWidth < window.innerWidth
+        ) {
             const margin = (window.innerWidth - contentWidth) / 2;
             rootMargin = `0px -${margin}px 0px -${margin}px`;
         } else {
             rootMargin = '0px 0px 0px 0px';
         }
+
+        this.options.rootMargin = rootMargin;
 
         this.observer = new IntersectionObserver(
             (entries) =>
@@ -310,7 +333,7 @@ export default class Slider {
                     }
                 }),
             {
-                root: this.slides[0].parentNode as HTMLElement,
+                root: container,
                 rootMargin,
                 threshold:
                     parseFloat(

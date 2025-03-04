@@ -48,13 +48,13 @@ export default interface ISliderNavigation {
      */
     useWholeScreen?: boolean;
     /**
-     * Defines max container width for the slider
+     * Tells if whole screen is indeed used in a given entity. Needed for calculations in observer
      */
-    maxContentWidth?: string;
+    wholeScreenUsed?: boolean;
     /**
-     * Defines page edge gutter
+     * Defines visible slide intersection. Used for calculations in observer
      */
-    pageEdgeGutter?: string;
+    rootMargin: string;
     /**
      * Defines intersection observer threshold
      */

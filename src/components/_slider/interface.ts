@@ -60,6 +60,10 @@ export default interface ISlider {
      */
     useWholeScreen: boolean;
     /**
+     * Tells if whole screen is indeed used in a given entity. Needed for calculations in observer
+     */
+    wholeScreenUsed?: boolean;
+    /**
      * Tells which CC component the instance is (image_teaser, hero_carouel, brand_carousel, products_carousel...)
      */
     componentType: string;
@@ -71,4 +75,8 @@ export default interface ISlider {
      * Defines page edge gutter
      */
     pageEdgeGutter: string;
+    /**
+     * Defines visible slide intersection. Used for calculations in observer
+     */
+    rootMargin: string;
 }
