@@ -5,7 +5,8 @@
  * - remove title
  * - reorganize elements
  * - add hotspots
- *
+ * - add "autocomplete" attribute for newsletter email input (line: 34)
+ * 
  * Aligned with Magento 2.4.7 in 04/2024
  */
 
@@ -30,7 +31,7 @@ $buttonLabel = $block->getButtonLabel();
                 <?php endif; ?>
                 <div class="cs-newsletter__control control">
                     <label for="newsletter" class="cs-newsletter__label"><?=__('Email address') ?></label>
-                    <input name="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
+                    <input name="email" autocomplete="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
                         <?php if (!empty($placeholder)): ?> placeholder="<?= $block->escapeHtmlAttr($placeholder) ?>" <?php endif; ?> value="<?= $block->escapeHtmlAttr($block->getInputValue()); ?>" data-validate="{required:true, 'validate-email':true}"
                     />
                 </div>
