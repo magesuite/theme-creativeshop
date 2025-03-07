@@ -1,6 +1,16 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'utils/visually-hidden';
+@import 'utils/deep-get/deep-get.scss';
+
+// Determines if the CSS mask-based star icons are enabled.
+$star-rating_use-css-mask-for-stars: deep-get(
+    $view-xml,
+    vars,
+    Magento_Review,
+    star-rating,
+    use-css-mask-for-stars
+) !default;
 
 $star-rating_color-active: $color_review-active !default;
 $star-rating_color-inactive: $color_review-inactive !default;
@@ -37,6 +47,10 @@ $star-rating_label-color: $color_text-800 !default;
 $star-rating_label-font-size: 0.75em !default;
 $star-rating_label-font-weight: 700 !default;
 $star-rating_label-text-transform: uppercase !default;
+// Determines the shape of the star
+$star-rating_icon-url: '../images/icons/reviews/star.svg' !default;
+// Determines aspect ratio of the stars
+$star-rating_aspect-ratio: 1 !default;
 
 .#{$ns}star-rating {
     $root: &;
@@ -61,22 +75,85 @@ $star-rating_label-text-transform: uppercase !default;
     }
 
     &__star {
-        display: flex;
         width: $star-rating_star-width-default;
-        height: 100%;
-        fill: $star-rating_color-inactive;
+
+        @if $star-rating_use-css-mask-for-stars {
+            height: calc(
+                #{$star-rating_star-width-default} /
+                    #{$star-rating_aspect-ratio}
+            );
+            aspect-ratio: $star-rating_aspect-ratio;
+
+            @supports (mask: url($star-rating_icon-url)) {
+                background: $star-rating_color-inactive;
+                mask: url($star-rating_icon-url) no-repeat center;
+                mask-size: contain;
+            }
+            // Fallback for browsers that do not support mask
+            @supports not (mask: url($star-rating_icon-url)) {
+                background-image: linear-gradient(
+                        45deg,
+                        $star-rating_color-inactive,
+                        $star-rating_color-inactive
+                    ),
+                    url($star-rating_icon-url);
+                background-color: $color_white;
+                background-blend-mode: lighten, normal;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+            }
+        } @else {
+            display: flex;
+            height: 100%;
+            fill: $star-rating_color-inactive;
+        }
 
         &--active {
-            fill: $star-rating_color-active;
+            @if $star-rating_use-css-mask-for-stars {
+                @supports (mask: url($star-rating_icon-url)) {
+                    background: $star-rating_color-active;
+                }
+                // Fallback for browsers that do not support mask
+                @supports not (mask: url($star-rating_icon-url)) {
+                    background-image: linear-gradient(
+                            45deg,
+                            $star-rating_color-active,
+                            $star-rating_color-active
+                        ),
+                        url($star-rating_icon-url);
+                }
+            } @else {
+                fill: $star-rating_color-active;
+            }
         }
 
         &--half-active {
-            .star-left {
-                fill: $star-rating_color-active;
-            }
+            @if $star-rating_use-css-mask-for-stars {
+                @supports (mask: url($star-rating_icon-url)) {
+                    background: linear-gradient(
+                        to right,
+                        $star-rating_color-active 50%,
+                        $star-rating_color-inactive 50%
+                    );
+                }
+                // Fallback for browsers that do not support mask
+                @supports not (mask: url($star-rating_icon-url)) {
+                    background-image: linear-gradient(
+                            to right,
+                            $star-rating_color-active 50%,
+                            $star-rating_color-inactive 50%
+                        ),
+                        url($star-rating_icon-url);
+                }
+            } @else {
+                .star-left {
+                    fill: $star-rating_color-active;
+                }
 
-            .star-rigth {
-                fill: $star-rating_color-inactive;
+                .star-right {
+                    fill: $star-rating_color-inactive;
+                }
             }
         }
 
@@ -88,9 +165,11 @@ $star-rating_label-text-transform: uppercase !default;
             width: $star-rating_star-width-review;
         }
 
-        path {
-            fill-opacity: 1;
-            fill: inherit;
+        @if not $star-rating_use-css-mask-for-stars {
+            path {
+                fill-opacity: 1;
+                fill: inherit;
+            }
         }
     }
 
@@ -106,16 +185,59 @@ $star-rating_label-text-transform: uppercase !default;
 
     &__form-star {
         opacity: 1;
-        fill: $star-rating_form-star-color-inactive;
-        width: 100%;
 
-        &--active {
-            fill: $star-rating_form-star-color-active;
+        @if $star-rating_use-css-mask-for-stars {
+            display: block;
+            aspect-ratio: $star-rating_aspect-ratio;
+
+            @supports (mask: url($star-rating_icon-url)) {
+                background: $star-rating_form-star-color-inactive;
+                mask: url($star-rating_icon-url) no-repeat center;
+                mask-size: contain;
+            }
+            // Fallback for browsers that do not support mask
+            @supports not (mask: url($star-rating_icon-url)) {
+                background-image: linear-gradient(
+                        45deg,
+                        $star-rating_form-star-color-inactive,
+                        $star-rating_form-star-color-inactive
+                    ),
+                    url($star-rating_icon-url);
+                background-color: $color_white;
+                background-blend-mode: lighten, normal;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+            }
+        } @else {
+            fill: $star-rating_form-star-color-inactive;
+            width: 100%;
         }
 
-        path {
-            fill-opacity: 1;
-            fill: inherit;
+        &--active {
+            @if $star-rating_use-css-mask-for-stars {
+                @supports (mask: url($star-rating_icon-url)) {
+                    background: $star-rating_form-star-color-active;
+                }
+                // Fallback for browsers that do not support mask
+                @supports not (mask: url($star-rating_icon-url)) {
+                    background-image: linear-gradient(
+                            45deg,
+                            $star-rating_form-star-color-active,
+                            $star-rating_form-star-color-active
+                        ),
+                        url($star-rating_icon-url);
+                }
+            } @else {
+                fill: $star-rating_form-star-color-active;
+            }
+        }
+
+        @if not $star-rating_use-css-mask-for-stars {
+            path {
+                fill-opacity: 1;
+                fill: inherit;
+            }
         }
 
         &:nth-last-of-type() {
@@ -123,11 +245,41 @@ $star-rating_label-text-transform: uppercase !default;
         }
 
         #{$root}__form-stars:hover & {
-            fill: $star-rating_form-star-color-active;
+            @if $star-rating_use-css-mask-for-stars {
+                @supports (mask: url($star-rating_icon-url)) {
+                    background: $star-rating_form-star-color-active;
+                }
+                // Fallback for browsers that do not support mask
+                @supports not (mask: url($star-rating_icon-url)) {
+                    background-image: linear-gradient(
+                            45deg,
+                            $star-rating_form-star-color-active,
+                            $star-rating_form-star-color-active
+                        ),
+                        url($star-rating_icon-url);
+                }
+            } @else {
+                fill: $star-rating_form-star-color-active;
+            }
         }
 
         #{$root}__form-stars label:hover ~ label & {
-            fill: $star-rating_form-star-color-inactive;
+            @if $star-rating_use-css-mask-for-stars {
+                @supports (mask: url($star-rating_icon-url)) {
+                    background: $star-rating_form-star-color-inactive;
+                }
+                // Fallback for browsers that do not support mask
+                @supports not (mask: url($star-rating_icon-url)) {
+                    background-image: linear-gradient(
+                            45deg,
+                            $star-rating_form-star-color-inactive,
+                            $star-rating_form-star-color-inactive
+                        ),
+                        url($star-rating_icon-url);
+                }
+            } @else {
+                fill: $star-rating_form-star-color-inactive;
+            }
         }
     }
 

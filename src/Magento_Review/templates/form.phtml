@@ -12,6 +12,7 @@
  */
 
 /** @var \Magento\Review\Block\Form $block */
+$useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Review');
 //phpcs:disable Generic.Files.LineLength
 ?>
 <?php if ($block->getAllowWriteReviewFlag()):?>
@@ -85,15 +86,19 @@
                                             title="<?= $block->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star')) ?>"
                                             id="<?= $block->escapeHtmlAttr($getRatingCode) ?>_<?= $block->escapeHtmlAttr($optionValue) ?>_label"
                                         >
-                                            <?=
-                                                $this->getLayout()
+                                            <?php if ($useCssStars): ?>
+                                                <i class="<?= 'cs-star-rating__form-star ' . $optionValue ?>" aria-hidden="true"></i>
+                                            <?php else: ?>
+                                                <?= $this->getLayout()
                                                     ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
                                                     ->setIconUrl('images/icons/reviews/star.svg')
                                                     ->setCssClass('cs-star-rating__form-star ' . $optionValue)
                                                     ->setInlined(true)
                                                     ->setAltText(__('star'))
                                                     ->toHtml();
-                                            ?>
+                                                ?>
+                                            <?php endif; ?>
+
                                             <span><?= $block->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star')) ?></span>
                                         </label>
                                         <?php $iterator++; ?>

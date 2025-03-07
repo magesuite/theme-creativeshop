@@ -11,12 +11,14 @@
     $reviewsUrl = $block->getReviewsUrl() ?? false;
     $labelIfNoRatings = $block->getLabelIfNoReviews() ?? '';
     $showCount = !$block->getHideReviewsCount() && ($reviewsCount > 0  || $labelIfNoRatings);
+    $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Review');
 ?>
 
 <?php if ($activeStars || $labelIfNoRatings): ?>
     <div class="cs-star-rating <?= $block->getAdditionalClasses(); ?>">
         <?php if ($activeStars): ?>
-            <div class="cs-star-rating__stars">
+            <div class="cs-star-rating__stars" role="img"
+                 aria-label="<?= $block->escapeHtmlAttr(__('Rated %1 out of %2 stars', $activeStars, $maxStars)) ?>">
                 <?php
                     $iconClass = 'cs-star-rating__star';
 
@@ -28,13 +30,16 @@
 
                             if (!isset($ratingStarIconActive)) {
                                 $iconStatusActive = ' ' . $iconClass . '--active';
-                                $ratingStarIconActive = $this->getLayout()
-                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                    ->setIconUrl('images/icons/reviews/star.svg')
-                                    ->setCssClass($iconClass . $iconStatusActive)
-                                    ->setAltText(__('star'))
-                                    ->setInlined(true)
-                                    ->toHtml();
+                                $ratingStarIconActive =
+                                    $useCssStars
+                                        ? '<i class="' . $iconClass . $iconStatusActive . '" aria-hidden="true"></i>'
+                                        : $this->getLayout()
+                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                        ->setIconUrl('images/icons/reviews/star.svg')
+                                        ->setCssClass($iconClass . $iconStatusActive)
+                                        ->setAltText(__('star'))
+                                        ->setInlined(true)
+                                        ->toHtml();
                             }
 
                             echo $ratingStarIconActive;
@@ -42,26 +47,32 @@
 
                             if (!isset($ratingStarIconHalfActive)) {
                                 $iconStatusHalfActive = ' ' . $iconClass . '--half-active';
-                                $ratingStarIconHalfActive = $this->getLayout()
-                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                    ->setIconUrl('images/icons/reviews/star.svg')
-                                    ->setCssClass($iconClass . $iconStatusHalfActive)
-                                    ->setAltText(__('star'))
-                                    ->setInlined(true)
-                                    ->toHtml();
+                                $ratingStarIconHalfActive =
+                                    $useCssStars
+                                        ? '<i class="' . $iconClass . $iconStatusHalfActive . '" aria-hidden="true"></i>'
+                                        : $this->getLayout()
+                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                        ->setIconUrl('images/icons/reviews/star.svg')
+                                        ->setCssClass($iconClass . $iconStatusHalfActive)
+                                        ->setAltText(__('star'))
+                                        ->setInlined(true)
+                                        ->toHtml();
                             }
 
                             echo $ratingStarIconHalfActive;
                         } else {
 
                             if (!isset($ratingStarIconNotActive)) {
-                                $ratingStarIconNotActive = $this->getLayout()
-                                    ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
-                                    ->setIconUrl('images/icons/reviews/star.svg')
-                                    ->setCssClass($iconClass)
-                                    ->setAltText(__('star'))
-                                    ->setInlined(true)
-                                    ->toHtml();
+                                $ratingStarIconNotActive =
+                                    $useCssStars
+                                        ? '<i class="' . $iconClass . '" aria-hidden="true"></i>'
+                                        : $this->getLayout()
+                                        ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
+                                        ->setIconUrl('images/icons/reviews/star.svg')
+                                        ->setCssClass($iconClass)
+                                        ->setAltText(__('star'))
+                                        ->setInlined(true)
+                                        ->toHtml();
                             }
 
                             echo $ratingStarIconNotActive;
