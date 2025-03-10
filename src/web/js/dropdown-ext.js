@@ -9,6 +9,7 @@
  *   * if there is no element with "data-labelledby" attribute, then default "aria-label" attribute will be used
  *   * if dialogTitle is specified, it's value will be used as "aria-label" attribute
  * - remove unwanted "tabindex = -1" attribute from dialog element when it is being added to DOM [3]
+ * - generate unique id for dropdown dialog element if it does not have one [4]
  *
  * Aligned with Magento 2.4.7 on 02/2025
  */
@@ -18,6 +19,15 @@ define(['jquery', 'mage/translate'], function ($, $t) {
     return function (mageDropdownDialog) {
         $.widget('mage.dropdownDialog', mageDropdownDialog, {
             _create: function () {
+                /** edit [4] start */
+                const uniqueId =
+                    'ui-id-' + Math.random().toString(36).substr(2, 9);
+
+                if (!this.element.attr('id')) {
+                    this.element.attr('id', uniqueId);
+                }
+                /** edit [4] end */
+
                 this._super();
                 const _self = this;
 
