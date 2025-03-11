@@ -1,5 +1,8 @@
 /**
- * Instead of reviews pagination use "Load more reviews" button
+ * Mixin has been created in order to:
+ * -Instead of reviews pagination use "Load more reviews" button
+ * -Remove ajax request on page load as first page of reviews is rendered server side
+ *
  * Aligned with Magento 2.4.7 in 04/2024
  */
 define(['jquery', 'loader', 'mage/translate'], function ($) {
@@ -68,6 +71,55 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
             });
         };
 
+        var handleAddingLoadMoreButton = function (
+            nextPageUrl,
+            reviewsPerPage,
+            numberOfReviews
+        ) {
+            $('.cs-reviews').addClass('cs-reviews--load-more');
+            $(reviewContainerSelector + ' .pages').remove();
+
+            addLoadMoreButton(nextPageUrl, reviewsPerPage, numberOfReviews);
+            attachLoadMoreButtonEvents();
+        };
+
+        var processReviewsData = function (data) {
+            var $newReviews = $(data).find('.cs-reviews__item');
+            var reviewsPerPage = $newReviews.length;
+            processedReviewsCount += reviewsPerPage;
+
+            var $pagination = $(data).find('.cs-pagination__content');
+            var numberOfReviews = parseInt(
+                $pagination.attr('data-reviews-number'),
+                10
+            );
+            var nextPageUrl = $pagination.attr('data-reviews-next-url');
+            var lastPageNumber = parseInt(
+                $pagination.attr('data-reviews-last-page-number'),
+                10
+            );
+            var currentPage = parseInt(
+                $pagination.attr('data-reviews-current-page'),
+                10
+            );
+            var isLastPage = $pagination.attr('data-reviews-is-last-page');
+
+            // Penultimate page
+            if (lastPageNumber - currentPage === 1) {
+                reviewsPerPage = numberOfReviews - currentPage * reviewsPerPage;
+            }
+
+            return {
+                $newReviews: $newReviews,
+                reviewsPerPage: reviewsPerPage,
+                numberOfReviews: numberOfReviews,
+                nextPageUrl: nextPageUrl,
+                lastPageNumber: lastPageNumber,
+                currentPage: currentPage,
+                isLastPage: isLastPage,
+            };
+        };
+
         function processReviewsLoadMore(url, fromPages) {
             $.ajax({
                 url: url,
@@ -76,47 +128,23 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
                 showLoader: false,
                 loaderContext: $('.product.data.items'),
             }).done(function (data) {
-                var $newReviews = $(data).find('.cs-reviews__item');
-                var reviewsPerPage = $newReviews.length;
-                processedReviewsCount += reviewsPerPage;
-
-                var $pagination = $(data).find('.cs-pagination__content');
-                var numberOfReviews = parseInt(
-                    $pagination.attr('data-reviews-number'),
-                    10
-                );
-                var nextPageUrl = $pagination.attr('data-reviews-next-url');
-                var lastPageNumber = parseInt(
-                    $pagination.attr('data-reviews-last-page-number'),
-                    10
-                );
-                var currentPage = parseInt(
-                    $pagination.attr('data-reviews-current-page'),
-                    10
-                );
-                var isLastPage = $pagination.attr('data-reviews-is-last-page');
-
-                // Penultimate page
-                if (lastPageNumber - currentPage === 1) {
-                    reviewsPerPage =
-                        numberOfReviews - currentPage * reviewsPerPage;
-                }
+                var reviewsData = processReviewsData(data);
 
                 if (fromPages === true) {
                     $('#product-review-container .cs-reviews__list')
-                        .append($newReviews)
+                        .append(reviewsData.$newReviews)
                         .trigger('contentUpdated');
 
-                    if (isLastPage) {
+                    if (reviewsData.isLastPage) {
                         $loadMoreReviewsButton.hide();
                         $('.' + reviewsCountSelectorClass).hide();
                         return;
                     }
 
                     updateLoadMoreButton(
-                        nextPageUrl,
-                        reviewsPerPage,
-                        numberOfReviews
+                        reviewsData.nextPageUrl,
+                        reviewsData.reviewsPerPage,
+                        reviewsData.numberOfReviews
                     );
                 } else {
                     $('#product-review-container')
@@ -128,21 +156,33 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
                         return;
                     }
 
-                    $('.cs-reviews').addClass('cs-reviews--load-more');
-                    $(reviewContainerSelector + ' .pages').remove();
-
-                    addLoadMoreButton(
-                        nextPageUrl,
-                        reviewsPerPage,
-                        numberOfReviews
+                    handleAddingLoadMoreButton(
+                        reviewsData.nextPageUrl,
+                        reviewsData.reviewsPerPage,
+                        reviewsData.numberOfReviews
                     );
-                    attachLoadMoreButtonEvents();
                 }
             });
         }
 
         return function (config) {
-            processReviewsLoadMore(config.productReviewUrl);
+            if (
+                !config.isRenderedFirstPageServerSide ||
+                typeof config.isRenderedFirstPageServerSide === 'undefined'
+            ) {
+                processReviewsLoadMore(config.productReviewUrl);
+            }
+
+            if ($(reviewContainerSelector + ' .pages').length) {
+                var reviewsData = processReviewsData(
+                    $(reviewContainerSelector).html()
+                );
+                handleAddingLoadMoreButton(
+                    reviewsData.nextPageUrl,
+                    reviewsData.reviewsPerPage,
+                    reviewsData.numberOfReviews
+                );
+            }
 
             $(function () {
                 var $addReviewLinks = $('a[href="#reviews"]');
