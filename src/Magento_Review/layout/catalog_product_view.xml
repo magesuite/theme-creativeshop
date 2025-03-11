@@ -1,10 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="review_product_form_component"/>
     <body>
@@ -17,6 +11,16 @@
                         <item name="mediaQueryScope" xsi:type="string">(max-width: 767px)</item>
                     </argument>
                 </arguments>
+
+                <!-- Server-side loading for initial collection of product reviews (first 10 items) -->
+                <block class="Magento\Review\Block\Product\View\ListView" name="reviews.tab.list" as="reviews_list" template="Magento_Review::product/view/list.phtml" ifconfig="catalog/review/active"/>
+                <block class="Magento\Theme\Block\Html\Pager" name="product_review_list.toolbar" ifconfig="catalog/review/active">
+                    <arguments>
+                        <argument name="use_ajax_review_url" xsi:type="boolean">true</argument>
+                        <argument name="show_amounts" xsi:type="boolean">false</argument>
+                    </arguments>
+                </block>
+
                 <block class="Magento\Catalog\Block\Product\View" name="reviews.summary" as="reviews_summary" template="Magento_Review::summary.phtml">
                     <arguments>
                         <argument xsi:type="boolean" name="show_numerical_score">true</argument>
@@ -36,7 +40,6 @@
                     </block>
                 </block>
             </referenceBlock>
-
 
             <referenceBlock name="product.review.form">
                 <block class="MageSuite\ThemeHelpers\Block\Icon" name="product.review.form.button.icon">
