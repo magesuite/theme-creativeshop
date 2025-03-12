@@ -38,10 +38,9 @@
             $isFirstPage = $block->isFirstPage();
             $currentPage = $block->escapeHtmlAttr($block->getCurrentPage());
         ?>
-        <div class="pages cs-pagination" role="navigation">
+        <div class="pages cs-pagination">
             <div
                 class="cs-pagination__content"
-                role="menubar"
                 data-reviews-number="<?= $collectionSize ?>"
                 data-reviews-last-page-number="<?= $lastPageNum ?>"
                 data-reviews-next-url="<?= $nextPageUrl ?>"
@@ -68,8 +67,8 @@
                         <<?= $prevActionTag ?> class="<?= $block->escapeHtmlAttr($prevPageLabel ? 'link ' : 'action ') ?> previous cs-pagination__action cs-pagination__action--previous-page<?= $prevActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
                           <?php if($prevActionTag == 'a'): ?> href="<?= $block->escapeUrl($block->getPreviousPageUrl()) ?>"<?php endif; ?>
                           title="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"
-                          tabindex="0"
-                          role="menuitem">
+                          <?php if(!$displayPrevNextLabels): ?>aria-label="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"<?php endif ?>
+                          tabindex="0">
                             <?= $previousPageIcon ?>
                             <?php if($displayPrevNextLabels): ?>
                                 <span class="cs-pagination__action-label cs-pagination__action-label--previous-page"><?= $block->escapeHtml($prevPageLabel) ?></span>
@@ -116,7 +115,7 @@
                     <ul class="items pages-items cs-pagination__items" role="none">
                         <?php if ($block->canShowFirst()): ?>
                             <li class="item cs-pagination__item cs-pagination__item--first-page" role="none">
-                                <a class="page first cs-pagination__number cs-pagination__number--first-page" href="<?= $block->escapeUrl($block->getFirstPageUrl()) ?>" role="menuitem">
+                                <a class="page first cs-pagination__number cs-pagination__number--first-page" href="<?= $block->escapeUrl($block->getFirstPageUrl()) ?>">
                                     <span><?= $block->escapeHtml($localeFormatter->formatNumber(1)) ?></span>
                                 </a>
                             </li>
@@ -130,7 +129,7 @@
                                         $localeFormatter->formatNumber($block->getPreviousJumpPage())
                                     )) ?>"
                                    href="<?= $block->escapeUrl($block->getPreviousJumpUrl()) ?>"
-                                   role="menuitem">
+                                >
                                     <span>...</span>
                                 </a>
                             </li>
@@ -138,7 +137,7 @@
 
                         <?php foreach ($block->getFramePages() as $page): ?>
                             <?php if ($block->isPageCurrent($page)): ?>
-                                <li class="item current cs-pagination__item cs-pagination__item--current">
+                                <li class="item current cs-pagination__item cs-pagination__item--current" role="none">
                                     <span class="cs-pagination__number cs-pagination__number--current">
                                         <span class="label cs-visually-hidden"><?= $block->escapeHtml(__('You\'re currently reading page')) ?> </span>
                                         <span><?= $block->escapeHtml($localeFormatter->formatNumber($page)) ?></span>
@@ -169,7 +168,7 @@
 
                         <?php if ($block->canShowLast()): ?>
                             <li class="item cs-pagination__item cs-pagination__item--last-page" role="none">
-                                <a class="page last cs-pagination__number cs-pagination__number--last-page" href="<?= $block->escapeUrl($block->getLastPageUrl()) ?>" role="menuitem">
+                                <a class="page last cs-pagination__number cs-pagination__number--last-page" href="<?= $block->escapeUrl($block->getLastPageUrl()) ?>">
                                     <span><?= $block->escapeHtml($localeFormatter->formatNumber($block->getLastPageNum())) ?></span>
                                 </a>
                             </li>
@@ -198,8 +197,8 @@
                           class="<?= $block->escapeHtmlAttr($nextPageLabel) ? 'link ' : 'action ' ?> next cs-pagination__action cs-pagination__action--next-page<?= $nextActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
                           <?php if($nextActionTag == 'a'): ?> href="<?= $block->escapeUrl($block->getNextPageUrl()) ?>"<?php endif ?>
                           title="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"
-                          tabindex="0"
-                          role="menuitem">
+                          <?php if(!$displayPrevNextLabels): ?>aria-label="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"<?php endif ?>
+                          tabindex="0">
                             <?= $nextPageIcon ?>
                             <?php if($displayPrevNextLabels): ?>
                                 <span class="cs-pagination__action-label cs-pagination__action-label--next-page"><?= /* @escapeNotVerified */ $nextPageLabel ?></span>
