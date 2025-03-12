@@ -201,6 +201,8 @@ export default class SliderNavigation {
      * Observes last slide item to disable/enable "next" button
      */
     protected _observeLastItem(): void {
+        if (!this._slides.length) return;
+
         const threshold = parseFloat(this.options.visibleSlideIntersection);
         const rootMargin = this.options.rootMargin;
 
