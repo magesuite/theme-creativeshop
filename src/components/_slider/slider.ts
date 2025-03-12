@@ -283,6 +283,8 @@ export default class Slider {
      * Creates intersection observer and handles intersecting callbacks by distributing it to sub-modules
      */
     protected _setIntersectionObserver(): void {
+        if (!this.slides.length) return;
+
         const threshold = parseFloat(
             this.options.paginationOptions.visibleSlideIntersection
         );
