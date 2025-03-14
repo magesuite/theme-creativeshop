@@ -67,6 +67,14 @@ export interface SlideGalleryOptions {
     galleryFullscreenImagesClass?: string;
     verticalThumbNav?: boolean;
     scrollTillEnd?: boolean;
+    mobileBreakpoint?:
+        | 'phone'
+        | 'phoneLg'
+        | 'tablet'
+        | 'laptop'
+        | 'laptopLg'
+        | 'desktop'
+        | 'tv';
 }
 
 /**
@@ -144,6 +152,7 @@ export default class SlideGallery {
         scrollToFirstImageOnUpdate: true,
         verticalThumbNav: false,
         scrollTillEnd: false,
+        mobileBreakpoint: 'tablet',
     };
 
     /**
@@ -628,7 +637,10 @@ export default class SlideGallery {
                 this._updateIndex(activeElementIndex);
                 this._toggleNavButtons();
 
-                if (window.innerWidth < window.breakpoint.tablet) {
+                if (
+                    window.innerWidth <
+                    window.breakpoint[this._defaultOptions.mobileBreakpoint]
+                ) {
                     this._setActiveThumb(activeElementIndex, true);
                 }
 
@@ -686,7 +698,10 @@ export default class SlideGallery {
      * based on current slider position.
      */
     protected _toggleThumbNavButtons(): void {
-        if (window.breakpoint.current >= window.breakpoint.tablet) {
+        if (
+            window.breakpoint.current >=
+            window.breakpoint[this._defaultOptions.mobileBreakpoint]
+        ) {
             if (this._defaultOptions.verticalThumbNav) {
                 const thumbnailHeight: number =
                     $(this._$thumbs[0]).outerHeight() +
@@ -762,7 +777,10 @@ export default class SlideGallery {
             behavior: behavior,
         });
 
-        if (window.innerWidth >= window.breakpoint.tablet) {
+        if (
+            window.innerWidth >=
+            window.breakpoint[this._defaultOptions.mobileBreakpoint]
+        ) {
             this._setActiveThumb(activeIndex);
         }
 
@@ -776,7 +794,10 @@ export default class SlideGallery {
      */
     public scrollPaginationToIndex(activeIndex: number): void {
         if (this._$thumbs[activeIndex]) {
-            if (window.breakpoint.current >= window.breakpoint.tablet) {
+            if (
+                window.breakpoint.current >=
+                window.breakpoint[this._defaultOptions.mobileBreakpoint]
+            ) {
                 if (this._defaultOptions.verticalThumbNav) {
                     this._paginationScrollable.scrollTo({
                         top:
@@ -814,7 +835,10 @@ export default class SlideGallery {
      * Scrolls thumbnails forward.
      */
     public scrollPaginationForward(): void {
-        if (window.breakpoint.current >= window.breakpoint.tablet) {
+        if (
+            window.breakpoint.current >=
+            window.breakpoint[this._defaultOptions.mobileBreakpoint]
+        ) {
             if (this._defaultOptions.verticalThumbNav) {
                 const thumbFullHeight =
                     $(this._$thumbs[0]).outerWidth() +
@@ -845,7 +869,10 @@ export default class SlideGallery {
      * Scrolls thumbnails backward.
      */
     public scrollPaginationBackward(): void {
-        if (window.breakpoint.current >= window.breakpoint.tablet) {
+        if (
+            window.breakpoint.current >=
+            window.breakpoint[this._defaultOptions.mobileBreakpoint]
+        ) {
             if (this._defaultOptions.verticalThumbNav) {
                 const thumbFullHeight =
                     $(this._$thumbs[0]).outerWidth() +
