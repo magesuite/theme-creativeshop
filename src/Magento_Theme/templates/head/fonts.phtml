@@ -21,7 +21,6 @@ if (!empty($webFonts)):
             <link rel="preload" as="style" href="<?= $escaper->escapeUrl($url) ?>">
             <link id="font_webfont" rel="stylesheet" href="<?= $escaper->escapeUrl($url) ?>" media="print">
             <?= $secureRenderer->renderEventListenerAsTag('onload', "this.onload=null;this.media='all'", '#font_webfont'); ?>
-            <noscript><link rel="stylesheet" href="<?= $escaper->escapeUrl($url) ?>"></noscript>
         <?php endif;
     endforeach;
 endif;
@@ -57,7 +56,6 @@ if (!empty($localFonts)):
                 <link rel="preload" as="style" href="<?= $escaper->escapeUrl($localFontUrl) ?>">
                 <link id="font_localfont" rel="stylesheet" href="<?= $escaper->escapeUrl($localFontUrl) ?>" media="print">
                 <?= $secureRenderer->renderEventListenerAsTag('onload', "this.media='all'", '#font_localfont'); ?>
-                <noscript><link rel="stylesheet" href="<?= $escaper->escapeUrl($localFontUrl) ?>"></noscript>
             <?php endif;
         endforeach;
     }
