@@ -20,14 +20,15 @@ const consentManagement = {
     mapVendors: {
         usercentrics:
             usercentricsVersion === 'v3' ? usercentricsv3 : usercentrics,
+        usercentricsv3: usercentricsv3,
         amasty: amasty,
     },
     /**
      * Check consent status
      * @param service
-     * @returns
+     * @returns boolean or Promise<boolean> - depending on Consent Management Provider
      */
-    checkConsent: function (service: string): boolean {
+    checkConsent: function (service: string): boolean | Promise<boolean> {
         if (!this.vendor || !this.mapVendors[this.vendor]) {
             return this.defaultValue;
         }
