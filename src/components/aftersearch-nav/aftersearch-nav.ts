@@ -2,6 +2,20 @@ import * as $ from 'jquery';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 
+const debounce = function (func, wait) {
+    let timeout;
+    return function () {
+        const context = this;
+        const args = arguments;
+        const later = function () {
+            timeout = null;
+            func.apply(context, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
 export interface AftersearchNavOptions {
     horizontalClassName?: string;
     filtersExpandedClassName?: string;
@@ -38,6 +52,7 @@ export class AftersearchNav {
         filterClick?: (event: JQuery.Event) => void;
         toggleButtonClick?: (event: JQuery.Event) => void;
         filterApply?: (event: JQuery.Event) => void;
+        inputChange?: (event: JQuery.Event) => void;
     } = {};
 
     public constructor($element: JQuery, options?: AftersearchNavOptions) {
@@ -163,9 +178,14 @@ export class AftersearchNav {
         this._eventListeners.filterClick = this._adjustDropdown.bind(this);
         this._eventListeners.toggleButtonClick = this._toggleFilters.bind(this);
         this._eventListeners.filterApply = this._applyFilter.bind(this);
+        this._eventListeners.inputChange = debounce(
+            this._adjustDropdown.bind(this),
+            300
+        );
 
         this._$listOfFilters.on('click', this._eventListeners.filterClick);
         this._$toggleButton.on('click', this._eventListeners.toggleButtonClick);
+        this._$element.on('input', this._eventListeners.inputChange);
         $(document).on(
             'click',
             this._options.loaderClickTargetsSelector,
