@@ -448,12 +448,12 @@ export default class Dailydeal {
         );
 
         // Check if discount badges exists.
-        if ($dailydealDiscountBadge && $defaultDiscountBadge) {
+        if ($dailydealDiscountBadge?.length && $defaultDiscountBadge?.length) {
             // Toggle discount badges.
             $dailydealDiscountBadge.css('display', ddEnabled ? '' : 'none');
             $defaultDiscountBadge.css('display', ddEnabled ? 'none' : '');
         }
-        if ($dailydealAmountBadge && $dailydealAmountBadge.length) {
+        if ($dailydealAmountBadge?.length) {
             $dailydealAmountBadge.css('display', ddEnabled ? '' : 'none');
         }
     }
