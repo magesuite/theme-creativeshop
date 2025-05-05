@@ -1,6 +1,6 @@
 /**
  * New methods and some adjustments connected with qty increment
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 define([
     'jquery',

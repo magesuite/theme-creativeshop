@@ -3,7 +3,7 @@
  *
  * Messages observable is now cleaned on beforeunload event
  *
- * Aligned with Magento 2.4.7 on 05/11/2024
+ * Aligned with Magento 2.4.8 on 05/2025
  */
 define(['jquery'], function ($, wrapper) {
     'use strict';

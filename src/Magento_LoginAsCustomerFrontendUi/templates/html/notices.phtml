@@ -4,14 +4,18 @@
  * - remove sticky feature init,
  * - link stylesheet only when LAC notification is visible on frontend
  *
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 
 /**
  * @var \Magento\Framework\View\Element\Template $block
  * @var \Magento\Framework\Escaper $escaper
  */
-$viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg');
+if ($block->getConfig()->isB2bEnabled()) {
+    $adobeFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/adobe-icon.svg');
+} else {
+    $adobeFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg');
+}
 ?>
 <?php if ($block->getConfig()->isEnabled()): ?>
     <link rel="stylesheet" type="text/css" href="<?= $block->getViewFileUrl('css/login-as-customer.css'); ?>" />
@@ -20,7 +24,7 @@ $viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images
         <div class="lac-notification clearfix" data-bind="visible: isVisible">
             <div class="top-container">
                 <div class="lac-notification-icon wrapper">
-                    <img class="logo-img"  src="<?= $escaper->escapeUrl($viewFileUrl) ?>" alt="Magento" />
+                    <img class="logo-img"  src="<?= $escaper->escapeUrl($adobeFileUrl) ?>" alt="Magento" />
                 </div>
                 <div class="lac-notification-text wrapper">
                     <span data-bind="html: notificationText"></span>

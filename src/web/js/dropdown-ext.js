@@ -11,7 +11,7 @@
  * - remove unwanted "tabindex = -1" attribute from dialog element when it is being added to DOM [3]
  * - generate unique id for dropdown dialog element if it does not have one [4]
  *
- * Aligned with Magento 2.4.7 on 02/2025
+ * Aligned with Magento 2.4.8 on 05/2025
  */
 define(['jquery', 'mage/translate'], function ($, $t) {
     'use strict';

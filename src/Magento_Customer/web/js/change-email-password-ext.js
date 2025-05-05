@@ -2,7 +2,7 @@
  * Modification type: extend
  * Reasons:
  * - add validation for account email change in UA
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.78in 04/2025
  */
 define(['jquery', 'jquery-ui-modules/widget'], function ($) {
     'use strict';

@@ -1,7 +1,7 @@
 /**
  * Step Navigator is extended to add additional scroll to the top of a page from shipping step to payment step. (fix mostly for Safari)
  * Before sometimes users did not see important part at the top of a step (f.e. payment methods) and were confused.
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 
 define(['mage/utils/wrapper', 'jquery'], function (wrapper, $) {

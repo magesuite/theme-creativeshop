@@ -5,7 +5,7 @@
  * - add Remove all filters button
  * - remove "Now Shopping by" label
  *
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 ?>
 <?php
@@ -26,8 +26,8 @@
             <li class="cs-aftersearch-nav-state__item item">
                 <?php
                 $clearLinkUrl = $_filter->getClearLinkUrl();
-                $currentFilterName = $block->escapeHtml(__($_filter->getName())) . " " . $block->escapeHtml($block->stripTags($_filter->getLabel()));
-                if ($clearLinkUrl):
+                $currentFilterName = $block->escapeHtmlAttr(__($_filter->getName()) . " " . $block->stripTags($_filter->getLabel()));
+                if ($clearLinkUrl) :
                     ?>
                     <a class="action previous" href="<?= $block->escapeUrl($_filter->getRemoveUrl()) ?>"
                        title="<?= $block->escapeHtmlAttr(__('Previous')) ?>">

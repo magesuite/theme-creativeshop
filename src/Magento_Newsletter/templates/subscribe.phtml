@@ -7,18 +7,27 @@
  * - add hotspots
  * - add "autocomplete" attribute for newsletter email input (line: 34)
  *
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 
 /** @var \Magento\Newsletter\Block\Subscribe $block */
+if (!$block->getButtonLockManager()) {
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $block->setButtonLockManager(
+        $objectManager->get(\Magento\Framework\View\Element\ButtonLockManager::class)
+    );
+}
+
 $label = $block->getInputLabel();
 $placeholder = $block->getInputPlaceholder();
 $buttonLabel = $block->getButtonLabel();
+
+/** @var $escaper \Magento\Framework\Escaper */
 ?>
 <div class="block newsletter cs-newsletter">
     <form class="form subscribe cs-newsletter__form"
         novalidate
-        action="<?= $block->escapeUrl($block->getFormActionUrl()) ?>"
+        action="<?= $escaper->escapeUrl($block->getFormActionUrl()) ?>"
         method="post"
         data-mage-init='{"validation": {"errorClass": "mage-error"}}'
         id="newsletter-validate-detail">
@@ -26,23 +35,23 @@ $buttonLabel = $block->getButtonLabel();
             <div class="field newsletter cs-newsletter__field">
                 <?php if (!empty($label)): ?>
                     <label class="label cs-newsletter__label" for="newsletter">
-                        <span><?= $block->escapeHtml($label) ?></span>
+                        <span><?= $escaper->escapeHtml($label) ?></span>
                     </label>
                 <?php endif; ?>
                 <div class="cs-newsletter__control control">
                     <label for="newsletter" class="cs-newsletter__label"><?=__('Email address') ?></label>
                     <input name="email" autocomplete="email" type="email" id="newsletter" class="input-text cs-newsletter__input"
-                        <?php if (!empty($placeholder)): ?> placeholder="<?= $block->escapeHtmlAttr($placeholder) ?>" <?php endif; ?> value="<?= $block->escapeHtmlAttr($block->getInputValue()); ?>" data-validate="{required:true, 'validate-email':true}"
+                        <?php if (!empty($placeholder)): ?> placeholder="<?= $escaper->escapeHtmlAttr($placeholder) ?>" <?php endif; ?> value="<?= $escaper->escapeHtmlAttr($block->getInputValue()); ?>" data-validate="{required:true, 'validate-email':true}"
                     />
                 </div>
             </div>
             <div class="actions cs-newsletter__actions">
                 <button class="action subscribe primary cs-newsletter__button"
-                        title="<?= !empty($buttonLabel) ? $block->escapeHtmlAttr($buttonLabel) : __('Subscribe') ?>"
+                        title="<?= !empty($buttonLabel) ? $escaper->escapeHtmlAttr($buttonLabel) : __('Subscribe') ?>"
                         type="submit">
                     <?= $block->getChildHtml('newsletter.subscribe.button.icon') ?>
                     <?php if (!empty($buttonLabel)): ?>
-                        <span class="cs-newsletter__button-label<?= $block->getHideButtonLabel() ? ' cs-visually-hidden' : '' ?>"><?= $block->escapeHtml($buttonLabel) ?></span>
+                        <span class="cs-newsletter__button-label<?= $block->getHideButtonLabel() ? ' cs-visually-hidden' : '' ?>"><?= $escaper->escapeHtml($buttonLabel) ?></span>
                     <?php endif; ?>
                 </button>
             </div>

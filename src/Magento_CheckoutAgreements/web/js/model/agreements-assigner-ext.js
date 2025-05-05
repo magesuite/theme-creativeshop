@@ -1,7 +1,7 @@
 /**
  * Changes in comparison to source file:
  * - modified: agreementForm,
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 /* tslint:disable one-variable-per-declaration */
 
@@ -30,11 +30,11 @@ define(['jquery'], function ($) {
                 agreementIds.push(item.value);
             });
 
-            if (paymentData.extension_attributes === undefined) {
-                paymentData.extension_attributes = {};
+            if (paymentData['extension_attributes'] === undefined) {
+                paymentData['extension_attributes'] = {};
             }
 
-            paymentData.extension_attributes.agreement_ids = agreementIds;
+            paymentData['extension_attributes']['agreement_ids'] = agreementIds;
         };
 
         return agreementsAssigner;

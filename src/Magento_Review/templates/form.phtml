@@ -8,20 +8,28 @@
  * - remove data-bind: scope from form element. This is a Magento bug, knockout component is initialized twice,
  * and data-scope clear all events on form (f.e. swatches clicks)
  *
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 
 /** @var \Magento\Review\Block\Form $block */
+if (!$block->getButtonLockManager()) {
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $block->setButtonLockManager(
+        $objectManager->get(\Magento\Framework\View\Element\ButtonLockManager::class)
+    );
+}
+/** @var $escaper \Magento\Framework\Escaper */
+
 $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Review');
 //phpcs:disable Generic.Files.LineLength
 ?>
 <?php if ($block->getAllowWriteReviewFlag()):?>
-<form action="<?= $block->escapeUrl($block->getAction()) ?>" class="cs-form | cs-reviews__form" method="post" id="review-form" data-role="product-review-form">
+<form action="<?= $escaper->escapeUrl($block->getAction()) ?>" class="cs-form | cs-reviews__form" method="post" id="review-form" data-role="product-review-form">
     <?= $block->getBlockHtml('formkey') ?>
     <h3 class="cs-reviews__headline">
-        <?= $block->escapeHtml(__("You're reviewing:")) ?>
+        <?= $escaper->escapeHtml(__("You're reviewing:")) ?>
         <span class="cs-reviews__product-name">
-            <?= $block->escapeHtml($block->getProductInfo()->getName()) ?>
+            <?= $escaper->escapeHtml($block->getProductInfo()->getName()) ?>
         </span>
     </h3>
     <div class="cs-reviews__options">
@@ -72,19 +80,19 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
 
                                         <input
                                             type="radio"
-                                            name="ratings[<?= $block->escapeHtmlAttr($rating->getId()) ?>]"
-                                            id="<?= $block->escapeHtmlAttr($getRatingCode) ?>_<?= $block->escapeHtmlAttr($optionValue) ?>"
-                                            value="<?= $block->escapeHtmlAttr($option->getId()) ?>"
+                                            name="ratings[<?= $escaper->escapeHtmlAttr($rating->getId()) ?>]"
+                                            id="<?= $escaper->escapeHtmlAttr($getRatingCode) ?>_<?= $escaper->escapeHtmlAttr($optionValue) ?>"
+                                            value="<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
                                             class="radio"
                                             data-validate="{'rating-required':true}"
                                             data-feedback-message="<?= /* @escapeNotVerified */ $msg ?>"
-                                            aria-labelledby="<?= $block->escapeHtml($getRatingCode) ?>_rating_label <?= $block->escapeHtml($getRatingCode) ?>_<?= $block->escapeHtmlAttr($optionValue) ?>_label"
+                                            aria-labelledby="<?= $escaper->escapeHtml($getRatingCode) ?>_rating_label <?= $escaper->escapeHtml($getRatingCode) ?>_<?= $escaper->escapeHtmlAttr($optionValue) ?>_label"
                                         />
                                         <label
-                                            class="cs-reviews__rate-stars rating-<?= $block->escapeHtmlAttr($iterator) ?>"
-                                            for="<?= $block->escapeHtmlAttr($getRatingCode) ?>_<?= $block->escapeHtmlAttr($optionValue) ?>"
-                                            title="<?= $block->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star')) ?>"
-                                            id="<?= $block->escapeHtmlAttr($getRatingCode) ?>_<?= $block->escapeHtmlAttr($optionValue) ?>_label"
+                                            class="cs-reviews__rate-stars rating-<?= $escaper->escapeHtmlAttr($iterator) ?>"
+                                            for="<?= $escaper->escapeHtmlAttr($getRatingCode) ?>_<?= $escaper->escapeHtmlAttr($optionValue) ?>"
+                                            title="<?= $escaper->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star')) ?>"
+                                            id="<?= $escaper->escapeHtmlAttr($getRatingCode) ?>_<?= $escaper->escapeHtmlAttr($optionValue) ?>_label"
                                         >
                                             <?php if ($useCssStars): ?>
                                                 <i class="<?= 'cs-star-rating__form-star ' . $optionValue ?>" aria-hidden="true"></i>
@@ -99,7 +107,7 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
                                                 ?>
                                             <?php endif; ?>
 
-                                            <span><?= $block->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star')) ?></span>
+                                            <span><?= $escaper->escapeHtmlAttr(__('%1 %2', $iterator, $iterator > 1 ? 'stars' : 'star')) ?></span>
                                         </label>
                                         <?php $iterator++; ?>
                                     <?php endforeach; ?>
@@ -115,7 +123,7 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
     <div class="cs-reviews__fieldset" data-hasrequired="<?php __('* Required Fields'); ?>" data-bind="scope: 'review-form'" data-role="product-review-form-fieldset">
         <div class="cs-field cs-form__field required">
             <label for="nickname_field" class="cs-field__label">
-                <span><?= $block->escapeHtml(__('Nickname')) ?>:</span>
+                <span><?= $escaper->escapeHtml(__('Nickname')) ?>:</span>
             </label>
             <div class="cs-field__control">
                 <input
@@ -131,7 +139,7 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
 
         <div class="cs-field cs-form__field required">
             <label for="summary_field" class="cs-field__label">
-                <?= $block->escapeHtml(__('Summary')) ?>:
+                <?= $escaper->escapeHtml(__('Summary')) ?>:
             </label>
             <div class="cs-field__control">
                 <input
@@ -147,7 +155,7 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
 
         <div class="cs-field cs-form__field required">
             <label for="review_field" class="cs-field__label">
-                <?= $block->escapeHtml(__('Review')) ?>:
+                <?= $escaper->escapeHtml(__('Review')) ?>:
             </label>
             <div class="cs-field__control">
                 <textarea
@@ -166,7 +174,7 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
 
     <div class="cs-reviews__submit cs-form__buttons">
         <button type="submit" class="cs-form__button cs-reviews__submit-button">
-            <span class="cs-form__button-span"><?= $block->escapeHtml(__('Submit Review')) ?></span>
+            <span class="cs-form__button-span"><?= $escaper->escapeHtml(__('Submit Review')) ?></span>
             <?= $block->getChildHtml('product.review.form.button.icon'); ?>
         </button>
     </div>
@@ -185,6 +193,6 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
 </script>
 <?php else: ?>
     <div class="cs-reviews__login-msg" id="review-form">
-    <?= $block->escapeHtml(__('Only registered users can write reviews. Please <a href="%1">Sign in</a> or <a href="%2">create an account</a>', $block->getLoginLink(), $block->getRegisterUrl()), ['a']) ?>
+    <?= $escaper->escapeHtml(__('Only registered users can write reviews. Please <a href="%1">Sign in</a> or <a href="%2">create an account</a>', $block->getLoginLink(), $block->getRegisterUrl()), ['a']) ?>
     </div>
 <?php endif ?>

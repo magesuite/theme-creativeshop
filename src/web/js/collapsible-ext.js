@@ -5,7 +5,7 @@
  * - introducing collapse functionality only for given media query
  * - activate/deactivate for mobile or desktop depending on configuration given
  * - disable scroll to top when closing filters for POP mobile
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 define(['jquery', 'matchMedia'], function ($, mediaCheck) {
     'use strict';

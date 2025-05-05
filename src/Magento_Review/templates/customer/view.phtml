@@ -3,7 +3,8 @@
  * Template override:
  * - add Magesuite stars component
  * - move rating label
- * Aligned with Magento 2.4.7 in 04/2024
+ * - replace time tag with span to avoid invalid format errors
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 
 /**
@@ -73,7 +74,7 @@ $product = $block->getProductData();
         </div>
         <div class="review-date">
             <?= $block->escapeHtml(__('Submitted on %1', '<span class="date">' .
-                $block->dateFormat($block->getReviewData()->getCreatedAt()) . '</span>'), ['span']) ?>
+                $block->dateFormat($block->getReviewData()->getCreatedAt()) . '</span>'), ['time']) ?>
         </div>
     </div>
 </div>

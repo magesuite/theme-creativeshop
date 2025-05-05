@@ -3,8 +3,9 @@
  * - add magesuite classes
  * - show qty-increment only when qty can change
  *
- * Aligned with Magento 2.4.7 in 07/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
+use Magento\Bundle\ViewModel\ValidateQuantity;
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 ?>
@@ -13,7 +14,10 @@
 <?php $_selections  = $_option->getSelections(); ?>
 <?php $_default     = $_option->getDefaultSelection(); ?>
 <?php list($_defaultQty, $_canChangeQty) = $block->getDefaultValues(); ?>
-
+<?php
+/** @var ValidateQuantity $viewModel */
+$viewModel = $block->getData('validateQuantityViewModel');
+?>
 <div class="field option <?= ($_option->getRequired()) ? ' required': '' ?> cs-bundle-box__field">
     <label class="label cs-bundle-box__product-name">
         <?= $block->escapeHtml($_option->getTitle()) ?>
@@ -57,7 +61,8 @@
                                data-selector="bundle_option[<?= $block->escapeHtmlAttr($_option->getId()) ?>]"
                             <?php if ($block->isSelected($_selection)) { echo ' checked="checked"'; } ?>
                             <?php if (!$_selection->isSaleable()) { echo ' disabled="disabled"'; } ?>
-                               value="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"/>
+                               value="<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>"
+                               data-errors-message-box="#validation-message-box-radio"/>
                         <label class="label cs-bundle-box__product-option-name"
                                for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-<?= $block->escapeHtmlAttr($_selection->getSelectionId()) ?>">
                             <span><?= /* @noEscape */ $block->getSelectionTitlePrice($_selection) ?></span>
@@ -66,6 +71,7 @@
                     </div>
                 <?php endforeach; ?>
                 <div id="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container"></div>
+                <div id="validation-message-box-radio"></div>
             <?php endif; ?>
         </div>
 

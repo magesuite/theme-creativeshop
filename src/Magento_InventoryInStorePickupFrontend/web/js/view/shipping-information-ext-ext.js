@@ -1,7 +1,7 @@
 /**
  * Extends for passing store address to template to display in summary
  * File name "ext-ext" because store pickup already extends shipping-information module
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 define([
     'Magento_Checkout/js/model/quote',

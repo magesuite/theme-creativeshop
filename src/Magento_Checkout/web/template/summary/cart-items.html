@@ -1,8 +1,10 @@
 <!--
 /**
- * Template has to be overriden in order to always show "Edit cart link" and in order to remove collapse
- * Also modal is moved from sidebar.html template
- * Aligned with Magento 2.4.7 in 04/2024
+ * Template has to be overriden in order to:
+ * - always show "Edit cart link"
+ * - remove collapse
+ * - move modal from sidebar.html template
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 -->
 <div
@@ -23,7 +25,7 @@ data-bind="afterRender:setModalElement, mageInit: {
 >
     <div class="block items-in-cart">
         <div class="title" data-role="title">
-            <strong role="heading">
+            <strong role="heading" aria-level="1">
                 <translate args="maxCartItemsToDisplay" if="maxCartItemsToDisplay < getCartLineItemsCount()"></translate>
                 <translate args="'of'" if="maxCartItemsToDisplay < getCartLineItemsCount()"></translate>
                 <span data-bind="text: getCartSummaryItemsCount().toLocaleString(window.LOCALE)"></span>
@@ -32,7 +34,7 @@ data-bind="afterRender:setModalElement, mageInit: {
             </strong>
         </div>
         <div class="content minicart-items" data-role="content">
-            <div class="minicart-items-wrapper overflowed">
+            <div class="minicart-items-wrapper">
                 <ol class="minicart-items">
                     <each args="items()">
                         <li class="product-item">

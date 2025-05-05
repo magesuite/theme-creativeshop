@@ -5,7 +5,7 @@
  * - add option to display limiter as buttons, not a select
  * (buttons are default magesuite option)
  *
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 ?>
 <?php
@@ -35,8 +35,9 @@
                     <?php if ($block->isLimitCurrent($_key)):?>
                         selected="selected"
                     <?php endif ?>>
-                    <?php $limitLabel = is_numeric($_limit) ? $localeFormatter->formatNumber((int) $_limit) : $_limit; ?>
-                    <?=$block->escapeHtml($limitLabel) ?>
+                    <?= $block->escapeHtml(
+                        is_numeric($_limit) ? $localeFormatter->formatNumber((int) $_limit) : $_limit
+                    ) ?>
                 </option>
             <?php endforeach; ?>
         </select>

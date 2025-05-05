@@ -1,12 +1,13 @@
 <?php
 /**
  * Template overridden to use custom rating-stars.phtml template
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 05/2025
  */
 
 /**
  * @var \Magento\Review\Block\Product\ReviewRenderer $block
  * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Magento\Framework\Escaper $escaper
  */
 
 $csProductHelper = $this->helper(MageSuite\Frontend\Helper\Product::class);
@@ -29,6 +30,6 @@ $allVotes = array_sum($votes);
     ?>
 <?php elseif ($block->isReviewEnabled() && $block->getDisplayIfEmpty()): ?>
     <div class="cs-buybox__no-review">
-        <a class="cs-buybox__no-review-link" href="#reviews"><?= $block->escapeHtml(__('Be the first to review this product')) ?></a>
+        <a class="cs-buybox__no-review-link" href="#reviews"><?= $escaper->escapeHtml(__('Be the first to review this product')) ?></a>
     </div>
 <?php endif; ?>

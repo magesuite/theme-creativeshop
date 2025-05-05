@@ -4,7 +4,7 @@
  * Checkout has duplicated T&C blocks which are displayed
  * according to current view (desktop, mobile).
  * Allows using "merged" T&Cs - documentation and examples on confluence
- * Aligned with Magento 2.4.7 in 04/2024
+ * Aligned with Magento 2.4.8 in 04/2025
  */
 define([
     'jquery',
