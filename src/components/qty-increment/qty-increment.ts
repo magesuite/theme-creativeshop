@@ -197,7 +197,31 @@ export default class QtyIncrement {
      */
     protected _attachEvents(): void {
         this._$decrementBtn.on('click', this.decrement.bind(this));
+        if (!this._$incrementBtn.is('button')) {
+            this._$decrementBtn.on('keydown', (e) => {
+                if (
+                    e.key === 'Enter' ||
+                    e.key === ' ' ||
+                    e.key === 'Spacebar'
+                ) {
+                    e.preventDefault();
+                    this.decrement();
+                }
+            });
+        }
         this._$incrementBtn.on('click', this.increment.bind(this));
+        if (!this._$incrementBtn.is('button')) {
+            this._$incrementBtn.on('keydown', (e) => {
+                if (
+                    e.key === 'Enter' ||
+                    e.key === ' ' ||
+                    e.key === 'Spacebar'
+                ) {
+                    e.preventDefault();
+                    this.increment();
+                }
+            });
+        }
 
         this._$input.on('blur', this._resetValue.bind(this));
     }
