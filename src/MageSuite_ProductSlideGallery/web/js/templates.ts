@@ -5,7 +5,7 @@ export const slideTemplate = `
                 <div class="cs-slide-gallery__picture-wrapper">
                     <picture class="cs-slide-gallery__picture cs-slide-gallery__picture--video">
                         <div data-video-teaser='{"url": "<%= image.videoUrl %>","type": "youtube"}'></div>
-                        <img type="<%= imageParams.imageMimeType %>" src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img" <% if (i > 3) { %>loading="lazy"<% } %> ></img>
+                        <img src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img" <% if (i > 3) { %>loading="lazy"<% } %> ></img>
                     </picture>
                 </div>
             </li>
@@ -14,13 +14,13 @@ export const slideTemplate = `
                 <div class="cs-slide-gallery__picture-wrapper">
                     <div class="cs-slide-gallery__picture cs-slide-gallery__picture--base">
                         <% if (i < 2) { %>
-                            <img type="<%= imageParams.imageMimeType %>" src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img"></img>
+                            <img src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img"></img>
                         <% } else { %>
-                            <img type="<%= imageParams.imageMimeType %>" src="<%= imageParams.loaderImage %>" data-src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img lazyload"></img>
+                            <img src="<%= imageParams.loaderImage %>" data-src="<%= image.img %>" alt="<%= image.caption %>" width="<%= imageParams.imageWidth %>" height="<%= imageParams.imageHeight %>" class="cs-slide-gallery__img lazyload"></img>
                         <% } %>
                     </div>
                     <div class="cs-slide-gallery__picture cs-slide-gallery__picture--full">
-                        <img type="<%= imageParams.imageMimeType %>" src="<%= image.full %>" alt="<%= image.caption %>" width="<%= imageParams.imageFullWidth %>" height="<%= imageParams.imageFullHeight %>" class="cs-slide-gallery__img"></img>
+                        <img src="<%= image.full %>" alt="<%= image.caption %>" width="<%= imageParams.imageFullWidth %>" height="<%= imageParams.imageFullHeight %>" class="cs-slide-gallery__img"></img>
                     </div>
                 </div>
             </li>
@@ -30,10 +30,10 @@ export const slideTemplate = `
 export const thumbnailTemplate = `
     <% _.each(images, function(image) { %>
         <% if (image.type === 'video') { %>
-            <li class="cs-slide-gallery__thumb cs-slide-gallery__thumb--video">
+            <div class="cs-slide-gallery__thumb cs-slide-gallery__thumb--video" tabindex="0" role="button">
         <% } else { %>
-            <li class="cs-slide-gallery__thumb">
+            <div class="cs-slide-gallery__thumb" tabindex="0" role="button">
         <% } %>
-            <img type="<%= imageParams.imageMimeType %>" src="<%= image.thumb %>" alt="<%= image.caption %>" width="<%= imageParams.imageSmallWidth %>" height="<%= imageParams.imageSmallHeight %>" class="cs-slide-gallery__thumb-img"></img>
-        </li>
+            <img src="<%= image.thumb %>" alt="<%= image.caption %>" width="<%= imageParams.imageSmallWidth %>" height="<%= imageParams.imageSmallHeight %>" class="cs-slide-gallery__thumb-img"></img>
+        </div>
     <% }); %>`;
