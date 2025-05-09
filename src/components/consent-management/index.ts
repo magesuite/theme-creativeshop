@@ -3,6 +3,7 @@ import deepGet from 'utils/deep-get/deep-get';
 import usercentrics from 'components/consent-management/vendor/usercentrics';
 import usercentricsv3 from 'components/consent-management/vendor/usercentricsv3';
 import amasty from 'components/consent-management/vendor/amasty';
+import consentmanager from 'components/consent-management/vendor/consentmanager';
 
 const usercentricsVersion = document
     .querySelector('[data-usercentrics-version]')
@@ -22,6 +23,7 @@ const consentManagement = {
             usercentricsVersion === 'v3' ? usercentricsv3 : usercentrics,
         usercentricsv3: usercentricsv3,
         amasty: amasty,
+        consentmanager: consentmanager,
     },
     /**
      * Check consent status
