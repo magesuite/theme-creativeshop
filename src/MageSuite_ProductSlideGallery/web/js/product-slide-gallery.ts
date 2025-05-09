@@ -13,7 +13,6 @@ declare global {
  * Interface for gallery images params
  */
 export interface IGalleryImageParams {
-    imageMimeType: string;
     imageWidth: number;
     imageHeight: number;
     imageFullWidth: number;
@@ -85,6 +84,7 @@ export default class SlideGallery {
     protected _fullscreenVisible: boolean = false;
     protected _zoomVisible: boolean = false;
     protected _$component: JQuery;
+    protected _$listWrapper: JQuery<HTMLElement>;
     protected _scrollable: HTMLElement;
     protected _paginationScrollable: HTMLElement;
     protected _$prevButton: JQuery;
@@ -103,6 +103,8 @@ export default class SlideGallery {
     protected _zoomStep: number = 0;
     protected _fullImagesLoaded: boolean = false;
     protected _$videoSlide: JQuery;
+    protected _$focusableStart: JQuery<HTMLElement>;
+    protected _$focusableEnd: JQuery<HTMLElement>;
     protected _observer: IntersectionObserver;
     protected _currentImages: any[] = [];
     public videoSlideInstance;
@@ -112,6 +114,7 @@ export default class SlideGallery {
         viewXmlConfigPath: 'vars.MageSuite_ProductSlideGallery.video_slide',
         zoom3Steps: false,
         selectors: {
+            listWrapperSelector: '.cs-slide-gallery__slides-wrapper',
             scrollableElementSelector: '.cs-slide-gallery__slides',
             listElementSelector: '.cs-slide-gallery__slides',
             navSelector: '.cs-slide-gallery__nav',
@@ -132,6 +135,8 @@ export default class SlideGallery {
             paginationElementSelector: '.cs-slide-gallery__pagination',
             loaderSelector: '.load.indicator',
             observeElementSelector: '.cs-slide-gallery__slide',
+            focusableStart: '[data-role="focusable-start"]',
+            focusableEnd: '[data-role="focusable-end"]',
         },
         classNames: {
             galleryAutoScrollClass: 'cs-slide-gallery--jump-scrolling',
@@ -175,7 +180,6 @@ export default class SlideGallery {
         if (!('IntersectionObserver' in window) || !this._$component) {
             return;
         }
-
         this._smoothscrollPolyfill();
         this._assignControls();
         this._assignSlides();
@@ -244,6 +248,9 @@ export default class SlideGallery {
      * Assign controls to variables
      */
     protected _assignControls(): void {
+        this._$listWrapper = this._$component.find(
+            this._defaultOptions.selectors.listWrapperSelector
+        );
         this._scrollable = this._$component.find(
             this._defaultOptions.selectors.scrollableElementSelector
         )[0];
@@ -273,6 +280,12 @@ export default class SlideGallery {
         );
         this._$closeButton = this._$component.find(
             this._defaultOptions.selectors.closeButtonSelector
+        );
+        this._$focusableStart = this._$component.find(
+            this._defaultOptions.selectors.focusableStart
+        );
+        this._$focusableEnd = this._$component.find(
+            this._defaultOptions.selectors.focusableEnd
         );
     }
 
@@ -311,6 +324,23 @@ export default class SlideGallery {
      * Defines and distributes control events across component's instance
      */
     protected _attachControlEvents(): void {
+        if (this._$listWrapper.length) {
+            this._$listWrapper.on('keydown', (e) => {
+                const { key } = e;
+                if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+                    e.preventDefault();
+                    if (!this._fullscreenVisible) {
+                        this._toggleFullscreen();
+                    } else {
+                        if (this._zoomVisible) {
+                            this._closeZoom(null);
+                        }
+                        this._toggleFullscreen();
+                    }
+                }
+            });
+        }
+
         if (this._$prevButton.length) {
             this._$prevButton.on('click', (): void => {
                 const currentIndex: number = this._getCurrentIndex();
@@ -399,8 +429,14 @@ export default class SlideGallery {
 
         if (this._$thumbs.length) {
             this._$thumbs.each((index, thumb): void => {
-                $(thumb).on('click', (): void => {
-                    this.scrollToIndex(index);
+                const $thumb = $(thumb);
+                $thumb.on('click', () => this.scrollToIndex(index));
+                $thumb.on('keydown', (e) => {
+                    const { key } = e;
+                    if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+                        e.preventDefault();
+                        this.scrollToIndex(index);
+                    }
                 });
             });
         }
@@ -490,6 +526,8 @@ export default class SlideGallery {
         } else {
             this._$thumbNextButton.prop('disabled', true);
         }
+
+        this._$closeButton.focus();
     }
 
     /**
@@ -1030,12 +1068,48 @@ export default class SlideGallery {
         if (this._fullscreenVisible) {
             this._initThumbNavButtons();
             this._$component.trigger('gallery:fullscreenclose');
+            this._$listWrapper.attr('tabindex', '0').attr('role', 'button');
         } else {
             this._initThumbNavButtonsFullscreen();
             this._$component.trigger('gallery:fullscreenopen');
+            this._$listWrapper.removeAttr('tabindex').removeAttr('role');
         }
 
         this._fullscreenVisible = !this._fullscreenVisible;
+        this.toggleKeyboardTrap(this._fullscreenVisible);
+    }
+
+    protected toggleKeyboardTrap(isActive: boolean): void {
+        const toggleAttributes = (element: JQuery, add: boolean): void => {
+            if (add) {
+                element
+                    .attr({ tabindex: 0, role: 'generic' })
+                    .on(
+                        'focusin',
+                        this.loopFocus.bind(
+                            this,
+                            element.is(this._$focusableStart) ? 'end' : 'start'
+                        )
+                    );
+            } else {
+                element.removeAttr('tabindex role').off('focusin');
+            }
+        };
+
+        toggleAttributes(this._$focusableStart, isActive);
+        toggleAttributes(this._$focusableEnd, isActive);
+    }
+
+    protected loopFocus(position: 'start' | 'end'): void {
+        if (position === 'start') {
+            this._$closeButton.focus();
+        } else {
+            if (!this._$thumbNextButton.is(':disabled')) {
+                this._$thumbNextButton.focus();
+            } else {
+                this._$thumbPrevButton.focus();
+            }
+        }
     }
 
     /**
