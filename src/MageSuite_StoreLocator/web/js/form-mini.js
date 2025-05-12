@@ -212,6 +212,11 @@ define([
                 _this.element.removeAttr('aria-activedescendant');
             }
         },
+        setActiveState: function (isActive) {
+            this._super(isActive);
+            /** The aria-expanded attribute is not allowed on the searchbox role */
+            this.element.removeAttr('aria-expanded');
+        },
     });
 
     return $.magesuite.quickSearch;
