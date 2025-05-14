@@ -66,9 +66,9 @@
                     <div class="item pages-item-previous cs-pagination__prev" role="none">
                         <<?= $prevActionTag ?> class="<?= $block->escapeHtmlAttr($prevPageLabel ? 'link ' : 'action ') ?> previous cs-pagination__action cs-pagination__action--previous-page<?= $prevActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
                           <?php if($prevActionTag == 'a'): ?> href="<?= $block->escapeUrl($block->getPreviousPageUrl()) ?>"<?php endif; ?>
-                          title="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"
-                          <?php if(!$displayPrevNextLabels): ?>aria-label="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"<?php endif ?>
-                          tabindex="0">
+                          <?php if($prevActionTag == 'a'): ?>title="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"<?php endif ?>
+                          <?php if(!$displayPrevNextLabels && $prevActionTag == 'a'): ?>aria-label="<?= $block->escapeHtmlAttr($prevPageLabel) ?>"<?php endif ?>
+                          <?php if($prevActionTag == 'a'): ?>tabindex="0"<?php endif ?>>
                             <?= $previousPageIcon ?>
                             <?php if($displayPrevNextLabels): ?>
                                 <span class="cs-pagination__action-label cs-pagination__action-label--previous-page"><?= $block->escapeHtml($prevPageLabel) ?></span>
@@ -196,9 +196,9 @@
                         <<?= $nextActionTag ?>
                           class="<?= $block->escapeHtmlAttr($nextPageLabel) ? 'link ' : 'action ' ?> next cs-pagination__action cs-pagination__action--next-page<?= $nextActionTag != 'a' ? ' cs-pagination__action--disabled' : ''; ?>"
                           <?php if($nextActionTag == 'a'): ?> href="<?= $block->escapeUrl($block->getNextPageUrl()) ?>"<?php endif ?>
-                          title="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"
-                          <?php if(!$displayPrevNextLabels): ?>aria-label="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"<?php endif ?>
-                          tabindex="0">
+                          <?php if($nextActionTag == 'a'): ?>title="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"<?php endif ?>
+                          <?php if(!$displayPrevNextLabels && $nextActionTag == 'a'): ?>aria-label="<?= $block->escapeHtmlAttr($nextPageLabel) ?>"<?php endif ?>
+                          <?php if($nextActionTag == 'a'): ?>tabindex="0"<?php endif ?>>
                             <?= $nextPageIcon ?>
                             <?php if($displayPrevNextLabels): ?>
                                 <span class="cs-pagination__action-label cs-pagination__action-label--next-page"><?= /* @escapeNotVerified */ $nextPageLabel ?></span>
