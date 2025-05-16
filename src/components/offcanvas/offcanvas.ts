@@ -17,6 +17,7 @@ export interface OffcanvasOptions {
     offcanvasShowTriggerEvent?: string; // Adds event to be listened to on body, that will trigger ofcanvas open.
     offcanvasHideTriggerEvent?: string; // Adds event to be listened to on body, that will trigger ofcanvas close.
     isInertDisabled?: () => boolean; // Function that will remove inert attribute on drawer when true is returned.
+    initiallyFocusableElement?: string; // Selector for element that should be focused when offcanvas is opened.
 }
 
 /**
@@ -35,6 +36,7 @@ export default class Offcanvas {
         triggerClick?: (event: Event) => void;
         overlayClick?: (event: Event) => void;
         closeClick?: (event: Event) => void;
+        keyDown?: (event: JQuery.KeyDownEvent) => void;
     } = {};
 
     /**
@@ -131,6 +133,17 @@ export default class Offcanvas {
         return Promise.all([this._showOverlay(), this._showDrawer()]).then(
             () => {
                 this._$element.trigger('offcanvas-show', this);
+                let $elementToFocus: JQuery<HTMLElement> | null = null;
+                if (this._options.initiallyFocusableElement) {
+                    $elementToFocus = this._$element.find(
+                        this._options.initiallyFocusableElement
+                    );
+                }
+                $elementToFocus = $elementToFocus?.length
+                    ? $elementToFocus
+                    : this._$element.find(':focusable').first();
+                $elementToFocus.focus();
+                $(document).on('keydown', this._eventListeners.keyDown);
                 return this;
             }
         );
@@ -140,6 +153,7 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is hidden.
      */
     public hide(): Promise<Offcanvas> {
+        $(document).off('keydown', this._eventListeners.keyDown);
         const $currentTopOffset: string = $('body').css('top');
         $('body')
             .removeClass('no-scroll ' + this._options.bodyOpenClass)
@@ -241,6 +255,12 @@ export default class Offcanvas {
             `.${this._options.triggerClassName}`,
             this._eventListeners.triggerClick
         );
+
+        this._eventListeners.keyDown = (e: JQuery.KeyDownEvent) => {
+            if (e.key === 'Escape') {
+                this.hide();
+            }
+        };
 
         if (this._options.offcanvasShowTriggerEvent) {
             $('body').on(this._options.offcanvasShowTriggerEvent, () =>
