@@ -1,0 +1,40 @@
+/**
+ * @see https://www.w3.org/WAI/WCAG21/Techniques/css/C40 for reference
+ */
+$focus-indicator-outline-width: 2px;
+$focus-indicator-outline-color: #f9f9f9;
+$focus-indicator-outline-offset: 0;
+$focus-indicator-box-shadow: 0 0 0 4px #193146;
+
+/* stylelint-disable block-no-empty */
+@mixin focus-indicator-hook(
+    $outline-width,
+    $outline-color,
+    $outline-offset,
+    $box-shadow
+) {
+}
+
+@mixin focus-indicator(
+    $outline-width: $focus-indicator-outline-width,
+    $outline-color: $focus-indicator-outline-color,
+    $outline-offset: $focus-indicator-outline-offset,
+    $box-shadow: $focus-indicator-box-shadow
+) {
+    outline: $outline-width solid $outline-color;
+    outline-offset: $outline-offset;
+    box-shadow: $box-shadow;
+
+    @include focus-indicator-hook(
+        $outline-width,
+        $outline-color,
+        $outline-offset,
+        $box-shadow
+    );
+}
+
+@mixin focus-indicator-reset {
+    outline: unset;
+    box-shadow: unset;
+}
+/* stylelint-enable */
