@@ -223,6 +223,12 @@ export default class QtyIncrement {
             });
         }
 
+        this._$input.on('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+
         this._$input.on('blur', this._resetValue.bind(this));
     }
 }
