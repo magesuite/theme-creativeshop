@@ -24,6 +24,7 @@ define(['jquery', 'mage/validation'], function ($) {
          */
         agreementValidator.validate = function () {
             var isValid = true;
+            let hasFocus = false;
 
             if (
                 !agreementsConfig.isEnabled ||
@@ -39,6 +40,10 @@ define(['jquery', 'mage/validation'], function ($) {
                     })
                 ) {
                     isValid = false;
+                    if (!hasFocus) {
+                        $(element).focus();
+                        hasFocus = true;
+                    }
                 }
             });
 
