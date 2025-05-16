@@ -45,6 +45,7 @@ $imageTeaserConfig = $block->getData('imageTeaserConfig');
             >
                 <<?= !$item->isUrlDisabled() ? "a href='$itemUrl'" : 'span' ?>
                     class="cs-navigation__link cs-navigation__link--main<?= $itemCategoryIcon ? ' cs-navigation__link--with-icon' : ''; ?>"
+                    <?php if ($item->isUrlDisabled() && $hasFlyout): ?>tabindex="0" role="button"<?php endif; ?>
                 >
                     <?php if ($itemCategoryIcon): ?>
                         <span class="cs-navigation__link-icon-wrapper cs-navigation__link-icon-wrapper--root">
