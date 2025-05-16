@@ -127,6 +127,7 @@ export default class Navigation {
             event: JQuery.MouseMoveEvent | JQuery.ClickEvent
         ) => void;
         navigationMouseleaveListener?: (event: JQuery.MouseLeaveEvent) => void;
+        onEscKeyDown?: (event: JQuery.KeyboardEventBase) => void;
     } = {};
     protected _resizeTimeout: any;
     protected _showTimeout: any;
@@ -772,6 +773,22 @@ export default class Navigation {
             this._hideOverlay();
         };
 
+        this._eventListeners.onEscKeyDown = (
+            event: JQuery.KeyboardEventBase
+        ) => {
+            if (event.keyCode === 27) {
+                const $activeFlyout = this._$element.find(
+                    `.${this._options.flyoutClassName}--visible`
+                );
+                $activeFlyout
+                    .parent(`.${this._options.itemClassName}--main`)
+                    .find(`.${this._options.itemLinkClassName}`)
+                    .first()
+                    .focus();
+                this._hideFlyout($activeFlyout);
+            }
+        };
+
         this._$window.on(
             'resize orientationchange',
             this._eventListeners.resizeListener
@@ -814,6 +831,7 @@ export default class Navigation {
                 this._eventListeners.itemMousemoveListener
             );
         }
+        this._$element.on('keydown', this._eventListeners.onEscKeyDown);
     }
 
     protected _getColumnsForViewport() {
@@ -867,6 +885,7 @@ export default class Navigation {
             'mouseleave',
             this._eventListeners.navigationMouseleaveListener
         );
+        this._$element.off('keydown', this._eventListeners.onEscKeyDown);
         this._$flyouts.off(
             'focusin',
             this._eventListeners.flyoutFocusInListener
