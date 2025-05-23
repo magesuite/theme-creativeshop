@@ -51,7 +51,11 @@
                     <!-- /ko -->
                     <!-- ko ifnot: canApplyMsrp -->
                     <!-- ko foreach: $parent.getRegion('priceSidebar') -->
-                    <!-- ko template: {name: getTemplate(), data: item.product_price, as: 'price'} --><!-- /ko -->
+                    <!-- ko template: {
+                        name: getTemplate(),
+                        data: (item.row_total_product_price ? item.row_total_product_price : item.product_price),
+                        as: 'price'
+                    } --><!-- /ko -->
                     <!-- /ko -->
                     <!-- /ko -->
                     <span if="item.row_total_product_original_price" data-bind="html: item.row_total_product_original_price" class="old-price"></span>
