@@ -238,7 +238,12 @@ export default class Offcanvas {
     protected _hideDrawer(): Promise<Offcanvas> {
         return new Promise((resolve) => {
             this._$drawer.removeClass(`drawer--visible`);
-            this._$drawer.attr('inert', true);
+            if (
+                typeof this._options.isInertDisabled === 'function' &&
+                !this._options.isInertDisabled()
+            ) {
+                this._$drawer.attr('inert', 'true');
+            }
             setTimeout(
                 () => resolve(this),
                 this._options.drawerTransitionDuration
