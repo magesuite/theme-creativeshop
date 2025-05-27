@@ -1,5 +1,5 @@
 /**
- * New methods and some adjustments connected with qty increment
+ * New methods and some adjustments connected with qty increment and a11y (title of confirm)
  * Aligned with Magento 2.4.8 in 04/2025
  */
 define([
@@ -85,6 +85,7 @@ define([
 
                     event.stopPropagation();
                     confirm({
+                        title: $.mage.__('Remove item'),
                         modalClass: 'confirm minicart-remove-item',
                         content: self.options.confirmMessage,
                         actions: {
