@@ -46,7 +46,7 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
                             </div>
                             <div class="cs-reviews__rating-control | review-control-vote">
                                 <span class="cs-reviews__rate-feedback" data-default-message="<?= /* @escapeNotVerified */ $msg ?>"><?=/* @escapeNotVerified */$msg?></span>
-                                <div class="cs-star-rating__form-stars">
+                                <div class="cs-star-rating__form-stars" role="radiogroup" aria-label="<?= $block->escapeHtmlAttr($msg) ?>">
                                     <?php $iterator = 1; foreach ($options as $option): ?>
                                         <?php $optionValue = $option->getValue(); ?>
 
@@ -94,7 +94,6 @@ $useCssStars = $block->getVar('star-rating/use-css-mask-for-stars', 'Magento_Rev
                                                     ->setIconUrl('images/icons/reviews/star.svg')
                                                     ->setCssClass('cs-star-rating__form-star ' . $optionValue)
                                                     ->setInlined(true)
-                                                    ->setAltText(__('star'))
                                                     ->toHtml();
                                                 ?>
                                             <?php endif; ?>
