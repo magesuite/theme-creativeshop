@@ -1,0 +1,88 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'utils/visually-hidden';
+
+$skip-links_container-padding: 0.5rem 0 !default;
+
+$skip-links_display-mode: static !default; // static | fixed
+$skip-links_background-color: $color_primary-500 !default;
+$skip-links_z-index: 400 !default;
+
+$skip-links_link-border: none !default;
+$skip-links_link-color: $color_text-200 !default;
+$skip-links_link-color-hover: $skip-links_link-color !default;
+$skip-links_link-color-focus: $skip-links_link-color !default;
+$skip-links_link-padding: 0.5rem 1rem !default;
+$skip-links_link-margin: 0.5rem !default;
+$skip-links_link-font-size: 1.6rem !default;
+$skip-links_link-font-weight: 700 !default;
+$skip-links_link-text-decoration: underline !default;
+
+.#{$ns}skip-links {
+    $root: &;
+
+    &__links {
+        background-color: $skip-links_background-color;
+        display: flex;
+        justify-content: center;
+
+        &:not(:focus):not(:focus-within) {
+            @include visually-hidden();
+            // intentional adjustment of clip properties so the element is still focusable
+            clip: auto;
+            clip-path: none;
+        }
+
+        &:focus,
+        &:focus-within {
+            @include visually-visible();
+            padding: $skip-links_container-padding;
+            width: 100%;
+
+            @if ($skip-links_display-mode == fixed) {
+                position: fixed;
+                z-index: $skip-links_z-index;
+            } @else if ($skip-links_display-mode == static) {
+                position: static;
+            }
+        }
+    }
+
+    &__link {
+        color: $skip-links_link-color;
+        padding: $skip-links_link-padding;
+        font-size: $skip-links_link-font-size;
+        border: $skip-links_link-border;
+        margin: $skip-links_link-margin;
+        font-weight: $skip-links_link-font-weight;
+        text-decoration: $skip-links_link-text-decoration;
+
+        &:nth-of-type(n + 2) {
+            display: none;
+        }
+
+        @include media('>=tablet') {
+            &:nth-of-type(n + 2) {
+                display: block;
+            }
+
+            &:nth-of-type(n + 3) {
+                display: none;
+            }
+        }
+
+        @include media('>=laptop') {
+            &:nth-of-type(n + 2),
+            &:nth-of-type(n + 3) {
+                display: block;
+            }
+        }
+
+        &:hover,
+        &:focus {
+            cursor: pointer;
+            color: $skip-links_link-color-hover;
+            text-decoration: $skip-links_link-text-decoration;
+        }
+    }
+}
