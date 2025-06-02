@@ -1,0 +1,79 @@
+<!--
+/**
+ * Template overwritten in order to:
+ * - add autocomplete for gift card code input [RK-1879]
+ * - add label for gift card code input [RK-1879]
+ * Aligned with Aheadworks_Giftcard v1.8.2 in 05/2025
+ */
+-->
+<div class="payment-option _collapsible opc-payment-additional aw-giftcard-code"
+     data-bind="mageInit: {'collapsible':{'openedState': '_active'}}">
+    <div class="payment-option-title field choice" data-role="title">
+        <span class="action action-toggle" id="block-aw-giftcard-heading" role="heading" aria-level="2">
+            <span data-bind="i18n: 'Gift Card'"></span>
+        </span>
+    </div>
+    <div class="payment-option-content" data-role="content">
+        <each args="getRegion('messages')" render=""></each>
+        <if args="isCustomerGiftcardCodesDisplayed()">
+            <div class="block aw-giftcard-codes-block" data-bind="blockLoader: isLoadingCustomerGiftcardsBlock()">
+                <div class="block-title">
+                    <span data-bind="i18n: 'Your Gift Card codes'"></span>
+                </div>
+                <div class="block-content">
+                    <div class="box">
+                        <div class="box-content">
+                            <table>
+                                <tbody>
+                                    <tr repeat="foreach: getCustomerGiftcardCodes(), item: '$giftcard'"
+                                        data-bind="attr: {'data-aw-giftcard-code': $giftcard().code }">
+                                        <td class="code">
+                                            <text args="$giftcard().code"></text>
+                                        </td>
+                                        <td class="balance">
+                                            <text args="formatPrice($giftcard().balance)"></text>
+                                        </td>
+                                        <td class="action-apply">
+                                            <a href="#" data-bind="attr: {'title': $t('Apply')},
+                                                                   click: applyByCode.bind($data, $giftcard().code),
+                                                                   i18n: 'Apply'"></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </if>
+        <form class="form form-aw-giftcard" id="aw-giftcard-form">
+            <div id="aw_giftcard__code_info"></div>
+            <div class="payment-option-inner">
+                <div class="field">
+                    <div class="control">
+                        <label for="giftcard_code" class="cs-visually-hidden" data-bind="text: $t('Enter Gift Card code')"></label>
+                        <input class="input-text"
+                               type="text"
+                               id="giftcard_code"
+                               name="giftcard_code"
+                               autocomplete="off"
+                               data-validate="{'required-entry':true}"
+                               data-bind="value: giftcardCode, attr:{placeholder: $t('Enter Gift Card code')} " />
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button class="action action-apply primary" type="submit" data-bind="'value': $t('Apply'), click: apply">
+                        <span data-bind="i18n: 'Apply'"></span>
+                    </button>
+                </div>
+                <div class="secondary">
+                    <button class="action check-aw-giftcard" type="button" data-role="aw-giftcard-check-code-action" data-bind="'value': $t('Check Status and Balance'), click: check">
+                        <span data-bind="i18n: 'Check Status and Balance'"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
