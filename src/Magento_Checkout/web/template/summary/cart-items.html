@@ -13,7 +13,8 @@ class="cs-checkout__summary-wrapper"
 data-bind="afterRender:setModalElement, mageInit: {
         'Magento_Ui/js/modal/modal':{
             'type': 'custom',
-            'modalClass': 'opc-summary-wrapper',
+            'title': $t('Order Summary'),
+            'modalClass': 'opc-summary-wrapper cart-items',
             'wrapperClass': 'cs-checkout__sidebar-inner',
             'parentModalClass': '_has-modal-custom',
             'responsive': true,
@@ -25,7 +26,14 @@ data-bind="afterRender:setModalElement, mageInit: {
 >
     <div class="block items-in-cart">
         <div class="title" data-role="title">
-            <strong role="heading" aria-level="1">
+            <strong role="heading" aria-level="1" data-bind="attr: {
+                'aria-label':
+                    getCartSummaryItemsCount() + ' ' +
+                    (getCartSummaryItemsCount() === 1
+                        ? $t('Item in Cart')
+                        : $t('Items in Cart')
+                    )
+            }">
                 <translate args="maxCartItemsToDisplay" if="maxCartItemsToDisplay < getCartLineItemsCount()"></translate>
                 <translate args="'of'" if="maxCartItemsToDisplay < getCartLineItemsCount()"></translate>
                 <span data-bind="text: getCartSummaryItemsCount().toLocaleString(window.LOCALE)"></span>
