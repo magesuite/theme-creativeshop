@@ -49,6 +49,7 @@ import 'components/price-box';
 import 'components/product-tile';
 import 'components/products-list';
 import 'components/qty-increment';
+import 'components/skip-links';
 import 'components/select';
 import 'components/slider';
 import 'components/social-media-list';
