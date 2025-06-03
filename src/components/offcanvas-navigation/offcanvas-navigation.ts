@@ -416,6 +416,7 @@ export default class OffcanvasNavigation {
                     );
                 });
         }
+        $listToShow.find(':focusable').first().focus();
     }
 
     /**
