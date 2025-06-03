@@ -27,6 +27,7 @@ $itemCategoryIcon = $item->getCategoryIcon();
         <?php endif; ?>
     >
         <a class="cs-offcanvas-navigation__link cs-offcanvas-navigation__link--return<?= !$prevIcon ? ' cs-offcanvas-navigation__link--prev' : '' ?>"
+           <?php if(!$prevIcon) : ?>title="<?= $escaper->escapeHtmlAttr($parentLabel || $itemLabel ? __('%1, return one level up', $parentLabel ? $parentLabel : $itemLabel) : __('Back'))?>"<?php endif; ?>
            href="<?= $escaper->escapeUrl($itemUrl); ?>"
         >
             <?php if ($prevIcon) : ?>
