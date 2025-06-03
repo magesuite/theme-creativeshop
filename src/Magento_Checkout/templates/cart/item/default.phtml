@@ -6,7 +6,7 @@
  * - add free badge if exists
  * - add checkout.cart.item.brand, checkout.cart.item.renderers.default.option.edit hotspots
  * - add qty-increment component instead of input
- * - add attributes to hide image link from assistive technologies
+ * - remove attributes to show image link in tab order
  *
  * Aligned with Magento 2.4.8 in 04/2025
  */
@@ -31,8 +31,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                 <?php if ($block->hasProductUrl()): ?>
                     <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
                     title="<?= $block->escapeHtml($block->getProductName()) ?>"
-                    tabindex="-1"
-                    class="cs-cart-item__image product-item-photo" aria-hidden="true" role="presentation">
+                    class="cs-cart-item__image product-item-photo">
                 <?php else:?>
                     <span class="cs-cart-item__image product-item-photo">
                 <?php endif;?>
