@@ -11,6 +11,45 @@ define(['jquery'], function ($) {
 
     return function (mageModal) {
         $.widget('mage.modal', mageModal, {
+            _create: function () {
+                this._super();
+
+                this._boundFocusHandler = this._handleFocus.bind(this);
+            },
+
+            _setActive: function () {
+                this._super();
+
+                if (this._canAppplyNoScroll()) {
+                    document.addEventListener(
+                        'focus',
+                        this._boundFocusHandler,
+                        true
+                    );
+                }
+            },
+
+            _unsetActive: function () {
+                this._super();
+
+                if (this._canAppplyNoScroll()) {
+                    document.removeEventListener(
+                        'focus',
+                        this._boundFocusHandler,
+                        true
+                    );
+                }
+            },
+
+            _handleFocus: function (event) {
+                const modalElement = this.modal[0];
+                const focusElement = this.modal.find(this.options.focus);
+
+                if (!modalElement.contains(document.activeElement)) {
+                    focusElement.focus();
+                }
+            },
+
             _createOverlay: function () {
                 if (this._canAppplyNoScroll()) {
                     const $currentTopOffset = window.scrollY;
