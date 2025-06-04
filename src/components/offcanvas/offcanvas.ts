@@ -37,7 +37,9 @@ export default class Offcanvas {
         overlayClick?: (event: Event) => void;
         closeClick?: (event: Event) => void;
         keyDown?: (event: JQuery.KeyDownEvent) => void;
+        focus?: (event: Event) => void;
     } = {};
+    protected _focusElement: JQuery<HTMLElement> | null = null;
 
     /**
      * Creates new offcanvas component with optional settings.
@@ -133,16 +135,24 @@ export default class Offcanvas {
         return Promise.all([this._showOverlay(), this._showDrawer()]).then(
             () => {
                 this._$element.trigger('offcanvas-show', this);
-                let $elementToFocus: JQuery<HTMLElement> | null = null;
+
                 if (this._options.initiallyFocusableElement) {
-                    $elementToFocus = this._$element.find(
+                    this._focusElement = this._$element.find(
                         this._options.initiallyFocusableElement
                     );
                 }
-                $elementToFocus = $elementToFocus?.length
-                    ? $elementToFocus
+                this._focusElement = this._focusElement?.length
+                    ? this._focusElement
                     : this._$element.find(':focusable').first();
-                $elementToFocus.focus();
+
+                this._focusElement.focus();
+
+                document.addEventListener(
+                    'focus',
+                    this._eventListeners.focus,
+                    true
+                );
+
                 $(document).on('keydown', this._eventListeners.keyDown);
                 return this;
             }
@@ -168,6 +178,10 @@ export default class Offcanvas {
             () => {
                 this._$element.trigger('offcanvas-hide', this);
                 this._$topbar.css('z-index', '');
+                document.removeEventListener(
+                    'focus',
+                    this._eventListeners.focus
+                );
                 return this;
             }
         );
@@ -250,6 +264,7 @@ export default class Offcanvas {
             );
         });
     }
+
     /**
      * Attaches event listeners.
      */
@@ -264,6 +279,13 @@ export default class Offcanvas {
         this._eventListeners.keyDown = (e: JQuery.KeyDownEvent) => {
             if (e.key === 'Escape') {
                 this.hide();
+            }
+        };
+
+        this._eventListeners.focus = () => {
+            const drawerElement = this._$drawer.get(0);
+            if (!drawerElement.contains(document.activeElement)) {
+                this._focusElement?.focus();
             }
         };
 
