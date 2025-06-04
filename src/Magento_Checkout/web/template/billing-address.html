@@ -1,0 +1,24 @@
+<!--
+/**
+ * Template overridden in order to:
+ * - add <legend /> tag to <fieldset> to improve accessibility (line: 17)
+ * Aligned with Magento 2.4.7 in 06/2025
+ */
+-->
+<div class="checkout-billing-address">
+    <div class="billing-address-same-as-shipping-block field choice" data-bind="visible: canUseShippingAddress()">
+        <input type="checkbox" name="billing-address-same-as-shipping"
+               data-bind="checked: isAddressSameAsShipping, click: useShippingAddress, attr: {id: 'billing-address-same-as-shipping-' + getCode($parent)}"/>
+        <label data-bind="attr: {for: 'billing-address-same-as-shipping-' + getCode($parent)}"><span
+                data-bind="i18n: 'My billing and shipping address are the same'"></span></label>
+    </div>
+    <render args="detailsTemplate"></render>
+    <fieldset class="fieldset" data-bind="visible: !isAddressDetailsVisible()">
+        <legend class="cs-visually-hidden" data-bind="i18n: 'Billing Address'"></legend>
+        <each args="getRegion('billing-address-list')" render=""></each>
+        <div data-bind="fadeVisible: isAddressFormVisible">
+            <render args="formTemplate"></render>
+        </div>
+        <render args="actionsTemplate"></render>
+    </fieldset>
+</div>
