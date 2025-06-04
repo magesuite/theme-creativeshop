@@ -6,14 +6,14 @@
  * - add SVG for See Details
  * - add conditions for boolean variables from XML
  * - add original price (old price - item.row_total_product_original_price) in case there is a special price
- * - add attributes to hide image link from assistive technologies
+ * - remove attributes and show image link in assistive technologies
  * Aligned with Magento 2.4.8 in 04/2025
  */
 -->
 <li class="item product product-item cs-minicart__list-item" data-role="product-item">
     <div class="product cs-minicart-product" data-bind="class: 'cs-minicart-product--type-' + item['product_type']">
         <!-- ko if: product_has_url -->
-        <a data-bind="attr: {href: product_url, title: product_name}" tabindex="-1" class="product-item-photo cs-minicart-product__image-container" aria-hidden="true" role="presentation">
+        <a data-bind="attr: {href: product_url, title: product_name}" class="product-item-photo cs-minicart-product__image-container">
             <!-- ko foreach: $parent.getRegion('itemImage') -->
                 <!-- ko template: {name: getTemplate(), data: item.product_image} --><!-- /ko -->
             <!-- /ko -->
