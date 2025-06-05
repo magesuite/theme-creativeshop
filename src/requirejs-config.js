@@ -109,6 +109,9 @@ var config = {
             'Magento_CheckoutAgreements/js/model/agreements-assigner': {
                 'Magento_CheckoutAgreements/js/model/agreements-assigner-ext': true,
             },
+            'Magento_CheckoutAgreements/js/model/agreements-modal': {
+                'Magento_CheckoutAgreements/js/model/agreements-modal-ext': true,
+            },
             'Magento_Catalog/js/validate-product': {
                 'Magento_Catalog/js/swatches-validation-ext': true,
             },
