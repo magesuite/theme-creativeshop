@@ -1,0 +1,22 @@
+<!--
+/**
+ * Template overridden in order to:
+ * - add accessible name and autocomplete attr to the select element
+ * Aligned with Magento 2.4.8 in 06/2025
+ */
+-->
+<div class="field field-select-billing">
+    <!-- ko if: (addressOptions.length > 1) -->
+    <label class="label" data-bind="attr: { for: 'billing_address_id' }">
+        <span data-bind="i18n: 'Billing Address'"></span>
+    </label>
+    <!-- /ko -->
+    <div class="control" data-bind="if: (addressOptions.length > 1)">
+        <select id="billing_address_id" class="select" name="billing_address_id" autocomplete="off" data-bind="
+        options: addressOptions,
+        optionsText: addressOptionsText,
+        value: selectedAddress,
+        event: {change: onAddressChange(selectedAddress())};
+    "></select>
+    </div>
+</div>

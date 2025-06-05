@@ -73,6 +73,26 @@ define(['ko', 'underscore'], function (ko, _) {
 
                 return validationResults;
             },
+            /**
+             * Custom method
+             * Assign autocomplete value based on input name
+             */
+            getAutocompleteValue: function (name) {
+                var map = {
+                    firstname: 'given-name',
+                    lastname: 'family-name',
+                    company: 'organization',
+                    'street[0]': 'address-line1',
+                    'street[1]': 'address-line2',
+                    city: 'address-level2',
+                    region_id: 'address-level1',
+                    postcode: 'postal-code',
+                    telephone: 'tel',
+                    email: 'email',
+                    country_id: 'country-name',
+                };
+                return map[name] || 'off';
+            },
         });
     };
 });
