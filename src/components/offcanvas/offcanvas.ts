@@ -204,6 +204,13 @@ export default class Offcanvas {
         );
     }
 
+    protected _handleFocus(): void {
+        const drawerElement = this._$drawer.get(0);
+        if (!drawerElement.contains(document.activeElement)) {
+            this._focusElement?.focus();
+        }
+    }
+
     /**
      * Shows overlay.
      * @return {Promise<Offcanvas>} Promise that resolves after overlay is shown.
@@ -282,12 +289,7 @@ export default class Offcanvas {
             }
         };
 
-        this._eventListeners.focus = () => {
-            const drawerElement = this._$drawer.get(0);
-            if (!drawerElement.contains(document.activeElement)) {
-                this._focusElement?.focus();
-            }
-        };
+        this._eventListeners.focus = this._handleFocus.bind(this);
 
         if (this._options.offcanvasShowTriggerEvent) {
             $('body').on(this._options.offcanvasShowTriggerEvent, () =>
@@ -318,7 +320,36 @@ export default class Offcanvas {
                 }
             });
         }
+
+        $('body').on('modal:open', () => {
+            this._disableFocusTrap();
+        });
+
+        $('body').on('modal:close', () => {
+            this._enableFocusTrap();
+        });
     }
+
+    protected _disableFocusTrap() {
+        if (this._eventListeners.focus) {
+            document.removeEventListener(
+                'focus',
+                this._eventListeners.focus,
+                true
+            );
+        }
+    }
+
+    protected _enableFocusTrap() {
+        if (this._eventListeners.focus) {
+            document.addEventListener(
+                'focus',
+                this._eventListeners.focus,
+                true
+            );
+        }
+    }
+
     /**
      * Removes event listeners.
      */
