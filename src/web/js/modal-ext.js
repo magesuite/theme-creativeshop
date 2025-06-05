@@ -20,25 +20,25 @@ define(['jquery'], function ($) {
             _setActive: function () {
                 this._super();
 
-                if (this._canAppplyNoScroll()) {
-                    document.addEventListener(
-                        'focus',
-                        this._boundFocusHandler,
-                        true
-                    );
-                }
+                document.addEventListener(
+                    'focus',
+                    this._boundFocusHandler,
+                    true
+                );
+
+                $('body').trigger('modal:open');
             },
 
             _unsetActive: function () {
                 this._super();
 
-                if (this._canAppplyNoScroll()) {
-                    document.removeEventListener(
-                        'focus',
-                        this._boundFocusHandler,
-                        true
-                    );
-                }
+                document.removeEventListener(
+                    'focus',
+                    this._boundFocusHandler,
+                    true
+                );
+
+                $('body').trigger('modal:close');
             },
 
             _handleFocus: function (event) {
