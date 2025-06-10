@@ -7,6 +7,7 @@
  * - add checkout.cart.item.brand, checkout.cart.item.renderers.default.option.edit hotspots
  * - add qty-increment component instead of input
  * - remove attributes to show image link in tab order
+ * - merge options into one link NKD-4574
  *
  * Aligned with Magento 2.4.8 in 04/2025
  */
@@ -58,14 +59,14 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     </strong>
                     <?php if ($_options = $block->getOptionList()): ?>
                         <div class="<?= $productType == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
+                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                                <a class="cs-cart-item__option-link"
+                                    href="<?= $block->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
+                                    title="<?= $block->escapeHtml(__('Edit item parameter')); ?>"
+                                >
+                            <?php endif; ?>
                             <?php foreach ($_options as $_option): ?>
                                 <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                                <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
-                                    <a class="cs-cart-item__option-link"
-                                        href="<?= $block->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
-                                        title="<?= $block->escapeHtml(__('Edit item parameter')); ?>"
-                                    >
-                                <?php endif; ?>
                                     <dl class="cs-cart-item__options-group item-options">
                                         <dt class="cs-cart-item__options-label">
                                             <?= $block->escapeHtml($_option['label']) ?>
@@ -81,10 +82,10 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                                             <?php endif; ?>
                                         </dd>
                                     </dl>
-                                <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
-                                </a>
-                                <?php endif; ?>
                             <?php endforeach; ?>
+                            <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
+                            </a>
+                            <?php endif; ?>
                         </div>
                     <?php endif;?>
                     <?php if ($messages = $block->getMessages()): ?>
