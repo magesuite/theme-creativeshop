@@ -19,6 +19,13 @@ export interface MinicartOptions {
     isMessagesOffcanvas?: boolean;
 
     /**
+     * Defines checkout button class
+     * @default {cs-minicart__button-checkout}
+     * @type {string}
+     */
+    checkoutBtnClass?: string;
+
+    /**
      * Defines messages container class
      * @default {page.messages}
      * @type {string}
@@ -195,6 +202,7 @@ export default class Minicart {
             {},
             {
                 isMessagesOffcanvas: true,
+                checkoutBtnClass: 'cs-minicart__button-checkout',
                 messagesContainerClass: 'page.messages',
                 messageWrapperClass: 'cs-messages__inner',
                 messageClass: 'cs-messages__message',
@@ -285,6 +293,8 @@ export default class Minicart {
                 }
             });
         }
+
+        this._attachEvents();
     }
 
     public openMinicart(): void {
@@ -567,5 +577,16 @@ export default class Minicart {
                 }
                 window.location.href = response.url;
             });
+    }
+
+    /**
+     * Add event listeners.
+     */
+    protected _attachEvents(): void {
+        // Pagehide event listener added to fix caching issue with disabled checkout
+        // button in minicart when going back from checkout page - [MGS-5341]
+        window.addEventListener('pagehide', (): void => {
+            $(`.${this._options.checkoutBtnClass}`).removeAttr('disabled');
+        });
     }
 }
