@@ -29,6 +29,7 @@ export interface OffcanvasNavigationOptions {
     headerSearchOptions?: HeaderSearchOptions;
     onNavigationRender?: () => void; // Callback to fire when navigation is rendered
     offcanvasMaxBreakpoint: number;
+    transitionDuration?: number; // Duration of the transition in milliseconds
 }
 
 interface MainNavigationCacheInfo {
@@ -81,6 +82,7 @@ export default class OffcanvasNavigation {
                     closeElementToggleSearch: false,
                 },
                 offcanvasMaxBreakpoint: breakpoint.tablet,
+                transitionDuration: 300,
             },
             options
         );
@@ -176,25 +178,27 @@ export default class OffcanvasNavigation {
 
         this._fixSwitcherLinks($offcanvasCurrencySwitcher);
 
-        requireAsync(['mage/apply/main', 'ko']).then(([mage, ko]) => {
-            mage.apply();
-            if (
-                !this._$element.find(
-                    '[type="text/x-magento-init"], [data-mage-init]'
-                )?.length
-            ) {
-                return;
-            }
-            // Check if first element child is not bound to KO, if not apply bindings.
-            this._$element.find('[data-bind]').each((index, element) => {
+        requireAsync(['mage/apply/main', 'ko', 'jquery-ui-modules/core']).then(
+            ([mage, ko]) => {
+                mage.apply();
                 if (
-                    element.firstElementChild &&
-                    !ko.dataFor(element.firstElementChild)
+                    !this._$element.find(
+                        '[type="text/x-magento-init"], [data-mage-init]'
+                    )?.length
                 ) {
-                    ko.applyBindings(null, element);
+                    return;
                 }
-            });
-        });
+                // Check if first element child is not bound to KO, if not apply bindings.
+                this._$element.find('[data-bind]').each((index, element) => {
+                    if (
+                        element.firstElementChild &&
+                        !ko.dataFor(element.firstElementChild)
+                    ) {
+                        ko.applyBindings(null, element);
+                    }
+                });
+            }
+        );
     }
 
     /**
@@ -357,6 +361,7 @@ export default class OffcanvasNavigation {
             .find(`.${this._options.className}__list`)
             .eq(0)
             .addClass(`${this._options.className}__list--current`);
+        this._setFocus();
     }
 
     /**
@@ -397,6 +402,7 @@ export default class OffcanvasNavigation {
                             `${this._options.className}__list--active`
                         );
                     });
+                this._setFocus();
             });
         } else {
             $currentLevel.removeClass(
@@ -415,6 +421,7 @@ export default class OffcanvasNavigation {
                         `${this._options.className}__list--active`
                     );
                 });
+            this._setFocus();
         }
     }
 
@@ -437,6 +444,7 @@ export default class OffcanvasNavigation {
             .parent()
             .closest(`.${this._options.className}__list`)
             .addClass(`${this._options.className}__list--current`);
+        this._setFocus();
     }
 
     /**
@@ -576,5 +584,16 @@ export default class OffcanvasNavigation {
                 this._activeCategoryPath[this._activeCategoryPath.length - 2];
             this._showCategoryLevel(parentCategoryId);
         }
+    }
+
+    protected _setFocus() {
+        setTimeout(() => {
+            this._$element
+                .find(
+                    `.${this._options.className}__list--current .${this._options.className}__link:focusable`
+                )
+                .first()
+                .focus();
+        }, this._options.transitionDuration);
     }
 }
