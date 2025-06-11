@@ -137,9 +137,9 @@ export default class Offcanvas {
                 this._$element.trigger('offcanvas-show', this);
 
                 if (this._options.initiallyFocusableElement) {
-                    this._focusElement = this._$element.find(
-                        this._options.initiallyFocusableElement
-                    );
+                    this._focusElement = this._$element
+                        .find(this._options.initiallyFocusableElement)
+                        .first();
                 }
                 this._focusElement = this._focusElement?.length
                     ? this._focusElement
