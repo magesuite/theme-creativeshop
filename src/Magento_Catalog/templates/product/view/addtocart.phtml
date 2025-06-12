@@ -25,6 +25,7 @@
                     <?= $this->getLayout()
                           ->createBlock(Magento\Framework\View\Element\Template::class)
                           ->setInputName('qty')
+                          ->setLabel($block->escapeHtml(__('Quantity of product added to the cart')))
                           ->setInputInitialValue($block->getProductDefaultQty() * 1)
                           ->setInputAdditionalParams('id="qty" data-validate="'.$block->escapeHtml(json_encode($qtyValidators)).'" min="0" max="'.$qtyValidators["validate-item-quantity"]["maxAllowed"].'"')
                           ->setDecrementIconUrl($block->getVar('qty_increment/icons/decrement', 'MageSuite_ThemeHelpers'))
