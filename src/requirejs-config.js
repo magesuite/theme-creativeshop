@@ -159,6 +159,9 @@ var config = {
             },
             'Magento_Theme/js/view/messages': {
                 'Magento_Theme/js/view/messages-ext': true
+            },
+            'Magento_Catalog/js/product/list/toolbar': {
+                'Magento_Catalog/js/product/list/toolbar-ext': true,
             }
         },
     },

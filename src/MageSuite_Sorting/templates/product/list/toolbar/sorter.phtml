@@ -3,16 +3,18 @@
  * Template overridden to:
  * - add support for customizable sorting label
  * - change classes
+ * - add autocomplete attribute and label position (a11y)
  * Aligned with MageSuite_Sorting v1.2.2 in 05/2025
  */
 /** @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar */
+/** @var $escaper \Magento\Framework\Escaper */
 ?>
 <?php
     $sorterLabel = $block->getVar('toolbar/sorter/label', 'Magento_Catalog');
 ?>
 <div class="toolbar-sorter sorter cs-sorter">
     <?php if(!empty($sorterLabel)): ?>
-        <label class="sorter-label cs-toolbar__label cs-sorter__label" for="sorter"><?= /* @escapeNotVerified */ __($sorterLabel) ?></label>
+        <label class="sorter-label cs-toolbar__label cs-sorter__label" for="sorter"><?= /* @escapeNotVerified */ __($sorterLabel) ?><span class="cs-sorter__label-position"></span></label>
     <?php endif; ?>
     <select id="sorter" data-role="sorter" class="sorter-options cs-select cs-sorter__select" autocomplete="off">
         <?php foreach ($block->getAvailableOrders() as $identifier => $label): ?>
