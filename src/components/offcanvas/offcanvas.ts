@@ -178,10 +178,7 @@ export default class Offcanvas {
             () => {
                 this._$element.trigger('offcanvas-hide', this);
                 this._$topbar.css('z-index', '');
-                document.removeEventListener(
-                    'focus',
-                    this._eventListeners.focus
-                );
+                this._disableFocusTrap();
                 return this;
             }
         );
