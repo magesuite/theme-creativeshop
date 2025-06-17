@@ -1,8 +1,11 @@
 import * as $ from 'jquery';
 import 'mage/translate';
 
-import mapStyles from 'MageSuite_StoreLocator/web/js/store-locator/map-style'; // custom styles for google map
-import MarkerClusterer from './markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
+import {
+    MarkerClusterer,
+    MarkerClustererOptions,
+    Renderer,
+} from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 
 declare global {
     interface Window {
@@ -19,7 +22,6 @@ export interface StoreLocatorOptions {
     basicZoomSmallDesktop?: number;
     basicZoomMobile?: number;
     showNearestStoreWhenNotFound?: boolean;
-    useDefaultMapStyles?: boolean;
     markerIcons?: object;
     clusterOptions?: object;
     clusterStyles?: object;
@@ -78,12 +80,12 @@ export default class StoreLocator {
             mapTypeControl: false, // see official google documentation
             streetViewControl: false, // see official google documentation
             fullscreenControl: false, // see official google documentation
+            mapId: 'DEMO_MAP_ID', // Map ID is required for advanced markers.
         },
         basicZoom: 13, // basic zoom (also for small desktop/tablet and mobile - see 2 options below) is set when the map center on specific location (for example when the user is geolocalized or when we pan to a specific store or a location)
         basicZoomSmallDesktop: 12,
         basicZoomMobile: 11,
         showNearestStoreWhenNotFound: false, // when set to true and no stores are found in the current zoom and location, show the nearest store
-        useDefaultMapStyles: false, // when set to true default google maps styles are used. If not, styles from store-locator/ map-style.js file are used
         markerIcons: {
             // sizes for markers in px
             pin: {
@@ -193,9 +195,7 @@ export default class StoreLocator {
 
         this._basePath = this._$element.attr('data-base-path');
 
-        if (!this._options.useDefaultMapStyles) {
-            this._options.mapOptions.styles = mapStyles;
-        }
+        this._options.mapOptions.mapId = this._$element.attr('data-map-id');
 
         this._$element.addClass('loading');
 
@@ -309,11 +309,18 @@ export default class StoreLocator {
                     if (this._locationMarker) {
                         this._locationMarker.setMap(null);
                     }
-                    this._locationMarker = new google.maps.Marker({
-                        position: coordinates,
-                        map: this.map,
-                        icon: this._options.markerIcons.userLocation,
-                    });
+
+                    const pinEl = this._createPinDiv(
+                        this._options.markerIcons.pin.url
+                    );
+
+                    this._locationMarker =
+                        new google.maps.marker.AdvancedMarkerElement({
+                            map: this.map,
+                            position: coordinates,
+                            content: pinEl,
+                            gmpClickable: true,
+                        });
                 } else {
                     $('.cs-store-locator__empty-message--nolocation').remove();
                     this._$itemsList.prepend(
@@ -511,11 +518,18 @@ export default class StoreLocator {
                 if (this._locationMarker) {
                     this._locationMarker.setMap(null);
                 }
-                this._locationMarker = new google.maps.Marker({
-                    position: coordinates,
-                    map: this.map,
-                    icon: this._options.markerIcons.userLocation,
-                });
+
+                const pinEl = this._createPinDiv(
+                    this._options.markerIcons.pin.url
+                );
+
+                this._locationMarker =
+                    new google.maps.marker.AdvancedMarkerElement({
+                        map: this.map,
+                        position: coordinates,
+                        content: pinEl,
+                        gmpClickable: true,
+                    });
             }
 
             this._$element.removeClass('loading');
@@ -577,9 +591,7 @@ export default class StoreLocator {
         const id = currentItem.attr('data-id');
 
         if (this.markers) {
-            const marker = this.markers.find(
-                (marker) => marker.get('storeId') === id
-            );
+            const marker = this.markers.find((marker) => marker.storeId === id);
 
             if (marker) {
                 this.updateActiveMarkerIcon(marker);
@@ -600,11 +612,15 @@ export default class StoreLocator {
      */
     public updateActiveMarkerIcon(marker) {
         if (this._activeMarker) {
-            this._activeMarker.setIcon(this._options.markerIcons.pin);
+            this._activeMarker.content = this._createPinDiv(
+                this._options.markerIcons.pin.url
+            );
         }
 
         this._activeMarker = marker;
-        this._activeMarker.setIcon(this._options.markerIcons.pinActive);
+        this._activeMarker.content = this._createPinDiv(
+            this._options.markerIcons.pinActive.url
+        );
     }
 
     /**
@@ -1000,11 +1016,18 @@ export default class StoreLocator {
                 if (this._locationMarker) {
                     this._locationMarker.setMap(null);
                 }
-                this._locationMarker = new google.maps.Marker({
-                    position: coordinates,
-                    map: this.map,
-                    icon: this._options.markerIcons.userLocation,
-                });
+
+                const pinEl = this._createPinDiv(
+                    this._options.markerIcons.pin.url
+                );
+
+                this._locationMarker =
+                    new google.maps.marker.AdvancedMarkerElement({
+                        map: this.map,
+                        position: coordinates,
+                        content: pinEl,
+                        gmpClickable: true,
+                    });
 
                 this.map.panTo(coordinates);
                 this.map.setZoom(this._options.basicZoom);
@@ -1032,6 +1055,53 @@ export default class StoreLocator {
     }
 
     /**
+     * Creating a div for displaying a pin
+     */
+    protected _createPinDiv(iconPath: string): HTMLElement {
+        const pinEl = document.createElement('div');
+        pinEl.style.width = `${this._options.markerIcons.pin.sizes.x}px`;
+        pinEl.style.height = `${this._options.markerIcons.pin.sizes.y}px`;
+        pinEl.style.backgroundImage = `url('${iconPath}')`;
+        pinEl.style.backgroundSize = 'contain';
+        pinEl.style.backgroundRepeat = 'no-repeat';
+        pinEl.style.backgroundPosition = 'center';
+
+        return pinEl;
+    }
+
+    /**
+     * Create custom cluster renderer to set custom cluster icon
+     */
+    protected _createClusterRenderer(): Renderer {
+        return {
+            render: ({ count, position }) => {
+                // Create a div to render a custom cluster icon
+                const div = document.createElement('div');
+                div.textContent = count.toString();
+
+                Object.assign(div.style, {
+                    background: `url('${this._options.clusterStyles.url}') no-repeat center`,
+                    backgroundSize: 'contain',
+                    width: `${this._options.clusterStyles.width}px`,
+                    height: `${this._options.clusterStyles.height}px`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: `${this._options.clusterStyles.textColor}`,
+                    fontSize: `${this._options.clusterStyles.textSize}px`,
+                    borderRadius: '50%',
+                    fontWeight: 'bold',
+                });
+
+                return new google.maps.marker.AdvancedMarkerElement({
+                    position,
+                    content: div,
+                });
+            },
+        };
+    }
+
+    /**
      * Populate the map with markers based on `this.stores` array.
      * Initialize InfoWindow which displays popup with store details when a user clicks on a marker.
      * Listen to click event on markers to execute `markerClickHandler` to show popup with details.
@@ -1049,28 +1119,36 @@ export default class StoreLocator {
         this._infoWindow = new google.maps.InfoWindow({});
 
         this.markers = this.stores.map((store) => {
-            const marker = new google.maps.Marker({
+            const pinEl = this._createPinDiv(this._options.markerIcons.pin.url);
+
+            const marker = new google.maps.marker.AdvancedMarkerElement({
+                map: this.map,
                 position: {
                     lat: store.latitude,
                     lng: store.longitude,
                 },
-                map: this.map,
-                icon: this._options.markerIcons.pin,
-                optimized: this.isIE() ? false : true, // see https://stackoverflow.com/questions/20414387/google-maps-svg-marker-doesnt-display-on-ie-11
+                content: pinEl,
+                gmpClickable: true,
             });
 
-            marker.addListener('click', () => {
+            marker.addEventListener('gmp-click', () => {
                 this.markerClickHandler(marker, store.sourceCode);
             });
-            marker.set('storeId', store.sourceCode);
+            marker.storeId = store.sourceCode;
 
             return marker;
         });
 
-        this.cluster = new MarkerClusterer(this.map, this.markers, {
-            styles: [this._options.clusterStyles],
-            ...this._options.clusterOptions,
-        });
+        // Custom cluster renderer
+        const renderer = this._createClusterRenderer();
+
+        const clasterOptions: MarkerClustererOptions = {
+            map: this.map,
+            markers: this.markers,
+            renderer,
+        };
+
+        this.cluster = new MarkerClusterer(clasterOptions);
     }
 
     /**
@@ -1086,24 +1164,6 @@ export default class StoreLocator {
         this._options.markerIcons.userLocation.url =
             path + '/icon-user-marker.png';
         this._options.clusterStyles.url = path + '/icon-cluster.png';
-
-        this._options.markerIcons.pin.scaledSize = new google.maps.Size(
-            this._options.markerIcons.pin.sizes.x,
-            this._options.markerIcons.pin.sizes.y
-        );
-        this._options.markerIcons.pinAlt.scaledSize = new google.maps.Size(
-            this._options.markerIcons.pinAlt.sizes.x,
-            this._options.markerIcons.pinAlt.sizes.y
-        );
-        this._options.markerIcons.pinActive.scaledSize = new google.maps.Size(
-            this._options.markerIcons.pinActive.sizes.x,
-            this._options.markerIcons.pinActive.sizes.y
-        );
-        this._options.markerIcons.userLocation.scaledSize =
-            new google.maps.Size(
-                this._options.markerIcons.userLocation.sizes.x,
-                this._options.markerIcons.userLocation.sizes.y
-            );
     }
 
     /**
