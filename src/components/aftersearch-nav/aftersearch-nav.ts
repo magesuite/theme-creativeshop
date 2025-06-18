@@ -158,9 +158,7 @@ export class AftersearchNav {
 
         this._closeCollapses(this._$listOfFilters);
 
-        this._$toggleButton
-            .attr('aria-expanded', ariaValue)
-            .attr('aria-selected', ariaValue);
+        this._$toggleButton.attr('aria-expanded', ariaValue);
         this._$element.toggleClass(this._options.filtersExpandedClassName);
     }
 
