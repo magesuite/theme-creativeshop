@@ -37,14 +37,47 @@ define(['jquery'], function ($) {
                     navigator.msMaxTouchPoints > 0
                 );
             },
+            /**
+             * Overwritten to remove obsolete role
+             */
             _getSectionHeader: function (type, data) {
-                var header = this._super(type, data);
+                var header = $('<dl class="autocomplete-list"></dl>');
 
                 if (type !== undefined) {
                     header.addClass(type);
                 }
 
                 return header;
+            },
+
+            /**
+             * Overwritten to remove obsolete role
+             */
+            _getSectionTitle: function (type, data) {
+                var title = '';
+
+                if (this.titleRenderers && this.titleRenderers[type]) {
+                    title = $(
+                        '<dt class="autocomplete-list-title title-' +
+                            type +
+                            '">' +
+                            this.titleRenderers[type].render(data) +
+                            '</dt>'
+                    );
+                } else if (
+                    this.options.templates &&
+                    this.options.templates[type].title
+                ) {
+                    title = $(
+                        '<dt class="autocomplete-list-title title-' +
+                            type +
+                            '">' +
+                            this.options.templates[type].title +
+                            '</dt>'
+                    );
+                }
+
+                return title;
             },
             /**
              * Validate selection of an element (eg : when ENTER is pressed)
