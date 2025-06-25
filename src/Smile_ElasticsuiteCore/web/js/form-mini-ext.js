@@ -38,18 +38,22 @@ define(['jquery'], function ($) {
                 );
             },
             /**
-             * Overwritten to remove obsolete role
+             * Overwritten to:
+             * - remove obsolete role
+             * - add 'type' class to the autosuggest results to differentiate groups
              */
             _getSectionHeader: function (type, data) {
+                var title = '';
                 var header = $('<dl class="autocomplete-list"></dl>');
 
                 if (type !== undefined) {
                     header.addClass(type);
+                    title = this._getSectionTitle(type, data);
+                    header.append(title);
                 }
 
                 return header;
             },
-
             /**
              * Overwritten to remove obsolete role
              */
