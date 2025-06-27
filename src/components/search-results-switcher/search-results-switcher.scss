@@ -1,11 +1,15 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'components/button/mixin';
 @import 'components/typography/mixin';
 
 $search-results-switcher_headline-level: $font-size_headline-3 !default;
 $search-results-switcher_count-color: $color_text-300 !default;
 $search-results-switcher_content--active-border: 1px solid $color_alto !default;
 $search-results-switcher_content-padding: 2rem 0 !default;
+$search-results-switcher_all-link-margin: 1.6rem 0 0;
+$search-results-switcher_all-link-button-type: 'link' !default;
+$search-results-switcher_all-link-button-icon-pos: 'no-icon' !default;
 
 .#{$ns}search-results-switcher {
     $root: &;
@@ -14,6 +18,13 @@ $search-results-switcher_content-padding: 2rem 0 !default;
 
     &__triggers {
         overflow: visible !important;
+    }
+
+    &__trigger {
+        &.disabled {
+            opacity: 0.6;
+            pointer-events: none;
+        }
     }
 
     &__content {
@@ -50,5 +61,14 @@ $search-results-switcher_content-padding: 2rem 0 !default;
                 content: ')';
             }
         }
+    }
+
+    &__all-link {
+        @include button(
+            $type: $search-results-switcher_all-link-button-type,
+            $icon_pos: $search-results-switcher_all-link-button-icon-pos
+        );
+
+        margin: $search-results-switcher_all-link-margin;
     }
 }

@@ -1,37 +1,27 @@
 <?php
 /**
  * Custom template
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
  */
+$areas = $block->getAreas() ?? [];
+$sortOrder = array_column($areas, 'sort_order');
+array_multisort($sortOrder, SORT_ASC, $areas);
 ?>
+<?php if (!empty($areas)) : ?>
 <div class="cs-tabs cs-tabs--bar cs-search-results-switcher">
     <div class="cs-tabs__triggers cs-search-results-switcher__triggers">
-        <div class="cs-tabs__title cs-tabs__title--active cs-search-results-switcher__trigger-wrapper cs-search-results-switcher__trigger-wrapper--all" data-role="collapsible">
+    <?php foreach ($areas as $key => $area) : ?>
+        <div class="cs-tabs__title cs-search-results-switcher__trigger-wrapper cs-search-results-switcher__trigger-wrapper--<?= $escaper->escapeHtmlAttr($key); ?> <?= /** @noEscape  */ $area['additional_css'] ?? '' ?>"
+             data-role="collapsible">
             <a class="cs-tabs__title-link cs-search-results-switcher__trigger"
-               tabindex="-1"
                data-toggle="switch"
-               href="#all">
-                <?php echo __('All results'); ?> <span class="cs-tabs__title-span" id="count-all"></span>
+               href="<?= $escaper->escapeHtmlAttr($area['title_href']); ?>"
+               id="<?= $escaper->escapeHtmlAttr($area['title_id']); ?>">
+                <?= $escaper->escapeHtmlAttr($area['label']); ?> <span class="cs-tabs__title-span" id="<?= $escaper->escapeHtmlAttr($area['count_id']) ?>"></span>
             </a>
         </div>
-
-        <div class="cs-tabs__title cs-search-results-switcher__trigger-wrapper cs-search-results-switcher__trigger-wrapper--pages" data-role="collapsible">
-            <a class="cs-tabs__title-link cs-search-results-switcher__trigger"
-               tabindex="-1"
-               data-toggle="switch"
-               href="#tab-content-cmspages"
-               id="tab-cmspages-title">
-                <?php echo __('Pages'); ?> <span class="cs-tabs__title-span" id="count-cms"></span>
-            </a>
-        </div>
-
-        <div class="cs-tabs__title cs-search-results-switcher__trigger-wrapper cs-search-results-switcher__trigger-wrapper--products" data-role="collapsible">
-            <a class="cs-tabs__title-link cs-search-results-switcher__trigger"
-               tabindex="-1"
-               data-toggle="switch"
-               href="#tab-content-products"
-               id="tab-products-title">
-                <?php echo __('Products'); ?> <span class="cs-tabs__title-span" id="count-products"></span>
-            </a>
-        </div>
+    <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>
