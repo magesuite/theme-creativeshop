@@ -40,20 +40,6 @@ interface ISearchresultsSwitcher {
     showAllAnchor?: string;
 
     /**
-     * Anchor of "CMS Pages" tab (tab content)
-     * @type {string}
-     * @default '#tab-content-cmspages'
-     */
-    cmsResultsSelector?: string;
-
-    /**
-     * Anchor of "Products" tab (tab content)
-     * @type {string}
-     * @default '#tab-content-products'
-     */
-    productsResultsSelector?: string;
-
-    /**
      * Tells if selected tab should be saved in sessionStorage (see WEB API documentation)
      * This setting has no effect for single type of results (for instance only Products or only CMS pages were found)
      * @type {boolean}
@@ -76,7 +62,14 @@ interface ISearchresultsSwitcher {
      * @default '.catalogsearch-result-index'
      */
     searchResultPageClass?: string;
+    searchResultAreas: SearchResultArea[];
 }
+
+type SearchResultArea = {
+    containerSelector: string;
+    countSelector: string;
+    name: string;
+};
 
 export default class SearchresultsSwitcher {
     protected _$component: JQuery;
@@ -99,11 +92,31 @@ export default class SearchresultsSwitcher {
                 activeTriggerClass: 'cs-tabs__title--active',
                 contentsClass: 'cs-search-results-switcher__content',
                 showAllAnchor: '#all',
-                cmsResultsSelector: '#tab-content-cmspages',
-                productsResultsSelector: '#tab-content-products',
                 saveStateInSession: true,
                 filtersStateSelector: '.cs-aftersearch-nav__state',
                 searchResultPageClass: 'catalogsearch-result-index',
+                searchResultAreas: [
+                    {
+                        containerSelector: '#tab-content-cmspages',
+                        countSelector: '#count-cms',
+                        name: 'pages',
+                    },
+                    {
+                        containerSelector: '#tab-content-products',
+                        countSelector: '#count-products',
+                        name: 'products',
+                    },
+                    {
+                        containerSelector: '#tab-content-blog',
+                        countSelector: '#count-blog',
+                        name: 'blog',
+                    },
+                    {
+                        containerSelector: '#tab-content-brands',
+                        countSelector: '#count-brands',
+                        name: 'brands',
+                    },
+                ],
             },
             options
         );
@@ -274,48 +287,53 @@ export default class SearchresultsSwitcher {
     }
 
     protected _setResultsCount(countOnlyProducts: boolean = false): void {
-        const $overallResultsCountHeadline: JQuery = $(
+        if (!this._options.searchResultAreas?.length) {
+            return;
+        }
+
+        const overallResultsCountHeadline = document.querySelector(
             `.${this._options.componentClass}__overall-count`
         );
-        const $cmsResults: JQuery = $(this._options.cmsResultsSelector);
-        const $productsResults: JQuery = $(
-            this._options.productsResultsSelector
-        );
-        let cmsCount: number = 0;
+        let allCount: number = 0;
         let productsCount: number = 0;
 
-        if ($cmsResults.length) {
-            const rawCmsCount: string = $cmsResults.find('h2 span').length
-                ? $cmsResults.find('h2 span').text()
-                : '';
-            if (rawCmsCount.length) {
-                cmsCount = parseInt(rawCmsCount, 10);
+        for (const area of this._options.searchResultAreas) {
+            const areaContainer = document.querySelector(
+                area.containerSelector
+            );
+            const countElement = document.querySelector(area.countSelector);
+            let count: number = 0;
+
+            if (areaContainer) {
+                const countElement = areaContainer.querySelector('h2 span');
+                const rawCount = countElement ? countElement.textContent : '';
+                if (rawCount.length) {
+                    count = parseInt(rawCount, 10);
+                }
+            }
+
+            allCount += count;
+            if (area.name === 'products') {
+                productsCount = count;
+            }
+
+            if (countElement) {
+                countElement.textContent = count.toString();
+
+                if (count === 0) {
+                    const { parentElement } = countElement;
+                    parentElement.classList.add('disabled');
+                    parentElement.setAttribute('tabindex', '-1');
+                    parentElement.setAttribute('aria-disabled', 'true');
+                }
             }
         }
 
-        if ($productsResults.length) {
-            const rawProductsCount: string = $productsResults.find('h2 span')
-                .length
-                ? $productsResults.find('h2 span').text()
-                : '';
-            if (rawProductsCount.length) {
-                productsCount = parseInt(rawProductsCount, 10);
-            }
-        }
-
-        if ($('#count-cms').length) {
-            $('#count-cms').html(cmsCount);
-        }
-
-        if ($('#count-products').length) {
-            $('#count-products').html(productsCount);
-        }
-
-        if ($overallResultsCountHeadline.length) {
+        if (overallResultsCountHeadline) {
             const overallCount: any = countOnlyProducts
                 ? productsCount
-                : cmsCount + productsCount;
-            $overallResultsCountHeadline.html(overallCount);
+                : allCount;
+            overallResultsCountHeadline.textContent = overallCount.toString();
         }
     }
 
