@@ -101,28 +101,49 @@ export default class HeaderSearch {
             this._$trigger.on('click', (e: Event): void => {
                 e.preventDefault();
 
-                this._toggleSearch();
-                this._focusInputField();
+                this._openPopup();
+            });
+
+            this._$trigger.on('keypress', (e: Event): void => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+
+                    this._openPopup();
+                }
             });
         }
     }
 
+    protected _openPopup() : void {
+        this._toggleSearch();
+        this._focusInputField();
+    }
+
     protected _closeElementClick(): void {
         this._$closeBtn.on('click', (): void => {
-            if (
-                this._options.closeElementToggleSearch ||
-                this._options.closeElementToggleSearch === 'both'
-            ) {
-                this._toggleSearch();
-            }
-
-            if (
-                !this._options.closeElementToggleSearch ||
-                this._options.closeElementToggleSearch === 'both'
-            ) {
-                this._resetInputValue();
+            this._closePopup();
+        });
+        this._$closeBtn.on('keypress', (e: Event): void => {
+            if (e.key === "Enter") {
+                this._closePopup();
             }
         });
+    }
+
+    protected _closePopup() : void {
+        if (
+            this._options.closeElementToggleSearch ||
+            this._options.closeElementToggleSearch === 'both'
+        ) {
+            this._toggleSearch();
+        }
+
+        if (
+            !this._options.closeElementToggleSearch ||
+            this._options.closeElementToggleSearch === 'both'
+        ) {
+            this._resetInputValue();
+        }
     }
 
     protected _resetInputValue(): void {
