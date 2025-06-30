@@ -164,10 +164,26 @@ define([
                     this._addQtyButtonAction(event, 'qtyDecrease');
                 };
 
+                events['keydown ' + this.options.item.qtyDecrease] = function (
+                    event
+                ) {
+                    if (event.key === 'Enter') {
+                        this._addQtyButtonAction(event, 'qtyDecrease');
+                    }
+                };
+
                 events['click ' + this.options.item.qtyIncrease] = function (
                     event
                 ) {
                     this._addQtyButtonAction(event, 'qtyIncrease');
+                };
+
+                events['keydown ' + this.options.item.qtyIncrease] = function (
+                    event
+                ) {
+                    if (event.key === 'Enter') {
+                        this._addQtyButtonAction(event, 'qtyIncrease');
+                    }
                 };
 
                 this._on(this.element, events);
