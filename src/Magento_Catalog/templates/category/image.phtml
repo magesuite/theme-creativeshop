@@ -2,6 +2,8 @@
 /**
  * Template has been overwritten in order to:
  * - add `fetchpriority` attribute
+ * - leave an empty alt to mark the image as decorative and hide it from assistive technologies
+ * - remove title for the same reason
  *
  * Aligned with Magento 2.4.7 in 04.2024
  */
@@ -25,11 +27,7 @@ $fetchPriorityHigh = $block->getFetchPriorityHigh() ? ' fetchpriority="high"' : 
     if ($_imgUrl = $block->getImage()->getUrl($_category)) {
         $_imgHtml = '<div class="category-image"><img src="'
             . $block->escapeUrl($_imgUrl)
-            . '" alt="'
-            . $block->escapeHtmlAttr($_category->getName())
-            . '" title="'
-            . $block->escapeHtmlAttr($_category->getName())
-            . '" class="image"'
+            . '" alt="" class="image"'
             . $fetchPriorityHigh . '/></div>';
         $_imgHtml = $block->getOutput()->categoryAttribute($_category, $_imgHtml, 'image');
         /* @noEscape */ echo $_imgHtml;
