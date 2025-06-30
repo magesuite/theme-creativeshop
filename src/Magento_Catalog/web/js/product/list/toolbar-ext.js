@@ -88,5 +88,7 @@ define(['jquery'], function ($) {
                 });
             },
         });
+
+        return $.mage.productListToolbarForm;
     };
 });
