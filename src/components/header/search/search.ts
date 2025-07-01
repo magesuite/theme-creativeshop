@@ -105,7 +105,7 @@ export default class HeaderSearch {
             });
 
             this._$trigger.on('keypress', (e: Event): void => {
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                     e.preventDefault();
 
                     this._openPopup();
@@ -114,7 +114,7 @@ export default class HeaderSearch {
         }
     }
 
-    protected _openPopup() : void {
+    protected _openPopup(): void {
         this._toggleSearch();
         this._focusInputField();
     }
@@ -124,13 +124,13 @@ export default class HeaderSearch {
             this._closePopup();
         });
         this._$closeBtn.on('keypress', (e: Event): void => {
-            if (e.key === "Enter") {
+            if (e.key === 'Enter') {
                 this._closePopup();
             }
         });
     }
 
-    protected _closePopup() : void {
+    protected _closePopup(): void {
         if (
             this._options.closeElementToggleSearch ||
             this._options.closeElementToggleSearch === 'both'
