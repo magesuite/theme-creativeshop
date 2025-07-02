@@ -1,6 +1,7 @@
 @import 'config/variables';
 @import 'vendors/include-media';
 @import 'utils/reset-list-style';
+@import 'utils/focus-indicator';
 
 $stack-nav_box-shadow: $box-shadow_base !default;
 $stack-nav_box-border-radius: $border-radius_base !default;
@@ -97,6 +98,10 @@ $stack-nav_delimiter-disabled: false !default;
             margin: 0;
             overflow: hidden;
             white-space: nowrap;
+
+            &:has(a:focus) {
+                overflow: visible;
+            }
         }
 
         #{$root}__list li a,
@@ -132,6 +137,10 @@ $stack-nav_delimiter-disabled: false !default;
             @include media('>=tablet') {
                 background-color: $stack-nav_item-hover-background;
             }
+        }
+
+        #{$root}__list li a:focus {
+            @include focus-indicator();
         }
 
         #{$root}__list li.current strong {
