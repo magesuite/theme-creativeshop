@@ -9,6 +9,8 @@ define(['jquery'], function ($) {
             options: {
                 toolbarSelector: 'cs-page-category__toolbar-wrapper',
                 sorterLabelClass: '.cs-sorter__label-position',
+                pagerLabelClass: '.cs-pagination__label-position',
+                pageControl: '[data-role="pager"]',
                 amountSelector: '.toolbar-amount',
                 instanceType: '',
                 translatedSuffixTop: $.mage.__('top'),
@@ -44,6 +46,7 @@ define(['jquery'], function ($) {
                 const elements = [
                     { selector: this.options.orderControl, prefix: 'sorter' },
                     { selector: this.options.limitControl, prefix: 'limiter' },
+                    { selector: this.options.pageControl, prefix: 'pager' },
                     {
                         selector: this.options.amountSelector,
                         prefix: 'toolbar-amount',
@@ -61,14 +64,18 @@ define(['jquery'], function ($) {
 
                     $element.attr('id', uniqueId);
 
-                    if (prefix === 'sorter') {
+                    if (prefix === 'sorter' || prefix === 'pager') {
                         const $label = $element.siblings(`label`);
                         if ($label.length) {
                             $label.attr('for', uniqueId);
 
-                            const $labelPosition = $label.find(
-                                this.options.sorterLabelClass
-                            );
+                            const labelClass =
+                                prefix === 'sorter'
+                                    ? this.options.sorterLabelClass
+                                    : this.options.pagerLabelClass;
+
+                            const $labelPosition = $label.find(labelClass);
+
                             if ($labelPosition.length) {
                                 $labelPosition.text(
                                     $.mage.__(this.options.instanceType)

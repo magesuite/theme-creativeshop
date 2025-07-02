@@ -77,12 +77,10 @@
                     </div>
                 <?php endif;?>
 
-                <?php if(!empty($prefix)): ?>
-                    <?php if($this->hasInputSwitcher()): ?>
-                        <label class="label pages-label cs-pagination__prefix-label" role="none"><?= $block->escapeHtml(__($prefix)) ?></label>
-                    <?php else: ?>
-                        <p class="label pages-label cs-pagination__prefix-label" role="none"><?= $block->escapeHtml(__($prefix)) ?></p>
-                    <?php endif; ?>
+                <?php if (!empty($prefix) && !$this->hasInputSwitcher()): ?>
+                    <p class="label pages-label cs-pagination__prefix-label" role="none">
+                        <?= $block->escapeHtml(__($prefix)) ?>
+                    </p>
                 <?php endif; ?>
 
                 <?php if($this->hasInputSwitcher()): ?>
@@ -92,22 +90,27 @@
                         $lastPageSeparator = !empty($lastPageSeparator) ? __($lastPageSeparator) : '/';
                     ?>
                     <div class="field cs-pagination__page-provider">
+                        <?php if(!empty($prefix)): ?>
+                            <label class="label pages-label cs-pagination__prefix-label"><?= $block->escapeHtml(__($prefix)) ?>
+                                <span class="cs-pagination__label-position"></span>
+                            </label>
+                        <?php endif; ?>
                         <input
                             class="input-text cs-pagination__page-provider-input"
                             type="number"
-                            aria-label="<?= __('Page:'); ?>"
                             min="1"
                             max="<?= $block->escapeHtmlAttr($lastPageNum) ?>"
                             size="2"
                             value="<?= $block->escapeHtmlAttr($block->getCurrentPage()) ?>"
                             data-url-pattern='<?= $block->escapeUrl($this->getUrlPattern()) ?>'
+                            data-role="pager"
                         >
 
-                        <label class="label cs-pagination__page-provider-label">
+                        <span class="label cs-pagination__page-provider-label">
                             <?php if($lastPageSeparator):
                                 echo $lastPageSeparator; ?>
                             <?php endif; ?> <?= $block->escapeHtml($lastPageNum) ?>
-                        </label>
+                        </span>
                     </div>
 
                 <?php else: ?>
