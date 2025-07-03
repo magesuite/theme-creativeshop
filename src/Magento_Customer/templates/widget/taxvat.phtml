@@ -1,0 +1,24 @@
+<?php
+/**
+ * Template overridden to:
+ * - add autocomplete attribute
+ * - remove 'title' attribute as input is described by corresponding <label /> tag
+ *
+ * Aligned with Magento 2.4.8 on 01/07/2025
+ */
+
+/** @var \Magento\Customer\Block\Widget\Taxvat $block */
+?>
+<div class="field taxvat<?= $block->isRequired() ? ' required' : ''; ?>">
+    <label class="label" for="<?= $block->escapeHtmlAttr($block->getFieldId('taxvat')) ?>"><span><?= $block->escapeHtml($block->getStoreLabel('taxvat')) ?></span></label>
+    <div class="control">
+        <input 
+            type="text" 
+            id="<?= $block->escapeHtmlAttr($block->getFieldId('taxvat')) ?>" 
+            name="<?= $block->escapeHtmlAttr($block->getFieldName('taxvat')) ?>" 
+            value="<?= $block->escapeHtmlAttr($block->getTaxvat()) ?>" 
+            autocomplete="off" 
+            class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('taxvat')) ?>" <?= $block->isRequired() ? ' 
+            data-validate="{required:true}"' : '' ?>>
+    </div>
+</div>
