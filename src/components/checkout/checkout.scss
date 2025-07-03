@@ -1195,43 +1195,54 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
     }
 
     // Modal
-    .modal-custom .modal-inner-wrap {
-        box-shadow: none;
-
-        .title {
-            @include media('<tablet') {
-                display: block;
-                padding-bottom: $checkout_base-space;
-            }
-        }
-
-        .table-totals {
-            @include media('<tablet') {
-                display: none;
-            }
-        }
-
-        .items-in-cart {
-            margin-top: $checkout_base-space;
-
-            @include media('<tablet') {
-                display: block;
-            }
-
+    .modal-custom {
+        &.cart-items {
             @include media('>=tablet') {
-                margin-top: 0;
+                [data-role='focusable-start'],
+                [data-role='focusable-end'] {
+                    display: none;
+                }
             }
+        }
+
+        .modal-inner-wrap {
+            box-shadow: none;
 
             .title {
-                padding: $checkout_base-space;
-
-                // Summary amount of product (magento markup)
-                strong {
-                    font-size: 1.4rem;
+                @include media('<tablet') {
+                    display: block;
+                    padding-bottom: $checkout_base-space;
                 }
+            }
+
+            .table-totals {
+                @include media('<tablet') {
+                    display: none;
+                }
+            }
+
+            .items-in-cart {
+                margin-top: $checkout_base-space;
 
                 @include media('<tablet') {
-                    padding-top: $checkout_base-space;
+                    display: block;
+                }
+
+                @include media('>=tablet') {
+                    margin-top: 0;
+                }
+
+                .title {
+                    padding: $checkout_base-space;
+
+                    // Summary amount of product (magento markup)
+                    strong {
+                        font-size: 1.4rem;
+                    }
+
+                    @include media('<tablet') {
+                        padding-top: $checkout_base-space;
+                    }
                 }
             }
         }
