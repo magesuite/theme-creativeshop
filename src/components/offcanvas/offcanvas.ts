@@ -319,11 +319,23 @@ export default class Offcanvas {
         }
 
         $('body').on('modal:open', () => {
-            this._disableFocusTrap();
+            if (
+                this._$trigger.hasClass(
+                    this._options.triggerClassName + '--active'
+                )
+            ) {
+                this._disableFocusTrap();
+            }
         });
 
         $('body').on('modal:close', () => {
-            this._enableFocusTrap();
+            if (
+                this._$trigger.hasClass(
+                    this._options.triggerClassName + '--active'
+                )
+            ) {
+                this._enableFocusTrap();
+            }
         });
     }
 
