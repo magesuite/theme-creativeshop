@@ -227,15 +227,24 @@ export default class SearchresultsSwitcher {
             $(this._options.filtersStateSelector).length ||
             (urlParams.p !== undefined && parseInt(urlParams.p, 10) > 1)
         ) {
-            const $productsTrigger: JQuery = this._$tabs.find(
-                `a[href="${this._options.productsResultsSelector}"]`
-            );
-            if (
-                $(this._options.productsResultsSelector).length &&
-                $productsTrigger.length
-            ) {
-                this._setResultsCount(true);
-                this.openTab($productsTrigger, false);
+            const productSearchResultArea: SearchResultArea =
+                this._options.searchResultAreas.find(
+                    (area: SearchResultArea) => area.name === 'products'
+                );
+            if (productSearchResultArea) {
+                const $container: JQuery = $(
+                    productSearchResultArea.containerSelector
+                );
+                const $trigger: JQuery = this._$tabs.find(
+                    `a[href="${productSearchResultArea.containerSelector}"]`
+                );
+
+                if ($container.length && $trigger.length) {
+                    this._setResultsCount(true);
+                    this.openTab($trigger, false);
+                } else {
+                    this._setResultsCount();
+                }
             } else {
                 this._setResultsCount();
             }
