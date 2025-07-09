@@ -200,6 +200,9 @@ export default class SearchresultsSwitcher {
         this._$tabs.removeClass(this._options.activeTriggerClass);
         $trigger.parent().addClass(this._options.activeTriggerClass);
 
+        this._$tabs.find(`.${this._options.triggersClass}`).attr('aria-selected', 'false');
+        $trigger.attr('aria-selected', 'true');
+
         if (this._options.saveStateInSession && saveState) {
             sessionStorage.setItem(
                 'searchresultsSwitcher',
