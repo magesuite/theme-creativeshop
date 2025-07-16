@@ -48,7 +48,7 @@ $product = $block->getProductData();
                                  title="<?= /* @noEscape */ $rating ?>%">
                                 <?= $this->getLayout()
                                         ->createBlock(\Magento\Framework\View\Element\Template::class)
-                                        ->setMaxStars(5)
+                                        ->setMaxStars($block->getMaxStars() ?? 5)
                                         ->setActiveStars($rating/20)
                                         ->setHideReviewsCount(false)
                                         ->setTemplate('Magento_Review::rating-stars.phtml')
