@@ -1,5 +1,6 @@
 @import 'config/variables';
 @import 'components/button/mixin';
+@import 'utils/visually-hidden';
 
 $product-stock-subscription_modal-max-width: 45rem !default;
 $product-stock-subscription_button-type: $button_default-type !default;
@@ -96,11 +97,19 @@ $product-stock-subscription_ajax-loader-height: $product-stock-subscription_ajax
 
     &__msg {
         .message {
-            display: none;
+            @include visually-hidden();
+
+            margin: 0;
+            padding: 0;
 
             &.error,
             &.success {
-                display: block;
+                @include visually-visible();
+            }
+
+            & > div {
+                margin: 1rem 0;
+                padding: 1.2rem 4.5rem 1rem 4.3rem;
             }
         }
     }
