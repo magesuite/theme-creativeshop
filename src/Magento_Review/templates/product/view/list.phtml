@@ -56,7 +56,7 @@ $format = $block->getDateFormat() ?: \IntlDateFormatter::SHORT;
                              ->setTemplate('Magento_Review::product/view/list-item.phtml')
                              ->setTitle($block->escapeHtml($_review->getTitle()))
                              ->setRatingData([
-                                "maxStars" => 5,
+                                "maxStars" => $block->getMaxStars() ?? 5,
                                 "overallScore" => $overallScore,
                                 "compoundRatings" => $compoundRatings
                              ])
