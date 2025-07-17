@@ -4,7 +4,7 @@ export const productTemplate = `
             <div class="cs-product-tile__thumbnail">
                 <figure class="cs-product-tile__figure">
                     <picture class="cs-product-tile__image">
-                        <img class="cs-product-tile__img" src="<%= image_url%>" loading="lazy" />
+                        <img class="cs-product-tile__img" src="<%= image_url%>" loading="lazy" alt="<%= name %>"/>
                     </picture>
                 </figure>
             </div>
