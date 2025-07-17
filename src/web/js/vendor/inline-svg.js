@@ -5,6 +5,7 @@
  * - Removed AMD declaration to make it work with requireJS as async script.
  * - Added checking "data-src" attribute before "src" to enable lazy loading.
  * - Added waiting for DOM ready and observing HTML changes.
+ * - Performance optimizations: tracking observed elements, early exit for invalid URLs
  */
 (function(root, doc) {
     var settings = {
@@ -23,6 +24,7 @@
 
     var cache = {};
     var queued = {};
+    var processed = new WeakSet(); // Track processed elements
 
     var parseAndReplace = function(svg, img) {
         var attributes = img.attributes;
@@ -39,7 +41,7 @@
 
         // Add an additional class to the inlined SVG to imply it was
         // in fact inlined, might be useful to know
-        svg.className += ' ' + 'inlined-svg';
+        svg.classList.add('inlined-svg');
 
         // Use the `alt` attribute if one exists
         if (attributes.alt?.value?.length) {
@@ -76,11 +78,19 @@
 
         request.onload = function() {
             if (request.status < 200 || request.status >= 400) {
+                // Clean up queue on error
+                delete queued[url];
                 return;
             }
 
             var xml = parser.parseFromString(request.responseText, 'text/xml');
             var svg = xml.getElementsByTagName('svg')[0];
+
+            if (!svg) {
+                // Clean up queue if no SVG found
+                delete queued[url];
+                return;
+            }
 
             // Remove some of the attributes that aren't needed
             svg.removeAttribute('xmlns:a');
@@ -97,6 +107,11 @@
             resolveQueue(svg, url);
         };
 
+        request.onerror = function() {
+            // Clean up queue on network error
+            delete queued[url];
+        };
+
         request.send();
     };
 
@@ -105,14 +120,23 @@
      * @public
      */
     var inline = function(svg) {
-        // Store some attributes of the image
-        var url = svg.getAttribute('data-src') || svg.src;
-
-        if (url.substr(-4) !== '.svg') {
+        // Skip if already processed
+        if (processed.has(svg)) {
             return;
         }
 
-        svg.className = svg.className.replace('inline-svg', '');
+        // Mark as processed immediately to prevent duplicate processing
+        processed.add(svg);
+
+        // Store some attributes of the image
+        var url = svg.getAttribute('data-src') || svg.src;
+
+        // Skip elements without valid SVG URLs (fixes infinite loop with data-bind elements)
+        if (!url || url.substr(-4) !== '.svg') {
+            return;
+        }
+
+        svg.classList.remove('inline-svg');
 
         if (cache[url]) {
             parseAndReplace(cache[url].cloneNode(true), svg);
@@ -131,6 +155,7 @@
 
     var init = function() {
         var observer = null;
+        var mutationObserver = null;
         var svgs = getAll(doc);
 
         if ('IntersectionObserver' in root) {
@@ -148,7 +173,9 @@
                 }
             );
             svgs.forEach(function(svg) {
-                observer.observe(svg);
+                if (!processed.has(svg)) {
+                    observer.observe(svg);
+                }
             });
         } else {
             svgs.forEach(function(svg) {
@@ -158,14 +185,22 @@
 
         if ('MutationObserver' in root) {
             var checkTimeout;
-            new MutationObserver(function() {
+            mutationObserver = new MutationObserver(function(mutations) {
                 clearTimeout(checkTimeout);
                 checkTimeout = setTimeout(function() {
-                    getAll(doc).forEach(function(svg) {
-                        observer ? observer.observe(svg) : inline(svg);
-                    });
+                    // Only query for new unprocessed SVG elements
+                    var newSvgs = getAll(doc).filter(svg => !processed.has(svg));
+                    
+                    // Only proceed if there are actually new elements to observe
+                    if (newSvgs.length === 0) {
+                        return;
+                    }
+                    
+                    newSvgs.forEach(svg => observer ? observer.observe(svg) : inline(svg));
                 }, 20);
-            }).observe(doc, {
+            });
+            
+            mutationObserver.observe(doc, {
                 subtree: true,
                 childList: true,
             });
