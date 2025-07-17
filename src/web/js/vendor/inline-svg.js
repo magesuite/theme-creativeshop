@@ -137,7 +137,6 @@
         }
 
         svg.classList.remove('inline-svg');
-        svg.classList.add('inlined-svg');
 
         if (cache[url]) {
             parseAndReplace(cache[url].cloneNode(true), svg);
