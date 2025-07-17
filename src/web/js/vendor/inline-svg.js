@@ -189,22 +189,14 @@
                 clearTimeout(checkTimeout);
                 checkTimeout = setTimeout(function() {
                     // Only query for new unprocessed SVG elements
-                    var newSvgs = getAll(doc).filter(function(svg) {
-                        return !processed.has(svg);
-                    });
+                    var newSvgs = getAll(doc).filter(svg => !processed.has(svg));
                     
                     // Only proceed if there are actually new elements to observe
                     if (newSvgs.length === 0) {
                         return;
                     }
                     
-                    newSvgs.forEach(function(svg) {
-                        if (observer) {
-                            observer.observe(svg);
-                        } else {
-                            inline(svg);
-                        }
-                    });
+                    newSvgs.forEach(svg => observer ? observer.observe(svg) : inline(svg));
                 }, 20);
             });
             
