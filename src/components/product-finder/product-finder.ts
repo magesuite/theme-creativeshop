@@ -139,6 +139,20 @@ export default class ProductFinder {
         }
     }
 
+    protected _updateTabIndexes() {
+        this._$options.attr('tabindex', -1);
+        this._$backButtons.attr('tabindex', -1);
+
+        const $currentStep = this._visitedSteps.slice(-1).pop();
+        $currentStep
+            .find(`.${this._options.optionClassName}`)
+            .attr('tabindex', 0);
+
+        this._$backButtons
+            .filter(`.${this._options.backButtonClassName}--visible`)
+            .attr('tabindex', 0);
+    }
+
     /**
      * Switches to the step with given step ID.
      *
@@ -160,6 +174,7 @@ export default class ProductFinder {
             `${this._options.backButtonClassName}--visible`
         );
 
+        this._updateTabIndexes();
         this._updateSizes();
         this._$backButtons.blur();
         this._scrollToTop();
@@ -184,6 +199,7 @@ export default class ProductFinder {
             this._$element.css('padding-bottom', 0);
         }
 
+        this._updateTabIndexes();
         this._updateSizes();
         this._$backButtons.blur();
     }
@@ -274,6 +290,10 @@ export default class ProductFinder {
             this._goToPreviousStep.bind(this);
 
         this._eventListeners.optionClickListener = (event) => {
+            if (event.type === 'keydown' && event.keyCode !== 13) {
+                return;
+            }
+
             const $clickedOption: JQuery = $(event.target).closest(
                 `.${this._options.optionClassName}`
             );
@@ -297,7 +317,10 @@ export default class ProductFinder {
             'click',
             this._eventListeners.backButtonClickListener
         );
-        this._$options.on('click', this._eventListeners.optionClickListener);
+        this._$options.on(
+            'click keydown',
+            this._eventListeners.optionClickListener
+        );
     }
 
     /**
@@ -309,6 +332,9 @@ export default class ProductFinder {
             'click',
             this._eventListeners.backButtonClickListener
         );
-        this._$options.off('click', this._eventListeners.optionClickListener);
+        this._$options.off(
+            'click keydown',
+            this._eventListeners.optionClickListener
+        );
     }
 }
