@@ -2,6 +2,7 @@
 @import 'vendors/include-media';
 @import 'utils/font-family';
 @import 'utils/component-spacing';
+@import 'utils/focus-indicator';
 @import 'components/button/mixin';
 @import 'components/typography/mixin';
 @import 'components/headline/mixin';
@@ -166,6 +167,10 @@ $product-finder_option-border-radius: 0.5rem !default;
         transition: 0.3s border-color;
         overflow: hidden;
 
+        &:focus-visible {
+            @include focus-indicator();
+        }
+
         &--checked,
         &:hover {
             border-color: $product-finder_option-border-hover;
@@ -275,5 +280,13 @@ $product-finder_option-border-radius: 0.5rem !default;
         text-align: center;
         -ms-grid-row: 2;
         grid-row: 2;
+        hyphens: auto;
+    }
+
+    &__reload-info {
+        margin-bottom: 2rem;
+        font-size: $font-size_paragraph;
+        text-align: center;
+        width: 100%;
     }
 }
