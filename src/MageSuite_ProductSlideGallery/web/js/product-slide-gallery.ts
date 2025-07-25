@@ -511,18 +511,32 @@ export default class SlideGallery {
      * Hide unnecessary thumbnails buttons on fullscreen init
      */
     protected _initThumbNavButtonsFullscreen(): void {
-        const thumbnailsHeight: number =
-            this._$thumbs.length *
-            ($(this._$thumbs[0]).outerHeight() +
-                parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
-
         this._$thumbPrevButton.prop('disabled', true);
 
         if (this._$thumbs.length > 1) {
-            this._$thumbNextButton.prop(
-                'disabled',
-                thumbnailsHeight <= $(this._paginationScrollable).outerHeight()
-            );
+            if (this._defaultOptions.verticalThumbNav) {
+                const thumbnailsHeight: number =
+                    this._$thumbs.length *
+                    ($(this._$thumbs[0]).outerHeight() +
+                        parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+
+                this._$thumbNextButton.prop(
+                    'disabled',
+                    thumbnailsHeight <=
+                        $(this._paginationScrollable).outerHeight()
+                );
+            } else {
+                const thumbnailsWidth: number =
+                    this._$thumbs.length *
+                    ($(this._$thumbs[0]).outerWidth() +
+                        parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+
+                this._$thumbNextButton.prop(
+                    'disabled',
+                    thumbnailsWidth <=
+                        $(this._paginationScrollable).outerWidth()
+                );
+            }
         } else {
             this._$thumbNextButton.prop('disabled', true);
         }
