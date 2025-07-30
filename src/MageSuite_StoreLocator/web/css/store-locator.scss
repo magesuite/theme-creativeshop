@@ -58,6 +58,13 @@ $store-locator_item-color: $color_text-800 !default;
 $store-locator_item-hours-trigger: $color_text-900 !default;
 $store-locator_close-color: $color_text-400 !default;
 
+// Consent info
+$store-locator_consent-info-zindex: 6 !default;
+$store-locator_consent-info-min-width: 30rem !default;
+$store-locator_consent-info-max-width: 44rem !default;
+$store-locator_consent-info-padding: $page_edge-gutter * 2 !default;
+$store-locator_consent-info-box-shadow: 4px 4px 5px 2px rgba(0, 0, 0, 0.3) !default;
+
 .#{$ns}store-locator {
     $root: &;
 
@@ -712,6 +719,29 @@ $store-locator_close-color: $color_text-400 !default;
         #{$root}__item-hours-trigger--open & {
             transform: rotate(180deg) translate(-0.7rem, -0.2rem);
             top: -0.5rem;
+        }
+    }
+
+    &__consent-info {
+        opacity: 0;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate3d(-50%, -80%, 0);
+        min-width: $store-locator_consent-info-min-width;
+        max-width: $store-locator_consent-info-max-width;
+        padding: $store-locator_consent-info-padding;
+        z-index: $store-locator_consent-info-zindex;
+        box-shadow: $store-locator_consent-info-box-shadow;
+        transition: transform 0.5s, opacity 0.5s;
+        pointer-events: none;
+        touch-action: none;
+
+        &.active {
+            opacity: 1;
+            transform: translate3d(-50%, -50%, 0);
+            pointer-events: auto;
+            touch-action: auto;
         }
     }
 }

@@ -10,6 +10,7 @@ import {
 declare global {
     interface Window {
         breakpoint: any;
+        googleApiConsentRequired: boolean;
     }
 }
 
@@ -27,6 +28,7 @@ export interface StoreLocatorOptions {
     clusterStyles?: object;
     limitOfShopsInitiallyDisplayed?: number;
     storeData?: string;
+    consentInfoTimeoutDelay?: number;
 }
 
 export interface Coordinates {
@@ -67,6 +69,9 @@ export default class StoreLocator {
     protected _$searchForm: JQuery;
     protected _$itemsList: JQuery;
     protected _$searchInput: JQuery;
+    protected _consentRequired: boolean;
+    protected _$consentInfo: JQuery<HTMLDivElement>;
+    protected _consentInfoTimeout: ReturnType<typeof setTimeout>;
 
     protected _sidebarClosed: boolean;
 
@@ -138,6 +143,7 @@ export default class StoreLocator {
             email
             url
         `, // fields that graphql call to the backend requests
+        consentInfoTimeoutDelay: 3000,
     };
 
     protected stores: any[] = []; // array will all stores and their details that GraphQL request returns
@@ -189,6 +195,10 @@ export default class StoreLocator {
             '.cs-store-locator__search-input'
         );
 
+        this._$consentInfo = this._$element.find(
+            '.cs-store-locator__consent-info'
+        );
+
         this._$itemsList = this._$element.find(
             '.cs-store-locator__stores-list-inner'
         );
@@ -199,6 +209,96 @@ export default class StoreLocator {
 
         this._$element.addClass('loading');
 
+        this._consentRequired = window.googleApiConsentRequired;
+
+        if (this._consentRequired) {
+            this.initConsentManagedScriptLoader();
+        } else {
+            this.init();
+        }
+    }
+
+    /**
+     * Async. Init ScriptLoader.
+     */
+    public async initConsentManagedScriptLoader(): Promise<any> {
+        const { default: ConsentManagedScriptLoader } = await import(
+            'components/consent-management/script-loader/script-loader'
+        );
+
+        new ConsentManagedScriptLoader();
+
+        this.showConsentInfo();
+        this.attachApiReadyEvent(this.apiReady.bind(this));
+    }
+
+    /**
+     * Wait for Goole Maps API to be loaded.
+     * Confirmed by emitting `googlemaps:loaded` event.
+     */
+    public attachApiReadyEvent(callback: () => void): void {
+        window.addEventListener('googlemaps:loaded', (e: Event) => {
+            callback();
+        });
+    }
+
+    /**
+     * Proceed with the script when Google Maps API is ready.
+     * This action includes hiding consent info
+     * and further Store Locator script initialization.
+     */
+    public apiReady(): void {
+        this.hideConsentInfo();
+        this.init();
+    }
+
+    /**
+     * Show consent info with short delay.
+     * If consent is given script will continue
+     * loading without showing consent info.
+     * This is the purpose of displaying it with delay.
+     */
+    public showConsentInfo(): void {
+        this._consentInfoTimeout = setTimeout((): void => {
+            this.showLayer();
+
+            this._$consentInfo.addClass('active');
+        }, this._options.consentInfoTimeoutDelay);
+    }
+
+    /**
+     * Show consent management layer by attaching click event
+     * to the consent info element and running `showVendorLayer` method
+     * from the consent management component.
+     */
+    public async showLayer(): Promise<void> {
+        const { default: consentManagement } = await import(
+            'components/consent-management'
+        );
+
+        const element = this._$consentInfo.find('a')[0];
+
+        if (element) {
+            element.addEventListener('click', () => {
+                consentManagement.showVendorLayer();
+            });
+        }
+    }
+
+    /**
+     * Hide consent info.
+     * Clear consent info timeout.
+     */
+    public hideConsentInfo(): void {
+        clearTimeout(this._consentInfoTimeout);
+        this._$consentInfo.removeClass('active');
+    }
+
+    /**
+     * Initialize Store Locator
+     * when API is ready.
+     */
+    public init(): void {
         // Mount map
         this._mountMap();
 
