@@ -33,6 +33,17 @@ const usercentrics = {
                 callback();
             }
         });
+    },
+    /**
+     * Show Usercentrics layer.
+     */
+    showLayer: (): void => {
+        if (
+            window['UC_UI'] &&
+            window['UC_UI'].isInitialized()
+        ) {
+            window['UC_UI'].showSecondLayer();
+        }
     }
 }
 

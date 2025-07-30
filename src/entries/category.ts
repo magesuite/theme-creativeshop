@@ -89,6 +89,7 @@ import 'components/toolbar';
 // import 'components/tile-gallery';
 // import 'components/tooltip';
 // import 'components/video-layer';
+// import 'components/consent-management/script-loader';
 
 /**
  * Optional components that require optional modules being installed
