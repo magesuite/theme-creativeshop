@@ -63,6 +63,18 @@ const consentManagement = {
 
         return this.mapVendors[this.vendor].attachChangeEvent(callback);
     },
+
+    /**
+     * Show vendor privacy settings layer.
+     * @returns
+     */
+    showVendorLayer: function (): void {
+        if (!this.vendor || !this.mapVendors[this.vendor]) {
+            return;
+        }
+
+        return this.mapVendors[this.vendor].showLayer();
+    },
 };
 
 export default consentManagement;

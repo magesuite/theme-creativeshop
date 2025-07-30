@@ -165,6 +165,28 @@ var config = {
             }
         },
     },
+
+    /**
+     * Hook that set a callback before inserting script tag to DOM
+     * that allow to add any attribute to given script
+     * via `attributes` property.
+     *
+     * Sample usage:
+     * attributes: {
+     *     script_name_defined_in_path: {
+     *         type: 'text/javascript',
+     *         crossorigin: 'anonymous'
+     *         'data-sample-attr': 'true',
+     *     }
+     * }
+     */
+    onNodeCreated: function(node, config, name, url) {
+        if (config.attributes && config.attributes[name]) {
+            Object.keys(config.attributes[name]).forEach(attribute => {
+                node.setAttribute(attribute, config.attributes[name][attribute]);
+            });
+        }
+    },
 };
 
 /**
