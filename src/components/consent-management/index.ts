@@ -4,6 +4,7 @@ import usercentrics from 'components/consent-management/vendor/usercentrics';
 import usercentricsv3 from 'components/consent-management/vendor/usercentricsv3';
 import amasty from 'components/consent-management/vendor/amasty';
 import consentmanager from 'components/consent-management/vendor/consentmanager';
+import cookiebot from 'components/consent-management/vendor/cookiebot';
 
 const usercentricsVersion = document
     .querySelector('[data-usercentrics-version]')
@@ -24,6 +25,7 @@ const consentManagement = {
         usercentricsv3: usercentricsv3,
         amasty: amasty,
         consentmanager: consentmanager,
+        cookiebot: cookiebot,
     },
     /**
      * Check consent status
