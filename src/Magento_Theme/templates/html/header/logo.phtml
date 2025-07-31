@@ -39,7 +39,7 @@ $logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
                 alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
                 <?= $mobileLogoWidth ? 'width="' . $mobileLogoWidth . '"' : '' ?>
                 <?= $mobileLogoHeight ? 'height="' . $mobileLogoHeight . '"' : '' ?>
-                <?php if (!$block->getLogoAlt()) : ?>role="presentation"<?php endif; ?>
+                <?php if (!$block->getLogoAlt() && !$block->isHomePage()) : ?>role="presentation"<?php endif; ?>
             />
         <?php endif; ?>
         <img class="cs-logo__image<?php if ($mobileLogoPath): ?> cs-logo__image--desktop<?php endif; ?>"
@@ -47,7 +47,7 @@ $logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
             alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
             <?= $logoWidth ? 'width="' . $block->escapeHtmlAttr($logoWidth) . '"' : '' ?>
             <?= $logoHeight ? 'height="' . $block->escapeHtmlAttr($logoHeight) . '"' : '' ?>
-            <?php if (!$block->getLogoAlt()) : ?>role="presentation"<?php endif; ?>
+            <?php if (!$block->getLogoAlt() && !$block->isHomePage()) : ?>role="presentation"<?php endif; ?>
         />
     <?php if (!$block->isHomePage()): ?>
         </a>
