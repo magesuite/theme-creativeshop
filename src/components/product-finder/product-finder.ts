@@ -202,6 +202,13 @@ export default class ProductFinder {
         this._updateTabIndexes();
         this._updateSizes();
         this._$backButtons.blur();
+
+        const $focusableOption = $targetStep
+            .find(`.${this._options.optionClassName}[tabindex="0"]`)
+            .first();
+        if ($focusableOption.length) {
+            $focusableOption.focus();
+        }
     }
 
     /**
