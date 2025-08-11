@@ -45,6 +45,10 @@ const cookiebot = {
      * @param callback
      */
     attachInitializeEvent: (callback: () => void) => {
+        if (window.Cookiebot) {
+            callback();
+            return;
+        }
         window.addEventListener('CookiebotOnLoad', callback)
     },
 
