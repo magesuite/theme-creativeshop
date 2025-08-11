@@ -86,6 +86,10 @@ export default class StoreLocator {
             streetViewControl: false, // see official google documentation
             fullscreenControl: false, // see official google documentation
             mapId: 'DEMO_MAP_ID', // Map ID is required for advanced markers.
+            cameraControl: true,
+            cameraControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_TOP,
+            },
         },
         basicZoom: 13, // basic zoom (also for small desktop/tablet and mobile - see 2 options below) is set when the map center on specific location (for example when the user is geolocalized or when we pan to a specific store or a location)
         basicZoomSmallDesktop: 12,
