@@ -1,4 +1,6 @@
 import * as $ from 'jquery';
+import viewXml from 'etc/view';
+import deepGet from 'utils/deep-get/deep-get';
 
 /**
  * Component options interface.
@@ -10,6 +12,10 @@ export interface CartOptions {
     qtyIncrementInputSelector?: string;
     cartUpdateButtonSelector?: string;
     updateCartActionTimeout?: number; // in ms
+    inputChangeAction: 'reload' | 'show_update_button';
+    visuallyHiddenClass?: string;
+    actionsContainerSelector?: string;
+    activeActionsClass?: string;
 }
 /**
  * Cart component to modify default M2 behavior
@@ -21,6 +27,7 @@ export default class Cart {
     protected _updateTimeout: any;
     protected _removeTimeout: any;
     protected _initValue: number;
+    protected updateButtonShown: boolean = false;
 
     public constructor(options?: CartOptions) {
         this._options = $.extend(
@@ -31,6 +38,13 @@ export default class Cart {
                 qtyIncrementInputSelector: '.cs-qty-increment__input',
                 cartUpdateButtonSelector: '#update-cart-button',
                 updateCartActionTimeout: 1500,
+                inputChangeAction: deepGet(
+                    viewXml,
+                    'vars.Magento_Checkout.cart.qty_input_change_action'
+                ),
+                visuallyHiddenClass: 'cs-visually-hidden',
+                actionsContainerSelector: '.cart.main.actions',
+                activeActionsClass: 'active',
             },
             options
         );
@@ -54,6 +68,29 @@ export default class Cart {
         this._updateTimeout = setTimeout((): void => {
             $(`${this._options.cartUpdateButtonSelector}`).trigger('click');
         }, delay);
+    }
+
+    protected _showUpdateButton(item: JQuery = null) {
+        if (this.updateButtonShown) {
+            return;
+        }
+        this._destroyRunningTimeouts();
+
+        this._initValue = Number(item.val());
+        const cartUpdateButtonElement = document.querySelector(
+            this._options.cartUpdateButtonSelector
+        );
+        if (cartUpdateButtonElement) {
+            cartUpdateButtonElement.removeAttribute('aria-hidden');
+            cartUpdateButtonElement.removeAttribute('tabindex');
+            cartUpdateButtonElement.classList.remove(
+                this._options.visuallyHiddenClass
+            );
+            cartUpdateButtonElement
+                .closest(this._options.actionsContainerSelector)
+                .classList.add(this._options.activeActionsClass);
+            this.updateButtonShown = true;
+        }
     }
 
     protected _removeItem(
@@ -112,7 +149,13 @@ export default class Cart {
 
         $(`${this._options.qtyIncrementInputSelector}`).on(
             'input change',
-            (e): void => {
+            (e, data): void => {
+                if (
+                    _this._options.inputChangeAction !== 'reload' &&
+                    data?.trigger === 'qty-increment'
+                ) {
+                    return;
+                }
                 const newValue = $(e.target).val();
 
                 // Don't perform any action when input is empty (e.g. when user hits backspace) or value doesn't change (to prevent duplicated error (NKD-3292))
@@ -123,10 +166,14 @@ export default class Cart {
                     return;
                 }
 
-                if (Number(newValue) < _this._options.minQtyValue) {
-                    this._removeItem($(e.target));
+                if (this._options.inputChangeAction === 'reload') {
+                    if (Number(newValue) < _this._options.minQtyValue) {
+                        this._removeItem($(e.target));
+                    } else {
+                        this._triggerUpdate($(e.target));
+                    }
                 } else {
-                    this._triggerUpdate($(e.target));
+                    this._showUpdateButton($(e.target));
                 }
             }
         );
