@@ -129,7 +129,10 @@ export default class QtyIncrement {
      * @param value New input value.
      */
     public setValue(value: number) {
-        this._$input.val(value).trigger('input').trigger('change');
+        this._$input
+            .val(value)
+            .trigger('input', [{ trigger: 'qty-increment' }])
+            .trigger('change', [{ trigger: 'qty-increment' }]);
     }
 
     /**

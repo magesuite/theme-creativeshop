@@ -1,5 +1,10 @@
 @import 'config/variables';
 @import 'vendors/include-media';
+@import 'components/button/mixin';
+
+$cart_actions-margin: 1.6rem 0 0 !default;
+$cart_update-button-type: $button_default-type !default;
+$cart_update-button-icon: $button_default-icon-pos !default;
 
 .#{$ns}cart-page {
     position: relative;
@@ -21,6 +26,31 @@
         justify-content: space-between;
         flex-flow: row wrap;
         margin-bottom: 4rem;
+    }
+
+    .cart.main.actions {
+        height: 0;
+        overflow: hidden;
+
+        &.active {
+            height: unset;
+            margin: $cart_actions-margin;
+            overflow: unset;
+        }
+    }
+
+    .action.update {
+        @include button(
+            $type: $cart_update-button-type,
+            $icon_pos: $cart_update-button-icon
+        );
+
+        span {
+            @include button_span(
+                $type: $cart_update-button-type,
+                $icon_pos: $cart_update-button-icon
+            );
+        }
     }
 }
 
