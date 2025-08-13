@@ -64,9 +64,14 @@
             </div>
         <?php endif ?>
     </div>
-    <div class="cart main actions cs-visually-hidden">
+    <?php
+    $shouldDisplayActions = $block->getContinueShoppingUrl()
+        || $block->getViewModel()->isClearShoppingCartEnabled()
+        || $block->getVar('cart/qty_input_change_action', 'Magento_Checkout') ?? '' == 'show_update_button'
+    ?>
+    <div class="cart main actions<?= /** @noEscape */ !$shouldDisplayActions ? ' cs-visually-hidden' : '' ?>">
         <?php if ($block->getContinueShoppingUrl()): ?>
-            <a class="action continue"
+            <a class="action continue<?= /** @noEscape */ $block->getHideActionContinue() ? ' cs-visually-hidden' : '' ?>"
                <?php if ($block->getHideActionContinue()) : ?>aria-hidden="true" tabindex="-1"<?php endif; ?>
                href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>"
                title="<?= $block->escapeHtml(__('Continue Shopping')) ?>">
@@ -80,7 +85,8 @@
                     data-cart-empty=""
                     value="empty_cart"
                     title="<?= $block->escapeHtml(__('Clear Shopping Cart')) ?>"
-                    class="action clear" id="empty_cart_button">
+                    class="action clear<?= /** @noEscape */ $block->getHideActionClear() ? ' cs-visually-hidden' : '' ?>"
+                    id="empty_cart_button">
                 <span><?= $block->escapeHtml(__('Clear Shopping Cart')) ?></span>
             </button>
         <?php endif ?>
@@ -91,7 +97,7 @@
                 data-cart-item-update=""
                 value="update_qty"
                 title="<?= $block->escapeHtml(__('Update Shopping Cart')) ?>"
-                class="action update">
+                class="action update<?= /** @noEscape */ $block->getHideActionUpdate() ? ' cs-visually-hidden' : '' ?>">
             <span><?= $block->escapeHtml(__('Update Shopping Cart')) ?></span>
         </button>
         <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
