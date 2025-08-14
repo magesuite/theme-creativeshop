@@ -18,6 +18,7 @@ var config = {
         mgsOffcanvas: 'js/offcanvas',
         mgsInstantProductFinder: 'js/instant-product-finder',
         mgsSlider: 'js/slider',
+        mgsTogglePassword: 'js/toggle-password',
     },
     shim: {
         'mage/dataPost': ['js/uenc-updater'],
@@ -156,6 +157,9 @@ var config = {
             },
             'Magento_Customer/js/change-email-password': {
                 'Magento_Customer/js/change-email-password-ext': true,
+            },
+            'Magento_Customer/js/show-password': {
+                'Magento_Customer/js/show-password-ext': false,
             },
             'Magento_Theme/js/view/messages': {
                 'Magento_Theme/js/view/messages-ext': true

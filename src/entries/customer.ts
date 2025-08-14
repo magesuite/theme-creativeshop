@@ -95,6 +95,7 @@ import 'components/toolbar';
 // import 'components/tooltip';
 // import 'components/video-layer';
 // import 'components/consent-management/script-loader';
+// import 'components/toggle-password/toggle-password.scss';
 
 /**
  * Optional components that require optional modules being installed
