@@ -389,35 +389,6 @@ export default class OffcanvasNavigation {
                 $currentLevel.removeClass(
                     `${this._options.className}__list--current`
                 );
-
-                $listToShow.css('display', 'block');
-
-                setTimeout(() => {
-                    $listToShow
-                        .addClass(
-                            `
-                            ${this._options.className}__list--active
-                            ${this._options.className}__list--current
-                        `
-                        )
-                        .parents(`.${this._options.className}__list`)
-                        .each((i, parent) => {
-                            $(parent).addClass(
-                                `${this._options.className}__list--active`
-                            );
-                        });
-                }, 50); // Allow trigger to be visible before adding active class - avoids bug on iOS when submenu is opened and closed immediately.
-
-                this._setFocus();
-            });
-        } else {
-            $currentLevel.removeClass(
-                `${this._options.className}__list--current`
-            );
-
-            $listToShow.css('display', 'block');
-
-            setTimeout(() => {
                 $listToShow
                     .addClass(
                         `
@@ -431,8 +402,25 @@ export default class OffcanvasNavigation {
                             `${this._options.className}__list--active`
                         );
                     });
-            }, 50); // Allow trigger to be visible before adding active class - avoids bug on iOS when submenu is opened and closed immediately.
-
+                this._setFocus();
+            });
+        } else {
+            $currentLevel.removeClass(
+                `${this._options.className}__list--current`
+            );
+            $listToShow
+                .addClass(
+                    `
+                    ${this._options.className}__list--active
+                    ${this._options.className}__list--current
+                `
+                )
+                .parents(`.${this._options.className}__list`)
+                .each((i, parent) => {
+                    $(parent).addClass(
+                        `${this._options.className}__list--active`
+                    );
+                });
             this._setFocus();
         }
     }
