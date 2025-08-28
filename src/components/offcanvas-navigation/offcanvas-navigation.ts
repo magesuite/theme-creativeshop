@@ -389,12 +389,13 @@ export default class OffcanvasNavigation {
                 $currentLevel.removeClass(
                     `${this._options.className}__list--current`
                 );
+
                 $listToShow
                     .addClass(
                         `
-                        ${this._options.className}__list--active
-                        ${this._options.className}__list--current
-                    `
+                    ${this._options.className}__list--active
+                    ${this._options.className}__list--current
+                `
                     )
                     .parents(`.${this._options.className}__list`)
                     .each((i, parent) => {
@@ -402,18 +403,20 @@ export default class OffcanvasNavigation {
                             `${this._options.className}__list--active`
                         );
                     });
+
                 this._setFocus();
             });
         } else {
             $currentLevel.removeClass(
                 `${this._options.className}__list--current`
             );
+
             $listToShow
                 .addClass(
                     `
-                    ${this._options.className}__list--active
-                    ${this._options.className}__list--current
-                `
+                ${this._options.className}__list--active
+                ${this._options.className}__list--current
+            `
                 )
                 .parents(`.${this._options.className}__list`)
                 .each((i, parent) => {
@@ -421,6 +424,7 @@ export default class OffcanvasNavigation {
                         `${this._options.className}__list--active`
                     );
                 });
+
             this._setFocus();
         }
     }
