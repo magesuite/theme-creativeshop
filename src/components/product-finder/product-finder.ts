@@ -140,17 +140,19 @@ export default class ProductFinder {
     }
 
     protected _updateTabIndexes() {
-        this._$options.attr('tabindex', -1);
-        this._$backButtons.attr('tabindex', -1);
+        this._$options.attr('tabindex', -1).attr('aria-hidden', 'true');
+        this._$backButtons.attr('tabindex', -1).attr('aria-hidden', 'true');
 
         const $currentStep = this._visitedSteps.slice(-1).pop();
         $currentStep
             .find(`.${this._options.optionClassName}`)
-            .attr('tabindex', 0);
+            .attr('tabindex', 0)
+            .attr('aria-hidden', 'false');
 
         this._$backButtons
             .filter(`.${this._options.backButtonClassName}--visible`)
-            .attr('tabindex', 0);
+            .attr('tabindex', 0)
+            .attr('aria-hidden', 'false');
     }
 
     /**
