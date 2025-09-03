@@ -1,7 +1,7 @@
 /**
  * This component adds an accessible toggle password button.
  * It includes an optional mixin (show-password-ext.js), which is disabled by default.
- * To enable, activate the mixin in requirejs-config.js and uncomment the 
+ * To enable, activate the mixin in requirejs-config.js and uncomment the
  * related styles (toggle-password.scss) in customer.ts and checkout.ts entries.
  */
 
@@ -29,6 +29,16 @@ export interface TogglePasswordOptions {
      * @default 'cs-toggle-password--hidden'
      */
     togglePasswordHiddenModifier?: string;
+    /**
+     * Text for the button to show password
+     * @default 'Show Password'
+     */
+    showPasswordText?: string;
+    /**
+     * Text for the button to hide password
+     * @default 'Hide Password'
+     */
+    hidePasswordText?: string;
 }
 
 export default class TogglePassword {
@@ -43,6 +53,8 @@ export default class TogglePassword {
                 togglePasswordSelector: 'cs-toggle-password',
                 togglePasswordVisibleModifier: 'cs-toggle-password--visible',
                 togglePasswordHiddenModifier: 'cs-toggle-password--hidden',
+                showPasswordText: $.mage.__('Show Password'),
+                hidePasswordText: $.mage.__('Hide Password'),
             },
             options
         );
@@ -55,7 +67,7 @@ export default class TogglePassword {
 
         this._$element.addClass(this._options.togglePasswordInputClass);
         this._$element.after(function () {
-            return `<button type="button" data-toggle="#${this.id}" class="${_this._options.togglePasswordSelector} ${_this._options.togglePasswordHiddenModifier}">${$.mage.__('Show password')}</button>`;
+            return `<button type="button" data-toggle="#${this.id}" class="${_this._options.togglePasswordSelector} ${_this._options.togglePasswordHiddenModifier}">${_this._options.showPasswordText}</button>`;
         });
 
         this._attachEvents();
@@ -69,10 +81,10 @@ export default class TogglePassword {
 
         if (inputID.attr('type') === 'password') {
             inputID.attr('type', 'text');
-            $(element).text(`${$.mage.__('Hide password')}`);
+            $(element).text(`${this._options.hidePasswordText}`);
         } else {
             inputID.attr('type', 'password');
-            $(element).text(`${$.mage.__('Show password')}`);
+            $(element).text(`${this._options.showPasswordText}`);
         }
     }
 
