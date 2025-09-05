@@ -131,9 +131,9 @@ define(['jquery', 'underscore'], function ($, _) {
                 var $option = this.element.find(
                     '.' +
                         this.options.classes.attributeClass +
-                        '[attribute-code="' +
+                        '[data-attribute-code="' +
                         key +
-                        '"] [option-id="' +
+                        '"] [data-option-id="' +
                         optionId +
                         '"]'
                 );
