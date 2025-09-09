@@ -591,13 +591,15 @@ export default class OffcanvasNavigation {
     }
 
     protected _setFocus() {
-        setTimeout(() => {
-            this._$element
-                .find(
-                    `.${this._options.className}__list--current .${this._options.className}__link:focusable`
-                )
-                .first()
-                .focus();
-        }, this._options.transitionDuration);
+        requireAsync(['jquery/ui-modules/focusable']).then(() => {
+            setTimeout(() => {
+                this._$element
+                    .find(
+                        `.${this._options.className}__list--current .${this._options.className}__link:focusable`
+                    )
+                    .first()
+                    .focus();
+            }, this._options.transitionDuration);
+        });
     }
 }
