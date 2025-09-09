@@ -40,6 +40,8 @@ export default class Offcanvas {
         focus?: (event: Event) => void;
     } = {};
     protected _focusElement: JQuery<HTMLElement> | null = null;
+    protected _currentTopOffset = 0;
+    protected _isOpen = false;
 
     /**
      * Creates new offcanvas component with optional settings.
@@ -122,18 +124,19 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is shown.
      */
     public show(): Promise<Offcanvas> {
-        const $currentTopOffset: number = window.scrollY;
-        $('body')
-            .addClass('no-scroll ' + this._options.bodyOpenClass)
-            .css({ top: -$currentTopOffset })
-            .trigger('before-offcanvas-open', [this]);
-        this._$pageWrapper.addClass('no-scroll-child');
+        if (this._isOpen) {
+            return Promise.resolve(this);
+        }
 
-        this._$trigger
-            .addClass(`${this._options.triggerClassName}--active`)
-            .attr('aria-expanded', 'true');
+        this._isOpen = true;
         return Promise.all([this._showOverlay(), this._showDrawer()]).then(
             () => {
+                this._saveScroll();
+
+                this._$trigger
+                    .addClass(`${this._options.triggerClassName}--active`)
+                    .attr('aria-expanded', 'true');
+
                 this._$element.trigger('offcanvas-show', this);
 
                 if (this._options.initiallyFocusableElement) {
@@ -163,19 +166,20 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is hidden.
      */
     public hide(): Promise<Offcanvas> {
-        $(document).off('keydown', this._eventListeners.keyDown);
-        const $currentTopOffset: string = $('body').css('top');
-        $('body')
-            .removeClass('no-scroll ' + this._options.bodyOpenClass)
-            .css('top', '');
-        this._$pageWrapper.removeClass('no-scroll-child');
-        window.scrollTo(0, parseInt($currentTopOffset || '0', 10) * -1);
+        if (!this._isOpen) {
+            return Promise.resolve(this);
+        }
 
-        this._$trigger
-            .removeClass(`${this._options.triggerClassName}--active`)
-            .attr('aria-expanded', 'false');
+        this._isOpen = false;
+        $(document).off('keydown', this._eventListeners.keyDown);
+
         return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
             () => {
+                this._restoreScroll();
+                this._$trigger
+                    .removeClass(`${this._options.triggerClassName}--active`)
+                    .attr('aria-expanded', 'false');
+
                 this._$element.trigger('offcanvas-hide', this);
                 this._$topbar.css('z-index', '');
                 this._disableFocusTrap();
@@ -189,6 +193,11 @@ export default class Offcanvas {
      * @return {Promise<Offcanvas>} Promise that resolves after offcanvas is hidden.
      */
     public softHide(): Promise<Offcanvas> {
+        if (!this._isOpen) {
+            return Promise.resolve(this);
+        }
+
+        this._isOpen = false;
         this._$trigger
             .removeClass(`${this._options.triggerClassName}--active`)
             .attr('aria-expanded', 'false');
@@ -206,6 +215,28 @@ export default class Offcanvas {
         if (!drawerElement.contains(document.activeElement)) {
             this._focusElement?.focus();
         }
+    }
+
+    protected _saveScroll() {
+        const body = document.body;
+        this._currentTopOffset = window.scrollY;
+        body.classList.add('no-scroll');
+        this._options.bodyOpenClass &&
+            body.classList.add(this._options.bodyOpenClass);
+        body.style.top = `-${this._currentTopOffset}px`;
+        $(body).trigger('before-offcanvas-open', [this]);
+        this._$pageWrapper.addClass('no-scroll-child');
+    }
+
+    protected _restoreScroll() {
+        const body = document.body;
+        body.classList.remove('no-scroll');
+        this._options.bodyOpenClass &&
+            body.classList.remove(this._options.bodyOpenClass);
+        body.style.top = '';
+        this._$pageWrapper.removeClass('no-scroll-child');
+        window.scrollTo(0, this._currentTopOffset);
+        this._currentTopOffset = 0;
     }
 
     /**
@@ -312,7 +343,7 @@ export default class Offcanvas {
 
         if (this._options.closeOnOtherOffcanvasOpened) {
             $('body').on('before-offcanvas-open', (e, instance) => {
-                if (!instance._$element.is(this._$element)) {
+                if (instance !== this) {
                     this.softHide();
                 }
             });
