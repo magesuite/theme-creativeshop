@@ -125,7 +125,14 @@
                                 </li>
                             <?php else: ?>
                                 <li class="item cs-pagination__item" role="none">
-                                    <a href="<?= /* @escapeNotVerified */ $block->getPageUrl($page); ?>" class="page cs-pagination__number" role="menuitem"><span><?= /* @escapeNotVerified */ $page; ?></span></a>
+                                    <a href="<?= /* @escapeNotVerified */ $block->getPageUrl($page); ?>" 
+                                       class="page cs-pagination__number" 
+                                       role="menuitem"
+                                       aria-label="<?= $escaper->escapeHtmlAttr(__(
+                                            'Go to page %1',
+                                            $block->escapeHtml($page)
+                                        )) ?>"
+                                    ><span><?= /* @escapeNotVerified */ $page; ?></span></a>
                                 </li>
                             <?php endif;?>
                         <?php endforeach;?>
