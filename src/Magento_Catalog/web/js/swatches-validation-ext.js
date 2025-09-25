@@ -70,7 +70,6 @@ define([
                         title: $.mage.__('Please select missing options'),
                         modalClass: 'missing-swatches-modal',
                         autoOpen: true,
-                        focus: 'none',
                         actions: {
                             cancel: function () {
                                 $form.appendTo(
