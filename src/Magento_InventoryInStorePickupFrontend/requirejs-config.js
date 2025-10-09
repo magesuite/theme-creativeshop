@@ -4,6 +4,9 @@ var config = {
             'Magento_InventoryInStorePickupFrontend/js/view/store-pickup': {
                 'Magento_InventoryInStorePickupFrontend/js/view/store-pickup-ext': true,
             },
+            'Magento_InventoryInStorePickupFrontend/js/view/store-selector': {
+                'Magento_InventoryInStorePickupFrontend/js/view/store-selector-ext-communication': true,
+            },
             'Magento_Checkout/js/next-button': {
                 'Magento_InventoryInStorePickupFrontend/js/next-button-ext': true,
             },
@@ -11,7 +14,7 @@ var config = {
                 'Magento_InventoryInStorePickupFrontend/js/view/form/element/email-ext': true,
             },
             'Magento_Checkout/js/view/shipping-information': {
-                'Magento_InventoryInStorePickupFrontend/js/view/shipping-information-ext-ext': true,
+                'Magento_InventoryInStorePickupFrontend/js/view/shipping-information-ext-addresses': true,
             },
         },
     },
