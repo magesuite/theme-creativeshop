@@ -4,26 +4,47 @@
  * Aligned with Magento 2.4.8 in 04/2025
  */
 -->
-<div id="delivery-method-selector" data-role="content">
+<div id="delivery-method-selector">
     <div class="cs-tabs cs-tabs--store-pickup">
-        <div class="cs-tabs__triggers">
+        <div class="cs-tabs__triggers" role="tablist" 
+            data-bind="event: { keydown: onDeliveryTabsKeydown }">
             <div class="cs-tabs__title"
-                 css="'cs-tabs__title--active': !isStorePickupSelected()"
+                css="'cs-tabs__title--active': !isStorePickupSelected()"
+                role="tab"
+                click="selectShipping" 
+                data-bind="
+                event: { keydown: onDeliveryTabKeydown }
+                attr: {
+                    id: 'tab-shipping',
+                    'aria-selected': !isStorePickupSelected() ? 'true' : 'false',
+                    tabindex: !isStorePickupSelected() ? 0 : -1,
+                    'aria-controls': 'shipping'
+                }"
             >
                 <button class="cs-tabs__title-link"
-                   css="'selected': !isStorePickupSelected()"
-                   click="selectShipping"
+                   tabindex="-1"
                    translate="'Shipping'"
+                   data-bind="css: {'selected': !isStorePickupSelected()}"
                 ></button>
             </div>
 
             <div class="cs-tabs__title"
-                 css="'cs-tabs__title--active': isStorePickupSelected()"
+                css="'cs-tabs__title--active': isStorePickupSelected()"
+                role="tab"
+                click="selectStorePickup"
+                data-bind="
+                event: { keydown: onDeliveryTabKeydown }
+                attr: {
+                    id: 'tab-pickup',
+                    'aria-selected': isStorePickupSelected() ? 'true' : 'false',
+                    tabindex: isStorePickupSelected() ? 0 : -1,
+                    'aria-controls': 'store-selector'
+                }"
             >
                 <button class="cs-tabs__title-link"
-                   css="'selected': isStorePickupSelected()"
-                   click="selectStorePickup"
-                   translate="'Pick in Store'"
+                tabindex="-1"
+                translate="'Pick in Store'" 
+                data-bind="css: {'selected': isStorePickupSelected()}"
                 ></button>
             </div>
         </div>

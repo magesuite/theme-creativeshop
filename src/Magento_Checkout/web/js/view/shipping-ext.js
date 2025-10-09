@@ -14,11 +14,24 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
         return Shipping.extend({
             defaults: {
                 hasEmail: ko.observable(true),
+                // Create local observable
+                isStorePickupComponentActive: ko.observable(false),
+                isStorePickupSelected: ko.observable(false),
+
+                // use import -> method form so we can feed the observable
+                imports: {
+                    // When source changes, Magento calls onStorePickupSelectedChanged(value)
+                    isStorePickupSelected:
+                        'checkout.steps.store-pickup:isStorePickupSelected',
+                },
             },
             initialize: function () {
                 this._super();
 
                 var self = this;
+
+                // Detect availability of the store pickup component
+                this._initStorePickupComponentCheck();
 
                 registry.async(
                     'checkout.steps.login-or-guest.continue-as-guest.customer-email'
@@ -30,6 +43,24 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
 
                 return this;
             },
+
+            _initStorePickupComponentCheck: function () {
+                var name = 'checkout.steps.store-pickup';
+
+                // Check if pickup component is already enabled
+                var storePickupComponent = registry.get(name);
+
+                if (storePickupComponent) {
+                    // Let the template know that the store pickup component is active to render additional attributes
+                    this.isStorePickupComponentActive(true);
+                } else {
+                    // Update observable when the store pickup component is registered later on
+                    registry.async(name)(() =>
+                        this.isStorePickupComponentActive(true)
+                    );
+                }
+            },
+
             enableForm: function () {
                 $('#co-shipping-form')
                     .removeClass('cs-form--disabled')

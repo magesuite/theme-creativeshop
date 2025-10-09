@@ -1,0 +1,53 @@
+<!--
+/**
+ * Override store-selector template to add binding related to tabs functionality (lines: 11-15)
+ *
+ * Aligned with Magento 2.4.8 in 10/2025
+ */
+-->
+<div id="store-selector" css="'store-selected': $parent.selectedLocation" 
+    data-bind="
+        blockLoader: $parent.isLoading,
+        attr: {
+            role: 'tabpanel',
+            'aria-labelledby': 'tab-pickup',
+            hidden: !isStorePickupSelected
+        }
+    ">
+    <each if="!quoteIsVirtual()" args="getRegion('customer-email')" render=""></each>
+    <div class="step-title" data-role="title">
+        <translate args="'Store'"></translate>
+    </div>
+    <div id="checkout-step-store-selector" class="step-content" data-role="content">
+        <render args="selectedLocationTemplate"></render>
+        <each args="getRegion('after-selected-location')" render=""></each>
+        <form class="form-continue" submit="setPickupInformation" novalidate="novalidate">
+            <div class="actions-toolbar">
+                <div class="secondary">
+                    <button type="button" class="button action" click="openPopup">
+                        <span if="selectedLocation">
+                            <translate args="'Select Other'"></translate>
+                        </span>
+                        <span ifnot="selectedLocation">
+                            <translate args="'Select Store'"></translate>
+                        </span>
+                    </button>
+                </div>
+                <div class="primary">
+                    <button data-role="opc-continue"
+                            type="submit"
+                            class="button action continue primary"
+                            css="disabled: !selectedLocation"
+                            enable="selectedLocation"
+                            disabled
+                    >
+                        <span>
+                            <translate args="'Next'"></translate>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="opc-store-selector-popup" render="storeSelectorPopupTemplate"></div>

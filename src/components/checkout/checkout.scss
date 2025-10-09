@@ -7,6 +7,7 @@
 @import 'components/typography/mixin';
 @import 'components/field/mixin';
 @import 'components/pseudoicon/mixin';
+@import 'utils/focus-indicator';
 
 $checkout_page-max-width: 93rem !default;
 
@@ -1922,6 +1923,13 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         ~ #shipping,
         ~ #opc-shipping_method {
             @include visually-hidden();
+        }
+    }
+
+    .#{$ns}tabs__title {
+        &:focus,
+        &:focus-visible {
+            @include focus-indicator();
         }
     }
 }
