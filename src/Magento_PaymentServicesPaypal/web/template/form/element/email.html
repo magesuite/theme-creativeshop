@@ -1,13 +1,12 @@
 <!--
 /**
- * Template overwritten in order to:
- * - add <legend /> tag to <fieldset> to improve accessibility (line: 17, 39)
- * - add 'notice' hotspot to insert text (line: 33-37)
- * Aligned with Magento 2.4.7 in 05/2025
+ * Override the module file in order to:
+ * - add notice output to render text from layout xml (lines: 30-34)
+ *
+ * Aligned with "magento/module-payment-services-paypal" v2.12.2 on 02/10/2025
  */
 -->
 <!-- ko ifnot: isCustomerLoggedIn() -->
-
 <!-- ko foreach: getRegion('before-login-form') -->
 <!-- ko template: getTemplate() --><!-- /ko -->
 <!-- /ko -->
@@ -15,7 +14,6 @@
       data-bind="submit:login"
       method="post">
     <fieldset id="customer-email-fieldset" class="fieldset" data-bind="blockLoader: isLoading">
-        <legend class="cs-visually-hidden"><span data-bind="i18n: 'Email Address'"></span></legend>
         <div class="field required">
             <label class="label" for="customer-email"><span data-bind="i18n: 'Email Address'"></span></label>
             <div class="control _with-tooltip">
@@ -27,22 +25,25 @@
                             afterRender: emailHasChanged,
                             mageInit: {'mage/trim-input':{}}"
                        name="username"
-                       data-validate="{required:true, 'validate-email':true}" 
-                       id="customer-email"
-                       autocomplete="email" />
-                <!-- ko if: $data.notice --> 
-                    <div data-bind="attr: { id: $data.noticeId, class: $data.notice_class }">
-                        <span data-bind="text: $data.notice"></span>
-                    </div>
+                       data-validate="{required:true, 'validate-email':true}"
+                       id="customer-email">
+                <!-- ko if: $data.notice -->
+                <div data-bind="attr: { id: $data.noticeId, class: $data.notice_class }">
+                    <span data-bind="text: $data.notice"></span>
+                </div>
                 <!-- /ko -->
                 <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
+
+                <!-- ko foreach: getRegion('paypal-fastlane-email-watermark') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+
                 <span class="note" data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.'--><!-- /ko --></span>
             </div>
         </div>
 
         <!--Hidden fields -->
         <fieldset class="fieldset hidden-fields" data-bind="fadeVisible: isPasswordVisible">
-            <legend class="cs-visually-hidden"><span data-bind="i18n: 'Password'"></span></legend>
             <div class="field">
                 <label class="label" for="customer-password"><span data-bind="i18n: 'Password'"></span></label>
                 <div class="control">
@@ -54,7 +55,7 @@
                            type="password"
                            name="password"
                            id="customer-password"
-                           data-validate="{required:true}" autocomplete="current-password" />
+                           data-validate="{required:true}" autocomplete="off">
                     <span class="note" data-bind="i18n: 'You already have an account with us. Sign in or continue as guest.'"></span>
                 </div>
 
@@ -63,7 +64,7 @@
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!-- /ko -->
             <div class="actions-toolbar">
-                <input name="context" type="hidden" value="checkout" />
+                <input name="context" type="hidden" value="checkout">
                 <div class="primary">
                     <button type="submit" class="action login primary" data-action="checkout-method-login"><span data-bind="i18n: 'Login'"></span></button>
                 </div>
