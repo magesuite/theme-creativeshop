@@ -227,7 +227,15 @@ export default class QtyIncrement {
         }
 
         this._$input.on('keydown', (e) => {
-            if (e.key === 'Enter') {
+            if (
+                e.key === 'Enter' ||
+                e.key === ' ' ||
+                e.key === 'Spacebar' ||
+                e.key === 'e' ||
+                e.key === 'E' ||
+                e.key === '+' ||
+                e.key === '-'
+            ) {
                 e.preventDefault();
             }
         });
