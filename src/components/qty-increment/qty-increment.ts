@@ -234,7 +234,9 @@ export default class QtyIncrement {
                 e.key === 'e' ||
                 e.key === 'E' ||
                 e.key === '+' ||
-                e.key === '-'
+                e.key === '-' ||
+                e.key === '.' ||
+                e.key === ','
             ) {
                 e.preventDefault();
             }
