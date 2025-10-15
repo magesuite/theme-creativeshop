@@ -11,18 +11,15 @@
     class="checkout-shipping-address"
     role="none"
     data-bind="
-        fadeVisible: isStorePickupComponentActive()
-            ? !isStorePickupSelected()
-            : visible()">
+        fadeVisible: visible()">
     <div 
-         aria-labelledby="tab-shipping"
-         data-bind="
-            attr: { 
-                hidden: isStorePickupComponentActive() && isStorePickupSelected() ? 'hidden' : null,
-                role: isStorePickupComponentActive() ? 'tabpanel' : null,
-                'aria-labellledby': isStorePickupComponentActive() ? 'tab-shipping' : null
-            }">
-    <div id="checkout-step-shipping" 
+        aria-labelledby="tab-shipping"
+        data-bind="attr: isStorePickupComponentActive() ? {
+            hidden: isStorePickupSelected() ? 'hidden' : null,
+            role: 'tabpanel',
+            'aria-labelledby': 'tab-shipping'
+        } : {}"> 
+    <div id="checkout-step-shipping"  
          data-role="content">
 
         <!-- ko ifnot: isCustomerLoggedIn -->

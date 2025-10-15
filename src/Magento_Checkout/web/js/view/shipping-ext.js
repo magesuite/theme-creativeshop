@@ -46,6 +46,7 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
 
             _initStorePickupComponentCheck: function () {
                 var name = 'checkout.steps.store-pickup';
+                self = this;
 
                 // Check if pickup component is already enabled
                 var storePickupComponent = registry.get(name);
@@ -55,9 +56,11 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
                     this.isStorePickupComponentActive(true);
                 } else {
                     // Update observable when the store pickup component is registered later on
-                    registry.async(name)(() =>
-                        this.isStorePickupComponentActive(true)
-                    );
+                    registry.async(name)(function (component) {
+                        if (component) {
+                            self.isStorePickupComponentActive(true);
+                        }
+                    });
                 }
             },
 
