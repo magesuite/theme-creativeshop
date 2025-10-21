@@ -5,6 +5,7 @@
  * @var \Magento\Framework\Escaper $escaper
  */
 $areas = $block->getAreas() ?? [];
+$areas = array_filter($areas, fn($area) => $area !== null);
 $sortOrder = array_column($areas, 'sort_order');
 array_multisort($sortOrder, SORT_ASC, $areas);
 ?>
