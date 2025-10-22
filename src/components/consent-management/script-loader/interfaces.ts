@@ -19,6 +19,14 @@ export default interface iConsentManagedScriptLoaderOptions {
      * @default false
      */
     useLocalStorage?: boolean;
+    /**
+     * Additional data attributes in script tag
+     */
+    dataAttributes?: {
+        consentServiceRequired?: string;
+        consentService?: string;
+        isInline?: string;
+    };
 }
 
 export interface mutationObserverConfig {

@@ -222,11 +222,7 @@ export default class StoreLocator {
      * Async. Init ScriptLoader.
      */
     public async initConsentManagedScriptLoader(): Promise<any> {
-        const { default: ConsentManagedScriptLoader } = await import(
-            'components/consent-management/script-loader/script-loader'
-        );
-
-        new ConsentManagedScriptLoader();
+        await import('components/consent-management/script-loader');
 
         this.showConsentInfo();
         this.attachApiReadyEvent(this.apiReady.bind(this));

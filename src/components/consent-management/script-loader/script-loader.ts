@@ -14,6 +14,10 @@ import iConsentManagedScriptLoaderOptions from 'components/consent-management/sc
  * by developer in a certain way.
  * Steps are divided into imperative and declarative notation.
  *
+ * It supports both inline scripts and scripts loaded via src attribute, event if there are multiple
+ * scripts for the same service.
+ * Logic in potential custom data-* attributes in script tag is also preserved in scripts.
+ *
  * In order to track the script:
  * - imperative notation (raw script tag inside PTHML):
  *   - set script type prop. to text/html - this will prevent the script from
@@ -29,6 +33,8 @@ import iConsentManagedScriptLoaderOptions from 'components/consent-management/sc
  *       because of the *.js extension, developer can define a url without extension
  *       at the end. Value of this attribute is taken by default by the script logic,
  *       with fallback to src attribute if not present
+ *     - data-is-inline (optional): value => true - use if script is inline script
+ *       or have data-* attributes, which are needed to be preserved
  * - declarative notation (data-mage-init / x-magento-init):
  *   - NOTE: In this type of notation it is assumed that the script has been added
  *     via path property in requirejs-config.js file,
@@ -58,14 +64,18 @@ export default class ConsentManagedScriptLoader {
                 subtree: false,
             },
         },
+        dataAttributes: {
+            consentServiceRequired: 'data-consent-service-required',
+            consentService: 'data-consent-service',
+            isInline: 'data-is-inline',
+        },
     };
-    public consentManagement: any;
-    public consentManagedScripts: HTMLScriptElement[];
-    public consentManagedScriptsSelector: string;
-    public consentManagedScriptsDataAttr = 'data-consent-service-required';
-    public serviceLoadStatus: Record<string, serviceLoadStatusType> = {};
-    public observer: MutationObserver;
-    public isInitialized = false;
+    private consentManagement: any;
+    private serviceLoadStatus: Record<string, serviceLoadStatusType> = {};
+    private observer: MutationObserver;
+    private isInitialized = false;
+    private consentManagedScriptsServices: Record<string, number> = {};
+    private consentManagedScriptsServicesLoaded: Record<string, number> = {};
 
     /**
      * Creates Consent Managed Script Loader component.
@@ -74,24 +84,47 @@ export default class ConsentManagedScriptLoader {
      */
     public constructor(options?: iConsentManagedScriptLoaderOptions) {
         this.options = { ...this.options, ...options }; // Shallow copy only!
-        this.consentManagedScriptsSelector = `[${this.consentManagedScriptsDataAttr}]`;
-        this.consentManagedScripts = Array.from(
-            document.querySelectorAll(this.consentManagedScriptsSelector)
+
+        const consentManagedScripts: HTMLScriptElement[] = Array.from(
+            document.querySelectorAll(
+                `[${this.options.dataAttributes.consentServiceRequired}]`
+            )
         );
 
         if (this.options.useObserver) {
             this.observeForNewScripts();
         }
-        this.init();
+
+        this.collectConsentManagedScripts(consentManagedScripts);
+        this.init(consentManagedScripts);
     }
 
     /**
      * Initialize script if Consent Managed Scripts are present.
      */
-    public init(): void {
-        if (this.consentManagedScripts.length > 0) {
-            this.initConsent();
+    public init(scriptElements: HTMLScriptElement[]): void {
+        if (scriptElements.length > 0) {
+            this.initConsent(scriptElements);
         }
+    }
+
+    /**
+     * Collect all consent managed scripts present in the document.
+     */
+    public collectConsentManagedScripts(
+        scriptElements: HTMLScriptElement[]
+    ): void {
+        scriptElements.forEach((scriptTag) => {
+            const service = scriptTag.getAttribute(
+                `${this.options.dataAttributes.consentService}`
+            );
+            if (service) {
+                this.consentManagedScriptsServices[service] =
+                    (this.consentManagedScriptsServices[service] || 0) + 1;
+            }
+        });
+
+        console.log(this.consentManagedScriptsServices);
     }
 
     /**
@@ -100,17 +133,17 @@ export default class ConsentManagedScriptLoader {
     public observeForNewScripts() {
         this.observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((item: HTMLScriptElement) => {
+                mutation.addedNodes.forEach((element: HTMLScriptElement) => {
                     if (
-                        item.type === 'text/html' &&
-                        item.hasAttribute(this.consentManagedScriptsDataAttr)
+                        element.type === 'text/html' &&
+                        element.hasAttribute(
+                            this.options.dataAttributes.consentServiceRequired
+                        )
                     ) {
-                        const consentManagedScriptsArrNew = [item];
+                        const consentManagedScriptsArrNew = [element];
 
                         if (!this.isInitialized) {
-                            this.consentManagedScripts =
-                                consentManagedScriptsArrNew;
-                            this.initConsent();
+                            this.initConsent([element]);
                         } else {
                             this.attachConsentEvents(
                                 consentManagedScriptsArrNew
@@ -131,7 +164,9 @@ export default class ConsentManagedScriptLoader {
      * ASYNC. Imports ConsentManagement module asynchronously.
      * @return Promise
      */
-    public async initConsent(): Promise<any> {
+    public async initConsent(
+        consentManagedScripts: HTMLScriptElement[]
+    ): Promise<void> {
         const { default: consentManagement } = await import(
             'components/consent-management'
         );
@@ -139,7 +174,7 @@ export default class ConsentManagedScriptLoader {
 
         if (this.consentManagement) {
             this.isInitialized = true;
-            this.attachConsentEvents(this.consentManagedScripts);
+            this.attachConsentEvents(consentManagedScripts);
         }
     }
 
@@ -212,12 +247,41 @@ export default class ConsentManagedScriptLoader {
         scriptTag: HTMLScriptElement,
         serviceName: string
     ): Promise<void> {
-        const scriptSrc = scriptTag.dataset?.src ?? scriptTag.src;
-        const { default: requireAsync } = await import('utils/require-async');
-        const script = await requireAsync([scriptSrc]);
+        const isInline =
+            scriptTag.hasAttribute(this.options.dataAttributes.isInline) ||
+            false;
 
-        this.updateServiceLoadStatus(serviceName);
-        this.eventDispatch(serviceName);
+        if (isInline) {
+            const script = document.createElement('script');
+
+            for (const attr of Array.from(scriptTag.attributes)) {
+                script.setAttribute(attr.name, attr.value);
+            }
+
+            if (scriptTag.textContent) {
+                script.textContent = scriptTag.textContent;
+            }
+
+            script.type = 'text/javascript';
+            document.head.appendChild(script);
+        } else {
+            const scriptSrc = scriptTag.dataset?.src ?? scriptTag.src;
+            const { default: requireAsync } = await import(
+                'utils/require-async'
+            );
+            const script = await requireAsync([scriptSrc]);
+        }
+
+        this.consentManagedScriptsServicesLoaded[serviceName] =
+            (this.consentManagedScriptsServicesLoaded[serviceName] || 0) + 1;
+
+        if (
+            this.consentManagedScriptsServicesLoaded[serviceName] ===
+            this.consentManagedScriptsServices[serviceName]
+        ) {
+            this.updateServiceLoadStatus(serviceName);
+            this.eventDispatch(serviceName);
+        }
     }
 
     /**
