@@ -123,8 +123,6 @@ export default class ConsentManagedScriptLoader {
                     (this.consentManagedScriptsServices[service] || 0) + 1;
             }
         });
-
-        console.log(this.consentManagedScriptsServices);
     }
 
     /**
