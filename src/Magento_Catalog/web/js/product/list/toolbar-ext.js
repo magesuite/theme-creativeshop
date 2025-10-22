@@ -94,6 +94,22 @@ define(['jquery'], function ($) {
                     }
                 });
             },
+
+            /**
+             * Iterate through all elements and check each element's type, so we can bind proper event.
+             * @param element
+             * @private
+             */
+            _bindOrder: function (element) {
+                element.each((i, e) => {
+                    var eventType = 'change';
+
+                    if (!$(e).is('select')) {
+                        eventType = 'click';
+                    }
+                    $(e).on(eventType, {}, $.proxy(this._processSorting, this));
+                });
+            },
         });
 
         return $.mage.productListToolbarForm;
