@@ -19,6 +19,11 @@ const usercentrics = {
      * @param callback
      */
     attachInitializeEvent: (callback: () => void) => {
+        if (window['UC_UI'] && window['UC_UI'].isInitialized()) {
+            callback();
+            return;
+        }
+
         window.addEventListener('UC_UI_INITIALIZED', (e) => {
             callback();
         });
