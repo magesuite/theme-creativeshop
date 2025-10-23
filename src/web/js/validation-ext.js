@@ -61,7 +61,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
                     }
                 });
             },
-            
+
             /**
              * Scope handler to the widget instance
              */
