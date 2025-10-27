@@ -13,11 +13,13 @@ array_multisort($sortOrder, SORT_ASC, $areas);
 <div class="cs-tabs cs-tabs--bar cs-search-results-switcher">
     <div class="cs-tabs__triggers cs-search-results-switcher__triggers">
     <?php foreach ($areas as $key => $area) : ?>
+        <?php $isAriaSelected = $area['is_aria_selected'] ?? 'false'; ?>
         <div class="cs-tabs__title cs-search-results-switcher__trigger-wrapper cs-search-results-switcher__trigger-wrapper--<?= $escaper->escapeHtmlAttr($key); ?> <?= /** @noEscape  */ $area['additional_css'] ?? '' ?>"
              data-role="collapsible">
             <a class="cs-tabs__title-link cs-search-results-switcher__trigger"
                data-toggle="switch"
                role="tab"
+               aria-selected="<?= $escaper->escapeHtmlAttr($isAriaSelected); ?>"
                href="<?= $escaper->escapeHtmlAttr($area['title_href']); ?>"
                id="<?= $escaper->escapeHtmlAttr($area['title_id']); ?>">
                 <?= $escaper->escapeHtmlAttr($area['label']); ?> <span class="cs-tabs__title-span" id="<?= $escaper->escapeHtmlAttr($area['count_id']) ?>"></span>
