@@ -2,8 +2,11 @@
 /**
  * Template overwritten in order to:
  * - add <legend /> tag to <fieldset> to improve accessibility (line: 17, 39)
- * - add 'notice' hotspot to insert text (line: 33-37)
- * Aligned with Magento 2.4.7 in 05/2025
+ * - add 'notice' hotspot to insert text (line: 33-37),
+ * - change account 'note' into separate 'account_notice' hotspot which content
+ *   function as additional description for email input that can be read by screen readers
+ *
+ * Aligned with Magento 2.4.8 in 10/2025
  */
 -->
 <!-- ko ifnot: isCustomerLoggedIn() -->
@@ -22,26 +25,40 @@
                 <input class="input-text"
                        type="email"
                        data-bind="
+                            attr: {
+                                'aria-labelledby': [$data.noticeId, $data.accountNoticeId]
+                                    .filter(function(id) { return id; })
+                                    .join(' ') || undefined
+                            },
                             textInput: email,
                             hasFocus: emailFocused,
                             afterRender: emailHasChanged,
                             mageInit: {'mage/trim-input':{}}"
                        name="username"
-                       data-validate="{required:true, 'validate-email':true}" 
+                       data-validate="{required:true, 'validate-email':true}"
                        id="customer-email"
-                       autocomplete="email" />
+                       autocomplete="email"/>
                 <!-- ko if: $data.notice --> 
                     <div data-bind="attr: { id: $data.noticeId, class: $data.notice_class }">
                         <span data-bind="text: $data.notice"></span>
                     </div>
                 <!-- /ko -->
+
                 <!-- ko template: 'ui/form/element/helper/tooltip' --><!-- /ko -->
-                <span class="note" data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.'--><!-- /ko --></span>
+
+                <!-- ko if: $data.account_notice -->
+                <div data-bind="
+                    fadeVisible: isPasswordVisible() == false, 
+                    attr: { id: $data.accountNoticeId, class: $data.account_notice_class}"
+                >
+                    <span data-bind="text: $data.account_notice"></span>
+                </div>
+                <!-- /ko -->
             </div>
         </div>
 
         <!--Hidden fields -->
-        <fieldset class="fieldset hidden-fields" data-bind="fadeVisible: isPasswordVisible">
+        <fieldset class="fieldset hidden-fields" data-bind="dimVisible: isPasswordVisible">
             <legend class="cs-visually-hidden"><span data-bind="i18n: 'Password'"></span></legend>
             <div class="field">
                 <label class="label" for="customer-password"><span data-bind="i18n: 'Password'"></span></label>
