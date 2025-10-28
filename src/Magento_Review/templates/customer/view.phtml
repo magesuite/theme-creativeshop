@@ -12,13 +12,16 @@
  * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
 
+/** @var \MageSuite\ThemeHelpers\ViewModel\Review\Details $viewModel */
+$viewModel = $block->getData('view_model');
+
 $product = $block->getProductData();
 ?>
 <?php if ($product->getId()): ?>
 <div class="block customer-review view">
     <div class="product-details">
         <div class="product-media">
-            <a class="product-photo" href="<?= $block->escapeUrl($product->getProductUrl()) ?>">
+            <a class="product-photo" href="<?= $block->escapeUrl($viewModel->getProductUrl($product)); ?>">
                 <?php /* customer_account_product_review_page */ ?>
                 <?= $block->getImage($block->getProductData(), 'customer_account_product_review_page')->toHtml() ?>
             </a>
