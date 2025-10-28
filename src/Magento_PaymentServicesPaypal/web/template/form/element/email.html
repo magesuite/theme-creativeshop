@@ -3,7 +3,9 @@
  * Override the module file in order to:
  * - add notice output to render text from layout xml (lines: 30-34),
  * - add <legend /> tag to <fieldset> to improve accessibility,
- * - add autocomplete attribute to input fields
+ * - add autocomplete attribute to input fields,
+ * - change account 'note' into separate 'account_notice' hotspot which content
+ *   function as additional description for email input that can be read by screen readers
  *
  * Aligned with "magento/module-payment-services-paypal" v2.12.2 on 02/10/2025
  */
@@ -23,6 +25,11 @@
                 <input class="input-text"
                        type="email"
                        data-bind="
+                            attr: {
+                                'aria-labelledby': [$data.noticeId, $data.accountNoticeId]
+                                    .filter(function(id) { return id; })
+                                    .join(' ') || undefined
+                            },
                             textInput: email,
                             hasFocus: emailFocused,
                             afterRender: emailHasChanged,
@@ -42,7 +49,14 @@
                     <!-- ko template: getTemplate() --><!-- /ko -->
                 <!-- /ko -->
 
-                <span class="note" data-bind="fadeVisible: isPasswordVisible() == false"><!-- ko i18n: 'You can create an account after checkout.'--><!-- /ko --></span>
+                <!-- ko if: $data.account_notice -->
+                <div data-bind="
+                    fadeVisible: isPasswordVisible() == false, 
+                    attr: { id: $data.accountNoticeId, class: $data.account_notice_class}"
+                >
+                    <span data-bind="text: $data.account_notice"></span>
+                </div>
+                <!-- /ko -->
             </div>
         </div>
 
