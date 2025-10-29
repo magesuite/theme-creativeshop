@@ -6,6 +6,7 @@ var config = {
         ccImageTeaser: 'js/image-teaser',
         ccImageTeaserLegacy: 'js/image-teaser-legacy',
         ccAccordion: 'js/accordion',
+        ccInstagram: 'js/instagram',
         ccProductsGrid: 'js/products-grid',
         ccSeparator: 'js/separator',
         ccBrandCarousel: 'js/brand-carousel',
