@@ -205,8 +205,6 @@ export default class StoreLocator {
 
         this._basePath = this._$element.attr('data-base-path');
 
-        this._options.mapOptions.mapId = this._$element.attr('data-map-id');
-
         this._$element.addClass('loading');
 
         this._consentRequired = window.googleApiConsentRequired;
@@ -295,6 +293,9 @@ export default class StoreLocator {
      * when API is ready.
      */
     public init(): void {
+        // Set map styling
+        this._setMapId();
+
         // Mount map
         this._mountMap();
 
@@ -303,6 +304,17 @@ export default class StoreLocator {
 
         // Attach events to elements that are not directly connected to the map
         this._attachEvents();
+    }
+
+    /**
+     * Set mapId from data attribute or use default one (DEMO_MAP_ID)
+     */
+    public _setMapId(): void {
+        const mapId = this._$element.attr('data-map-id');
+
+        if (mapId) {
+            this._options.mapOptions.mapId = mapId;
+        }
     }
 
     /**
