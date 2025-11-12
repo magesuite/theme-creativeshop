@@ -146,7 +146,7 @@ $product-tile-list_column-breakpoint-max: '<#{$product-tile-list_one-column-brea
         }
 
         #{$root}__main {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: min-content 1fr;
 
             grid-template-areas:
                 'name name'
@@ -161,7 +161,7 @@ $product-tile-list_column-breakpoint-max: '<#{$product-tile-list_one-column-brea
                 'addto addto';
 
             @include media($product-tile-list_column-breakpoint-min) {
-                grid-template-columns: minmax(0, 1fr) fit-content(10rem) #{$product-tile_general-elements-gutter * 2} 12rem 12rem;
+                grid-template-columns: minmax(0, 1fr) fit-content(10rem) #{$product-tile_general-elements-gutter * 2} 10rem 14rem;
 
                 grid-template-areas:
                     'name review separator badges badges'
@@ -368,6 +368,19 @@ $product-tile-list_column-breakpoint-max: '<#{$product-tile-list_one-column-brea
                     }
                 }
             }
+
+            &:has(.#{$ns}recent-lowest-price) {
+                flex-direction: column;
+
+                .price-box {
+                    margin-bottom: 0.5rem;
+                }
+            }
+        }
+
+        .#{$ns}recent-lowest-price {
+            font-size: 1.2rem;
+            text-align: right;
         }
 
         #{$root}__addtocart {
