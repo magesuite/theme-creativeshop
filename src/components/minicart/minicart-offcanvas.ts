@@ -188,6 +188,7 @@ export default class Minicart {
     protected _productsCarouselSettings: ISlider;
     protected _options: MinicartOptions;
     protected _endpointUrl: JQueryDeferred<string> = jQuery.Deferred();
+    protected _$triggeringElement: JQuery<HTMLElement> | null = null;
 
     /**
      * Creates new Minicart component with optional settings.
@@ -278,10 +279,22 @@ export default class Minicart {
                 '#btn-minicart-close, .btn-minicart-close',
                 (): any => this._offcanvasMinicart.hide()
             )
-            .on('openMinicart', (): void => this.openMinicart());
+            .on('openMinicart', (): void => this.openMinicart())
+            .on('offcanvas-hide', (): void => {
+                if (this._$triggeringElement && this._$triggeringElement.length) {
+                    this._$triggeringElement.trigger('focus');
+                    this._$triggeringElement = null;
+                }
+            });
 
         if (this._xmlSettings.open_on_product_added) {
-            this._$minicart.on('productAdded', (): void => {
+            this._$minicart.on('productAdded', (event: JQuery.Event): void => {
+                const $addToCartButton = $('.atc-ajax-processing');
+                
+                if ($addToCartButton.length) {
+                    this._$triggeringElement = $addToCartButton;
+                }
+                
                 if (
                     typeof this._options.shouldOpenOnProductAdded === 'function'
                 ) {

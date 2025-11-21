@@ -183,6 +183,7 @@ export default class Offcanvas {
                 this._$element.trigger('offcanvas-hide', this);
                 this._$topbar.css('z-index', '');
                 this._disableFocusTrap();
+
                 return this;
             }
         );
@@ -287,12 +288,16 @@ export default class Offcanvas {
     protected _hideDrawer(): Promise<Offcanvas> {
         return new Promise((resolve) => {
             this._$drawer.removeClass(`drawer--visible`);
+
             if (
-                typeof this._options.isInertDisabled === 'function' &&
-                !this._options.isInertDisabled()
+                !(
+                    typeof this._options.isInertDisabled === 'function' &&
+                    this._options.isInertDisabled()
+                )
             ) {
-                this._$drawer.attr('inert', 'true');
+                this._$drawer.attr('inert', '');
             }
+
             setTimeout(
                 () => resolve(this),
                 this._options.drawerTransitionDuration
