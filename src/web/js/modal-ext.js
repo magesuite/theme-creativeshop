@@ -15,9 +15,12 @@ define(['jquery'], function ($) {
                 this._super();
 
                 this._boundFocusHandler = this._handleFocus.bind(this);
+                this._triggerElement = null;
             },
 
             _setActive: function () {
+                this._triggerElement = document.activeElement;
+
                 this._super();
 
                 document.addEventListener(
@@ -37,6 +40,15 @@ define(['jquery'], function ($) {
                     this._boundFocusHandler,
                     true
                 );
+
+                if (
+                    this._triggerElement &&
+                    document.body.contains(this._triggerElement)
+                ) {
+                    setTimeout(() => {
+                        this._triggerElement.focus();
+                    }, 0);
+                }
 
                 $('body').trigger('modal:close');
             },
