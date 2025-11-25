@@ -6,6 +6,16 @@ import amasty from 'components/consent-management/vendor/amasty';
 import consentmanager from 'components/consent-management/vendor/consentmanager';
 import cookiebot from 'components/consent-management/vendor/cookiebot';
 
+// This module provides a unified interface for managing user consent across different consent management vendors.
+// It exports an object with methods to check consent status, initialize event listeners, handle consent changes, and show vendor-specific privacy settings layers.
+// The module automatically detects the configured consent management vendor and delegates the operations to the appropriate vendor-specific implementation.
+
+declare global {
+    interface Window {
+        consentManagement?: typeof consentManagement;
+    }
+}
+
 const usercentricsVersion = document
     .querySelector('[data-usercentrics-version]')
     ?.getAttribute('data-usercentrics-version');
@@ -79,4 +89,5 @@ const consentManagement = {
     },
 };
 
-export default consentManagement;
+window.consentManagement = window.consentManagement || consentManagement;
+export default window.consentManagement;
