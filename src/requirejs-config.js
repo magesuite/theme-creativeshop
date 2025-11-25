@@ -20,6 +20,7 @@ var config = {
         mgsInstantProductFinder: 'js/instant-product-finder',
         mgsSlider: 'js/slider',
         mgsTogglePassword: 'js/toggle-password',
+        mgsConsentManagement: 'js/consent-management',
     },
     shim: {
         'mage/dataPost': ['js/uenc-updater'],
