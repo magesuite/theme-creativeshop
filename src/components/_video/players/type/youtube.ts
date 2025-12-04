@@ -7,7 +7,7 @@ const SDK_GLOBAL_READY = 'onYouTubeIframeAPIReady';
 const MATCH_NOCOOKIE = /youtube-nocookie\.com/;
 const NOCOOKIE_HOST = 'https://www.youtube-nocookie.com';
 const MATCH_URL_YOUTUBE =
-    /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
+    /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|shorts\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 
 /**
  * Get YouTube video id
