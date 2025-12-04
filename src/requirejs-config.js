@@ -49,6 +49,9 @@ var config = {
             'mage/validation': {
                 'js/validation-ext': true,
             },
+            'Magento_Ui/js/lib/validation/validator': {
+                'Magento_Ui/js/lib/validation/validator-ext': true,
+            },
             'Magento_Ui/js/modal/modal': {
                 'js/modal-ext': true,
             },

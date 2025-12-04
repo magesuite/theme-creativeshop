@@ -4,7 +4,8 @@
  * - Added autocomplete attribute to tax field
  * - Removed title attributes
  * - pass empty title in getCountryHtmlSelect
- * Aligned with Magento 2.4.8 in 07/2025
+ * - add validation to street and city fields
+ * Aligned with Magento 2.4.8 in 12/2025
  */
 
 /** @var \Magento\Customer\Block\Address\Edit $block */
@@ -75,7 +76,9 @@ $regionProvider = $block->getRegionProvider();
                        name="street[0]"
                        value="<?= $escaper->escapeHtmlAttr($block->getStreetLine(1)) ?>"
                        id="street_1"
-                       class="input-text <?= $escaper->escapeHtmlAttr($_streetValidationClass) ?>"
+                       class="input-text <?= $escaper->escapeHtmlAttr($_streetValidationClass) ?> validate-street"
+                       data-validate="{maxlength: 255}"
+                       maxlength="255"
                        autocomplete="address-line1" />
                 <div class="nested">
                     <?php for ($_i = 1, $_n = $viewModel->addressGetStreetLines(); $_i < $_n; $_i++): ?>
@@ -87,8 +90,10 @@ $regionProvider = $block->getRegionProvider();
                                 <input type="text" name="street[<?= /* @noEscape */ $_i ?>]"
                                        value="<?= $escaper->escapeHtmlAttr($block->getStreetLine($_i + 1)) ?>"
                                        id="street_<?= /* @noEscape */ $_i + 1 ?>"
-                                       class="input-text
+                                       class="input-text validate-street
                                         <?= $escaper->escapeHtmlAttr($_streetValidationClassNotRequired) ?>"
+                                       data-validate="{maxlength: 255}"
+                                       maxlength="255"
                                        autocomplete="address-line<?= $_i + 1?>"/>
                             </div>
                         </div>
@@ -148,7 +153,9 @@ $regionProvider = $block->getRegionProvider();
                 <input type="text"
                        name="city"
                        value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
-                       class="input-text <?= $escaper->escapeHtmlAttr($_cityValidationClass) ?>"
+                       class="input-text <?= $escaper->escapeHtmlAttr($_cityValidationClass) ?> validate-city"
+                       data-validate="{maxlength: 100}"
+                       maxlength="100"
                        id="city"
                        autocomplete="address-level2" />
             </div>

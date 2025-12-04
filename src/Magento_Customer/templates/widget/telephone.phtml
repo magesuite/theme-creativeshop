@@ -1,0 +1,30 @@
+<?php
+/**
+ * Template overwritten due to:
+ * - add validation to match BE pattern
+ * Aligned with Magento 2.4.8 on 12/2025
+ */
+
+/** @var \Magento\Customer\Block\Widget\Telephone $block */
+?>
+
+<div class="field telephone <?= $block->isRequired() ? 'required' : '' ?>">
+    <label for="telephone" class="label">
+        <span>
+            <?= $block->escapeHtml(__('Phone Number')) ?>
+        </span>
+    </label>
+    <div class="control">
+        <input type="tel"
+               name="telephone"
+               id="telephone"
+               value="<?= $block->escapeHtmlAttr($block->getTelephone()) ?>"
+               class="input-text <?= $block->escapeHtmlAttr(
+                   $block->getAttributeValidationClass('telephone')
+               ) ?> validate-phone"
+               data-validate="{maxlength: 50}"
+               maxlength="50"
+               autocomplete="tel"
+        >
+    </div>
+</div>
