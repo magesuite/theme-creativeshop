@@ -22,7 +22,7 @@ define([
         );
 
         validator.addRule(
-            'validate-street',
+            'validate-street-name',
             function (value) {
                 return $.mage.isEmpty(value) || /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value);
             },

@@ -65,7 +65,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
         );
 
         $.validator.addMethod(
-            'validate-street',
+            'validate-street-name',
             function (value) {
                 return /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value);
             },
