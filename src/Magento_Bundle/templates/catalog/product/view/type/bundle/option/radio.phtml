@@ -19,9 +19,15 @@ use Magento\Bundle\ViewModel\ValidateQuantity;
 $viewModel = $block->getData('validateQuantityViewModel');
 ?>
 <div class="field option <?= ($_option->getRequired()) ? ' required': '' ?> cs-bundle-box__field">
-    <label class="label cs-bundle-box__product-name">
-        <?= $block->escapeHtml($_option->getTitle()) ?>
-    </label>
+    <?php if ($block->showSingle()): ?>
+        <span class="label cs-bundle-box__product-name">
+            <?= $block->escapeHtml($_option->getTitle()) ?>
+        </span>
+    <?php else: ?>
+        <label class="label cs-bundle-box__product-name" for="bundle-option-<?= $block->escapeHtmlAttr($_option->getId()) ?>">
+            <?= $block->escapeHtml($_option->getTitle()) ?>
+        </label>
+    <?php endif; ?>
     <div class="control cs-bundle-box__options-list">
         <div class="nested options-list">
             <?php if ($block->showSingle()): ?>
@@ -33,6 +39,7 @@ $viewModel = $block->getData('validateQuantityViewModel');
                        value="<?= (int)$_selections[0]->getSelectionId() ?>"
                        id="bundle-option-<?= (int)$_option->getId() ?>-<?= (int)$_selections[0]->getSelectionId() ?>"
                        checked="checked"
+                       aria-hidden="true"
                 />
             <?php else: ?>
                 <?php if (!$_option->getRequired()): ?>
