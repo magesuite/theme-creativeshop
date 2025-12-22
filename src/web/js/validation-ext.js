@@ -51,7 +51,10 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
         $.validator.addMethod(
             'validate-name',
             function (value) {
-                return /^[\p{L}\p{M},_.`'’&‘´()\[\]/—\s\d-]+$/u.test(value);
+                return (
+                    $.mage.isEmpty(value) ||
+                    /^[\p{L}\p{M},_.`'’&‘´()\[\]/—\s\d-]+$/u.test(value)
+                );
             },
             $.mage.__('Please enter a valid name (no special characters).')
         );
@@ -59,7 +62,10 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
         $.validator.addMethod(
             'validate-city',
             function (value) {
-                return /^[\p{L}\p{M}\s\d,.\-\/\[\]()`‘’´']+$/u.test(value);
+                return (
+                    $.mage.isEmpty(value) ||
+                    /^[\p{L}\p{M}\s\d,.\-\/\[\]()`‘’´']+$/u.test(value)
+                );
             },
             $.mage.__('Please enter a valid city name (no special characters).')
         );
@@ -67,15 +73,20 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
         $.validator.addMethod(
             'validate-street-name',
             function (value) {
-                return /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value);
+                return (
+                    $.mage.isEmpty(value) ||
+                    /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value)
+                );
             },
-            $.mage.__('Please enter a valid street name (no special characters).')
+            $.mage.__(
+                'Please enter a valid street name (no special characters).'
+            )
         );
 
         $.validator.addMethod(
             'validate-phone',
             function (value) {
-                return /^[\d\s+\-\/()]+$/u.test(value);
+                return $.mage.isEmpty(value) || /^[\d\s+\-\/()]+$/u.test(value);
             },
             $.mage.__('Please use 0-9, +, -, (, ), / and space only.')
         );
