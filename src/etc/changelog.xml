@@ -3032,11 +3032,24 @@
                     <ticket_id>RK-2167</ticket_id>
                 </entry>
             </tag>
-            <tag version="21.1.12" date="2025-12-22">
+            <tag version="21.1.13" date="2025-12-22">
                 <entry>
                     <type>FEATURE</type>
                     <overview>Add check for UA validations - do not validate empty</overview>
                     <ticket_id>RK-2179</ticket_id>
+                </entry>
+            </tag>
+            <tag version="21.1.14" date="2025-12-22">
+                <entry>
+                    <type>FIX</type>
+                    <overview>Add check for empty string in missing house number validation</overview>
+                    <description>
+                        House number warning appeared incorrectly on page load when street fields were empty due to a race condition
+                        where validation method fired before field values were populated.
+                        Additional check has been added to ensure warning only appears when user has entered actual text (not empty/whitespace),
+                        preventing also false positives on page load when race condition occurs.
+                    </description>
+                    <ticket_id>KRG-3317</ticket_id>
                 </entry>
             </tag>
         </changelog>
