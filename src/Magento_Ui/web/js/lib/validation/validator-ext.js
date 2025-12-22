@@ -1,14 +1,14 @@
-define([
-    'jquery',
-    'mage/translate',
-], function ($) {
+define(['jquery', 'mage/translate'], function ($) {
     'use strict';
 
     return function (validator) {
         validator.addRule(
             'validate-name',
             function (value) {
-                return $.mage.isEmpty(value) || /^[\p{L}\p{M},_.`''&'´()\[\]/—\s\d-]+$/u.test(value);
+                return (
+                    $.mage.isEmpty(value) ||
+                    /^[\p{L}\p{M},_.`''&'´()\[\]/—\s\d-]+$/u.test(value)
+                );
             },
             $.mage.__('Please enter a valid name (no special characters).')
         );
@@ -16,7 +16,10 @@ define([
         validator.addRule(
             'validate-city',
             function (value) {
-                return $.mage.isEmpty(value) || /^[\p{L}\p{M}\s\d,.\-\/\[\]()`''´']+$/u.test(value);
+                return (
+                    $.mage.isEmpty(value) ||
+                    /^[\p{L}\p{M}\s\d,.\-\/\[\]()`''´']+$/u.test(value)
+                );
             },
             $.mage.__('Please enter a valid city name (no special characters).')
         );
@@ -24,9 +27,14 @@ define([
         validator.addRule(
             'validate-street-name',
             function (value) {
-                return $.mage.isEmpty(value) || /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value);
+                return (
+                    $.mage.isEmpty(value) ||
+                    /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value)
+                );
             },
-            $.mage.__('Please enter a valid street name (no special characters).')
+            $.mage.__(
+                'Please enter a valid street name (no special characters).'
+            )
         );
 
         validator.addRule(
