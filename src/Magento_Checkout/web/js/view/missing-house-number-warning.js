@@ -63,7 +63,7 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
             }
 
             if (lastStreetElement) {
-                if (!/\d/.test(combinedText)) {
+                if (combinedText.trim() && !/\d/.test(combinedText)) {
                     lastStreetElement.warn(
                         $t('Do not forget about street number')
                     );
