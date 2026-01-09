@@ -1,5 +1,11 @@
 /**
- * Custom
+ * Custom component to show warning if no house number is provided in street address
+ *
+ * Notes:
+ * - listens: watches for changes in the data provider (the data model), not the UI elements,
+ * - this.source: data provider - the actual data model that stores the form values,
+ * - this.source.get('shippingAddress.street') - accessing the data that actually changed and triggered the listener.
+ *   This bypasses the UI element synchronization delay entirely.
  */
 define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
     Component,
@@ -43,23 +49,20 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
                 self.streetElement3 = element;
             });
         },
-        streetValueChanged: function (value) {
+        streetValueChanged: function () {
             var lastStreetElement;
-            var combinedText = '';
+            var street = this.source.get('shippingAddress.street') || [];
 
-            if (this.streetElement1) {
-                combinedText = this.streetElement1.value();
-                lastStreetElement = this.streetElement1;
-            }
+            var combinedText =
+                (street[0] || '') + (street[1] || '') + (street[2] || '');
 
-            if (this.streetElement2) {
-                combinedText = combinedText + this.streetElement2.value();
-                lastStreetElement = this.streetElement2;
-            }
-
+            // Determine last element
             if (this.streetElement3) {
-                combinedText = combinedText + this.streetElement3.value();
                 lastStreetElement = this.streetElement3;
+            } else if (this.streetElement2) {
+                lastStreetElement = this.streetElement2;
+            } else if (this.streetElement1) {
+                lastStreetElement = this.streetElement1;
             }
 
             if (lastStreetElement) {
