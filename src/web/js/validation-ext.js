@@ -46,6 +46,28 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
                     $.validator.defaults.onkeyup.call(this, element, event);
                 },
             },
+
+            _create: function () {
+                this._super();
+
+                this.element.on('submit', function (e) {
+                    if (
+                        $(this).data('mageValidation') &&
+                        !$(this).validation('isValid')
+                    ) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        return false;
+                    }
+                });
+            },
+            
+            /**
+             * Scope handler to the widget instance
+             */
+            _listenFormValidate: function () {
+                this.element.on('invalid-form.validate', this.listenFormValidateHandler);
+            },
         });
 
         $.validator.addMethod(
