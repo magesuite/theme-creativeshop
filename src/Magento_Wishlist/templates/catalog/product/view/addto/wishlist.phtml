@@ -8,6 +8,7 @@
 * Aligned with Magento 2.4.8 in 05/2025
 */
 /** @var \Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist $block */
+/** @var \Magento\Framework\Escaper $escaper */
 ?>
 <?php if ($block->isWishListAllowed()) : ?>
     <?php
@@ -17,15 +18,15 @@
     <li class="cs-buybox__addto-item <?= $block->getAdditionalCssClasses() ?>">
         <a href="#"
            class="action towishlist cs-buybox__addto-link"
-           title="<?= $block->getLinkLabel() ?? __('Add to wishlist') ?>"
+           title="<?= $escaper->escapeHtmlAttr($block->getLinkLabel()) ?? __('Add to wishlist') ?>"
            data-role="add-to-links"
            data-post='<?= /* @noEscape */ $block->getWishlistParams() ?>'
            data-uenc-update='true'
            data-action="add-to-wishlist"
-           data-product-id="<?= $productId; ?>"
+           data-product-id="<?= $escaper->escapeHtmlAttr($productId) ?>"
         >
-            <?= $block->getChildHtml(''); ?>
-            <span class="cs-buybox__addto-link-text"><?= $block->getLinkLabel() ?></span>
+            <?= /* @noEscape */ $block->getChildHtml('') ?>
+            <span class="cs-buybox__addto-link-text"><?= $escaper->escapeHtml($block->getLinkLabel()) ?></span>
         </a>
     </li>
 <?php endif; ?>
