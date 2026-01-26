@@ -29,7 +29,7 @@ define(['jquery', 'mage/translate'], function ($) {
             function (value) {
                 return (
                     $.mage.isEmpty(value) ||
-                    /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value)
+                    /^[\p{L}\p{M}"\[\],.\-''`'´—#°&_()\\/\s\d]+$/u.test(value)
                 );
             },
             $.mage.__(
