@@ -61,12 +61,15 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
                     }
                 });
             },
-            
+
             /**
              * Scope handler to the widget instance
              */
             _listenFormValidate: function () {
-                this.element.on('invalid-form.validate', this.listenFormValidateHandler);
+                this.element.on(
+                    'invalid-form.validate',
+                    this.listenFormValidateHandler
+                );
             },
         });
 
@@ -97,7 +100,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
             function (value) {
                 return (
                     $.mage.isEmpty(value) ||
-                    /^[\p{L}\p{M}"\[\],.\-''`'´—#°&()\\/\s\d]+$/u.test(value)
+                    /^[\p{L}\p{M}"\[\],.\-''`'´—#°&_()\\/\s\d]+$/u.test(value)
                 );
             },
             $.mage.__(
