@@ -1,3 +1,11 @@
+import type { Usercentrics } from "usercentrics-browser-ui";
+
+declare global {
+    interface Window {
+        __ucCmp: Usercentrics;
+    }
+}
+
 const usercentrics = {
     /**
      * Check consent status for Usercentrics
