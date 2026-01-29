@@ -1,0 +1,47 @@
+@import 'config/variables';
+@import 'utils/reset-list-style';
+
+$mfa_code-item_gap: 1.6rem !default;
+
+$mfa_code-item_border: 1px solid $color_border-500 !default;
+$mfa_code-item_font-family: monospace !default;
+$mfa_code-item_padding: 0.8rem 1.6rem !default;
+
+$mfa_code-actions_margin-top: 2rem !default;
+
+@media print {
+    .customer-mfa-index {
+        .#{$ns}dashboard__sidebar,
+        .#{$ns}dashboard__bottom,
+        .#{$ns}container--page-bottom,
+        .message,
+        .action.print,
+        .form,
+        .header.links {
+            display: none;
+        }
+    }
+}
+
+.#{$ns}mfa {
+    &__code-list {
+        @include reset-list-style;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: $mfa_code-item_gap;
+    }
+
+    &__code-item {
+        @include reset-list-style;
+
+        border: $mfa_code-item_border;
+        font-family: $mfa_code-item_font-family;
+        padding: $mfa_code-item_padding;
+    }
+
+    &__code-actions {
+        flex: 1 0 100%;
+        margin-top: $mfa_code-actions_margin-top;
+    }
+}

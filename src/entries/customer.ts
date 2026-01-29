@@ -111,3 +111,4 @@ import 'components/toolbar';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_Pwa';
 // import 'MageSuite_ProductNotification';
+// import 'MageSuite_CustomerMfa';
