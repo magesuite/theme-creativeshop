@@ -42,11 +42,6 @@ export default class Slider {
     protected _instanceNode: HTMLElement;
     protected _slideGroups: HTMLElement[][];
     protected _isIntersectionObserverInitialized: boolean;
-    protected _isTablet: MediaQueryList = window.matchMedia(`
-        (min-width: ${window.breakpoint.phoneLg}px)
-        and
-        (max-width: ${window.breakpoint.laptop - 1}px)
-    `);
 
     /**
      * Creates new Slider component with optional settings.
@@ -127,13 +122,24 @@ export default class Slider {
             newBreakpoint = window.innerWidth;
         }
 
-        return this._isTablet?.matches &&
+        // for 4-in-row ITs, we force 2-in-row on tablet resolutions
+        const isTabletBreakpoint =
+            window.breakpoint.current >= window.breakpoint.tablet &&
+            window.breakpoint.current < window.breakpoint.laptop;
+
+        if (
+            isTabletBreakpoint &&
             this.options.componentType === 'image_teaser' &&
-            +this.options.itemsPerView === 4 // for 4-in-row ITs, we force 2-in-row on tablet resolutions
-            ? 2
-            : newBreakpoint >= window.breakpoint.tablet
-            ? this.options.itemsPerView
-            : 1;
+            +this.options.itemsPerView === 4
+        ) {
+            return 2;
+        }
+
+        if (newBreakpoint < window.breakpoint.tablet) {
+            return 1;
+        }
+
+        return this.options.itemsPerView;
     }
 
     /**
