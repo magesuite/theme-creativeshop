@@ -479,7 +479,8 @@ export default class SlideGallery {
         const thumbnailsWidth: number =
             this._$thumbs.length *
             ($(this._$thumbs[0]).outerWidth() +
-                parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+                parseInt($(this._$thumbs[0]).css('margin-inline-start'), 10) +
+                parseInt($(this._$thumbs[0]).css('margin-inline-end'), 10));
 
         this._$thumbPrevButton.prop('disabled', true);
 
@@ -488,7 +489,14 @@ export default class SlideGallery {
                 const thumbnailsHeight: number =
                     this._$thumbs.length *
                     ($(this._$thumbs[0]).outerHeight() +
-                        parseInt($(this._$thumbs[0]).css('margin'), 10) * 2);
+                        parseInt(
+                            $(this._$thumbs[0]).css('margin-block-start'),
+                            10
+                        ) +
+                        parseInt(
+                            $(this._$thumbs[0]).css('margin-block-end'),
+                            10
+                        ));
 
                 this._$thumbNextButton.prop(
                     'disabled',
