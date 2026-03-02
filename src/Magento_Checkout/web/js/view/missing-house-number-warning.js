@@ -31,6 +31,12 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
             this._super();
             var self = this;
 
+            // Explicitly resolve this.source via registry to avoid a race condition in some browsers (e.g. Firefox),
+            // where listens callbacks can fire before uiComponent assigns this.source automatically.
+            registry.async(this.provider)(function (source) {
+                self.source = source;
+            });
+
             registry.async(
                 'checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.street.0'
             )(function (element) {
