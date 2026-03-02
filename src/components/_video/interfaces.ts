@@ -5,6 +5,7 @@ export interface YouTubePlayerOptions {
     loop: boolean;
     width: string;
     height: string;
+    pause_button: boolean;
     player_vars: YouTubePlayerParameters;
 }
 
@@ -22,6 +23,7 @@ interface YouTubePlayerParameters {
 export interface VimeoPlayerOptions {
     width: string;
     height: string;
+    pause_button: boolean;
     player_vars: VimeoPlayerParameters;
 }
 
@@ -41,6 +43,7 @@ export interface FacebookPlayerOptions {
     app_id: string;
     app_version: string;
     width: string;
+    pause_button: boolean;
     player_vars: FacebookPlayerParameters;
 }
 
@@ -57,6 +60,7 @@ interface FacebookPlayerParameters {
 export interface FilePlayerOptions {
     width: string;
     height: string;
+    pause_button: boolean;
     player_vars: FilePlayerParameters;
 }
 
@@ -73,6 +77,9 @@ interface FilePlayerParameters {
  */
 export default interface VideoTeaserOptions {
     videoSelector: string;
+    playPauseButtonParentSelector: string;
+    playPauseButtonClassName: string;
+    playPauseButtonPlayingClassName: string;
     youtube: YouTubePlayerOptions;
     vimeo: VimeoPlayerOptions;
     facebook: FacebookPlayerOptions;
@@ -103,11 +110,15 @@ export interface PlayerType {
             | FacebookPlayerOptions
             | FilePlayerOptions
             | VideoLayerYouTubeOptions,
-        id: string
+        id: string,
+        onStateChange?: () => void
     ) => void;
     play: (id: string) => void;
+    onPlay?: () => void;
     pause: (id: string) => void;
+    onPause?: () => void;
     destroy: (id: string) => void;
+    isPlaying: (id: string) => Promise<boolean>;
 }
 
 /**

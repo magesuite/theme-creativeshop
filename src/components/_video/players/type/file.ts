@@ -8,7 +8,12 @@ const filePlayer = {
      * @param options
      * @param id
      */
-    render: function (url: string, options: FilePlayerOptions, id: string) {
+    render: function (
+        url: string,
+        options: FilePlayerOptions,
+        id: string,
+        onStageChangeHandler?: () => void
+    ) {
         const video = document.createElement('video');
         video.id = id;
         video.src = url;
@@ -22,6 +27,11 @@ const filePlayer = {
 
         document.getElementById(id).replaceWith(video);
         this.players[id] = document.getElementById(id);
+        if (typeof onStageChangeHandler === 'function') {
+            ['ended', 'pause', 'play'].forEach((event) =>
+                this.players[id].addEventListener(event, onStageChangeHandler)
+            );
+        }
     },
     /**
      * Play video for given player id
@@ -50,6 +60,14 @@ const filePlayer = {
             delete this.players[id];
             document.getElementById(id).remove();
         }
+    },
+
+    isPlaying: async function (id) {
+        if (this.players[id]) {
+            return !this.players[id].paused;
+        }
+
+        return false;
     },
 };
 

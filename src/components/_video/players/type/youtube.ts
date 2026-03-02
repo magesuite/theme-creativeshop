@@ -25,7 +25,12 @@ const youtubePlayer = {
      * @param options
      * @param id
      */
-    render: function (url: string, options: YouTubePlayerOptions, id: string) {
+    render: function (
+        url: string,
+        options: YouTubePlayerOptions,
+        id: string,
+        onStageChangeHandler?: () => void
+    ) {
         const videoId = getVideoId(url);
 
         // Guard: prevent if there is no video id
@@ -51,12 +56,20 @@ const youtubePlayer = {
                     },
                     // Trigger manual loop
                     onStateChange: (event) => {
+                        const { ENDED, PAUSED, PLAYING } =
+                            window[SDK_GLOBAL].PlayerState;
                         if (options.loop && !options.player_vars.controls) {
-                            const { ENDED } = window[SDK_GLOBAL].PlayerState;
-
                             if (event.data === ENDED) {
                                 event.target?.playVideo();
                             }
+                        }
+                        if (
+                            typeof onStageChangeHandler === 'function' &&
+                            (event.data === ENDED ||
+                                event.data === PAUSED ||
+                                event.data === PLAYING)
+                        ) {
+                            onStageChangeHandler();
                         }
                     },
                 },
@@ -102,6 +115,14 @@ const youtubePlayer = {
         if (this.players[id]) {
             this.players[id].destroy();
         }
+    },
+
+    isPlaying: async function (id) {
+        const { PLAYING } = window[SDK_GLOBAL].PlayerState;
+
+        return this.players[id]
+            ? this.players[id].playerInfo.playerState === PLAYING
+            : false;
     },
 };
 

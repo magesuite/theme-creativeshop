@@ -14,13 +14,24 @@ const vimeoPlayer = {
      * @param options
      * @param id
      */
-    render: function (url: string, options: VimeoPlayerOptions, id: string) {
+    render: function (
+        url: string,
+        options: VimeoPlayerOptions,
+        id: string,
+        onStageChangeHandler?: () => void
+    ) {
         getSDK(SDK_URL, SDK_GLOBAL, SDK_GLOBAL_READY, SDK_REQUIREJS).then(
             (Player) => {
                 this.players[id] = new Player(id, {
                     url,
                     ...options.player_vars,
                 });
+
+                if (onStageChangeHandler) {
+                    ['pause', 'play'].forEach((event) => {
+                        this.players[id].on(event, onStageChangeHandler);
+                    });
+                }
 
                 this.players[id].ready().then(() => {
                     const iframe = document
@@ -70,6 +81,15 @@ const vimeoPlayer = {
         if (this.players[id]) {
             this.players[id].destroy();
         }
+    },
+
+    isPlaying: async function (id) {
+        if (this.players[id]) {
+            const paused = await this.players[id].getPaused();
+            return !paused;
+        }
+
+        return false;
     },
 };
 

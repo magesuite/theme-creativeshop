@@ -1,3 +1,5 @@
+import * as $ from 'jquery';
+import 'mage/translate';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 import consentManagement from 'components/consent-management';
@@ -130,10 +132,44 @@ export default class VideoTeaser {
                     videoWrapper.id = videoTeaserId;
                     videoPlayerPlaceholder.prepend(videoWrapper);
 
+                    const pauseButton: HTMLButtonElement | null =
+                        videoTypeConfig.pause_button
+                            ? document.createElement('button')
+                            : null;
+
+                    if (pauseButton) {
+                        pauseButton.setAttribute('title', $.mage.__('Play'));
+                        pauseButton.classList.add(
+                            this._options.playPauseButtonClassName
+                        );
+                        pauseButton.addEventListener(
+                            'click',
+                            this.onPlayPauseClick.bind(
+                                this,
+                                videoPlayer,
+                                pauseButton,
+                                videoTeaserId
+                            )
+                        );
+                        videoPlayerPlaceholder
+                            .closest(
+                                this._options.playPauseButtonParentSelector
+                            )
+                            .appendChild(pauseButton);
+                    }
+
                     videoPlayer.render(
                         videoData.url,
                         videoTypeConfig,
-                        videoTeaserId
+                        videoTeaserId,
+                        pauseButton
+                            ? this.onVideoStateChange.bind(
+                                  this,
+                                  videoPlayer,
+                                  pauseButton,
+                                  videoTeaserId
+                              )
+                            : null
                     );
                 }
             } else {
@@ -193,5 +229,42 @@ export default class VideoTeaser {
         | FacebookPlayerOptions
         | FilePlayerOptions {
         return this._options[videoData.type];
+    }
+
+    protected async onPlayPauseClick(
+        videoPlayer: PlayerType,
+        pauseButton: HTMLButtonElement,
+        videoTeaserId: string,
+        event?: Event
+    ) {
+        event?.preventDefault();
+        const isPlaying = await videoPlayer.isPlaying(videoTeaserId);
+
+        if (isPlaying) {
+            videoPlayer.pause(videoTeaserId);
+        } else {
+            videoPlayer.play(videoTeaserId);
+        }
+    }
+
+    protected onVideoStateChange(
+        videoPlayer: PlayerType,
+        pauseButton: HTMLButtonElement,
+        videoTeaserId: string
+    ) {
+        videoPlayer.isPlaying(videoTeaserId).then((isPlaying) => {
+            console.log(isPlaying, pauseButton);
+            if (isPlaying) {
+                pauseButton.setAttribute('title', $.mage.__('Pause'));
+                pauseButton.classList.add(
+                    this._options.playPauseButtonPlayingClassName
+                );
+            } else {
+                pauseButton.setAttribute('title', $.mage.__('Play'));
+                pauseButton.classList.remove(
+                    this._options.playPauseButtonPlayingClassName
+                );
+            }
+        });
     }
 }

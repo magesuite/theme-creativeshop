@@ -33,6 +33,7 @@ const prepareVideoData = (
 
 const facebookPlayer = {
     players: {},
+    _isPlaying: {},
     isSDKLoaded: false,
     /**
      * Render Facebook Player
@@ -40,7 +41,12 @@ const facebookPlayer = {
      * @param options
      * @param id
      */
-    render: function (url: string, options: FacebookPlayerOptions, id: string) {
+    render: function (
+        url: string,
+        options: FacebookPlayerOptions,
+        id: string,
+        onStageChangeHandler?: () => void
+    ) {
         // Guard: prevent loading FB SKD without app id or version, it will fail
         if (!options.app_id || !options.app_version) {
             // Facebook application data not found
@@ -64,6 +70,7 @@ const facebookPlayer = {
             FB.Event.subscribe('xfbml.ready', (msg) => {
                 if (msg.type === 'video' && msg.id === id) {
                     this.players[id] = msg.instance;
+                    this._isPlaying[id] = false;
 
                     if (options.player_vars.loop) {
                         this.players[id].subscribe('finishedPlaying', () =>
@@ -79,6 +86,18 @@ const facebookPlayer = {
 
                     if (options.player_vars.autoplay) {
                         this.players[id].play();
+                    }
+
+                    if (typeof onStageChangeHandler === 'function') {
+                        ['finishedPlaying', 'paused', 'startedPlaying'].forEach(
+                            (event) => {
+                                this.players[id].subscribe(event, () => {
+                                    this._isPlaying[id] =
+                                        event === 'startedPlaying';
+                                    onStageChangeHandler();
+                                });
+                            }
+                        );
                     }
 
                     // For some reason Facebook have added `visibility: hidden`
@@ -119,6 +138,14 @@ const facebookPlayer = {
             delete this.players[id];
             document.getElementById(id).remove();
         }
+    },
+
+    isPlaying: async function (id: string) {
+        if (this.players[id]) {
+            return this._isPlaying[id];
+        }
+
+        return false;
     },
 };
 
