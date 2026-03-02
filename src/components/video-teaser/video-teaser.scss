@@ -1,6 +1,19 @@
 @import 'config/variables';
 
 $vt_disable-pointer-events: true !default;
+$vt-pause-button_background-playing: url('../images/icons/video/pause.svg')
+    no-repeat center center / 2rem !default;
+$vt-pause-button_background-paused: url('../images/icons/video/play.svg')
+    no-repeat center center / 2rem !default;
+$vt-pause-button_border: 1px solid $color_primary-500 !default;
+$vt-pause-button_border-radius: $border-radius_base !default;
+$vt-pause-button_height: 4rem !default;
+$vt-pause-button_width: 4rem !default;
+$vt-pause-button_position-x: 'right' !default;
+$vt-pause-button_position-y: 'bottom' !default;
+$vt-pause-button_position-x-offset: 2rem !default;
+$vt-pause-button_position-y-offset: 2rem !default;
+$vt-pause-button_z-index: 1 !default;
 
 .#{$ns}image-teaser {
     $root: &;
@@ -17,6 +30,23 @@ $vt_disable-pointer-events: true !default;
         #{$root}__gradient,
         #{$root}__optimizer-container {
             z-index: 1;
+        }
+    }
+
+    &__play-pause-button {
+        background: $vt-pause-button_background-paused;
+        border: $vt-pause-button_border;
+        border-radius: $vt-pause-button_border-radius;
+        cursor: pointer;
+        height: $vt-pause-button_height;
+        position: absolute;
+        width: $vt-pause-button_width;
+        #{$vt-pause-button_position-x}: $vt-pause-button_position-x-offset;
+        #{$vt-pause-button_position-y}: $vt-pause-button_position-y-offset;
+        z-index: $vt-pause-button_z-index;
+
+        &--playing {
+            background: $vt-pause-button_background-playing;
         }
     }
 
