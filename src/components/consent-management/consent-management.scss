@@ -1,0 +1,84 @@
+@import 'config/variables';
+@import 'components/button/mixin';
+
+$consent-management_overlay-background: url('../images/spinner.svg') no-repeat
+    center center / 5rem 5rem rgba(255, 255, 255, 0.5) !default;
+$consent-management_background-color: $color_white !default;
+$consent-management_button-type: $button_default-type !default;
+$consent-management_button-icon-pos: 'none' !default;
+$consent-management_z-index: 99 !default;
+$consent-management_box-shadow: 4px 4px 5px 2px rgba(0, 0, 0, 0.3) !default;
+$consent-management_animation-delay: 1s !default;
+$consent-management_min-width: 30rem !default;
+$consent-management_max-width: 45rem !default;
+$consent-management_padding: 2rem !default;
+
+.#{$ns}consent-management {
+    $root: &;
+
+    width: 0;
+    height: 0;
+    display: none;
+    overflow: hidden;
+
+    &--active {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: $consent-management_z-index;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $consent-management_overlay-background;
+        animation: animateOverlayLoading 0.1s linear forwards;
+        animation-delay: $consent-management_animation-delay;
+    }
+
+    &__wrapper {
+        background-color: $consent-management_background-color;
+        padding: $consent-management_padding;
+        box-shadow: $consent-management_box-shadow;
+        width: 100%;
+        min-width: $consent-management_min-width;
+        max-width: $consent-management_max-width;
+        animation: animateLayer 1s ease forwards;
+        animation-delay: $consent-management_animation-delay;
+        opacity: 0;
+        text-align: center;
+    }
+
+    &__text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    &__button {
+        @include button(
+            $type: $consent-management_button-type,
+            $icon_pos: $consent-management_button-icon-pos
+        );
+
+        margin-top: 1.5rem;
+    }
+}
+
+@keyframes animateOverlayLoading {
+    100% {
+        background-image: none;
+    }
+}
+
+@keyframes animateLayer {
+    from {
+        opacity: 0;
+        margin-top: -10rem;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
