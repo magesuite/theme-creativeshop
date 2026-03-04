@@ -11,7 +11,6 @@ declare global {
 }
 
 export interface InstagramOptions {
-    consentTemplate: string;
     teaserConsentWrapperClass: string;
     teaserConsentLinkClass: string;
     teaserSlidesWrapperClass: string;
@@ -21,29 +20,15 @@ export interface InstagramOptions {
         consentSrcset: string;
     };
     intersectionObserverOptions: IntersectionObserverInit;
+    consentInfo?: {
+        additionalClasses: string;
+        text: string;
+    };
 }
 
 export default class Instagram {
     protected _$element: JQuery<HTMLElement>;
     protected _options: InstagramOptions = {
-        consentTemplate: `
-            <div class="cs-image-teaser__consent-wrapper">
-                <div class="cs-image-teaser__consent-info">
-                    <span class="cs-image-teaser__consent-text">
-                        ${$.mage
-                            .__(
-                                'To view this content please enable Instagram Content in %1'
-                            )
-                            .replace(
-                                '%1',
-                                `<a href="#" class="cs-image-teaser__consent-link">${$.mage.__(
-                                    'Privacy Settings'
-                                )}</a>`
-                            )}
-                    </span>
-                </div>
-            </div>
-        `,
         teaserConsentWrapperClass: 'cs-image-teaser__consent-wrapper',
         teaserConsentLinkClass: 'cs-image-teaser__consent-link',
         teaserSlidesWrapperClass: 'cs-image-teaser__slides-wrapper',
@@ -54,6 +39,12 @@ export default class Instagram {
         },
         intersectionObserverOptions: {
             threshold: 0.1,
+        },
+        consentInfo: {
+            additionalClasses: 'cs-consent-management--instagram',
+            text: $.mage.__(
+                'To view this content please enable Instagram Content in <button class="cs-consent-management__button">Privacy Settings</button>'
+            ),
         },
     };
     protected _observer?: IntersectionObserver;
@@ -117,7 +108,7 @@ export default class Instagram {
                 this.showConsentInfo();
             }
         } catch (error) {
-            console.error('Error loading Instagram content:', error);
+            console.error('Error loading Instagram content: ', error);
         }
     }
 
@@ -135,24 +126,13 @@ export default class Instagram {
             });
     }
 
-    public showConsentInfo(): void {
-        if (
-            !this._$element.find(`.${this._options.teaserConsentWrapperClass}`)
-                .length
-        ) {
-            this._$element.append(this._options.consentTemplate);
-        }
+    public async showConsentInfo() {
+        await consentManagement.mountConsentLayer(this._$element[0], {
+            classModifier: this._options.consentInfo.additionalClasses,
+            text: this._options.consentInfo.text,
+        });
 
-        const $link = this._$element.find(
-            `.${this._options.teaserConsentLinkClass}`
-        );
-        if ($link.length) {
-            $link.off('click.instagramConsent');
-            $link.on('click.instagramConsent', (e) => {
-                e.preventDefault();
-                consentManagement.showVendorLayer();
-            });
-        }
+        consentManagement.toggleConsentLayerVisibility(this._$element[0], true);
 
         this._$element
             .find(`.${this._options.teaserSlidesWrapperClass}`)
@@ -160,9 +140,11 @@ export default class Instagram {
     }
 
     public hideConsentInfo(): void {
-        this._$element
-            .find(`.${this._options.teaserConsentWrapperClass}`)
-            .remove();
+        consentManagement.toggleConsentLayerVisibility(
+            this._$element[0],
+            false
+        );
+
         this._$element
             .find(`.${this._options.teaserSlidesWrapperClass}`)
             .removeAttr('aria-hidden');
