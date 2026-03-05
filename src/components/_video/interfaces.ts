@@ -114,11 +114,10 @@ export interface PlayerType {
         onStateChange?: () => void
     ) => void;
     play: (id: string) => void;
-    onPlay?: () => void;
-    pause: (id: string) => void;
-    onPause?: () => void;
+    pause: (id: string, userPaused?: boolean) => void;
     destroy: (id: string) => void;
     isPlaying: (id: string) => Promise<boolean>;
+    userPaused: (id: string) => boolean;
 }
 
 /**

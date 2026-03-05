@@ -19,6 +19,7 @@ const getVideoId = (url: string): string | null =>
 
 const youtubePlayer = {
     players: {},
+    _userPaused: {},
     /**
      * Render YouTube Player
      * @param url
@@ -97,7 +98,7 @@ const youtubePlayer = {
      * - additional check whether video is playing or paused
      * @param id
      */
-    pause: function (id) {
+    pause: function (id, userPaused: boolean) {
         const { PLAYING } = window[SDK_GLOBAL].PlayerState;
 
         if (
@@ -105,6 +106,9 @@ const youtubePlayer = {
             this.players[id].playerInfo.playerState === PLAYING
         ) {
             this.players[id].pauseVideo();
+            if (userPaused) {
+                this._userPaused[id] = true;
+            }
         }
     },
     /**
@@ -123,6 +127,10 @@ const youtubePlayer = {
         return this.players[id]
             ? this.players[id].playerInfo.playerState === PLAYING
             : false;
+    },
+
+    userPaused: function (id: string) {
+        return this._userPaused[id] || false;
     },
 };
 

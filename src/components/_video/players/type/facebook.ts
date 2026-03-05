@@ -34,6 +34,7 @@ const prepareVideoData = (
 const facebookPlayer = {
     players: {},
     _isPlaying: {},
+    _userPaused: {},
     isSDKLoaded: false,
     /**
      * Render Facebook Player
@@ -124,9 +125,12 @@ const facebookPlayer = {
      * Pause video for given player id
      * @param id
      */
-    pause: function (id: string) {
+    pause: function (id: string, userPaused: boolean) {
         if (this.players[id]) {
             this.players[id].pause();
+            if (userPaused) {
+                this._userPaused[id] = true;
+            }
         }
     },
     /**
@@ -146,6 +150,10 @@ const facebookPlayer = {
         }
 
         return false;
+    },
+
+    userPaused: function (id: string) {
+        return this._userPaused[id] || false;
     },
 };
 
