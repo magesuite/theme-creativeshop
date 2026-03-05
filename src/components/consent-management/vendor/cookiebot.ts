@@ -59,6 +59,12 @@ const cookiebot = {
     attachChangeEvent: (callback: () => void) => {
         window.addEventListener('CookiebotOnAccept', callback)
     },
+
+    showLayer: () => {
+        if (window.Cookiebot) {
+            window.Cookiebot.renew();
+        }
+     }
 };
 
 export default cookiebot;

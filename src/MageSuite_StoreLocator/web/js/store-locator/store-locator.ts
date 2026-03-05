@@ -26,7 +26,10 @@ export interface StoreLocatorOptions {
     clusterStyles?: object;
     limitOfShopsInitiallyDisplayed?: number;
     storeData?: string;
-    consentInfoTimeoutDelay?: number;
+    consentInfo?: {
+        additionalClasses: string;
+        text: string;
+    };
 }
 
 export interface Coordinates {
@@ -141,7 +144,12 @@ export default class StoreLocator {
             email
             url
         `, // fields that graphql call to the backend requests
-        consentInfoTimeoutDelay: 3000,
+        consentInfo: {
+            additionalClasses: 'cs-consent-management--googlemaps',
+            text: $.mage.__(
+                'To view this content please enable Google Maps in <button class="cs-consent-management__button">Privacy Settings</button>'
+            ),
+        },
     };
 
     protected stores: any[] = []; // array will all stores and their details that GraphQL request returns
@@ -164,6 +172,7 @@ export default class StoreLocator {
     protected _infoWindowOpened: boolean;
 
     protected loader: any;
+    protected consentManagement: any;
 
     /**
      * Creates new Store Locator component with optional settings.
@@ -193,10 +202,6 @@ export default class StoreLocator {
             '.cs-store-locator__search-input'
         );
 
-        this._$consentInfo = this._$element.find(
-            '.cs-store-locator__consent-info'
-        );
-
         this._$itemsList = this._$element.find(
             '.cs-store-locator__stores-list-inner'
         );
@@ -207,13 +212,12 @@ export default class StoreLocator {
             this._options.mapOptions.styles = mapStyles;
         }
 
-        this._$element.addClass('loading');
-
         this._consentRequired = window.googleApiConsentRequired;
 
         if (this._consentRequired) {
             this.initConsentManagedScriptLoader();
         } else {
+            this._$element.addClass('loading');
             this.init();
         }
     }
@@ -222,14 +226,29 @@ export default class StoreLocator {
      * Async. Init ScriptLoader.
      */
     public async initConsentManagedScriptLoader(): Promise<any> {
-        const { default: ConsentManagedScriptLoader } = await import(
-            'components/consent-management/script-loader/script-loader'
+        const { default: consentManagement } = await import(
+            'components/consent-management'
         );
 
-        new ConsentManagedScriptLoader();
+        this.consentManagement = consentManagement;
+        this.consentManagement.initializeEvent(this.loadMap.bind(this));
+        this.consentManagement.changeEvent(this.loadMap.bind(this));
+    }
 
-        this.showConsentInfo();
-        this.attachApiReadyEvent(this.apiReady.bind(this));
+    public async loadMap(): Promise<void> {
+        try {
+            const consentGranted: boolean =
+                await this.consentManagement.checkConsent('googlemaps');
+
+            if (consentGranted) {
+                this.attachApiReadyEvent(this.apiReady.bind(this));
+                await import('components/consent-management/script-loader');
+            } else {
+                this.showConsentInfo();
+            }
+        } catch (error) {
+            console.error('Error loading Google Maps: ', error);
+        }
     }
 
     /**
@@ -253,17 +272,28 @@ export default class StoreLocator {
     }
 
     /**
-     * Show consent info with short delay.
-     * If consent is given script will continue
-     * loading without showing consent info.
-     * This is the purpose of displaying it with delay.
+     * Show consent info if consent is not given
      */
-    public showConsentInfo(): void {
-        this._consentInfoTimeout = setTimeout((): void => {
-            this.showLayer();
+    public async showConsentInfo() {
+        await this.consentManagement.mountConsentLayer(this._$element[0], {
+            classModifier: this._options.consentInfo.additionalClasses,
+            text: this._options.consentInfo.text,
+        });
 
-            this._$consentInfo.addClass('active');
-        }, this._options.consentInfoTimeoutDelay);
+        this.consentManagement.toggleConsentLayerVisibility(
+            this._$element[0],
+            true
+        );
+    }
+
+    /**
+     * Hide consent info.
+     */
+    public async hideConsentInfo() {
+        this.consentManagement.toggleConsentLayerVisibility(
+            this._$element[0],
+            false
+        );
     }
 
     /**
@@ -283,15 +313,6 @@ export default class StoreLocator {
                 consentManagement.showVendorLayer();
             });
         }
-    }
-
-    /**
-     * Hide consent info.
-     * Clear consent info timeout.
-     */
-    public hideConsentInfo(): void {
-        clearTimeout(this._consentInfoTimeout);
-        this._$consentInfo.removeClass('active');
     }
 
     /**
