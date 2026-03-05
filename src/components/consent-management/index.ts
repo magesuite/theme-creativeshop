@@ -1,3 +1,7 @@
+import 'components/consent-management/consent-management.scss';
+import * as $ from 'jquery';
+import 'mage/translate';
+
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 import usercentrics from 'components/consent-management/vendor/usercentrics';
@@ -27,6 +31,16 @@ const consentManagement = {
         consentmanager: consentmanager,
         cookiebot: cookiebot,
     },
+    consentLayerClassName:
+        deepGet(
+            viewXml,
+            'vars.Magento_Theme.consent_management.consent_template_class_selector'
+        ) || 'cs-consent-management',
+    consentLayerTriggerClassName:
+        deepGet(
+            viewXml,
+            'vars.Magento_Theme.consent_management.consent_layer_trigger_class_selector'
+        ) || 'cs-consent-management__button',
     /**
      * Check consent status
      * @param service
@@ -77,6 +91,62 @@ const consentManagement = {
 
         return this.mapVendors[this.vendor].showLayer();
     },
+
+    /**
+     * Mount consent layer overlay to main element (container)
+     * @param container
+     * @param templateOptions
+     */
+    mountConsentLayer: async function (
+        container: HTMLElement,
+        templateOptions = {
+            classModifier: '',
+            text: $.mage.__(
+                'To view this content, please adjust <button class="cs-consent-management__button">Privacy Settings</button>'
+            ),
+        }
+    ): Promise<void> {
+        const { default: requireAsync } = await import('utils/require-async');
+        const { consentTemplate } = await import(
+            'components/consent-management/templates/template'
+        );
+
+        await requireAsync(['mage/template']).then(([mageTemplate]) => {
+            container.insertAdjacentHTML(
+                'beforeend',
+                mageTemplate(consentTemplate, templateOptions)
+            );
+
+            const link = container.querySelector(
+                `.${this.consentLayerTriggerClassName}`
+            );
+
+            if (link) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showVendorLayer();
+                });
+            }
+        });
+    },
+
+    /**
+     * Toggle consent layer visibility
+     * @param container
+     * @param isVisible
+     */
+    toggleConsentLayerVisibility: function (
+        container: HTMLElement,
+        isVisible: boolean
+    ) {
+        container
+            .querySelector(`.${this.consentLayerClassName}`)
+            ?.classList.toggle(
+                `${this.consentLayerClassName}--active`,
+                isVisible
+            );
+    },
 };
 
+window.consentManagement = window.consentManagement || consentManagement;
 export default consentManagement;
