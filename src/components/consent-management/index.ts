@@ -9,6 +9,7 @@ import usercentricsv3 from 'components/consent-management/vendor/usercentricsv3'
 import amasty from 'components/consent-management/vendor/amasty';
 import consentmanager from 'components/consent-management/vendor/consentmanager';
 import cookiebot from 'components/consent-management/vendor/cookiebot';
+import cookiefirst from 'components/consent-management/vendor/cookiefirst';
 
 // This module provides a unified interface for managing user consent across different consent management vendors.
 // It exports an object with methods to check consent status, initialize event listeners, handle consent changes, and show vendor-specific privacy settings layers.
@@ -40,6 +41,7 @@ const consentManagement = {
         amasty: amasty,
         consentmanager: consentmanager,
         cookiebot: cookiebot,
+        cookiefirst: cookiefirst,
     },
     consentLayerClassName:
         deepGet(

@@ -253,7 +253,6 @@ export default class VideoTeaser {
         videoTeaserId: string
     ) {
         videoPlayer.isPlaying(videoTeaserId).then((isPlaying) => {
-            console.log(isPlaying, pauseButton);
             if (isPlaying) {
                 pauseButton.setAttribute('title', $.mage.__('Pause'));
                 pauseButton.classList.add(
