@@ -123,7 +123,10 @@ export default class VideoTeaser {
 
             if (isVisible) {
                 if (hasPlayer) {
-                    if (videoTypeConfig.player_vars.autoplay) {
+                    if (
+                        videoTypeConfig.player_vars.autoplay &&
+                        !videoPlayer.userPaused(videoTeaserId)
+                    ) {
                         videoPlayer.play(videoTeaserId);
                     }
                 } else {
@@ -147,7 +150,6 @@ export default class VideoTeaser {
                             this.onPlayPauseClick.bind(
                                 this,
                                 videoPlayer,
-                                pauseButton,
                                 videoTeaserId
                             )
                         );
@@ -233,7 +235,6 @@ export default class VideoTeaser {
 
     protected async onPlayPauseClick(
         videoPlayer: PlayerType,
-        pauseButton: HTMLButtonElement,
         videoTeaserId: string,
         event?: Event
     ) {
@@ -241,7 +242,7 @@ export default class VideoTeaser {
         const isPlaying = await videoPlayer.isPlaying(videoTeaserId);
 
         if (isPlaying) {
-            videoPlayer.pause(videoTeaserId);
+            videoPlayer.pause(videoTeaserId, true);
         } else {
             videoPlayer.play(videoTeaserId);
         }

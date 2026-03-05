@@ -8,6 +8,7 @@ const SDK_REQUIREJS = true;
 
 const vimeoPlayer = {
     players: {},
+    _userPaused: {},
     /**
      * Render Vimeo Player
      * @param url
@@ -64,11 +65,14 @@ const vimeoPlayer = {
      * - additional check whether video is playing or paused
      * @param id
      */
-    pause: function (id) {
+    pause: function (id, userPaused: boolean) {
         if (this.players[id]) {
             this.players[id].getPaused().then((paused) => {
                 if (!paused) {
                     this.players[id].pause();
+                    if (userPaused) {
+                        this._userPaused[id] = true;
+                    }
                 }
             });
         }
@@ -90,6 +94,10 @@ const vimeoPlayer = {
         }
 
         return false;
+    },
+
+    userPaused: function (id: string) {
+        return this._userPaused[id] || false;
     },
 };
 

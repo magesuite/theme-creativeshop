@@ -2,6 +2,7 @@ import { FilePlayerOptions } from 'components/_video/interfaces';
 
 const filePlayer = {
     players: {},
+    _userPaused: {},
     /**
      * Render File Player
      * @param url
@@ -46,9 +47,12 @@ const filePlayer = {
      * Pause video for given player id
      * @param id
      */
-    pause: function (id) {
+    pause: function (id, userPaused: boolean) {
         if (this.players[id]) {
             this.players[id].pause();
+            if (userPaused) {
+                this._userPaused[id] = true;
+            }
         }
     },
     /**
@@ -68,6 +72,10 @@ const filePlayer = {
         }
 
         return false;
+    },
+
+    userPaused: function (id: string) {
+        return this._userPaused[id] || false;
     },
 };
 
