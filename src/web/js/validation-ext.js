@@ -48,8 +48,6 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
             },
 
             _create: function () {
-                this._super();
-
                 this.element.on('submit', function (e) {
                     if (
                         $(this).data('mageValidation') &&
@@ -60,6 +58,8 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
                         return false;
                     }
                 });
+
+                this._super();
             },
 
             /**
