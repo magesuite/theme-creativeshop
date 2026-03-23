@@ -46,7 +46,7 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
 
             _initStorePickupComponentCheck: function () {
                 var name = 'checkout.steps.store-pickup';
-                self = this;
+                var self = this;
 
                 // Check if pickup component is already enabled
                 var storePickupComponent = registry.get(name);
