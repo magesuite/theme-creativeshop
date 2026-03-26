@@ -128,6 +128,10 @@ define(['jquery'], function ($) {
 
                 this._refreshDisplay();
             },
+
+            _getItemCount: function () {
+                return this.options.maxItemsCount ?? this._super();
+            },
         });
 
         return $.smileEs.rangeSlider;
