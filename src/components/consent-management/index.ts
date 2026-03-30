@@ -25,7 +25,9 @@ const usercentricsVersion = document
     .querySelector('[data-usercentrics-version]')
     ?.getAttribute('data-usercentrics-version');
 const consentManagement = {
-    vendor: deepGet(viewXml, 'vars.Magento_Theme.consent_management.vendor'),
+    vendor:
+        (window as any).consentManagementConfig?.vendor ||
+        deepGet(viewXml, 'vars.Magento_Theme.consent_management.vendor'),
     services: deepGet(
         viewXml,
         'vars.Magento_Theme.consent_management.services'
