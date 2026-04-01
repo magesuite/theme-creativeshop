@@ -273,6 +273,14 @@ export default class Minicart {
             bodyOpenClass: 'minicart-offcanvas-open',
         });
 
+        this._$minicartTrigger.on('click', (e: JQuery.ClickEvent): void => {
+            if (this._isMinicartOpen()) {
+                $('body').removeClass('minicart-opening');
+            } else {
+                $('body').addClass('minicart-opening');
+            }
+        });
+
         this._$minicart
             .on(
                 'click touchend',
@@ -281,7 +289,12 @@ export default class Minicart {
             )
             .on('openMinicart', (): void => this.openMinicart())
             .on('offcanvas-hide', (): void => {
-                if (this._$triggeringElement && this._$triggeringElement.length) {
+                $('body').removeClass('minicart-opening');
+
+                if (
+                    this._$triggeringElement &&
+                    this._$triggeringElement.length
+                ) {
                     this._$triggeringElement.trigger('focus');
                     this._$triggeringElement = null;
                 }
@@ -290,11 +303,11 @@ export default class Minicart {
         if (this._xmlSettings.open_on_product_added) {
             this._$minicart.on('productAdded', (event: JQuery.Event): void => {
                 const $addToCartButton = $('.atc-ajax-processing');
-                
+
                 if ($addToCartButton.length) {
                     this._$triggeringElement = $addToCartButton;
                 }
-                
+
                 if (
                     typeof this._options.shouldOpenOnProductAdded === 'function'
                 ) {
