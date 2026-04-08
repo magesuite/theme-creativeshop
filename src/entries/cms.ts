@@ -85,3 +85,4 @@ import 'components/separator/separator.scss';
 // import 'MageSuite_QuickReorder/reorder-banner';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_Pwa';
+import 'MageSuite_Revocation';

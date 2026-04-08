@@ -1,0 +1,88 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/button/mixin';
+@import 'components/table/mixin';
+
+$revocation_guest-lookup-padding-top: 0 !default;
+$revocation_form-margin: 2rem 0 !default;
+
+$revocation_content-inset: $page_edge-gutter !default;
+
+$revocation_legal-notice-margin: 1rem 0 !default;
+$revocation_legal-notice-font-size: inherit !default;
+
+$revocation_actions-primary-type: 'primary' !default;
+$revocation_actions-primary-icon-pos: 'no-icon' !default;
+
+$revocation_actions-back-type: 'secondary' !default;
+$revocation_actions-back-icon-pos: 'no-icon' !default;
+
+$revocation_actions-toolbar-margin-top: 2rem !default;
+$revocation_actions-back-margin-top: 2rem !default;
+
+.#{$ns}revocation {
+    margin: $revocation_form-margin;
+    padding-inline: $revocation_content-inset;
+
+    h1,
+    h2,
+    h3 {
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .legal-notice {
+        margin: $revocation_legal-notice-margin;
+        font-size: $revocation_legal-notice-font-size;
+    }
+
+    .table-wrapper {
+        @include media('<=laptop') {
+            @include table-wrapper-mobile-layout();
+        }
+    }
+
+    &__actions {
+        margin-top: $revocation_actions-toolbar-margin-top;
+    }
+
+    &__submit {
+        @include button(
+            $type: $revocation_actions-primary-type,
+            $icon_pos: $revocation_actions-primary-icon-pos
+        );
+
+        span {
+            @include button_span(
+                $type: $revocation_actions-primary-type,
+                $icon_pos: $revocation_actions-primary-icon-pos
+            );
+        }
+    }
+
+    &__back {
+        @include button(
+            $type: $revocation_actions-back-type,
+            $icon_pos: $revocation_actions-back-icon-pos
+        );
+        margin-top: $revocation_actions-back-margin-top;
+
+        span {
+            @include button_span(
+                $type: $revocation_actions-back-type,
+                $icon_pos: $revocation_actions-back-icon-pos
+            );
+        }
+    }
+}
+
+body[class*='revocation-'] {
+    .page-title {
+        padding-inline: $revocation_content-inset;
+    }
+
+    .column.main {
+        padding-top: $revocation_guest-lookup-padding-top;
+    }
+}
