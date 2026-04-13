@@ -17,6 +17,10 @@ $infinite-scroll_product-tile-overlay-background: rgba(
 
 $infinite-scroll_indicator-padding: 2rem !default;
 
+$infinite-scroll_placeholder-loader-icon: '../images/spinner.svg' !default;
+$infinite-scroll_placeholder-loader-width: 3rem !default;
+$infinite-scroll_placeholder-loader-height: $infinite-scroll_placeholder-loader-width !default;
+
 .#{$ns}infinite-scroll {
     &__area {
         padding: $infinite-scroll_area-padding;
@@ -66,5 +70,22 @@ $infinite-scroll_indicator-padding: 2rem !default;
         display: flex;
         justify-content: center;
         padding: $infinite-scroll_indicator-padding;
+    }
+
+    &__placeholder-loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        min-height: 100%;
+
+        &:after {
+            content: '';
+            display: block;
+            width: $infinite-scroll_placeholder-loader-width;
+            height: $infinite-scroll_placeholder-loader-height;
+            background: url($infinite-scroll_placeholder-loader-icon) no-repeat
+                center center / 100% 100%;
+        }
     }
 }
