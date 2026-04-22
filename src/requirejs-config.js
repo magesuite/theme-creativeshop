@@ -93,6 +93,7 @@ var config = {
             },
             'Magento_Checkout/js/model/step-navigator': {
                 'Magento_Checkout/js/model/step-navigator-ext': true,
+                'Magento_Checkout/js/model/step-navigator-page-title': true,
             },
             'quickSearch': {
                 'Smile_ElasticsuiteCore/js/form-mini-ext': true,
