@@ -1,6 +1,8 @@
 <!--
 /**
- * Template overriden to add wrppers and classes
+ * Template overriden to:
+ - [0] add wrappers and classes
+ - [1] add possibility to navigate to the step using keyboard
  * Aligned with Magento 2.4.8 in 04/2025
  */
 -->
@@ -8,9 +10,15 @@
     <ul class="cs-progress-bar">
         <!-- ko foreach: { data: steps().sort(sortItems), as: 'item' } -->
         <li class="cs-progress-bar__item" data-bind="css: item.isVisible() ? '_active' : ($parent.isProcessed(item) ? '_complete' : ''), attr: { 'aria-current': item.isVisible() ? 'step' : undefined }">
-            <span class="cs-progress-bar__indicator-wrapper" data-bind="click: $parent.navigateTo">
+            <!-- [1] keyboard navigation via native button -->
+            <button type="button"
+                    class="cs-progress-bar__indicator-wrapper"
+                    data-bind="
+                        click: $parent.navigateTo,
+                        disable: !$parent.isProcessed(item)
+                    ">
                 <span class="cs-progress-bar__indicator"></span>
-            </span>
+            </button>
             <span class="cs-progress-bar__item-text" data-bind="i18n: item.title, click: $parent.navigateTo"></span>
         </li>
         <!-- /ko -->
