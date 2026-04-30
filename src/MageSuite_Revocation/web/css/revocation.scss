@@ -3,11 +3,6 @@
 @import 'components/button/mixin';
 @import 'components/table/mixin';
 
-$revocation_guest-lookup-padding-top: 0 !default;
-$revocation_form-margin: 2rem 0 !default;
-
-$revocation_content-inset: $page_edge-gutter !default;
-
 $revocation_legal-notice-margin: 1rem 0 !default;
 $revocation_legal-notice-font-size: inherit !default;
 
@@ -20,10 +15,9 @@ $revocation_actions-back-icon-pos: 'no-icon' !default;
 $revocation_actions-toolbar-margin-top: 2rem !default;
 $revocation_actions-back-margin-top: 2rem !default;
 
-.#{$ns}revocation {
-    margin: $revocation_form-margin;
-    padding-inline: $revocation_content-inset;
+$revocation_confirmation-table-max-width: 75% !default;
 
+.#{$ns}revocation {
     h1,
     h2,
     h3 {
@@ -75,14 +69,10 @@ $revocation_actions-back-margin-top: 2rem !default;
             );
         }
     }
-}
 
-body[class*='revocation-'] {
-    .page-title {
-        padding-inline: $revocation_content-inset;
-    }
-
-    .column.main {
-        padding-top: $revocation_guest-lookup-padding-top;
+    &--confirmation {
+        @include media('>tablet') {
+            max-width: $revocation_confirmation-table-max-width;
+        }
     }
 }
