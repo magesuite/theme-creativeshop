@@ -172,7 +172,13 @@ var config = {
             },
             'Magento_Catalog/js/product/list/toolbar': {
                 'Magento_Catalog/js/product/list/toolbar-ext': true,
-            }
+            },
+            'Magento_OrderCancellationUi/js/cancel-order-modal': {
+                'Magento_OrderCancellationUi/js/cancel-order-modal-ext': true,
+            },
+            cancelOrderModal: {
+                'Magento_OrderCancellationUi/js/cancel-order-modal-ext': true,
+            },
         },
     },
 
