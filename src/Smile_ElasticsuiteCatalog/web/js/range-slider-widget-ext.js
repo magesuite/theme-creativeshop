@@ -108,7 +108,8 @@ define(['jquery'], function ($) {
             parseStringToFloat: function (amount) {
                 return parseFloat(
                     amount
-                        .replace(this.options.fieldFormat.groupSymbol, '')
+                        .split(this.options.fieldFormat.groupSymbol)
+                        .join('')
                         .replace(this.options.fieldFormat.decimalSymbol, '.')
                 );
             },
