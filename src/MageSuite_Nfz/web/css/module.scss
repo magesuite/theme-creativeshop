@@ -1,0 +1,41 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$nfz-healthcheck_bricks-per-row: deep-get(
+    $view-xml,
+    vars,
+    MageSuite_ContentConstructor,
+    columns,
+    one-column
+) !default;
+
+.page-layout-healthcheck {
+    .#{$ns}grid-layout__grid {
+        @each $breakpoint, $itemsPerRow in $nfz-healthcheck_bricks-per-row {
+            @include media('>=#{$breakpoint}') {
+                grid-template-columns: repeat(
+                    #{$itemsPerRow},
+                    minmax(0, 1fr)
+                ) !important;
+            }
+        }
+    }
+
+    .nfz-domain-list {
+        display: flex;
+        gap: 1rem;
+
+        &__domain {
+            display: flex;
+
+            &::after {
+                content: ':';
+                display: block;
+            }
+        }
+
+        &__status {
+            font-weight: 600;
+        }
+    }
+}
