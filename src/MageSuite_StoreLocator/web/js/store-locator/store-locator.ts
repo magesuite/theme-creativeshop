@@ -630,7 +630,7 @@ export default class StoreLocator {
                 }
 
                 const pinEl = this._createPinDiv(
-                    this._options.markerIcons.pin.url
+                    this._options.markerIcons.userLocation.url
                 );
 
                 this._locationMarker =
@@ -1128,7 +1128,7 @@ export default class StoreLocator {
                 }
 
                 const pinEl = this._createPinDiv(
-                    this._options.markerIcons.pin.url
+                    this._options.markerIcons.userLocation.url
                 );
 
                 this._locationMarker =
