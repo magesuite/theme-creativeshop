@@ -14,8 +14,10 @@ $revocation_actions-back-icon-pos: 'no-icon' !default;
 
 $revocation_actions-toolbar-margin-top: 2rem !default;
 $revocation_actions-back-margin-top: 2rem !default;
+$revocation_actions-back-display: inline-block !default;
 
 $revocation_confirmation-table-max-width: 75% !default;
+$revocation_confirmation-table-cell-padding: 0.8rem 1rem !default;
 
 .#{$ns}revocation {
     h1,
@@ -39,6 +41,12 @@ $revocation_confirmation-table-max-width: 75% !default;
 
     &__actions {
         margin-top: $revocation_actions-toolbar-margin-top;
+
+        .#{$ns}dashboard & {
+            &.actions-toolbar > .secondary .action.back {
+                display: $revocation_actions-back-display;
+            }
+        }
     }
 
     &__submit {
@@ -71,6 +79,22 @@ $revocation_confirmation-table-max-width: 75% !default;
     }
 
     &--confirmation {
+        @include media('<tablet') {
+            // Specificity matches table-mobile-layout() mixin
+            .table-wrapper
+                .table:not(.comparison):not(.totals):not(.table-totals)
+                tbody
+                td {
+                padding: $revocation_confirmation-table-cell-padding;
+            }
+
+            .order-summary tbody th {
+                width: 1px;
+                white-space: nowrap;
+                text-align: left;
+            }
+        }
+
         @include media('>tablet') {
             max-width: $revocation_confirmation-table-max-width;
         }
