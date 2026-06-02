@@ -295,6 +295,11 @@ export default class StoreLocator {
      * when API is ready.
      */
     public init(): void {
+        if (!this.isGoogleMapsApiAvailable()) {
+            this._$element.removeClass('loading');
+            return;
+        }
+
         // Set map styling
         this._setMapId();
 
@@ -306,6 +311,10 @@ export default class StoreLocator {
 
         // Attach events to elements that are not directly connected to the map
         this._attachEvents();
+    }
+
+    protected isGoogleMapsApiAvailable(): boolean {
+        return typeof google !== 'undefined' && !!google.maps;
     }
 
     /**
