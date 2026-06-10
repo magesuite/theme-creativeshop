@@ -204,6 +204,13 @@ $faq_category-section_pseudoicon-color-expanded: $faq_list-item-color-hover !def
             width: 100%;
         }
 
+        @include media('>=tablet') {
+            .page-layout-2columns-left & {
+                max-width: 40rem;
+                flex-shrink: 1;
+            }
+        }
+
         &-form {
             @include field();
         }
@@ -220,6 +227,11 @@ $faq_category-section_pseudoicon-color-expanded: $faq_list-item-color-hover !def
 
             @include media('>=tablet') {
                 min-width: 30rem !important;
+
+                .page-layout-2columns-left & {
+                    min-width: 0 !important;
+                    width: 100%;
+                }
             }
         }
 
@@ -265,5 +277,155 @@ $faq_category-section_pseudoicon-color-expanded: $faq_list-item-color-hover !def
 
     &-no-display {
         display: none;
+    }
+}
+
+.column.main {
+    @include media('>=tablet') {
+        width: 77.5% !important;
+    }
+}
+
+.sidebar {
+    border: none !important;
+    padding: 4rem 0 0;
+}
+
+.aw-faq-sidebar {
+    $root: &;
+
+    &-content {
+        margin-bottom: 2rem;
+        font-size: 1.4rem;
+        padding: 0 1rem 0 0;
+
+        &-desktop {
+            display: none;
+
+            @include media('>=tablet') {
+                display: block;
+                background: $color_background-200;
+            }
+        }
+
+        &-mobile {
+            @include media('>=tablet') {
+                display: none;
+            }
+        }
+    }
+
+    &-collapsible {
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 6;
+
+        @include media('>=tablet') {
+            display: none;
+        }
+
+        &-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            color: $color_text-800;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: none;
+
+            &:before {
+                content: none !important;
+            }
+
+            &,
+            &:active,
+            &:focus,
+            &:hover {
+                background: transparent;
+                border: 0;
+                color: $color_text-800;
+                box-shadow: none;
+            }
+
+            &__icon {
+                position: relative;
+                display: inline-block;
+                width: 1.4rem;
+                height: 0.2rem;
+                background: $color_text-800;
+                transition: background-color 0.3s, transform 0.3s;
+
+                &:before,
+                &:after {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    width: 1.4rem;
+                    height: 0.2rem;
+                    background: $color_text-800;
+                    transition: background-color 0.3s, transform 0.3s;
+                }
+
+                &:before {
+                    transform: translate3d(0, -250%, 0);
+                }
+
+                &:after {
+                    transform: translate3d(0, 250%, 0);
+                }
+            }
+
+            + [data-role='content'] {
+                margin-top: 1rem;
+            }
+        }
+
+        &.active {
+            #{$root}-collapsible-button__icon {
+                transform: rotate(-45deg);
+
+                &:before,
+                &:after {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+
+    // to override specificity
+    &-content
+        #{$root}-tree
+        .jstree-node#{$root}-tree-top-level
+        > .jstree-anchor,
+    &-collapsible
+        #{$root}-tree
+        .jstree-node#{$root}-tree-top-level
+        > .jstree-anchor,
+    &-content #{$root}-tree .jstree-node > .jstree-anchor {
+        @include font-family($font-family_primary);
+
+        font-weight: 400;
+
+        @include media('<tablet') {
+            font-size: 1.4rem;
+        }
+    }
+
+    &-content #{$root}-tree .jstree-node > .jstree-anchor {
+        @include media('<tablet') {
+            font-size: 1.2rem;
+        }
+    }
+
+    &-tree-active-node {
+        .jstree-wholerow {
+            background: transparent !important;
+        }
     }
 }

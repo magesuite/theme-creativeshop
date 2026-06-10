@@ -9,13 +9,14 @@
  * - remove attributes to show image link in tab order
  * - merge options into one link NKD-4574
  *
- * Aligned with Magento 2.4.8 in 04/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate
 // phpcs:disable Generic.Files.LineLength
 
 /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+/** @var \Magento\Framework\Escaper $escaper */
 
 $_item = $block->getItem();
 $product = $_item->getProduct();
@@ -27,11 +28,11 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
 ?>
 <tbody class="cs-cart-table__body cart item">
     <tr class="cs-cart-item cs-cart-item--<?= $escaper->escapeHtmlAttr($productType) ?> item-info">
-        <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="cs-cart-table__col cs-cart-item__item col item">
+        <td data-th="<?= $escaper->escapeHtml(__('Item')) ?>" class="cs-cart-table__col cs-cart-item__item col item">
             <div class="cs-cart-item__product">
                 <?php if ($block->hasProductUrl()): ?>
-                    <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
-                    title="<?= $block->escapeHtml($block->getProductName()) ?>"
+                    <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"
+                    title="<?= $escaper->escapeHtml($block->getProductName()) ?>"
                     class="cs-cart-item__image product-item-photo">
                 <?php else:?>
                     <span class="cs-cart-item__image product-item-photo">
@@ -52,30 +53,30 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?= $block->getChildHtml('checkout.cart.item.brand.' . $_item->getProductType(), false); ?>
                     <strong class="cs-cart-item__name product-item-name">
                         <?php if ($block->hasProductUrl()): ?>
-                            <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"><?= $block->escapeHtml($block->getProductName()) ?></a>
+                            <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"><?= $escaper->escapeHtml($block->getProductName()) ?></a>
                         <?php else: ?>
-                            <?= $block->escapeHtml($block->getProductName()) ?>
+                            <?= $escaper->escapeHtml($block->getProductName()) ?>
                         <?php endif; ?>
                     </strong>
                     <?php if ($_options = $block->getOptionList()): ?>
                         <div class="<?= $productType == 'bundle' ? 'cs-cart-item__options cs-cart-item__options--rows' : 'cs-cart-item__options' ?>">
                             <?php if($product->isVisibleInSiteVisibility() && $block->getLinkOptions()): ?>
                                 <a class="cs-cart-item__option-link"
-                                    href="<?= $block->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
-                                    title="<?= $block->escapeHtml(__('Edit item parameter')); ?>"
+                                    href="<?= $escaper->escapeUrl($this->getUrl('checkout/cart/configure', ['id' => $_item->getId(),'product_id' => $product->getId()]));?>"
+                                    title="<?= $escaper->escapeHtml(__('Edit item parameter')); ?>"
                                 >
                             <?php endif; ?>
                             <?php foreach ($_options as $_option): ?>
                                 <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
                                     <dl class="cs-cart-item__options-group item-options">
                                         <dt class="cs-cart-item__options-label">
-                                            <?= $block->escapeHtml($_option['label']) ?>
+                                            <?= $escaper->escapeHtml($_option['label']) ?>
                                         </dt>
                                         <dd class="cs-cart-item__options-value">
                                             <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                                <?= $block->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
+                                                <?= $escaper->escapeHtml($_formatedOptionValue['full_view'], ['span', 'a']) ?>
                                             <?php else: ?>
-                                                <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
+                                                <?= $escaper->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
                                             <?php endif; ?>
                                             <?php if($block->hasProductUrl() && $block->getLinkOptions()): ?>
                                                 <?= $block->getChildHtml('checkout.cart.item.renderers.default.option.edit'); ?>
@@ -90,7 +91,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif;?>
                     <?php if ($messages = $block->getMessages()): ?>
                         <?php foreach ($messages as $message): ?>
-                            <div class="cs-cart-item__message cart item message <?= $block->escapeHtmlAttr($message['type']) ?>"><div><?= $block->escapeHtml($message['text']) ?></div></div>
+                            <div class="cs-cart-item__message cart item message <?= $escaper->escapeHtmlAttr($message['type']) ?>"><div><?= $escaper->escapeHtml($message['text']) ?></div></div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
@@ -102,30 +103,30 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
         </td>
 
         <?php if ($canApplyMsrp): ?>
-            <td class="cs-cart-table__col cs-cart-item__price col msrp" data-th="<?= $block->escapeHtml(__('Price')) ?>">
+            <td class="cs-cart-table__col cs-cart-item__price col msrp" data-th="<?= $escaper->escapeHtml(__('Price')) ?>">
                 <span class="pricing msrp">
-                    <span class="msrp notice"><?= $block->escapeHtml(__('See price before order confirmation.')) ?></span>
+                    <span class="msrp notice"><?= $escaper->escapeHtml(__('See price before order confirmation.')) ?></span>
                     <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
                     <a href="#" class="action help map"
-                       id="<?= ($block->escapeHtmlAttr($helpLinkId)) ?>"
+                       id="<?= ($escaper->escapeHtmlAttr($helpLinkId)) ?>"
                        data-mage-init='{"addToCart":{
                                             "origin": "info",
-                                            "helpLinkId": "#<?= $block->escapeJs($block->escapeHtml($helpLinkId)) ?>",
-                                            "productName": "<?= $block->escapeJs($block->escapeHtml($product->getName())) ?>",
+                                            "helpLinkId": "#<?= $escaper->escapeJs($escaper->escapeHtml($helpLinkId)) ?>",
+                                            "productName": "<?= $escaper->escapeJs($escaper->escapeHtml($product->getName())) ?>",
                                             "showAddToCart": false
                                             }
                                         }'
                     >
-                        <span><?= $block->escapeHtml(__("What's this?")) ?></span>
+                        <span><?= $escaper->escapeHtml(__("What's this?")) ?></span>
                     </a>
                 </span>
             </td>
         <?php else: ?>
-            <td class="cs-cart-table__col cs-cart-item__price col price" data-th="<?= $block->escapeHtml(__('Price')) ?>">
+            <td class="cs-cart-table__col cs-cart-item__price col price" data-th="<?= $escaper->escapeHtml(__('Price')) ?>">
                 <?= $block->getUnitPriceHtml($_item) ?>
             </td>
         <?php endif; ?>
-        <td class="cs-cart-table__col cs-cart-item__qty col qty" data-th="<?= $block->escapeHtml(__('Qty')) ?>">
+        <td class="cs-cart-table__col cs-cart-item__qty col qty" data-th="<?= $escaper->escapeHtml(__('Qty')) ?>">
             <div class="cs-cart-item__qty-input">
                 <?php
                     $qtyBlock = $block->getChildBlock('checkout.cart.item.'.$_item->getProductType().'.qty');
@@ -136,7 +137,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
             </div>
         </td>
 
-        <td class="cs-cart-table__col cs-cart-item__subtotal col subtotal" data-th="<?= $block->escapeHtml(__('Subtotal')) ?>">
+        <td class="cs-cart-table__col cs-cart-item__subtotal col subtotal" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
             <div class="cs-cart-item__subtotal-inner">
                 <?php if ($canApplyMsrp): ?>
                     <span class="cart msrp subtotal">--</span>

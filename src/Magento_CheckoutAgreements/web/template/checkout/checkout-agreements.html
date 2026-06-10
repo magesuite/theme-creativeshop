@@ -1,24 +1,26 @@
 <!--
 /**
  * This file has been overwritten in order to:
- * - add magesuite classes
+ * - add magesuite classes and wrapping cs-checkout__agreements block
  * - replace button tag with span tag
- * Aligned with Magento 2.4.8 in 04/2025
+ * - bind the checkbox to $parent.checkboxState
+ *   so duplicated desktop/mobile T&C blocks sharing the same agreement stay in sync
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 -->
 <div class="cs-checkout__agreements | checkout-agreements-block">
     <div data-role="checkout-agreements">
-        <div class="checkout-agreements" data-bind="visible: isVisible">
+        <div class="checkout-agreements fieldset" data-bind="visible: isVisible">
             <!-- ko foreach: agreements -->
             <!-- ko if: ($parent.isAgreementRequired($data)) -->
-            <div class="checkout-agreement | cs-input cs-input--type-checkbox | required">
-                <input type="checkbox" class="cs-input__checkbox | required-entry"
+            <div class="checkout-agreement field choice required">
+                <input type="checkbox" class="required-entry"
                        data-bind="checked: $parent.checkboxState, attr: {
                                         'id': $parent.getCheckboxId($parentContext, agreementId),
                                         'name': 'agreement[' + agreementId + ']',
                                         'value': agreementId
                                     }"/>
-                <label class="cs-input__label" data-bind="attr: {'for': $parent.getCheckboxId($parentContext, agreementId)}">
+                <label class="label" data-bind="attr: {'for': $parent.getCheckboxId($parentContext, agreementId)}">
                     <span data-bind="click: function(data, event) { return $parent.showContent(data, event) }">
                         <span data-bind="html: checkboxText"></span>
                     </span>

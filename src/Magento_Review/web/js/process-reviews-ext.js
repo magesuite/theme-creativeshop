@@ -3,7 +3,7 @@
  * -Instead of reviews pagination use "Load more reviews" button
  * -Remove ajax request on page load as first page of reviews is rendered server side
  *
- * Aligned with Magento 2.4.8 in 05/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 define(['jquery', 'loader', 'mage/translate'], function ($) {
     'use strict';

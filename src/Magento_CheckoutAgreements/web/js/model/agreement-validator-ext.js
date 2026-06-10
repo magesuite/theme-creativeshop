@@ -1,7 +1,7 @@
 /**
  * Changes in comparison to source file:
  * - modified: agreementsInputPath,
- * Aligned with Magento 2.4.8 in 04/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 /* tslint:disable one-variable-per-declaration */
 

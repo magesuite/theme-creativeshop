@@ -1,7 +1,7 @@
 /**
  * Default range slider extension which adds support for "from" and "to" inputs
  * synchronized with slider values to provide better UX.
- * Aligned with Smile_ElasticsuiteCatalog in 05/2025
+ * Aligned with Smile_Elasticsuite v2.12.0 in 06/2026
  */
 
 define(['jquery'], function ($) {

@@ -1,7 +1,7 @@
 /**
  * Elasticsuite search autocomplete extension that allows to search for a phrase
  * before automatic suggestions are loaded.
- * Aligned with Smile_ElasticSuiteCore in 05/2025
+ * Aligned with Smile_ElasticSuiteCore in 05/2026
  */
 
 define(['jquery'], function ($) {

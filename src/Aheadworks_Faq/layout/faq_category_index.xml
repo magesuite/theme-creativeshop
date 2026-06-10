@@ -7,17 +7,27 @@
     <body>
         <referenceContainer name="main.content" htmlClass="cs-container cs-container--faq-category-page" />
 
+        <referenceBlock name="aw_faq.sidebar.search" remove="true"/>
+        <referenceBlock name="aw_faq.sidebar.search.collapsible" remove="true"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="wishlist_sidebar" remove="true"/>
+
         <referenceContainer name="content">
             <container name="cs_faq_wrapper" htmlTag="div" htmlClass="cs-faq-index">
                 <container name="cs_faq_header" htmlTag="div" htmlClass="cs-faq-index__header">
                 </container>
-
             </container>
         </referenceContainer>
 
         <block class="Aheadworks\Faq\Block\Category\CategoryList" name="aw_faq.name" template="Aheadworks_Faq::main-title.phtml"/>
 
-        <referenceBlock name="aw_faq.search">
+        <block class="Aheadworks\Faq\Block\Search\Search"
+               ifconfig="faq/general/faq_search_enabled"
+               name="aw_faq.search"
+               template="Aheadworks_Faq::search/search_field.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Aheadworks\Faq\ViewModel\Search\SearchForm</argument>
+            </arguments>
             <block class="MageSuite\ThemeHelpers\Block\Icon" name="aw_faq.search.button.icon">
                 <arguments>
                     <argument name="icon_url" xsi:type="string">images/icons/faq/icon-magnifier.svg</argument>
@@ -27,10 +37,10 @@
                     <argument name="lazy_loaded" xsi:type="boolean">true</argument>
                 </arguments>
             </block>
-        </referenceBlock>
+        </block>
 
-        <referenceBlock name="aw_faq.category">
-            <block class="MageSuite\ThemeHelpers\Block\Icon" name="aw_faq.category.icon">
+        <referenceBlock name="aw_faq.category.child_items">
+            <block class="MageSuite\ThemeHelpers\Block\Icon" name="aw_faq.category.child_items.icon">
                 <arguments>
                     <argument name="icon_url" xsi:type="string">images/icons/faq/icon-arrow.svg</argument>
                     <argument name="css_class" xsi:type="string">cs-faq-index__list-item-icon</argument>
@@ -41,9 +51,11 @@
             </block>
         </referenceBlock>
 
+        <move element="aw_faq.sidebar.collapsible" destination="content" before="cs_faq_wrapper"/>
         <move element="aw_faq.name" destination="cs_faq_header" before="-"/>
         <move element="aw_faq.search" destination="cs_faq_header" after="aw_faq.name"/>
-        <move element="aw_faq.category_name" destination="cs_faq_wrapper" after="cs_faq_header"/>
-        <move element="aw_faq.category" destination="cs_faq_wrapper" after="aw_faq.category_name"/>
+        <move element="aw_faq.category.title" destination="cs_faq_wrapper" after="cs_faq_header"/>
+        <move element="aw_faq.category.content" destination="cs_faq_wrapper" after="aw_faq.category.title"/>
+        <move element="aw_faq.category.child_items" destination="cs_faq_wrapper" after="aw_faq.category.content"/>
     </body>
 </page>

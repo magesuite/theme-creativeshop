@@ -2,30 +2,43 @@
 /**
  * Template adjusted to:
  * - match the success/success.scss component in case of css classes and tags
- * Aligned with Magento 2.4.8 in 04/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
 ?>
 <div class="checkout-success | cs-page-success__section">
-    <?php if ($block->getOrderId()) : ?>
-        <?php if ($block->getCanViewOrder()) : ?>
-            <p class="cs-page-success__subheadline"><?= $block->escapeHtml(__('Your order # is: %1.', sprintf('<a href="%s" class="order-number"><strong>%s</strong></a>', $block->escapeUrl($block->getViewOrderUrl()), $block->getOrderId())), ['a', 'strong']) ?></p>
-        <?php else : ?>
-            <p class="cs-page-success__subheadline"><?= $block->escapeHtml(__('Your order # is: <span>%1</span>.', $block->getOrderId()), ['span']) ?></p>
-        <?php endif;?>
-        <?php if ($block->getIsOrderStorePickup()->execute()) : ?>
+    <?php // phpstan:ignore ?>    
+    <?php if ($block->getOrderId()): ?>
+        <?php // phpstan:ignore ?>
+        <?php if ($block->getCanViewOrder()): ?>
+            <?php // phpstan:ignore ?>
+            <p class="cs-page-success__subheadline"><?= $escaper->escapeHtml(__('Your order # is: %1.', sprintf('<a href="%s" class="order-number"><strong>%s</strong></a>', $escaper->escapeUrl($block->getViewOrderUrl()), $block->getOrderId())), ['a', 'strong']) ?></p>
+        <?php else: ?>
+            <?php // phpstan:ignore ?>
+            <p class="cs-page-success__subheadline"><?= $escaper->escapeHtml(__('Your order # is: <span>%1</span>.', $block->getOrderId()), ['span']) ?></p>
+        <?php endif; ?>
+        <?php // phpstan:ignore ?>
+        <?php if ($block->getIsOrderStorePickup()->execute()): ?>
             <p class="cs-page-success__text">
-                <?= $block->escapeHtml(__('We\'ll email you an order and pick-up confirmation with details.'), ['br']) ?>
+                <?= $escaper->escapeHtml(__('We\'ll email you an order and pick-up confirmation with details.'), ['br']) ?>
             </p>
-        <?php else : ?>
-            <p class="cs-page-success__text"><?= $block->escapeHtml(__('We\'ll email you an order confirmation with details and tracking info.'), ['br']) ?></p>
-        <?php endif;?>
+        <?php else: ?>
+            <p class="cs-page-success__text"><?= $escaper->escapeHtml(__('We\'ll email you an order confirmation with details and tracking info.'), ['br']) ?></p>
+        <?php endif; ?>
     <?php endif; ?>
 
+    <?php // phpstan:ignore ?>
     <?= $block->getAdditionalInfoHtml() ?>
 
     <div class="cs-page-success__button-wrapper">
-        <a class="cs-page-success__button" href="<?= $block->escapeUrl($block->getContinueUrl()) ?>">
-            <span class="cs-page-success__button-span"><?= $block->escapeHtml(__('Continue Shopping')) ?></span>
+        <a class="cs-page-success__button" href="<?= $escaper->escapeUrl($block->getContinueUrl()) ?>">
+            <span class="cs-page-success__button-span"><?= $escaper->escapeHtml(__('Continue Shopping')) ?></span>
             <?= $block->getChildHtml('success.page.continue.button.icon'); ?>
         </a>
     </div>

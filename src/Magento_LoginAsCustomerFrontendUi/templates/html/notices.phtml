@@ -3,19 +3,14 @@
  * Template has been overwritten in order to:
  * - remove sticky feature init,
  * - link stylesheet only when LAC notification is visible on frontend
- *
- * Aligned with Magento 2.4.8 in 05/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 
 /**
  * @var \Magento\Framework\View\Element\Template $block
  * @var \Magento\Framework\Escaper $escaper
  */
-if ($block->getConfig()->isB2bEnabled()) {
-    $adobeFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/adobe-icon.svg');
-} else {
-    $adobeFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg');
-}
+$viewFileUrl = $block->getViewFileUrl('Magento_LoginAsCustomerFrontendUi::images/magento-icon.svg');
 ?>
 <?php if ($block->getConfig()->isEnabled()): ?>
     <link rel="stylesheet" type="text/css" href="<?= $block->getViewFileUrl('css/login-as-customer.css'); ?>" />
@@ -24,29 +19,29 @@ if ($block->getConfig()->isB2bEnabled()) {
         <div class="lac-notification clearfix" data-bind="visible: isVisible">
             <div class="top-container">
                 <div class="lac-notification-icon wrapper">
-                    <img class="logo-img"  src="<?= $escaper->escapeUrl($adobeFileUrl) ?>" alt="Magento" />
+                    <img class="logo-img"  src="<?= $escaper->escapeUrl($viewFileUrl) ?>" alt="Magento" />
                 </div>
                 <div class="lac-notification-text wrapper">
                     <span data-bind="html: notificationText"></span>
                 </div>
                 <div class="lac-notification-links wrapper">
-                   <?= $block->getChildHtml('login-as-customer-notice-links') ?>
+                    <?= $block->getChildHtml('login-as-customer-notice-links') ?>
                 </div>
             </div>
         </div>
         <?= /* @noEscape */ $secureRenderer->renderStyleAsTag('display: none;', 'div.lac-notification.clearfix') ?>
     </div>
     <script type="text/x-magento-init">
-    {
-        "*": {
-            "Magento_Ui/js/core/app": {
-                "components": {
-                    "loginAsCustomer": {
-                        "component": "Magento_LoginAsCustomerFrontendUi/js/view/loginAsCustomer"
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "loginAsCustomer": {
+                            "component": "Magento_LoginAsCustomerFrontendUi/js/view/loginAsCustomer"
+                        }
                     }
                 }
             }
         }
-    }
     </script>
 <?php endif; ?>

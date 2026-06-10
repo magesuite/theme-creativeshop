@@ -3,7 +3,7 @@
  * Success icon visibility for different for can be manipulated by css. By default it is only visible for checkout shipping address form
  * Add editing state class. Functionality can be disabled by setting enableEditingState option to false
  * Add mapping to set proper autocomplete value complaint with WCAG
- * Aligned with Magento 2.4.8 in 05/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 define(['ko', 'underscore'], function (ko, _) {
     'use strict';
