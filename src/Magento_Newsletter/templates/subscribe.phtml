@@ -6,22 +6,15 @@
  * - reorganize elements
  * - add hotspots
  * - add "autocomplete" attribute for newsletter email input (line: 34)
- *
- * Aligned with Magento 2.4.8 in 05/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 
 /** @var \Magento\Newsletter\Block\Subscribe $block */
-if (!$block->getButtonLockManager()) {
-    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-    $block->setButtonLockManager(
-        $objectManager->get(\Magento\Framework\View\Element\ButtonLockManager::class)
-    );
-}
-
+/** @var \Magento\Framework\View\Element\ButtonLockManager|null $buttonLockManager */
+$buttonLockManager = $block->getData('button_lock_manager');
 $label = $block->getInputLabel();
 $placeholder = $block->getInputPlaceholder();
 $buttonLabel = $block->getButtonLabel();
-
 /** @var $escaper \Magento\Framework\Escaper */
 ?>
 <div class="block newsletter cs-newsletter">
@@ -48,7 +41,10 @@ $buttonLabel = $block->getButtonLabel();
             <div class="actions cs-newsletter__actions">
                 <button class="action subscribe primary cs-newsletter__button"
                         title="<?= !empty($buttonLabel) ? $escaper->escapeHtmlAttr($buttonLabel) : __('Subscribe') ?>"
-                        type="submit">
+                        type="submit"
+                        <?php if ($buttonLockManager?->isDisabled('newsletter_form_submit')): ?>
+                        disabled="disabled"
+                    <?php endif; ?>>
                     <?= $block->getChildHtml('newsletter.subscribe.button.icon') ?>
                     <?php if (!empty($buttonLabel)): ?>
                         <span class="cs-newsletter__button-label<?= $block->getHideButtonLabel() ? ' cs-visually-hidden' : '' ?>"><?= $escaper->escapeHtml($buttonLabel) ?></span>

@@ -1,7 +1,7 @@
 /**
  * Changes in comparison to source file:
  * - modified: createModal to add title (l:24),
- * Aligned with Magento 2.4.7 in 06/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 define(['jquery', 'Magento_Ui/js/modal/modal', 'mage/translate'], function (
     $,

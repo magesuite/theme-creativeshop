@@ -178,27 +178,25 @@ export default class OffcanvasNavigation {
 
         this._fixSwitcherLinks($offcanvasCurrencySwitcher);
 
-        requireAsync(['mage/apply/main', 'ko', 'jquery-ui-modules/core']).then(
-            ([mage, ko]) => {
-                mage.apply();
-                if (
-                    !this._$element.find(
-                        '[type="text/x-magento-init"], [data-mage-init]'
-                    )?.length
-                ) {
-                    return;
-                }
-                // Check if first element child is not bound to KO, if not apply bindings.
-                this._$element.find('[data-bind]').each((index, element) => {
-                    if (
-                        element.firstElementChild &&
-                        !ko.dataFor(element.firstElementChild)
-                    ) {
-                        ko.applyBindings(null, element);
-                    }
-                });
+        requireAsync(['mage/apply/main', 'ko']).then(([mage, ko]) => {
+            mage.apply();
+            if (
+                !this._$element.find(
+                    '[type="text/x-magento-init"], [data-mage-init]'
+                )?.length
+            ) {
+                return;
             }
-        );
+            // Check if first element child is not bound to KO, if not apply bindings.
+            this._$element.find('[data-bind]').each((index, element) => {
+                if (
+                    element.firstElementChild &&
+                    !ko.dataFor(element.firstElementChild)
+                ) {
+                    ko.applyBindings(null, element);
+                }
+            });
+        });
     }
 
     /**

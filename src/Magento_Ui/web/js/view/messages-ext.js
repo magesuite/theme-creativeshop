@@ -1,6 +1,6 @@
 /**
  * Extends time after messages are hidden from 5s to 30s.
- * Aligned with Magento 2.4.8 in 05/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 define(['ko', 'jquery'], function (ko, $) {
     'use strict';

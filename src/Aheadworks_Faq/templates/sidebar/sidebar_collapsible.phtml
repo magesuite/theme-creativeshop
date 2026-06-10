@@ -1,0 +1,29 @@
+<?php
+/**
+ * Template overridden in order to:
+ * - drop non-standard easeOutCubic easing which broke the toggle when jQuery UI Effects is not loaded
+ * - add explicit type="button" so the trigger doesn't accidentally submit a parent form
+ * Aligned with Aheadworks_Faq v1.8.0 in 06/2026
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Aheadworks\Faq\ViewModel\CategoryTree\AbstractCategoryTree $viewModel */
+$viewModel = $block->getViewModel();
+?>
+<div class="aw-faq-sidebar-collapsible" data-mage-init='{
+    "collapsible": {
+        "openedState": "active",
+        "active": false,
+        "animate": 300
+    }}'>
+    <button type="button" class="aw-faq-sidebar-collapsible-button" data-role="title">
+        <span class="aw-faq-sidebar-collapsible-button__icon"></span>
+        <span class="aw-faq-sidebar-collapsible-button__text">
+            <?= $escaper->escapeHtml($viewModel->getPageTitle()) ?>
+        </span>
+    </button>
+    <div data-role="content">
+        <?= $block->getChildHtml('aw_faq.sidebar.content.collapsible') ?>
+    </div>
+</div>

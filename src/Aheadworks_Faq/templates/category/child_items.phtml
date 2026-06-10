@@ -1,0 +1,62 @@
+<?php
+/**
+ * Template overridden in order to:
+ * - add magesuite classes
+ * - add icon
+ * - simplify markup to match cs-faq-index pattern
+ * Aligned with Aheadworks_Faq v1.8.0 in 06/2026
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Aheadworks\Faq\ViewModel\Category $viewModel */
+$viewModel = $block->getViewModel();
+$categoryTree = $viewModel->getCategoryTree();
+$urlManager = $viewModel->getUrlManager();
+?>
+<div class="cs-faq-index__container">
+    <?php foreach ($categoryTree->getChildren() as $childTree): ?>
+        <?php
+        $childCategory = $childTree->getCategory();
+        $childArticles = $childTree->getArticles();
+        ?>
+        <div class="cs-faq-index__category">
+            <section class="cs-faq-index__category-section" data-mage-init='{
+                    "collapsible": {
+                        "mediaQueryScope": "(max-width: 767px)"
+                    }
+                }'>
+                <h2 class="cs-faq-index__title cs-faq-index__category-name" data-role="title">
+                    <a href="<?= $escaper->escapeUrl($urlManager->getCategoryUrl($childCategory)) ?>"><?= $escaper->escapeHtml($childCategory->getName()) ?></a>
+                </h2>
+                <?php if ($childArticles): ?>
+                    <ul class="cs-faq-index__list" data-role="content">
+                        <?php foreach ($childArticles as $article): ?>
+                            <li class="cs-faq-index__list-item">
+                                <a href="<?= $escaper->escapeUrl($urlManager->getArticleUrl($article)) ?>">
+                                    <?= $escaper->escapeHtml($article->getTitle()) ?>
+                                    <?= $block->getChildHtml('aw_faq.category.child_items.icon') ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </section>
+        </div>
+    <?php endforeach; ?>
+
+    <?php if ($categoryTree->getArticles()): ?>
+        <ul class="cs-faq-index__list">
+            <?php foreach ($categoryTree->getArticles() as $article): ?>
+                <li class="cs-faq-index__list-item">
+                    <a href="<?= $escaper->escapeUrl($urlManager->getArticleUrl($article)) ?>">
+                        <?= $escaper->escapeHtml($article->getTitle()) ?>
+                        <?= $block->getChildHtml('aw_faq.category.child_items.icon') ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>

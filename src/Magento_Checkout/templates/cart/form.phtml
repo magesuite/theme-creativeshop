@@ -6,7 +6,7 @@
  * There is a script prepared in: `components/cart/cart.ts` which shows loader and triggers click on hidden #update-cart-button button
  * - add aria-hidden to actions
  *
- * Aligned with Magento 2.4.8 in 04/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 
 // phpcs:disable Magento2.Templates.ThisInTemplate
@@ -15,12 +15,13 @@
 ?>
 <?php $mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1); ?>
 <?= $block->getChildHtml('form_before') ?>
-<form action="<?= $block->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>"
+    <form action="<?= $escaper->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>"
           method="post"
           id="form-validate"
           data-mage-init='{"Magento_Checkout/js/action/update-shopping-cart":
-              {"validationURL" : "<?= $block->escapeUrl($block->getUrl('checkout/cart/updateItemQty')) ?>",
-              "updateCartActionContainer": "#update_cart_action_container"}
+              {"validationURL" : "<?= $escaper->escapeUrl($block->getUrl('checkout/cart/updateItemQty')) ?>",
+              "updateCartActionContainer": "#update_cart_action_container"},
+              "Magento_Checkout/js/cart/ensure-subtotal-sync": {}
           }'
           class="form form-cart cs-form cs-container__cart-items">
     <?= $block->getBlockHtml('formkey') ?>
@@ -34,23 +35,23 @@
                class="cart items data table cs-cart-table"
                data-mage-init='{"shoppingCart":{"emptyCartButton": ".action.clear",
                "updateCartActionContainer": "#update_cart_action_container"}}'>
-            <caption class="table-caption cs-cart-table__caption"><?= $block->escapeHtml(__('Shopping Cart Items')) ?></caption>
+            <caption class="table-caption cs-cart-table__caption"><?= $escaper->escapeHtml(__('Shopping Cart Items')) ?></caption>
             <thead class="cs-cart-table__head">
                 <tr>
                     <th class="col item cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Item')) ?></span>
+                        <span class="cs-cart-table__head-text"><?= $escaper->escapeHtml(__('Item')) ?></span>
                     </th>
                     <th class="col price cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Price')) ?></span>
+                        <span class="cs-cart-table__head-text"><?= $escaper->escapeHtml(__('Price')) ?></span>
                     </th>
                     <th class="col qty cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Qty')) ?></span>
+                        <span class="cs-cart-table__head-text"><?= $escaper->escapeHtml(__('Qty')) ?></span>
                     </th>
                     <th class="col subtotal cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Subtotal')) ?></span>
+                        <span class="cs-cart-table__head-text"><?= $escaper->escapeHtml(__('Subtotal')) ?></span>
                     </th>
                     <th class="col actions cs-cart-table__head-col" scope="col">
-                        <span class="cs-cart-table__head-text"><?= $block->escapeHtml(__('Actions')) ?></span>
+                        <span class="cs-cart-table__head-text"><?= $escaper->escapeHtml(__('Actions')) ?></span>
                     </th>
                 </tr>
             </thead>
@@ -73,9 +74,9 @@
         <?php if ($block->getContinueShoppingUrl()): ?>
             <a class="action continue<?= /** @noEscape */ $block->getHideActionContinue() ? ' cs-visually-hidden' : '' ?>"
                <?php if ($block->getHideActionContinue()) : ?>aria-hidden="true" tabindex="-1"<?php endif; ?>
-               href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>"
-               title="<?= $block->escapeHtml(__('Continue Shopping')) ?>">
-                <span><?= $block->escapeHtml(__('Continue Shopping')) ?></span>
+               href="<?= $escaper->escapeUrl($block->getContinueShoppingUrl()) ?>"
+               title="<?= $escaper->escapeHtml(__('Continue Shopping')) ?>">
+                <span><?= $escaper->escapeHtml(__('Continue Shopping')) ?></span>
             </a>
         <?php endif; ?>
         <?php if ($block->getViewModel()->isClearShoppingCartEnabled()): ?>
@@ -84,10 +85,10 @@
                     name="update_cart_action"
                     data-cart-empty=""
                     value="empty_cart"
-                    title="<?= $block->escapeHtml(__('Clear Shopping Cart')) ?>"
+                    title="<?= $escaper->escapeHtml(__('Clear Shopping Cart')) ?>"
                     class="action clear<?= /** @noEscape */ $block->getHideActionClear() ? ' cs-visually-hidden' : '' ?>"
                     id="empty_cart_button">
-                <span><?= $block->escapeHtml(__('Clear Shopping Cart')) ?></span>
+                <span><?= $escaper->escapeHtml(__('Clear Shopping Cart')) ?></span>
             </button>
         <?php endif ?>
         <button type="submit"
@@ -96,9 +97,9 @@
                 id="update-cart-button"
                 data-cart-item-update=""
                 value="update_qty"
-                title="<?= $block->escapeHtml(__('Update Shopping Cart')) ?>"
+                title="<?= $escaper->escapeHtml(__('Update Shopping Cart')) ?>"
                 class="action update<?= /** @noEscape */ $block->getHideActionUpdate() ? ' cs-visually-hidden' : '' ?>">
-            <span><?= $block->escapeHtml(__('Update Shopping Cart')) ?></span>
+            <span><?= $escaper->escapeHtml(__('Update Shopping Cart')) ?></span>
         </button>
         <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update=""/>
     </div>

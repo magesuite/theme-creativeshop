@@ -1,5 +1,5 @@
 /**
- * Aligned with Magento 2.4.8 in 04/2025
+ * Aligned with Magento 2.4.9 in 05/2026
  */
 define([
     'Magento_Checkout/js/checkout-data',

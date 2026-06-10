@@ -2,34 +2,45 @@
 /**
  * Template overridden in order to:
  * - add magesuite classes and additional wrapper
- * Aligned with Aheadworks_Faq v1.0.3 in 05/2025
+ * Aligned with Aheadworks_Faq v1.8.0 in 06/2026
  */
 
 // @codingStandardsIgnoreFile
 
 /** @var $block \Aheadworks\Faq\Block\Search\Search */
+/** @var $escaper \Magento\Framework\Escaper */
+
+$viewModel = $block->getViewModel();
+$minSearchQueryLength = $viewModel->getMinSearchQueryLength();
+$maxSearchQueryLength = $viewModel->getMaxSearchQueryLength();
 ?>
-<?php $searchQuery = $block->getData('data') ? $block->getData('data') : $block->getSearchQueryString();?>
+<?php $searchQuery = $block->getData('data') ? $block->getData('data') : $block->getSearchQueryString(); ?>
     <div class="cs-faq-index__search">
-        <form class="cs-faq-index__search-form" action="<?php echo $block->escapeUrl($block->getFaqSearchUrl()) ?>" method="get" role="search">
+        <form class="cs-faq-index__search-form"
+              action="<?= $escaper->escapeUrl($block->getFaqSearchUrl()) ?>"
+              method="get"
+              role="search">
             <div class="cs-faq-index__search-field">
                 <div class="cs-faq-index__search-control">
                     <input id="cs-faq-index-search-field" type="text"
-                            placeholder="<?php echo $block->escapeHtml(__('Type here to search FAQ articles')); ?>"
+                            placeholder="<?= $escaper->escapeHtml(__('Type here to search FAQ articles')); ?>"
                             class="cs-faq-index__search-input"
-                            name="<?php /* @noEscape */ echo $block->getQueryParamName() ?>"
+                            name="<?= /* @noEscape */ $block->getQueryParamName() ?>"
                             role="combobox"
                             aria-required="true"
                             required
-                            value="<?php echo $block->escapeHtml($searchQuery) ?>"/>
-                    <input type="hidden" name="routeName" value="<?php echo $block->escapeHtml($block->getRouteName()) ?>" />
+                            value="<?= $escaper->escapeHtml($searchQuery) ?>"
+                            <?= $minSearchQueryLength ? "minlength=" . $escaper->escapeHtmlAttr($minSearchQueryLength) : "" ?>
+                            <?= $maxSearchQueryLength ? "maxlength=" . $escaper->escapeHtmlAttr($maxSearchQueryLength) : "" ?>
+                    />
+                    <input type="hidden" name="routeName" value="<?= $escaper->escapeHtml($block->getRouteName()) ?>" />
                     <div id="search_autocomplete" class="cs-faq-index__search-autocomplete search-autocomplete"></div>
                 </div>
             </div>
             <div class="cs-faq-index__search-action">
-                <button type="submit" title="<?php echo  $block->escapeHtml(__('Search')); ?>" class="cs-faq-index__search-button" >
+                <button type="submit" title="<?= $escaper->escapeHtml(__('Search')); ?>" class="cs-faq-index__search-button" >
                     <?= $block->getChildHtml('aw_faq.search.button.icon'); ?>
-                    <span class="cs-faq-index__search-button-span"><?php echo  $block->escapeHtml(__('Search')); ?></span>
+                    <span class="cs-faq-index__search-button-span"><?= $escaper->escapeHtml(__('Search')); ?></span>
                 </button>
             </div>
         </form>

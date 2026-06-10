@@ -4,12 +4,13 @@
  * - add magesuite classes
  * - add icons
  * - change wording
- * Aligned with Aheadworks_Faq v1.0.3 in 05/2025
+ * Aligned with Aheadworks_Faq v1.8.0 in 06/2026
  */
 
 // @codingStandardsIgnoreFile
 
 /** @var \Aheadworks\Faq\Block\Category\CategoryList $block */
+/** @var \Magento\Framework\Escaper $escaper */
 ?>
 <div class="cs-faq-index__container">
 <?php foreach($block->getCategories() as $category): ?>
@@ -17,7 +18,7 @@
     <?php $allowedArticlesNumber = $category->getNumArticlesToDisplay(); ?>
     <?php $moreArticles = count($categoryArticles) - $allowedArticlesNumber; ?>
     <?php if ($category->getArticleListIcon()) {
-         $articleListIcon = 'class="cs-faq-index__list-item cs-faq-index__list-item-img" style="background:url(' . $block->escapeUrl($block->getArticleListIconUrl($category)) . ')"';
+         $articleListIcon = 'class="cs-faq-index__list-item cs-faq-index__list-item-img" style="background:url(' . $escaper->escapeUrl($block->getArticleListIconUrl($category)) . ')"';
     } else {
          $articleListIcon = 'class="cs-faq-index__list-item"';
     }
@@ -30,17 +31,17 @@
             }'>
             <h2 class="cs-faq-index__title cs-faq-index__category-name" data-role="title">
                 <?php if ($block->getCategoryIconUrl($category)) :?>
-                    <img class="cs-faq-index__list-img" src="<?php echo $block->escapeUrl($block->getCategoryIconUrl($category)); ?>" alt="<?php echo $block->escapeHtml($category->getName()); ?>" />
+                    <img class="cs-faq-index__list-img" src="<?= $escaper->escapeUrl($block->getCategoryIconUrl($category)) ?>" alt="<?= $escaper->escapeHtml($category->getName()) ?>" />
                 <?php endif; ?>
-                <a href="<?php echo $block->escapeUrl($block->getCategoryUrl($category)); ?>"><?php echo $block->escapeHtml($category->getName()); ?></a>
+                <a href="<?= $escaper->escapeUrl($block->getCategoryUrl($category)) ?>"><?= $escaper->escapeHtml($category->getName()) ?></a>
             </h2>
             <ul class="cs-faq-index__list" data-role="content">
                 <?php if ($allowedArticlesNumber): ?>
                     <?php while($allowedArticlesNumber): ?>
                         <?php if (isset($categoryArticles[$allowedArticlesNumber-1])): ?>
                             <?php $article = $categoryArticles[$allowedArticlesNumber-1]; ?>
-                            <li <?php /* @noEscape */ echo $articleListIcon ?> >
-                                <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?>
+                            <li <?= /* @noEscape */ $articleListIcon ?> >
+                                <a href="<?= $escaper->escapeUrl($block->getArticleUrl($article)) ?>"><?= $escaper->escapeHtml($article->getTitle()) ?>
                                     <?= $block->getChildHtml('aw_faq.category_list.icon'); ?>
                                 </a>
                             </li>
@@ -49,8 +50,8 @@
                     <?php endwhile; ?>
                 <?php else: ?>
                     <?php foreach ($categoryArticles as $article): ?>
-                        <li <?php /* @noEscape */ echo $articleListIcon ?> >
-                            <a href="<?php echo $block->escapeUrl($block->getArticleUrl($article)); ?>"><?php echo  $block->escapeHtml($article->getTitle()); ?>
+                        <li <?= /* @noEscape */ $articleListIcon ?> >
+                            <a href="<?= $escaper->escapeUrl($block->getArticleUrl($article)) ?>"><?= $escaper->escapeHtml($article->getTitle()) ?>
                                 <?= $block->getChildHtml('aw_faq.category_list.icon'); ?>
                             </a>
                         </li>
@@ -58,8 +59,8 @@
                 <?php endif; ?>
             </ul>
             <?php if ($category->getNumArticlesToDisplay() && $moreArticles > 0):?>
-                <a class="cs-faq-index__more-link" href="<?php echo $block->escapeUrl($block->getCategoryUrl($category)); ?>">
-                    <?php echo $moreArticles == 1 ? __('Read 1 more article') : __('Read %1 more articles', $moreArticles) ?>
+                <a class="cs-faq-index__more-link" href="<?= $escaper->escapeUrl($block->getCategoryUrl($category)) ?>">
+                    <?= $moreArticles == 1 ? __('Read 1 more article') : __('Read %1 more articles', $moreArticles) ?>
                 </a>
             <?php endif; ?>
         </section>

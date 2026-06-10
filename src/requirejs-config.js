@@ -85,12 +85,6 @@ var config = {
             'Magento_Checkout/js/sidebar': {
                 'Magento_Checkout/js/sidebar-ext': true,
             },
-            'regionUpdater': {
-                'Magento_Checkout/js/region-updater-ext': true,
-            },
-            'Magento_Checkout/js/region-updater': {
-                'Magento_Checkout/js/region-updater-ext': true,
-            },
             'Magento_Checkout/js/model/step-navigator': {
                 'Magento_Checkout/js/model/step-navigator-ext': true,
                 'Magento_Checkout/js/model/step-navigator-page-title': true,
@@ -179,6 +173,9 @@ var config = {
             cancelOrderModal: {
                 'Magento_OrderCancellationUi/js/cancel-order-modal-ext': true,
             },
+            'Magento_Wishlist/js/view/wishlist': {
+                'Magento_Wishlist/js/view/wishlist-mixin': false
+            }
         },
     },
 
