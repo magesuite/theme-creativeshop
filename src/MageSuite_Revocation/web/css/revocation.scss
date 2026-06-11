@@ -19,6 +19,8 @@ $revocation_actions-back-display: inline-block !default;
 $revocation_confirmation-table-max-width: 75% !default;
 $revocation_confirmation-table-cell-padding: 0.8rem 1rem !default;
 
+$revocation_history-disabled-opacity: 0.5 !default;
+
 .#{$ns}revocation {
     h1,
     h2,
@@ -75,6 +77,17 @@ $revocation_confirmation-table-cell-padding: 0.8rem 1rem !default;
                 $type: $revocation_actions-back-type,
                 $icon_pos: $revocation_actions-back-icon-pos
             );
+        }
+    }
+
+    &__orders-table-cell {
+        .action.revoke.disabled {
+            cursor: not-allowed;
+            opacity: $revocation_history-disabled-opacity;
+        }
+
+        .#{$ns}tooltip {
+            margin-left: 0;
         }
     }
 
