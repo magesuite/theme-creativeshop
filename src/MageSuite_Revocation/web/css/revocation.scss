@@ -17,17 +17,13 @@ $revocation_actions-back-margin-top: 2rem !default;
 $revocation_actions-back-display: inline-block !default;
 
 $revocation_confirmation-table-max-width: 75% !default;
-$revocation_confirmation-table-cell-padding: 0.8rem 1rem !default;
+$revocation_confirmation-table-cell-padding: 0.8rem 0rem !default;
 
 $revocation_history-disabled-opacity: 0.5 !default;
 
 .#{$ns}revocation {
-    h1,
-    h2,
-    h3 {
-        &:first-child {
-            margin-top: 0;
-        }
+    .order-summary {
+        margin-bottom: 0rem;
     }
 
     .legal-notice {
@@ -70,6 +66,7 @@ $revocation_history-disabled-opacity: 0.5 !default;
             $type: $revocation_actions-back-type,
             $icon_pos: $revocation_actions-back-icon-pos
         );
+
         margin-top: $revocation_actions-back-margin-top;
 
         span {
@@ -92,19 +89,13 @@ $revocation_history-disabled-opacity: 0.5 !default;
     }
 
     &--confirmation {
-        @include media('<tablet') {
+        @include media('<laptop') {
             // Specificity matches table-mobile-layout() mixin
             .table-wrapper
                 .table:not(.comparison):not(.totals):not(.table-totals)
                 tbody
                 td {
                 padding: $revocation_confirmation-table-cell-padding;
-            }
-
-            .order-summary tbody th {
-                width: 1px;
-                white-space: nowrap;
-                text-align: left;
             }
         }
 
