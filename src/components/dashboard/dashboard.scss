@@ -52,6 +52,9 @@ $dashboard_space-between-boxes: 2rem !default;
 
 // Order table
 $dashboard_price-font-color: $color_text-500 !default;
+// Revocation specific
+// If tooltip is present in the last row, it will be cut by table overflow. Padding is added to prevent this.
+$dashboard_table-padding-bottom: 3rem !default;
 
 .#{$ns}dashboard {
     $root: &;
@@ -547,6 +550,14 @@ $dashboard_price-font-color: $color_text-500 !default;
     .transactions {
         @if ($dashboard_has-darker-background == true) {
             padding: $dashboard_boxes-inner-padding;
+        }
+    }
+
+    .orders-history {
+        @include media('>=laptop') {
+            &:has(.#{$ns}revocation__orders-table-cell) {
+                padding-bottom: $dashboard_table-padding-bottom;
+            }
         }
     }
 
