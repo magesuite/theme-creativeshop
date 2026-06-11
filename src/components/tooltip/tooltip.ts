@@ -157,6 +157,10 @@ export default class Tooltip {
     }
 
     protected _showTooltip($tooltip: JQuery, $trigger?: JQuery): void {
+        if (this._$activeTooltip && !this._$activeTooltip.is($tooltip)) {
+            this._hideActiveTooltip();
+        }
+
         this._$activeTooltip = $tooltip;
         this._$activeTrigger = $trigger || this._getTrigger($tooltip);
 
