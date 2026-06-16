@@ -1237,26 +1237,34 @@ export default class StoreLocator {
 
         this._infoWindow = new google.maps.InfoWindow({});
 
-        this.markers = this.stores.map((store) => {
-            const pinEl = this._createPinDiv(this._options.markerIcons.pin.url);
+        this.markers = this.stores
+            .filter(
+                (store) =>
+                    !isNaN(parseFloat(store.latitude)) &&
+                    !isNaN(parseFloat(store.longitude))
+            )
+            .map((store) => {
+                const pinEl = this._createPinDiv(
+                    this._options.markerIcons.pin.url
+                );
 
-            const marker = new google.maps.marker.AdvancedMarkerElement({
-                map: this.map,
-                position: {
-                    lat: store.latitude,
-                    lng: store.longitude,
-                },
-                content: pinEl,
-                gmpClickable: true,
+                const marker = new google.maps.marker.AdvancedMarkerElement({
+                    map: this.map,
+                    position: {
+                        lat: parseFloat(store.latitude),
+                        lng: parseFloat(store.longitude),
+                    },
+                    content: pinEl,
+                    gmpClickable: true,
+                });
+
+                marker.addEventListener('gmp-click', () => {
+                    this.markerClickHandler(marker, store.sourceCode);
+                });
+                marker.storeId = store.sourceCode;
+
+                return marker;
             });
-
-            marker.addEventListener('gmp-click', () => {
-                this.markerClickHandler(marker, store.sourceCode);
-            });
-            marker.storeId = store.sourceCode;
-
-            return marker;
-        });
 
         // Custom cluster renderer
         const renderer = this._createClusterRenderer();
