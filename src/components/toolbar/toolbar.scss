@@ -1,7 +1,6 @@
 @import 'config/variables';
 @import 'config/breakpoints';
 @import 'vendors/include-media';
-@import 'components/button/mixin';
 
 $toolbar_display: flex !default;
 $toolbar_flex-align-items: center !default;
@@ -33,9 +32,6 @@ $toolbar_sorter-align: left !default;
 $toolbar_limiter-align: left !default;
 $toolbar_viewmode-switcher-align: left !default;
 $toolbar_pagination-align: right !default;
-
-$toolbar_filters-button-type: 'secondary' !default;
-$toolbar_filters-button-icon-pos: 'left' !default;
 
 .#{$ns}toolbar {
     $root: &;
@@ -101,27 +97,10 @@ $toolbar_filters-button-icon-pos: 'left' !default;
     }
 
     &__filters-button {
-        @include button(
-            $type: $toolbar_filters-button-type,
-            $icon_pos: $toolbar_filters-button-icon-pos
-        );
-
         &-icon {
-            @include button_icon(
-                $type: $toolbar_filters-button-type,
-                $icon_pos: $toolbar_filters-button-icon-pos
-            );
-
             max-width: 2.3rem;
             max-height: 2.3rem;
         }
-    }
-
-    &__filters-button-label {
-        @include button_span(
-            $type: $toolbar_filters-button-type,
-            $icon_pos: $toolbar_filters-button-icon-pos
-        );
     }
 }
 

@@ -10,6 +10,7 @@ $rating = $csProductHelper->getReviewSummary($block->getProduct(), true);
 $ratingData = $rating['data'];
 $votes = $rating['data']['votes'];
 $allVotes = array_sum($votes);
+$buttonModifierClass = $block->getButtonModifierClass();
 ?>
 
 <?php if ($allVotes > 0): ?>
@@ -78,8 +79,8 @@ $allVotes = array_sum($votes);
             </ul>
         <?php endif; ?>
         <div class="cs-reviews-summary__button-wrapper">
-            <button class="cs-reviews-summary__button">
-                <span class="cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */__('Add Review') ?></span>
+            <button class="cs-button <?= $escaper->escapeHtmlAttr($buttonModifierClass) ?> cs-reviews-summary__button">
+                <span class="cs-button__span cs-reviews-summary__button-span"> <?= /* @escapeNotVerified */__('Add Review') ?></span>
                 <?= $block->getChildHtml('reviews.summary.button.icon'); ?>
             </button>
         </div>

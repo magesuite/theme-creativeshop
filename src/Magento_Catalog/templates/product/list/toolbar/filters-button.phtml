@@ -1,18 +1,22 @@
 <?php
 /**
  * Custom template to display offcanvas filters toggle button
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
  */
 ?>
 <?php
     $filtersIcon = $block->getVar('toolbar/filters_offcanvas_button/icon', 'Magento_Catalog');
+    $buttonModifierClass = $block->getVar('toolbar/filters_offcanvas_button/button_modifier_class', 'Magento_Catalog');
 ?>
 
-<button class="cs-toolbar__filters-button" type="button">
+<button class="cs-button <?= $escaper->escapeHtmlAttr($buttonModifierClass) ?> cs-toolbar__filters-button" type="button">
     <?php if ($filtersIcon): ?>
         <?= $this->getLayout()
             ->createBlock('MageSuite\ThemeHelpers\Block\Icon')
             ->setIconUrl($filtersIcon)
-            ->setCssClass('cs-toolbar__filters-button-icon')
+            ->setCssClass('cs-button__icon cs-toolbar__filters-button-icon')
             ->setAltText(__('Set Ascending Direction'))
             ->setInlined(true)
             ->setLazyLoaded(true)
@@ -20,7 +24,7 @@
         ?>
     <?php endif; ?>
 
-    <span class="cs-toolbar__filters-button-label">
+    <span class="cs-button__span cs-toolbar__filters-button-label">
         <?= __($block->getVar('toolbar/filters_offcanvas_button/label', 'Magento_Catalog')) ?>
     </span>
 </button>
