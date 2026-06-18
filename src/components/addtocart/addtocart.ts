@@ -170,10 +170,8 @@ export default class AddToCart {
                 minicartLinkClass: 'cs-addtocart__minicart-link',
                 minicartQtyBadgeClass: 'cs-addtocart__minicart-qty-badge',
                 minicartQtyTextClass: 'cs-addtocart__minicart-qty-text',
-                clonedQtyBadgeWrapperClass:
-                    'cs-addtocart__minicart-qty-badge-wrapper',
-                qtyBadgeStartPositionRelationSelector:
-                    '.cs-addtocart__button-icon',
+                clonedQtyBadgeWrapperClass: 'cs-addtocart__minicart-qty-badge-wrapper',
+                qtyBadgeStartPositionRelationSelector: '.cs-addtocart__button-icon',
                 minicartDialogSelector: '.block-minicart',
                 reloadPageOnProductsAddedInCart: true,
             },
@@ -204,9 +202,7 @@ export default class AddToCart {
      * @param e - event emitted by `this._options.processingEvent`
      */
     protected _onProcessing(e: JQuery.Event): any {
-        this._$component = $('.atc-ajax-processing').closest(
-            `.${this._options.componentClass}`
-        );
+        this._$component = $('.atc-ajax-processing').closest(`.${this._options.componentClass}`);
         this._$button = this._$component.find('button[type="submit"]');
 
         if (this._$component.length && this._$button.length) {
@@ -223,9 +219,7 @@ export default class AddToCart {
                 clearTimeout(this._animationTimeout);
                 clearTimeout(this._visibilityTimeout);
                 clearTimeout(this._allDoneTimeout);
-                this._$component.addClass(
-                    `${this._options.componentClass}--loading`
-                );
+                this._$component.addClass(`${this._options.componentClass}--loading`);
             }
         }
     }
@@ -246,8 +240,7 @@ export default class AddToCart {
      * @param ajaxRes - AJAX call response delivered by Magento's scripts
      */
     protected _onDone(e: JQuery.Event, ajaxRes: any): void {
-        const actionFailed: boolean =
-            ajaxRes.response.backUrl || ajaxRes.response.messages;
+        const actionFailed: boolean = ajaxRes.response.backUrl || ajaxRes.response.messages;
 
         if (!actionFailed) {
             if (this._shouldReloadPage(ajaxRes)) {
@@ -263,19 +256,14 @@ export default class AddToCart {
         }
 
         if (this._$component.length && actionFailed) {
-            this._$component.addClass(
-                `${this._options.componentClass}--no-transitions`
-            );
+            this._$component.addClass(`${this._options.componentClass}--no-transitions`);
         }
 
         if (this._$button.length) {
             this._$button.prop('disabled', false);
         }
 
-        if (
-            this._options.onDoneHandler &&
-            typeof this._options.onDoneHandler === 'function'
-        ) {
+        if (this._options.onDoneHandler && typeof this._options.onDoneHandler === 'function') {
             this._options.onDoneHandler(this, ajaxRes, e);
             if (
                 !actionFailed &&
@@ -292,18 +280,14 @@ export default class AddToCart {
 
                 this._$component
                     .removeClass(`${this._options.componentClass}--loading`)
-                    .addClass(
-                        `${this._options.componentClass}--done ${statusModifier}`
-                    );
+                    .addClass(`${this._options.componentClass}--done ${statusModifier}`);
 
                 if (!actionFailed && this._options.animateMinicart) {
                     this._startQtyUpdate(this._$component);
                 }
 
                 this._animationTimeout = setTimeout((): void => {
-                    this._$component.addClass(
-                        `${this._options.componentClass}--animation-done`
-                    );
+                    this._$component.addClass(`${this._options.componentClass}--animation-done`);
                 }, this._options.successAnimationDuration);
 
                 if (!actionFailed) {
@@ -350,10 +334,7 @@ export default class AddToCart {
                 !this._minicartOffcanvasSettings.open_on_product_added)
         ) {
             this._getCartData().then((newQty) => {
-                if (
-                    !isNaN(newQty) &&
-                    $(`.${this._options.minicartClass}`).length
-                ) {
+                if (!isNaN(newQty) && $(`.${this._options.minicartClass}`).length) {
                     this._animateMinicart('down');
 
                     if (this._options.animateQtyBadge) {
@@ -392,19 +373,12 @@ export default class AddToCart {
      * @param direction - 'up'/'down' to define if it should show & stick minicart or unstick & hide it
      */
     protected _animateMinicart(direction: string): void {
-        const $minicart: JQuery<HTMLElement> = $(
-            `.${this._options.minicartClass}`
-        );
-        const $minicartLink: JQuery<HTMLElement> = $(
-            `.${this._options.minicartLinkClass}:visible`
-        );
-        const $minicartDialog: JQuery<HTMLElement> = $(
-            `${this._options.minicartDialogSelector}`
-        );
+        const $minicart: JQuery<HTMLElement> = $(`.${this._options.minicartClass}`);
+        const $minicartLink: JQuery<HTMLElement> = $(`.${this._options.minicartLinkClass}:visible`);
+        const $minicartDialog: JQuery<HTMLElement> = $(`${this._options.minicartDialogSelector}`);
 
         if ($minicartDialog.length) {
-            const mageDropdownDialog: any =
-                $minicartDialog.data('mageDropdownDialog');
+            const mageDropdownDialog: any = $minicartDialog.data('mageDropdownDialog');
 
             if (typeof mageDropdownDialog !== 'undefined') {
                 mageDropdownDialog.close();
@@ -446,44 +420,27 @@ export default class AddToCart {
      *   - Initializes animation of moving (cloned) badge to the minicart (`this._moveBadgeToStickyCart`)
      * @param direction {string} - 'up'/'down' to define if it should show & stick minicart or unstick & hide it
      */
-    protected _insertQtyBadge(
-        newQty: number,
-        $component: JQuery<HTMLElement>
-    ): any {
-        let $clonedBadge: JQuery<HTMLElement> = $(
-            `.${this._options.clonedQtyBadgeWrapperClass}`
-        );
+    protected _insertQtyBadge(newQty: number, $component: JQuery<HTMLElement>): any {
+        let $clonedBadge: JQuery<HTMLElement> = $(`.${this._options.clonedQtyBadgeWrapperClass}`);
 
         if ($clonedBadge.length) {
             $clonedBadge.remove();
         }
 
-        $('body').append(
-            `<div class="${this._options.clonedQtyBadgeWrapperClass}"></div>`
-        );
+        $('body').append(`<div class="${this._options.clonedQtyBadgeWrapperClass}"></div>`);
         $clonedBadge = $(`.${this._options.clonedQtyBadgeWrapperClass}`);
 
-        const $link: JQuery<HTMLElement> = $(
-            `.${this._options.minicartLinkClass}:visible`
-        );
-        const $badge: JQuery<HTMLElement> = $link.find(
-            `.${this._options.minicartQtyBadgeClass}`
-        );
+        const $link: JQuery<HTMLElement> = $(`.${this._options.minicartLinkClass}:visible`);
+        const $badge: JQuery<HTMLElement> = $link.find(`.${this._options.minicartQtyBadgeClass}`);
         const $startingRelation: JQuery<HTMLElement> = $component.find(
             this._options.qtyBadgeStartPositionRelationSelector
         );
 
-        if (
-            !$clonedBadge.length ||
-            !$link.length ||
-            !$badge.length ||
-            !$startingRelation.length
-        ) {
+        if (!$clonedBadge.length || !$link.length || !$badge.length || !$startingRelation.length) {
             return;
         }
 
-        const startingPosition: any =
-            $startingRelation[0].getBoundingClientRect();
+        const startingPosition: any = $startingRelation[0].getBoundingClientRect();
         const $clone: JQuery<HTMLElement> = $badge.clone();
         const $clonedQtyHolder: JQuery<HTMLElement> = $clone.find(
             `.${this._options.minicartQtyTextClass}`
@@ -519,17 +476,13 @@ export default class AddToCart {
         $clonedBadge.one('transitionend', (): void => this._bindScrollEvent());
 
         if (this._isMinicartSticky) {
-            $clonedBadge.addClass(
-                `${this._options.clonedQtyBadgeWrapperClass}--minicart-sticky`
-            );
+            $clonedBadge.addClass(`${this._options.clonedQtyBadgeWrapperClass}--minicart-sticky`);
         }
 
-        $clonedBadge
-            .addClass(`${this._options.clonedQtyBadgeWrapperClass}--animating`)
-            .css({
-                top: '',
-                left: `${Math.round(parseInt(cartBadgeRect.left, 10))}px`,
-            });
+        $clonedBadge.addClass(`${this._options.clonedQtyBadgeWrapperClass}--animating`).css({
+            top: '',
+            left: `${Math.round(parseInt(cartBadgeRect.left, 10))}px`,
+        });
     }
 
     /**
@@ -553,9 +506,8 @@ export default class AddToCart {
         $('body').on(this._options.processingEvent, (e: JQuery.Event): void =>
             this._onProcessing(e)
         );
-        $(document).on(
-            this._options.doneEvent,
-            (e: JQuery.Event, ajaxRes: any): void => this._onDone(e, ajaxRes)
+        $(document).on(this._options.doneEvent, (e: JQuery.Event, ajaxRes: any): void =>
+            this._onDone(e, ajaxRes)
         );
     }
 

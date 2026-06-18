@@ -15,9 +15,7 @@ export default class SliderAutorotation {
     public currentSlideIndex: number;
     protected _navigation: any;
     protected _rotator: ReturnType<typeof setInterval>;
-    protected _isTouchMq: MediaQueryList = window.matchMedia(
-        '(hover: none) and (pointer: coarse)'
-    );
+    protected _isTouchMq: MediaQueryList = window.matchMedia('(hover: none) and (pointer: coarse)');
     protected _touchstartX: number;
     protected _touchendX: number;
     protected _scrollableContainer: HTMLElement;
@@ -42,8 +40,7 @@ export default class SliderAutorotation {
         this.currentSlideIndex = 1;
 
         this.canEnable =
-            this.options.useAutorotationAlsoForTouchScreens ||
-            !this._isTouchMq?.matches;
+            this.options.useAutorotationAlsoForTouchScreens || !this._isTouchMq?.matches;
 
         if (this.canEnable) {
             this._startAutorotate();
@@ -61,11 +58,7 @@ export default class SliderAutorotation {
      * and updates current index to know to which slide to scroll next upon next call
      */
     protected _scrollToNext(): void {
-        if (
-            this._navigation != null &&
-            this._navigation.interacted &&
-            this._rotator != null
-        ) {
+        if (this._navigation != null && this._navigation.interacted && this._rotator != null) {
             this._stopAutorotate();
             return;
         }
@@ -73,8 +66,7 @@ export default class SliderAutorotation {
         let nextIndex = this.currentSlideIndex + this.options.itemsPerView;
 
         if (nextIndex === this.options.collectionSize) {
-            nextIndex =
-                this.options.collectionSize - this.options.itemsPerView + 1;
+            nextIndex = this.options.collectionSize - this.options.itemsPerView + 1;
         } else if (nextIndex > this.options.collectionSize) {
             nextIndex = 1;
         }
@@ -105,35 +97,20 @@ export default class SliderAutorotation {
         }
 
         if (!this._navigation?.interacted) {
-            this._rotator = setInterval(
-                (): void => this._scrollToNext(),
-                this.options.delay
-            );
+            this._rotator = setInterval((): void => this._scrollToNext(), this.options.delay);
         }
     }
 
     protected _detachEvents(): void {
-        this.options.pauseNode?.removeEventListener(
-            'mouseenter',
-            this.boundMouseenterHandler
-        );
-        this.options.pauseNode?.removeEventListener(
-            'mouseleave',
-            this.boundMouseleaveHandler
-        );
+        this.options.pauseNode?.removeEventListener('mouseenter', this.boundMouseenterHandler);
+        this.options.pauseNode?.removeEventListener('mouseleave', this.boundMouseleaveHandler);
 
-        if (
-            this._isTouchMq?.matches &&
-            this.options.useAutorotationAlsoForTouchScreens
-        ) {
+        if (this._isTouchMq?.matches && this.options.useAutorotationAlsoForTouchScreens) {
             this._scrollableContainer.removeEventListener(
                 'touchstart',
                 this.boundTouchstartHandler
             );
-            this._scrollableContainer.removeEventListener(
-                'touchend',
-                this.boundTouchendHandler
-            );
+            this._scrollableContainer.removeEventListener('touchend', this.boundTouchendHandler);
         }
     }
 
@@ -141,41 +118,23 @@ export default class SliderAutorotation {
      * Initializes mouseenter and mouseleave events for controlling autorotate
      */
     protected _attachEvents(): void {
-        if (
-            this.options.pauseNode &&
-            this.canEnable &&
-            !this._navigation.interacted
-        ) {
+        if (this.options.pauseNode && this.canEnable && !this._navigation.interacted) {
             this.boundMouseenterHandler = this._stopAutorotate.bind(this);
             this.boundMouseleaveHandler = this._startAutorotate.bind(this);
 
-            this.options.pauseNode?.addEventListener(
-                'mouseenter',
-                this.boundMouseenterHandler
-            );
-            this.options.pauseNode?.addEventListener(
-                'mouseleave',
-                this.boundMouseleaveHandler
-            );
+            this.options.pauseNode?.addEventListener('mouseenter', this.boundMouseenterHandler);
+            this.options.pauseNode?.addEventListener('mouseleave', this.boundMouseleaveHandler);
 
-            if (
-                this._isTouchMq?.matches &&
-                this.options.useAutorotationAlsoForTouchScreens
-            ) {
-                this.boundTouchstartHandler =
-                    this._touchstartHandler.bind(this);
+            if (this._isTouchMq?.matches && this.options.useAutorotationAlsoForTouchScreens) {
+                this.boundTouchstartHandler = this._touchstartHandler.bind(this);
                 this.boundTouchendHandler = this._touchendHandler.bind(this);
-                this._scrollableContainer =
-                    this.options.navInstance._scrollable;
+                this._scrollableContainer = this.options.navInstance._scrollable;
 
                 this._scrollableContainer.addEventListener(
                     'touchstart',
                     this.boundTouchstartHandler
                 );
-                this._scrollableContainer.addEventListener(
-                    'touchend',
-                    this.boundTouchendHandler
-                );
+                this._scrollableContainer.addEventListener('touchend', this.boundTouchendHandler);
             }
         }
 
@@ -209,23 +168,13 @@ export default class SliderAutorotation {
     /**
      * Checks offset and stops autorotation on user interaction
      */
-    protected _handleGesture(
-        startX: number,
-        endX: number,
-        minSwipeLength: number
-    ): void {
+    protected _handleGesture(startX: number, endX: number, minSwipeLength: number): void {
         // Check if swipe last at least for half of visible Slide / Check if slide changed
         if (Math.abs(startX - endX) >= minSwipeLength) {
             this._stopAutorotate();
 
-            this._scrollableContainer.removeEventListener(
-                'touchstart',
-                this._touchstartHandler
-            );
-            this._scrollableContainer.removeEventListener(
-                'touchend',
-                this._touchendHandler
-            );
+            this._scrollableContainer.removeEventListener('touchstart', this._touchstartHandler);
+            this._scrollableContainer.removeEventListener('touchend', this._touchendHandler);
         }
     }
 
@@ -241,8 +190,7 @@ export default class SliderAutorotation {
      */
     protected _touchendHandler(e: TouchEvent): void {
         this._touchendX = e.changedTouches[0].screenX;
-        const minSlideLength =
-            (this._scrollableContainer.offsetWidth * 5) / 100;
+        const minSlideLength = (this._scrollableContainer.offsetWidth * 5) / 100;
 
         this._handleGesture(this._touchstartX, this._touchendX, minSlideLength);
     }

@@ -81,38 +81,27 @@ export default class QtyIncrement {
      * @param $element Element to initialize component on.
      * @param options Custom options for the component.
      */
-    public constructor(
-        $element?: JQuery<HTMLElement>,
-        options?: QtyIncrementOptions
-    ) {
+    public constructor($element?: JQuery<HTMLElement>, options?: QtyIncrementOptions) {
         this._options = $.extend(this._options, options);
 
         this._$element = $element || $('.cs-qty-increment');
         this._$input = this._$element.find(`.${this._options.inputClassName}`);
-        this._$decrementBtn = this._$element.find(
-            `.${this._options.decrementButtonClassName}`
-        );
-        this._$incrementBtn = this._$element.find(
-            `.${this._options.incrementButtonClassName}`
-        );
+        this._$decrementBtn = this._$element.find(`.${this._options.decrementButtonClassName}`);
+        this._$incrementBtn = this._$element.find(`.${this._options.incrementButtonClassName}`);
 
         this._initialValue = this.getValue();
 
         const minValue = this._$input.attr('min');
-        this._minValue =
-            minValue !== undefined ? Number(minValue) : this._options.minValue;
+        this._minValue = minValue !== undefined ? Number(minValue) : this._options.minValue;
 
         const maxValue = this._$input.attr('max');
-        this._maxValue =
-            maxValue !== undefined ? Number(maxValue) : this._options.maxValue;
+        this._maxValue = maxValue !== undefined ? Number(maxValue) : this._options.maxValue;
 
         const step = this._$input.attr('step');
         this._step = step !== undefined ? Number(step) : this._options.step;
 
         this._isShoppingCart =
-            document.body.classList.value.indexOf(
-                this._options.cartPageClassIdentifier
-            ) !== -1;
+            document.body.classList.value.indexOf(this._options.cartPageClassIdentifier) !== -1;
 
         this._attachEvents();
     }
@@ -166,9 +155,7 @@ export default class QtyIncrement {
             /*
              * Set Qty = 0 (remove product) when user click decrement with current minimum Qty value within cart-page view
              */
-            !this._isShoppingCart
-                ? (newValue = this._minValue)
-                : (newValue = 0);
+            !this._isShoppingCart ? (newValue = this._minValue) : (newValue = 0);
         }
 
         this.setValue(newValue);
@@ -202,11 +189,7 @@ export default class QtyIncrement {
         this._$decrementBtn.on('click', this.decrement.bind(this));
         if (!this._$incrementBtn.is('button')) {
             this._$decrementBtn.on('keydown', (e) => {
-                if (
-                    e.key === 'Enter' ||
-                    e.key === ' ' ||
-                    e.key === 'Spacebar'
-                ) {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
                     e.preventDefault();
                     this.decrement();
                 }
@@ -215,11 +198,7 @@ export default class QtyIncrement {
         this._$incrementBtn.on('click', this.increment.bind(this));
         if (!this._$incrementBtn.is('button')) {
             this._$incrementBtn.on('keydown', (e) => {
-                if (
-                    e.key === 'Enter' ||
-                    e.key === ' ' ||
-                    e.key === 'Spacebar'
-                ) {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
                     e.preventDefault();
                     this.increment();
                 }

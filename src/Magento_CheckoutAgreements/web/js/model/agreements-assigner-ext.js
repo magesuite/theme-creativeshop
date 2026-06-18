@@ -20,9 +20,7 @@ define(['jquery'], function ($) {
             }
 
             // agreementForm has to be adjusted to current placement of T&C block
-            agreementForm = $(
-                '.cs-checkout__agreements div[data-role=checkout-agreements] input'
-            );
+            agreementForm = $('.cs-checkout__agreements div[data-role=checkout-agreements] input');
             agreementData = agreementForm.serializeArray();
             agreementIds = [];
 

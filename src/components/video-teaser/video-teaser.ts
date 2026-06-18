@@ -25,9 +25,7 @@ export default class VideoTeaser {
         viewXmlConfigPath = 'vars.MageSuite_ContentConstructorFrontend.video_teaser'
     ) {
         this._options = deepGet(viewXml, viewXmlConfigPath);
-        this._videoTeasers = document.querySelectorAll(
-            this._options.videoSelector
-        );
+        this._videoTeasers = document.querySelectorAll(this._options.videoSelector);
 
         if (this._videoTeasers?.length > 0) {
             this.initialize();
@@ -49,9 +47,7 @@ export default class VideoTeaser {
                     this.handleVideoTeaser(
                         entry.target,
                         entry.isIntersecting,
-                        Array.from(this._videoTeasers).indexOf(
-                            entry.target as HTMLDivElement
-                        )
+                        Array.from(this._videoTeasers).indexOf(entry.target as HTMLDivElement)
                     );
                 });
             },
@@ -89,9 +85,7 @@ export default class VideoTeaser {
      * @param index
      */
     protected async handleVideoTeaser(videoTeaser, isVisible, index): void {
-        const videoPlayerPlaceholder = videoTeaser.querySelector(
-            '[data-video-teaser]'
-        );
+        const videoPlayerPlaceholder = videoTeaser.querySelector('[data-video-teaser]');
         const videoData: VideoTeaserDataOptions = JSON.parse(
             videoPlayerPlaceholder.dataset.videoTeaser
         );
@@ -99,14 +93,9 @@ export default class VideoTeaser {
             | YouTubePlayerOptions
             | VimeoPlayerOptions
             | FacebookPlayerOptions
-            | FilePlayerOptions = this.getVideoConfiguration(
-            videoTeaser,
-            videoData
-        );
+            | FilePlayerOptions = this.getVideoConfiguration(videoTeaser, videoData);
         const consentStatus: boolean =
-            videoData.type !== 'file'
-                ? await consentManagement.checkConsent(videoData.type)
-                : true;
+            videoData.type !== 'file' ? await consentManagement.checkConsent(videoData.type) : true;
         const hasPlayer: boolean =
             videoPlayerPlaceholder.querySelector('iframe') !== null ||
             videoPlayerPlaceholder.querySelector('video') !== null;
@@ -130,33 +119,23 @@ export default class VideoTeaser {
                         videoPlayer.play(videoTeaserId);
                     }
                 } else {
-                    const videoWrapper: HTMLDivElement =
-                        document.createElement('div');
+                    const videoWrapper: HTMLDivElement = document.createElement('div');
                     videoWrapper.id = videoTeaserId;
                     videoPlayerPlaceholder.prepend(videoWrapper);
 
-                    const pauseButton: HTMLButtonElement | null =
-                        videoTypeConfig.pause_button
-                            ? document.createElement('button')
-                            : null;
+                    const pauseButton: HTMLButtonElement | null = videoTypeConfig.pause_button
+                        ? document.createElement('button')
+                        : null;
 
                     if (pauseButton) {
                         pauseButton.setAttribute('title', $.mage.__('Play'));
-                        pauseButton.classList.add(
-                            this._options.playPauseButtonClassName
-                        );
+                        pauseButton.classList.add(this._options.playPauseButtonClassName);
                         pauseButton.addEventListener(
                             'click',
-                            this.onPlayPauseClick.bind(
-                                this,
-                                videoPlayer,
-                                videoTeaserId
-                            )
+                            this.onPlayPauseClick.bind(this, videoPlayer, videoTeaserId)
                         );
                         videoPlayerPlaceholder
-                            .closest(
-                                this._options.playPauseButtonParentSelector
-                            )
+                            .closest(this._options.playPauseButtonParentSelector)
                             .appendChild(pauseButton);
                     }
 
@@ -185,13 +164,8 @@ export default class VideoTeaser {
             if (isVisible && hasPlayer) {
                 videoPlayer.destroy(videoTeaserId);
 
-                if (
-                    videoPlayerPlaceholder.firstElementChild.id ===
-                    videoTeaserId
-                ) {
-                    videoPlayerPlaceholder.removeChild(
-                        videoPlayerPlaceholder.firstElementChild
-                    );
+                if (videoPlayerPlaceholder.firstElementChild.id === videoTeaserId) {
+                    videoPlayerPlaceholder.removeChild(videoPlayerPlaceholder.firstElementChild);
                 }
             }
         }
@@ -206,10 +180,8 @@ export default class VideoTeaser {
         const distance: DOMRect = element.getBoundingClientRect();
 
         return (
-            distance.top <=
-                (window.innerHeight || document.documentElement.clientHeight) &&
-            distance.left <=
-                (window.innerWidth || document.documentElement.clientWidth) &&
+            distance.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+            distance.left <= (window.innerWidth || document.documentElement.clientWidth) &&
             distance.bottom >= 0 &&
             distance.right >= 0
         );
@@ -225,11 +197,7 @@ export default class VideoTeaser {
     public getVideoConfiguration(
         videoTeaser,
         videoData
-    ):
-        | YouTubePlayerOptions
-        | VimeoPlayerOptions
-        | FacebookPlayerOptions
-        | FilePlayerOptions {
+    ): YouTubePlayerOptions | VimeoPlayerOptions | FacebookPlayerOptions | FilePlayerOptions {
         return this._options[videoData.type];
     }
 
@@ -256,14 +224,10 @@ export default class VideoTeaser {
         videoPlayer.isPlaying(videoTeaserId).then((isPlaying) => {
             if (isPlaying) {
                 pauseButton.setAttribute('title', $.mage.__('Pause'));
-                pauseButton.classList.add(
-                    this._options.playPauseButtonPlayingClassName
-                );
+                pauseButton.classList.add(this._options.playPauseButtonPlayingClassName);
             } else {
                 pauseButton.setAttribute('title', $.mage.__('Play'));
-                pauseButton.classList.remove(
-                    this._options.playPauseButtonPlayingClassName
-                );
+                pauseButton.classList.remove(this._options.playPauseButtonPlayingClassName);
             }
         });
     }

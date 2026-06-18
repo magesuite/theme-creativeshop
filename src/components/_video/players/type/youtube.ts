@@ -14,8 +14,7 @@ const MATCH_URL_YOUTUBE =
  * @param url
  * @returns
  */
-const getVideoId = (url: string): string | null =>
-    url ? url.match(MATCH_URL_YOUTUBE)[1] : null;
+const getVideoId = (url: string): string | null => (url ? url.match(MATCH_URL_YOUTUBE)[1] : null);
 
 const youtubePlayer = {
     players: {},
@@ -57,8 +56,7 @@ const youtubePlayer = {
                     },
                     // Trigger manual loop
                     onStateChange: (event) => {
-                        const { ENDED, PAUSED, PLAYING } =
-                            window[SDK_GLOBAL].PlayerState;
+                        const { ENDED, PAUSED, PLAYING } = window[SDK_GLOBAL].PlayerState;
                         if (options.loop && !options.player_vars.controls) {
                             if (event.data === ENDED) {
                                 event.target?.playVideo();
@@ -86,10 +84,7 @@ const youtubePlayer = {
     play: function (id) {
         const { PAUSED } = window[SDK_GLOBAL].PlayerState;
 
-        if (
-            this.players[id] &&
-            this.players[id].playerInfo.playerState === PAUSED
-        ) {
+        if (this.players[id] && this.players[id].playerInfo.playerState === PAUSED) {
             this.players[id].playVideo();
         }
     },
@@ -101,10 +96,7 @@ const youtubePlayer = {
     pause: function (id, userPaused: boolean) {
         const { PLAYING } = window[SDK_GLOBAL].PlayerState;
 
-        if (
-            this.players[id] &&
-            this.players[id].playerInfo.playerState === PLAYING
-        ) {
+        if (this.players[id] && this.players[id].playerInfo.playerState === PLAYING) {
             this.players[id].pauseVideo();
             if (userPaused) {
                 this._userPaused[id] = true;
@@ -124,9 +116,7 @@ const youtubePlayer = {
     isPlaying: async function (id) {
         const { PLAYING } = window[SDK_GLOBAL].PlayerState;
 
-        return this.players[id]
-            ? this.players[id].playerInfo.playerState === PLAYING
-            : false;
+        return this.players[id] ? this.players[id].playerInfo.playerState === PLAYING : false;
     },
 
     userPaused: function (id: string) {

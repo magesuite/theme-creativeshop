@@ -14,28 +14,19 @@ define(['mage/utils/wrapper'], function (wrapper) {
     function updateDocumentTitle(stepNavigator, code) {
         const step = stepNavigator
             .steps()
-            .find(
-                ({ code: stepCode, alias }) =>
-                    stepCode === code || alias === code
-            );
+            .find(({ code: stepCode, alias }) => stepCode === code || alias === code);
 
-        const title =
-            step?.title &&
-            (typeof step.title === 'function' ? step.title() : step.title);
+        const title = step?.title && (typeof step.title === 'function' ? step.title() : step.title);
         if (title) {
             document.title = buildCheckoutPageTitle(title);
         }
     }
 
     function updateDocumentTitleFromVisibleStep(stepNavigator) {
-        const visibleStep = stepNavigator
-            .steps()
-            .find((step) => step.isVisible?.());
+        const visibleStep = stepNavigator.steps().find((step) => step.isVisible?.());
         const title =
             visibleStep?.title &&
-            (typeof visibleStep.title === 'function'
-                ? visibleStep.title()
-                : visibleStep.title);
+            (typeof visibleStep.title === 'function' ? visibleStep.title() : visibleStep.title);
 
         if (title) {
             document.title = buildCheckoutPageTitle(title);
@@ -43,13 +34,10 @@ define(['mage/utils/wrapper'], function (wrapper) {
     }
 
     return function (StepNavigator) {
-        StepNavigator.next = wrapper.wrap(
-            StepNavigator.next,
-            function (originalAction) {
-                originalAction();
-                updateDocumentTitleFromVisibleStep(StepNavigator);
-            }
-        );
+        StepNavigator.next = wrapper.wrap(StepNavigator.next, function (originalAction) {
+            originalAction();
+            updateDocumentTitleFromVisibleStep(StepNavigator);
+        });
 
         StepNavigator.handleHash = wrapper.wrap(
             StepNavigator.handleHash,

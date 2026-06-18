@@ -27,8 +27,7 @@ define(['jquery', 'mage/translate'], function ($, $t) {
             },
             _create: function () {
                 /** edit [4] start */
-                const uniqueId =
-                    'ui-id-' + Math.random().toString(36).substr(2, 9);
+                const uniqueId = 'ui-id-' + Math.random().toString(36).substr(2, 9);
 
                 if (!this.element.attr('id')) {
                     this.element.attr('id', uniqueId);

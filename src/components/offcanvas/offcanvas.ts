@@ -65,9 +65,7 @@ export default class Offcanvas {
             options
         );
 
-        this._$element = element
-            ? $(element)
-            : $(`.${this._options.className}`);
+        this._$element = element ? $(element) : $(`.${this._options.className}`);
         if (this._$element.length === 0) {
             return;
         }
@@ -86,11 +84,7 @@ export default class Offcanvas {
 
         // Hide offcanvas when search is opened
         $('body').on('before-search-open', () => {
-            if (
-                this._$trigger.hasClass(
-                    `${this._options.triggerClassName}--active`
-                )
-            ) {
+            if (this._$trigger.hasClass(`${this._options.triggerClassName}--active`)) {
                 this.hide();
             }
         });
@@ -111,9 +105,7 @@ export default class Offcanvas {
     public toggle(e: Event): Promise<Offcanvas> {
         e.preventDefault();
 
-        if (
-            this._$trigger.hasClass(`${this._options.triggerClassName}--active`)
-        ) {
+        if (this._$trigger.hasClass(`${this._options.triggerClassName}--active`)) {
             return this.hide();
         }
 
@@ -129,37 +121,31 @@ export default class Offcanvas {
         }
 
         this._isOpen = true;
-        return Promise.all([this._showOverlay(), this._showDrawer()]).then(
-            () => {
-                this._saveScroll();
+        return Promise.all([this._showOverlay(), this._showDrawer()]).then(() => {
+            this._saveScroll();
 
-                this._$trigger
-                    .addClass(`${this._options.triggerClassName}--active`)
-                    .attr('aria-expanded', 'true');
+            this._$trigger
+                .addClass(`${this._options.triggerClassName}--active`)
+                .attr('aria-expanded', 'true');
 
-                this._$element.trigger('offcanvas-show', this);
+            this._$element.trigger('offcanvas-show', this);
 
-                if (this._options.initiallyFocusableElement) {
-                    this._focusElement = this._$element
-                        .find(this._options.initiallyFocusableElement)
-                        .first();
-                }
-                this._focusElement = this._focusElement?.length
-                    ? this._focusElement
-                    : this._$element.find(':focusable').first();
-
-                this._focusElement.focus();
-
-                document.addEventListener(
-                    'focus',
-                    this._eventListeners.focus,
-                    true
-                );
-
-                $(document).on('keydown', this._eventListeners.keyDown);
-                return this;
+            if (this._options.initiallyFocusableElement) {
+                this._focusElement = this._$element
+                    .find(this._options.initiallyFocusableElement)
+                    .first();
             }
-        );
+            this._focusElement = this._focusElement?.length
+                ? this._focusElement
+                : this._$element.find(':focusable').first();
+
+            this._focusElement.focus();
+
+            document.addEventListener('focus', this._eventListeners.focus, true);
+
+            $(document).on('keydown', this._eventListeners.keyDown);
+            return this;
+        });
     }
     /**
      * Hides offcanvas.
@@ -173,20 +159,18 @@ export default class Offcanvas {
         this._isOpen = false;
         $(document).off('keydown', this._eventListeners.keyDown);
 
-        return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
-            () => {
-                this._restoreScroll();
-                this._$trigger
-                    .removeClass(`${this._options.triggerClassName}--active`)
-                    .attr('aria-expanded', 'false');
+        return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(() => {
+            this._restoreScroll();
+            this._$trigger
+                .removeClass(`${this._options.triggerClassName}--active`)
+                .attr('aria-expanded', 'false');
 
-                this._$element.trigger('offcanvas-hide', this);
-                this._$topbar.css('z-index', '');
-                this._disableFocusTrap();
+            this._$element.trigger('offcanvas-hide', this);
+            this._$topbar.css('z-index', '');
+            this._disableFocusTrap();
 
-                return this;
-            }
-        );
+            return this;
+        });
     }
 
     /**
@@ -203,12 +187,10 @@ export default class Offcanvas {
             .removeClass(`${this._options.triggerClassName}--active`)
             .attr('aria-expanded', 'false');
         $('body').removeClass(this._options.bodyOpenClass);
-        return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(
-            () => {
-                this._$element.trigger('offcanvas-hide', this);
-                return this;
-            }
-        );
+        return Promise.all([this._hideOverlay(), this._hideDrawer()]).then(() => {
+            this._$element.trigger('offcanvas-hide', this);
+            return this;
+        });
     }
 
     protected _handleFocus(): void {
@@ -222,8 +204,7 @@ export default class Offcanvas {
         const body = document.body;
         this._currentTopOffset = window.scrollY;
         body.classList.add('no-scroll');
-        this._options.bodyOpenClass &&
-            body.classList.add(this._options.bodyOpenClass);
+        this._options.bodyOpenClass && body.classList.add(this._options.bodyOpenClass);
         body.style.top = `-${this._currentTopOffset}px`;
         $(body).trigger('before-offcanvas-open', [this]);
         this._$pageWrapper.addClass('no-scroll-child');
@@ -232,8 +213,7 @@ export default class Offcanvas {
     protected _restoreScroll() {
         const body = document.body;
         body.classList.remove('no-scroll');
-        this._options.bodyOpenClass &&
-            body.classList.remove(this._options.bodyOpenClass);
+        this._options.bodyOpenClass && body.classList.remove(this._options.bodyOpenClass);
         body.style.top = '';
         this._$pageWrapper.removeClass('no-scroll-child');
         window.scrollTo(0, this._currentTopOffset);
@@ -248,10 +228,7 @@ export default class Offcanvas {
         return new Promise((resolve) => {
             this._$topbar.css('z-index', 'auto');
             this._$overlay.addClass(`overlay--visible`);
-            setTimeout(
-                () => resolve(this),
-                this._options.overlayTransitionDuration
-            );
+            setTimeout(() => resolve(this), this._options.overlayTransitionDuration);
         });
     }
     /**
@@ -261,10 +238,7 @@ export default class Offcanvas {
     protected _hideOverlay(): Promise<Offcanvas> {
         return new Promise((resolve) => {
             this._$overlay.removeClass(`overlay--visible`);
-            setTimeout(
-                () => resolve(this),
-                this._options.overlayTransitionDuration
-            );
+            setTimeout(() => resolve(this), this._options.overlayTransitionDuration);
         });
     }
     /**
@@ -275,10 +249,7 @@ export default class Offcanvas {
         return new Promise((resolve) => {
             this._$drawer.addClass(`drawer--visible`);
             this._$drawer.removeAttr('inert');
-            setTimeout(
-                () => resolve(this),
-                this._options.drawerTransitionDuration
-            );
+            setTimeout(() => resolve(this), this._options.drawerTransitionDuration);
         });
     }
     /**
@@ -298,10 +269,7 @@ export default class Offcanvas {
                 this._$drawer.attr('inert', '');
             }
 
-            setTimeout(
-                () => resolve(this),
-                this._options.drawerTransitionDuration
-            );
+            setTimeout(() => resolve(this), this._options.drawerTransitionDuration);
         });
     }
 
@@ -325,15 +293,11 @@ export default class Offcanvas {
         this._eventListeners.focus = this._handleFocus.bind(this);
 
         if (this._options.offcanvasShowTriggerEvent) {
-            $('body').on(this._options.offcanvasShowTriggerEvent, () =>
-                this.show()
-            );
+            $('body').on(this._options.offcanvasShowTriggerEvent, () => this.show());
         }
 
         if (this._options.offcanvasHideTriggerEvent) {
-            $('body').on(this._options.offcanvasHideTriggerEvent, () =>
-                this.hide()
-            );
+            $('body').on(this._options.offcanvasHideTriggerEvent, () => this.hide());
         }
 
         if (this._options.closeOnBlur) {
@@ -355,21 +319,13 @@ export default class Offcanvas {
         }
 
         $('body').on('modal:open', () => {
-            if (
-                this._$trigger.hasClass(
-                    this._options.triggerClassName + '--active'
-                )
-            ) {
+            if (this._$trigger.hasClass(this._options.triggerClassName + '--active')) {
                 this._disableFocusTrap();
             }
         });
 
         $('body').on('modal:close', () => {
-            if (
-                this._$trigger.hasClass(
-                    this._options.triggerClassName + '--active'
-                )
-            ) {
+            if (this._$trigger.hasClass(this._options.triggerClassName + '--active')) {
                 this._enableFocusTrap();
             }
         });
@@ -377,21 +333,13 @@ export default class Offcanvas {
 
     protected _disableFocusTrap() {
         if (this._eventListeners.focus) {
-            document.removeEventListener(
-                'focus',
-                this._eventListeners.focus,
-                true
-            );
+            document.removeEventListener('focus', this._eventListeners.focus, true);
         }
     }
 
     protected _enableFocusTrap() {
         if (this._eventListeners.focus) {
-            document.addEventListener(
-                'focus',
-                this._eventListeners.focus,
-                true
-            );
+            document.addEventListener('focus', this._eventListeners.focus, true);
         }
     }
 

@@ -243,48 +243,30 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
     &__cta {
         #{$root}__slide--scheme-dark & {
-            @include button(
-                $type: $it_cta-type--dark,
-                $icon_pos: $it_cta-icon-position
-            );
+            @include button($type: $it_cta-type--dark, $icon_pos: $it_cta-icon-position);
         }
 
         #{$root}__slide--scheme-light & {
-            @include button(
-                $type: $it_cta-type--light,
-                $icon_pos: $it_cta-icon-position
-            );
+            @include button($type: $it_cta-type--light, $icon_pos: $it_cta-icon-position);
         }
 
         &-span {
             #{$root}__slide--scheme-dark & {
-                @include button_span(
-                    $type: $it_cta-type--dark,
-                    $icon_pos: $it_cta-icon-position
-                );
+                @include button_span($type: $it_cta-type--dark, $icon_pos: $it_cta-icon-position);
             }
 
             #{$root}__slide--scheme-light & {
-                @include button_span(
-                    $type: $it_cta-type--light,
-                    $icon_pos: $it_cta-icon-position
-                );
+                @include button_span($type: $it_cta-type--light, $icon_pos: $it_cta-icon-position);
             }
         }
 
         &-icon {
             #{$root}__slide--scheme-dark & {
-                @include button_icon(
-                    $type: $it_cta-type--dark,
-                    $icon_pos: $it_cta-icon-position
-                );
+                @include button_icon($type: $it_cta-type--dark, $icon_pos: $it_cta-icon-position);
             }
 
             #{$root}__slide--scheme-light & {
-                @include button_icon(
-                    $type: $it_cta-type--light,
-                    $icon_pos: $it_cta-icon-position
-                );
+                @include button_icon($type: $it_cta-type--light, $icon_pos: $it_cta-icon-position);
             }
         }
 
@@ -345,12 +327,7 @@ $it--icon_items-in-view-till-laptop: deep-get(
                         }
 
                         #{$root}__slide--scheme-dark & {
-                            @include teaser-gradient-overlay(
-                                $x,
-                                $y,
-                                $it_gradient-color--dark,
-                                85%
-                            );
+                            @include teaser-gradient-overlay($x, $y, $it_gradient-color--dark, 85%);
                         }
                     }
                 }
@@ -413,9 +390,8 @@ $it--icon_items-in-view-till-laptop: deep-get(
         @each $breakpoint, $itemsPerRow in $it--icon_items-in-view-till-laptop {
             @include media('>=#{$breakpoint}', '<laptop') {
                 --size: calc(
-                    var(--base-size) / #{$itemsPerRow} - ((
-                                    #{$itemsPerRow - 1} * var(--gap)
-                                ) / #{$itemsPerRow})
+                    var(--base-size) / #{$itemsPerRow} -
+                        ((#{$itemsPerRow - 1} * var(--gap)) / #{$itemsPerRow})
                 ) !important;
             }
         }
@@ -513,7 +489,9 @@ $it--icon_items-in-view-till-laptop: deep-get(
 
     &__consent-wrapper {
         position: absolute;
-        transition: transform 0.5s, opacity 0.5s;
+        transition:
+            transform 0.5s,
+            opacity 0.5s;
         background-color: rgba($color_white, 0.6);
         align-items: center;
         justify-content: center;

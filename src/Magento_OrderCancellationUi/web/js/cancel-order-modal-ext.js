@@ -46,9 +46,7 @@ define([
                             /** @inheritdoc */
                             click: function () {
                                 let thisModal = this,
-                                    reason = $(
-                                        '#cancel-order-reason-' + order_id
-                                    )
+                                    reason = $('#cancel-order-reason-' + order_id)
                                         .find(':selected')
                                         .text(),
                                     mutation = `
@@ -85,26 +83,18 @@ mutation cancelOrder($order_id: ID!, $reason: String!) {
                                             .attr('aria-busy', false)
                                             .trigger('processStop');
 
-                                        if (
-                                            response.responseJSON.data
-                                                .cancelOrder.error !== null
-                                        ) {
+                                        if (response.responseJSON.data.cancelOrder.error !== null) {
                                             customerData.set('messages', {
                                                 messages: [
                                                     {
                                                         text: $.mage.__(
-                                                            response
-                                                                .responseJSON
-                                                                .data
-                                                                .cancelOrder
+                                                            response.responseJSON.data.cancelOrder
                                                                 .error
                                                         ),
                                                         type: 'error',
                                                     },
                                                 ],
-                                                data_id: Math.floor(
-                                                    Date.now() / 1000
-                                                ),
+                                                data_id: Math.floor(Date.now() / 1000),
                                             });
                                         } else {
                                             $.mage.cookies.set(
@@ -112,10 +102,7 @@ mutation cancelOrder($order_id: ID!, $reason: String!) {
                                                 JSON.stringify([
                                                     {
                                                         text: $.mage.__(
-                                                            response
-                                                                .responseJSON
-                                                                .data
-                                                                .cancelOrder
+                                                            response.responseJSON.data.cancelOrder
                                                                 .order.status
                                                         ),
                                                         type: 'success',

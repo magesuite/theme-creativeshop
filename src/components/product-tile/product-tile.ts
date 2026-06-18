@@ -25,10 +25,7 @@ export default class ProductTile {
     protected _options: ProductTileOptions;
     protected _$element?: JQuery;
 
-    public constructor(
-        $element?: JQuery<HTMLElement>,
-        options?: ProductTileOptions
-    ) {
+    public constructor($element?: JQuery<HTMLElement>, options?: ProductTileOptions) {
         const areSwatchesConfigurable = deepGet(
             viewXml,
             'vars.Magento_Catalog.configurable_tile_swatches.enabled'
@@ -61,9 +58,7 @@ export default class ProductTile {
             }
 
             if (!$target.closest(this._options.ignoredSelectors).length) {
-                const $productTile = $target.closest(
-                    this._options.tileModifier
-                );
+                const $productTile = $target.closest(this._options.tileModifier);
 
                 window.location = $productTile
                     .find(`${this._options.tileLinkElement}`)

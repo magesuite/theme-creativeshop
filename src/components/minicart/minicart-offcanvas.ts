@@ -216,18 +216,11 @@ export default class Minicart {
             options
         );
 
-        const minicartMessageSetting = deepGet(
-            viewXml,
-            'vars.Magento_Checkout.minicart_messages'
-        );
+        const minicartMessageSetting = deepGet(viewXml, 'vars.Magento_Checkout.minicart_messages');
 
-        this._options.isMessagesOffcanvas =
-            minicartMessageSetting === 'page' ? false : true;
+        this._options.isMessagesOffcanvas = minicartMessageSetting === 'page' ? false : true;
 
-        this._xmlSettings = deepGet(
-            viewXml,
-            'vars.Magento_Checkout.minicart_offcanvas'
-        );
+        this._xmlSettings = deepGet(viewXml, 'vars.Magento_Checkout.minicart_offcanvas');
 
         if (!this._xmlSettings.enabled) {
             return;
@@ -254,13 +247,9 @@ export default class Minicart {
             viewXml,
             'vars.Magento_Checkout.minicart_offcanvas.products_carousel.js'
         );
-        this._$minicartTrigger = $(
-            `.${this._options.minicartTriggerClassName}`
-        );
+        this._$minicartTrigger = $(`.${this._options.minicartTriggerClassName}`);
         this._$minicart = $("[data-block='minicart']");
-        this._$messagesContainer = $(
-            `.${this._options.messagesContainerClass}`
-        );
+        this._$messagesContainer = $(`.${this._options.messagesContainerClass}`);
         this._$message = null;
         this._$messageHtmlContainer = $(
             `<div class="${this._options.messageHtmlContainerClass}"></div>`
@@ -282,19 +271,14 @@ export default class Minicart {
         });
 
         this._$minicart
-            .on(
-                'click touchend',
-                '#btn-minicart-close, .btn-minicart-close',
-                (): any => this._offcanvasMinicart.hide()
+            .on('click touchend', '#btn-minicart-close, .btn-minicart-close', (): any =>
+                this._offcanvasMinicart.hide()
             )
             .on('openMinicart', (): void => this.openMinicart())
             .on('offcanvas-hide', (): void => {
                 $('body').removeClass('minicart-opening');
 
-                if (
-                    this._$triggeringElement &&
-                    this._$triggeringElement.length
-                ) {
+                if (this._$triggeringElement && this._$triggeringElement.length) {
                     this._$triggeringElement.trigger('focus');
                     this._$triggeringElement = null;
                 }
@@ -308,9 +292,7 @@ export default class Minicart {
                     this._$triggeringElement = $addToCartButton;
                 }
 
-                if (
-                    typeof this._options.shouldOpenOnProductAdded === 'function'
-                ) {
+                if (typeof this._options.shouldOpenOnProductAdded === 'function') {
                     if (this._options.shouldOpenOnProductAdded() === true) {
                         this.openMinicart();
                     }
@@ -331,14 +313,12 @@ export default class Minicart {
         if (this._options.isMessagesOffcanvas) {
             this._clearGlobalMessage();
             this._clearMinicartMessage();
-            requireAsync(['Magento_Ui/js/lib/view/utils/async']).then(
-                (): void => {
-                    $.async(
-                        `.${this._options.messagesContainerClass} .${this._options.messageClass}`,
-                        (): void => this._cloneAddToCartMessage()
-                    );
-                }
-            );
+            requireAsync(['Magento_Ui/js/lib/view/utils/async']).then((): void => {
+                $.async(
+                    `.${this._options.messagesContainerClass} .${this._options.messageClass}`,
+                    (): void => this._cloneAddToCartMessage()
+                );
+            });
         }
 
         if (this._xmlSettings.products_carousel.enabled) {
@@ -351,18 +331,14 @@ export default class Minicart {
      */
     protected _cloneAddToCartMessage(): void {
         // Clone message
-        this._$message = this._$messagesContainer.find(
-            `.${this._options.messageWrapperClass}`
-        );
+        this._$message = this._$messagesContainer.find(`.${this._options.messageWrapperClass}`);
         this._$message.clone().appendTo(this._$messageHtmlContainer);
 
         // Clear main message wrapper
         this._$message.empty();
 
         // Insert cloned message HTML into offcanvas minicart
-        this._$messageHtmlContainer.insertAfter(
-            `.${this._options.messageInsertAfterClass}`
-        );
+        this._$messageHtmlContainer.insertAfter(`.${this._options.messageInsertAfterClass}`);
 
         // Hide minicart message with animation.
         this._hideMinicartMessage();
@@ -375,9 +351,7 @@ export default class Minicart {
      * Show minicart message.
      */
     protected _showMinicartMessage(): void {
-        this._$minicart
-            .find(`.${this._options.messageHtmlContainerClass}`)
-            .show();
+        this._$minicart.find(`.${this._options.messageHtmlContainerClass}`).show();
     }
 
     /**
@@ -412,9 +386,7 @@ export default class Minicart {
      * Clear global message if exist.
      */
     protected _clearGlobalMessage(): void {
-        this._$message = this._$messagesContainer.find(
-            `.${this._options.messageWrapperClass}`
-        );
+        this._$message = this._$messagesContainer.find(`.${this._options.messageWrapperClass}`);
 
         // Clear main message wrapper
         if (this._$message.length) {
@@ -436,88 +408,71 @@ export default class Minicart {
             if (!$carouselWrapper.length) return;
 
             $carouselWrapper
-                .removeClass(
-                    `${this._productsCarouselOptions.componentWrapperClass}--ready`
-                )
-                .addClass(
-                    `${this._productsCarouselOptions.componentWrapperClass}--loading`
+                .removeClass(`${this._productsCarouselOptions.componentWrapperClass}--ready`)
+                .addClass(`${this._productsCarouselOptions.componentWrapperClass}--loading`);
+
+            this._getProductsCarousel(productId).then((response: AjaxResponse): void => {
+                const $dataTarget: JQuery = this._$minicart.find(
+                    `.${this._productsCarouselOptions.componentClass}`
                 );
 
-            this._getProductsCarousel(productId).then(
-                (response: AjaxResponse): void => {
-                    const $dataTarget: JQuery = this._$minicart.find(
-                        `.${this._productsCarouselOptions.componentClass}`
+                if (!$.isEmptyObject(response) && $dataTarget.length) {
+                    $carouselWrapper.removeClass(
+                        `${this._productsCarouselOptions.componentWrapperClass}--loading`
                     );
 
-                    if (!$.isEmptyObject(response) && $dataTarget.length) {
-                        $carouselWrapper.removeClass(
-                            `${this._productsCarouselOptions.componentWrapperClass}--loading`
+                    const responseCarouselHTML: string = response.content;
+                    const $carouselSlides = $(responseCarouselHTML).find(
+                        `.${this._productsCarouselOptions.carouselClass}__slide`
+                    );
+
+                    $dataTarget.empty();
+
+                    if ($carouselSlides.length) {
+                        $carouselWrapper.addClass(
+                            `${this._productsCarouselOptions.componentWrapperClass}--ready`
                         );
 
-                        const responseCarouselHTML: string = response.content;
-                        const $carouselSlides = $(responseCarouselHTML).find(
-                            `.${this._productsCarouselOptions.carouselClass}__slide`
-                        );
+                        const carouselHTMLMarkup = $(responseCarouselHTML);
+                        let carouselSettings = $(
+                            `.${this._productsCarouselOptions.carouselClass}`,
+                            carouselHTMLMarkup
+                        ).data('mage-init');
 
-                        $dataTarget.empty();
+                        if (carouselSettings != null) {
+                            carouselSettings.ccProductsCarousel = {
+                                ...carouselSettings.ccProductsCarousel,
+                                ...this._productsCarouselSettings,
+                            };
 
-                        if ($carouselSlides.length) {
-                            $carouselWrapper.addClass(
-                                `${this._productsCarouselOptions.componentWrapperClass}--ready`
-                            );
+                            carouselSettings = JSON.stringify(carouselSettings);
 
-                            const carouselHTMLMarkup = $(responseCarouselHTML);
-                            let carouselSettings = $(
+                            $(
                                 `.${this._productsCarouselOptions.carouselClass}`,
                                 carouselHTMLMarkup
-                            ).data('mage-init');
+                            ).attr('data-mage-init', carouselSettings);
+                            $dataTarget.append(carouselHTMLMarkup);
+                        } else {
+                            $dataTarget.html(responseCarouselHTML);
+                        }
 
-                            if (carouselSettings != null) {
-                                carouselSettings.ccProductsCarousel = {
-                                    ...carouselSettings.ccProductsCarousel,
-                                    ...this._productsCarouselSettings,
-                                };
+                        $dataTarget.trigger('contentUpdated');
 
-                                carouselSettings =
-                                    JSON.stringify(carouselSettings);
+                        requireAsync(['mage/cookies', 'catalogAddToCart']).then(() => {
+                            // Refresh the form_key for rendered html.
+                            const formKey = $.mage.cookies.get('form_key');
+                            $dataTarget.find('input[name="form_key"]').val(formKey);
 
-                                $(
-                                    `.${this._productsCarouselOptions.carouselClass}`,
-                                    carouselHTMLMarkup
-                                ).attr('data-mage-init', carouselSettings);
-                                $dataTarget.append(carouselHTMLMarkup);
-                            } else {
-                                $dataTarget.html(responseCarouselHTML);
-                            }
+                            // Initialize Magento addToCart widget
+                            $dataTarget.find('[data-role=tocart-form]').catalogAddToCart();
+                        });
 
-                            $dataTarget.trigger('contentUpdated');
-
-                            requireAsync([
-                                'mage/cookies',
-                                'catalogAddToCart',
-                            ]).then(() => {
-                                // Refresh the form_key for rendered html.
-                                const formKey = $.mage.cookies.get('form_key');
-                                $dataTarget
-                                    .find('input[name="form_key"]')
-                                    .val(formKey);
-
-                                // Initialize Magento addToCart widget
-                                $dataTarget
-                                    .find('[data-role=tocart-form]')
-                                    .catalogAddToCart();
-                            });
-
-                            if (
-                                this._xmlSettings.products_carousel
-                                    .button_dynamic_url
-                            ) {
-                                this._dynamicRedirect(response.category);
-                            }
+                        if (this._xmlSettings.products_carousel.button_dynamic_url) {
+                            this._dynamicRedirect(response.category);
                         }
                     }
                 }
-            );
+            });
         });
     }
 
@@ -546,9 +501,7 @@ export default class Minicart {
             mageUrl.setBaseUrl(window.BASE_URL);
 
             this._endpointUrl.resolve(
-                mageUrl.build(
-                    `${this._productsCarouselOptions.redererEndpoint}`
-                )
+                mageUrl.build(`${this._productsCarouselOptions.redererEndpoint}`)
             );
         });
     }
@@ -594,11 +547,7 @@ export default class Minicart {
             .on('click', (event: JQuery.ClickEvent): void => {
                 const $target: JQuery = $(event.target);
 
-                if (
-                    $target.closest(
-                        `.${this._productsCarouselOptions.btnClass}`
-                    ).length
-                ) {
+                if ($target.closest(`.${this._productsCarouselOptions.btnClass}`).length) {
                     event.preventDefault();
                 }
                 window.location.href = response.url;

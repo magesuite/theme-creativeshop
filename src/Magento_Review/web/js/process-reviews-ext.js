@@ -15,11 +15,7 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
         var processedReviewsCount = 0;
         var $loadMoreReviewsButton;
 
-        var addLoadMoreButton = function (
-            nextPageUrl,
-            reviewsCountForPage,
-            numberOfReviews
-        ) {
+        var addLoadMoreButton = function (nextPageUrl, reviewsCountForPage, numberOfReviews) {
             $(reviewContainerSelector)
                 .append(
                     '<div class="cs-reviews__button" id="load-more-reviews" data-next-url="' +
@@ -45,18 +41,12 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
             $loadMoreReviewsButton.loader();
         };
 
-        var updateLoadMoreButton = function (
-            nextPageUrl,
-            reviewsPerPage,
-            numberOfReviews
-        ) {
+        var updateLoadMoreButton = function (nextPageUrl, reviewsPerPage, numberOfReviews) {
             $loadMoreReviewsButton.attr('data-next-url', nextPageUrl);
 
             $loadMoreReviewsButton.find('.count').text(reviewsPerPage);
             $('.' + reviewsCountSelectorClass).text(
-                showMoreText
-                    .replace('%1', processedReviewsCount)
-                    .replace('%2', numberOfReviews)
+                showMoreText.replace('%1', processedReviewsCount).replace('%2', numberOfReviews)
             );
 
             $loadMoreReviewsButton.loader('hide');
@@ -71,11 +61,7 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
             });
         };
 
-        var handleAddingLoadMoreButton = function (
-            nextPageUrl,
-            reviewsPerPage,
-            numberOfReviews
-        ) {
+        var handleAddingLoadMoreButton = function (nextPageUrl, reviewsPerPage, numberOfReviews) {
             $('.cs-reviews').addClass('cs-reviews--load-more');
             $(reviewContainerSelector + ' .pages').remove();
 
@@ -89,19 +75,10 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
             processedReviewsCount += reviewsPerPage;
 
             var $pagination = $(data).find('.cs-pagination__content');
-            var numberOfReviews = parseInt(
-                $pagination.attr('data-reviews-number'),
-                10
-            );
+            var numberOfReviews = parseInt($pagination.attr('data-reviews-number'), 10);
             var nextPageUrl = $pagination.attr('data-reviews-next-url');
-            var lastPageNumber = parseInt(
-                $pagination.attr('data-reviews-last-page-number'),
-                10
-            );
-            var currentPage = parseInt(
-                $pagination.attr('data-reviews-current-page'),
-                10
-            );
+            var lastPageNumber = parseInt($pagination.attr('data-reviews-last-page-number'), 10);
+            var currentPage = parseInt($pagination.attr('data-reviews-current-page'), 10);
             var isLastPage = $pagination.attr('data-reviews-is-last-page');
 
             // Penultimate page
@@ -147,9 +124,7 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
                         reviewsData.numberOfReviews
                     );
                 } else {
-                    $('#product-review-container')
-                        .append(data)
-                        .trigger('contentUpdated');
+                    $('#product-review-container').append(data).trigger('contentUpdated');
 
                     if (!$(reviewContainerSelector + ' .pages').length) {
                         // There is only 10 or less reviews
@@ -174,9 +149,7 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
             }
 
             if ($(reviewContainerSelector + ' .pages').length) {
-                var reviewsData = processReviewsData(
-                    $(reviewContainerSelector).html()
-                );
+                var reviewsData = processReviewsData($(reviewContainerSelector).html());
                 handleAddingLoadMoreButton(
                     reviewsData.nextPageUrl,
                     reviewsData.reviewsPerPage,
@@ -189,25 +162,17 @@ define(['jquery', 'loader', 'mage/translate'], function ($) {
                 var reviewsSection = document.querySelector('#reviews');
 
                 if ($addReviewLinks.length && reviewsSection) {
-                    var $collapsibleTrigger = $(reviewsSection).find(
-                        '[data-role="title"]'
-                    );
+                    var $collapsibleTrigger = $(reviewsSection).find('[data-role="title"]');
 
                     $addReviewLinks.on('click', function (e) {
                         e.preventDefault();
 
                         window.scrollTo({
-                            top:
-                                reviewsSection.getBoundingClientRect().top +
-                                window.scrollY -
-                                90,
+                            top: reviewsSection.getBoundingClientRect().top + window.scrollY - 90,
                             behavior: 'smooth',
                         });
 
-                        if (
-                            $collapsibleTrigger.attr('aria-expanded') ===
-                            'false'
-                        ) {
+                        if ($collapsibleTrigger.attr('aria-expanded') === 'false') {
                             $collapsibleTrigger.trigger('click');
                         }
                     });

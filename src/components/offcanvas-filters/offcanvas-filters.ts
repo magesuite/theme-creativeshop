@@ -19,29 +19,20 @@ export default class OffcanvasFilters extends Offcanvas {
     constructor(element?: HTMLElement, options?: OffcanvasOptions) {
         super(element, options);
 
-        if (
-            this._$drawer &&
-            (this.offcanvasDesktopEnabled || this.offcanvasMobileEnabled)
-        ) {
-            document.addEventListener(
-                'breakpointChange',
-                this._onBreakpointChange.bind(this)
-            );
+        if (this._$drawer && (this.offcanvasDesktopEnabled || this.offcanvasMobileEnabled)) {
+            document.addEventListener('breakpointChange', this._onBreakpointChange.bind(this));
             this._onBreakpointChange();
         }
     }
 
     protected _shouldEnableDrawer(isDesktop: boolean) {
-        return isDesktop
-            ? this.offcanvasDesktopEnabled
-            : this.offcanvasMobileEnabled;
+        return isDesktop ? this.offcanvasDesktopEnabled : this.offcanvasMobileEnabled;
     }
 
     protected _onBreakpointChange() {
         if (
             this._shouldEnableDrawer(
-                window.breakpoint.current >=
-                    window.breakpoint[this.offcanvasBreakpoint]
+                window.breakpoint.current >= window.breakpoint[this.offcanvasBreakpoint]
             )
         ) {
             this._$drawer.attr('inert', '');

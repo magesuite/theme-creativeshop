@@ -15,12 +15,7 @@ define([
             function (originalAction, methods) {
                 originalAction(methods);
 
-                if (
-                    quote &&
-                    !quote.paymentMethod() &&
-                    !quote.isVirtual() &&
-                    methods.length
-                ) {
+                if (quote && !quote.paymentMethod() && !quote.isVirtual() && methods.length) {
                     var filteredMethods = _.without(
                         methods,
                         _.find(methods, function (paymentMethod) {

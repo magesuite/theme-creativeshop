@@ -82,10 +82,8 @@ export default class Instagram {
         const rect: DOMRect = element.getBoundingClientRect();
 
         return (
-            rect.top <=
-                (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.left <=
-                (window.innerWidth || document.documentElement.clientWidth) &&
+            rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.left <= (window.innerWidth || document.documentElement.clientWidth) &&
             rect.bottom >= 0 &&
             rect.right >= 0
         );
@@ -93,13 +91,9 @@ export default class Instagram {
 
     public async loadInstagram(): Promise<void> {
         try {
-            const consentGranted: boolean =
-                await consentManagement.checkConsent('instagram');
+            const consentGranted: boolean = await consentManagement.checkConsent('instagram');
 
-            this._$element.toggleClass(
-                this._options.teaserConsentDisplayedClass,
-                !consentGranted
-            );
+            this._$element.toggleClass(this._options.teaserConsentDisplayedClass, !consentGranted);
 
             if (consentGranted) {
                 this.loadImages();
@@ -115,15 +109,13 @@ export default class Instagram {
     public loadImages(): void {
         const { consentSrc, consentSrcset } = this._options.dataAttributes;
 
-        this._$element
-            .find(`[${consentSrc}], [${consentSrcset}]`)
-            .each((_, el) => {
-                const src = el.getAttribute(consentSrc);
-                const srcset = el.getAttribute(consentSrcset);
+        this._$element.find(`[${consentSrc}], [${consentSrcset}]`).each((_, el) => {
+            const src = el.getAttribute(consentSrc);
+            const srcset = el.getAttribute(consentSrcset);
 
-                if (src) el.setAttribute('src', src);
-                if (srcset) el.setAttribute('srcset', srcset);
-            });
+            if (src) el.setAttribute('src', src);
+            if (srcset) el.setAttribute('srcset', srcset);
+        });
     }
 
     public async showConsentInfo() {
@@ -140,13 +132,8 @@ export default class Instagram {
     }
 
     public hideConsentInfo(): void {
-        consentManagement.toggleConsentLayerVisibility(
-            this._$element[0],
-            false
-        );
+        consentManagement.toggleConsentLayerVisibility(this._$element[0], false);
 
-        this._$element
-            .find(`.${this._options.teaserSlidesWrapperClass}`)
-            .removeAttr('aria-hidden');
+        this._$element.find(`.${this._options.teaserSlidesWrapperClass}`).removeAttr('aria-hidden');
     }
 }

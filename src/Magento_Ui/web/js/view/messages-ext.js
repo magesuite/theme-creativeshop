@@ -14,17 +14,13 @@ define(['ko', 'jquery'], function (ko, $) {
                 this._super();
 
                 if (
-                    this.index.indexOf(
-                        'checkout.steps.billing-step.payment.payments-list'
-                    ) !== -1
+                    this.index.indexOf('checkout.steps.billing-step.payment.payments-list') !== -1
                 ) {
                     this.messageContainer.errorMessages.subscribe(function () {
                         if ($('.payment-method._active').length) {
                             $('html, body').animate(
                                 {
-                                    scrollTop: $(
-                                        '.payment-method._active'
-                                    ).offset().top,
+                                    scrollTop: $('.payment-method._active').offset().top,
                                 },
                                 800
                             );

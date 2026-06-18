@@ -23,9 +23,7 @@ define([
                 if (
                     document.body.classList.contains('page-product-bundle') ||
                     document.body.classList.contains('page-product-giftcard') ||
-                    document.body.classList.contains(
-                        'page-product--no-missing-swatches-modal'
-                    )
+                    document.body.classList.contains('page-product--no-missing-swatches-modal')
                 ) {
                     return;
                 }
@@ -58,9 +56,7 @@ define([
                 }
 
                 // Create modal
-                $(document.body).prepend(
-                    '<div id="missing-swatches-modal"></div>'
-                );
+                $(document.body).prepend('<div id="missing-swatches-modal"></div>');
 
                 var slideModal = modal(
                     {
@@ -72,9 +68,7 @@ define([
                         autoOpen: true,
                         actions: {
                             cancel: function () {
-                                $form.appendTo(
-                                    '.cs-buybox__section--product-form'
-                                );
+                                $form.appendTo('.cs-buybox__section--product-form');
                             },
                         },
                         buttons: [],
@@ -100,28 +94,26 @@ define([
                     $form.appendTo('.missing-swatches-modal .modal-content');
                     $formParent.prepend($clonedForm);
 
-                    $form
-                        .find('input, select')
-                        .on('change.addToCart', function () {
-                            if ($form.validation('isValid')) {
-                                $form.trigger('processStart');
+                    $form.find('input, select').on('change.addToCart', function () {
+                        if ($form.validation('isValid')) {
+                            $form.trigger('processStart');
 
-                                $clonedForm.remove();
-                                $formParent.prepend($form);
-                                $form.find('.product-options-bottom').show();
-                                $formParent.css('height', '');
+                            $clonedForm.remove();
+                            $formParent.prepend($form);
+                            $form.find('.product-options-bottom').show();
+                            $formParent.css('height', '');
 
-                                slideModal.closeModal();
+                            slideModal.closeModal();
 
-                                $form.trigger('processStop');
+                            $form.trigger('processStop');
 
-                                var jqForm = $form.catalogAddToCart({
-                                    bindSubmit: false,
-                                });
+                            var jqForm = $form.catalogAddToCart({
+                                bindSubmit: false,
+                            });
 
-                                jqForm.catalogAddToCart('submitForm', jqForm);
-                            }
-                        });
+                            jqForm.catalogAddToCart('submitForm', jqForm);
+                        }
+                    });
                 });
             },
         });

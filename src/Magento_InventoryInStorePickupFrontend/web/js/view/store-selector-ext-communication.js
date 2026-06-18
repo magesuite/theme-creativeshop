@@ -12,8 +12,7 @@ define(['ko'], function (ko) {
                 isStorePickupSelected: ko.observable(false),
 
                 imports: {
-                    isStorePickupSelected:
-                        'checkout.steps.store-pickup:isStorePickupSelected',
+                    isStorePickupSelected: 'checkout.steps.store-pickup:isStorePickupSelected',
                 },
             },
         });

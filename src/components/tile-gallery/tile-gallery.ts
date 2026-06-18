@@ -101,9 +101,7 @@ export default class TileGallery {
             options
         );
 
-        this._$galleryItems = this._$gallery.find(
-            `.${this._options.galleryItemClass}`
-        );
+        this._$galleryItems = this._$gallery.find(`.${this._options.galleryItemClass}`);
         this._$defaultMainImage = this._$gallery
             .closest(`.${this._options.galleryAndMainImageWrapperClass}`)
             .find(`.${this._options.mainImageClass}`);
@@ -162,11 +160,7 @@ export default class TileGallery {
      * Switches gallery image with and marks active thumbnail with CSS class.
      * This method provides additional classes that can be used to animate switch.
      */
-    protected _switchImage(
-        imgSrc: string,
-        imgSrcset: string,
-        index: number
-    ): any {
+    protected _switchImage(imgSrc: string, imgSrcset: string, index: number): any {
         if (!imgSrc) {
             return;
         }
@@ -184,14 +178,12 @@ export default class TileGallery {
         if ($selectedImage.length > 0) {
             this._toggleMainImage($selectedImage);
         } else {
-            this._loadChosenImage(imgSrc, imgSrcset, index).then(
-                (newImage: HTMLElement): void => {
-                    mainImageParent.append(newImage);
-                    requestAnimationFrame(() => {
-                        this._toggleMainImage($(newImage));
-                    });
-                }
-            );
+            this._loadChosenImage(imgSrc, imgSrcset, index).then((newImage: HTMLElement): void => {
+                mainImageParent.append(newImage);
+                requestAnimationFrame(() => {
+                    this._toggleMainImage($(newImage));
+                });
+            });
         }
     }
 
@@ -223,9 +215,7 @@ export default class TileGallery {
                 const index = this._$galleryItems.index($item);
                 const $itemImg = $item.find('img');
                 const imageSrc: string = $itemImg.data('product-image-src');
-                const imageSrcset: string = $itemImg.data(
-                    'product-image-srcset'
-                );
+                const imageSrcset: string = $itemImg.data('product-image-srcset');
 
                 this._setActiveThumbnail(index);
                 this._switchImage(imageSrc, imageSrcset, index);

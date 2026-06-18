@@ -111,17 +111,22 @@ $button_icon-offset: 0.1em !default;
 
 @mixin button-box($type: $button_default-type) {
     @if ($type == 'link') {
-        transition: color $button_animation-time, fill $button_animation-time;
+        transition:
+            color $button_animation-time,
+            fill $button_animation-time;
 
         * {
-            transition: color $button_animation-time,
+            transition:
+                color $button_animation-time,
                 fill $button_animation-time;
         }
     } @else {
         padding: $button_padding;
         box-sizing: border-box;
-        transition: background-color $button_animation-time,
-            border-color $button_animation-time, fill $button_animation-time,
+        transition:
+            background-color $button_animation-time,
+            border-color $button_animation-time,
+            fill $button_animation-time,
             color $button_animation-time;
         vertical-align: middle;
         z-index: 5;
@@ -130,10 +135,7 @@ $button_icon-offset: 0.1em !default;
     @include button-box-hook($type);
 }
 
-@mixin button-animation-for(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button-animation-for($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     @if ($type == 'primary') {
         @if ($button_primary-enable-animation) {
             @include button_animation(
@@ -330,10 +332,7 @@ $button_icon-offset: 0.1em !default;
     @include button-colors-hook($type);
 }
 
-@mixin button(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     @include button-base();
     @include button-box($type);
     @include button-animation-for($type, $icon_pos);
@@ -354,10 +353,7 @@ $button_icon-offset: 0.1em !default;
     @include button_span-base-hook();
 }
 
-@mixin button_span-icon(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button_span-icon($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     @if ($icon_pos == 'right') {
         padding-left: 0;
 
@@ -366,25 +362,14 @@ $button_icon-offset: 0.1em !default;
         } @else {
             @if (
                 unit($button_padding-when-icon) ==
-                    unit(
-                        get-value-from-list(
-                            $variable: $button_padding,
-                            $side: $icon_pos
-                        )
-                    )
+                    unit(get-value-from-list($variable: $button_padding, $side: $icon_pos))
             ) {
                 padding-right: $button_padding-when-icon +
-                    get-value-from-list(
-                        $variable: $button_padding,
-                        $side: $icon_pos
-                    );
+                    get-value-from-list($variable: $button_padding, $side: $icon_pos);
             } @else {
                 padding-right: calc(
                     #{$button_padding-when-icon} +
-                        #{get-value-from-list(
-                            $variable: $button_padding,
-                            $side: $icon_pos
-                        )}
+                        #{get-value-from-list($variable: $button_padding, $side: $icon_pos)}
                 );
             }
         }
@@ -396,25 +381,14 @@ $button_icon-offset: 0.1em !default;
         } @else {
             @if (
                 unit($button_padding-when-icon) ==
-                    unit(
-                        get-value-from-list(
-                            $variable: $button_padding,
-                            $side: $icon_pos
-                        )
-                    )
+                    unit(get-value-from-list($variable: $button_padding, $side: $icon_pos))
             ) {
                 padding-left: $button_padding-when-icon +
-                    get-value-from-list(
-                        $variable: $button_padding,
-                        $side: $icon_pos
-                    );
+                    get-value-from-list($variable: $button_padding, $side: $icon_pos);
             } @else {
                 padding-left: calc(
                     #{$button_padding-when-icon} +
-                        #{get-value-from-list(
-                            $variable: $button_padding,
-                            $side: $icon_pos
-                        )}
+                        #{get-value-from-list($variable: $button_padding, $side: $icon_pos)}
                 );
             }
         }
@@ -425,10 +399,7 @@ $button_icon-offset: 0.1em !default;
     @include button_span-icon-hook($type, $icon_pos);
 }
 
-@mixin button_span(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button_span($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     @include button_span-base();
     @include button_span-icon($type, $icon_pos);
 
@@ -445,10 +416,7 @@ $button_icon-offset: 0.1em !default;
     @include button_icon-base-hook();
 }
 
-@mixin button_icon-pos(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button_icon-pos($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     @if ($icon_pos == 'right') or ($icon_pos == 'left') {
         position: absolute;
         top: 50%;
@@ -468,20 +436,14 @@ $button_icon-offset: 0.1em !default;
             right: 0;
         } @else {
             margin-right: 0;
-            right: get-value-from-list(
-                $variable: $button_padding,
-                $side: $icon_pos
-            );
+            right: get-value-from-list($variable: $button_padding, $side: $icon_pos);
         }
     } @else if ($icon_pos == 'left') {
         @if ($type == 'link') {
             left: 0;
         } @else {
             margin-left: 0;
-            left: get-value-from-list(
-                $variable: $button_padding,
-                $side: $icon_pos
-            );
+            left: get-value-from-list($variable: $button_padding, $side: $icon_pos);
         }
     } @else {
         display: none;
@@ -490,10 +452,7 @@ $button_icon-offset: 0.1em !default;
     @include button_icon-pos-hook($type, $icon_pos);
 }
 
-@mixin button_icon(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button_icon($type: $button_default-type, $icon_pos: $button_default-icon-pos) {
     @include button_icon-base();
     @include button_icon-pos($type, $icon_pos);
 

@@ -127,22 +127,13 @@ export default class SearchresultsSwitcher {
 
         if (this._$triggers.length && this._$contents.length > 1) {
             this._init();
-        } else if (
-            this._$contents.length === 0 &&
-            this._$searchResultsPage.length
-        ) {
-            $('.cs-page-category__main').addClass(
-                'cs-page-category__main--search-no-result'
-            );
+        } else if (this._$contents.length === 0 && this._$searchResultsPage.length) {
+            $('.cs-page-category__main').addClass('cs-page-category__main--search-no-result');
 
-            const $msgs: JQuery = $(
-                `.${this._options.componentClass}__messages`
-            );
+            const $msgs: JQuery = $(`.${this._options.componentClass}__messages`);
 
             if ($msgs.length) {
-                $msgs.addClass(
-                    `${this._options.componentClass}__messages--visible`
-                );
+                $msgs.addClass(`${this._options.componentClass}__messages--visible`);
             }
         } else {
             this.showContents();
@@ -171,9 +162,7 @@ export default class SearchresultsSwitcher {
         if ($section && $section.length) {
             $section.removeClass(`${this._options.contentsClass}--active`);
         } else {
-            this._$contents.removeClass(
-                `${this._options.contentsClass}--active`
-            );
+            this._$contents.removeClass(`${this._options.contentsClass}--active`);
         }
     }
 
@@ -185,8 +174,7 @@ export default class SearchresultsSwitcher {
      */
     public openTab($trigger: JQuery, saveState: boolean = true): void {
         const $target: JQuery = $($trigger.attr('href'));
-        const isShowAll: boolean =
-            $trigger.attr('href') === this._options.showAllAnchor;
+        const isShowAll: boolean = $trigger.attr('href') === this._options.showAllAnchor;
 
         if (isShowAll) {
             this.showContents();
@@ -204,10 +192,7 @@ export default class SearchresultsSwitcher {
         $trigger.attr('aria-selected', 'true');
 
         if (this._options.saveStateInSession && saveState) {
-            sessionStorage.setItem(
-                'searchresultsSwitcher',
-                $trigger.attr('href')
-            );
+            sessionStorage.setItem('searchresultsSwitcher', $trigger.attr('href'));
         }
     }
 
@@ -230,14 +215,11 @@ export default class SearchresultsSwitcher {
             $(this._options.filtersStateSelector).length ||
             (urlParams.p !== undefined && parseInt(urlParams.p, 10) > 1)
         ) {
-            const productSearchResultArea: SearchResultArea =
-                this._options.searchResultAreas.find(
-                    (area: SearchResultArea) => area.name === 'products'
-                );
+            const productSearchResultArea: SearchResultArea = this._options.searchResultAreas.find(
+                (area: SearchResultArea) => area.name === 'products'
+            );
             if (productSearchResultArea) {
-                const $container: JQuery = $(
-                    productSearchResultArea.containerSelector
-                );
+                const $container: JQuery = $(productSearchResultArea.containerSelector);
                 const $trigger: JQuery = this._$tabs.find(
                     `a[href="${productSearchResultArea.containerSelector}"]`
                 );
@@ -260,12 +242,8 @@ export default class SearchresultsSwitcher {
                 this._options.saveStateInSession &&
                 sessionStorage.getItem('searchresultsSwitcher')
             ) {
-                const sectionName: string = sessionStorage.getItem(
-                    'searchresultsSwitcher'
-                );
-                const $trigger: JQuery = this._$tabs.find(
-                    `a[href="${sectionName}"]`
-                );
+                const sectionName: string = sessionStorage.getItem('searchresultsSwitcher');
+                const $trigger: JQuery = this._$tabs.find(`a[href="${sectionName}"]`);
 
                 if ($trigger.length) {
                     this.openTab($trigger);
@@ -310,9 +288,7 @@ export default class SearchresultsSwitcher {
         let productsCount: number = 0;
 
         for (const area of this._options.searchResultAreas) {
-            const areaContainer = document.querySelector(
-                area.containerSelector
-            );
+            const areaContainer = document.querySelector(area.containerSelector);
             const countElement = document.querySelector(area.countSelector);
             let count: number = 0;
 
@@ -342,9 +318,7 @@ export default class SearchresultsSwitcher {
         }
 
         if (overallResultsCountHeadline) {
-            const overallCount: any = countOnlyProducts
-                ? productsCount
-                : allCount;
+            const overallCount: any = countOnlyProducts ? productsCount : allCount;
             overallResultsCountHeadline.textContent = overallCount.toString();
         }
     }

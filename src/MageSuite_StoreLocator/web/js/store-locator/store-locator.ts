@@ -1,11 +1,7 @@
 import * as $ from 'jquery';
 import 'mage/translate';
 
-import {
-    MarkerClusterer,
-    MarkerClustererOptions,
-    Renderer,
-} from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
+import { MarkerClusterer, MarkerClustererOptions, Renderer } from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 
 declare global {
     interface Window {
@@ -181,29 +177,17 @@ export default class StoreLocator {
         this._$element = $element || $('.cs-store-locator');
         this._options = $.extend(true, this._options, options);
 
-        this._$sidebarToggler = this._$element.find(
-            '.cs-store-locator__sidebar-toggler'
-        );
+        this._$sidebarToggler = this._$element.find('.cs-store-locator__sidebar-toggler');
 
-        this._$locationButton = this._$element.find(
-            '.cs-store-locator__location-button'
-        );
+        this._$locationButton = this._$element.find('.cs-store-locator__location-button');
 
-        this._$searchButton = this._$element.find(
-            '.cs-store-locator__search-button'
-        );
+        this._$searchButton = this._$element.find('.cs-store-locator__search-button');
 
-        this._$searchForm = this._$element.find(
-            '.cs-store-locator__search-form'
-        );
+        this._$searchForm = this._$element.find('.cs-store-locator__search-form');
 
-        this._$searchInput = this._$element.find(
-            '.cs-store-locator__search-input'
-        );
+        this._$searchInput = this._$element.find('.cs-store-locator__search-input');
 
-        this._$itemsList = this._$element.find(
-            '.cs-store-locator__stores-list-inner'
-        );
+        this._$itemsList = this._$element.find('.cs-store-locator__stores-list-inner');
 
         this._basePath = this._$element.attr('data-base-path');
         this._consentRequired = window.googleApiConsentRequired;
@@ -220,9 +204,7 @@ export default class StoreLocator {
      * Async. Init ScriptLoader.
      */
     public async initConsentManagedScriptLoader(): Promise<any> {
-        const { default: consentManagement } = await import(
-            'components/consent-management'
-        );
+        const { default: consentManagement } = await import('components/consent-management');
 
         this.consentManagement = consentManagement;
         this.consentManagement.initializeEvent(this.loadMap.bind(this));
@@ -231,8 +213,7 @@ export default class StoreLocator {
 
     public async loadMap(): Promise<void> {
         try {
-            const consentGranted: boolean =
-                await this.consentManagement.checkConsent('googlemaps');
+            const consentGranted: boolean = await this.consentManagement.checkConsent('googlemaps');
 
             if (consentGranted) {
                 this.attachApiReadyEvent(this.apiReady.bind(this));
@@ -274,20 +255,14 @@ export default class StoreLocator {
             text: this._options.consentInfo.text,
         });
 
-        this.consentManagement.toggleConsentLayerVisibility(
-            this._$element[0],
-            true
-        );
+        this.consentManagement.toggleConsentLayerVisibility(this._$element[0], true);
     }
 
     /**
      * Hide consent info.
      */
     public async hideConsentInfo() {
-        this.consentManagement.toggleConsentLayerVisibility(
-            this._$element[0],
-            false
-        );
+        this.consentManagement.toggleConsentLayerVisibility(this._$element[0], false);
     }
 
     /**
@@ -374,101 +349,85 @@ export default class StoreLocator {
      * If backend does not return coordinates prepare and display message nolocation for 5s
      */
     public searchButtonClickHandler() {
-        const query: string | number | string[] = $(
-            '.cs-store-locator__search-input'
-        ).val();
+        const query: string | number | string[] = $('.cs-store-locator__search-input').val();
 
         this._$searchForm.addClass('loading');
 
-        return this.getCoordinatesFromQuery(query as string).then(
-            (response) => {
-                if (
-                    response.data.addressLocation &&
-                    response.data.addressLocation.latitude &&
-                    response.data.addressLocation.longitude
+        return this.getCoordinatesFromQuery(query as string).then((response) => {
+            if (
+                response.data.addressLocation &&
+                response.data.addressLocation.latitude &&
+                response.data.addressLocation.longitude
+            ) {
+                const coordinates: Coordinates = {
+                    lat: response.data.addressLocation.latitude,
+                    lng: response.data.addressLocation.longitude,
+                };
+
+                this.map.panTo(coordinates);
+
+                const windowWidth = window.breakpoint.current;
+
+                if (windowWidth < window.breakpoint.laptop) {
+                    this.map.setZoom(this._options.basicZoomMobile);
+                } else if (
+                    windowWidth >= window.breakpoint.laptop &&
+                    windowWidth < window.breakpoint.laptopLg
                 ) {
-                    const coordinates: Coordinates = {
-                        lat: response.data.addressLocation.latitude,
-                        lng: response.data.addressLocation.longitude,
-                    };
-
-                    this.map.panTo(coordinates);
-
-                    const windowWidth = window.breakpoint.current;
-
-                    if (windowWidth < window.breakpoint.laptop) {
-                        this.map.setZoom(this._options.basicZoomMobile);
-                    } else if (
-                        windowWidth >= window.breakpoint.laptop &&
-                        windowWidth < window.breakpoint.laptopLg
-                    ) {
-                        this.map.setZoom(this._options.basicZoomSmallDesktop);
-                    } else {
-                        this.map.setZoom(this._options.basicZoom);
-                    }
-
-                    this.setUserPositionAndPopulateDistance(
-                        this.stores,
-                        coordinates
-                    );
-
-                    if (
-                        this._options.showNearestStoreWhenNotFound &&
-                        !this.getFilteredStores().length
-                    ) {
-                        this.showNearestStoreView(coordinates);
-                    }
-
-                    if (windowWidth < window.breakpoint.laptop) {
-                        this.renderMobileStoresList();
-                    } else {
-                        this.renderItems(this.getFilteredStores(), false);
-                    }
-
-                    if (this._locationMarker) {
-                        this._locationMarker.setMap(null);
-                    }
-
-                    const pinEl = this._createPinDiv(
-                        this._options.markerIcons.pin.url
-                    );
-
-                    this._locationMarker =
-                        new google.maps.marker.AdvancedMarkerElement({
-                            map: this.map,
-                            position: coordinates,
-                            content: pinEl,
-                            gmpClickable: true,
-                        });
+                    this.map.setZoom(this._options.basicZoomSmallDesktop);
                 } else {
-                    $('.cs-store-locator__empty-message--nolocation').remove();
-                    this._$itemsList.prepend(
-                        `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">
-                ${$.mage.__(
-                    'Unfortunately we were not able to find this location.'
-                )}</div>`
-                    );
-
-                    if (window.breakpoint.current < window.breakpoint.laptop) {
-                        this.openMobileStores();
-                    }
-
-                    $('.cs-store-locator__empty-message--nolocation').show();
-
-                    setTimeout(() => {
-                        $('.cs-store-locator__empty-message--nolocation')
-                            .slideUp()
-                            .remove();
-                        if (
-                            window.breakpoint.current < window.breakpoint.laptop
-                        ) {
-                            this.closeMobileStores();
-                        }
-                    }, 5000);
+                    this.map.setZoom(this._options.basicZoom);
                 }
-                this._$searchForm.removeClass('loading');
+
+                this.setUserPositionAndPopulateDistance(this.stores, coordinates);
+
+                if (
+                    this._options.showNearestStoreWhenNotFound &&
+                    !this.getFilteredStores().length
+                ) {
+                    this.showNearestStoreView(coordinates);
+                }
+
+                if (windowWidth < window.breakpoint.laptop) {
+                    this.renderMobileStoresList();
+                } else {
+                    this.renderItems(this.getFilteredStores(), false);
+                }
+
+                if (this._locationMarker) {
+                    this._locationMarker.setMap(null);
+                }
+
+                const pinEl = this._createPinDiv(this._options.markerIcons.pin.url);
+
+                this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
+                    map: this.map,
+                    position: coordinates,
+                    content: pinEl,
+                    gmpClickable: true,
+                });
+            } else {
+                $('.cs-store-locator__empty-message--nolocation').remove();
+                this._$itemsList.prepend(
+                    `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">
+                ${$.mage.__('Unfortunately we were not able to find this location.')}</div>`
+                );
+
+                if (window.breakpoint.current < window.breakpoint.laptop) {
+                    this.openMobileStores();
+                }
+
+                $('.cs-store-locator__empty-message--nolocation').show();
+
+                setTimeout(() => {
+                    $('.cs-store-locator__empty-message--nolocation').slideUp().remove();
+                    if (window.breakpoint.current < window.breakpoint.laptop) {
+                        this.closeMobileStores();
+                    }
+                }, 5000);
             }
-        );
+            this._$searchForm.removeClass('loading');
+        });
     }
 
     /**
@@ -496,10 +455,7 @@ export default class StoreLocator {
      * @param {renderAllStores} boolean Info if all stores should be rendered
      */
     public renderItems(stores, renderAllStores): void {
-        if (
-            this._allItemsRendered &&
-            !(window.breakpoint.current < window.breakpoint.laptop)
-        ) {
+        if (this._allItemsRendered && !(window.breakpoint.current < window.breakpoint.laptop)) {
             return;
         }
 
@@ -514,9 +470,7 @@ export default class StoreLocator {
         });
 
         if (stores.length <= this._options.limitOfShopsInitiallyDisplayed) {
-            this._$itemsList
-                .find('.cs-store-locator__stores-more-wrapper')
-                .remove();
+            this._$itemsList.find('.cs-store-locator__stores-more-wrapper').remove();
         } else {
             this._$itemsList.append(
                 `<div class="cs-store-locator__stores-more-wrapper"><span class="cs-store-locator__stores-more-text">${$.mage.__(
@@ -525,32 +479,26 @@ export default class StoreLocator {
             );
         }
 
-        this._$itemsList
-            .find('.cs-store-locator__stores-more-wrapper')
-            .on('click', (e) => {
-                this._$element.addClass('loading');
+        this._$itemsList.find('.cs-store-locator__stores-more-wrapper').on('click', (e) => {
+            this._$element.addClass('loading');
 
-                // Make sure that loading class is added before all stores start to render
-                setTimeout(() => {
-                    this.renderItems(this.stores, true);
-                }, 100);
-                // When a lot of elements ia added to the DOM browser hangs for a moment. This loader force user to wait a bit.
-                setTimeout(() => {
-                    this._$element.removeClass('loading');
-                    this._$itemsList
-                        .find('.cs-store-locator__stores-more-wrapper')
-                        .remove();
-                    this._allItemsRendered = true;
-                    this.mapChangeHandler();
-                }, 3000);
-            });
+            // Make sure that loading class is added before all stores start to render
+            setTimeout(() => {
+                this.renderItems(this.stores, true);
+            }, 100);
+            // When a lot of elements ia added to the DOM browser hangs for a moment. This loader force user to wait a bit.
+            setTimeout(() => {
+                this._$element.removeClass('loading');
+                this._$itemsList.find('.cs-store-locator__stores-more-wrapper').remove();
+                this._allItemsRendered = true;
+                this.mapChangeHandler();
+            }, 3000);
+        });
 
         this._$element.find('.cs-store-locator__item').on('click', (e) => {
             if (
                 !$(e.target).hasClass('cs-store-locator__item-hours-trigger') &&
-                !$(e.target).hasClass(
-                    'cs-store-locator__item-hours-trigger-icon'
-                )
+                !$(e.target).hasClass('cs-store-locator__item-hours-trigger-icon')
             ) {
                 this.itemClickHandler($(e.currentTarget));
             }
@@ -612,10 +560,7 @@ export default class StoreLocator {
                 this.map.setZoom(this._options.basicZoom);
             }
 
-            if (
-                this._options.showNearestStoreWhenNotFound &&
-                !this.getFilteredStores().length
-            ) {
+            if (this._options.showNearestStoreWhenNotFound && !this.getFilteredStores().length) {
                 this.showNearestStoreView(coordinates);
             }
 
@@ -623,10 +568,7 @@ export default class StoreLocator {
                 this._$itemsList.empty();
                 this._allItemsRendered = false;
 
-                this.setUserPositionAndPopulateDistance(
-                    this.stores,
-                    coordinates
-                );
+                this.setUserPositionAndPopulateDistance(this.stores, coordinates);
 
                 if (windowWidth < window.breakpoint.laptop) {
                     this.renderMobileStoresList();
@@ -638,17 +580,14 @@ export default class StoreLocator {
                     this._locationMarker.setMap(null);
                 }
 
-                const pinEl = this._createPinDiv(
-                    this._options.markerIcons.userLocation.url
-                );
+                const pinEl = this._createPinDiv(this._options.markerIcons.userLocation.url);
 
-                this._locationMarker =
-                    new google.maps.marker.AdvancedMarkerElement({
-                        map: this.map,
-                        position: coordinates,
-                        content: pinEl,
-                        gmpClickable: true,
-                    });
+                this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
+                    map: this.map,
+                    position: coordinates,
+                    content: pinEl,
+                    gmpClickable: true,
+                });
             }
 
             this._$element.removeClass('loading');
@@ -667,17 +606,11 @@ export default class StoreLocator {
         setTimeout(() => {
             this.openMobileStores();
 
-            this._$itemsList.append(
-                '<div class="cs-store-locator__store-list-close"></div>'
-            );
-            this._$itemsList
-                .find('.cs-store-locator__store-list-close')
-                .on('click', (event) => {
-                    this.closeMobileStores();
-                });
-            const $emptyMessage = this._$element.find(
-                '.cs-store-locator__empty-message'
-            );
+            this._$itemsList.append('<div class="cs-store-locator__store-list-close"></div>');
+            this._$itemsList.find('.cs-store-locator__store-list-close').on('click', (event) => {
+                this.closeMobileStores();
+            });
+            const $emptyMessage = this._$element.find('.cs-store-locator__empty-message');
 
             if (filteredStores.length > 0) {
                 $emptyMessage.hide();
@@ -731,15 +664,11 @@ export default class StoreLocator {
      */
     public updateActiveMarkerIcon(marker) {
         if (this._activeMarker) {
-            this._activeMarker.content = this._createPinDiv(
-                this._options.markerIcons.pin.url
-            );
+            this._activeMarker.content = this._createPinDiv(this._options.markerIcons.pin.url);
         }
 
         this._activeMarker = marker;
-        this._activeMarker.content = this._createPinDiv(
-            this._options.markerIcons.pinActive.url
-        );
+        this._activeMarker.content = this._createPinDiv(this._options.markerIcons.pinActive.url);
     }
 
     /**
@@ -761,10 +690,7 @@ export default class StoreLocator {
             this.map.setZoom(this._options.basicZoom);
         }
 
-        if (
-            window.breakpoint.current >= window.breakpoint.laptop &&
-            !this._sidebarClosed
-        ) {
+        if (window.breakpoint.current >= window.breakpoint.laptop && !this._sidebarClosed) {
             this.map.panBy(-sidebarWidth / 2, 0);
         }
 
@@ -810,9 +736,7 @@ export default class StoreLocator {
         const websiteLine = store.url
             ? `<p class="cs-store-locator__item-website">${$.mage.__(
                   'Website'
-              )}: <a href="//${store.url}" target="_blank" rel="nofollow">${
-                  store.url
-              }</a></p>`
+              )}: <a href="//${store.url}" target="_blank" rel="nofollow">${store.url}</a></p>`
             : ``;
 
         const storeDistance = store.distance
@@ -832,8 +756,8 @@ export default class StoreLocator {
 
         return `<div class="cs-store-locator__item"
             data-id="${store.sourceCode}" data-lat="${
-            store.latitude
-        }" data-lng="${store.longitude}">
+                store.latitude
+            }" data-lng="${store.longitude}">
             <div class="cs-store-locator__store-details-close"></div>
             <div class="cs-store-locator__item-content">
                 <div class="cs-store-locator__item-header">
@@ -903,16 +827,12 @@ export default class StoreLocator {
      */
     public toggleSidebar(): void {
         if (!this._sidebarClosed) {
-            $('.cs-store-locator__sidebar').addClass(
-                'cs-store-locator__sidebar--closed'
-            );
+            $('.cs-store-locator__sidebar').addClass('cs-store-locator__sidebar--closed');
             $('.cs-store-locator__sidebar-toggler-icon').addClass(
                 'cs-store-locator__sidebar-toggler-icon--closed'
             );
         } else {
-            $('.cs-store-locator__sidebar').removeClass(
-                'cs-store-locator__sidebar--closed'
-            );
+            $('.cs-store-locator__sidebar').removeClass('cs-store-locator__sidebar--closed');
             $('.cs-store-locator__sidebar-toggler-icon').removeClass(
                 'cs-store-locator__sidebar-toggler-icon--closed'
             );
@@ -995,9 +915,7 @@ export default class StoreLocator {
     public openMobilePopup(id) {
         const store = this.stores.find((store) => store.sourceCode === id);
 
-        $('.cs-store-locator__store-details').append(
-            this.getInfoWindowContent(store)
-        );
+        $('.cs-store-locator__store-details').append(this.getInfoWindowContent(store));
 
         this._$element.addClass('cs-store-locator--mobile-popup-open');
     }
@@ -1127,26 +1045,20 @@ export default class StoreLocator {
         this.getGeolocation()
             .then((coordinates: Coordinates) => {
                 // User location from geolocation service
-                this.setUserPositionAndPopulateDistance(
-                    this.stores,
-                    coordinates
-                );
+                this.setUserPositionAndPopulateDistance(this.stores, coordinates);
 
                 if (this._locationMarker) {
                     this._locationMarker.setMap(null);
                 }
 
-                const pinEl = this._createPinDiv(
-                    this._options.markerIcons.userLocation.url
-                );
+                const pinEl = this._createPinDiv(this._options.markerIcons.userLocation.url);
 
-                this._locationMarker =
-                    new google.maps.marker.AdvancedMarkerElement({
-                        map: this.map,
-                        position: coordinates,
-                        content: pinEl,
-                        gmpClickable: true,
-                    });
+                this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
+                    map: this.map,
+                    position: coordinates,
+                    content: pinEl,
+                    gmpClickable: true,
+                });
 
                 this.map.panTo(coordinates);
                 this.map.setZoom(this._options.basicZoom);
@@ -1280,8 +1192,7 @@ export default class StoreLocator {
         this._options.markerIcons.pin.url = path + '/icon-pin.png';
         this._options.markerIcons.pinAlt.url = path + '/icon-pin-alt.png';
         this._options.markerIcons.pinActive.url = path + '/icon-pin-active.png';
-        this._options.markerIcons.userLocation.url =
-            path + '/icon-user-marker.png';
+        this._options.markerIcons.userLocation.url = path + '/icon-user-marker.png';
         this._options.clusterStyles.url = path + '/icon-cluster.png';
     }
 
@@ -1291,17 +1202,9 @@ export default class StoreLocator {
      * zoomChangeHandler is connected with mobile behavior.
      */
     protected _attachMapListeners() {
-        google.maps.event.addListener(
-            this.map,
-            'bounds_changed',
-            this.mapChangeHandler.bind(this)
-        );
+        google.maps.event.addListener(this.map, 'bounds_changed', this.mapChangeHandler.bind(this));
 
-        google.maps.event.addListener(
-            this.map,
-            'zoom_changed',
-            this.zoomChangeHandler.bind(this)
-        );
+        google.maps.event.addListener(this.map, 'zoom_changed', this.zoomChangeHandler.bind(this));
     }
 
     /**
@@ -1310,20 +1213,12 @@ export default class StoreLocator {
      */
     protected _attachEvents(): void {
         this._$sidebarToggler.on('click', this.toggleSidebar.bind(this));
-        this._$locationButton.on(
-            'click',
-            this.locationButtonClickHandler.bind(this)
-        );
-        this._$searchButton.on(
-            'click',
-            this.searchButtonClickHandler.bind(this)
-        );
+        this._$locationButton.on('click', this.locationButtonClickHandler.bind(this));
+        this._$searchButton.on('click', this.searchButtonClickHandler.bind(this));
         this._$searchForm.on('submit', (e) => {
             e.preventDefault();
 
-            const selectedSuggestion = $(
-                '.cs-store-locator__search-item.selected'
-            ).length
+            const selectedSuggestion = $('.cs-store-locator__search-item.selected').length
                 ? $('.cs-store-locator__search-item.selected')
                 : null;
 
@@ -1336,29 +1231,19 @@ export default class StoreLocator {
 
         this._$element.on('click', (event) => {
             const $eventTarget = $(event.target);
-            const isTrigger = $eventTarget.hasClass(
-                'cs-store-locator__item-hours-trigger'
-            );
+            const isTrigger = $eventTarget.hasClass('cs-store-locator__item-hours-trigger');
             const isTriggerIcon = $eventTarget.hasClass(
                 'cs-store-locator__item-hours-trigger-icon'
             );
             if (isTrigger || isTriggerIcon) {
                 const $trigger = isTrigger
                     ? $eventTarget
-                    : $eventTarget.parent(
-                          '.cs-store-locator__item-hours-trigger'
-                      );
-                $trigger.toggleClass(
-                    'cs-store-locator__item-hours-trigger--open'
-                );
+                    : $eventTarget.parent('.cs-store-locator__item-hours-trigger');
+                $trigger.toggleClass('cs-store-locator__item-hours-trigger--open');
                 $trigger.next().toggle();
             }
 
-            if (
-                $(event.target).hasClass(
-                    'cs-store-locator__store-details-close'
-                )
-            ) {
+            if ($(event.target).hasClass('cs-store-locator__store-details-close')) {
                 this.closeMobilePopup();
             }
         });

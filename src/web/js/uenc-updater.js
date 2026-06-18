@@ -13,9 +13,7 @@ define(['jquery'], function ($) {
         var $element = $(element);
         var elementData = $element.data('post');
         var shouldUpdate =
-            $element.data('uenc-update') &&
-            elementData.data &&
-            elementData.data.uenc;
+            $element.data('uenc-update') && elementData.data && elementData.data.uenc;
 
         if (shouldUpdate) {
             elementData.data.uenc = uenc;

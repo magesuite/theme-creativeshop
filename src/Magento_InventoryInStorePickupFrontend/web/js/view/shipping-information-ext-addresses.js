@@ -3,10 +3,10 @@
  *
  * Aligned with Magento 2.4.9 in 05/2026
  */
-define([
-    'Magento_Checkout/js/model/quote',
-    'Magento_Customer/js/customer-data',
-], function (quote, customerData) {
+define(['Magento_Checkout/js/model/quote', 'Magento_Customer/js/customer-data'], function (
+    quote,
+    customerData
+) {
     'use strict';
 
     var countryData = customerData.get('directory-data');
@@ -18,9 +18,7 @@ define([
              * @return {String}
              */
             getCountryName: function (countryId) {
-                return countryData()[countryId] !== undefined
-                    ? countryData()[countryId].name
-                    : '';
+                return countryData()[countryId] !== undefined ? countryData()[countryId].name : '';
             },
 
             /**

@@ -81,15 +81,13 @@ export default class SalebarWidget {
                             ),
                         });
                     } else {
-                        // tslint:disable-next-line
                         console.warn(`Salebar: related ${element} not found`);
                     }
                     return result;
                 }, []);
 
-            this._$window.on(
-                'resize orientationchange salebarLoaded breakpointChange',
-                (e) => this._resizeHandler(e)
+            this._$window.on('resize orientationchange salebarLoaded breakpointChange', (e) =>
+                this._resizeHandler(e)
             );
         }
 
@@ -103,8 +101,7 @@ export default class SalebarWidget {
 
     protected _resizeHandler(event): void {
         if (
-            breakpoint.current >
-                parseInt(this._options.fixedElementsBreakpoint, 10) ||
+            breakpoint.current > parseInt(this._options.fixedElementsBreakpoint, 10) ||
             !this._cachedElementHeight ||
             this._cachedElementHeight !== this._$element.outerHeight() ||
             event.type === 'breakpointChange'
@@ -126,9 +123,7 @@ export default class SalebarWidget {
             // Double check if elements are fixed
             if (relatedElem.$element.css('position') === 'fixed') {
                 relatedElem.$element.css({
-                    top:
-                        relatedElem.computedTopProperty +
-                        this._cachedElementHeight,
+                    top: relatedElem.computedTopProperty + this._cachedElementHeight,
                 });
             }
         });
@@ -163,10 +158,7 @@ export default class SalebarWidget {
         )} ${timeRemaining.minutes} ${this._setCountdownLabel(
             timeRemaining.minutes,
             'minute'
-        )} ${timeRemaining.seconds} ${this._setCountdownLabel(
-            timeRemaining.seconds,
-            'second'
-        )}`;
+        )} ${timeRemaining.seconds} ${this._setCountdownLabel(timeRemaining.seconds, 'second')}`;
 
         $(`.${this._options.countdownPlaceholderClass}`).text(timeValue);
     }
@@ -176,8 +168,7 @@ export default class SalebarWidget {
      * @return {object} - total time, days, hours, minutes and seconds values
      */
     protected _getRemainingTime(): object {
-        const timeRemaining: number =
-            this._options.timerDate - this._getCurrentTime();
+        const timeRemaining: number = this._options.timerDate - this._getCurrentTime();
 
         return {
             total: timeRemaining,

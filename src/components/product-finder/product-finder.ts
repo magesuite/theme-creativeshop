@@ -78,9 +78,7 @@ export default class ProductFinder {
         this._$inputs = this._$steps.find(`.${this._options.inputClassName}`);
         this._$options = this._$steps.find(`.${this._options.optionClassName}`);
 
-        this._$backButtons = this._$element.find(
-            `.${this._options.backButtonClassName}`
-        );
+        this._$backButtons = this._$element.find(`.${this._options.backButtonClassName}`);
         this._$form = this._$element.find(`.${this._options.formClassName}`);
 
         this._updateSizes();
@@ -112,9 +110,7 @@ export default class ProductFinder {
                     $currentStep.height() + this._$backButtons.outerHeight()
                 );
             },
-            previousHeight > currentStepHeight
-                ? this._options.stepResizeDelay
-                : 0
+            previousHeight > currentStepHeight ? this._options.stepResizeDelay : 0
         );
     }
 
@@ -129,9 +125,7 @@ export default class ProductFinder {
             setTimeout(() => {
                 $('html, body').animate(
                     {
-                        scrollTop:
-                            this._$element.offset().top -
-                            this._options.scrollOffset,
+                        scrollTop: this._$element.offset().top - this._options.scrollOffset,
                     },
                     500
                 );
@@ -166,15 +160,11 @@ export default class ProductFinder {
             .addClass(`${this._options.stepClassName}--previous`)
             .removeClass(`${this._options.stepClassName}--current`);
 
-        const $targetStep: JQuery = this._$steps.filter(
-            `[data-step-id="${stepId}"]`
-        );
+        const $targetStep: JQuery = this._$steps.filter(`[data-step-id="${stepId}"]`);
         $targetStep.addClass(`${this._options.stepClassName}--current`);
         this._visitedSteps.push($targetStep);
 
-        this._$backButtons.addClass(
-            `${this._options.backButtonClassName}--visible`
-        );
+        this._$backButtons.addClass(`${this._options.backButtonClassName}--visible`);
 
         this._updateTabIndexes();
         this._updateSizes();
@@ -195,9 +185,7 @@ export default class ProductFinder {
             .removeClass(`${this._options.stepClassName}--previous`);
 
         if (this._visitedSteps.length <= 1) {
-            this._$backButtons.removeClass(
-                `${this._options.backButtonClassName}--visible`
-            );
+            this._$backButtons.removeClass(`${this._options.backButtonClassName}--visible`);
             this._$element.css('padding-bottom', 0);
         }
 
@@ -220,9 +208,7 @@ export default class ProductFinder {
         const configuredData: ProductFinderConfiguration = {};
 
         this._visitedSteps.forEach(($step: JQuery) => {
-            const $selectedOption = $step.find(
-                `.${this._options.optionClassName}--checked`
-            );
+            const $selectedOption = $step.find(`.${this._options.optionClassName}--checked`);
             const categoryId: string = $selectedOption.data('category-id');
             const attributes: object = $selectedOption
                 .data('attributes')
@@ -243,13 +229,8 @@ export default class ProductFinder {
         });
 
         // Ignore all attributes if last option had category_only option set to true.
-        const $lastStep: JQuery =
-            this._visitedSteps[this._visitedSteps.length - 1];
-        if (
-            $lastStep
-                .find(`.${this._options.optionClassName}--checked`)
-                .data('category-only')
-        ) {
+        const $lastStep: JQuery = this._visitedSteps[this._visitedSteps.length - 1];
+        if ($lastStep.find(`.${this._options.optionClassName}--checked`).data('category-only')) {
             delete configuredData.attributes;
         }
 
@@ -295,8 +276,7 @@ export default class ProductFinder {
     protected _attachEvents(): void {
         this._eventListeners.resizeListener = this._updateSizes.bind(this);
 
-        this._eventListeners.backButtonClickListener =
-            this._goToPreviousStep.bind(this);
+        this._eventListeners.backButtonClickListener = this._goToPreviousStep.bind(this);
 
         this._eventListeners.optionClickListener = (event) => {
             if (event.type === 'keydown' && event.keyCode !== 13) {
@@ -310,9 +290,7 @@ export default class ProductFinder {
                 .parent()
                 .find(`.${this._options.optionClassName}--checked`)
                 .removeClass(`${this._options.optionClassName}--checked`);
-            $clickedOption.addClass(
-                `${this._options.optionClassName}--checked`
-            );
+            $clickedOption.addClass(`${this._options.optionClassName}--checked`);
             const targetStepId: string = $clickedOption.data('next-step-id');
             if (targetStepId !== 'search') {
                 this._goToStep(targetStepId);
@@ -322,14 +300,8 @@ export default class ProductFinder {
         };
 
         this._$window.on('resize', this._eventListeners.resizeListener);
-        this._$backButtons.on(
-            'click',
-            this._eventListeners.backButtonClickListener
-        );
-        this._$options.on(
-            'click keydown',
-            this._eventListeners.optionClickListener
-        );
+        this._$backButtons.on('click', this._eventListeners.backButtonClickListener);
+        this._$options.on('click keydown', this._eventListeners.optionClickListener);
     }
 
     /**
@@ -337,13 +309,7 @@ export default class ProductFinder {
      */
     protected _detachEvents(): void {
         this._$window.off('resize', this._eventListeners.resizeListener);
-        this._$backButtons.off(
-            'click',
-            this._eventListeners.backButtonClickListener
-        );
-        this._$options.off(
-            'click keydown',
-            this._eventListeners.optionClickListener
-        );
+        this._$backButtons.off('click', this._eventListeners.backButtonClickListener);
+        this._$options.off('click keydown', this._eventListeners.optionClickListener);
     }
 }

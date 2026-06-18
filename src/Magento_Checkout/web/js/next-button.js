@@ -15,8 +15,7 @@ define([
         defaults: {
             displayArea: 'next-button',
             template: 'Magento_Checkout/next-button',
-            nextButtonSelector:
-                '#co-shipping-method-form [data-role="opc-continue"]',
+            nextButtonSelector: '#co-shipping-method-form [data-role="opc-continue"]',
         },
         isDisabled: false,
         initialize: function () {

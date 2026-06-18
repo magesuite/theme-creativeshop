@@ -190,16 +190,16 @@
                 checkTimeout = setTimeout(function() {
                     // Only query for new unprocessed SVG elements
                     var newSvgs = getAll(doc).filter(svg => !processed.has(svg));
-                    
+
                     // Only proceed if there are actually new elements to observe
                     if (newSvgs.length === 0) {
                         return;
                     }
-                    
+
                     newSvgs.forEach(svg => observer ? observer.observe(svg) : inline(svg));
                 }, 20);
             });
-            
+
             mutationObserver.observe(doc, {
                 subtree: true,
                 childList: true,

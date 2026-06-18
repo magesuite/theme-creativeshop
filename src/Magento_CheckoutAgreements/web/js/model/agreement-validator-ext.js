@@ -10,12 +10,9 @@ define(['jquery', 'mage/validation'], function ($) {
 
     return function (agreementValidator) {
         var checkoutConfig = window.checkoutConfig,
-            agreementsConfig = checkoutConfig
-                ? checkoutConfig.checkoutAgreements
-                : {},
+            agreementsConfig = checkoutConfig ? checkoutConfig.checkoutAgreements : {},
             // agreementsInputPath has to be adjusted to current placement of T&C block
-            agreementsInputPath =
-                '.cs-checkout__agreements div.checkout-agreements input';
+            agreementsInputPath = '.cs-checkout__agreements div.checkout-agreements input';
 
         /**
          * Validate checkout agreements
@@ -26,10 +23,7 @@ define(['jquery', 'mage/validation'], function ($) {
             var isValid = true;
             let hasFocus = false;
 
-            if (
-                !agreementsConfig.isEnabled ||
-                $(agreementsInputPath).length === 0
-            ) {
+            if (!agreementsConfig.isEnabled || $(agreementsInputPath).length === 0) {
                 return true;
             }
 

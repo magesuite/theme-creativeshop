@@ -5,20 +5,14 @@ import NavigationMegaDropdown from 'components/navigation/navigation-mega-dropdo
 
 import 'components/navigation/navigation.scss';
 
-const navigationElement = document.querySelector(
-    '.cs-navigation'
-) as HTMLElement;
+const navigationElement = document.querySelector('.cs-navigation') as HTMLElement;
 
 if (navigationElement) {
     let NavigationClass = Navigation;
     /**
      * Navigation component initialization
      */
-    if (
-        navigationElement.querySelector(
-            '[data-category-identifier="all-categories"]'
-        )
-    ) {
+    if (navigationElement.querySelector('[data-category-identifier="all-categories"]')) {
         NavigationClass = NavigationMegaDropdown;
     }
 

@@ -10,8 +10,7 @@ define([], function () {
             defaults: {
                 exports: {
                     isStorePickupAvailable: '${ $.provider }:isAvailable',
-                    isStorePickupSelected:
-                        '${ $.provider }:isStorePickupSelected',
+                    isStorePickupSelected: '${ $.provider }:isStorePickupSelected',
                 },
             },
 
@@ -46,10 +45,7 @@ define([], function () {
                             this.selectShipping
                                 ? this.selectShipping()
                                 : this.isStorePickupSelected(false);
-                        } else if (
-                            event.target.id === 'tab-pickup' &&
-                            !isPickup
-                        ) {
+                        } else if (event.target.id === 'tab-pickup' && !isPickup) {
                             this.selectStorePickup
                                 ? this.selectStorePickup()
                                 : this.isStorePickupSelected(true);

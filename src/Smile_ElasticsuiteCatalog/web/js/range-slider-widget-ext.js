@@ -36,17 +36,10 @@ define(['jquery'], function ($) {
                 if (from !== this.from || to !== this.to) {
                     this.element
                         .find(this.options.fromInput)
-                        .val(
-                            this._formatLabel(this.from).replace(
-                                /[^\d\.\,]/g,
-                                ''
-                            )
-                        );
+                        .val(this._formatLabel(this.from).replace(/[^\d\.\,]/g, ''));
                     this.element
                         .find(this.options.toInput)
-                        .val(
-                            this._formatLabel(this.to).replace(/[^\d\.\,]/g, '')
-                        );
+                        .val(this._formatLabel(this.to).replace(/[^\d\.\,]/g, ''));
                 }
             },
             /**
@@ -123,9 +116,7 @@ define(['jquery'], function ($) {
                 this.from = from;
                 this.to = to;
 
-                this.element
-                    .find(this.options.sliderBar)
-                    .slider('values', [this.from, this.to]);
+                this.element.find(this.options.sliderBar).slider('values', [this.from, this.to]);
 
                 this._refreshDisplay();
             },

@@ -30,10 +30,7 @@ define(['jquery', 'matchMedia'], function ($, mediaCheck) {
                     isMediaCheckActive = false;
                 }
 
-                if (
-                    !this.options.mediaQueryScope.length ||
-                    isMediaCheckActive
-                ) {
+                if (!this.options.mediaQueryScope.length || isMediaCheckActive) {
                     this._super();
                     this.options.isCreated = true;
                 } else {

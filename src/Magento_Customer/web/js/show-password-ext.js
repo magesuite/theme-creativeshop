@@ -2,11 +2,11 @@
  * Mixin due to:
  * - added show password icon to password input
  */
-define([
-  'jquery', 
-  'mgsTogglePassword', 
-  'mgsWaitForElement'
-], function ($, mgsTogglePassword, mgsWaitForElement) {
+define(['jquery', 'mgsTogglePassword', 'mgsWaitForElement'], function (
+    $,
+    mgsTogglePassword,
+    mgsWaitForElement
+) {
     'use strict';
 
     return function (target) {
@@ -27,11 +27,9 @@ define([
                 const passwordInputs = $(this.passwordSelector);
 
                 if (!passwordInputs?.length) {
-                    mgsWaitForElement(this.passwordSelector).then(
-                        (element) => {
-                            this._initTogglePassword($(element));
-                        }
-                    );
+                    mgsWaitForElement(this.passwordSelector).then((element) => {
+                        this._initTogglePassword($(element));
+                    });
                 }
 
                 this._initTogglePassword(passwordInputs);

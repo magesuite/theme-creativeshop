@@ -42,10 +42,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
                 // Do nothing if there is no query string or configred attributes
                 if (
-                    !(
-                        referrerQueryString.length &&
-                        $.isArray(this.options.jsonConfig.attributes)
-                    )
+                    !(referrerQueryString.length && $.isArray(this.options.jsonConfig.attributes))
                 ) {
                     return;
                 }
@@ -61,18 +58,15 @@ define(['jquery', 'underscore'], function ($, _) {
                 });
 
                 // Reduce swatches config to have just option labels and IDs
-                var swatches = this.options.jsonConfig.attributes.reduce(
-                    function (acc, swatch) {
-                        acc[swatch.code] = acc[swatch.code] || {};
+                var swatches = this.options.jsonConfig.attributes.reduce(function (acc, swatch) {
+                    acc[swatch.code] = acc[swatch.code] || {};
 
-                        $.each(swatch.options, function (index, option) {
-                            acc[swatch.code][option.label] = option.id;
-                        });
+                    $.each(swatch.options, function (index, option) {
+                        acc[swatch.code][option.label] = option.id;
+                    });
 
-                        return acc;
-                    },
-                    {}
-                );
+                    return acc;
+                }, {});
 
                 $.each(
                     Object.keys(searchParams),
@@ -82,9 +76,7 @@ define(['jquery', 'underscore'], function ($, _) {
 
                         // Check if search param contains an optionId for any of configured swatches
                         var optionId =
-                            swatches[key] && swatches[key][value]
-                                ? swatches[key][value]
-                                : null;
+                            swatches[key] && swatches[key][value] ? swatches[key][value] : null;
 
                         if (!optionId) {
                             return;
@@ -95,12 +87,8 @@ define(['jquery', 'underscore'], function ($, _) {
                 );
             },
             handleDisabledAndSingleSwatches: function () {
-                var optionsWithoutDisabledProducts =
-                    this.options.jsonConfig.attributes.map(function (
-                        currentValue,
-                        index,
-                        array
-                    ) {
+                var optionsWithoutDisabledProducts = this.options.jsonConfig.attributes.map(
+                    function (currentValue, index, array) {
                         currentValue.options = currentValue.options.filter(
                             function (element, index, array) {
                                 return element.products.length > 0;
@@ -108,16 +96,14 @@ define(['jquery', 'underscore'], function ($, _) {
                         );
 
                         return currentValue;
-                    });
+                    }
+                );
 
-                var optionsWithSingleSwatch =
-                    optionsWithoutDisabledProducts.filter(function (
-                        element,
-                        index,
-                        array
-                    ) {
+                var optionsWithSingleSwatch = optionsWithoutDisabledProducts.filter(
+                    function (element, index, array) {
                         return element.options.length === 1;
-                    });
+                    }
+                );
 
                 $.each(
                     optionsWithSingleSwatch,
@@ -145,9 +131,7 @@ define(['jquery', 'underscore'], function ($, _) {
                         return;
                     }
 
-                    if (
-                        $parentInput.hasClass(this.options.classes.selectClass)
-                    ) {
+                    if ($parentInput.hasClass(this.options.classes.selectClass)) {
                         $parentInput.val(optionId);
                         $parentInput.trigger('change');
                     } else {

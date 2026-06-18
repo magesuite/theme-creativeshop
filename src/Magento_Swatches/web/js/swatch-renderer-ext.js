@@ -25,16 +25,11 @@ define(['jquery', 'mage/translate'], function ($, $t) {
              */
             _RenderFormInput: function (config) {
                 var originalHtml = this._super(config);
-                var validationMessage = $t('Please select %1').replace(
-                    '%1',
-                    config.label
-                );
+                var validationMessage = $t('Please select %1').replace('%1', config.label);
 
                 return originalHtml.replace(
                     'data-validate="{required: true}"',
-                    'data-validate="{required: true}" data-msg-required="' +
-                        validationMessage +
-                        '"'
+                    'data-validate="{required: true}" data-msg-required="' + validationMessage + '"'
                 );
             },
 
@@ -62,14 +57,10 @@ define(['jquery', 'mage/translate'], function ($, $t) {
                     '.' + this.options.classes.attributeClass
                 ).length;
                 var optionSelected = this.element.find(
-                    '.' +
-                        this.options.classes.attributeClass +
-                        '[data-option-selected]'
+                    '.' + this.options.classes.attributeClass + '[data-option-selected]'
                 ).length;
                 var isSimpleProductSelected = optionAmount === optionSelected;
-                var $product = this.element.parents(
-                    this.options.selectorProduct
-                );
+                var $product = this.element.parents(this.options.selectorProduct);
                 var result = this._getNewPrices();
                 var isDiscounted =
                     typeof result !== 'undefined' &&
@@ -80,26 +71,17 @@ define(['jquery', 'mage/translate'], function ($, $t) {
 
                 $product
                     .find(this.options.slyOldPriceSelector)
-                    .toggle(
-                        isDiscounted &&
-                            isSimpleProductSelected &&
-                            this.options.toggleOldPrice
-                    );
+                    .toggle(isDiscounted && isSimpleProductSelected && this.options.toggleOldPrice);
                 $product
                     .find(this.options.selectorProductPrice)
                     .find('span:first')
                     .toggleClass(
                         'special-price',
-                        isDDActive
-                            ? true
-                            : isDiscounted && isSimpleProductSelected
+                        isDDActive ? true : isDiscounted && isSimpleProductSelected
                     );
                 $product
                     .find('.normal-price .price-label')
-                    .toggle(
-                        !isSimpleProductSelected &&
-                            this.options.toggleFromPriceLabel
-                    );
+                    .toggle(!isSimpleProductSelected && this.options.toggleFromPriceLabel);
             },
 
             /**

@@ -39,7 +39,8 @@ $notification-panel_button-decline-icon-pos: 'no-icon' !default;
 
 $notification-panel_permission-border: none !default;
 $notification-panel_permission-border-radius: $border-radius_base !default;
-$notification-panel_permission-box-shadow: 2px 2px 5px rgba($color_black, 0.1),
+$notification-panel_permission-box-shadow:
+    2px 2px 5px rgba($color_black, 0.1),
     -2px -2px 5px rgba($color_black, 0.1) !default;
 $notification-panel_permission-font-size: 1.2rem !default;
 $notification-panel_permission-padding: 1rem 2rem !default;
@@ -149,9 +150,7 @@ $notification-panel--slim_icon-next-color--hover: $color_black !default;
 
         &--animate {
             @if $notification-panel_icon-status-animation {
-                animation: ringing
-                    $notification-panel_icon-status-animation-repeat
-                    infinite;
+                animation: ringing $notification-panel_icon-status-animation-repeat infinite;
             }
         }
     }
@@ -165,8 +164,7 @@ $notification-panel--slim_icon-next-color--hover: $color_black !default;
         }
 
         @include media('<laptop') {
-            padding-right: 2 *
-                (get-value-from-list($notification-panel_padding, 'right'));
+            padding-right: 2 * (get-value-from-list($notification-panel_padding, 'right'));
         }
     }
 
@@ -262,8 +260,7 @@ $notification-panel--slim_icon-next-color--hover: $color_black !default;
             margin: 0 0 0.5rem;
 
             @include media('>=phoneLg') {
-                margin: 0
-                    get-value-from-list($notification-panel_gutter, 'right') 0 0;
+                margin: 0 get-value-from-list($notification-panel_gutter, 'right') 0 0;
             }
         }
 
@@ -296,16 +293,14 @@ $notification-panel--slim_icon-next-color--hover: $color_black !default;
                 #{$root}__button-span {
                     @include button_span(
                         $type: $notification-panel--slim_button-accept-type,
-                        $icon_pos:
-                            $notification-panel--slim_button-accept-icon-pos
+                        $icon_pos: $notification-panel--slim_button-accept-icon-pos
                     );
                 }
 
                 #{$root}__button-icon {
                     @include button_icon(
                         $type: $notification-panel--slim_button-accept-type,
-                        $icon_pos:
-                            $notification-panel--slim_button-accept-icon-pos
+                        $icon_pos: $notification-panel--slim_button-accept-icon-pos
                     );
                 }
             }
@@ -373,10 +368,7 @@ $notification-panel--slim_icon-next-color--hover: $color_black !default;
         padding: get-value-from-list($notification-panel_padding, 'right');
 
         #{$root}--slim & {
-            padding: get-value-from-list(
-                $notification-panel--slim_padding,
-                'right'
-            );
+            padding: get-value-from-list($notification-panel--slim_padding, 'right');
             display: none;
 
             &._active {

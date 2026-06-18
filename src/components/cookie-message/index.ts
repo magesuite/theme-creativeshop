@@ -1,6 +1,5 @@
 import 'components/cookie-message/cookie-message.scss';
 
-/* tslint:disable:no-unused-new object-literal-key-quotes max-classes-per-file */
 import * as $ from 'jquery';
 
 interface ICookieMessageSettings {
@@ -81,10 +80,7 @@ export default class CookieMessage {
         this.$wrapper.addClass('cs-cookie-message--shown');
         this.status = 'active';
 
-        if (
-            this._settings.onShown &&
-            typeof this._settings.onShown === 'function'
-        ) {
+        if (this._settings.onShown && typeof this._settings.onShown === 'function') {
             this._settings.onShown();
         }
     }
@@ -107,10 +103,7 @@ export default class CookieMessage {
             this.$wrapper.remove();
             this.status = 'destroyed';
 
-            if (
-                this._settings.onDestroyed &&
-                typeof this._settings.onDestroyed === 'function'
-            ) {
+            if (this._settings.onDestroyed && typeof this._settings.onDestroyed === 'function') {
                 this._settings.onDestroyed();
             }
         }, this._settings.destroyDelay);

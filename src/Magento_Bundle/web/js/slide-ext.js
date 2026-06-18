@@ -14,9 +14,7 @@ define(['jquery'], function ($) {
                 $(this.options.bundleOptionsContainer).slideDown(800);
                 $('html, body').animate(
                     {
-                        scrollTop:
-                            $(this.options.bundleOptionsContainer).offset()
-                                .top - 65,
+                        scrollTop: $(this.options.bundleOptionsContainer).offset().top - 65,
                     },
                     600
                 );

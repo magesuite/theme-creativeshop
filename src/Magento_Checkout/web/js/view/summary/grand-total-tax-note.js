@@ -1,9 +1,7 @@
 /**
  * Custom
  */
-define(['Magento_Checkout/js/view/summary/abstract-total'], function (
-    Component
-) {
+define(['Magento_Checkout/js/view/summary/abstract-total'], function (Component) {
     'use strict';
 
     return Component.extend({

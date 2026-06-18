@@ -23,11 +23,7 @@ define(['jquery'], function ($) {
 
                 this._super();
 
-                document.addEventListener(
-                    'focus',
-                    this._boundFocusHandler,
-                    true
-                );
+                document.addEventListener('focus', this._boundFocusHandler, true);
 
                 $('body').trigger('modal:open');
             },
@@ -35,16 +31,9 @@ define(['jquery'], function ($) {
             _unsetActive: function () {
                 this._super();
 
-                document.removeEventListener(
-                    'focus',
-                    this._boundFocusHandler,
-                    true
-                );
+                document.removeEventListener('focus', this._boundFocusHandler, true);
 
-                if (
-                    this._triggerElement &&
-                    document.body.contains(this._triggerElement)
-                ) {
+                if (this._triggerElement && document.body.contains(this._triggerElement)) {
                     setTimeout(() => {
                         this._triggerElement.focus();
                     }, 0);
@@ -66,9 +55,7 @@ define(['jquery'], function ($) {
                 if (this._canAppplyNoScroll()) {
                     const $currentTopOffset = window.scrollY;
 
-                    $('body')
-                        .addClass('modal-no-scroll')
-                        .css({ top: -$currentTopOffset });
+                    $('body').addClass('modal-no-scroll').css({ top: -$currentTopOffset });
                 }
 
                 this._super();
@@ -80,10 +67,7 @@ define(['jquery'], function ($) {
                     const $currentTopOffset = $('body').css('top');
 
                     $('body').removeClass('modal-no-scroll').css({ top: '' });
-                    window.scrollTo(
-                        0,
-                        parseInt($currentTopOffset || '0', 10) * -1
-                    );
+                    window.scrollTo(0, parseInt($currentTopOffset || '0', 10) * -1);
                 }
             },
             /**

@@ -17,8 +17,7 @@ $pseudoicon-arrow-default-direction: 'up' !default;
 $pseudoicon-arrow-active-direction: 'down' !default;
 // In some cases (it depends on $pseudoicon-width/height value), we need to fix offset for left part of icon
 $pseudoicon-arrow-left-offset: calc(
-    #{$pseudoicon-position-side-offset} + #{$pseudoicon-width} - #{2 *
-        $pseudoicon-height}
+    #{$pseudoicon-position-side-offset} + #{$pseudoicon-width} - #{2 * $pseudoicon-height}
 ) !default;
 
 $pseudoicon-active-selector: '&[aria-expanded="true"]' !default;
@@ -54,20 +53,19 @@ $pseudoicon-active-selector: '&[aria-expanded="true"]' !default;
             @if ($type == 'arrow') {
                 @if (($arrow-default == 'up') and ($arrow-active == 'down')) or
                     (($arrow-default == 'down') and ($arrow-active == 'up')) or
-                    (
-                        ($arrow-default == 'left') and
-                            ($arrow-active == 'right')
-                    ) or
+                    (($arrow-default == 'left') and ($arrow-active == 'right')) or
                     (($arrow-default == 'right') and ($arrow-active == 'left'))
                 {
-                    transition: transform $animation-time linear,
+                    transition:
+                        transform $animation-time linear,
                         right $animation-time linear,
                         background-color $animation-time linear;
                 } @else {
                     transition: background-color $animation-time linear;
                 }
             } @else {
-                transition: transform (2 * $animation-time) ease-out,
+                transition:
+                    transform (2 * $animation-time) ease-out,
                     opacity $animation-time ease-out,
                     background-color $animation-time linear;
             }

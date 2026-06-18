@@ -12,9 +12,7 @@ define([
         return NextButton.extend({
             continueToPayment: function () {
                 if (this.isPackstationSelected()) {
-                    $(
-                        '#checkout-step-packstation-selector .form-continue'
-                    ).submit();
+                    $('#checkout-step-packstation-selector .form-continue').submit();
                 } else {
                     this._super();
                 }
