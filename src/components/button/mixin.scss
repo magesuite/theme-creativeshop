@@ -85,10 +85,7 @@ $button_icon-offset: 0.1em !default;
 
 // stylelint-disable function-calc-no-unspaced-operator
 
-@mixin button(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button-base() {
     display: inline-block;
     font-size: $button_font-size;
     font-weight: $button_font-weight;
@@ -98,7 +95,29 @@ $button_icon-offset: 0.1em !default;
     margin: 0;
     text-transform: $button_text-transform;
 
-    @if ($type != 'link') {
+    &::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    &[disabled] {
+        opacity: 0.65;
+        cursor: auto;
+    }
+
+    @include button-base-hook();
+}
+
+@mixin button-box($type: $button_default-type) {
+    @if ($type == 'link') {
+        transition: color $button_animation-time, fill $button_animation-time;
+
+        * {
+            transition: color $button_animation-time,
+                fill $button_animation-time;
+        }
+    } @else {
         padding: $button_padding;
         box-sizing: border-box;
         transition: background-color $button_animation-time,
@@ -108,6 +127,13 @@ $button_icon-offset: 0.1em !default;
         z-index: 5;
     }
 
+    @include button-box-hook($type);
+}
+
+@mixin button-animation-for(
+    $type: $button_default-type,
+    $icon_pos: $button_default-icon-pos
+) {
     @if ($type == 'primary') {
         @if ($button_primary-enable-animation) {
             @include button_animation(
@@ -144,15 +170,6 @@ $button_icon-offset: 0.1em !default;
         }
     }
 
-    @if ($type == 'link') {
-        transition: color $button_animation-time, fill $button_animation-time;
-
-        * {
-            transition: color $button_animation-time,
-                fill $button_animation-time;
-        }
-    }
-
     @if ($type == 'success') {
         @if ($button_success-enable-animation) {
             @include button_animation(
@@ -174,13 +191,12 @@ $button_icon-offset: 0.1em !default;
             );
         }
     }
-    // stylelint-disable no-descending-specificity
-    &::-moz-focus-inner {
-        border: 0;
-        padding: 0;
-        margin: 0;
-    }
 
+    @include button-animation-for-hook($type, $icon_pos);
+}
+
+@mixin button-colors($type: $button_default-type) {
+    // stylelint-disable no-descending-specificity
     &,
     &:visited {
         @if ($type != 'link') {
@@ -244,7 +260,6 @@ $button_icon-offset: 0.1em !default;
             }
         }
     }
-    // stylelint-enable no-descending-specificity
 
     &:hover,
     &:focus,
@@ -310,19 +325,24 @@ $button_icon-offset: 0.1em !default;
             }
         }
     }
+    // stylelint-enable no-descending-specificity
 
-    &[disabled] {
-        opacity: 0.65;
-        cursor: auto;
-    }
+    @include button-colors-hook($type);
+}
+
+@mixin button(
+    $type: $button_default-type,
+    $icon_pos: $button_default-icon-pos
+) {
+    @include button-base();
+    @include button-box($type);
+    @include button-animation-for($type, $icon_pos);
+    @include button-colors($type);
 
     @include button-hook($type, $icon_pos);
 }
 
-@mixin button_span(
-    $type: $button_default-type,
-    $icon_pos: $button_default-icon-pos
-) {
+@mixin button_span-base() {
     margin-top: $button_span-font-offset;
     z-index: 1;
     font-weight: $button_font-weight;
@@ -331,6 +351,13 @@ $button_icon-offset: 0.1em !default;
     line-height: $button_line-height;
     letter-spacing: $button_text-letter-spacing;
 
+    @include button_span-base-hook();
+}
+
+@mixin button_span-icon(
+    $type: $button_default-type,
+    $icon_pos: $button_default-icon-pos
+) {
     @if ($icon_pos == 'right') {
         padding-left: 0;
 
@@ -395,19 +422,33 @@ $button_icon-offset: 0.1em !default;
         @include visually-hidden();
     }
 
-    @include button_span-hook($type, $icon_pos);
+    @include button_span-icon-hook($type, $icon_pos);
 }
 
-@mixin button_icon(
+@mixin button_span(
     $type: $button_default-type,
     $icon_pos: $button_default-icon-pos
 ) {
+    @include button_span-base();
+    @include button_span-icon($type, $icon_pos);
+
+    @include button_span-hook($type, $icon_pos);
+}
+
+@mixin button_icon-base() {
     max-width: 1em;
     max-height: $button_font-size;
     z-index: 2;
     height: auto;
     width: 100%;
 
+    @include button_icon-base-hook();
+}
+
+@mixin button_icon-pos(
+    $type: $button_default-type,
+    $icon_pos: $button_default-icon-pos
+) {
     @if ($icon_pos == 'right') or ($icon_pos == 'left') {
         position: absolute;
         top: 50%;
@@ -445,6 +486,16 @@ $button_icon-offset: 0.1em !default;
     } @else {
         display: none;
     }
+
+    @include button_icon-pos-hook($type, $icon_pos);
+}
+
+@mixin button_icon(
+    $type: $button_default-type,
+    $icon_pos: $button_default-icon-pos
+) {
+    @include button_icon-base();
+    @include button_icon-pos($type, $icon_pos);
 
     @include button_icon-hook($type, $icon_pos);
 }
