@@ -72,8 +72,7 @@ $accordion_item-headline-icon-arrow-left-offset: $accordion_item-headline-icon-p
                 $height: $accordion_item-headline-icon-height,
                 $arrow-default: $accordion_item-headline-icon-default--closed,
                 $arrow-active: $accordion_item-headline-icon-default--opened,
-                $position-side-offset:
-                    $accordion_item-headline-icon-position-side-offset,
+                $position-side-offset: $accordion_item-headline-icon-position-side-offset,
                 $arrow-offset: $accordion_item-headline-icon-arrow-left-offset
             );
 
@@ -113,11 +112,9 @@ $accordion_item-headline-icon-arrow-left-offset: $accordion_item-headline-icon-p
 
         @if ($accordion_item-headline-icon-use-pseudoicon-instead-svg) {
             @if ($accordion_item-headline-icon-position == right) {
-                padding-right: 3 *
-                    $accordion_item-headline-icon-position-side-offset;
+                padding-right: 3 * $accordion_item-headline-icon-position-side-offset;
             } @else {
-                padding-left: 3 *
-                    $accordion_item-headline-icon-position-side-offset;
+                padding-left: 3 * $accordion_item-headline-icon-position-side-offset;
             }
         }
     }
@@ -158,17 +155,13 @@ $accordion_item-headline-icon-arrow-left-offset: $accordion_item-headline-icon-p
 
         @if ($accordion_item-headline-icon-position == left) {
             @include media('>=tablet') {
-                @if not(
-                    $accordion_item-headline-icon-use-pseudoicon-instead-svg
-                )
-                {
+                @if not($accordion_item-headline-icon-use-pseudoicon-instead-svg) {
                     padding-left: calc(
                         #{$accordion_item-headline-icon-spacing-from-text} +
                             #{$accordion_item-headline-icon-width}
                     );
                 } @else {
-                    padding-left: 3 *
-                        $accordion_item-headline-icon-position-side-offset;
+                    padding-left: 3 * $accordion_item-headline-icon-position-side-offset;
                 }
             }
         }

@@ -7,11 +7,7 @@
  * - this.source.get('shippingAddress.street') - accessing the data that actually changed and triggered the listener.
  *   This bypasses the UI element synchronization delay entirely.
  */
-define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
-    Component,
-    registry,
-    $t
-) {
+define(['uiComponent', 'uiRegistry', 'mage/translate'], function (Component, registry, $t) {
     'use strict';
     return Component.extend({
         defaults: {
@@ -19,12 +15,9 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
             streetElement2: null,
             streetElement3: null,
             listens: {
-                '${ $.provider }:shippingAddress.street.0':
-                    'streetValueChanged',
-                '${ $.provider }:shippingAddress.street.1':
-                    'streetValueChanged',
-                '${ $.provider }:shippingAddress.street.2':
-                    'streetValueChanged',
+                '${ $.provider }:shippingAddress.street.0': 'streetValueChanged',
+                '${ $.provider }:shippingAddress.street.1': 'streetValueChanged',
+                '${ $.provider }:shippingAddress.street.2': 'streetValueChanged',
             },
         },
         initialize: function () {
@@ -59,8 +52,7 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
             var lastStreetElement;
             var street = this.source.get('shippingAddress.street') || [];
 
-            var combinedText =
-                (street[0] || '') + (street[1] || '') + (street[2] || '');
+            var combinedText = (street[0] || '') + (street[1] || '') + (street[2] || '');
 
             // Determine last element
             if (this.streetElement3) {
@@ -73,9 +65,7 @@ define(['uiComponent', 'uiRegistry', 'mage/translate'], function (
 
             if (lastStreetElement) {
                 if (combinedText.trim() && !/\d/.test(combinedText)) {
-                    lastStreetElement.warn(
-                        $t('Do not forget about street number')
-                    );
+                    lastStreetElement.warn($t('Do not forget about street number'));
                 } else {
                     lastStreetElement.warn(null);
                 }

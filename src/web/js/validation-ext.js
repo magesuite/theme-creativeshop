@@ -49,10 +49,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
 
             _create: function () {
                 this.element.on('submit', function (e) {
-                    if (
-                        $(this).data('mageValidation') &&
-                        !$(this).validation('isValid')
-                    ) {
+                    if ($(this).data('mageValidation') && !$(this).validation('isValid')) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
                         return false;
@@ -66,10 +63,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
              * Scope handler to the widget instance
              */
             _listenFormValidate: function () {
-                this.element.on(
-                    'invalid-form.validate',
-                    this.listenFormValidateHandler
-                );
+                this.element.on('invalid-form.validate', this.listenFormValidateHandler);
             },
         });
 
@@ -77,8 +71,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
             'validate-name',
             function (value) {
                 return (
-                    $.mage.isEmpty(value) ||
-                    /^[\p{L}\p{M},_.`'’&‘´()\[\]/—\s\d-]+$/u.test(value)
+                    $.mage.isEmpty(value) || /^[\p{L}\p{M},_.`'’&‘´()\[\]/—\s\d-]+$/u.test(value)
                 );
             },
             $.mage.__('Please enter a valid name (no special characters).')
@@ -87,10 +80,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
         $.validator.addMethod(
             'validate-city',
             function (value) {
-                return (
-                    $.mage.isEmpty(value) ||
-                    /^[\p{L}\p{M}\s\d,.\-\/\[\]()`‘’´']+$/u.test(value)
-                );
+                return $.mage.isEmpty(value) || /^[\p{L}\p{M}\s\d,.\-\/\[\]()`‘’´']+$/u.test(value);
             },
             $.mage.__('Please enter a valid city name (no special characters).')
         );
@@ -103,9 +93,7 @@ define(['jquery', 'jquery-ui-modules/widget'], function ($) {
                     /^[\p{L}\p{M}"\[\],.\-''`'´—#°&_()\\/\s\d]+$/u.test(value)
                 );
             },
-            $.mage.__(
-                'Please enter a valid street name (no special characters).'
-            )
+            $.mage.__('Please enter a valid street name (no special characters).')
         );
 
         $.validator.addMethod(

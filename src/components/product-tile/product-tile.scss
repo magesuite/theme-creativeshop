@@ -46,13 +46,12 @@ $product-tile_badges-y-asis-position-prop: top !default;
 $product-tile_badges-x-asis-position-prop: left !default;
 $product-tile_badges-y-asis-position-value: $product-tile_general-elements-gutter !default;
 $product-tile_badges-x-asis-position-value: $product-tile_general-elements-gutter !default;
-$product-tile_badges-item-margin: 0 0 #{$product-tile_general-elements-gutter /
-    4} !default;
+$product-tile_badges-item-margin: 0 0 #{$product-tile_general-elements-gutter / 4} !default;
 
 // Swatches
 $product-tile_swatches-container-min-height: 2.6rem !default;
-$product-tile_swatches-margin: $product-tile_general-elements-gutter 0 #{$product-tile_general-elements-gutter /
-    2} !default;
+$product-tile_swatches-margin: $product-tile_general-elements-gutter 0
+    #{$product-tile_general-elements-gutter / 2} !default;
 $product-tile_swatches-alignment: $product-tile_alignment !default;
 
 // Brand
@@ -90,8 +89,7 @@ $product-tile_dailydeal-margin: 0 !default;
 // Wishlist
 $product-tile_wishlist-comment-visible: false !default;
 $product-tile_wishlist-comment-textarea-height: 5rem !default;
-$product-tile_wishlist-actions-margin: #{$product-tile_general-elements-gutter /
-    2} 0 0 !default;
+$product-tile_wishlist-actions-margin: #{$product-tile_general-elements-gutter / 2} 0 0 !default;
 $product-tile_wishlist-actions-display: flex !default;
 $product-tile_wishlist-actions-justify-content: space-between !default;
 
@@ -104,8 +102,7 @@ $product-tile_description-font-size: 1.3rem !default;
 $product-tile_description-font-weight: 400 !default;
 $product-tile_description-line-height: 1.4 !default;
 $product-tile_description-color: $color_dove-gray !default;
-$product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter /
-    2} !default;
+$product-tile_description-margin: 0 0 #{$product-tile_general-elements-gutter / 2} !default;
 
 // Thumbnail
 $product-tile_limit-container-to-image-size: false !default;
@@ -127,13 +124,7 @@ $product-tile_prices-margin: 0 !default;
 $product-tile_display-old-price-first: true !default;
 $product-tile_prices-alignment: 'left' !default;
 
-$product-tile-magento-catalog-image: deep-get(
-    $view-xml,
-    media,
-    images,
-    image,
-    category_page_grid
-);
+$product-tile-magento-catalog-image: deep-get($view-xml, media, images, image, category_page_grid);
 $product-tile-magento-catalog-image-width: to-number(
     #{map-get($product-tile-magento-catalog-image, width)}
 );
@@ -185,11 +176,7 @@ $product-tile-magento-catalog-image-height: to-number(
         position: relative;
         padding: $product-tile_padding;
 
-        @if (
-            $product-tile_content-height !=
-                'auto' and
-                $product-tile_main-after-slide-on-hover
-        ) {
+        @if ($product-tile_content-height != 'auto' and $product-tile_main-after-slide-on-hover) {
             @media (hover: hover) and (pointer: fine) {
                 padding-bottom: $product-tile_content-height;
             }
@@ -229,8 +216,7 @@ $product-tile-magento-catalog-image-height: to-number(
 
         @if ($product-tile_limit-container-to-image-size) {
             max-width: ($product-tile-magento-catalog-image-width / 10) * 1rem;
-            max-height: ($product-tile-magento-catalog-image-height / 10) *
-                1rem;
+            max-height: ($product-tile-magento-catalog-image-height / 10) * 1rem;
             margin: 0 auto;
         }
     }
@@ -342,10 +328,7 @@ $product-tile-magento-catalog-image-height: to-number(
     &__name-link {
         color: $product-tile_product-name-link-color;
 
-        @if (
-            $product-tile_product-name-link-color !=
-                $product-tile_product-name-link-color-hover
-        ) {
+        @if ($product-tile_product-name-link-color != $product-tile_product-name-link-color-hover) {
             transition: color 0.15s linear;
         }
 
@@ -532,10 +515,7 @@ $product-tile-magento-catalog-image-height: to-number(
         }
 
         @if ($product-tile_addtocart-reduced) {
-            .#{$ns}product-tile:not(.#{$ns}product-tile--list):not(
-                    .#{$ns}product-tile--teaser
-                )
-                & {
+            .#{$ns}product-tile:not(.#{$ns}product-tile--list):not(.#{$ns}product-tile--teaser) & {
                 .#{$ns}addtocart {
                     &__button {
                         min-height: 4rem;
@@ -561,8 +541,7 @@ $product-tile-magento-catalog-image-height: to-number(
                 }
             }
 
-            .#{$ns}product-tile:not(.#{$ns}product-tile--list)
-                &.#{$ns}addtocart--loading {
+            .#{$ns}product-tile:not(.#{$ns}product-tile--list) &.#{$ns}addtocart--loading {
                 .#{$ns}addtocart__loading {
                     transform: scale(1) translate3d(-50%, -50%, 0);
                 }

@@ -33,10 +33,7 @@ export default class ExpectedDeliveryDate {
         placeholderSelector: '.cs-indicator-exp-delivery__placeholder',
     };
 
-    public constructor(
-        $element: JQuery,
-        options?: ExpectedDeliveryDateOptions
-    ) {
+    public constructor($element: JQuery, options?: ExpectedDeliveryDateOptions) {
         if ($element.length === 0) {
             return;
         }
@@ -56,17 +53,13 @@ export default class ExpectedDeliveryDate {
         // Expected delivery component
         const $expectedDeliveryComponent = this._$element;
         // Cutoff time
-        const maxTime = Number(
-            this._$element.attr(this._options.maxTimeAttribute)
-        );
+        const maxTime = Number(this._$element.attr(this._options.maxTimeAttribute));
         // Default delivery day - order placed before cutoff time
         let defaultDeliveryDay = $expectedDeliveryComponent.find(
             this._options.deliverySameDaySelector
         );
         // Placeholder
-        const placeholder = $expectedDeliveryComponent.find(
-            this._options.placeholderSelector
-        );
+        const placeholder = $expectedDeliveryComponent.find(this._options.placeholderSelector);
 
         // If order is placed after cutoff switch default to delivery day +1
         if (currentTime > maxTime) {
@@ -75,12 +68,8 @@ export default class ExpectedDeliveryDate {
             );
         }
 
-        $(defaultDeliveryDay).addClass(
-            'cs-indicator-exp-delivery__text--visible'
-        );
+        $(defaultDeliveryDay).addClass('cs-indicator-exp-delivery__text--visible');
 
-        $(placeholder).addClass(
-            'cs-indicator-exp-delivery__placeholder--hidden'
-        );
+        $(placeholder).addClass('cs-indicator-exp-delivery__placeholder--hidden');
     }
 }

@@ -49,9 +49,7 @@ export default class Cart {
             options
         );
 
-        this._cartTable = document.querySelector(
-            `${this._options.cartTableSelector}`
-        );
+        this._cartTable = document.querySelector(`${this._options.cartTableSelector}`);
         this._updateTimeout = null;
         this._initValue = 0;
 
@@ -83,9 +81,7 @@ export default class Cart {
         if (cartUpdateButtonElement) {
             cartUpdateButtonElement.removeAttribute('aria-hidden');
             cartUpdateButtonElement.removeAttribute('tabindex');
-            cartUpdateButtonElement.classList.remove(
-                this._options.visuallyHiddenClass
-            );
+            cartUpdateButtonElement.classList.remove(this._options.visuallyHiddenClass);
             cartUpdateButtonElement
                 .closest(this._options.actionsContainerSelector)
                 .classList.add(this._options.activeActionsClass);
@@ -124,58 +120,49 @@ export default class Cart {
         const _this = this;
 
         window.addEventListener('orientationchange', (): void => {
-            const cartTableStyle: string = getComputedStyle(
-                this._cartTable
-            ).getPropertyValue('display');
+            const cartTableStyle: string = getComputedStyle(this._cartTable).getPropertyValue(
+                'display'
+            );
             this._cartTable.style.display = 'none';
             setTimeout((): void => {
                 this._cartTable.style.display = cartTableStyle;
             }, 10);
         });
 
-        $(`${this._options.qtyIncrementButtonSelector}`).on(
-            'click',
-            (e): void => {
-                if (
-                    !$(e.target)
-                        .parents('.cs-qty-increment__button')
-                        .hasClass('cs-qty-increment__button--disabled') &&
-                    !$(e.target).hasClass('cs-qty-increment__button--disabled')
-                ) {
+        $(`${this._options.qtyIncrementButtonSelector}`).on('click', (e): void => {
+            if (
+                !$(e.target)
+                    .parents('.cs-qty-increment__button')
+                    .hasClass('cs-qty-increment__button--disabled') &&
+                !$(e.target).hasClass('cs-qty-increment__button--disabled')
+            ) {
+                this._triggerUpdate($(e.target));
+            }
+        });
+
+        $(`${this._options.qtyIncrementInputSelector}`).on('input change', (e, data): void => {
+            if (
+                _this._options.inputChangeAction !== 'reload' &&
+                data?.trigger === 'qty-increment'
+            ) {
+                return;
+            }
+            const newValue = $(e.target).val();
+
+            // Don't perform any action when input is empty (e.g. when user hits backspace) or value doesn't change (to prevent duplicated error (NKD-3292))
+            if (newValue === '' || Number(this._initValue) === Number(newValue)) {
+                return;
+            }
+
+            if (this._options.inputChangeAction === 'reload') {
+                if (Number(newValue) < _this._options.minQtyValue) {
+                    this._removeItem($(e.target));
+                } else {
                     this._triggerUpdate($(e.target));
                 }
+            } else {
+                this._showUpdateButton($(e.target));
             }
-        );
-
-        $(`${this._options.qtyIncrementInputSelector}`).on(
-            'input change',
-            (e, data): void => {
-                if (
-                    _this._options.inputChangeAction !== 'reload' &&
-                    data?.trigger === 'qty-increment'
-                ) {
-                    return;
-                }
-                const newValue = $(e.target).val();
-
-                // Don't perform any action when input is empty (e.g. when user hits backspace) or value doesn't change (to prevent duplicated error (NKD-3292))
-                if (
-                    newValue === '' ||
-                    Number(this._initValue) === Number(newValue)
-                ) {
-                    return;
-                }
-
-                if (this._options.inputChangeAction === 'reload') {
-                    if (Number(newValue) < _this._options.minQtyValue) {
-                        this._removeItem($(e.target));
-                    } else {
-                        this._triggerUpdate($(e.target));
-                    }
-                } else {
-                    this._showUpdateButton($(e.target));
-                }
-            }
-        );
+        });
     }
 }

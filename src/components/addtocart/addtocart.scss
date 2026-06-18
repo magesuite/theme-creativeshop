@@ -47,10 +47,7 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
     }
 
     &__button {
-        @include button(
-            $type: $addtocart_button-type,
-            $icon_pos: $addtocart_button-icon-position
-        );
+        @include button($type: $addtocart_button-type, $icon_pos: $addtocart_button-icon-position);
 
         &[disabled] {
             /*
@@ -113,7 +110,9 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         height: $addtocart_button-icon-height;
 
         /* stylelint-disable */
-        @if ($addtocart_button-icon-position == 'right') or ($addtocart_button-icon-position == 'left') {
+        @if ($addtocart_button-icon-position == 'right') or
+            ($addtocart_button-icon-position == 'left')
+        {
             #{$addtocart_button-icon-position}: $addtocart_button-icon-edge-gutter;
         }
         /* stylelint-enable */
@@ -125,7 +124,8 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
 
     &__button-label,
     &__success-label {
-        transition: opacity 0.15s linear,
+        transition:
+            opacity 0.15s linear,
             transform 1s cubic-bezier(0, 0.77, 0.18, 1);
     }
 
@@ -142,7 +142,8 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         width: $addtocart_loading-indicator-ball-size * 4;
         height: $addtocart_loading-indicator-ball-size;
         opacity: 0;
-        transition: opacity 0.15s linear,
+        transition:
+            opacity 0.15s linear,
             transform 1s cubic-bezier(0, 0.77, 0.18, 1);
         transition-delay: 0.2s;
 
@@ -212,8 +213,7 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         transform: translate3d(-50%, -50%, 0) translateX(-2em); // calc() doesn't work in IE so i had to duplicate translateX() transform to adjust X position
         transition-delay: 0.2s;
         white-space: nowrap;
-        padding-right: #{$addtocart_button-padding-right -
-            $addtocart_button-padding-left};
+        padding-right: #{$addtocart_button-padding-right - $addtocart_button-padding-left};
     }
 
     &__minicart {
@@ -272,7 +272,8 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
         position: absolute;
         opacity: 0;
         z-index: 600;
-        transition: top 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93),
+        transition:
+            top 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93),
             left 0.9s cubic-bezier(0.42, 0.31, 0.34, 0.93);
         pointer-events: none;
 
@@ -330,11 +331,7 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
             transform: translate3d(0, 0, 0);
 
             &:after {
-                transform: translate3d(
-                    -#{$addtocart_button-skewed-background-width + 0.2},
-                    0,
-                    0
-                );
+                transform: translate3d(-#{$addtocart_button-skewed-background-width + 0.2}, 0, 0);
             }
         }
     }
@@ -382,7 +379,8 @@ $addtocart_ajax-fail-fill: $addtocart_ajax-fail-color !default;
 
         #{$root}__success-label,
         #{$root}__fail-icon {
-            transition: opacity 0.6s linear,
+            transition:
+                opacity 0.6s linear,
                 transform 0.6s cubic-bezier(0.86, 0.01, 0.83, 0.51);
             transition-delay: 0;
         }

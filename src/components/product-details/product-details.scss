@@ -9,8 +9,7 @@ $product-description_item-background-desktop: linear-gradient(
     #f8f8f8 0%,
     #ffffff 50%
 ) !default;
-$product-description_item-main-background: $color_background-500
-    url('../images/background.png') !default;
+$product-description_item-main-background: $color_background-500 url('../images/background.png') !default;
 
 $product-description_item-separator-border: 1px solid $color_border-500 !default;
 
@@ -133,24 +132,20 @@ $product-description_headline-cc-visible: false !default;
         @include media('<tablet') {
             background: $product-description_headline-background;
             // Extend "background" beyond padding and margin through box-shadow
-            box-shadow: 0 2em 0 $product-description_headline-background,
+            box-shadow:
+                0 2em 0 $product-description_headline-background,
                 0 -2em 0 $product-description_headline-background,
-                $page_edge-gutter 0 0 2em
-                    $product-description_headline-background,
+                $page_edge-gutter 0 0 2em $product-description_headline-background,
                 -$page_edge-gutter 0 0 2em $product-description_headline-background;
         }
     }
 
     &__headline-title {
-        @include headline-title(
-            $font-size: $product-description--mobile_headline-title-font-size
-        );
+        @include headline-title($font-size: $product-description--mobile_headline-title-font-size);
         text-align: left;
 
         @include media('>=tablet') {
-            @include headline-title(
-                $font-size: $product-description_headline-title-font-size
-            );
+            @include headline-title($font-size: $product-description_headline-title-font-size);
             text-align: center;
         }
 

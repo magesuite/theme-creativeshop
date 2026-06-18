@@ -40,8 +40,7 @@ export class AftersearchNav {
         toggleButtonClassName: 'cs-aftersearch-nav__toggle-button',
         filterClassName: 'cs-aftersearch-nav__filter',
         filterContentClassName: 'cs-aftersearch-nav__filter-content',
-        filterContentRightClassName:
-            'cs-aftersearch-nav__filter-content--align-right',
+        filterContentRightClassName: 'cs-aftersearch-nav__filter-content--align-right',
         loaderClassName: 'cs-aftersearch-nav__loader',
         showLoaderOnClick: true,
         loaderClickTargetsSelector:
@@ -60,23 +59,13 @@ export class AftersearchNav {
         this._options = $.extend(this._options, options);
 
         this._switchBreakpoint =
-            breakpoint[
-                deepGet(
-                    viewXml,
-                    'vars.Magento_Catalog.filters.breakpoint_switch'
-                )
-            ] ?? breakpoint.tablet;
+            breakpoint[deepGet(viewXml, 'vars.Magento_Catalog.filters.breakpoint_switch')] ??
+            breakpoint.tablet;
 
-        this._$toggleButton = this._$element.find(
-            `.${this._options.toggleButtonClassName}`
-        );
-        this._$listOfFilters = this._$element.find(
-            `.${this._options.filterClassName}`
-        );
+        this._$toggleButton = this._$element.find(`.${this._options.toggleButtonClassName}`);
+        this._$listOfFilters = this._$element.find(`.${this._options.filterClassName}`);
 
-        this._isHorizontal = this._$element.hasClass(
-            this._options.horizontalClassName
-        );
+        this._isHorizontal = this._$element.hasClass(this._options.horizontalClassName);
 
         this._attachEvents();
     }
@@ -99,9 +88,7 @@ export class AftersearchNav {
      *  Set height of dropdown content elements to best fit available screen.
      */
     protected _setProperHeightOfFlyout($filter: JQuery): void {
-        const $filterContent: JQuery = $filter.find(
-            '.cs-aftersearch-nav__filter-content'
-        );
+        const $filterContent: JQuery = $filter.find('.cs-aftersearch-nav__filter-content');
         // Remove height that was previously set to start with clean value.
         $filterContent.css('max-height', '');
 
@@ -127,23 +114,16 @@ export class AftersearchNav {
             return;
         }
 
-        const $filterContent = $filter.find(
-            `.${this._options.filterContentClassName}`
-        );
+        const $filterContent = $filter.find(`.${this._options.filterContentClassName}`);
         const $filterOptions = $filter.parent();
         const filterOptionsWidth = $filterOptions.width();
         const filterOptionsOffset = $filterOptions.offset();
         const filterOffset = $filter.offset();
 
-        if (
-            filterOffset.left - filterOptionsOffset.left >=
-            filterOptionsWidth / 2
-        ) {
+        if (filterOffset.left - filterOptionsOffset.left >= filterOptionsWidth / 2) {
             $filterContent.addClass(this._options.filterContentRightClassName);
         } else {
-            $filterContent.removeClass(
-                this._options.filterContentRightClassName
-            );
+            $filterContent.removeClass(this._options.filterContentRightClassName);
         }
     }
 
@@ -151,9 +131,7 @@ export class AftersearchNav {
      *  Toggle visibility of additional filters.
      */
     protected _toggleFilters(): void {
-        const areFiltersExpanded = this._$element.hasClass(
-            this._options.filtersExpandedClassName
-        );
+        const areFiltersExpanded = this._$element.hasClass(this._options.filtersExpandedClassName);
         const ariaValue = areFiltersExpanded ? 'false' : 'true';
 
         this._closeCollapses(this._$listOfFilters);
@@ -176,10 +154,7 @@ export class AftersearchNav {
         this._eventListeners.filterClick = this._adjustDropdown.bind(this);
         this._eventListeners.toggleButtonClick = this._toggleFilters.bind(this);
         this._eventListeners.filterApply = this._applyFilter.bind(this);
-        this._eventListeners.inputChange = debounce(
-            this._adjustDropdown.bind(this),
-            300
-        );
+        this._eventListeners.inputChange = debounce(this._adjustDropdown.bind(this), 300);
 
         this._$listOfFilters.on('click', this._eventListeners.filterClick);
         this._$toggleButton.on('click', this._eventListeners.toggleButtonClick);

@@ -12,23 +12,13 @@ const VIDEO_CLASS = 'fb-video';
  * @param options
  * @param id
  */
-const prepareVideoData = (
-    url: string,
-    options: FacebookPlayerOptions,
-    id: string
-) => {
+const prepareVideoData = (url: string, options: FacebookPlayerOptions, id: string) => {
     const element = document.getElementById(id);
     element.className = VIDEO_CLASS;
     element.setAttribute('data-href', url);
     element.setAttribute('data-width', options.width);
-    element.setAttribute(
-        'data-autoplay',
-        Boolean(options.player_vars.autoplay).toString()
-    );
-    element.setAttribute(
-        'data-controls',
-        Boolean(options.player_vars.controls).toString()
-    );
+    element.setAttribute('data-autoplay', Boolean(options.player_vars.autoplay).toString());
+    element.setAttribute('data-controls', Boolean(options.player_vars.controls).toString());
 };
 
 const facebookPlayer = {
@@ -90,22 +80,18 @@ const facebookPlayer = {
                     }
 
                     if (typeof onStageChangeHandler === 'function') {
-                        ['finishedPlaying', 'paused', 'startedPlaying'].forEach(
-                            (event) => {
-                                this.players[id].subscribe(event, () => {
-                                    this._isPlaying[id] =
-                                        event === 'startedPlaying';
-                                    onStageChangeHandler();
-                                });
-                            }
-                        );
+                        ['finishedPlaying', 'paused', 'startedPlaying'].forEach((event) => {
+                            this.players[id].subscribe(event, () => {
+                                this._isPlaying[id] = event === 'startedPlaying';
+                                onStageChangeHandler();
+                            });
+                        });
                     }
 
                     // For some reason Facebook have added `visibility: hidden`
                     // to the iframe when autoplay fails, so here we set it back
-                    document
-                        .getElementById(id)
-                        .querySelector('iframe').style.visibility = 'visible';
+                    document.getElementById(id).querySelector('iframe').style.visibility =
+                        'visible';
                 }
             });
 

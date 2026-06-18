@@ -25,9 +25,7 @@ define(['jquery'], function ($) {
 
                 if (this.element.closest(`.${toolbarSelector}--top`).length) {
                     this.options.instanceType = 'top';
-                } else if (
-                    this.element.closest(`.${toolbarSelector}--bottom`).length
-                ) {
+                } else if (this.element.closest(`.${toolbarSelector}--bottom`).length) {
                     this.options.instanceType = 'bottom';
                 }
 
@@ -77,9 +75,7 @@ define(['jquery'], function ($) {
                             const $labelPosition = $label.find(labelClass);
 
                             if ($labelPosition.length) {
-                                $labelPosition.text(
-                                    $.mage.__(this.options.instanceType)
-                                );
+                                $labelPosition.text($.mage.__(this.options.instanceType));
                             }
                         }
                     }
@@ -88,8 +84,7 @@ define(['jquery'], function ($) {
                         let $limiterAriaLabel = $element.attr('aria-label');
 
                         $limiterAriaLabel =
-                            $limiterAriaLabel +
-                            ` (${$.mage.__(this.options.instanceType)})`;
+                            $limiterAriaLabel + ` (${$.mage.__(this.options.instanceType)})`;
                         $element.attr('aria-label', $limiterAriaLabel);
                     }
                 });

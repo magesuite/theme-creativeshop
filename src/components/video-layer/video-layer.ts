@@ -31,10 +31,7 @@ export default class VideoLayer {
      * Creates VideoLayer component
      */
     public constructor() {
-        this._options = deepGet(
-            viewXml,
-            'vars.MageSuite_ContentConstructorFrontend.video_layer'
-        );
+        this._options = deepGet(viewXml, 'vars.MageSuite_ContentConstructorFrontend.video_layer');
         this._layerTriggers = document.querySelectorAll(
             '.cs-image-teaser a[href*="youtube.com"], .cs-image-teaser a[href*="youtu.be"]'
         );
@@ -67,28 +64,26 @@ export default class VideoLayer {
 
             this.prepareModalWrapper(videoPlayerId, videoModalId);
 
-            requireAsync(['jquery', 'Magento_Ui/js/modal/modal']).then(
-                ([$, modal]) => {
-                    this._videoModal[videoModalId] = modal(
-                        {
-                            /**
-                             * When modal is closed
-                             */
-                            closed: (): void => {
-                                this._videoPlayer.pause(videoPlayerId);
-                            },
-                            /**
-                             * When modal is opened
-                             */
-                            opened: (): void => {
-                                this.forceMobileFullscreen(videoPlayerId);
-                            },
-                            ...modalOptions,
+            requireAsync(['jquery', 'Magento_Ui/js/modal/modal']).then(([$, modal]) => {
+                this._videoModal[videoModalId] = modal(
+                    {
+                        /**
+                         * When modal is closed
+                         */
+                        closed: (): void => {
+                            this._videoPlayer.pause(videoPlayerId);
                         },
-                        $(`#${videoModalId}`)
-                    );
-                }
-            );
+                        /**
+                         * When modal is opened
+                         */
+                        opened: (): void => {
+                            this.forceMobileFullscreen(videoPlayerId);
+                        },
+                        ...modalOptions,
+                    },
+                    $(`#${videoModalId}`)
+                );
+            });
 
             element.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -103,8 +98,7 @@ export default class VideoLayer {
      * @param videoModalId
      */
     protected prepareModalWrapper(videoPlayerId, videoModalId): void {
-        const videoWrapperElement: HTMLDivElement =
-            document.createElement('div');
+        const videoWrapperElement: HTMLDivElement = document.createElement('div');
         videoWrapperElement.id = videoModalId;
         videoWrapperElement.className = 'cs-video-layer__wrapper';
 
@@ -127,8 +121,7 @@ export default class VideoLayer {
      */
     protected async attachEvent(element, videoPlayerId, videoModalId): void {
         if (await consentManagement.checkConsent('youtube')) {
-            const hasPlayer: boolean =
-                this.getIframePlayer(videoPlayerId) !== null;
+            const hasPlayer: boolean = this.getIframePlayer(videoPlayerId) !== null;
 
             if (!hasPlayer) {
                 this.renderPlayer(element.href, videoPlayerId);

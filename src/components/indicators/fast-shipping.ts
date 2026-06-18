@@ -126,31 +126,23 @@ export default class FastShipping {
         this._options = $.extend(this._options, options);
         this._translations = this._getTranslationsJSON();
         this._countdownInterval = null;
-        this._$timerPlaceholder = this._$element.find(
-            this._options.timerSelector
-        );
+        this._$timerPlaceholder = this._$element.find(this._options.timerSelector);
 
         this._deliveryData = {
             time: parseInt(
                 this._$element
-                    .find(
-                        `.${this._options.namespace}indicator-fast-shipping__data-time`
-                    )
+                    .find(`.${this._options.namespace}indicator-fast-shipping__data-time`)
                     .val() as string,
                 10
             ),
             nextDayTime: parseInt(
                 this._$element
-                    .find(
-                        `.${this._options.namespace}indicator-fast-shipping__data-time-next`
-                    )
+                    .find(`.${this._options.namespace}indicator-fast-shipping__data-time-next`)
                     .val() as string,
                 10
             ),
             deliveryDay: this._$element
-                .find(
-                    `.${this._options.namespace}indicator-fast-shipping__data-delivery-day`
-                )
+                .find(`.${this._options.namespace}indicator-fast-shipping__data-delivery-day`)
                 .val()
                 .toString(),
         };
@@ -169,13 +161,9 @@ export default class FastShipping {
 
         if (timeRemaining.total > 0) {
             if (this._options.timerVariant === 'countdown') {
-                this._$timerPlaceholder.html(
-                    this._getFormattedTimeLeft(timeRemaining)
-                );
+                this._$timerPlaceholder.html(this._getFormattedTimeLeft(timeRemaining));
             } else {
-                this._$timerPlaceholder.html(
-                    this._getFormattedTimeTo(timeRemaining.total)
-                );
+                this._$timerPlaceholder.html(this._getFormattedTimeTo(timeRemaining.total));
             }
         } else {
             this.showVariant(timeRemaining);
@@ -189,24 +177,16 @@ export default class FastShipping {
      */
     public showVariant(timeRemaining): void {
         const variant: string = timeRemaining.total > 0 ? 'today' : 'tomorrow';
-        const $allVariants = this._$element.find(
-            `.${this._options.variantClassName}`
-        );
+        const $allVariants = this._$element.find(`.${this._options.variantClassName}`);
         const $variant = this._$element.find(
             `.${this._options.variantClassName}[data-fs-scenario="${variant}"]`
         );
 
         if ($variant.length) {
-            $allVariants.removeClass(
-                `${this._options.variantClassName}--visible`
-            );
+            $allVariants.removeClass(`${this._options.variantClassName}--visible`);
             $variant.addClass(`${this._options.variantClassName}--visible`);
         } else {
-            /* tslint:disable */
-            console.warn(
-                `Fast Shipping: Could not find target element: ${variant}`
-            );
-            /* tslint:enable */
+            console.warn(`Fast Shipping: Could not find target element: ${variant}`);
         }
     }
 
@@ -255,21 +235,17 @@ export default class FastShipping {
     protected _getTimeRemaining(): object {
         const timeRemaining: number =
             this._deliveryData.time -
-            (Math.floor(Date.now() / 1000) -
-                new Date().getTimezoneOffset() * 60);
+            (Math.floor(Date.now() / 1000) - new Date().getTimezoneOffset() * 60);
 
         return {
             total: timeRemaining,
             days: Math.floor(timeRemaining / (60 * 60 * 24)),
             hours: Math.floor((timeRemaining / (60 * 60)) % 24),
             minutes:
-                timeRemaining < 59 && timeRemaining > 0
-                    ? 1
-                    : Math.floor((timeRemaining / 60) % 60),
+                timeRemaining < 59 && timeRemaining > 0 ? 1 : Math.floor((timeRemaining / 60) % 60),
             totalNextDay:
                 this._deliveryData.nextDayTime -
-                (Math.floor(Date.now() / 1000) -
-                    new Date().getTimezoneOffset() * 60),
+                (Math.floor(Date.now() / 1000) - new Date().getTimezoneOffset() * 60),
         };
     }
 
@@ -297,10 +273,7 @@ export default class FastShipping {
         // Replaces all dynamic characters
         if (deadline.days > 0) {
             template = template.replace('%d%', deadline.days);
-            template = template.replace(
-                '%dl%',
-                this._getTimeLabel(deadline.days, 'day')
-            );
+            template = template.replace('%dl%', this._getTimeLabel(deadline.days, 'day'));
         } else {
             template = template.replace('%d%', '');
             template = template.replace('%dl%', '');
@@ -308,10 +281,7 @@ export default class FastShipping {
 
         if (deadline.hours > 0) {
             template = template.replace('%h%', deadline.hours);
-            template = template.replace(
-                '%hl%',
-                this._getTimeLabel(deadline.hours, 'hour')
-            );
+            template = template.replace('%hl%', this._getTimeLabel(deadline.hours, 'hour'));
         } else {
             template = template.replace('%h%', '');
             template = template.replace('%hl%', '');
@@ -319,10 +289,7 @@ export default class FastShipping {
 
         if (deadline.minutes > 0) {
             template = template.replace('%m%', deadline.minutes);
-            template = template.replace(
-                '%ml%',
-                this._getTimeLabel(deadline.minutes, 'minute')
-            );
+            template = template.replace('%ml%', this._getTimeLabel(deadline.minutes, 'minute'));
         } else {
             template = template.replace('%m%', '');
             template = template.replace('%ml%', '');
@@ -338,8 +305,7 @@ export default class FastShipping {
      */
     protected _getFormattedTimeTo(unixTime: number): string {
         const deadlineTimestamp: any = new Date(
-            (this._deliveryData.time + new Date().getTimezoneOffset() * 60) *
-                1000
+            (this._deliveryData.time + new Date().getTimezoneOffset() * 60) * 1000
         );
 
         const h: number = deadlineTimestamp.getHours();

@@ -18,8 +18,7 @@ define(['jquery'], function ($) {
                 this.element.off('blur');
                 this._blur();
 
-                this._resetFormOnOuterClick =
-                    this._resetFormOnOuterClick.bind(this);
+                this._resetFormOnOuterClick = this._resetFormOnOuterClick.bind(this);
                 $('body').on('click', this._resetFormOnOuterClick);
 
                 this.isTouchDevice = this._isTouchDevice();
@@ -68,10 +67,7 @@ define(['jquery'], function ($) {
                             this.titleRenderers[type].render(data) +
                             '</dt>'
                     );
-                } else if (
-                    this.options.templates &&
-                    this.options.templates[type].title
-                ) {
+                } else if (this.options.templates && this.options.templates[type].title) {
                     title = $(
                         '<dt class="autocomplete-list-title title-' +
                             type +
@@ -102,9 +98,7 @@ define(['jquery'], function ($) {
             _resetResponseList: function (all) {
                 this._super(all);
 
-                var minWidth = all
-                    ? ''
-                    : parseInt(this.element.outerWidth(), 10);
+                var minWidth = all ? '' : parseInt(this.element.outerWidth(), 10);
                 this.autoComplete.css({
                     minWidth: minWidth,
                     width: '',

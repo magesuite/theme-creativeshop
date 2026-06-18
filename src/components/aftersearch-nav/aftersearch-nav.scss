@@ -47,8 +47,7 @@ $aftersearch-nav--horizontal_filter-line-height: $button_line-height !default;
 $aftersearch-nav--horizontal_filter-padding: $button_padding !default;
 
 $aftersearch-nav--horizontal_filter-title-box-shadow: none !default;
-$aftersearch-nav--horizontal_filter-title-box-shadow-opened: 0 0px 10px 0
-    rgba(0, 0, 0, 0.15) !default;
+$aftersearch-nav--horizontal_filter-title-box-shadow-opened: 0 0px 10px 0 rgba(0, 0, 0, 0.15) !default;
 $aftersearch-nav--horizontal_filter-title-background-color: $color_background-500 !default;
 $aftersearch-nav--horizontal_filter-title-border: 1px solid
     $aftersearch-nav--horizontal_filter-title-background-color !default;
@@ -60,8 +59,7 @@ $aftersearch-nav--horizontal_filter-title-border-opened: 1px solid
     $aftersearch-nav--horizontal_filter-title-background-color-opened !default;
 
 $aftersearch-nav--horizontal_filter-content-background: $color_background-200 !default;
-$aftersearch-nav--horizontal_filter-content-box-shadow: 0 4px 6px 0
-    rgba(0, 0, 0, 0.15) !default;
+$aftersearch-nav--horizontal_filter-content-box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15) !default;
 
 $aftersearch-nav--horizontal_toggle-button-bottom: false !default;
 $aftersearch-nav--horizontal_toggle-button-type: $button_default-type !default;
@@ -96,9 +94,7 @@ $aftersearch-nav--horizontal_rows: (
 ) !default;
 
 // Calculates layout for elements in horizontal navigation for each breakpoint.
-$num-aftersearch-nav--horizontal_cols: length(
-    $aftersearch-nav--horizontal_cols
-) !default;
+$num-aftersearch-nav--horizontal_cols: length($aftersearch-nav--horizontal_cols) !default;
 
 .#{$ns}aftersearch-nav {
     $root: &;
@@ -194,8 +190,7 @@ $num-aftersearch-nav--horizontal_cols: length(
                 $width: $aftersearch-nav_filters-trigger-pseudoicon-width,
                 $height: $aftersearch-nav_filters-trigger-pseudoicon-height,
                 $color: $aftersearch-nav_filters-trigger-pseudoicon-color,
-                $color-expanded:
-                    $aftersearch-nav_filters--expanded-trigger-pseudoicon-color
+                $color-expanded: $aftersearch-nav_filters--expanded-trigger-pseudoicon-color
             );
         }
 
@@ -253,10 +248,8 @@ $num-aftersearch-nav--horizontal_cols: length(
                 $width: $aftersearch-nav_filter-title-pseudoicon-width,
                 $height: $aftersearch-nav_filter-title-pseudoicon-height,
                 $color: $aftersearch-nav_filter-title-pseudoicon-color,
-                $color-hover:
-                    $aftersearch-nav_filter--hover-title-pseudoicon-color,
-                $color-expanded:
-                    $aftersearch-nav_filter--expanded-title-pseudoicon-color
+                $color-hover: $aftersearch-nav_filter--hover-title-pseudoicon-color,
+                $color-expanded: $aftersearch-nav_filter--expanded-title-pseudoicon-color
             );
         }
 
@@ -521,7 +514,10 @@ $num-aftersearch-nav--horizontal_cols: length(
                 padding: $aftersearch-nav--horizontal_filter-padding;
                 border: $aftersearch-nav--horizontal_filter-title-border;
                 box-shadow: $aftersearch-nav--horizontal_filter-title-box-shadow;
-                transition: box-shadow 0.3s, background 0.3s, border 0.3s;
+                transition:
+                    box-shadow 0.3s,
+                    background 0.3s,
+                    border 0.3s;
                 word-break: unset;
 
                 &:hover {
@@ -543,19 +539,14 @@ $num-aftersearch-nav--horizontal_cols: length(
             #{$root}__toggle-button {
                 @include button(
                     $type: $aftersearch-nav--horizontal_toggle-button-type,
-                    $icon_pos:
-                        $aftersearch-nav--horizontal_toggle-button-icon-pos
+                    $icon_pos: $aftersearch-nav--horizontal_toggle-button-icon-pos
                 );
 
                 @include pseudoicon(
-                    $width:
-                        $aftersearch-nav--horizontal_toggle-button-pseudoicon-width,
-                    $height:
-                        $aftersearch-nav--horizontal_toggle-button-pseudoicon-height,
-                    $color:
-                        $aftersearch-nav--horizontal_toggle-button-pseudoicon-color,
-                    $color-hover:
-                        $aftersearch-nav--horizontal_toggle-button--hover-pseudoicon-color,
+                    $width: $aftersearch-nav--horizontal_toggle-button-pseudoicon-width,
+                    $height: $aftersearch-nav--horizontal_toggle-button-pseudoicon-height,
+                    $color: $aftersearch-nav--horizontal_toggle-button-pseudoicon-color,
+                    $color-hover: $aftersearch-nav--horizontal_toggle-button--hover-pseudoicon-color,
                     $color-expanded:
                         $aftersearch-nav--horizontal_toggle-button--expanded-pseudoicon-color
                 );
@@ -602,9 +593,7 @@ $num-aftersearch-nav--horizontal_cols: length(
                 opacity: 0;
                 box-shadow: $aftersearch-nav--horizontal_filter-content-box-shadow;
 
-                @include media(
-                    '>=#{$aftersearch-nav--filters-switch-breakpoint}'
-                ) {
+                @include media('>=#{$aftersearch-nav--filters-switch-breakpoint}') {
                     padding-bottom: 0;
                 }
 
@@ -635,9 +624,7 @@ $num-aftersearch-nav--horizontal_cols: length(
         @mixin aftersearch-nav_filters-visibility($cols, $range) {
             #{$root}__filter,
             #{$root}__toggle-wrapper {
-                flex-basis: calc(
-                    #{100% / $cols} - #{$aftersearch-nav--horizontal_item-gutter}
-                );
+                flex-basis: calc(#{100% / $cols} - #{$aftersearch-nav--horizontal_item-gutter});
             }
 
             #{$root}__filter {
@@ -677,26 +664,14 @@ $num-aftersearch-nav--horizontal_cols: length(
 
             @if $i == $num-aftersearch-nav--horizontal_cols {
                 @include media('>=#{$cols-breakpoint_name}') {
-                    @include aftersearch-nav_filters-visibility(
-                        $cols-breakpoint_value,
-                        $elements
-                    );
+                    @include aftersearch-nav_filters-visibility($cols-breakpoint_value, $elements);
                 }
             } @else {
-                $cols-breakpoint-next: nth(
-                    $aftersearch-nav--horizontal_cols,
-                    $i + 1
-                );
+                $cols-breakpoint-next: nth($aftersearch-nav--horizontal_cols, $i + 1);
                 $cols-breakpoint_name-next: nth($cols-breakpoint-next, 1);
 
-                @include media(
-                    '>=#{$cols-breakpoint_name}',
-                    '<#{$cols-breakpoint_name-next}'
-                ) {
-                    @include aftersearch-nav_filters-visibility(
-                        $cols-breakpoint_value,
-                        $elements
-                    );
+                @include media('>=#{$cols-breakpoint_name}', '<#{$cols-breakpoint_name-next}') {
+                    @include aftersearch-nav_filters-visibility($cols-breakpoint_value, $elements);
                 }
             }
         }

@@ -30,9 +30,7 @@ export default class SliderNavigation {
         this._scrollable = this.options.rootComponentNode.querySelector(
             this.options.scrollableElementSelector
         );
-        this._slides = this.options.rootComponentNode.querySelectorAll(
-            this.options.slideSelector
-        );
+        this._slides = this.options.rootComponentNode.querySelectorAll(this.options.slideSelector);
         this._prevTrigger = this.options.rootComponentNode.querySelector(
             this.options.prevButtonSelector
         );
@@ -73,13 +71,11 @@ export default class SliderNavigation {
         let computedScrollPadding: number = 0;
 
         if (this.options.useWholeScreen && this.options.wholeScreenUsed) {
-            computedScrollPadding = +getComputedStyle(this._scrollable)
-                .scrollPaddingInline;
+            computedScrollPadding = +getComputedStyle(this._scrollable).scrollPaddingInline;
 
             if (isNaN(computedScrollPadding)) {
                 computedScrollPadding =
-                    this._slides[this.currentIndex - 1].getBoundingClientRect()
-                        .left;
+                    this._slides[this.currentIndex - 1].getBoundingClientRect().left;
             }
         }
 
@@ -94,14 +90,8 @@ export default class SliderNavigation {
     }
 
     public destroy(): void {
-        this._prevTrigger?.removeEventListener(
-            'click',
-            this._handleSlideToPrev
-        );
-        this._nextTrigger?.removeEventListener(
-            'click',
-            this._handleSlideToNext
-        );
+        this._prevTrigger?.removeEventListener('click', this._handleSlideToPrev);
+        this._nextTrigger?.removeEventListener('click', this._handleSlideToNext);
     }
 
     /**
@@ -117,9 +107,7 @@ export default class SliderNavigation {
      * @param entry {IntersectionObserverEntry} changed IO entry
      */
     public handleIntersect(entry: IntersectionObserverEntry): void {
-        this.currentIndex = Math.ceil(
-            Array.prototype.indexOf.call(this._slides, entry.target) + 1
-        );
+        this.currentIndex = Math.ceil(Array.prototype.indexOf.call(this._slides, entry.target) + 1);
 
         this._togglePrevButtonLock();
         this._toggleVisibility();
@@ -172,8 +160,7 @@ export default class SliderNavigation {
      */
     protected _handleSlideToNext(): void {
         this.scrollToSlide(
-            this.currentIndex + this.options.itemsPerView <
-                this.options.collectionSize
+            this.currentIndex + this.options.itemsPerView < this.options.collectionSize
                 ? this.currentIndex + this.options.itemsPerView
                 : this.options.collectionSize
         );
@@ -184,17 +171,13 @@ export default class SliderNavigation {
      * Defines and distributes events across component's instance
      */
     protected _attachEvents(): void {
-        this._prevTrigger?.addEventListener(
-            'click',
-            (): void => this._handleSlideToPrev(),
-            { passive: true }
-        );
+        this._prevTrigger?.addEventListener('click', (): void => this._handleSlideToPrev(), {
+            passive: true,
+        });
 
-        this._nextTrigger?.addEventListener(
-            'click',
-            (): void => this._handleSlideToNext(),
-            { passive: true }
-        );
+        this._nextTrigger?.addEventListener('click', (): void => this._handleSlideToNext(), {
+            passive: true,
+        });
     }
 
     /**

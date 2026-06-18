@@ -19,17 +19,13 @@ function inputStatus(inputType: string): void {
 }
 
 function createNewsletterCheckboxLabel(): void {
-    const $element: JQuery = $pccfItem.find(
-        '.newsletter-checkbox input[type="checkbox"]'
-    );
+    const $element: JQuery = $pccfItem.find('.newsletter-checkbox input[type="checkbox"]');
 
     $element.each(function (): void {
         const inputId: string = $(this).attr('id');
         const helpParagraph: JQuery = $(this).next('p');
         const helpText: string = $(this).next('p').text();
-        let defaultLabelText: string = `${$.mage.__(
-            'Subscribe to our newsletter'
-        )}`;
+        let defaultLabelText: string = `${$.mage.__('Subscribe to our newsletter')}`;
 
         if (helpText !== '') {
             defaultLabelText = helpText;
@@ -52,9 +48,7 @@ function inputToggler(inputType: string): void {
         }
         if ($(this).prop('checked') === true) {
             if (inputType === 'radio') {
-                $(`input[name="${inputName}"]`)
-                    .parent('label')
-                    .removeClass('checked');
+                $(`input[name="${inputName}"]`).parent('label').removeClass('checked');
             }
             $(this).parent().addClass('checked');
         } else {

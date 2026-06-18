@@ -1,0 +1,242 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+@use 'config/breakpoints' as bp;
+
+// =============================================================================
+// media() - responsive breakpoint mixin
+// =============================================================================
+// A @use-native replacement for include-media. Reads the project $breakpoints
+// map from config/breakpoints (which in turn reads from view.xml), and
+// generates correct min-width / max-width media queries from a simple
+// operator+key or operator+value string syntax.
+
+// SUPPORTED OPERATORS
+// -------------------
+//   >=  min-width, inclusive   (most common - "from this breakpoint up")
+//   >   min-width, exclusive   (next pixel/unit above the value)
+//   <=  max-width, inclusive
+//   <   max-width, exclusive   (most common - "below this breakpoint")
+
+// BREAKPOINT KEYS
+// ---------------
+// Named keys are resolved from config/breakpoints: phone, phoneLg, tablet,
+// laptop, laptopLg, desktop, tv. Raw dimension values (px, em, rem) are also
+// accepted - the mixin converts the string to a Sass number automatically.
+
+// USAGE - importing in a component
+// ---------------------------------
+// Add one line at the top of your SCSS file (replaces the old @import lines
+// for 'config/breakpoints' and 'vendors/include-media'):
+
+//   @use 'utils/media' as *;
+
+// The `as *` makes @include media(...) available without a namespace prefix,
+// preserving full backwards-compatible call syntax.
+
+// USAGE - basic examples
+// ----------------------
+//   // Named breakpoint, min-width
+//   @include media('>=tablet') { ... }
+//   // Named breakpoint, max-width exclusive
+//   @include media('<laptop') { ... }
+//   // Range - combines two conditions with `and`
+//   @include media('>=tablet', '<laptop') { ... }
+//   // Raw px value - useful for one-off tweaks not tied to a named breakpoint
+//   @include media('>=500px') { ... }
+//   @include media('<768px') { ... }
+//   // Raw em / rem values
+//   @include media('>=48em') { ... }
+//   @include media('<30rem') { ... }
+//   // Dynamic value via variable (breakpoint name or raw dimension)
+//   $my-breakpoint: tablet;
+//   @include media('>=#{$my-breakpoint}') { ... }
+//   // Variable holding a full condition string (legacy pattern still works)
+//   $component-switch-breakpoint: '>=laptop' !default;
+//   @include media($component-switch-breakpoint) { ... }
+
+// -----------------------------------------------------------------------------
+// Private helpers
+// -----------------------------------------------------------------------------
+
+// Unit - Sass dimension map used by _attach-unit().
+$_units: (
+    'px': 1px,
+    'em': 1em,
+    'rem': 1rem,
+    '%': 1%,
+    'vw': 1vw,
+    'vh': 1vh,
+    'vmin': 1vmin,
+    'vmax': 1vmax,
+);
+
+// How much to step in/out per unit for exclusive operators (> and <).
+// Values mirror include-media's $unit-intervals for compatibility.
+$_unit-intervals: (
+    'px': 1px,
+    'em': 0.01em,
+    'rem': 0.1rem,
+);
+
+// Attaches a CSS unit to a unitless number.
+// e.g. _attach-unit(48, 'em') -> 48em
+@function _attach-unit($number, $unit) {
+    @if map.has-key($_units, $unit) {
+        @return $number * map.get($_units, $unit);
+    }
+    // Unknown unit - return as-is and let Sass/CSS surface the error naturally.
+    @return $number;
+}
+
+// Converts a dimension string such as '500px', '48.5em', '30rem' to a real
+// Sass number so arithmetic (exclusive adjustments) can be applied to it.
+// If $value is already a number it is returned unchanged.
+@function _str-to-number($value) {
+    @if meta.type-of($value) == 'number' {
+        @return $value;
+    }
+
+    $str: string.unquote('#{$value}');
+    $result: 0;
+    $digits: 0; // 0 = integer part, >0 = decimal divisor
+    $minus: string.slice($str, 1, 1) == '-';
+    $start: 1;
+    @if $minus {
+        $start: 2;
+    }
+    $digits-map: (
+        '0': 0,
+        '1': 1,
+        '2': 2,
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        '6': 6,
+        '7': 7,
+        '8': 8,
+        '9': 9,
+    );
+
+    @for $i from $start through string.length($str) {
+        $char: string.slice($str, $i, $i);
+
+        @if $char == '.' {
+            $digits: 1;
+        } @else if map.has-key($digits-map, $char) {
+            $digit: map.get($digits-map, $char);
+            @if $digits == 0 {
+                $result: $result * 10 + $digit;
+            } @else {
+                $digits: $digits * 10;
+                $result: $result + math.div($digit, $digits);
+            }
+        } @else {
+            // First non-numeric character - everything from here is the unit.
+            $unit: string.slice($str, $i);
+            $signed: $result;
+            @if $minus {
+                $signed: -$result;
+            }
+            @return _attach-unit($signed, $unit);
+        }
+    }
+
+    @if $minus {
+        @return -$result;
+    }
+    @return $result;
+}
+
+// Resolves a breakpoint token to a Sass number.
+// Named keys (e.g. 'tablet') are looked up in the project $breakpoints map.
+// Raw dimension strings (e.g. '500px', '48em') are parsed by _str-to-number().
+@function _resolve($key) {
+    $key: string.unquote('#{$key}');
+    @if map.has-key(bp.$breakpoints, $key) {
+        @return map.get(bp.$breakpoints, $key);
+    }
+    @return _str-to-number($key);
+}
+
+// Returns value - one unit step (for exclusive max-width, i.e. the `<` operator).
+@function _exclusive-max($value) {
+    $unit: math.unit($value);
+    @if map.has-key($_unit-intervals, $unit) {
+        @return $value - map.get($_unit-intervals, $unit);
+    }
+    @return $value - 1px; // safe fallback for unknown units
+}
+
+// Returns value + one unit step (for exclusive min-width, i.e. the `>` operator).
+@function _exclusive-min($value) {
+    $unit: math.unit($value);
+    @if map.has-key($_unit-intervals, $unit) {
+        @return $value + map.get($_unit-intervals, $unit);
+    }
+    @return $value + 1px;
+}
+
+// Parses a single condition string into a CSS media feature expression.
+// e.g. '>=tablet' -> '(min-width: 48em)'
+//      '<500px'   -> '(max-width: 499px)'
+@function _condition-to-feature($condition) {
+    $s: string.unquote('#{$condition}');
+
+    @if string.slice($s, 1, 2) == '>=' {
+        @return '(min-width: #{_resolve(string.slice($s, 3))})';
+    } @else if string.slice($s, 1, 2) == '<=' {
+        @return '(max-width: #{_resolve(string.slice($s, 3))})';
+    } @else if string.slice($s, 1, 1) == '>' {
+        @return '(min-width: #{_exclusive-min(_resolve(string.slice($s, 2)))})';
+    } @else if string.slice($s, 1, 1) == '<' {
+        @return '(max-width: #{_exclusive-max(_resolve(string.slice($s, 2)))})';
+    }
+
+    @warn 'media(): unrecognised condition "#{$condition}" - expected an operator (>=, >, <=, <) followed by a breakpoint key or dimension value.';
+    @return null;
+}
+
+// =============================================================================
+// Public mixin
+// =============================================================================
+
+/// Wraps content in a media query built from one or more condition strings.
+/// Multiple conditions are joined with `and`.
+///
+/// @param {String} $conditions... - One or more condition strings, each
+///   starting with an operator (>=, >, <=, <) followed by a named breakpoint
+///   key or a raw CSS dimension value (px, em, rem, ...).
+///
+/// @example scss
+///   .component { @include media('>=tablet') { display: flex; } }
+///   // -> @media (min-width: 48em) { .component { display: flex; } }
+///
+/// @example scss
+///   .component { @include media('>=tablet', '<laptop') { width: 50%; } }
+///   // -> @media (min-width: 48em) and (max-width: 63.99em) { ... }
+///
+/// @example scss
+///   .component { @include media('>=500px') { padding: 2rem; } }
+///   // -> @media (min-width: 500px) { ... }
+@mixin media($conditions...) {
+    $query: '';
+
+    @each $condition in $conditions {
+        $feature: _condition-to-feature($condition);
+        @if $feature {
+            @if string.length($query) > 0 {
+                $query: $query + ' and ' + $feature;
+            } @else {
+                $query: $feature;
+            }
+        }
+    }
+
+    @if string.length($query) > 0 {
+        @media #{$query} {
+            @content;
+        }
+    }
+}

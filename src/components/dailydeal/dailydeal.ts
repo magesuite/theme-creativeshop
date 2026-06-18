@@ -168,48 +168,30 @@ export default class Dailydeal {
     protected _options: DailydealOptions = {
         namespace: 'cs-',
         get countdownTemplate() {
-            return `<span class="${
-                this.namespace
-            }dailydeal__countdown-element ${
+            return `<span class="${this.namespace}dailydeal__countdown-element ${
                 this.namespace
             }dailydeal__countdown-element--special">
                     <img class="inline-svg ${
                         this.namespace
                     }dailydeal__countdown-icon" data-src="${requirejs.toUrl(
-                'images/icons/clock.svg'
-            )}" alt="">
+                        'images/icons/clock.svg'
+                    )}" alt="">
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-value">%d%</span>
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-label">%ld%</span>
+                    <span class="${this.namespace}dailydeal__countdown-value">%d%</span>
+                    <span class="${this.namespace}dailydeal__countdown-label">%ld%</span>
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-value">%h%</span>
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-label">%lh%</span>
+                    <span class="${this.namespace}dailydeal__countdown-value">%h%</span>
+                    <span class="${this.namespace}dailydeal__countdown-label">%lh%</span>
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-value">%m%</span>
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-label">%lm%</span>
+                    <span class="${this.namespace}dailydeal__countdown-value">%m%</span>
+                    <span class="${this.namespace}dailydeal__countdown-label">%lm%</span>
                 </span>
                 <span class="${this.namespace}dailydeal__countdown-element">
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-value">%s%</span>
-                    <span class="${
-                        this.namespace
-                    }dailydeal__countdown-label">%ls%</span>
+                    <span class="${this.namespace}dailydeal__countdown-value">%s%</span>
+                    <span class="${this.namespace}dailydeal__countdown-label">%ls%</span>
                 </span>`;
         },
         get countdownSelector() {
@@ -289,9 +271,7 @@ export default class Dailydeal {
         }
 
         // Containers (Prices & Badges)
-        this._$tile = this._$element
-            .closest(this._options.tileSelector)
-            .first();
+        this._$tile = this._$element.closest(this._options.tileSelector).first();
         this._$pdpPriceContainer = this._$element
             .closest(this._options.pdpSaleBlockSelector)
             .find(this._options.pdpPriceContainerSelector);
@@ -474,13 +454,9 @@ export default class Dailydeal {
 
         if (
             !this._isTile() &&
-            !$pdpPriceContainer.hasClass(
-                `${this._options.namespace}price--pdp_dailydeal-countdown`
-            )
+            !$pdpPriceContainer.hasClass(`${this._options.namespace}price--pdp_dailydeal-countdown`)
         ) {
-            $pdpPriceContainer.addClass(
-                `${this._options.namespace}price--pdp_dailydeal-countdown`
-            );
+            $pdpPriceContainer.addClass(`${this._options.namespace}price--pdp_dailydeal-countdown`);
         }
     }
 
@@ -493,9 +469,7 @@ export default class Dailydeal {
             : this._$pdpBadgeContainer;
         if (
             this._isTile() &&
-            $badgeContainer.find(
-                `.${this._options.namespace}product-tile__badge--discount`
-            ).length
+            $badgeContainer.find(`.${this._options.namespace}product-tile__badge--discount`).length
         ) {
             if (
                 !$badgeContainer.hasClass(
@@ -514,12 +488,8 @@ export default class Dailydeal {
      */
     protected _isTile(): boolean {
         return (
-            this._$element.hasClass(
-                `${this._options.namespace}dailydeal--tile`
-            ) ||
-            this._$element.hasClass(
-                `${this._options.namespace}dailydeal--tile-teaser`
-            )
+            this._$element.hasClass(`${this._options.namespace}dailydeal--tile`) ||
+            this._$element.hasClass(`${this._options.namespace}dailydeal--tile-teaser`)
         );
     }
 
@@ -530,9 +500,8 @@ export default class Dailydeal {
      * @returns boolean
      */
     protected _isConfigProduct(priceContainer: JQuery<HTMLElement>): boolean {
-        return !!priceContainer
-            .find(this._options.dailyDealConfigProductPriceSelector)
-            .first().length;
+        return !!priceContainer.find(this._options.dailyDealConfigProductPriceSelector).first()
+            .length;
     }
 
     /**
@@ -581,9 +550,7 @@ export default class Dailydeal {
      * @return label {string} label from this._options.labels object
      */
     protected _getCountdownLabel(n: number, timeUnit: string): any {
-        const ddSelector: JQuery = this._$element.closest(
-            this._options.dailyDealSelector
-        );
+        const ddSelector: JQuery = this._$element.closest(this._options.dailyDealSelector);
         const dataPhrase: string = 'data-phrase-';
 
         if (this._options.updateLabels) {
@@ -630,43 +597,29 @@ export default class Dailydeal {
         // Set time in countdown template
         template = template.replace(
             '%d%',
-            `<span class="csdd-d">${this._getFormattedTimeElement(
-                timeRemaining.days
-            )}</span>`
+            `<span class="csdd-d">${this._getFormattedTimeElement(timeRemaining.days)}</span>`
         );
         template = template.replace(
             '%h%',
-            `<span class="csdd-h">${this._getFormattedTimeElement(
-                timeRemaining.hours
-            )}</span>`
+            `<span class="csdd-h">${this._getFormattedTimeElement(timeRemaining.hours)}</span>`
         );
         template = template.replace(
             '%m%',
-            `<span class="csdd-m">${this._getFormattedTimeElement(
-                timeRemaining.minutes
-            )}</span>`
+            `<span class="csdd-m">${this._getFormattedTimeElement(timeRemaining.minutes)}</span>`
         );
         template = template.replace(
             '%s%',
-            `<span class="csdd-s">${this._getFormattedTimeElement(
-                timeRemaining.seconds
-            )}</span>`
+            `<span class="csdd-s">${this._getFormattedTimeElement(timeRemaining.seconds)}</span>`
         );
 
         // Set labels in countdown template
         template = template.replace(
             '%ld%',
-            `<span class="csdd-ld">${this._getCountdownLabel(
-                timeRemaining.days,
-                'day'
-            )}</span>`
+            `<span class="csdd-ld">${this._getCountdownLabel(timeRemaining.days, 'day')}</span>`
         );
         template = template.replace(
             '%lh%',
-            `<span class="csdd-lh">${this._getCountdownLabel(
-                timeRemaining.hours,
-                'hour'
-            )}</span>`
+            `<span class="csdd-lh">${this._getCountdownLabel(timeRemaining.hours, 'hour')}</span>`
         );
         template = template.replace(
             '%lm%',
@@ -688,7 +641,6 @@ export default class Dailydeal {
     }
 
     protected _setUniqueIds(): void {
-        /* tslint:disable-next-line */
         const rdm: number = (Math.random() * (999 - 1 + 1)) << 0;
         this._$countdown.addClass(`countdown-${rdm}-${this._endTime}`);
     }
@@ -746,10 +698,7 @@ export default class Dailydeal {
             );
         }
 
-        const countdownsUniqueClass: string = this._$countdown
-            .attr('class')
-            .split(' ')
-            .pop();
+        const countdownsUniqueClass: string = this._$countdown.attr('class').split(' ').pop();
         if ($(`.${countdownsUniqueClass}`).length > 1) {
             $(`.${countdownsUniqueClass}`).last().html(this._$countdown.html());
         }

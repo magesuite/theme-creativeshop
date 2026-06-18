@@ -28,17 +28,10 @@ const consentManagement = {
     vendor:
         (window as any).consentManagementConfig?.vendor ||
         deepGet(viewXml, 'vars.Magento_Theme.consent_management.vendor'),
-    services: deepGet(
-        viewXml,
-        'vars.Magento_Theme.consent_management.services'
-    ),
-    defaultValue: deepGet(
-        viewXml,
-        'vars.Magento_Theme.consent_management.default_value'
-    ),
+    services: deepGet(viewXml, 'vars.Magento_Theme.consent_management.services'),
+    defaultValue: deepGet(viewXml, 'vars.Magento_Theme.consent_management.default_value'),
     mapVendors: {
-        usercentrics:
-            usercentricsVersion === 'v3' ? usercentricsv3 : usercentrics,
+        usercentrics: usercentricsVersion === 'v3' ? usercentricsv3 : usercentrics,
         usercentricsv3: usercentricsv3,
         amasty: amasty,
         consentmanager: consentmanager,
@@ -46,10 +39,8 @@ const consentManagement = {
         cookiefirst: cookiefirst,
     },
     consentLayerClassName:
-        deepGet(
-            viewXml,
-            'vars.Magento_Theme.consent_management.consent_template_class_selector'
-        ) || 'cs-consent-management',
+        deepGet(viewXml, 'vars.Magento_Theme.consent_management.consent_template_class_selector') ||
+        'cs-consent-management',
     consentLayerTriggerClassName:
         deepGet(
             viewXml,
@@ -65,9 +56,7 @@ const consentManagement = {
             return this.defaultValue;
         }
 
-        return this.mapVendors[this.vendor].checkConsent(
-            this.services[service]
-        );
+        return this.mapVendors[this.vendor].checkConsent(this.services[service]);
     },
     /**
      * Run callback on vendor initialization
@@ -121,9 +110,8 @@ const consentManagement = {
         }
     ): Promise<void> {
         const { default: requireAsync } = await import('utils/require-async');
-        const { consentTemplate } = await import(
-            'components/consent-management/templates/template'
-        );
+        const { consentTemplate } =
+            await import('components/consent-management/templates/template');
 
         await requireAsync(['mage/template']).then(([mageTemplate]) => {
             container.insertAdjacentHTML(
@@ -131,9 +119,7 @@ const consentManagement = {
                 mageTemplate(consentTemplate, templateOptions)
             );
 
-            const link = container.querySelector(
-                `.${this.consentLayerTriggerClassName}`
-            );
+            const link = container.querySelector(`.${this.consentLayerTriggerClassName}`);
 
             if (link) {
                 link.addEventListener('click', (e) => {
@@ -149,16 +135,10 @@ const consentManagement = {
      * @param container
      * @param isVisible
      */
-    toggleConsentLayerVisibility: function (
-        container: HTMLElement,
-        isVisible: boolean
-    ) {
+    toggleConsentLayerVisibility: function (container: HTMLElement, isVisible: boolean) {
         container
             .querySelector(`.${this.consentLayerClassName}`)
-            ?.classList.toggle(
-                `${this.consentLayerClassName}--active`,
-                isVisible
-            );
+            ?.classList.toggle(`${this.consentLayerClassName}--active`, isVisible);
     },
 };
 

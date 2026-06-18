@@ -2,11 +2,11 @@
  * Custom
  * Provides logic to hide/show agreements only on the last step of checkout
  */
-define([
-    'ko',
-    'uiComponent',
-    'Magento_Checkout/js/model/step-navigator',
-], function (ko, Component, stepNavigator) {
+define(['ko', 'uiComponent', 'Magento_Checkout/js/model/step-navigator'], function (
+    ko,
+    Component,
+    stepNavigator
+) {
     'use strict';
     return Component.extend({
         defaults: {

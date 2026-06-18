@@ -9,8 +9,7 @@ declare global {
 export default class SliderPagination {
     public options: ISliderPagination = {
         fractionBreakpoint: 10,
-        fractionTemplate:
-            '<span class="current">%currentSlide</span> / %allSlides',
+        fractionTemplate: '<span class="current">%currentSlide</span> / %allSlides',
         slidesWrapperSelector: '.cs-image-teaser__slides',
         slideSelector: '.cs-image-teaser__slide',
         visibleSlideIntersection: 0.5,
@@ -30,12 +29,9 @@ export default class SliderPagination {
     public constructor(options: ISliderPagination) {
         this.options = { ...this.options, ...options };
 
-        this._paginationWrapper = this.options.rootComponentNode.querySelector(
-            '.cs-slider-pagination'
-        );
-        this._slides = this.options.rootComponentNode.querySelectorAll(
-            this.options.slideSelector
-        );
+        this._paginationWrapper =
+            this.options.rootComponentNode.querySelector('.cs-slider-pagination');
+        this._slides = this.options.rootComponentNode.querySelectorAll(this.options.slideSelector);
 
         if (this._paginationWrapper) {
             this._renderOutput();
@@ -65,12 +61,8 @@ export default class SliderPagination {
             if (this._bullets == null) {
                 this.rebuild();
             } else {
-                this._bullets.forEach((bullet) =>
-                    bullet?.classList.remove('current')
-                );
-                this._bullets
-                    .item(this.newBulletIndex)
-                    ?.classList.add('current');
+                this._bullets.forEach((bullet) => bullet?.classList.remove('current'));
+                this._bullets.item(this.newBulletIndex)?.classList.add('current');
             }
         }
 
@@ -98,8 +90,7 @@ export default class SliderPagination {
      */
     public handleIntersect(entry: IntersectionObserverEntry): void {
         const newBulletIndex: number = Math.ceil(
-            Array.prototype.indexOf.call(this._slides, entry.target) /
-                this.options.itemsPerView
+            Array.prototype.indexOf.call(this._slides, entry.target) / this.options.itemsPerView
         );
 
         if (newBulletIndex < this.bulletsCount) {
@@ -120,22 +111,16 @@ export default class SliderPagination {
      * Builds component's DOM
      */
     protected _renderOutput(): void {
-        this.bulletsCount = Math.ceil(
-            this.options.collectionSize / this.options.itemsPerView
-        );
+        this.bulletsCount = Math.ceil(this.options.collectionSize / this.options.itemsPerView);
         this.isFraction = this.bulletsCount >= this.options.fractionBreakpoint;
         this._setIndexes();
 
         if (this.isFraction) {
             this.currentBulletIndex = 0;
-            this._paginationWrapper.classList.add(
-                'cs-slider-pagination--fraction'
-            );
+            this._paginationWrapper.classList.add('cs-slider-pagination--fraction');
             this._updateFractionHtml();
         } else {
-            this._paginationWrapper.classList.remove(
-                'cs-slider-pagination--fraction'
-            );
+            this._paginationWrapper.classList.remove('cs-slider-pagination--fraction');
             this._paginationWrapper.innerHTML = Array.from(
                 { length: this.bulletsCount },
                 (_: typeof undefined, i: number) =>

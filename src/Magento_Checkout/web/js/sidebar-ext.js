@@ -31,49 +31,36 @@ define([
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['click ' + this.options.button.close] = function (
-                    event
-                ) {
+                events['click ' + this.options.button.close] = function (event) {
                     event.stopPropagation();
                     $(self.options.targetElement).dropdownDialog('close');
                 };
-                events['click ' + this.options.button.checkout] = $.proxy(
-                    function () {
-                        var cart = customerData.get('cart');
-                        var customer = customerData.get('customer');
-                        var element = $(this.options.button.checkout);
+                events['click ' + this.options.button.checkout] = $.proxy(function () {
+                    var cart = customerData.get('cart');
+                    var customer = customerData.get('customer');
+                    var element = $(this.options.button.checkout);
 
-                        if (
-                            !customer().firstname &&
-                            cart().isGuestCheckoutAllowed === false
-                        ) {
-                            // set URL for redirect on successful login/registration. It's postprocessed on backend.
-                            $.cookie(
-                                'login_redirect',
-                                this.options.url.checkout
-                            );
+                    if (!customer().firstname && cart().isGuestCheckoutAllowed === false) {
+                        // set URL for redirect on successful login/registration. It's postprocessed on backend.
+                        $.cookie('login_redirect', this.options.url.checkout);
 
-                            if (this.options.url.isRedirectRequired) {
-                                element.prop('disabled', true);
-                                location.href = this.options.url.loginUrl;
-                            } else {
-                                authenticationPopup.showModal();
-                            }
-
-                            return false;
+                        if (this.options.url.isRedirectRequired) {
+                            element.prop('disabled', true);
+                            location.href = this.options.url.loginUrl;
+                        } else {
+                            authenticationPopup.showModal();
                         }
-                        element.prop('disabled', true);
-                        location.href = this.options.url.checkout;
-                    },
-                    this
-                );
+
+                        return false;
+                    }
+                    element.prop('disabled', true);
+                    location.href = this.options.url.checkout;
+                }, this);
 
                 /**
                  * @param {jQuery.Event} event
                  */
-                events['click ' + this.options.button.remove] = function (
-                    event
-                ) {
+                events['click ' + this.options.button.remove] = function (event) {
                     var removedElementQtyInput = $(event.currentTarget)
                         .parents('.actions')
                         .find('.item-qty')
@@ -98,13 +85,8 @@ define([
                              *  but set Qty = minVal if user decide to not remove the item on the level of modal confirmation
                              */
                             cancel: function () {
-                                if (
-                                    removedElementQtyInput.val() <
-                                    self.options.minValue
-                                ) {
-                                    removedElementQtyInput.val(
-                                        `${self.options.minValue}`
-                                    );
+                                if (removedElementQtyInput.val() < self.options.minValue) {
+                                    removedElementQtyInput.val(`${self.options.minValue}`);
                                 }
                             },
 
@@ -158,29 +140,21 @@ define([
             _addQtyButtonsEvents: function () {
                 var events = {};
 
-                events['click ' + this.options.item.qtyDecrease] = function (
-                    event
-                ) {
+                events['click ' + this.options.item.qtyDecrease] = function (event) {
                     this._addQtyButtonAction(event, 'qtyDecrease');
                 };
 
-                events['keydown ' + this.options.item.qtyDecrease] = function (
-                    event
-                ) {
+                events['keydown ' + this.options.item.qtyDecrease] = function (event) {
                     if (event.key === 'Enter') {
                         this._addQtyButtonAction(event, 'qtyDecrease');
                     }
                 };
 
-                events['click ' + this.options.item.qtyIncrease] = function (
-                    event
-                ) {
+                events['click ' + this.options.item.qtyIncrease] = function (event) {
                     this._addQtyButtonAction(event, 'qtyIncrease');
                 };
 
-                events['keydown ' + this.options.item.qtyIncrease] = function (
-                    event
-                ) {
+                events['keydown ' + this.options.item.qtyIncrease] = function (event) {
                     if (event.key === 'Enter') {
                         this._addQtyButtonAction(event, 'qtyIncrease');
                     }
@@ -194,10 +168,7 @@ define([
                 var qtyElement = $('#cart-item-' + itemId + '-qty');
                 var qtyValue = parseInt(qtyElement.val(), 10);
 
-                if (
-                    qtyValue === this.options.minValue &&
-                    action === 'qtyDecrease'
-                ) {
+                if (qtyValue === this.options.minValue && action === 'qtyDecrease') {
                     this._triggerRemove($(event.currentTarget));
 
                     return;
@@ -205,10 +176,7 @@ define([
 
                 qtyValue =
                     action === 'qtyDecrease'
-                        ? Math.max(
-                              qtyValue - this.options.step,
-                              this.options.minValue
-                          )
+                        ? Math.max(qtyValue - this.options.step, this.options.minValue)
                         : qtyValue + this.options.step;
                 qtyElement.val(qtyValue).trigger('keyup');
             },
@@ -224,10 +192,7 @@ define([
             },
 
             _triggerRemove: function (elem) {
-                const deleteTrigger = elem
-                    .parents('.product-item')
-                    .find('a.action.delete')
-                    .eq(0);
+                const deleteTrigger = elem.parents('.product-item').find('a.action.delete').eq(0);
 
                 if (deleteTrigger) {
                     deleteTrigger.trigger('click');
@@ -242,13 +207,9 @@ define([
                     var itemId = elem.data('cart-item');
                     var itemQty = elem.data('item-qty');
                     var updateItemButton = $('#update-cart-item-' + itemId);
-                    var loadIndicator = $(
-                        '.cs-minicart__content .load.indicator'
-                    );
+                    var loadIndicator = $('.cs-minicart__content .load.indicator');
                     var $qtyIncrementButtons = $(
-                        '.cs-qty-increment__button[data-cart-item="' +
-                            itemId +
-                            '"]'
+                        '.cs-qty-increment__button[data-cart-item="' + itemId + '"]'
                     );
 
                     if (that._isValidQty(itemQty, elem.val())) {

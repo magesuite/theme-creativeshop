@@ -29,12 +29,8 @@ define([
             }
             // Otherwise, get to highlighting
             var matchStartPosition = string.match(regex).index;
-            var matchEndPosition =
-                matchStartPosition + string.match(regex)[0].toString().length;
-            var originalTextFoundByRegex = string.substring(
-                matchStartPosition,
-                matchEndPosition
-            );
+            var matchEndPosition = matchStartPosition + string.match(regex)[0].toString().length;
+            var originalTextFoundByRegex = string.substring(matchStartPosition, matchEndPosition);
             completedString = completedString.replace(
                 regex,
                 '<b>' + originalTextFoundByRegex + '</b>'
@@ -85,9 +81,7 @@ define([
                 width: searchField.outerWidth(),
             };
 
-            var dropdown = $(
-                '<ul role="listbox" class="cs-store-locator__search-list"></ul>'
-            );
+            var dropdown = $('<ul role="listbox" class="cs-store-locator__search-list"></ul>');
             var value = this.element.val();
 
             this.submitBtn.disabled = isEmpty(value);
@@ -97,9 +91,7 @@ define([
                     url: this.options.url,
                     data: JSON.stringify({
                         query:
-                            '{addressAutocomplete(query: "' +
-                            value +
-                            '", ) {items {description}}}',
+                            '{addressAutocomplete(query: "' + value + '", ) {items {description}}}',
                     }),
                     contentType: 'application/json',
                 }).done(function (response) {
@@ -116,9 +108,7 @@ define([
 
                             html =
                                 '<li class="cs-store-locator__search-item"><span class="qs-option-name">' +
-                                highlightMatchesInString(element.description, [
-                                    value,
-                                ]) +
+                                highlightMatchesInString(element.description, [value]) +
                                 '</span></li>';
                             dropdown.append(html);
                         });
@@ -129,9 +119,7 @@ define([
                             .html(dropdown)
                             .css(clonePosition)
                             .show()
-                            .find(
-                                _this.options.responseFieldElements + ':visible'
-                            );
+                            .find(_this.options.responseFieldElements + ':visible');
 
                         _this.element.removeAttr('aria-activedescendant');
 
@@ -145,13 +133,9 @@ define([
                             .on(
                                 'click',
                                 function (e) {
-                                    _this.responseList.selected = $(
-                                        e.currentTarget
-                                    );
+                                    _this.responseList.selected = $(e.currentTarget);
                                     _this.element.val(
-                                        _this.responseList.selected
-                                            .find('.qs-option-name')
-                                            .text()
+                                        _this.responseList.selected.find('.qs-option-name').text()
                                     );
                                     _this.searchForm.trigger('submit');
                                     _this._resetResponseList(true);
@@ -165,12 +149,8 @@ define([
                                         _this.responseList.indexList.removeClass(
                                             _this.options.selectClass
                                         );
-                                        $(e.target).addClass(
-                                            _this.options.selectClass
-                                        );
-                                        _this.responseList.selected = $(
-                                            e.target
-                                        );
+                                        $(e.target).addClass(_this.options.selectClass);
+                                        _this.responseList.selected = $(e.target);
                                         _this.element.attr(
                                             'aria-activedescendant',
                                             $(e.target).attr('id')
@@ -186,13 +166,9 @@ define([
                                             !_this._getLastElement() &&
                                             _this
                                                 ._getLastElement()
-                                                .hasClass(
-                                                    _this.options.selectClass
-                                                )
+                                                .hasClass(_this.options.selectClass)
                                         ) {
-                                            $(e.target).removeClass(
-                                                _this.options.selectClass
-                                            );
+                                            $(e.target).removeClass(_this.options.selectClass);
                                             _this._resetResponseList(false);
                                         }
                                     }

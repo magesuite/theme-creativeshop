@@ -114,9 +114,7 @@ export default class PageScroll {
             !e[0].isIntersecting ? this._showButton() : this._hideButton();
         }, this._options.observerOptions);
 
-        this._observer.observe(
-            document.querySelector(this._options.observeElementSelector)
-        );
+        this._observer.observe(document.querySelector(this._options.observeElementSelector));
     }
 
     /**

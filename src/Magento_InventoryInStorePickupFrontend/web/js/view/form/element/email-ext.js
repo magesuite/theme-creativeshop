@@ -6,20 +6,15 @@
  * Links toggle shipping form fields as in original modification
  * Aligned with Magento 2.4.9 in 05/2026
  */
-define([
-    'jquery',
-    'Magento_InventoryInStorePickupFrontend/js/view/store-pickup',
-], function ($) {
+define(['jquery', 'Magento_InventoryInStorePickupFrontend/js/view/store-pickup'], function ($) {
     'use strict';
 
     return function (EmailComponent) {
         return EmailComponent.extend({
             defaults: {
                 imports: {
-                    isStorePickupAvailable:
-                        'checkout.steps.store-pickup:isAvailable',
-                    isStorePickupSelected:
-                        'checkout.steps.store-pickup:isStorePickupSelected',
+                    isStorePickupAvailable: 'checkout.steps.store-pickup:isAvailable',
+                    isStorePickupSelected: 'checkout.steps.store-pickup:isStorePickupSelected',
                 },
             },
 

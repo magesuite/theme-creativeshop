@@ -317,7 +317,8 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
                         (
                                 (100vw - (#{$page_edge-gutter} * 2)) *
                                     (1 - #{$checkout_sidebar-width / 100%})
-                            ) - (#{$checkout_base-space} * 2) - 0.7rem
+                            ) -
+                            (#{$checkout_base-space} * 2) - 0.7rem
                     ); // 7px for scrollbar
                     box-sizing: border-box;
                     margin-top: 2.7rem;
@@ -329,10 +330,8 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
                 .error,
                 .warning {
                     width: calc(
-                        (
-                                #{$checkout_page-max-width} * (1 - #{$checkout_sidebar-width /
-                                            100%})
-                            ) - (#{$checkout_base-space} * 2)
+                        (#{$checkout_page-max-width} * (1 - #{$checkout_sidebar-width / 100%})) -
+                            (#{$checkout_base-space} * 2)
                     );
                 }
             }
@@ -519,9 +518,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         @include media('>=tablet') {
             height: 100%;
             z-index: 2;
-            width: calc(
-                #{$checkout_sidebar-width} - #{$checkout_main-column-and-sidebar-gap}
-            );
+            width: calc(#{$checkout_sidebar-width} - #{$checkout_main-column-and-sidebar-gap});
             margin: 0 0 0 $checkout_main-column-and-sidebar-gap;
             order: 2;
         }
@@ -838,8 +835,10 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         .counter {
             @include qty-counter();
 
-            transition: background-color $button_animation-time,
-                fill $button_animation-time, color $button_animation-time;
+            transition:
+                background-color $button_animation-time,
+                fill $button_animation-time,
+                color $button_animation-time;
             margin-left: 0.5rem;
             margin-bottom: -0.15em;
             top: -0.15em;
@@ -1822,9 +1821,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
         .input-text {
             position: static;
             margin-bottom: 0;
-            padding-right: calc(
-                #{$checkout_store-pickup-search_button-width} + 1em
-            );
+            padding-right: calc(#{$checkout_store-pickup-search_button-width} + 1em);
         }
 
         .actions {
@@ -1836,9 +1833,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: calc(
-                100% - #{$checkout_store-pickup-search-padding-bottom}
-            );
+            height: calc(100% - #{$checkout_store-pickup-search-padding-bottom});
             border-top-right-radius: $border-radius_base;
             border-bottom-right-radius: $border-radius_base;
 
@@ -1850,8 +1845,7 @@ $checkout_store-pickup-selected-location_button-type: $button_default-type !defa
                 height: 100%;
                 z-index: 10;
                 content: '';
-                background: transparent
-                    $checkout_store-pickup-search_button-background-image
+                background: transparent $checkout_store-pickup-search_button-background-image
                     no-repeat 60% center;
                 background-size: $checkout_store-pickup-search_button-background-size;
             }

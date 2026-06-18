@@ -66,14 +66,7 @@ export interface SlideGalleryOptions {
     galleryFullscreenImagesClass?: string;
     verticalThumbNav?: boolean;
     scrollTillEnd?: boolean;
-    mobileBreakpoint?:
-        | 'phone'
-        | 'phoneLg'
-        | 'tablet'
-        | 'laptop'
-        | 'laptopLg'
-        | 'desktop'
-        | 'tv';
+    mobileBreakpoint?: 'phone' | 'phoneLg' | 'tablet' | 'laptop' | 'laptopLg' | 'desktop' | 'tv';
 }
 
 /**
@@ -164,10 +157,7 @@ export default class SlideGallery {
      * Slide gallery component constructor
      * @param  {SlideGalleryOptions} options Image params
      */
-    public constructor(
-        element?: HTMLDivElement,
-        options?: SlideGalleryOptions
-    ) {
+    public constructor(element?: HTMLDivElement, options?: SlideGalleryOptions) {
         this._defaultOptions = $.extend(true, this._defaultOptions, options);
         this._$component = $(element);
         this.init();
@@ -188,9 +178,7 @@ export default class SlideGallery {
         this._setActiveThumb(0);
         this._initGalleryApi();
 
-        this.videoSlideInstance = new VideoTeaser(
-            this._defaultOptions.viewXmlConfigPath
-        );
+        this.videoSlideInstance = new VideoTeaser(this._defaultOptions.viewXmlConfigPath);
 
         this._$component.addClass('loaded');
         this._$component.trigger('gallery:loaded');
@@ -233,10 +221,7 @@ export default class SlideGallery {
             !window.__smoothScrollPolyfilled
         ) {
             import('smoothscroll-polyfill').then((smoothscroll) => {
-                if (
-                    smoothscroll &&
-                    typeof smoothscroll.polyfill === 'function'
-                ) {
+                if (smoothscroll && typeof smoothscroll.polyfill === 'function') {
                     smoothscroll.polyfill();
                     window.__smoothScrollPolyfilled = true;
                 }
@@ -284,9 +269,7 @@ export default class SlideGallery {
         this._$focusableStart = this._$component.find(
             this._defaultOptions.selectors.focusableStart
         );
-        this._$focusableEnd = this._$component.find(
-            this._defaultOptions.selectors.focusableEnd
-        );
+        this._$focusableEnd = this._$component.find(this._defaultOptions.selectors.focusableEnd);
     }
 
     /**
@@ -298,15 +281,9 @@ export default class SlideGallery {
             .find(this._defaultOptions.selectors.listElementSelector)
             .children(this._defaultOptions.selectors.slideSelector);
 
-        this._$thumbs = this._$component.find(
-            this._defaultOptions.selectors.thumbSelector
-        );
-        this._$images = this._$component.find(
-            this._defaultOptions.selectors.imageSelector
-        );
-        this._$zoomImages = this._$component.find(
-            this._defaultOptions.selectors.zoomImageSelector
-        );
+        this._$thumbs = this._$component.find(this._defaultOptions.selectors.thumbSelector);
+        this._$images = this._$component.find(this._defaultOptions.selectors.imageSelector);
+        this._$zoomImages = this._$component.find(this._defaultOptions.selectors.zoomImageSelector);
 
         // Video slide element
         this._$videoSlide = this._$component.find(
@@ -315,8 +292,7 @@ export default class SlideGallery {
 
         // Update images
         if (!this._currentImages.length) {
-            this._currentImages =
-                this._defaultOptions.imageParams.initialGalleryImages;
+            this._currentImages = this._defaultOptions.imageParams.initialGalleryImages;
         }
     }
 
@@ -345,8 +321,7 @@ export default class SlideGallery {
             this._$prevButton.on('click', (): void => {
                 const currentIndex: number = this._getCurrentIndex();
 
-                const activeIndex: number =
-                    currentIndex - 1 > 0 ? currentIndex - 1 : 0;
+                const activeIndex: number = currentIndex - 1 > 0 ? currentIndex - 1 : 0;
 
                 this.scrollToIndex(activeIndex);
                 this.scrollPaginationToIndex(activeIndex);
@@ -489,25 +464,17 @@ export default class SlideGallery {
                 const thumbnailsHeight: number =
                     this._$thumbs.length *
                     ($(this._$thumbs[0]).outerHeight() +
-                        parseInt(
-                            $(this._$thumbs[0]).css('margin-block-start'),
-                            10
-                        ) +
-                        parseInt(
-                            $(this._$thumbs[0]).css('margin-block-end'),
-                            10
-                        ));
+                        parseInt($(this._$thumbs[0]).css('margin-block-start'), 10) +
+                        parseInt($(this._$thumbs[0]).css('margin-block-end'), 10));
 
                 this._$thumbNextButton.prop(
                     'disabled',
-                    thumbnailsHeight <=
-                        $(this._paginationScrollable).outerHeight()
+                    thumbnailsHeight <= $(this._paginationScrollable).outerHeight()
                 );
             } else {
                 this._$thumbNextButton.prop(
                     'disabled',
-                    thumbnailsWidth <=
-                        $(this._paginationScrollable).outerWidth()
+                    thumbnailsWidth <= $(this._paginationScrollable).outerWidth()
                 );
             }
         } else {
@@ -530,8 +497,7 @@ export default class SlideGallery {
 
                 this._$thumbNextButton.prop(
                     'disabled',
-                    thumbnailsHeight <=
-                        $(this._paginationScrollable).outerHeight()
+                    thumbnailsHeight <= $(this._paginationScrollable).outerHeight()
                 );
             } else {
                 const thumbnailsWidth: number =
@@ -541,8 +507,7 @@ export default class SlideGallery {
 
                 this._$thumbNextButton.prop(
                     'disabled',
-                    thumbnailsWidth <=
-                        $(this._paginationScrollable).outerWidth()
+                    thumbnailsWidth <= $(this._paginationScrollable).outerWidth()
                 );
             }
         } else {
@@ -570,9 +535,7 @@ export default class SlideGallery {
             this._attachSlidesEvents();
             this._setObserver();
 
-            this.videoSlideInstance = new VideoTeaser(
-                this._defaultOptions.viewXmlConfigPath
-            );
+            this.videoSlideInstance = new VideoTeaser(this._defaultOptions.viewXmlConfigPath);
 
             if (this._defaultOptions.scrollToFirstImageOnUpdate) {
                 this.scrollToIndex(0);
@@ -580,10 +543,7 @@ export default class SlideGallery {
 
             this._$component.trigger('gallery:reloaded');
             this._toggleLoader(false);
-            $(this._$component).attr(
-                'data-item-count',
-                this._currentImages.length
-            );
+            $(this._$component).attr('data-item-count', this._currentImages.length);
         });
     }
 
@@ -603,9 +563,7 @@ export default class SlideGallery {
     protected _imagesAreEqual(images): boolean {
         return (
             images.length === this._currentImages.length &&
-            images.every(
-                (value, index) => value.img === this._currentImages[index].img
-            )
+            images.every((value, index) => value.img === this._currentImages[index].img)
         );
     }
 
@@ -614,9 +572,8 @@ export default class SlideGallery {
      */
     protected async _renderSlides() {
         const { default: requireAsync } = await import('utils/require-async');
-        const { slideTemplate, thumbnailTemplate } = await import(
-            'MageSuite_ProductSlideGallery/web/js/templates'
-        );
+        const { slideTemplate, thumbnailTemplate } =
+            await import('MageSuite_ProductSlideGallery/web/js/templates');
 
         return requireAsync(['mage/template']).then(([mageTemplate]) => {
             const templateOptions = {
@@ -624,17 +581,10 @@ export default class SlideGallery {
                 imageParams: this._defaultOptions.imageParams,
             };
             const slideMarkup = mageTemplate(slideTemplate, templateOptions);
-            const thumbnailMarkup = mageTemplate(
-                thumbnailTemplate,
-                templateOptions
-            );
+            const thumbnailMarkup = mageTemplate(thumbnailTemplate, templateOptions);
 
-            $(this._defaultOptions.selectors.listElementSelector).html(
-                slideMarkup
-            );
-            $(this._defaultOptions.selectors.paginationElementSelector).html(
-                thumbnailMarkup
-            );
+            $(this._defaultOptions.selectors.listElementSelector).html(slideMarkup);
+            $(this._defaultOptions.selectors.paginationElementSelector).html(thumbnailMarkup);
         });
     }
 
@@ -685,8 +635,7 @@ export default class SlideGallery {
      * visibility, setting active thumbnail and triggers `slide:changed` custom event.
      */
     protected _onSlideChange(entries): void {
-        const slideActive: string =
-            this._defaultOptions.classNames.slideActiveClass;
+        const slideActive: string = this._defaultOptions.classNames.slideActiveClass;
 
         entries.forEach((entry) => {
             entry.target.classList.toggle(slideActive, entry.isIntersecting);
@@ -697,10 +646,7 @@ export default class SlideGallery {
                 this._updateIndex(activeElementIndex);
                 this._toggleNavButtons();
 
-                if (
-                    window.innerWidth <
-                    window.breakpoint[this._defaultOptions.mobileBreakpoint]
-                ) {
+                if (window.innerWidth < window.breakpoint[this._defaultOptions.mobileBreakpoint]) {
                     this._setActiveThumb(activeElementIndex, true);
                 }
 
@@ -715,13 +661,8 @@ export default class SlideGallery {
      * Transition timeout has been set in order to
      * avoid spaming thumbnail pagination elements with `thumbActiveClass`.
      */
-    protected _setActiveThumb(
-        activeIndex: number,
-        transition: boolean = false
-    ): void {
-        this._$thumbs.removeClass(
-            this._defaultOptions.classNames.thumbActiveClass
-        );
+    protected _setActiveThumb(activeIndex: number, transition: boolean = false): void {
+        this._$thumbs.removeClass(this._defaultOptions.classNames.thumbActiveClass);
 
         if (transition) {
             let transitionTimeout: ReturnType<typeof setTimeout> = null;
@@ -747,10 +688,7 @@ export default class SlideGallery {
         const activeIndex: number = this._getCurrentIndex();
 
         this._$prevButton.prop('disabled', activeIndex === 0);
-        this._$nextButton.prop(
-            'disabled',
-            activeIndex + 1 > this._$slides.length - 1
-        );
+        this._$nextButton.prop('disabled', activeIndex + 1 > this._$slides.length - 1);
     }
 
     /**
@@ -758,31 +696,20 @@ export default class SlideGallery {
      * based on current slider position.
      */
     protected _toggleThumbNavButtons(): void {
-        if (
-            window.breakpoint.current >=
-            window.breakpoint[this._defaultOptions.mobileBreakpoint]
-        ) {
+        if (window.breakpoint.current >= window.breakpoint[this._defaultOptions.mobileBreakpoint]) {
             if (this._defaultOptions.verticalThumbNav) {
                 const thumbnailHeight: number =
                     $(this._$thumbs[0]).outerHeight() +
                     parseInt($(this._$thumbs[0]).css('margin-bottom'), 10);
-                const thumbnailsHeight: number =
-                    this._$thumbs.length * thumbnailHeight;
-                const paginationScrollTop: number =
-                    this._paginationScrollable.scrollTop;
+                const thumbnailsHeight: number = this._$thumbs.length * thumbnailHeight;
+                const paginationScrollTop: number = this._paginationScrollable.scrollTop;
 
-                this._$thumbPrevButton.prop(
-                    'disabled',
-                    paginationScrollTop === 0
-                );
+                this._$thumbPrevButton.prop('disabled', paginationScrollTop === 0);
                 this._$thumbNextButton.prop(
                     'disabled',
                     thumbnailsHeight -
                         paginationScrollTop -
-                        parseInt(
-                            $(this._$thumbs[0]).css('margin-bottom'),
-                            10
-                        ) <=
+                        parseInt($(this._$thumbs[0]).css('margin-bottom'), 10) <=
                         $(this._paginationScrollable).outerHeight()
                 );
             } else {
@@ -790,22 +717,15 @@ export default class SlideGallery {
                     $(this._$thumbs[0]).css('margin-right'),
                     10
                 );
-                const thumbnailWidth: number =
-                    $(this._$thumbs[0]).outerWidth() + thumbnailMargin;
-                const thumbnailsWidth: number =
-                    this._$thumbs.length * thumbnailWidth;
-                const paginationScrollLeft: number =
-                    this._paginationScrollable.scrollLeft;
+                const thumbnailWidth: number = $(this._$thumbs[0]).outerWidth() + thumbnailMargin;
+                const thumbnailsWidth: number = this._$thumbs.length * thumbnailWidth;
+                const paginationScrollLeft: number = this._paginationScrollable.scrollLeft;
 
-                this._$thumbPrevButton.prop(
-                    'disabled',
-                    paginationScrollLeft === 0
-                );
+                this._$thumbPrevButton.prop('disabled', paginationScrollLeft === 0);
                 this._$thumbNextButton.prop(
                     'disabled',
                     thumbnailsWidth - paginationScrollLeft <=
-                        $(this._paginationScrollable).outerWidth() +
-                            thumbnailMargin
+                        $(this._paginationScrollable).outerWidth() + thumbnailMargin
                 );
             }
         }
@@ -814,14 +734,9 @@ export default class SlideGallery {
     /**
      * Scrolls gallery to element based on given index value param.
      */
-    public scrollToIndex(
-        activeIndex: number,
-        behavior: ScrollBehavior = 'smooth'
-    ): void {
+    public scrollToIndex(activeIndex: number, behavior: ScrollBehavior = 'smooth'): void {
         if (behavior === 'auto') {
-            this._$component.addClass(
-                this._defaultOptions.classNames.galleryAutoScrollClass
-            );
+            this._$component.addClass(this._defaultOptions.classNames.galleryAutoScrollClass);
 
             setTimeout((): void => {
                 this._$component.removeClass(
@@ -837,10 +752,7 @@ export default class SlideGallery {
             behavior: behavior,
         });
 
-        if (
-            window.innerWidth >=
-            window.breakpoint[this._defaultOptions.mobileBreakpoint]
-        ) {
+        if (window.innerWidth >= window.breakpoint[this._defaultOptions.mobileBreakpoint]) {
             this._setActiveThumb(activeIndex);
         }
 
@@ -862,28 +774,16 @@ export default class SlideGallery {
                     this._paginationScrollable.scrollTo({
                         top:
                             this._$thumbs[activeIndex].offsetTop -
-                            parseInt(
-                                $(this._$thumbs[activeIndex]).css('padding'),
-                                10
-                            ) -
-                            parseInt(
-                                $(this._$thumbs[activeIndex]).css('margin'),
-                                10
-                            ),
+                            parseInt($(this._$thumbs[activeIndex]).css('padding'), 10) -
+                            parseInt($(this._$thumbs[activeIndex]).css('margin'), 10),
                         behavior: this._scrollBehavior,
                     });
                 } else {
                     this._paginationScrollable.scrollTo({
                         left:
                             this._$thumbs[activeIndex].offsetLeft -
-                            parseInt(
-                                $(this._$thumbs[activeIndex]).css('padding'),
-                                10
-                            ) -
-                            parseInt(
-                                $(this._$thumbs[activeIndex]).css('margin'),
-                                10
-                            ),
+                            parseInt($(this._$thumbs[activeIndex]).css('padding'), 10) -
+                            parseInt($(this._$thumbs[activeIndex]).css('margin'), 10),
                         behavior: this._scrollBehavior,
                     });
                 }
@@ -895,10 +795,7 @@ export default class SlideGallery {
      * Scrolls thumbnails forward.
      */
     public scrollPaginationForward(): void {
-        if (
-            window.breakpoint.current >=
-            window.breakpoint[this._defaultOptions.mobileBreakpoint]
-        ) {
+        if (window.breakpoint.current >= window.breakpoint[this._defaultOptions.mobileBreakpoint]) {
             if (this._defaultOptions.verticalThumbNav) {
                 const thumbFullHeight =
                     $(this._$thumbs[0]).outerWidth() +
@@ -929,10 +826,7 @@ export default class SlideGallery {
      * Scrolls thumbnails backward.
      */
     public scrollPaginationBackward(): void {
-        if (
-            window.breakpoint.current >=
-            window.breakpoint[this._defaultOptions.mobileBreakpoint]
-        ) {
+        if (window.breakpoint.current >= window.breakpoint[this._defaultOptions.mobileBreakpoint]) {
             if (this._defaultOptions.verticalThumbNav) {
                 const thumbFullHeight =
                     $(this._$thumbs[0]).outerWidth() +
@@ -962,11 +856,7 @@ export default class SlideGallery {
     /**
      * Centers images during zoom in / zoom out in fullscreen mode.
      */
-    protected _centerImage(
-        e?: JQuery.Event,
-        initialWidth?: number,
-        initialHeight?: number
-    ): void {
+    protected _centerImage(e?: JQuery.Event, initialWidth?: number, initialHeight?: number): void {
         let top: number;
         let left: number;
 
@@ -982,19 +872,13 @@ export default class SlideGallery {
             const xRatio = e.offsetX / initialWidth;
             const yRatio = e.offsetY / initialHeight;
 
-            left =
-                currentFullImg.clientWidth * xRatio -
-                window.innerWidth * xRatio;
-            top =
-                currentFullImg.clientHeight * yRatio -
-                window.innerHeight * yRatio;
+            left = currentFullImg.clientWidth * xRatio - window.innerWidth * xRatio;
+            top = currentFullImg.clientHeight * yRatio - window.innerHeight * yRatio;
         }
 
         const centerImages = (e): void => {
             // Center current image if zoom was triggered by click/touch event
-            this._$component.addClass(
-                this._defaultOptions.classNames.galleryAutoScrollClass
-            );
+            this._$component.addClass(this._defaultOptions.classNames.galleryAutoScrollClass);
 
             setTimeout((): void => {
                 this._$component.removeClass(
@@ -1010,14 +894,8 @@ export default class SlideGallery {
                 });
             } else {
                 currentSlide.scrollTo({
-                    top:
-                        (currentFullImg.clientHeight -
-                            currentSlide.clientHeight) /
-                        2,
-                    left:
-                        (currentFullImg.clientWidth -
-                            currentSlide.clientWidth) /
-                        2,
+                    top: (currentFullImg.clientHeight - currentSlide.clientHeight) / 2,
+                    left: (currentFullImg.clientWidth - currentSlide.clientWidth) / 2,
                     behavior: 'auto',
                 });
             }
@@ -1026,15 +904,11 @@ export default class SlideGallery {
         if (currentFullImg.complete && currentFullImg.naturalHeight !== 0) {
             centerImages(e);
         } else {
-            this._$component.addClass(
-                this._defaultOptions.classNames.galleryLoadingClass
-            );
+            this._$component.addClass(this._defaultOptions.classNames.galleryLoadingClass);
             centerImages(e);
 
             setTimeout((): void => {
-                this._$component.removeClass(
-                    this._defaultOptions.classNames.galleryLoadingClass
-                );
+                this._$component.removeClass(this._defaultOptions.classNames.galleryLoadingClass);
             }, 1000);
         }
     }
@@ -1057,9 +931,7 @@ export default class SlideGallery {
      * Sets full size images.
      */
     protected _setFullImages(): void {
-        this._$component.toggleClass(
-            this._defaultOptions.classNames.galleryFullscreenImagesClass
-        );
+        this._$component.toggleClass(this._defaultOptions.classNames.galleryFullscreenImagesClass);
 
         if (this._fullImagesLoaded) {
             return;
@@ -1077,12 +949,8 @@ export default class SlideGallery {
      * Toggles between normal and full screen gallery mode.
      */
     protected _toggleFullscreen(): void {
-        this._$component.toggleClass(
-            this._defaultOptions.classNames.galleryFullscreenClass
-        );
-        $('body, html').toggleClass(
-            this._defaultOptions.classNames.galleryFullscreenVisibleClass
-        );
+        this._$component.toggleClass(this._defaultOptions.classNames.galleryFullscreenClass);
+        $('body, html').toggleClass(this._defaultOptions.classNames.galleryFullscreenVisibleClass);
 
         this._setFullImages();
         this.scrollToIndex(this._getCurrentIndex(), 'auto');
@@ -1138,12 +1006,8 @@ export default class SlideGallery {
      * Exits zoom mode.
      */
     protected _closeZoom(e: JQuery.Event): void {
-        $('body, html').removeClass(
-            this._defaultOptions.classNames.galleryZoomVisibleClass
-        );
-        this._$component.removeClass(
-            this._defaultOptions.classNames.galleryZoomClass
-        );
+        $('body, html').removeClass(this._defaultOptions.classNames.galleryZoomVisibleClass);
+        this._$component.removeClass(this._defaultOptions.classNames.galleryZoomClass);
 
         if (this._defaultOptions.zoom3Steps) {
             this._$component.removeClass(
@@ -1178,12 +1042,8 @@ export default class SlideGallery {
         const currentPictureWidth: number = currentPicture.clientWidth;
         const currentPictureHeight: number = currentPicture.clientHeight;
 
-        $('body, html').addClass(
-            this._defaultOptions.classNames.galleryZoomVisibleClass
-        );
-        this._$component.addClass(
-            this._defaultOptions.classNames.galleryZoomClass
-        );
+        $('body, html').addClass(this._defaultOptions.classNames.galleryZoomVisibleClass);
+        this._$component.addClass(this._defaultOptions.classNames.galleryZoomClass);
 
         if (this._defaultOptions.zoom3Steps && this._zoomStep < 3) {
             this._$component.removeClass(
@@ -1218,20 +1078,12 @@ export default class SlideGallery {
                 `${this._defaultOptions.classNames.galleryZoomClass}-${this._zoomStep}`
             );
             this._zoomStep--;
-            $('body, html').removeClass(
-                this._defaultOptions.classNames.galleryZoomVisibleClass
-            );
-            this._$component.removeClass(
-                this._defaultOptions.classNames.galleryZoomClass
-            );
+            $('body, html').removeClass(this._defaultOptions.classNames.galleryZoomVisibleClass);
+            this._$component.removeClass(this._defaultOptions.classNames.galleryZoomClass);
             this._zoomVisible = false;
         } else if (!this._defaultOptions.zoom3Steps) {
-            $('body, html').removeClass(
-                this._defaultOptions.classNames.galleryZoomVisibleClass
-            );
-            this._$component.removeClass(
-                this._defaultOptions.classNames.galleryZoomClass
-            );
+            $('body, html').removeClass(this._defaultOptions.classNames.galleryZoomVisibleClass);
+            this._$component.removeClass(this._defaultOptions.classNames.galleryZoomClass);
             this._zoomVisible = false;
         }
     }
@@ -1277,9 +1129,7 @@ export default class SlideGallery {
         }
 
         if (this._isVideo()) {
-            $(this._defaultOptions.selectors.slideSelector).off(
-                'slide:changed'
-            );
+            $(this._defaultOptions.selectors.slideSelector).off('slide:changed');
         }
     }
 }

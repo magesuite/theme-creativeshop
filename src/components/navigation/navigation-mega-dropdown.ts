@@ -1,12 +1,8 @@
 import * as $ from 'jquery';
-import {
-    default as Navigation,
-    NavigationOptions,
-} from 'components/navigation/navigation';
+import { default as Navigation, NavigationOptions } from 'components/navigation/navigation';
 
 export default class NavigationMegaDropdown extends Navigation {
-    protected _allCategoriesItemSelector: string =
-        '[data-category-identifier="all-categories"]';
+    protected _allCategoriesItemSelector: string = '[data-category-identifier="all-categories"]';
     protected _activeParentId: number = 0;
     protected _$allCategoriesItem: JQuery;
     protected _$allCategoriesFlyout: JQuery;
@@ -18,12 +14,8 @@ export default class NavigationMegaDropdown extends Navigation {
             return;
         }
 
-        this._$allCategoriesItem = this._$element.find(
-            this._allCategoriesItemSelector
-        );
-        this._$allCategoriesFlyout = this._$allCategoriesItem.find(
-            this._$flyouts
-        );
+        this._$allCategoriesItem = this._$element.find(this._allCategoriesItemSelector);
+        this._$allCategoriesFlyout = this._$allCategoriesItem.find(this._$flyouts);
     }
 
     /**
@@ -64,9 +56,7 @@ export default class NavigationMegaDropdown extends Navigation {
      * @param {JQuery} $megaSubmenu Submenu to set columns for.
      */
     protected _adjustMegaSubmenuColumns($megaSubmenu: JQuery): void {
-        const $flyout: JQuery = $megaSubmenu.closest(
-            `.${this._options.flyoutClassName}`
-        );
+        const $flyout: JQuery = $megaSubmenu.closest(`.${this._options.flyoutClassName}`);
         this._setColumnCount($megaSubmenu, 1);
 
         const flyoutMaxHeight: number = this._options.flyoutMaxHeight;
@@ -153,8 +143,7 @@ export default class NavigationMegaDropdown extends Navigation {
             return;
         }
 
-        const activeCategoryId: number =
-            $activeCategoryIndicator.data('active-category-id');
+        const activeCategoryId: number = $activeCategoryIndicator.data('active-category-id');
         if (activeCategoryId) {
             const $activeCategoryEl: JQuery = this._$container.find(
                 `[data-category-id="${activeCategoryId}"]`
@@ -169,10 +158,7 @@ export default class NavigationMegaDropdown extends Navigation {
                 );
                 $parentCategory
                     .addClass(this._options.activeCategoryClassName)
-                    .data(
-                        'active-class',
-                        this._options.activeCategoryClassName
-                    );
+                    .data('active-class', this._options.activeCategoryClassName);
             }
         }
     }
@@ -180,9 +166,7 @@ export default class NavigationMegaDropdown extends Navigation {
     protected _attachEvents(): void {
         super._attachEvents();
 
-        const $allCategoriesList: JQuery = $(
-            '.cs-navigation__list--all-categories'
-        );
+        const $allCategoriesList: JQuery = $('.cs-navigation__list--all-categories');
         const $allCategoriesItems: JQuery = $allCategoriesList.find(
             `.${this._options.itemClassName}--all-categories`
         );
@@ -198,13 +182,10 @@ export default class NavigationMegaDropdown extends Navigation {
             }
 
             const horizontalChange = Math.abs(
-                previousXPositions[0] -
-                    previousXPositions[previousXPositions.length - 1]
+                previousXPositions[0] - previousXPositions[previousXPositions.length - 1]
             );
 
-            const targetParentId = $(event.target)
-                .closest($allCategoriesItems)
-                .data('category-id');
+            const targetParentId = $(event.target).closest($allCategoriesItems).data('category-id');
             if (targetParentId === this._activeParentId) {
                 return;
             }
@@ -228,22 +209,17 @@ export default class NavigationMegaDropdown extends Navigation {
             }
         });
 
-        $allCategoriesItems.on(
-            'touchstart',
-            (event: JQuery.TouchStartEvent) => {
-                const targetParentId = $(event.target)
-                    .closest($allCategoriesItems)
-                    .data('category-id');
-                const $categoryChildren = this._$allCategoriesFlyout.find(
-                    `[data-parent-item-id="${targetParentId}"]`
-                );
+        $allCategoriesItems.on('touchstart', (event: JQuery.TouchStartEvent) => {
+            const targetParentId = $(event.target).closest($allCategoriesItems).data('category-id');
+            const $categoryChildren = this._$allCategoriesFlyout.find(
+                `[data-parent-item-id="${targetParentId}"]`
+            );
 
-                if ($categoryChildren.length) {
-                    event.preventDefault();
-                    this._hideCategoryChildren(this._activeParentId);
-                    this._showCategoryChildren(targetParentId);
-                }
+            if ($categoryChildren.length) {
+                event.preventDefault();
+                this._hideCategoryChildren(this._activeParentId);
+                this._showCategoryChildren(targetParentId);
             }
-        );
+        });
     }
 }

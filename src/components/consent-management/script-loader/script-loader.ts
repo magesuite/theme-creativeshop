@@ -86,9 +86,7 @@ export default class ConsentManagedScriptLoader {
         this.options = { ...this.options, ...options }; // Shallow copy only!
 
         const consentManagedScripts: HTMLScriptElement[] = Array.from(
-            document.querySelectorAll(
-                `[${this.options.dataAttributes.consentServiceRequired}]`
-            )
+            document.querySelectorAll(`[${this.options.dataAttributes.consentServiceRequired}]`)
         );
 
         if (this.options.useObserver) {
@@ -111,13 +109,9 @@ export default class ConsentManagedScriptLoader {
     /**
      * Collect all consent managed scripts present in the document.
      */
-    public collectConsentManagedScripts(
-        scriptElements: HTMLScriptElement[]
-    ): void {
+    public collectConsentManagedScripts(scriptElements: HTMLScriptElement[]): void {
         scriptElements.forEach((scriptTag) => {
-            const service = scriptTag.getAttribute(
-                `${this.options.dataAttributes.consentService}`
-            );
+            const service = scriptTag.getAttribute(`${this.options.dataAttributes.consentService}`);
             if (service) {
                 this.consentManagedScriptsServices[service] =
                     (this.consentManagedScriptsServices[service] || 0) + 1;
@@ -134,18 +128,14 @@ export default class ConsentManagedScriptLoader {
                 mutation.addedNodes.forEach((element: HTMLScriptElement) => {
                     if (
                         element.type === 'text/html' &&
-                        element.hasAttribute(
-                            this.options.dataAttributes.consentServiceRequired
-                        )
+                        element.hasAttribute(this.options.dataAttributes.consentServiceRequired)
                     ) {
                         const consentManagedScriptsArrNew = [element];
 
                         if (!this.isInitialized) {
                             this.initConsent([element]);
                         } else {
-                            this.attachConsentEvents(
-                                consentManagedScriptsArrNew
-                            );
+                            this.attachConsentEvents(consentManagedScriptsArrNew);
                         }
                     }
                 });
@@ -162,12 +152,8 @@ export default class ConsentManagedScriptLoader {
      * ASYNC. Imports ConsentManagement module asynchronously.
      * @return Promise
      */
-    public async initConsent(
-        consentManagedScripts: HTMLScriptElement[]
-    ): Promise<void> {
-        const { default: consentManagement } = await import(
-            'components/consent-management'
-        );
+    public async initConsent(consentManagedScripts: HTMLScriptElement[]): Promise<void> {
+        const { default: consentManagement } = await import('components/consent-management');
         this.consentManagement = consentManagement;
 
         if (this.consentManagement) {
@@ -195,20 +181,16 @@ export default class ConsentManagedScriptLoader {
      *
      * @param scriptTag script tag element
      */
-    public handleConsentManagedScripts(
-        scriptTag: HTMLScriptElement
-    ): Promise<void> {
+    public handleConsentManagedScripts(scriptTag: HTMLScriptElement): Promise<void> {
         const scriptConsentService = scriptTag.dataset?.consentService;
         const scriptType = scriptTag.type;
-        const isServiceLoaded: boolean =
-            this.serviceLoadStatus?.[scriptConsentService]?.loaded;
+        const isServiceLoaded: boolean = this.serviceLoadStatus?.[scriptConsentService]?.loaded;
 
         if (scriptType !== 'text/html') {
             return;
         }
 
-        const consentStatus: boolean =
-            this.consentManagement.checkConsent(scriptConsentService);
+        const consentStatus: boolean = this.consentManagement.checkConsent(scriptConsentService);
 
         if (this.options.useLocalStorage) {
             // TODO: Change single entries to object
@@ -220,11 +202,7 @@ export default class ConsentManagedScriptLoader {
                 localStorageConsentStatus === null ||
                 localStorageConsentStatus !== consentStatus.toString()
             ) {
-                this.saveToLocalStorage(
-                    localStorageItemName,
-                    consentStatus,
-                    scriptConsentService
-                );
+                this.saveToLocalStorage(localStorageItemName, consentStatus, scriptConsentService);
             }
         }
 
@@ -241,13 +219,8 @@ export default class ConsentManagedScriptLoader {
      * @param scriptTag script tag element
      * @param serviceName name of the service consent is saved for
      */
-    public async loadScript(
-        scriptTag: HTMLScriptElement,
-        serviceName: string
-    ): Promise<void> {
-        const isInline =
-            scriptTag.hasAttribute(this.options.dataAttributes.isInline) ||
-            false;
+    public async loadScript(scriptTag: HTMLScriptElement, serviceName: string): Promise<void> {
+        const isInline = scriptTag.hasAttribute(this.options.dataAttributes.isInline) || false;
 
         if (isInline) {
             const script = document.createElement('script');
@@ -264,9 +237,7 @@ export default class ConsentManagedScriptLoader {
             document.head.appendChild(script);
         } else {
             const scriptSrc = scriptTag.dataset?.src ?? scriptTag.src;
-            const { default: requireAsync } = await import(
-                'utils/require-async'
-            );
+            const { default: requireAsync } = await import('utils/require-async');
             const script = await requireAsync([scriptSrc]);
         }
 
@@ -313,18 +284,12 @@ export default class ConsentManagedScriptLoader {
      * @param consentStatus current consent status of the selected service
      * @param serviceName name of the service consent is saved for
      */
-    public saveToLocalStorage(
-        itemName: string,
-        consentStatus: boolean,
-        serviceName: string
-    ): void {
+    public saveToLocalStorage(itemName: string, consentStatus: boolean, serviceName: string): void {
         try {
             // TODO: Change single entries to object
             window.localStorage.setItem(itemName, consentStatus.toString());
         } catch (error) {
-            console.error(
-                `${serviceName}: We could not save the value of the consent`
-            );
+            console.error(`${serviceName}: We could not save the value of the consent`);
         }
     }
 }

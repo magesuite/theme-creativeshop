@@ -16,10 +16,8 @@ define([
                 pickInStoreButtonSelector:
                     '#checkout-step-store-selector [data-role="opc-continue"]',
                 imports: {
-                    isStorePickupAvailable:
-                        'checkout.steps.store-pickup:isAvailable',
-                    isStorePickupSelected:
-                        'checkout.steps.store-pickup:isStorePickupSelected',
+                    isStorePickupAvailable: 'checkout.steps.store-pickup:isAvailable',
+                    isStorePickupSelected: 'checkout.steps.store-pickup:isStorePickupSelected',
                 },
                 listens: {
                     isStorePickupSelected: 'updateStorePickupSelection',
@@ -33,12 +31,9 @@ define([
                 this._super();
 
                 // Subscribe to location selection observable to make sure store is chosen
-                pickupLocationsService.selectedLocation.subscribe(function (
-                    storeData
-                ) {
+                pickupLocationsService.selectedLocation.subscribe(function (storeData) {
                     this.isLocationSelected(storeData !== null);
-                },
-                this);
+                }, this);
             },
 
             // isStorePickupSelected has to be listened for changes.

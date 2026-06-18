@@ -56,8 +56,7 @@ $minicart_width: 40rem !default;
 $minicart_actions-min-height: 16.4rem !default;
 
 $minicart_content-background: $color_background-200 !default;
-$minicart_action-wrapper_box-shadow: 0 -5px 5px -5px
-    rgba($color_background-800, 0.27) !default;
+$minicart_action-wrapper_box-shadow: 0 -5px 5px -5px rgba($color_background-800, 0.27) !default;
 
 $minicart-offcanvas-carousel: deep-get(
     $view-xml,
@@ -78,12 +77,7 @@ $minicart-offcanvas-carousel_item-per-row: deep-get(
     columnsConfig
 ) !default;
 
-$minicart_message-type: deep-get(
-    $view-xml,
-    vars,
-    Magento_Checkout,
-    minicart_messages
-) !default;
+$minicart_message-type: deep-get($view-xml, vars, Magento_Checkout, minicart_messages) !default;
 
 $minicart-offcanvas-carousel_mobile-gap: 0.8rem !default;
 $minicart-offcanvas-carousel_desktop-gap: 0.8rem !default;
@@ -551,8 +545,10 @@ $minicart_button-viewcart-icon-pos: $button_default-icon-pos !default;
                         100% -
                             (
                                 (
-                                        #{$global_header-height-desktop} - #{$global_header-height-tablet}
-                                    ) / 2
+                                        #{$global_header-height-desktop} -
+                                            #{$global_header-height-tablet}
+                                    ) /
+                                    2
                             )
                     );
                 }

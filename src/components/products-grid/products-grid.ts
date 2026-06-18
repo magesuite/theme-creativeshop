@@ -14,10 +14,7 @@ export class ProductsGrid {
         breakpointChange: this.onBreakpointChange.bind(this),
     };
 
-    constructor(
-        element: HTMLElement,
-        config: Partial<ProductsGridOptions> = {}
-    ) {
+    constructor(element: HTMLElement, config: Partial<ProductsGridOptions> = {}) {
         this.element = element;
         if (!this.element) {
             console.error('ProductsGrid: Element not found');
@@ -34,17 +31,11 @@ export class ProductsGrid {
     }
 
     protected attachEventListeners() {
-        document.addEventListener(
-            'breakpointChange',
-            this.eventListeners.breakpointChange
-        );
+        document.addEventListener('breakpointChange', this.eventListeners.breakpointChange);
     }
 
     public destroy() {
-        document.removeEventListener(
-            'breakpointChange',
-            this.eventListeners.breakpointChange
-        );
+        document.removeEventListener('breakpointChange', this.eventListeners.breakpointChange);
         this.element = null;
     }
 
@@ -53,16 +44,14 @@ export class ProductsGrid {
     }
 
     protected handleItemsVisibility() {
-        this.element
-            .querySelectorAll<HTMLElement>(this.options.itemSelector)
-            .forEach((item) => {
-                if (item.offsetHeight < this.options.minItemHeight) {
-                    item.setAttribute('aria-hidden', 'true');
-                    item.setAttribute('inert', '');
-                } else {
-                    item.removeAttribute('aria-hidden');
-                    item.removeAttribute('inert');
-                }
-            });
+        this.element.querySelectorAll<HTMLElement>(this.options.itemSelector).forEach((item) => {
+            if (item.offsetHeight < this.options.minItemHeight) {
+                item.setAttribute('aria-hidden', 'true');
+                item.setAttribute('inert', '');
+            } else {
+                item.removeAttribute('aria-hidden');
+                item.removeAttribute('inert');
+            }
+        });
     }
 }

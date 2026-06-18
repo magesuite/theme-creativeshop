@@ -3,10 +3,7 @@ import * as $ from 'jquery';
 import requireAsync from 'utils/require-async';
 import { default as idleDeferred } from 'utils/idle-deffered';
 
-import {
-    default as HeaderSearch,
-    HeaderSearchOptions,
-} from 'components/header/search/search';
+import { default as HeaderSearch, HeaderSearchOptions } from 'components/header/search/search';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
 
@@ -95,9 +92,9 @@ export default class OffcanvasNavigation {
 
         // Read active category path from a special tag.
         // Template literal used to always get data attribute as a string
-        this._activeCategoryPath = `${$('#active-category-path').data(
-            'activeCategoryPath'
-        )}`.split('/');
+        this._activeCategoryPath = `${$('#active-category-path').data('activeCategoryPath')}`.split(
+            '/'
+        );
 
         // Prefetch mobile navigation when browser becomes idle (only for mobile devices).
         if (breakpoint.current <= this._options.offcanvasMaxBreakpoint) {
@@ -118,10 +115,7 @@ export default class OffcanvasNavigation {
         this._firstInit = false;
 
         // Disable orientation change event if initialization is already ongoing
-        $(document).off(
-            'breakpointChange',
-            this._eventListeners.initOffcanvasNav
-        );
+        $(document).off('breakpointChange', this._eventListeners.initOffcanvasNav);
 
         this._getHtml()
             .then((html) => this._initHtml(html))
@@ -142,12 +136,7 @@ export default class OffcanvasNavigation {
                         this._options.onNavigationRender();
                     }
 
-                    if (
-                        deepGet(
-                            viewXml,
-                            'vars.Magento_Theme.header.mobile_search_in_offcanvas'
-                        )
-                    ) {
+                    if (deepGet(viewXml, 'vars.Magento_Theme.header.mobile_search_in_offcanvas')) {
                         this._handleOffcanvasSearch();
                     }
                 })
@@ -180,19 +169,12 @@ export default class OffcanvasNavigation {
 
         requireAsync(['mage/apply/main', 'ko']).then(([mage, ko]) => {
             mage.apply();
-            if (
-                !this._$element.find(
-                    '[type="text/x-magento-init"], [data-mage-init]'
-                )?.length
-            ) {
+            if (!this._$element.find('[type="text/x-magento-init"], [data-mage-init]')?.length) {
                 return;
             }
             // Check if first element child is not bound to KO, if not apply bindings.
             this._$element.find('[data-bind]').each((index, element) => {
-                if (
-                    element.firstElementChild &&
-                    !ko.dataFor(element.firstElementChild)
-                ) {
+                if (element.firstElementChild && !ko.dataFor(element.firstElementChild)) {
                     ko.applyBindings(null, element);
                 }
             });
@@ -208,17 +190,12 @@ export default class OffcanvasNavigation {
             return;
         }
 
-        const desktopSwitcherId = `${$offcanvasSwitcher
-            .attr('id')
-            .replace('-offcanvas', '')}`;
+        const desktopSwitcherId = `${$offcanvasSwitcher.attr('id').replace('-offcanvas', '')}`;
         const $desktopSwitcherLinks = $(`#${desktopSwitcherId} a`);
         // If there is a desktop counterpart then just copy its "data-post".
         if ($desktopSwitcherLinks.length) {
             $offcanvasSwitcher.find('a').each((index, element) => {
-                $(element).attr(
-                    'data-post',
-                    $desktopSwitcherLinks.eq(index).attr('data-post')
-                );
+                $(element).attr('data-post', $desktopSwitcherLinks.eq(index).attr('data-post'));
             });
         } else {
             // Otherwise try to fallback to dummy solution which should redirect to other storeview's homepage.
@@ -226,9 +203,7 @@ export default class OffcanvasNavigation {
                 const $switcherLink = $(element);
                 const postData = $switcherLink.data('post');
                 try {
-                    const endpointUrl = atob(
-                        postData.data.uenc.replace(/,/g, '')
-                    );
+                    const endpointUrl = atob(postData.data.uenc.replace(/,/g, ''));
                     const targetUrl = endpointUrl.slice(
                         0,
                         endpointUrl.indexOf(this._options.endpointPath) + 1
@@ -255,10 +230,7 @@ export default class OffcanvasNavigation {
                 'href',
                 $offcanvasLoginLink
                     .attr('href')
-                    .replace(
-                        /referer\/[^\/]+\//,
-                        `referer/${btoa(window.location.href)}/`
-                    )
+                    .replace(/referer\/[^\/]+\//, `referer/${btoa(window.location.href)}/`)
             );
         }
     }
@@ -300,11 +272,9 @@ export default class OffcanvasNavigation {
         const cacheInfo = this._getCacheInfo();
 
         if (!cacheInfo.url) {
-            /* tslint:disable */
             console.warn(
                 `Main navigation is missing "data-mobile-endpoint-url" attribute, please make sure its template is up to date.`
             );
-            /* tslint:enable */
             return deferred.resolve('');
         }
 
@@ -339,9 +309,7 @@ export default class OffcanvasNavigation {
     protected _handleParentLinkClick(event: Event): void {
         event.preventDefault();
 
-        const categoryToShow = $(event.target).hasClass(
-            `${this._options.className}__link--parent`
-        )
+        const categoryToShow = $(event.target).hasClass(`${this._options.className}__link--parent`)
             ? $(event.target).data('category-id')
             : $(event.target)
                   .parents(`.${this._options.className}__link--parent`)
@@ -384,9 +352,7 @@ export default class OffcanvasNavigation {
             $currentLevel.last().prop('scrollTop')
         ) {
             $currentLevel.animate({ scrollTop: 0 }, 'fast', () => {
-                $currentLevel.removeClass(
-                    `${this._options.className}__list--current`
-                );
+                $currentLevel.removeClass(`${this._options.className}__list--current`);
 
                 $listToShow
                     .addClass(
@@ -397,17 +363,13 @@ export default class OffcanvasNavigation {
                     )
                     .parents(`.${this._options.className}__list`)
                     .each((i, parent) => {
-                        $(parent).addClass(
-                            `${this._options.className}__list--active`
-                        );
+                        $(parent).addClass(`${this._options.className}__list--active`);
                     });
 
                 this._setFocus();
             });
         } else {
-            $currentLevel.removeClass(
-                `${this._options.className}__list--current`
-            );
+            $currentLevel.removeClass(`${this._options.className}__list--current`);
 
             $listToShow
                 .addClass(
@@ -418,9 +380,7 @@ export default class OffcanvasNavigation {
                 )
                 .parents(`.${this._options.className}__list`)
                 .each((i, parent) => {
-                    $(parent).addClass(
-                        `${this._options.className}__list--active`
-                    );
+                    $(parent).addClass(`${this._options.className}__list--active`);
                 });
 
             this._setFocus();
@@ -433,9 +393,7 @@ export default class OffcanvasNavigation {
      */
     protected _hideLevel(event: Event): void {
         event.preventDefault();
-        const $levelToHide = $(event.target).closest(
-            `.${this._options.className}__list`
-        );
+        const $levelToHide = $(event.target).closest(`.${this._options.className}__list`);
         $levelToHide
             .removeClass(
                 `
@@ -457,9 +415,7 @@ export default class OffcanvasNavigation {
             return;
         }
 
-        const $levelsToHide = this._$element.find(
-            `.${this._options.className}__list`
-        );
+        const $levelsToHide = this._$element.find(`.${this._options.className}__list`);
         // Reset all levels.
         $levelsToHide.removeClass(
             `${this._options.className}__list--active ${this._options.className}__list--current`
@@ -482,8 +438,7 @@ export default class OffcanvasNavigation {
         this._eventListeners.offcanvasHide = this._resetLevels.bind(this);
         $(document).on('offcanvas-hide', this._eventListeners.offcanvasHide);
 
-        this._eventListeners.parentLinkClick =
-            this._handleParentLinkClick.bind(this);
+        this._eventListeners.parentLinkClick = this._handleParentLinkClick.bind(this);
 
         this._$drawer.on(
             'click',
@@ -499,12 +454,8 @@ export default class OffcanvasNavigation {
         );
 
         // Check for orientation change and initialize mobile nav if needed
-        this._eventListeners.initOffcanvasNav =
-            this._dynamicOffcanvasInit.bind(this);
-        $(document).on(
-            'breakpointChange',
-            this._eventListeners.initOffcanvasNav
-        );
+        this._eventListeners.initOffcanvasNav = this._dynamicOffcanvasInit.bind(this);
+        $(document).on('breakpointChange', this._eventListeners.initOffcanvasNav);
     }
 
     /**
@@ -535,21 +486,15 @@ export default class OffcanvasNavigation {
             return;
         }
 
-        const activeCategoryId =
-            this._activeCategoryPath[this._activeCategoryPath.length - 1];
+        const activeCategoryId = this._activeCategoryPath[this._activeCategoryPath.length - 1];
         const $activeCategoryLink = $(
             `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
         );
 
-        if (
-            $activeCategoryLink.hasClass(
-                `${this._options.className}__link--parent`
-            )
-        ) {
+        if ($activeCategoryLink.hasClass(`${this._options.className}__link--parent`)) {
             this._showCategoryLevel(activeCategoryId);
         } else {
-            const parentCategoryId =
-                this._activeCategoryPath[this._activeCategoryPath.length - 2];
+            const parentCategoryId = this._activeCategoryPath[this._activeCategoryPath.length - 2];
             this._showCategoryLevel(parentCategoryId);
         }
     }
@@ -559,31 +504,22 @@ export default class OffcanvasNavigation {
      */
     protected _highlightActiveCategoryItem(): void {
         if (this._activeCategoryPath.length) {
-            const activeCategoryId =
-                this._activeCategoryPath[this._activeCategoryPath.length - 1];
+            const activeCategoryId = this._activeCategoryPath[this._activeCategoryPath.length - 1];
 
-            $(
-                `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
-            )
+            $(`.${this._options.className}__link[data-category-id="${activeCategoryId}"]`)
                 .parent()
                 .addClass(this._options.activeCategoryHighlightClass);
         }
 
-        const activeCategoryId =
-            this._activeCategoryPath[this._activeCategoryPath.length - 1];
+        const activeCategoryId = this._activeCategoryPath[this._activeCategoryPath.length - 1];
         const $activeCategoryLink = $(
             `.${this._options.className}__link[data-category-id="${activeCategoryId}"]`
         );
 
-        if (
-            $activeCategoryLink.hasClass(
-                `${this._options.className}__link--parent`
-            )
-        ) {
+        if ($activeCategoryLink.hasClass(`${this._options.className}__link--parent`)) {
             this._showCategoryLevel(activeCategoryId);
         } else {
-            const parentCategoryId =
-                this._activeCategoryPath[this._activeCategoryPath.length - 2];
+            const parentCategoryId = this._activeCategoryPath[this._activeCategoryPath.length - 2];
             this._showCategoryLevel(parentCategoryId);
         }
     }

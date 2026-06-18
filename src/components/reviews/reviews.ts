@@ -59,11 +59,7 @@ export default class Reviews {
      * Preselect value. Do not change message
      */
     protected _preselectStar(index): void {
-        for (
-            let ratingIndex: number = 0;
-            ratingIndex < this._$wrapper.length;
-            ratingIndex++
-        ) {
+        for (let ratingIndex: number = 0; ratingIndex < this._$wrapper.length; ratingIndex++) {
             const $activeRadio = this._$wrapper
                 .eq(ratingIndex)
                 .find('input[type="radio"]')
@@ -89,13 +85,9 @@ export default class Reviews {
                 .find('.cs-star-rating__form-star')
                 .each((index: number, element: JQuery) => {
                     if (index <= starIndex) {
-                        $(element).addClass(
-                            'cs-star-rating__form-star--active'
-                        );
+                        $(element).addClass('cs-star-rating__form-star--active');
                     } else {
-                        $(element).removeClass(
-                            'cs-star-rating__form-star--active'
-                        );
+                        $(element).removeClass('cs-star-rating__form-star--active');
                     }
                 });
 
@@ -113,26 +105,13 @@ export default class Reviews {
         const _this: any = this;
         const $radios: any = [];
 
-        for (
-            let ratingIndex: number = 0;
-            ratingIndex < _this._$wrapper.length;
-            ratingIndex++
-        ) {
-            $radios[ratingIndex] = _this._$wrapper
-                .eq(ratingIndex)
-                .find('input[type="radio"]');
+        for (let ratingIndex: number = 0; ratingIndex < _this._$wrapper.length; ratingIndex++) {
+            $radios[ratingIndex] = _this._$wrapper.eq(ratingIndex).find('input[type="radio"]');
 
-            for (
-                let starIndex: number = 0;
-                starIndex < $radios[ratingIndex].length;
-                starIndex++
-            ) {
-                $radios[ratingIndex][starIndex].addEventListener(
-                    'change',
-                    function (): void {
-                        _this._setActiveStars($(this), ratingIndex, starIndex);
-                    }
-                );
+            for (let starIndex: number = 0; starIndex < $radios[ratingIndex].length; starIndex++) {
+                $radios[ratingIndex][starIndex].addEventListener('change', function (): void {
+                    _this._setActiveStars($(this), ratingIndex, starIndex);
+                });
             }
         }
     }

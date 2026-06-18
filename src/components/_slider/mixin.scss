@@ -5,9 +5,7 @@
 @import 'components/_slider/hooks';
 
 // Calculate container breakpoint + 2 * edge gutter and transform to 'em' unit for media query
-$containerBreakpointPx: (
-        strip-unit($page_max-width) + 2 * strip-unit($page_edge-gutter)
-    ) * 10;
+$containerBreakpointPx: (strip-unit($page_max-width) + 2 * strip-unit($page_edge-gutter)) * 10;
 $containerBreakpointEm: $containerBreakpointPx / 16 * 1em;
 $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
 
@@ -196,11 +194,7 @@ $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
         @include media('>=tablet') {
             @for $i from 2 through 8 {
                 &#{$root}--items-in-row-#{$i} {
-                    --size: calc(
-                        var(--base-size) /
-                            #{$i} -
-                            ((#{$i - 1} * var(--gap)) / #{$i})
-                    );
+                    --size: calc(var(--base-size) / #{$i} - ((#{$i - 1} * var(--gap)) / #{$i}));
                 }
             }
         }
@@ -224,9 +218,8 @@ $toContainerBreakpointEm: ($containerBreakpointPx - 1) / 16 * 1em;
         @each $breakpoint, $itemsPerRow in $columns-config {
             @include media('>=#{$breakpoint}') {
                 --size: calc(
-                    var(--base-size) / #{$itemsPerRow} - ((
-                                    #{$itemsPerRow - 1} * var(--gap)
-                                ) / #{$itemsPerRow})
+                    var(--base-size) / #{$itemsPerRow} -
+                        ((#{$itemsPerRow - 1} * var(--gap)) / #{$itemsPerRow})
                 );
             }
         }

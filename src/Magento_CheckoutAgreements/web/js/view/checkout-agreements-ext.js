@@ -6,11 +6,11 @@
  * Allows using "merged" T&Cs - documentation and examples on confluence
  * Aligned with Magento 2.4.9 in 05/2026
  */
-define([
-    'jquery',
-    'ko',
-    'Magento_CheckoutAgreements/js/model/agreements-modal',
-], function ($, ko, agreementsModal) {
+define(['jquery', 'ko', 'Magento_CheckoutAgreements/js/model/agreements-modal'], function (
+    $,
+    ko,
+    agreementsModal
+) {
     'use strict';
 
     var mixin = {
@@ -19,13 +19,9 @@ define([
         showContent: function (element, event) {
             this.modalTitle(element.checkboxText);
             this.modalContent(
-                '<div class="agreements-modal-content">' +
-                    element.content +
-                    '</div>'
+                '<div class="agreements-modal-content">' + element.content + '</div>'
             );
-            this.contentHeight(
-                element.contentHeight ? element.contentHeight : 'auto'
-            );
+            this.contentHeight(element.contentHeight ? element.contentHeight : 'auto');
 
             var $modalContent = $('.agreements-modal-content');
             var $target = $modalContent.find($(event.target).attr('href'));

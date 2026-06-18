@@ -102,25 +102,19 @@ export default class Tooltip {
         if ($(`.${this._options.overlayClass}`).length) {
             this._$overlay = $(`.${this._options.overlayClass}`);
         } else {
-            this._$overlay = $(
-                `<div class="${this._options.overlayClass}"></div>`
-            );
+            this._$overlay = $(`<div class="${this._options.overlayClass}"></div>`);
             $('body').append(this._$overlay);
         }
     }
 
     protected _toggleOverlay(): void {
         if (this._$overlay.length) {
-            this._$overlay.toggleClass(
-                `${this._options.overlayClass}--visible`
-            );
+            this._$overlay.toggleClass(`${this._options.overlayClass}--visible`);
         }
     }
 
     protected _cloneTooltip($tooltip: JQuery): void {
-        const $clone = $tooltip
-            .clone()
-            .addClass(`${this._options.tooltipClass}--clone`);
+        const $clone = $tooltip.clone().addClass(`${this._options.tooltipClass}--clone`);
 
         // Force LazyLoad to process images in cloned
         // content one more time in order to set proper
@@ -134,9 +128,7 @@ export default class Tooltip {
 
         $('body').append($clone);
 
-        const $cloneContent = $clone
-            .find(`.${this._options.contentClass}`)
-            .first();
+        const $cloneContent = $clone.find(`.${this._options.contentClass}`).first();
         const contentId = $cloneContent.attr('id');
 
         if (contentId) {
@@ -178,10 +170,7 @@ export default class Tooltip {
         this._focusCloneCloseButton();
     }
 
-    protected _hideTooltip(
-        $target: JQuery,
-        shouldRestoreFocus: boolean = false
-    ): void {
+    protected _hideTooltip($target: JQuery, shouldRestoreFocus: boolean = false): void {
         if (this._getCurrentScenario() === 'tooltip') {
             this._setTooltipState($target, false);
             $target.removeClass(`${this._options.tooltipClass}--active`);
@@ -208,10 +197,7 @@ export default class Tooltip {
     }
 
     protected _setTooltipState($tooltip: JQuery, isActive: boolean): void {
-        this._getTrigger($tooltip).attr(
-            'aria-expanded',
-            isActive ? 'true' : 'false'
-        );
+        this._getTrigger($tooltip).attr('aria-expanded', isActive ? 'true' : 'false');
         $tooltip
             .find(`.${this._options.contentClass}`)
             .first()
@@ -232,10 +218,7 @@ export default class Tooltip {
             return;
         }
 
-        this._$clone
-            .find(`.${this._options.closeClass}`)
-            .first()
-            .trigger('focus');
+        this._$clone.find(`.${this._options.closeClass}`).first().trigger('focus');
     }
 
     protected _isToggleKey(e: JQuery.Event): boolean {
@@ -247,17 +230,13 @@ export default class Tooltip {
     }
 
     protected _toggleTooltip($trigger: JQuery): void {
-        const $target: JQuery = $trigger.closest(
-            `.${this._options.tooltipClass}`
-        );
+        const $target: JQuery = $trigger.closest(`.${this._options.tooltipClass}`);
 
         if (!$target.length) {
             return;
         }
 
-        const isClickedActive: boolean = $target.hasClass(
-            `${this._options.tooltipClass}--active`
-        );
+        const isClickedActive: boolean = $target.hasClass(`${this._options.tooltipClass}--active`);
 
         if (isClickedActive) {
             if (this._getCurrentScenario() === 'tooltip') {
@@ -286,16 +265,12 @@ export default class Tooltip {
     protected _setEvents(): void {
         const _obj: any = this;
 
-        $(document).on(
-            'click',
-            `.${this._options.triggerClass}`,
-            function (e): void {
-                e.preventDefault();
-                e.stopPropagation();
+        $(document).on('click', `.${this._options.triggerClass}`, function (e): void {
+            e.preventDefault();
+            e.stopPropagation();
 
-                _obj._toggleTooltip($(this));
-            }
-        );
+            _obj._toggleTooltip($(this));
+        });
 
         $(document).on(
             'keydown',
@@ -315,16 +290,11 @@ export default class Tooltip {
             `.${this._options.overlayClass}, .${this._options.closeClass}`,
             function (): void {
                 if (_obj._$clone) {
-                    _obj._hideTooltip(
-                        _obj._$clone,
-                        $(this).hasClass(_obj._options.closeClass)
-                    );
+                    _obj._hideTooltip(_obj._$clone, $(this).hasClass(_obj._options.closeClass));
                     return;
                 }
 
-                const $target = $(this).closest(
-                    `.${_obj._options.tooltipClass}`
-                );
+                const $target = $(this).closest(`.${_obj._options.tooltipClass}`);
                 _obj._hideTooltip($target, true);
             }
         );

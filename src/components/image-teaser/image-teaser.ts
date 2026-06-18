@@ -105,14 +105,12 @@ export default class ImageTeaser {
      * @param breakpoint {number} optional breakpoint (screen-width in px) for which calculation should happen. If not passed, fallbacks to current window width.
      * @return number of items per view for given breakpoint
      */
-    protected _getCurrentItemsPerView(
-        breakpoint: number = window.innerWidth
-    ): number {
+    protected _getCurrentItemsPerView(breakpoint: number = window.innerWidth): number {
         return this._isTablet?.matches && +this.options.itemsPerView === 4
             ? 2
             : breakpoint >= window.breakpoint.tablet
-            ? this.options.itemsPerView
-            : 1;
+              ? this.options.itemsPerView
+              : 1;
     }
 
     /**
@@ -120,8 +118,7 @@ export default class ImageTeaser {
      * @return boolean
      */
     protected _checkTouch(): boolean {
-        return this.options.autorotationOptions
-            .useAutorotationAlsoForTouchScreens
+        return this.options.autorotationOptions.useAutorotationAlsoForTouchScreens
             ? true
             : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
     }
@@ -143,9 +140,8 @@ export default class ImageTeaser {
             ...this.options.navigationOptions,
         };
 
-        const { default: SliderNavigation } = await import(
-            'components/_slider/navigation/navigation'
-        );
+        const { default: SliderNavigation } =
+            await import('components/_slider/navigation/navigation');
         this.navigation = new SliderNavigation(navigationOptions);
 
         if (
@@ -173,9 +169,8 @@ export default class ImageTeaser {
             ...this.options.paginationOptions,
         };
 
-        const { default: SliderPagination } = await import(
-            'components/_slider/pagination/pagination'
-        );
+        const { default: SliderPagination } =
+            await import('components/_slider/pagination/pagination');
         this.pagination = new SliderPagination(paginationOptions);
     }
 
@@ -189,17 +184,14 @@ export default class ImageTeaser {
                 collectionSize: this.options.itemsCount,
                 itemsPerView: this.currentItemsPerView,
                 navInstance: this.navigation,
-                pauseNode: this._$it[0].querySelector(
-                    '.cs-image-teaser__slides-wrapper'
-                ),
+                pauseNode: this._$it[0].querySelector('.cs-image-teaser__slides-wrapper'),
                 delay: 6000,
             },
             ...this.options.autorotationOptions,
         };
 
-        const { default: SliderAutorotation } = await import(
-            'components/_slider/autorotation/autorotation'
-        );
+        const { default: SliderAutorotation } =
+            await import('components/_slider/autorotation/autorotation');
         this.autorotation = new SliderAutorotation(autorotationOptions);
     }
 
@@ -207,35 +199,26 @@ export default class ImageTeaser {
      * Listens to 'breakpointChange' event. When emitted, checks if 'currentItemsPerView' should be updated and updates if so. Afterwards it calls Navigation and Pagination API to set new items per view value and update those modules.
      */
     protected _watchBreakpointChanges(): void {
-        document.addEventListener(
-            'breakpointChange',
-            (e: CustomEvent): void => {
-                if (
-                    this.currentItemsPerView !==
-                    this._getCurrentItemsPerView(e.detail?.breakpoint)
-                ) {
-                    this.currentItemsPerView = this._getCurrentItemsPerView(
-                        e.detail?.breakpoint
-                    );
-                    this.navigation?.setItemsPerView(this.currentItemsPerView);
-                    this.pagination?.setItemsPerView(this.currentItemsPerView);
-                }
-
-                const checkTouch: boolean = this.options.autorotationOptions
-                    .useAutorotationAlsoForTouchScreens
-                    ? true
-                    : window.matchMedia('(hover:hover) and (pointer: fine)')
-                          .matches;
-
-                if (
-                    this.options.useAutorotation &&
-                    this._checkTouch() &&
-                    this._$it[0].offsetParent != null &&
-                    !this.autorotation
-                ) {
-                    this._initAutorotation();
-                }
+        document.addEventListener('breakpointChange', (e: CustomEvent): void => {
+            if (this.currentItemsPerView !== this._getCurrentItemsPerView(e.detail?.breakpoint)) {
+                this.currentItemsPerView = this._getCurrentItemsPerView(e.detail?.breakpoint);
+                this.navigation?.setItemsPerView(this.currentItemsPerView);
+                this.pagination?.setItemsPerView(this.currentItemsPerView);
             }
-        );
+
+            const checkTouch: boolean = this.options.autorotationOptions
+                .useAutorotationAlsoForTouchScreens
+                ? true
+                : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
+
+            if (
+                this.options.useAutorotation &&
+                this._checkTouch() &&
+                this._$it[0].offsetParent != null &&
+                !this.autorotation
+            ) {
+                this._initAutorotation();
+            }
+        });
     }
 }

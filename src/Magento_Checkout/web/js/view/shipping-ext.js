@@ -2,12 +2,7 @@
  * Provide additional methods to shipping step
  * Aligned with Magento 2.4.9 in 05/2026
  */
-define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
-    $,
-    registry,
-    ko,
-    $t
-) {
+define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function ($, registry, ko, $t) {
     'use strict';
 
     return function (Shipping) {
@@ -21,8 +16,7 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
                 // use import -> method form so we can feed the observable
                 imports: {
                     // When source changes, Magento calls onStorePickupSelectedChanged(value)
-                    isStorePickupSelected:
-                        'checkout.steps.store-pickup:isStorePickupSelected',
+                    isStorePickupSelected: 'checkout.steps.store-pickup:isStorePickupSelected',
                 },
             },
             initialize: function () {
@@ -33,13 +27,13 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
                 // Detect availability of the store pickup component
                 this._initStorePickupComponentCheck();
 
-                registry.async(
-                    'checkout.steps.login-or-guest.continue-as-guest.customer-email'
-                )(function (element) {
-                    if (element) {
-                        self.hasEmail(false);
+                registry.async('checkout.steps.login-or-guest.continue-as-guest.customer-email')(
+                    function (element) {
+                        if (element) {
+                            self.hasEmail(false);
+                        }
                     }
-                });
+                );
 
                 return this;
             },
@@ -85,13 +79,9 @@ define(['jquery', 'uiRegistry', 'knockout', 'mage/translate'], function (
                         'checkout.steps.shipping-step.shippingAddress.authentication-tab.errors',
                         (messagesInstance) => {
                             if (messagesInstance?.messageContainer) {
-                                messagesInstance.messageContainer.addErrorMessage(
-                                    {
-                                        message: $t(
-                                            'Please log in to continue.'
-                                        ),
-                                    }
-                                );
+                                messagesInstance.messageContainer.addErrorMessage({
+                                    message: $t('Please log in to continue.'),
+                                });
                             }
                         }
                     );

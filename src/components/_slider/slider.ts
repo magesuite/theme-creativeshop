@@ -62,8 +62,7 @@ export default class Slider {
             this._initPagination();
         }
 
-        this._breakpointChangeHandler =
-            this._breakpointChangeHandler.bind(this);
+        this._breakpointChangeHandler = this._breakpointChangeHandler.bind(this);
         this._watchBreakpointChanges();
     }
 
@@ -95,10 +94,7 @@ export default class Slider {
         this.navigation?.destroy();
         this.pagination?.destroy();
         this.autorotation?.destroy();
-        document.removeEventListener(
-            'breakpointChange',
-            this._breakpointChangeHandler
-        );
+        document.removeEventListener('breakpointChange', this._breakpointChangeHandler);
     }
 
     /**
@@ -109,9 +105,7 @@ export default class Slider {
     protected _getCurrentItemsPerView(newBreakpoint?: number): number {
         if (this.options.columnsConfig) {
             const ipv: number =
-                +this.options.columnsConfig[
-                    this._getCurrentBreakpointName(newBreakpoint)
-                ];
+                +this.options.columnsConfig[this._getCurrentBreakpointName(newBreakpoint)];
 
             if (ipv) {
                 return ipv;
@@ -158,13 +152,12 @@ export default class Slider {
             Object.keys(window.breakpoint)
                 .filter(
                     (key) =>
-                        key !== 'current' &&
-                        window.breakpoint[key] === window.breakpoint.current
+                        key !== 'current' && window.breakpoint[key] === window.breakpoint.current
                 )
                 .reduce(
                     (res: string | object, key: string) => (
-                        // tslint:disable-next-line:ban-comma-operator
-                        (res[key] = window.breakpoint[key]), res
+                        (res[key] = window.breakpoint[key]),
+                        res
                     ),
                     {}
                 )
@@ -182,10 +175,7 @@ export default class Slider {
             !window.__smoothScrollPolyfilled
         ) {
             import('smoothscroll-polyfill').then((smoothscroll) => {
-                if (
-                    smoothscroll &&
-                    typeof smoothscroll.polyfill === 'function'
-                ) {
+                if (smoothscroll && typeof smoothscroll.polyfill === 'function') {
                     smoothscroll.polyfill();
                     window.__smoothScrollPolyfilled = true;
                 }
@@ -198,8 +188,7 @@ export default class Slider {
      * @return boolean
      */
     protected _checkTouch(): boolean {
-        return this.options.autorotationOptions
-            .useAutorotationAlsoForTouchScreens
+        return this.options.autorotationOptions.useAutorotationAlsoForTouchScreens
             ? true
             : window.matchMedia('(hover:hover) and (pointer: fine)').matches;
     }
@@ -218,16 +207,14 @@ export default class Slider {
                 slideSelector: this.options.slideSelector,
                 useWholeScreen: this.options.useWholeScreen,
                 wholeScreenUsed: this.options.wholeScreenUsed,
-                visibleSlideIntersection:
-                    this.options.paginationOptions.visibleSlideIntersection,
+                visibleSlideIntersection: this.options.paginationOptions.visibleSlideIntersection,
                 rootMargin: this.options.rootMargin,
             },
             ...this.options.navigationOptions,
         };
 
-        const { default: SliderNavigation } = await import(
-            'components/_slider/navigation/navigation'
-        );
+        const { default: SliderNavigation } =
+            await import('components/_slider/navigation/navigation');
         this.navigation = new SliderNavigation(navigationOptions);
 
         if (
@@ -255,9 +242,8 @@ export default class Slider {
             ...this.options.paginationOptions,
         };
 
-        const { default: SliderPagination } = await import(
-            'components/_slider/pagination/pagination'
-        );
+        const { default: SliderPagination } =
+            await import('components/_slider/pagination/pagination');
         this.pagination = new SliderPagination(paginationOptions);
     }
 
@@ -271,17 +257,14 @@ export default class Slider {
                 collectionSize: this.options.itemsCount,
                 itemsPerView: this.currentItemsPerView,
                 navInstance: this.navigation,
-                pauseNode: this._instanceNode.querySelector(
-                    this.options.slidesWrapperSelector
-                ),
+                pauseNode: this._instanceNode.querySelector(this.options.slidesWrapperSelector),
                 delay: 6000,
             },
             ...this.options.autorotationOptions,
         };
 
-        const { default: SliderAutorotation } = await import(
-            'components/_slider/autorotation/autorotation'
-        );
+        const { default: SliderAutorotation } =
+            await import('components/_slider/autorotation/autorotation');
         this.autorotation = new SliderAutorotation(autorotationOptions);
     }
 
@@ -291,14 +274,11 @@ export default class Slider {
     protected _setIntersectionObserver(): void {
         if (!this.slides.length) return;
 
-        const threshold = parseFloat(
-            this.options.paginationOptions.visibleSlideIntersection
-        );
+        const threshold = parseFloat(this.options.paginationOptions.visibleSlideIntersection);
 
         let rootMargin;
         const contentWidth: number =
-            parseInt(this.options.maxContentWidth) +
-            2 * parseInt(this.options.pageEdgeGutter);
+            parseInt(this.options.maxContentWidth) + 2 * parseInt(this.options.pageEdgeGutter);
 
         //addional check if slider is indeed using use_whole_screen option as intended
         //(sometimes silders have full width limited with css, but still have use_whole_screen option enabled globally)
@@ -306,8 +286,7 @@ export default class Slider {
         const containerStyle = window.getComputedStyle(container);
         const containerWidth =
             container.clientWidth -
-            (parseFloat(containerStyle.paddingLeft) +
-                parseFloat(containerStyle.paddingRight));
+            (parseFloat(containerStyle.paddingLeft) + parseFloat(containerStyle.paddingRight));
 
         const containerParent = container.parentNode as HTMLElement;
 
@@ -344,9 +323,7 @@ export default class Slider {
                 root: container,
                 rootMargin,
                 threshold:
-                    parseFloat(
-                        this.options.paginationOptions.visibleSlideIntersection
-                    ) || 0.5,
+                    parseFloat(this.options.paginationOptions.visibleSlideIntersection) || 0.5,
             }
         );
     }
@@ -373,17 +350,11 @@ export default class Slider {
      * Afterwards it calls Navigation and Pagination API to set new items per view value and update those modules.
      */
     protected _watchBreakpointChanges(): void {
-        document.addEventListener(
-            'breakpointChange',
-            this._breakpointChangeHandler,
-            false
-        );
+        document.addEventListener('breakpointChange', this._breakpointChangeHandler, false);
     }
 
     protected _breakpointChangeHandler(e: CustomEvent): void {
-        const newItemsPerView: number = this._getCurrentItemsPerView(
-            e.detail?.breakpoint
-        );
+        const newItemsPerView: number = this._getCurrentItemsPerView(e.detail?.breakpoint);
 
         if (this.currentItemsPerView !== newItemsPerView) {
             this.currentItemsPerView = newItemsPerView;

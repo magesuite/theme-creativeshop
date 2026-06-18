@@ -1,4 +1,3 @@
-/* tslint:disable:no-unused-new object-literal-key-quotes max-classes-per-file */
 import * as $ from 'jquery';
 
 interface IItemClonerTouchSettings {
@@ -159,18 +158,11 @@ export default class ItemCloner {
         this._createCloneWrapper();
         this._setEvents();
 
-        if (
-            this.settings.belowBreakpointClass &&
-            this.settings.belowBreakpointClass !== ''
-        ) {
+        if (this.settings.belowBreakpointClass && this.settings.belowBreakpointClass !== '') {
             this._setBelowBreakpointClass();
         }
 
-        if (
-            this._isTouch &&
-            !this.settings.touch.enabled &&
-            this.settings.touch.displayAsStatic
-        ) {
+        if (this._isTouch && !this.settings.touch.enabled && this.settings.touch.displayAsStatic) {
             this._setAsStatic();
         }
 
@@ -184,17 +176,11 @@ export default class ItemCloner {
      */
     public destroy(): void {
         if (this.isActive && this.$wrapper.children().length) {
-            if (
-                this.settings.onBeforeHide &&
-                typeof this.settings.onBeforeHide === 'function'
-            ) {
+            if (this.settings.onBeforeHide && typeof this.settings.onBeforeHide === 'function') {
                 this.settings.onBeforeHide();
             }
 
-            this.$wrapper
-                .html('')
-                .removeClass(this.settings.clonerHoverClass)
-                .removeAttr('style');
+            this.$wrapper.html('').removeClass(this.settings.clonerHoverClass).removeAttr('style');
             this.$origins
                 .filter(`.${this.settings.originHoverClass}`)
                 .removeClass(this.settings.originHoverClass);
@@ -205,10 +191,7 @@ export default class ItemCloner {
             this.$origin = undefined;
             this.$clone = undefined;
 
-            if (
-                this.settings.onHidden &&
-                typeof this.settings.onHidden === 'function'
-            ) {
+            if (this.settings.onHidden && typeof this.settings.onHidden === 'function') {
                 this.settings.onHidden();
             }
         }
@@ -220,9 +203,7 @@ export default class ItemCloner {
      */
     protected _createCloneWrapper(): void {
         if (!$(`.${this.settings.clonerClass}`).length) {
-            $('body').append(
-                `<div class="${this.settings.clonerClass}"></div>`
-            );
+            $('body').append(`<div class="${this.settings.clonerClass}"></div>`);
         }
 
         this.$wrapper = $(`.${this.settings.clonerClass}`);
@@ -236,10 +217,7 @@ export default class ItemCloner {
         this.$clone.addClass(`${this.settings.cloneContentHoverClass}`);
         this.isActive = true;
 
-        if (
-            this.settings.onShown &&
-            typeof this.settings.onShown === 'function'
-        ) {
+        if (this.settings.onShown && typeof this.settings.onShown === 'function') {
             this.settings.onShown(this);
         }
     }
@@ -252,10 +230,7 @@ export default class ItemCloner {
         this.$origin = $origin;
 
         // Run onBeforeShow callback if defined
-        if (
-            this.settings.onBeforeShow &&
-            typeof this.settings.onBeforeShow === 'function'
-        ) {
+        if (this.settings.onBeforeShow && typeof this.settings.onBeforeShow === 'function') {
             this.settings.onBeforeShow();
         }
 
@@ -303,9 +278,7 @@ export default class ItemCloner {
         const _this: any = this;
         let throttler: any;
         const onEvents: string = this._isTouch ? 'touchstart' : 'mouseenter';
-        const offEvents: string = this._isTouch
-            ? 'touchend touchcancel'
-            : 'mouseleave';
+        const offEvents: string = this._isTouch ? 'touchend touchcancel' : 'mouseleave';
 
         this.$origins.stop().on(onEvents, function (event: Event): void {
             // Clone only if needed
@@ -347,11 +320,8 @@ export default class ItemCloner {
         if (this.settings.touch.enabled) {
             $(document).on('touchstart', function (event: Event): void {
                 if (
-                    !$(event.target).hasClass(
-                        `${_this.settings.clonerClass}`
-                    ) &&
-                    !$(event.target).parents(`.${_this.settings.clonerClass}`)
-                        .length
+                    !$(event.target).hasClass(`${_this.settings.clonerClass}`) &&
+                    !$(event.target).parents(`.${_this.settings.clonerClass}`).length
                 ) {
                     _this.destroy();
                 }
@@ -359,10 +329,7 @@ export default class ItemCloner {
         }
 
         // Resize event to set class for $origins if needed
-        if (
-            this.settings.belowBreakpointClass &&
-            this.settings.belowBreakpointClass !== ''
-        ) {
+        if (this.settings.belowBreakpointClass && this.settings.belowBreakpointClass !== '') {
             $(window).on('resize', function (): void {
                 clearTimeout(throttler);
                 throttler = setTimeout((): void => {
@@ -377,10 +344,7 @@ export default class ItemCloner {
      * Only if hover is disabled and option to do so is set to true
      */
     protected _setAsStatic(): void {
-        if (
-            this.settings.touch.staticClass &&
-            this.settings.touch.staticClass !== ''
-        ) {
+        if (this.settings.touch.staticClass && this.settings.touch.staticClass !== '') {
             this.$origins.addClass(this.settings.touch.staticClass);
         }
     }
