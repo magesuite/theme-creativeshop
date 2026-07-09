@@ -49,6 +49,9 @@ var config = {
             'mage/validation': {
                 'js/validation-ext': true,
             },
+            'mage/smart-keyboard-handler': {
+                'js/smart-keyboard-handler-ext': true,
+            },
             'Magento_Ui/js/lib/validation/validator': {
                 'Magento_Ui/js/lib/validation/validator-ext': true,
             },
