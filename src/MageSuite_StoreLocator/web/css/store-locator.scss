@@ -50,6 +50,7 @@ $store-locator_autocomplete-background: $color_background-200 !default;
 $store-locator_autocomplete-item-selected-background: $color_background-500 !default;
 
 // Store item
+$store-locator_item-custom-markup: false !default;
 $store-locator_item-padding: 2rem !default;
 $store-locator_item-hover-background: $color_background-500 !default;
 $store-locator_item-active-background: $color_background-600 !default;
@@ -454,7 +455,7 @@ $store-locator_consent-info-box-shadow: 4px 4px 5px 2px rgba(0, 0, 0, 0.3) !defa
     &__empty-message {
         background: $store-locator_sidebar-background;
         padding: $store-locator_sidebar-basic-space-inside;
-        display: none;
+        display: block;
 
         @include media('<laptop') {
             padding-right: 5rem;
@@ -470,255 +471,257 @@ $store-locator_consent-info-box-shadow: 4px 4px 5px 2px rgba(0, 0, 0, 0.3) !defa
         }
     }
 
-    &__item {
-        overflow: hidden;
-        padding: $store-locator_item-padding;
-        padding-bottom: calc(#{$store-locator_item-padding} - 1rem);
-        height: 100%;
-        cursor: pointer;
-        position: relative;
-
-        @include media('>=laptop') {
+    @if not $store-locator_item-custom-markup {
+        &__item {
+            overflow: hidden;
             padding: $store-locator_item-padding;
-        }
+            padding-bottom: calc(#{$store-locator_item-padding} - 1rem);
+            height: 100%;
+            cursor: pointer;
+            position: relative;
 
-        &:after {
-            content: '';
-            display: inline-block;
-            position: absolute;
-            bottom: 0;
-            left: 2rem;
-            width: calc(100% - 4rem);
-            height: 1px;
-            background: $store-locator_basic-border-color;
-
-            #{$root}__map &,
-            #{$root}--mobile-popup-open & {
-                display: none;
-            }
-        }
-
-        &:nth-last-child(2) {
-            &:after {
-                display: none;
-            }
-        }
-
-        @include media('>=laptop') {
-            #{$root}__map & {
-                padding: 1.5rem 2rem 1.3rem;
-            }
-        }
-
-        &:hover {
-            background: $store-locator_item-hover-background;
-
-            #{$root}__map & {
-                background: transparent;
-            }
-        }
-
-        &--active {
-            background: $store-locator_item-active-background;
-        }
-    }
-
-    &__item-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-
-        @include media('>=laptop') {
-            margin-bottom: 1rem;
-        }
-    }
-
-    &__item-name,
-    &__item-route,
-    &__item-address,
-    &__item-phone,
-    &__item-distance,
-    &__item-email {
-        @include font-family($font_family-primary);
-        font-weight: 400;
-        color: $store-locator_item-color;
-        margin: 0;
-        font-size: 1.5rem;
-
-        @include media('>=laptop') {
-            font-size: $store-locator_item-font-size;
-        }
-    }
-
-    &__item-name {
-        font-weight: 700;
-        text-transform: none;
-        flex: 1;
-        display: inline-block;
-        transition:
-            color 0.3s linear,
-            border-bottom-color 0.3s linear;
-        padding-right: 1rem;
-    }
-
-    &__item-route {
-        margin: 0;
-        padding: 0;
-        text-decoration: none;
-        display: none; //hidden for now, should be flex;
-        align-items: center;
-        padding-left: 2rem;
-        background-image: url('../images/icons/route.svg');
-        background-repeat: no-repeat;
-        background-position: left center;
-        background-size: 1.4rem 1.4rem;
-
-        #{$root}__map & {
-            display: none;
-        }
-    }
-
-    &__item-route-icon {
-        width: 1.2rem;
-        height: 1.2rem;
-        margin-right: 0.5rem;
-        transition: fill 0.3s linear;
-    }
-
-    &__item-phone {
-        text-decoration: none;
-    }
-
-    &__item-footer {
-        display: flex;
-        justify-content: space-between;
-
-        &--right {
-            justify-content: flex-end;
-        }
-    }
-
-    &__item-distance {
-        display: inline-block;
-        font-style: italic;
-
-        @include media('>=laptop') {
-            margin-top: 1rem;
-        }
-    }
-
-    &__item-email {
-        text-decoration: none;
-        color: $store-locator_item-color;
-
-        @include media('>=laptop') {
-            margin-top: 1rem;
-        }
-    }
-
-    &__item-description {
-        margin-top: 1rem;
-    }
-
-    &__item-hours-wrapper {
-        padding: 0.5rem 0 0;
-        @include font-family($font_family-primary);
-        font-size: 1.3rem;
-        font-weight: 400;
-
-        @include media('>=laptop') {
-            padding: 1rem 0 0;
-            font-size: 1.4rem;
-        }
-    }
-
-    &__item-hours-today {
-        @include font-family($font_family-primary);
-        font-size: 1.3rem;
-        font-weight: 400;
-
-        @include media('>=laptop') {
-            font-size: 1.4rem;
-        }
-
-        span {
             @include media('>=laptop') {
-                font-size: 1.3rem;
-                padding-left: 1rem;
+                padding: $store-locator_item-padding;
             }
-        }
-    }
 
-    &__item-hours-today-space {
-        display: inline-block;
-        width: 1rem;
-    }
-
-    &__item-hours {
-        margin-top: 1rem;
-        margin-bottom: 0;
-        list-style: none inside none;
-        padding-left: 0;
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 32rem;
-        font-size: 1.2rem;
-
-        span {
-            float: right;
-
-            &:first-child {
-                padding-right: 1rem;
+            &:after {
+                content: '';
                 display: inline-block;
-                width: 45%;
-                float: left;
+                position: absolute;
+                bottom: 0;
+                left: 2rem;
+                width: calc(100% - 4rem);
+                height: 1px;
+                background: $store-locator_basic-border-color;
+
+                #{$root}__map &,
+                #{$root}--mobile-popup-open & {
+                    display: none;
+                }
+            }
+
+            &:nth-last-child(2) {
+                &:after {
+                    display: none;
+                }
+            }
+
+            @include media('>=laptop') {
+                #{$root}__map & {
+                    padding: 1.5rem 2rem 1.3rem;
+                }
+            }
+
+            &:hover {
+                background: $store-locator_item-hover-background;
+
+                #{$root}__map & {
+                    background: transparent;
+                }
+            }
+
+            &--active {
+                background: $store-locator_item-active-background;
             }
         }
 
-        li {
-            padding: 0 1.5rem 0 0;
+        &__item-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+
+            @include media('>=laptop') {
+                margin-bottom: 1rem;
+            }
+        }
+
+        &__item-name,
+        &__item-route,
+        &__item-address,
+        &__item-phone,
+        &__item-distance,
+        &__item-email {
+            @include font-family($font_family-primary);
+            font-weight: 400;
+            color: $store-locator_item-color;
             margin: 0;
-            width: 55%;
-            line-height: 140%;
+            font-size: 1.5rem;
 
-            &:nth-child(2n + 2) {
-                padding-right: 0;
-                width: 45%;
+            @include media('>=laptop') {
+                font-size: $store-locator_item-font-size;
             }
         }
-    }
 
-    &__item-hours-trigger {
-        background: unset;
-        border: unset;
-        display: inline-block;
-        margin: 0;
-        padding: 0 2rem 0 0;
-    }
-
-    &__item-hours-trigger-icon {
-        @include pseudoicon(
-            $width: 0.7rem,
-            $height: 1px,
-            $color: $store-locator_item-hours-trigger,
-            $arrow-default: 'down',
-            $type: 'arrow'
-        );
-        display: inline-block;
-        transform: translate(1.8rem, -0.4rem);
-
-        &:before {
-            right: 0.5rem;
+        &__item-name {
+            font-weight: 700;
+            text-transform: none;
+            flex: 1;
+            display: inline-block;
+            transition:
+                color 0.3s linear,
+                border-bottom-color 0.3s linear;
+            padding-right: 1rem;
         }
 
-        &:after {
-            right: 0;
+        &__item-route {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            display: none; //hidden for now, should be flex;
+            align-items: center;
+            padding-left: 2rem;
+            background-image: url('../images/icons/route.svg');
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: 1.4rem 1.4rem;
+
+            #{$root}__map & {
+                display: none;
+            }
         }
 
-        #{$root}__item-hours-trigger--open & {
-            transform: rotate(180deg) translate(-0.7rem, -0.2rem);
-            top: -0.5rem;
+        &__item-route-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: 0.5rem;
+            transition: fill 0.3s linear;
+        }
+
+        &__item-phone {
+            text-decoration: none;
+        }
+
+        &__item-footer {
+            display: flex;
+            justify-content: space-between;
+
+            &--right {
+                justify-content: flex-end;
+            }
+        }
+
+        &__item-distance {
+            display: inline-block;
+            font-style: italic;
+
+            @include media('>=laptop') {
+                margin-top: 1rem;
+            }
+        }
+
+        &__item-email {
+            text-decoration: none;
+            color: $store-locator_item-color;
+
+            @include media('>=laptop') {
+                margin-top: 1rem;
+            }
+        }
+
+        &__item-description {
+            margin-top: 1rem;
+        }
+
+        &__item-hours-wrapper {
+            padding: 0.5rem 0 0;
+            @include font-family($font_family-primary);
+            font-size: 1.3rem;
+            font-weight: 400;
+
+            @include media('>=laptop') {
+                padding: 1rem 0 0;
+                font-size: 1.4rem;
+            }
+        }
+
+        &__item-hours-today {
+            @include font-family($font_family-primary);
+            font-size: 1.3rem;
+            font-weight: 400;
+
+            @include media('>=laptop') {
+                font-size: 1.4rem;
+            }
+
+            span {
+                @include media('>=laptop') {
+                    font-size: 1.3rem;
+                    padding-left: 1rem;
+                }
+            }
+        }
+
+        &__item-hours-today-space {
+            display: inline-block;
+            width: 1rem;
+        }
+
+        &__item-hours {
+            margin-top: 1rem;
+            margin-bottom: 0;
+            list-style: none inside none;
+            padding-left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 32rem;
+            font-size: 1.2rem;
+
+            span {
+                float: right;
+
+                &:first-child {
+                    padding-right: 1rem;
+                    display: inline-block;
+                    width: 45%;
+                    float: left;
+                }
+            }
+
+            li {
+                padding: 0 1.5rem 0 0;
+                margin: 0;
+                width: 55%;
+                line-height: 140%;
+
+                &:nth-child(2n + 2) {
+                    padding-right: 0;
+                    width: 45%;
+                }
+            }
+        }
+
+        &__item-hours-trigger {
+            background: unset;
+            border: unset;
+            display: inline-block;
+            margin: 0;
+            padding: 0 2rem 0 0;
+        }
+
+        &__item-hours-trigger-icon {
+            @include pseudoicon(
+                $width: 0.7rem,
+                $height: 1px,
+                $color: $store-locator_item-hours-trigger,
+                $arrow-default: 'down',
+                $type: 'arrow'
+            );
+            display: inline-block;
+            transform: translate(1.8rem, -0.4rem);
+
+            &:before {
+                right: 0.5rem;
+            }
+
+            &:after {
+                right: 0;
+            }
+
+            #{$root}__item-hours-trigger--open & {
+                transform: rotate(180deg) translate(-0.7rem, -0.2rem);
+                top: -0.5rem;
+            }
         }
     }
 
