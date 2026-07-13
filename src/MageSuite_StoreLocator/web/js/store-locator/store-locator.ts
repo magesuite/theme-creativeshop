@@ -1,7 +1,7 @@
 import * as $ from 'jquery';
 import 'mage/translate';
 
-import { MarkerClusterer, MarkerClustererOptions, Renderer } from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
+import { MarkerClusterer, Renderer, SuperClusterAlgorithm } from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 
 declare global {
     interface Window {
@@ -19,9 +19,10 @@ export interface StoreLocatorOptions {
     basicZoomSmallDesktop?: number;
     basicZoomMobile?: number;
     showNearestStoreWhenNotFound?: boolean;
-    markerIcons?: object;
-    clusterOptions?: object;
+    markerIcons: Record<string, any>;
+    clusterOptions?: Record<string, any>;
     clusterStyles?: object;
+    selectors: Record<string, any>;
     limitOfShopsInitiallyDisplayed?: number;
     storeData?: string;
     consentInfo?: {
@@ -72,8 +73,6 @@ export default class StoreLocator {
 
     protected _sidebarClosed: boolean;
 
-    protected _numberOfStores: number;
-
     protected _options: StoreLocatorOptions = {
         mapOptions: {
             // To learn more about possible google map options visit: https://developers.google.com/maps/documentation/javascript/controls
@@ -115,6 +114,11 @@ export default class StoreLocator {
                 },
             },
         },
+        selectors: {
+            storelocatorItem: '[data-role="storelocator-item"]',
+            storelocatorItemHoursTrigger: '[data-role="storelocator-hours-trigger"]',
+            storelocatorSidebarClose: '[data-role="storelocator-sidebar-close"]',
+        },
         clusterStyles: {
             // styles for clusters (circles that groups stores ans show their amount of there is no space to show all markers separately)
             url: '',
@@ -154,19 +158,17 @@ export default class StoreLocator {
     protected _basePath: string;
 
     protected map: any;
-    protected mapBounds: any;
     protected markers: any;
     protected cluster: any;
 
-    protected _userPosition: object;
+    protected _userPosition: Coordinates | null;
+    protected _sidebarWidth: number = 0;
     protected _activeMarker: any;
     protected _locationMarker: any;
     protected _activeStoreId: string;
 
     protected _infoWindow: any; // there is only one info window (popup) withe details for all markers. Only content is changed when info window is requested
-    protected _infoWindowOpened: boolean;
 
-    protected loader: any;
     protected consentManagement: any;
 
     /**
@@ -191,6 +193,8 @@ export default class StoreLocator {
 
         this._basePath = this._$element.attr('data-base-path');
         this._consentRequired = window.googleApiConsentRequired;
+
+        this._sidebarWidth = this._$element.find('.cs-store-locator__sidebar')[0]?.offsetWidth ?? 0;
 
         if (this._consentRequired) {
             this.initConsentManagedScriptLoader();
@@ -332,10 +336,15 @@ export default class StoreLocator {
             contentType: 'application/json',
         }).done((response) => {
             if (response.data) {
-                this.stores = response.data.storePickupLocations.items;
+                this.stores = response.data.storePickupLocations.items
+                    .map((store: any) => ({
+                        ...store,
+                        latitude: parseFloat(store.latitude),
+                        longitude: parseFloat(store.longitude),
+                    }))
+                    .filter((store: any) => !isNaN(store.latitude) && !isNaN(store.longitude));
             }
 
-            this._$element.removeClass('loading');
             this._initMap();
         });
     }
@@ -349,7 +358,7 @@ export default class StoreLocator {
      * If backend does not return coordinates prepare and display message nolocation for 5s
      */
     public searchButtonClickHandler() {
-        const query: string | number | string[] = $('.cs-store-locator__search-input').val();
+        const query: string | number | string[] = this._$searchInput.val() ?? '';
 
         this._$searchForm.addClass('loading');
 
@@ -398,7 +407,11 @@ export default class StoreLocator {
                     this._locationMarker.setMap(null);
                 }
 
-                const pinEl = this._createPinDiv(this._options.markerIcons.pin.url);
+                const pinEl = this._createPinDiv(
+                    this._options.markerIcons.pin.url,
+                    this._options.markerIcons.pin.sizes.x,
+                    this._options.markerIcons.pin.sizes.y
+                );
 
                 this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
                     map: this.map,
@@ -408,10 +421,7 @@ export default class StoreLocator {
                 });
             } else {
                 $('.cs-store-locator__empty-message--nolocation').remove();
-                this._$itemsList.prepend(
-                    `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">
-                ${$.mage.__('Unfortunately we were not able to find this location.')}</div>`
-                );
+                this._$itemsList.prepend(this.messageNoLocationFound);
 
                 if (window.breakpoint.current < window.breakpoint.laptop) {
                     this.openMobileStores();
@@ -433,15 +443,53 @@ export default class StoreLocator {
     /**
      * Add additional distance info for stores objects, assigned user position to `this._userPosition` class field
      */
-    public setUserPositionAndPopulateDistance(stores, userPosition): void {
+    public setUserPositionAndPopulateDistance(
+        stores: any[],
+        userPosition: Coordinates | null
+    ): void {
         this.stores = this.populateStoresDistance(stores, userPosition);
 
         this.stores = this.stores.sort((a, b) => {
             return a.distance - b.distance;
         });
 
-        this.stores = Object.freeze(this.stores);
         this._userPosition = userPosition;
+    }
+
+    /**
+     * Returns translated HTML message shown when no stores are found in the current map area.
+     */
+    public messageNoStores(): string {
+        return `<div class="cs-store-locator__empty-message">${$.mage.__(
+            'Unfortunately we do not have any stores in your area. Please zoom the map to see bigger area.'
+        )}</div>`;
+    }
+
+    /**
+     * Returns translated HTML message with a "Show more stores" trigger shown when the store list is truncated.
+     */
+    public messageShowMoreStores(): string {
+        return `<div class="cs-store-locator__stores-more-wrapper"><span class="cs-store-locator__stores-more-text">${$.mage.__(
+            'Show more stores'
+        )}</span></div>`;
+    }
+
+    /**
+     * Returns translated HTML message shown when the geocoder cannot resolve the searched location.
+     */
+    public messageNoLocationFound(): string {
+        return `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--nolocation">${$.mage.__(
+            'Unfortunately we were not able to find this location.'
+        )}</div>`;
+    }
+
+    /**
+     * Returns translated HTML message shown when the browser geolocation API is unavailable or denied.
+     */
+    public messageGeolocationDisabled(): string {
+        return `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--geolocation-disabled"><span>${$.mage.__(
+            'Unfortunately geolocation is not enabled on your device or browser.'
+        )}</span></div>`;
     }
 
     /**
@@ -454,62 +502,38 @@ export default class StoreLocator {
      * @param {Array} stores all stores
      * @param {renderAllStores} boolean Info if all stores should be rendered
      */
-    public renderItems(stores, renderAllStores): void {
+    public async renderItems(stores: any[], renderAllStores: boolean): Promise<void> {
         if (this._allItemsRendered && !(window.breakpoint.current < window.breakpoint.laptop)) {
             return;
         }
 
-        this._$itemsList.empty();
+        const limit = this._options.limitOfShopsInitiallyDisplayed ?? 50;
+        const storesToRender = renderAllStores ? stores : stores.slice(0, limit);
 
-        stores.map((store, index) => {
-            if (renderAllStores) {
-                this._$itemsList.append(this.getInfoWindowContent(store));
-            } else if (index <= this._options.limitOfShopsInitiallyDisplayed) {
-                this._$itemsList.append(this.getInfoWindowContent(store));
-            }
-        });
+        const htmlItems = await Promise.all(
+            storesToRender.map((store) => this.getInfoWindowContent(store, 'sidebar'))
+        );
+        this._$itemsList[0].innerHTML = htmlItems.join('');
 
-        if (stores.length <= this._options.limitOfShopsInitiallyDisplayed) {
-            this._$itemsList.find('.cs-store-locator__stores-more-wrapper').remove();
-        } else {
-            this._$itemsList.append(
-                `<div class="cs-store-locator__stores-more-wrapper"><span class="cs-store-locator__stores-more-text">${$.mage.__(
-                    'Show more stores'
-                )}</span></div>`
-            );
+        if (stores.length === 0) {
+            this._$itemsList.append(this.messageNoStores);
         }
 
-        this._$itemsList.find('.cs-store-locator__stores-more-wrapper').on('click', (e) => {
-            this._$element.addClass('loading');
+        if (stores.length > limit && !renderAllStores) {
+            this._$itemsList.append(this.messageShowMoreStores);
 
-            // Make sure that loading class is added before all stores start to render
-            setTimeout(() => {
-                this.renderItems(this.stores, true);
-            }, 100);
-            // When a lot of elements ia added to the DOM browser hangs for a moment. This loader force user to wait a bit.
-            setTimeout(() => {
-                this._$element.removeClass('loading');
-                this._$itemsList.find('.cs-store-locator__stores-more-wrapper').remove();
-                this._allItemsRendered = true;
-                this.mapChangeHandler();
-            }, 3000);
-        });
-
-        this._$element.find('.cs-store-locator__item').on('click', (e) => {
-            if (
-                !$(e.target).hasClass('cs-store-locator__item-hours-trigger') &&
-                !$(e.target).hasClass('cs-store-locator__item-hours-trigger-icon')
-            ) {
-                this.itemClickHandler($(e.currentTarget));
-            }
-        });
-
-        this._$itemsList.append(
-            `<div class="cs-store-locator__empty-message">
-        ${$.mage.__(
-            'Unfortunately we do not have any stores in your area. Please zoom the map to see bigger area.'
-        )}</div>`
-        );
+            this._$itemsList.find('.cs-store-locator__stores-more-wrapper').on('click', () => {
+                this._$element.addClass('loading');
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        this.renderItems(this.stores, true);
+                        this._allItemsRendered = true;
+                        this._$element.removeClass('loading');
+                        this.mapChangeHandler();
+                    });
+                });
+            });
+        }
     }
 
     /**
@@ -519,20 +543,16 @@ export default class StoreLocator {
     public getFilteredStores(): any[] {
         const bounds = this.map.getBounds();
 
-        const isVisibleOnMap = (store) => {
-            return bounds.contains({
-                lat: parseFloat(store.latitude),
-                lng: parseFloat(store.longitude),
-            });
-        };
+        if (!bounds) {
+            return this._userPosition ? this.stores : [];
+        }
 
-        let filteredStores = this.stores.filter(isVisibleOnMap);
-
-        filteredStores = filteredStores.sort((a, b) => {
-            return a.distance - b.distance;
-        });
-
-        return filteredStores;
+        return this.stores.filter((store) =>
+            bounds.contains({
+                lat: store.latitude,
+                lng: store.longitude,
+            })
+        );
     }
 
     /**
@@ -580,7 +600,11 @@ export default class StoreLocator {
                     this._locationMarker.setMap(null);
                 }
 
-                const pinEl = this._createPinDiv(this._options.markerIcons.userLocation.url);
+                const pinEl = this._createPinDiv(
+                    this._options.markerIcons.userLocation.url,
+                    this._options.markerIcons.userLocation.sizes.x,
+                    this._options.markerIcons.userLocation.sizes.y
+                );
 
                 this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
                     map: this.map,
@@ -601,7 +625,7 @@ export default class StoreLocator {
         this.closeMobileStores();
 
         const filteredStores = this.getFilteredStores().slice(0, 9);
-        this.renderItems(this.getFilteredStores().slice(0, 9), false);
+        this.renderItems(filteredStores, false);
 
         setTimeout(() => {
             this.openMobileStores();
@@ -623,7 +647,7 @@ export default class StoreLocator {
     /**
      * Show info window for marker
      */
-    public markerClickHandler(marker, storeId) {
+    public markerClickHandler(marker: any, storeId: string) {
         this.updateActiveMarkerIcon(marker);
 
         this._activeStoreId = storeId;
@@ -639,8 +663,8 @@ export default class StoreLocator {
     /**
      * Pan to clicked store on the map, show info window
      */
-    public itemClickHandler(currentItem) {
-        const id = currentItem.attr('data-id');
+    public selectStore(currentItem: JQuery) {
+        const id = currentItem.attr('data-id') ?? '';
 
         if (this.markers) {
             const marker = this.markers.find((marker) => marker.storeId === id);
@@ -662,28 +686,43 @@ export default class StoreLocator {
     /**
      * Set active marker
      */
-    public updateActiveMarkerIcon(marker) {
+    public updateActiveMarkerIcon(marker: any) {
         if (this._activeMarker) {
-            this._activeMarker.content = this._createPinDiv(this._options.markerIcons.pin.url);
+            this._activeMarker.content = this._createPinDiv(
+                this._options.markerIcons.pin.url,
+                this._options.markerIcons.pin.sizes.x,
+                this._options.markerIcons.pin.sizes.y
+            );
         }
 
         this._activeMarker = marker;
-        this._activeMarker.content = this._createPinDiv(this._options.markerIcons.pinActive.url);
+        this._activeMarker.content = this._createPinDiv(
+            this._options.markerIcons.pinActive.url,
+            this._options.markerIcons.pinActive.sizes.x,
+            this._options.markerIcons.pinActive.sizes.y
+        );
     }
 
     /**
      * Pan to clicked store on the map, show info window
      */
-    public panToStore(id) {
+    public async panToStore(id: string) {
+        if (!this._infoWindow) {
+            return;
+        }
+
         this._infoWindow.close(this.map, this._activeMarker);
 
         const store = this.stores.find((store) => store.sourceCode === id);
+
+        if (!store) {
+            return;
+        }
+
         const coordinates: Coordinates = {
             lat: store.latitude,
             lng: store.longitude,
         };
-        const sidebarWidth = $('.cs-store-locator__sidebar').width();
-
         this.map.panTo(coordinates);
 
         if (this.map.getZoom() < this._options.basicZoom) {
@@ -691,12 +730,11 @@ export default class StoreLocator {
         }
 
         if (window.breakpoint.current >= window.breakpoint.laptop && !this._sidebarClosed) {
-            this.map.panBy(-sidebarWidth / 2, 0);
+            this.map.panBy(-this._sidebarWidth / 2, 0);
         }
 
         if (window.breakpoint.current >= window.breakpoint.laptop) {
-            this._infoWindowOpened = true;
-            this._infoWindow.setContent(this.getInfoWindowContent(store));
+            this._infoWindow.setContent(await this.getInfoWindowContent(store, 'pin'));
             this._infoWindow.open(this.map, this._activeMarker);
         }
     }
@@ -704,80 +742,40 @@ export default class StoreLocator {
     /**
      * Return custom html template for sidebar store info box.
      */
-    public getInfoWindowContent(store): string {
-        const storePostCode = store.postCode ? `${store.postCode} ` : '';
-        const storeCity = store.city ? store.city : '';
-        const storeStreet = store.street ? store.street : '';
+    public async getInfoWindowContent(store: any, area?: string): Promise<any> {
+        const { default: requireAsync } = await import('utils/require-async');
+        const { infoWindowContent } =
+            await import('MageSuite_StoreLocator/web/js/store-locator/template');
+        const templateOptions = this.getStoreData(store, area);
+        const [mageTemplate] = await requireAsync(['mage/template']);
+        return mageTemplate(infoWindowContent, templateOptions);
+    }
 
-        const addressLine1 =
-            storePostCode || storeCity || store.street
-                ? `<p class="cs-store-locator__item-address">
-        ${storePostCode} ${storeCity}, ${storeStreet}</p>`
-                : ``;
-
-        const phoneLine = store.phone
-            ? `<p class="cs-store-locator__item-phone">${$.mage.__(
-                  'Tel'
-              )}: <a href="tel:${store.phone}">${store.phone}</a></p>`
-            : ``;
-
-        const faxLine = store.fax
-            ? `<p class="cs-store-locator__item-fax">${$.mage.__(
-                  'Fax'
-              )}: <a href="fax:${store.fax}">${store.fax}</a></p>`
-            : ``;
-
-        const emailLine = store.email
-            ? `<p class="cs-store-locator__item-email">${$.mage.__(
-                  'E-Mail'
-              )}: <a href="mailto:${store.email}">${store.email}</a></p>`
-            : ``;
-
-        const websiteLine = store.url
-            ? `<p class="cs-store-locator__item-website">${$.mage.__(
-                  'Website'
-              )}: <a href="//${store.url}" target="_blank" rel="nofollow">${store.url}</a></p>`
-            : ``;
-
-        const storeDistance = store.distance
-            ? `<span class="cs-store-locator__item-distance">
-        ${$.mage.__('Distance')}: ${store.distance} km</span>`
-            : ``;
-
-        const descriptionLine = store.description
-            ? `<p class="cs-store-locator__item-description">${store.description}</p>`
-            : ``;
-
-        // Not in the response for now
-        const routeLink: string = store.routeLink;
-
-        // Opening hours are not ready yest in response from backend
-        const openingHours = store.openingHours ? store.openingHours : '';
-
-        return `<div class="cs-store-locator__item"
-            data-id="${store.sourceCode}" data-lat="${
-                store.latitude
-            }" data-lng="${store.longitude}">
-            <div class="cs-store-locator__store-details-close"></div>
-            <div class="cs-store-locator__item-content">
-                <div class="cs-store-locator__item-header">
-                    <h2 class="cs-store-locator__item-name">${store.name}</h2>
-                    <a href="${routeLink}" target="_blank" rel="noopener noreferrer" class="cs-store-locator__item-route">
-                        <span>${$.mage.__('Route')}</span>
-                    </a>
-                </div>
-                ${addressLine1}
-                ${phoneLine}
-                ${faxLine}
-                ${emailLine}
-                ${websiteLine}
-                ${descriptionLine}
-            </div>
-            ${openingHours}
-            <div class="cs-store-locator__item-footer">
-                ${storeDistance}
-            </div>
-        </div>`;
+    public getStoreData(store: any, area?: string): Object {
+        return {
+            area: area ?? '',
+            sourceCode: store.sourceCode ?? '',
+            latitude: store.latitude,
+            longitude: store.longitude,
+            city: store.city ?? '',
+            title: store.name,
+            routeLabel: $.mage.__('Route'),
+            routeLink: store.routeLink,
+            postCode: store.postCode ?? '',
+            street: store.street ?? '',
+            phoneLabel: $.mage.__('Tel'),
+            phone: store.phone ?? '',
+            faxLabel: $.mage.__('Fax'),
+            fax: store.fax ?? '',
+            emailLabel: $.mage.__('E-Mail'),
+            email: store.email ?? '',
+            urlLabel: $.mage.__('Website'),
+            url: store.url ?? '',
+            description: store.description ?? '',
+            openingHours: store.openingHours ?? '',
+            distanceLabel: $.mage.__('Distance'),
+            distance: store.distance ?? '',
+        };
     }
 
     /**
@@ -809,9 +807,7 @@ export default class StoreLocator {
     }
 
     public geolocationErrorHandler() {
-        const geolocationMessage = `<div class="cs-store-locator__empty-message cs-store-locator__empty-message--geolocation-disabled"><span>${$.mage.__(
-            'Unfortunately geolocation is not enabled on your device or browser.'
-        )}</div>`;
+        const geolocationMessage = this.messageGeolocationDisabled;
 
         if (window.breakpoint.current < window.breakpoint.laptop) {
             $('.cs-store-locator__search').append(geolocationMessage);
@@ -846,26 +842,37 @@ export default class StoreLocator {
      */
     public filterItems(): void {
         const bounds = this.map.getBounds();
-        let visibleStores: number = 0;
-        this._$element.find('.cs-store-locator__item').each(function () {
-            if (
-                bounds.contains({
-                    lat: parseFloat($(this).attr('data-lat')),
-                    lng: parseFloat($(this).attr('data-lng')),
-                })
-            ) {
-                $(this).show();
-                visibleStores++;
-            } else {
-                $(this).hide();
+
+        if (!bounds) {
+            return;
+        }
+
+        const visibleIds = new Set(
+            this.stores
+                .filter((store) =>
+                    bounds.contains({
+                        lat: store.latitude,
+                        lng: store.longitude,
+                    })
+                )
+                .map((store) => store.sourceCode)
+        );
+
+        requestAnimationFrame(() => {
+            this._$itemsList[0]
+                .querySelectorAll<HTMLElement>(this._options.selectors.storelocatorItem)
+                .forEach((el) => {
+                    el.style.display = visibleIds.has(el.dataset.id) ? '' : 'none';
+                });
+
+            const emptyMessage = this._$itemsList[0].querySelector<HTMLElement>(
+                '.cs-store-locator__empty-message'
+            );
+
+            if (emptyMessage) {
+                emptyMessage.style.display = visibleIds.size > 0 ? 'none' : 'block';
             }
         });
-
-        if (visibleStores > 0) {
-            this._$element.find('.cs-store-locator__empty-message').hide();
-        } else {
-            this._$element.find('.cs-store-locator__empty-message').show();
-        }
     }
 
     /**
@@ -894,7 +901,7 @@ export default class StoreLocator {
      * @param {Coordinates} coordinates Coordinates object { lat, lng }
      * @returns {Array} stores
      */
-    public populateStoresDistance(stores, coordinates: Coordinates): object {
+    public populateStoresDistance(stores: any[], coordinates: Coordinates | null): object {
         return stores.map((store) => {
             return {
                 ...store,
@@ -912,10 +919,12 @@ export default class StoreLocator {
      * Sidebar (which on mobiles is located on the top of the map) mobile behavior is quite different then desktop. Below are some method for mobile functionalities.
      * @param {String} id id of a store
      */
-    public openMobilePopup(id) {
+    public async openMobilePopup(id: string) {
         const store = this.stores.find((store) => store.sourceCode === id);
 
-        $('.cs-store-locator__store-details').append(this.getInfoWindowContent(store));
+        $('.cs-store-locator__store-details').append(
+            await this.getInfoWindowContent(store, 'mobile')
+        );
 
         this._$element.addClass('cs-store-locator--mobile-popup-open');
     }
@@ -954,7 +963,6 @@ export default class StoreLocator {
             this.filterItems();
         } else {
             this.renderItems(this.getFilteredStores(), false);
-            this.filterItems();
         }
     }
 
@@ -970,7 +978,7 @@ export default class StoreLocator {
      * @param {Number} lng2 Point 2 - longitude
      * @returns {Number} Distance between 2 points on earth in km
      */
-    public calculateDistance(lat1, lng1, lat2, lng2): number {
+    public calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
         const deltaLat = (Math.abs(lat1 - lat2) * Math.PI) / 180;
         const deltaLng = (Math.abs(lng1 - lng2) * Math.PI) / 180;
         const lat1Radians = (lat1 * Math.PI) / 180;
@@ -993,6 +1001,10 @@ export default class StoreLocator {
      * to center the map between it and a current location.
      */
     public showNearestStoreView(currentCoordinates: Coordinates): void {
+        if (!this.stores.length) {
+            return;
+        }
+
         const closest: { store: any; distance: number } = this.stores.reduce(
             (closestStore, store) => {
                 const distance = this.calculateDistance(
@@ -1021,14 +1033,6 @@ export default class StoreLocator {
         this.map.fitBounds(bounds);
     }
 
-    public isIE() {
-        const ua = window.navigator.userAgent; // Check the userAgent property of the window.navigator object
-        const msie = ua.indexOf('MSIE '); // IE 10 or older
-        const trident = ua.indexOf('Trident/'); // IE 11
-
-        return msie > 0 || trident > 0;
-    }
-
     /**
      * The method executes methods that take care of creating markers on the map.
      * It also checks if browser's geolocation service is available and if so it executes `setUserPositionAndPopulateDistance` method that set user's location on the map and calculate distances to the stores.
@@ -1038,60 +1042,60 @@ export default class StoreLocator {
      * In every case `_attachMapListeners` method is executed that bounds `mapChangeHandler` and `zoomChangeHandler`.
      * mapChangeHandler is important method responsible for displaying in the sidebar only store that are currently visible on the map.
      */
-    protected _initMap(): void {
+    protected async _initMap(): Promise<void> {
         this._setMarkerIcons();
-        this._createMarkers();
 
-        this.getGeolocation()
-            .then((coordinates: Coordinates) => {
-                // User location from geolocation service
-                this.setUserPositionAndPopulateDistance(this.stores, coordinates);
+        const [, coordinates] = await Promise.all([
+            this._createMarkers().catch((error) => {
+                console.error('Failed to create markers:', error);
+            }),
+            this.getGeolocation().catch(() => null) as Promise<Coordinates | null>,
+        ]);
 
-                if (this._locationMarker) {
-                    this._locationMarker.setMap(null);
-                }
+        this.setUserPositionAndPopulateDistance(this.stores, coordinates);
 
-                const pinEl = this._createPinDiv(this._options.markerIcons.userLocation.url);
+        if (coordinates) {
+            if (this._locationMarker) {
+                this._locationMarker.setMap(null);
+            }
 
-                this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
-                    map: this.map,
-                    position: coordinates,
-                    content: pinEl,
-                    gmpClickable: true,
-                });
+            const pinEl = this._createPinDiv(
+                this._options.markerIcons.userLocation.url,
+                this._options.markerIcons.userLocation.sizes.x,
+                this._options.markerIcons.userLocation.sizes.y
+            );
 
-                this.map.panTo(coordinates);
-                this.map.setZoom(this._options.basicZoom);
-
-                if (
-                    this._options.showNearestStoreWhenNotFound &&
-                    !this.getFilteredStores().length
-                ) {
-                    this.showNearestStoreView(coordinates);
-                }
-
-                this.renderItems(this.getFilteredStores(), false);
-                this._attachMapListeners();
-                this.mapChangeHandler();
-                this._$element.removeClass('loading');
-            })
-            .catch((error) => {
-                // We don't know users position
-                this.setUserPositionAndPopulateDistance(this.stores, null);
-
-                this.renderItems(this.stores, false);
-                this._attachMapListeners();
-                this._$element.removeClass('loading');
+            this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
+                map: this.map,
+                position: coordinates,
+                content: pinEl,
+                gmpClickable: true,
             });
+
+            this.map.panTo(coordinates);
+            this.map.setZoom(this._options.basicZoom);
+
+            if (this._options.showNearestStoreWhenNotFound && !this.getFilteredStores().length) {
+                this.showNearestStoreView(coordinates);
+            }
+
+            this.renderItems(this.getFilteredStores(), false);
+        } else {
+            this.renderItems(this.stores, false);
+        }
+
+        this._attachMapListeners();
+        this.mapChangeHandler();
+        this._$element.removeClass('loading');
     }
 
     /**
      * Creating a div for displaying a pin
      */
-    protected _createPinDiv(iconPath: string): HTMLElement {
+    protected _createPinDiv(iconPath: string, sizeX: number = 18, sizeY: number = 25): HTMLElement {
         const pinEl = document.createElement('div');
-        pinEl.style.width = `${this._options.markerIcons.pin.sizes.x}px`;
-        pinEl.style.height = `${this._options.markerIcons.pin.sizes.y}px`;
+        pinEl.style.width = `${sizeX}px`;
+        pinEl.style.height = `${sizeY}px`;
         pinEl.style.backgroundImage = `url('${iconPath}')`;
         pinEl.style.backgroundSize = 'contain';
         pinEl.style.backgroundRepeat = 'no-repeat';
@@ -1138,48 +1142,85 @@ export default class StoreLocator {
      * Listen to click event on markers to execute `markerClickHandler` to show popup with details.
      * Initialize cluster library.
      */
-    protected _createMarkers(): void {
-        if (!this.map) {
-            return;
-        }
+    protected _createMarkers(): Promise<void> {
+        return new Promise((resolve) => {
+            if (!this.map) {
+                resolve();
+                return;
+            }
 
-        if (this.cluster) {
-            this.cluster.clearMarkers();
-        }
+            if (this.cluster) {
+                this.cluster.clearMarkers();
+            }
 
-        this._infoWindow = new google.maps.InfoWindow({});
+            this._infoWindow = new google.maps.InfoWindow({});
 
-        this.markers = this.stores.map((store) => {
-            const pinEl = this._createPinDiv(this._options.markerIcons.pin.url);
+            const allMarkers: any[] = [];
+            let index = 0;
 
-            const marker = new google.maps.marker.AdvancedMarkerElement({
-                map: this.map,
-                position: {
-                    lat: store.latitude,
-                    lng: store.longitude,
-                },
-                content: pinEl,
-                gmpClickable: true,
-            });
+            const finalize = () => {
+                this.markers = allMarkers;
+                this.cluster = new MarkerClusterer({
+                    map: this.map,
+                    markers: this.markers,
+                    renderer: this._createClusterRenderer(),
+                    algorithm: new SuperClusterAlgorithm(this._options.clusterOptions || {}),
+                });
+                resolve();
+            };
 
-            marker.addEventListener('gmp-click', () => {
-                this.markerClickHandler(marker, store.sourceCode);
-            });
-            marker.storeId = store.sourceCode;
+            const createMarker = (store: any) => {
+                const pinEl = this._createPinDiv(
+                    this._options.markerIcons.pin.url,
+                    this._options.markerIcons.pin.sizes.x,
+                    this._options.markerIcons.pin.sizes.y
+                );
+                const marker = new google.maps.marker.AdvancedMarkerElement({
+                    position: {
+                        lat: store.latitude,
+                        lng: store.longitude,
+                    },
+                    content: pinEl,
+                    gmpClickable: true,
+                });
+                marker.addEventListener('gmp-click', () => {
+                    this.markerClickHandler(marker, store.sourceCode);
+                });
+                marker.storeId = store.sourceCode;
+                allMarkers.push(marker);
+            };
 
-            return marker;
+            const processChunk = (deadline?: IdleDeadline) => {
+                while (index < this.stores.length) {
+                    if (deadline && deadline.timeRemaining() <= 0) {
+                        requestIdleCallback(processChunk);
+                        return;
+                    }
+                    createMarker(this.stores[index]);
+                    index++;
+                }
+                finalize();
+            };
+
+            const processChunkFallback = () => {
+                const chunkEnd = Math.min(index + 200, this.stores.length);
+                while (index < chunkEnd) {
+                    createMarker(this.stores[index]);
+                    index++;
+                }
+                if (index < this.stores.length) {
+                    setTimeout(processChunkFallback, 0);
+                } else {
+                    finalize();
+                }
+            };
+
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(processChunk);
+            } else {
+                setTimeout(processChunkFallback, 0);
+            }
         });
-
-        // Custom cluster renderer
-        const renderer = this._createClusterRenderer();
-
-        const clasterOptions: MarkerClustererOptions = {
-            map: this.map,
-            markers: this.markers,
-            renderer,
-        };
-
-        this.cluster = new MarkerClusterer(clasterOptions);
     }
 
     /**
@@ -1202,9 +1243,44 @@ export default class StoreLocator {
      * zoomChangeHandler is connected with mobile behavior.
      */
     protected _attachMapListeners() {
-        google.maps.event.addListener(this.map, 'bounds_changed', this.mapChangeHandler.bind(this));
-
+        google.maps.event.addListener(this.map, 'idle', this.mapChangeHandler.bind(this));
         google.maps.event.addListener(this.map, 'zoom_changed', this.zoomChangeHandler.bind(this));
+    }
+
+    protected itemClickHandler(event: JQuery.ClickEvent): void {
+        const $target = $(event.target as HTMLElement);
+
+        if ($target.is(this._options.selectors.storelocatorSidebarClose)) {
+            this.closeMobilePopup();
+            return;
+        }
+
+        const $trigger = $target.closest(this._options.selectors.storelocatorItemHoursTrigger);
+
+        if ($trigger.length) {
+            $trigger.toggleClass('active');
+            $trigger.next().toggle();
+            return;
+        }
+
+        const $item = $target.closest(this._options.selectors.storelocatorItem);
+        if ($item.length) {
+            this.selectStore($item);
+        }
+    }
+
+    protected searchFormSubmitHandler(e: JQuery.SubmitEvent): void {
+        e.preventDefault();
+
+        const selectedSuggestion = $('.cs-store-locator__search-item.selected').length
+            ? $('.cs-store-locator__search-item.selected')
+            : null;
+
+        if (selectedSuggestion) {
+            this._$searchInput.val(selectedSuggestion.text());
+        }
+
+        this.searchButtonClickHandler();
     }
 
     /**
@@ -1215,44 +1291,11 @@ export default class StoreLocator {
         this._$sidebarToggler.on('click', this.toggleSidebar.bind(this));
         this._$locationButton.on('click', this.locationButtonClickHandler.bind(this));
         this._$searchButton.on('click', this.searchButtonClickHandler.bind(this));
-        this._$searchForm.on('submit', (e) => {
-            e.preventDefault();
+        this._$searchForm.on('submit', this.searchFormSubmitHandler.bind(this));
+        this._$element.on('click', this.itemClickHandler.bind(this));
 
-            const selectedSuggestion = $('.cs-store-locator__search-item.selected').length
-                ? $('.cs-store-locator__search-item.selected')
-                : null;
-
-            if (selectedSuggestion) {
-                this._$searchInput.val(selectedSuggestion.text());
-            }
-
-            this.searchButtonClickHandler();
-        });
-
-        this._$element.on('click', (event) => {
-            const $eventTarget = $(event.target);
-            const isTrigger = $eventTarget.hasClass('cs-store-locator__item-hours-trigger');
-            const isTriggerIcon = $eventTarget.hasClass(
-                'cs-store-locator__item-hours-trigger-icon'
-            );
-            if (isTrigger || isTriggerIcon) {
-                const $trigger = isTrigger
-                    ? $eventTarget
-                    : $eventTarget.parent('.cs-store-locator__item-hours-trigger');
-                $trigger.toggleClass('cs-store-locator__item-hours-trigger--open');
-                $trigger.next().toggle();
-            }
-
-            if ($(event.target).hasClass('cs-store-locator__store-details-close')) {
-                this.closeMobilePopup();
-            }
-        });
-
-        window.addEventListener('resize', this.windowResizeHandler.bind(this));
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => {
-                this.windowResizeHandler();
-            }, 200);
+        document.addEventListener('breakpointChange', () => {
+            this.windowResizeHandler.bind(this);
         });
     }
 }
