@@ -1,7 +1,11 @@
 import * as $ from 'jquery';
 import 'mage/translate';
 
-import { MarkerClusterer, Renderer, SuperClusterAlgorithm } from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
+import {
+    MarkerClusterer,
+    Renderer,
+    SuperClusterViewportAlgorithm,
+} from '@googlemaps/markerclusterer'; // The library creates and manages per-zoom-level clusters for large amounts of markers.
 
 declare global {
     interface Window {
@@ -1164,7 +1168,9 @@ export default class StoreLocator {
                     map: this.map,
                     markers: this.markers,
                     renderer: this._createClusterRenderer(),
-                    algorithm: new SuperClusterAlgorithm(this._options.clusterOptions || {}),
+                    algorithm: new SuperClusterViewportAlgorithm(
+                        this._options.clusterOptions || {}
+                    ),
                 });
                 resolve();
             };
