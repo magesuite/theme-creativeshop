@@ -1,4 +1,4 @@
-export const infoWindowContent = `
+export const storeItemTemplate = `
 <div class="cs-store-locator__item <% if (area) { %>cs-store-locator__item--<%= area %><% } %>" <% if (sourceCode) { %>data-id="<%= sourceCode %>"<% } %> <% if (latitude) { %>data-lat="<%= latitude %>"<% } %> <% if (longitude) { %>data-lng="<%= longitude %>" data-role="storelocator-item"<% } %>>
     <div class="cs-store-locator__store-details-close" data-role="storelocator-sidebar-close"></div>
     <div class="cs-store-locator__item-content">
