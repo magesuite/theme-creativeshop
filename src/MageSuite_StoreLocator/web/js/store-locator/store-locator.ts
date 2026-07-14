@@ -412,9 +412,9 @@ export default class StoreLocator {
                 }
 
                 const pinEl = this._createPinDiv(
-                    this._options.markerIcons.pin.url,
-                    this._options.markerIcons.pin.sizes.x,
-                    this._options.markerIcons.pin.sizes.y
+                    this._options.markerIcons.userLocation.url,
+                    this._options.markerIcons.userLocation.sizes.x,
+                    this._options.markerIcons.userLocation.sizes.y
                 );
 
                 this._locationMarker = new google.maps.marker.AdvancedMarkerElement({
