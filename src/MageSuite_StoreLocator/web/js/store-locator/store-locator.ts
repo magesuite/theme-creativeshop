@@ -172,7 +172,8 @@ export default class StoreLocator {
     protected _activeStoreId: string;
 
     protected _infoWindow: any; // there is only one info window (popup) withe details for all markers. Only content is changed when info window is requested
-
+    protected _storeItemTemplate: Promise<{ mageTemplate: any; storeItemTemplate: string }> | null =
+        null;
     protected consentManagement: any;
 
     /**
@@ -747,12 +748,29 @@ export default class StoreLocator {
      * Return custom html template for sidebar store info box.
      */
     public async getInfoWindowContent(store: any, area?: string): Promise<any> {
-        const { default: requireAsync } = await import('utils/require-async');
-        const { infoWindowContent } =
-            await import('MageSuite_StoreLocator/web/js/store-locator/template');
+        const { mageTemplate, storeItemTemplate } = await this._getStoreItemTemplate();
         const templateOptions = this.getStoreData(store, area);
-        const [mageTemplate] = await requireAsync(['mage/template']);
-        return mageTemplate(infoWindowContent, templateOptions);
+
+        return mageTemplate(storeItemTemplate, templateOptions);
+    }
+
+    /**
+     * Resolve template rendering dependencies once and reuse them for every store instead of
+     * re-importing the same modules on every `getInfoWindowContent` call.
+     */
+    protected _getStoreItemTemplate(): Promise<{ mageTemplate: any; storeItemTemplate: string }> {
+        if (!this._storeItemTemplate) {
+            this._storeItemTemplate = (async () => {
+                const { default: requireAsync } = await import('utils/require-async');
+                const { storeItemTemplate } =
+                    await import('MageSuite_StoreLocator/web/js/store-locator/template');
+                const [mageTemplate] = await requireAsync(['mage/template']);
+
+                return { mageTemplate, storeItemTemplate };
+            })();
+        }
+
+        return this._storeItemTemplate;
     }
 
     public getStoreData(store: any, area?: string): Object {
