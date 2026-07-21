@@ -4,7 +4,7 @@
 /* @var $block \Magento\Wishlist\Block\Customer\Sidebar */
 /* @var \Magento\Wishlist\Helper\Data $wishlistHelper */
 $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');
-$items = $wishlistHelper->getWishlistItemCollection()->getItems();
+$items = $wishlistHelper->getWishlist() ? $wishlistHelper->getWishlistItemCollection()->getItems() : [];
 
 $viewMode = $block->getViewMode();
 $viewModeClass = $block->getGridComponentClass();
