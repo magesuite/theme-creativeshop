@@ -1,0 +1,312 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+
+$smart-cart_primary-color: $color_primary-500 !default;
+$smart-cart_primary-color-dark: $color_primary-800 !default;
+$smart-cart_text-color: $color_text-800 !default;
+$smart-cart_muted-color: $color_text-500 !default;
+$smart-cart_border-color: $color_border-500 !default;
+$smart-cart_soft-background: $color_background-500 !default;
+$smart-cart_border-radius: 0.8rem !default;
+
+.smart-order-modal-wrapper.modal-popup .modal-inner-wrap {
+    max-width: 68rem;
+}
+
+.smart-order-modal {
+    color: $smart-cart_text-color;
+    font-size: 1.4rem;
+
+    &__intro {
+        color: $smart-cart_muted-color;
+        line-height: 1.5;
+        margin: 0 0 2rem;
+    }
+
+    // Upload dropzone
+    &__dropzone {
+        align-items: center;
+        background: $smart-cart_soft-background;
+        border: 2px dashed $smart-cart_border-color;
+        border-radius: $smart-cart_border-radius;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        justify-content: center;
+        padding: 3.2rem 2rem;
+        text-align: center;
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+
+        &:hover,
+        &.is-dragover {
+            background: rgba($smart-cart_primary-color, 0.08);
+            border-color: $smart-cart_primary-color;
+        }
+
+        &.has-file &-hint {
+            color: $smart-cart_primary-color-dark;
+            font-weight: 600;
+        }
+    }
+
+    &__dropzone-icon {
+        color: $smart-cart_primary-color;
+        line-height: 0;
+    }
+
+    &__dropzone-title {
+        color: $smart-cart_text-color;
+        font-size: 1.6rem;
+        font-weight: 700;
+    }
+
+    &__dropzone-hint {
+        color: $smart-cart_muted-color;
+        font-size: 1.2rem;
+    }
+
+    &__file {
+        height: 1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+
+    // Camera capture: only offered on touch devices (phones/tablets), where the capture
+    // attribute opens the camera; on mouse/trackpad devices it's just a redundant file picker.
+    &__camera-row {
+        display: none;
+
+        @media (pointer: coarse) {
+            align-items: center;
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            margin-top: 1.6rem;
+        }
+    }
+
+    &__camera-divider {
+        color: $smart-cart_muted-color;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+    }
+
+    &__camera-btn {
+        align-items: center;
+        background: $color_white;
+        border: 1px solid $smart-cart_border-color;
+        border-radius: $smart-cart_border-radius;
+        color: $smart-cart_primary-color-dark;
+        cursor: pointer;
+        display: inline-flex;
+        font-size: 1.3rem;
+        font-weight: 600;
+        gap: 0.6rem;
+        padding: 0.8rem 1.6rem;
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease;
+
+        &:hover {
+            background: rgba($smart-cart_primary-color, 0.08);
+            border-color: $smart-cart_primary-color;
+        }
+    }
+
+    &__camera-input {
+        height: 1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        width: 1px;
+    }
+
+    &__actions {
+        margin-top: 2.4rem;
+        text-align: right;
+    }
+
+    &__submit {
+        min-width: 18rem;
+    }
+
+    // Loader
+    &__loader {
+        color: $smart-cart_muted-color;
+        padding: 4rem 1rem;
+        text-align: center;
+    }
+
+    &__spinner {
+        animation: smart-order-spin 0.8s linear infinite;
+        border: 3px solid rgba($smart-cart_primary-color, 0.2);
+        border-radius: 50%;
+        border-top-color: $smart-cart_primary-color;
+        display: inline-block;
+        height: 3rem;
+        margin-bottom: 1.2rem;
+        width: 3rem;
+    }
+
+    // Result list
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    &__item {
+        align-items: center;
+        background: $color_white;
+        border: 1px solid $smart-cart_border-color;
+        border-radius: $smart-cart_border-radius;
+        display: grid;
+        gap: 1.2rem;
+        grid-template-columns: auto 4.4rem 1fr;
+        padding: 1.2rem 1.4rem;
+        row-gap: 0.8rem;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            opacity 0.2s ease;
+
+        @include media('>=tablet') {
+            grid-template-columns: auto 5.6rem 1fr auto auto;
+            row-gap: 0;
+        }
+
+        &:hover {
+            border-color: rgba($smart-cart_primary-color, 0.3);
+            box-shadow: 0 0.2rem 0.8rem rgba($smart-cart_primary-color-dark, 0.08);
+        }
+
+        &.is-unselected {
+            opacity: 0.5;
+        }
+    }
+
+    &__select {
+        accent-color: $smart-cart_primary-color;
+        cursor: pointer;
+        height: 1.8rem;
+        width: 1.8rem;
+    }
+
+    &__thumb {
+        align-items: center;
+        background: $smart-cart_soft-background;
+        border-radius: 0.6rem;
+        display: flex;
+        height: 4.4rem;
+        justify-content: center;
+        overflow: hidden;
+        width: 4.4rem;
+
+        @include media('>=tablet') {
+            height: 5.6rem;
+            width: 5.6rem;
+        }
+
+        img {
+            height: auto;
+            max-height: 100%;
+            max-width: 100%;
+        }
+    }
+
+    &__info {
+        min-width: 0;
+    }
+
+    &__name {
+        color: $smart-cart_text-color;
+        display: block;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    &__sku {
+        color: $smart-cart_muted-color;
+        display: block;
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+    }
+
+    &__options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.6rem;
+    }
+
+    &__option {
+        align-items: center;
+        background: rgba($smart-cart_primary-color, 0.08);
+        border-radius: 2rem;
+        color: $smart-cart_primary-color-dark;
+        display: inline-flex;
+        font-size: 1.1rem;
+        gap: 0.4rem;
+        line-height: 1.6;
+        padding: 0.2rem 0.8rem;
+
+        b {
+            font-weight: 700;
+        }
+    }
+
+    &__qty {
+        border: 1px solid $smart-cart_border-color;
+        border-radius: 0.6rem;
+        font-size: 1.4rem;
+        grid-column: 2 / 3;
+        padding: 0.6rem;
+        text-align: center;
+        width: 5.2rem;
+
+        @include media('>=tablet') {
+            grid-column: auto;
+        }
+    }
+
+    &__price {
+        font-weight: 700;
+        grid-column: 3 / 4;
+        text-align: right;
+        white-space: nowrap;
+
+        @include media('>=tablet') {
+            grid-column: auto;
+        }
+    }
+}
+
+@keyframes smart-order-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Standalone upload form (MageSuite_SmartCart::form.phtml)
+.smart-order {
+    &__camera-field {
+        display: none;
+
+        @media (pointer: coarse) {
+            display: block;
+        }
+
+        input[data-smart-order-camera] {
+            height: 1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            width: 1px;
+        }
+    }
+}
