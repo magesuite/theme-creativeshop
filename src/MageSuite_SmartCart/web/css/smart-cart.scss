@@ -9,11 +9,11 @@ $smart-cart_border-color: $color_border-500 !default;
 $smart-cart_soft-background: $color_background-500 !default;
 $smart-cart_border-radius: 0.8rem !default;
 
-.smart-order-modal-wrapper.modal-popup .modal-inner-wrap {
+.smart-cart-modal-wrapper.modal-popup .modal-inner-wrap {
     max-width: 68rem;
 }
 
-.smart-order-modal {
+.smart-cart-modal {
     color: $smart-cart_text-color;
     font-size: 1.4rem;
 
@@ -127,12 +127,36 @@ $smart-cart_border-radius: 0.8rem !default;
     }
 
     &__actions {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        justify-content: flex-end;
         margin-top: 2.4rem;
-        text-align: right;
+
+        .secondary {
+            margin-right: auto;
+        }
     }
 
     &__submit {
         min-width: 18rem;
+    }
+
+    &__restart-btn {
+        background: transparent;
+        border: 0;
+        color: $smart-cart_muted-color;
+        cursor: pointer;
+        font-size: 1.3rem;
+        font-weight: 600;
+        padding: 0;
+        text-decoration: underline;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: $smart-cart_primary-color-dark;
+        }
     }
 
     // Loader
@@ -143,7 +167,7 @@ $smart-cart_border-radius: 0.8rem !default;
     }
 
     &__spinner {
-        animation: smart-order-spin 0.8s linear infinite;
+        animation: smart-cart-spin 0.8s linear infinite;
         border: 3px solid rgba($smart-cart_primary-color, 0.2);
         border-radius: 50%;
         border-top-color: $smart-cart_primary-color;
@@ -286,27 +310,88 @@ $smart-cart_border-radius: 0.8rem !default;
     }
 }
 
-@keyframes smart-order-spin {
+@keyframes smart-cart-spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-// Standalone upload form (MageSuite_SmartCart::form.phtml)
-.smart-order {
-    &__camera-field {
-        display: none;
+// Standalone upload form (MageSuite_SmartCart::form.phtml). Shares the modal's dropzone,
+// camera, loader and result-list styling above; only the intro text and step bar are its own.
+.smart-cart {
+    color: $smart-cart_text-color;
+    font-size: 1.4rem;
 
-        @media (pointer: coarse) {
-            display: block;
-        }
+    &__intro {
+        color: $smart-cart_muted-color;
+        line-height: 1.5;
+        margin: 0 0 2rem;
+    }
 
-        input[data-smart-order-camera] {
+    &__steps {
+        display: flex;
+        gap: 2.4rem;
+        list-style: none;
+        margin: 0 0 2.4rem;
+        padding: 0;
+    }
+
+    &__step {
+        align-items: center;
+        color: $smart-cart_muted-color;
+        display: flex;
+        gap: 0.8rem;
+        position: relative;
+
+        &:not(:last-child)::after {
+            background: $smart-cart_border-color;
+            content: '';
             height: 1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            width: 1px;
+            margin-left: 0.8rem;
+            position: relative;
+            top: 0;
+            width: 3.2rem;
         }
+
+        &.is-active {
+            color: $smart-cart_text-color;
+
+            .smart-cart__step-number {
+                background: $smart-cart_primary-color;
+                color: $color_white;
+            }
+        }
+
+        &.is-complete {
+            .smart-cart__step-number {
+                background: $smart-cart_primary-color-dark;
+                color: $color_white;
+            }
+
+            &::after {
+                background: $smart-cart_primary-color-dark;
+            }
+        }
+    }
+
+    &__step-number {
+        align-items: center;
+        background: $smart-cart_soft-background;
+        border-radius: 50%;
+        display: flex;
+        flex-shrink: 0;
+        font-weight: 700;
+        height: 2.8rem;
+        justify-content: center;
+        width: 2.8rem;
+    }
+
+    &__step-label {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    &__panel {
+        margin-bottom: 2rem;
     }
 }
