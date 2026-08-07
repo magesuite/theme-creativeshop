@@ -121,8 +121,38 @@ define(['jquery'], function ($) {
                 this._refreshDisplay();
             },
 
+            _initSliderValues: function () {
+                this._super();
+
+                this._detectTotalItemsCount();
+            },
+
+            _initAdaptiveSliderValues: function () {
+                this._super();
+
+                this._detectTotalItemsCount();
+            },
+            /**
+             * Custom method - maxItemsCount reflects the currently applied range, so it is the
+             * total number of products only when no range is applied yet.
+             */
+            _detectTotalItemsCount: function () {
+                this.hasTotalItemsCount =
+                    Boolean(this.options.maxItemsCount) &&
+                    this.from === this.minValue &&
+                    this.to === this.maxValue;
+            },
+
             _getItemCount: function () {
-                return this.options.maxItemsCount ?? this._super();
+                if (
+                    this.hasTotalItemsCount &&
+                    this.from === this.minValue &&
+                    this.to === this.maxValue
+                ) {
+                    return this.options.maxItemsCount;
+                }
+
+                return this._super();
             },
         });
 
