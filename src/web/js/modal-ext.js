@@ -4,6 +4,7 @@
  * Reasons:
  * - add modal-no-scroll class to body when modal is opened and calculate scroll position
  * - do not add additional above logic if minicart or offcanvas navigation arw opened
+ * - restore focus to the trigger element with preventScroll
  * Aligned with Magento 2.4.8 in 04/2025
  */
 define(['jquery'], function ($) {
@@ -35,7 +36,7 @@ define(['jquery'], function ($) {
 
                 if (this._triggerElement && document.body.contains(this._triggerElement)) {
                     setTimeout(() => {
-                        this._triggerElement.focus();
+                        this._triggerElement.focus({ preventScroll: true });
                     }, 0);
                 }
 
