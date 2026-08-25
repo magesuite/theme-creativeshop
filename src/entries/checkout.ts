@@ -106,6 +106,7 @@ import 'components/separator/separator.scss';
  * Optional components that require optional modules being installed
  */
 // import 'Amazon_Pay';
+// import 'MageSuite_Garan';
 // import 'MageSuite_InstantPurchase';
 // import 'MageSuite_LoginOrGuestCheckoutStep';
 // import 'MageSuite_MultipleProductInserter';
