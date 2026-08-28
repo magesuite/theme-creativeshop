@@ -1,0 +1,561 @@
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/badge/mixin';
+@import 'etc/view.scss';
+@import 'utils/deep-get/deep-get.scss';
+@import 'utils/string-to-number';
+@import 'components/star-rating/star-rating';
+
+$pins_marker-width--mobile: 1.9rem !default;
+$pins_marker-height--mobile: 2.7rem !default;
+$pins_marker-width: 2.6rem !default;
+$pins_marker-height: 3.68rem !default;
+$pins_marker-shadow: drop-shadow(
+    0 0.1rem 0.3rem rgba($color_black, 0.4)
+) !default;
+$pins_color: $color_cerulean-blue !default;
+$pins_z-index: 10 !default;
+$pins_marker-transform--active: scale(1.08) !default;
+$pins_marker-transition: transform 0.15s ease-out !default;
+$pins_marker-unresolved-color: $color_dove-gray !default;
+$pins_marker-strike-color: $color_white !default;
+$pins_marker-strike-thickness: 0.2rem !default;
+$pins_marker-strike-radius: 0.1rem !default;
+// Keep the centring translate if you override this.
+$pins_marker-strike-transform: translate(-50%, -50%) rotate(-45deg) !default;
+$pins_card-width: 14.5rem !default;
+$pins_card-max-width: 70vw !default;
+$pins_card-skeleton-bg: $color_gallery !default;
+$pins_card-radius: $border-radius_base !default;
+$pins_card-media-image: deep-get(
+    $view-xml,
+    media,
+    images,
+    image,
+    category_page_grid
+);
+$pins_card-media-ratio: percentage(
+    to-number(#{map-get($pins_card-media-image, height)}) /
+        to-number(#{map-get($pins_card-media-image, width)})
+) !default;
+$pins_card-image-padding: 0.6rem !default;
+$pins_card-body-padding: 0 1rem 1rem !default;
+$pins_card-body-areas: 'name' 'price' 'rating' !default;
+$pins_card-elements-gap: 0.4rem !default;
+$pins_card-badge-padding: 0 0.7rem !default;
+$pins_card-show-arrow: true !default;
+$pins_card-sale-bg: $badge--discount-background !default;
+$pins_card-sale-color: $badge--discount-color !default;
+$pins_card-badge-radius: $badge_border-radius !default;
+$pins_focus-outline-width: 0.2rem !default;
+$pins_focus-outline-offset: 0.2rem !default;
+$pins_focus-outline-color: $color_mineshaft !default;
+$pins_focus-halo-color: rgba($color_white, 0.9) !default;
+$pins_focus-radius: 0.2rem !default;
+$pins_focus-glow: drop-shadow(0 0 0.2rem $color_white)
+    drop-shadow(0 0 0.3rem currentColor) !default;
+$pins_card-font-size: 1.3rem !default;
+$pins_card-name-font-weight: 600 !default;
+$pins_card-name-lines: 2 !default;
+$pins_card-badge-font-size: 1.1rem !default;
+$pins_card-badge-font-weight: 700 !default;
+$pins_card-badge-text-transform: uppercase !default;
+// Pill height: these two work together, change both or neither.
+$pins_card-badge-min-height: 2em !default;
+$pins_card-badge-line-height: 2 !default;
+// Price vars are unset: the store's global price-box styles the price.
+$pins_card-price-align: center !default;
+$pins_card-show-old-price: false !default;
+$pins_card-old-price-first: true !default;
+$pins_card-hide-price-label: false !default;
+$pins_card-current-price-color: null !default;
+$pins_card-old-price-color: null !default;
+$pins_card-old-price-decoration: null !default;
+$pins_card-current-price-font-weight: null !default;
+$pins_card-old-price-font-weight: null !default;
+$pins_card-bg: $color_white !default;
+$pins_card-text-color: $color_mineshaft !default;
+$pins_card-shadow: 0 0.4rem 1.6rem rgba($color_black, 0.2) !default;
+$pins_card-transition-duration: 0.15s !default;
+$pins_card-transition-easing: ease-out !default;
+$pins_card-image-fit: cover !default;
+$pins_card-image-transition: opacity 0.3s ease-out !default;
+$pins_card-skeleton-shimmer: $color_white !default;
+$pins_card-skeleton-gradient: linear-gradient(
+    90deg,
+    rgba($pins_card-skeleton-shimmer, 0) 0%,
+    rgba($pins_card-skeleton-shimmer, 0.55) 50%,
+    rgba($pins_card-skeleton-shimmer, 0) 100%
+) !default;
+$pins_card-skeleton-animation: cs-pins-shimmer 1.4s ease-in-out infinite !default;
+// Pin-to-card distance; the script only picks the side.
+$pins_card-gap: 1.3rem !default;
+$pins_card-arrow-size: 0.8rem !default;
+$pins_card-arrow-inset: 1.6rem !default;
+// The card edge can land on a fractional pixel and leave a seam.
+$pins_card-arrow-overlap: 1px !default;
+
+.#{$ns}image-teaser__figure:has(> .#{$ns}pins) {
+    display: grid;
+    grid-template-columns: 100%;
+    align-content: start;
+
+    > .#{$ns}image-teaser__picture,
+    > .#{$ns}pins {
+        grid-area: 1 / 1;
+    }
+}
+
+.#{$ns}pins {
+    $root: &;
+
+    position: relative;
+    z-index: $pins_z-index;
+    // Click-through except on the pins, so a slide CTA underneath still works.
+    pointer-events: none;
+
+    &__pin {
+        position: absolute;
+        width: $pins_marker-width--mobile;
+        height: $pins_marker-height--mobile;
+        transform: translate(-50%, -50%);
+        color: var(--cs-pins-color, #{$pins_color});
+        pointer-events: auto;
+        cursor: pointer;
+
+        @include media('>=tablet') {
+            width: $pins_marker-width;
+            height: $pins_marker-height;
+        }
+    }
+
+    &__trigger {
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: none;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:focus-visible {
+            outline: $pins_focus-outline-width solid $pins_focus-outline-color;
+            outline-offset: $pins_focus-outline-offset;
+            box-shadow: 0 0 0
+                ($pins_focus-outline-width + $pins_focus-outline-offset)
+                $pins_focus-halo-color;
+            border-radius: $pins_focus-radius;
+        }
+    }
+
+    &__pin:hover,
+    &__pin.is-open {
+        z-index: 3;
+    }
+
+    &__marker {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        filter: $pins_marker-shadow;
+
+        @media (prefers-reduced-motion: no-preference) {
+            transition: $pins_marker-transition;
+        }
+    }
+
+    &__pin:hover &__marker,
+    &__pin.is-open &__marker,
+    &__trigger:focus-visible &__marker {
+        @media (prefers-reduced-motion: no-preference) {
+            transform: $pins_marker-transform--active;
+        }
+    }
+
+    &__trigger:focus-visible &__marker {
+        filter: $pins_focus-glow;
+    }
+
+    &__icon {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__pin--unresolved {
+        color: $pins_marker-unresolved-color;
+
+        #{$root}__marker:after {
+            content: '';
+            position: absolute;
+            // Centred on the teardrop's inner circle.
+            top: 36%;
+            left: 50%;
+            width: $pins_marker-height--mobile;
+            height: $pins_marker-strike-thickness;
+            background: $pins_marker-strike-color;
+            border-radius: $pins_marker-strike-radius;
+            transform: $pins_marker-strike-transform;
+            pointer-events: none;
+
+            @include media('>=tablet') {
+                width: $pins_marker-height;
+            }
+        }
+    }
+
+    // ---- Product card (rich pins) ----
+    // The script sets `data-arrow` (card edge facing the pin) and may set
+    // `--cs-pins-card-shift`.
+    &__card {
+        display: block;
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + #{$pins_card-gap});
+        width: $pins_card-width;
+        max-width: $pins_card-max-width;
+        background: $pins_card-bg;
+        border-radius: $pins_card-radius;
+        box-shadow: $pins_card-shadow;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateX(-50%);
+        transition: opacity $pins_card-transition-duration
+                $pins_card-transition-easing,
+            visibility 0s linear $pins_card-transition-duration;
+        z-index: 2;
+    }
+
+    &__card[data-arrow='bottom'] {
+        top: auto;
+        right: auto;
+        bottom: calc(100% + #{$pins_card-gap});
+        left: 50%;
+        transform: translateX(calc(-50% + var(--cs-pins-card-shift, 0px)));
+    }
+
+    &__card[data-arrow='top'] {
+        bottom: auto;
+        right: auto;
+        top: calc(100% + #{$pins_card-gap});
+        left: 50%;
+        transform: translateX(calc(-50% + var(--cs-pins-card-shift, 0px)));
+    }
+
+    &__card[data-arrow='right'] {
+        bottom: auto;
+        left: auto;
+        top: 50%;
+        right: calc(100% + #{$pins_card-gap});
+        transform: translateY(calc(-50% + var(--cs-pins-card-shift, 0px)));
+    }
+
+    &__card[data-arrow='left'] {
+        bottom: auto;
+        right: auto;
+        top: 50%;
+        left: calc(100% + #{$pins_card-gap});
+        transform: translateY(calc(-50% + var(--cs-pins-card-shift, 0px)));
+    }
+
+    &__pin--rich.is-open &__card {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity $pins_card-transition-duration
+                $pins_card-transition-easing,
+            visibility 0s;
+    }
+
+    &:not(#{$root}--initialized) &__pin--rich:focus-within &__card {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity $pins_card-transition-duration
+                $pins_card-transition-easing,
+            visibility 0s;
+    }
+
+    @if $pins_card-show-arrow {
+        $pins_card-arrow-offset: clamp(
+            #{$pins_card-arrow-inset},
+            calc(50% - var(--cs-pins-card-shift, 0px)),
+            calc(100% - #{$pins_card-arrow-inset})
+        );
+
+        &__card:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+
+        &__card[data-arrow='top']:after {
+            bottom: 100%;
+            left: $pins_card-arrow-offset;
+            margin-bottom: -$pins_card-arrow-overlap;
+            transform: translateX(-50%);
+            border-right: $pins_card-arrow-size solid transparent;
+            border-left: $pins_card-arrow-size solid transparent;
+            border-bottom: $pins_card-arrow-size solid $pins_card-bg;
+        }
+
+        &__card[data-arrow='bottom']:after {
+            top: 100%;
+            left: $pins_card-arrow-offset;
+            margin-top: -$pins_card-arrow-overlap;
+            transform: translateX(-50%);
+            border-right: $pins_card-arrow-size solid transparent;
+            border-left: $pins_card-arrow-size solid transparent;
+            border-top: $pins_card-arrow-size solid $pins_card-bg;
+        }
+
+        &__card[data-arrow='left']:after {
+            right: 100%;
+            top: $pins_card-arrow-offset;
+            margin-right: -$pins_card-arrow-overlap;
+            transform: translateY(-50%);
+            border-top: $pins_card-arrow-size solid transparent;
+            border-bottom: $pins_card-arrow-size solid transparent;
+            border-right: $pins_card-arrow-size solid $pins_card-bg;
+        }
+
+        &__card[data-arrow='right']:after {
+            left: 100%;
+            top: $pins_card-arrow-offset;
+            margin-left: -$pins_card-arrow-overlap;
+            transform: translateY(-50%);
+            border-top: $pins_card-arrow-size solid transparent;
+            border-bottom: $pins_card-arrow-size solid transparent;
+            border-left: $pins_card-arrow-size solid $pins_card-bg;
+        }
+    }
+
+    &__card-media {
+        display: block;
+        position: relative;
+        width: 100%;
+        padding-top: $pins_card-media-ratio;
+        background-color: $pins_card-bg;
+        border-top-left-radius: $pins_card-radius;
+        border-top-right-radius: $pins_card-radius;
+        overflow: hidden;
+
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            top: $pins_card-image-padding;
+            right: $pins_card-image-padding;
+            bottom: $pins_card-image-padding;
+            left: $pins_card-image-padding;
+        }
+
+        &:before {
+            background-color: $pins_card-skeleton-bg;
+        }
+
+        &:after {
+            transform: translateX(-100%);
+            background: $pins_card-skeleton-gradient;
+
+            @media (prefers-reduced-motion: no-preference) {
+                animation: $pins_card-skeleton-animation;
+            }
+        }
+
+        &.is-loaded:before,
+        &.is-loaded:after {
+            display: none;
+        }
+    }
+
+    &__card-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: $pins_card-image-padding;
+        box-sizing: border-box;
+        object-fit: $pins_card-image-fit;
+        opacity: 0;
+        transition: $pins_card-image-transition;
+        z-index: 1;
+
+        &.is-loaded {
+            opacity: 1;
+        }
+    }
+
+    &__card-badges {
+        position: absolute;
+        top: $pins_card-image-padding;
+        left: $pins_card-image-padding;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        gap: $pins_card-elements-gap;
+    }
+
+    &__card-badge {
+        display: inline-block;
+        min-height: $pins_card-badge-min-height;
+        padding: $pins_card-badge-padding;
+        border-radius: $pins_card-badge-radius;
+        font-size: $pins_card-badge-font-size;
+        font-weight: $pins_card-badge-font-weight;
+        line-height: $pins_card-badge-line-height;
+        text-transform: $pins_card-badge-text-transform;
+
+        &--sale {
+            background: $pins_card-sale-bg;
+            color: $pins_card-sale-color;
+        }
+    }
+
+    &__card-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: $pins_card-body-areas;
+        gap: $pins_card-elements-gap;
+        padding: $pins_card-body-padding;
+    }
+
+    &__card-name {
+        grid-area: name;
+        display: -webkit-box;
+        overflow: hidden;
+        color: $pins_card-text-color;
+        font-size: $pins_card-font-size;
+        font-weight: $pins_card-name-font-weight;
+        line-height: 1.3;
+        -webkit-line-clamp: $pins_card-name-lines;
+        -webkit-box-orient: vertical;
+    }
+
+    &__card-price {
+        grid-area: price;
+        color: $pins_card-text-color;
+        font-size: $pins_card-font-size;
+
+        @if $pins_card-hide-price-label {
+            .price-label {
+                display: none;
+            }
+        }
+
+        .old-price {
+            order: if($pins_card-old-price-first, 0, 2);
+
+            @if $pins_card-old-price-first {
+                margin-right: $pins_card-elements-gap;
+            } @else {
+                margin-left: $pins_card-elements-gap;
+            }
+        }
+
+        .normal-price,
+        .special-price {
+            order: if($pins_card-old-price-first, 2, 0);
+        }
+
+        &--sale {
+            .price-box {
+                display: flex;
+                align-items: $pins_card-price-align;
+                flex-wrap: nowrap;
+            }
+        }
+
+        @if $pins_card-show-old-price {
+            .price-box {
+                display: flex;
+                align-items: $pins_card-price-align;
+                flex-wrap: nowrap;
+            }
+
+            .price {
+                white-space: nowrap;
+            }
+
+            .old-price .price,
+            .normal-price .price,
+            .special-price .price {
+                font-size: $pins_card-font-size;
+            }
+        }
+
+        @if $pins_card-old-price-color != null {
+            .old-price .price {
+                color: $pins_card-old-price-color;
+            }
+        }
+
+        @if $pins_card-old-price-decoration != null {
+            .old-price .price {
+                text-decoration: $pins_card-old-price-decoration;
+            }
+        }
+
+        @if $pins_card-current-price-font-weight != null {
+            .normal-price .price,
+            .special-price .price {
+                font-weight: $pins_card-current-price-font-weight;
+            }
+        }
+
+        @if $pins_card-old-price-font-weight != null {
+            .old-price .price {
+                font-weight: $pins_card-old-price-font-weight;
+            }
+        }
+
+        @if $pins_card-show-old-price or
+            ($pins_card-current-price-color != null)
+        {
+            &--sale {
+                @if $pins_card-show-old-price {
+                    .price-box .old-price.no-display {
+                        display: inline-block;
+                    }
+                }
+
+                @if $pins_card-current-price-color != null {
+                    .normal-price .price,
+                    .special-price .price {
+                        color: $pins_card-current-price-color;
+                    }
+                }
+            }
+        }
+    }
+
+    &__card-rating {
+        grid-area: rating;
+        white-space: nowrap;
+
+        .#{$ns}star-rating {
+            flex-wrap: nowrap;
+        }
+
+        .#{$ns}star-rating__text-annotation {
+            display: none;
+        }
+    }
+}
+
+@keyframes cs-pins-shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}

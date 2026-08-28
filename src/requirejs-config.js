@@ -5,6 +5,7 @@ var config = {
         vendors: 'vendors',
         ccImageTeaser: 'js/image-teaser',
         ccImageTeaserLegacy: 'js/image-teaser-legacy',
+        ccPins: 'js/pins',
         ccAccordion: 'js/accordion',
         ccInstagram: 'js/instagram',
         ccProductsGrid: 'js/products-grid',
