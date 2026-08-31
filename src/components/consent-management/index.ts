@@ -48,7 +48,7 @@ const consentManagement = {
         ) || 'cs-consent-management__button',
     /**
      * Check consent status
-     * @param service
+     * @param service - service key as defined in view.xml or string that matches the exact service name
      * @returns boolean or Promise<boolean> - depending on Consent Management Provider
      */
     checkConsent: function (service: string): boolean | Promise<boolean> {
@@ -56,7 +56,7 @@ const consentManagement = {
             return this.defaultValue;
         }
 
-        return this.mapVendors[this.vendor].checkConsent(this.services[service]);
+        return this.mapVendors[this.vendor].checkConsent(this.services[service] ?? service);
     },
     /**
      * Run callback on vendor initialization
