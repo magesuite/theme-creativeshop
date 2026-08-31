@@ -90,10 +90,8 @@ export default class VideoTeaser {
             videoPlayerPlaceholder.dataset.videoTeaser
         );
         const videoTypeConfig:
-            | YouTubePlayerOptions
-            | VimeoPlayerOptions
-            | FacebookPlayerOptions
-            | FilePlayerOptions = this.getVideoConfiguration(videoTeaser, videoData);
+            YouTubePlayerOptions | VimeoPlayerOptions | FacebookPlayerOptions | FilePlayerOptions =
+            this.getVideoConfiguration(videoTeaser, videoData);
         const consentStatus: boolean =
             videoData.type !== 'file' ? await consentManagement.checkConsent(videoData.type) : true;
         const hasPlayer: boolean =

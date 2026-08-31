@@ -260,12 +260,10 @@ export default class Offcanvas {
         return new Promise((resolve) => {
             this._$drawer.removeClass(`drawer--visible`);
 
-            if (
-                !(
-                    typeof this._options.isInertDisabled === 'function' &&
-                    this._options.isInertDisabled()
-                )
-            ) {
+            if (!(
+                typeof this._options.isInertDisabled === 'function' &&
+                this._options.isInertDisabled()
+            )) {
                 this._$drawer.attr('inert', '');
             }
 

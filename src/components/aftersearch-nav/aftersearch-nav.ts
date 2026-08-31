@@ -71,9 +71,7 @@ export class AftersearchNav {
         this._isHorizontal = this._$element.hasClass(this._options.horizontalClassName);
 
         this._manualFiltersEnabled =
-            $(
-                `.${this._options.wrapperClassName} + [data-manual-filters="true"]`
-            ).length > 0;
+            $(`.${this._options.wrapperClassName} + [data-manual-filters="true"]`).length > 0;
 
         this._attachEvents();
     }
@@ -167,10 +165,7 @@ export class AftersearchNav {
             this._eventListeners.filterApply = this._applyFilter.bind(this);
         }
 
-        this._eventListeners.inputChange = debounce(
-            this._adjustDropdown.bind(this),
-            300
-        );
+        this._eventListeners.inputChange = debounce(this._adjustDropdown.bind(this), 300);
 
         this._$listOfFilters.on('click', this._eventListeners.filterClick);
         this._$toggleButton.on('click', this._eventListeners.toggleButtonClick);
