@@ -17,6 +17,7 @@ const debounce = function (func, wait) {
 };
 
 export interface AftersearchNavOptions {
+    wrapperClassName?: string;
     horizontalClassName?: string;
     filtersExpandedClassName?: string;
     toggleButtonClassName?: string;
@@ -33,8 +34,10 @@ export class AftersearchNav {
     protected _$toggleButton: JQuery;
     protected _$listOfFilters: JQuery;
     protected _isHorizontal = false;
+    protected _manualFiltersEnabled = false;
     protected _switchBreakpoint: number;
     protected _options: AftersearchNavOptions = {
+        wrapperClassName: 'cs-aftersearch-nav',
         horizontalClassName: 'cs-aftersearch-nav--horizontal',
         filtersExpandedClassName: 'cs-aftersearch-nav--expanded',
         toggleButtonClassName: 'cs-aftersearch-nav__toggle-button',
@@ -66,6 +69,11 @@ export class AftersearchNav {
         this._$listOfFilters = this._$element.find(`.${this._options.filterClassName}`);
 
         this._isHorizontal = this._$element.hasClass(this._options.horizontalClassName);
+
+        this._manualFiltersEnabled =
+            $(
+                `.${this._options.wrapperClassName} + [data-manual-filters="true"]`
+            ).length > 0;
 
         this._attachEvents();
     }
@@ -153,16 +161,28 @@ export class AftersearchNav {
     protected _attachEvents(): void {
         this._eventListeners.filterClick = this._adjustDropdown.bind(this);
         this._eventListeners.toggleButtonClick = this._toggleFilters.bind(this);
-        this._eventListeners.filterApply = this._applyFilter.bind(this);
-        this._eventListeners.inputChange = debounce(this._adjustDropdown.bind(this), 300);
+
+        if (!this._manualFiltersEnabled) {
+            // Do not set event listener if MageSuite_ManualFilters is enabled
+            this._eventListeners.filterApply = this._applyFilter.bind(this);
+        }
+
+        this._eventListeners.inputChange = debounce(
+            this._adjustDropdown.bind(this),
+            300
+        );
 
         this._$listOfFilters.on('click', this._eventListeners.filterClick);
         this._$toggleButton.on('click', this._eventListeners.toggleButtonClick);
         this._$element.on('input', this._eventListeners.inputChange);
-        $(document).on(
-            'click',
-            this._options.loaderClickTargetsSelector,
-            this._eventListeners.filterApply
-        );
+
+        if (!this._manualFiltersEnabled) {
+            // Disconnect event listener if MageSuite_ManualFilters is enabled
+            $(document).on(
+                'click',
+                this._options.loaderClickTargetsSelector,
+                this._eventListeners.filterApply
+            );
+        }
     }
 }
