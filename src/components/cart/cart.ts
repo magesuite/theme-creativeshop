@@ -1,6 +1,7 @@
 import * as $ from 'jquery';
 import viewXml from 'etc/view';
 import deepGet from 'utils/deep-get/deep-get';
+import { initQtyIncrement } from 'components/qty-increment/qty-increment';
 
 /**
  * Component options interface.
@@ -8,6 +9,8 @@ import deepGet from 'utils/deep-get/deep-get';
 export interface CartOptions {
     minQtyValue?: number;
     cartTableSelector?: string;
+    cartContainerSelector?: string;
+    cartFormSelector?: string;
     qtyIncrementButtonSelector?: string;
     qtyIncrementInputSelector?: string;
     cartUpdateButtonSelector?: string;
@@ -23,7 +26,6 @@ export interface CartOptions {
  */
 export default class Cart {
     protected _options: CartOptions;
-    protected _cartTable: HTMLElement;
     protected _updateTimeout: any;
     protected _removeTimeout: any;
     protected _initValue: number;
@@ -34,6 +36,8 @@ export default class Cart {
             {
                 minQtyValue: 1,
                 cartTableSelector: '#shopping-cart-table',
+                cartContainerSelector: '.cart-container',
+                cartFormSelector: '#form-validate',
                 qtyIncrementButtonSelector: '.cs-qty-increment__button',
                 qtyIncrementInputSelector: '.cs-qty-increment__input',
                 cartUpdateButtonSelector: '#update-cart-button',
@@ -49,7 +53,6 @@ export default class Cart {
             options
         );
 
-        this._cartTable = document.querySelector(`${this._options.cartTableSelector}`);
         this._updateTimeout = null;
         this._initValue = 0;
 
@@ -120,49 +123,76 @@ export default class Cart {
         const _this = this;
 
         window.addEventListener('orientationchange', (): void => {
-            const cartTableStyle: string = getComputedStyle(this._cartTable).getPropertyValue(
-                'display'
-            );
-            this._cartTable.style.display = 'none';
+            const cartTable: HTMLElement = document.querySelector(this._options.cartTableSelector);
+            if (!cartTable) {
+                return;
+            }
+            const cartTableStyle: string = getComputedStyle(cartTable).getPropertyValue('display');
+            cartTable.style.display = 'none';
             setTimeout((): void => {
-                this._cartTable.style.display = cartTableStyle;
+                cartTable.style.display = cartTableStyle;
             }, 10);
         });
 
-        $(`${this._options.qtyIncrementButtonSelector}`).on('click', (e): void => {
-            if (
-                !$(e.target)
-                    .parents('.cs-qty-increment__button')
-                    .hasClass('cs-qty-increment__button--disabled') &&
-                !$(e.target).hasClass('cs-qty-increment__button--disabled')
-            ) {
-                this._triggerUpdate($(e.target));
-            }
-        });
-
-        $(`${this._options.qtyIncrementInputSelector}`).on('input change', (e, data): void => {
-            if (
-                _this._options.inputChangeAction !== 'reload' &&
-                data?.trigger === 'qty-increment'
-            ) {
-                return;
-            }
-            const newValue = $(e.target).val();
-
-            // Don't perform any action when input is empty (e.g. when user hits backspace) or value doesn't change (to prevent duplicated error (NKD-3292))
-            if (newValue === '' || Number(this._initValue) === Number(newValue)) {
-                return;
-            }
-
-            if (this._options.inputChangeAction === 'reload') {
-                if (Number(newValue) < _this._options.minQtyValue) {
-                    this._removeItem($(e.target));
-                } else {
+        $(`${this._options.cartContainerSelector}`).on(
+            'click',
+            `${this._options.qtyIncrementButtonSelector}`,
+            (e): void => {
+                if (
+                    !$(e.target)
+                        .parents('.cs-qty-increment__button')
+                        .hasClass('cs-qty-increment__button--disabled') &&
+                    !$(e.target).hasClass('cs-qty-increment__button--disabled')
+                ) {
                     this._triggerUpdate($(e.target));
                 }
-            } else {
-                this._showUpdateButton($(e.target));
             }
-        });
+        );
+
+        $(`${this._options.cartContainerSelector}`).on(
+            'input change',
+            `${this._options.qtyIncrementInputSelector}`,
+            (e, data): void => {
+                if (
+                    _this._options.inputChangeAction !== 'reload' &&
+                    data?.trigger === 'qty-increment'
+                ) {
+                    return;
+                }
+                const newValue = $(e.target).val();
+
+                // Don't perform any action when input is empty (e.g. when user hits backspace) or value doesn't change (to prevent duplicated error (NKD-3292))
+                if (newValue === '' || Number(this._initValue) === Number(newValue)) {
+                    return;
+                }
+
+                if (this._options.inputChangeAction === 'reload') {
+                    if (Number(newValue) < _this._options.minQtyValue) {
+                        this._removeItem($(e.target));
+                    } else {
+                        this._triggerUpdate($(e.target));
+                    }
+                } else {
+                    this._showUpdateButton($(e.target));
+                }
+            }
+        );
+
+        this._initialiseQtyIncrement();
+    }
+
+    protected _initialiseQtyIncrement(): void {
+        /*
+         * Magento_Checkout/js/cart/ensure-subtotal-sync replaces #form-validate wholesale
+         * with a freshly rendered form when subtotals mismatch, so qty steppers inside it
+         * need to be (re)initialised on the new nodes.
+         */
+        $(`${this._options.cartContainerSelector}`).on(
+            'contentUpdated',
+            `${this._options.cartFormSelector}`,
+            function (): void {
+                initQtyIncrement($(this));
+            }
+        );
     }
 }

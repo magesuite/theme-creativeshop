@@ -3,7 +3,7 @@ import * as $ from 'jquery';
 /**
  * Component options interface.
  */
-interface QtyIncrementOptions {
+export interface QtyIncrementOptions {
     /**
      * Minimum input value that can be provided.
      * @default 1
@@ -223,4 +223,18 @@ export default class QtyIncrement {
 
         this._$input.on('blur', this._resetValue.bind(this));
     }
+}
+
+export function initQtyIncrement(
+    $scope: JQuery<Document | HTMLElement>,
+    options?: QtyIncrementOptions
+): void {
+    $scope.find('.cs-qty-increment').each(function (): void {
+        const $element = $(this);
+        if ($element.data('qtyIncrementInitialized')) {
+            return;
+        }
+        $element.data('qtyIncrementInitialized', true);
+        new QtyIncrement($element, options);
+    });
 }
