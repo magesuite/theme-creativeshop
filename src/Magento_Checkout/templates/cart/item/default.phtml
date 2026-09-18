@@ -5,6 +5,7 @@
  * - add different classes for options in case of bundle product
  * - add free badge if exists
  * - add checkout.cart.item.brand, checkout.cart.item.renderers.default.option.edit hotspots
+ * - add checkout.cart.item.warranty-label hotspot
  * - add qty-increment component instead of input
  * - remove attributes to show image link in tab order
  * - merge options into one link NKD-4574
@@ -89,6 +90,7 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                             <?php endif; ?>
                         </div>
                     <?php endif;?>
+                    <?= $block->getChildHtml('checkout.cart.item.warranty-label.' . $_item->getProductType(), false); ?>
                     <?php if ($messages = $block->getMessages()): ?>
                         <?php foreach ($messages as $message): ?>
                             <div class="cs-cart-item__message cart item message <?= $escaper->escapeHtmlAttr($message['type']) ?>"><div><?= $escaper->escapeHtml($message['text']) ?></div></div>
