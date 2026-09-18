@@ -107,6 +107,7 @@ import 'components/toolbar';
  * Optional components that require optional modules being installed
  */
 // import 'Amazon_Pay';
+// import 'MageSuite_Garan';
 // import 'MageSuite_InstantPurchase';
 // import 'MageSuite_ProductVariants';
 // import 'MageSuite_PwaNotifications';

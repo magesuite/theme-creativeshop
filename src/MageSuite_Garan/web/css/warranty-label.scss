@@ -1,0 +1,104 @@
+// Same look as the other product-page trust indicators (cs-indicator-fast-shipping etc.):
+// reuses their shared mixins so it reads as part of the same family instead of a one-off style.
+@import 'config/variables';
+@import 'vendors/include-media';
+@import 'components/indicators/mixins';
+
+.#{$ns}garan-warranty-label {
+    &:not(:last-child) {
+        margin: 0 0 1rem;
+    }
+
+    @include indicator();
+
+    &__content {
+        display: flex;
+        align-items: center;
+    }
+
+    &__icon {
+        @include indicator-icon();
+        object-fit: contain;
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__headline {
+        @include indicator-headline();
+    }
+
+    &__link {
+        display: block;
+        cursor: pointer;
+
+        &:not(:last-child) {
+            margin: 0 0 0.25rem;
+        }
+    }
+
+    &__text {
+        @include indicator-text();
+    }
+}
+
+// Hidden until Magento_Ui/js/modal/modal shows them once, on first open (it overrides this with its
+// own inline display style at that point, so this only hides the raw source markup up to then).
+.#{$ns}garan-notice-label-modal,
+.#{$ns}garan-warranty-label-modal {
+    display: none;
+}
+
+.#{$ns}garan-notice-label-modal-wrapper,
+.#{$ns}garan-warranty-label-modal-wrapper {
+    .modal-inner-wrap {
+        width: 640px;
+    }
+}
+
+.#{$ns}garan-notice-label {
+    display: flex;
+    justify-content: center;
+
+    &__image {
+        max-width: 640px;
+        height: auto;
+    }
+}
+
+.#{$ns}garan-notice-label-modal__image,
+.#{$ns}garan-warranty-label-modal__image {
+    max-width: 100%;
+    height: auto;
+}
+
+.#{$ns}cart-item__warranty-label {
+    flex: stretch;
+}
+
+.#{$ns}topbar {
+    &__notice-label-link {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-left: 0.9rem;
+        padding: 0 0 0 0.3rem;
+
+        @include media('>=laptop') {
+            margin-left: 1.7rem;
+            padding: 0 0 0 1.3rem;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            border-left: 0.2rem solid $color_white;
+            transform: skew(-18deg);
+        }
+    }
+}
