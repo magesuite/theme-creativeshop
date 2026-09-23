@@ -252,6 +252,16 @@ $smart-cart_border-radius: 0.8rem !default;
         display: block;
         font-weight: 700;
         line-height: 1.3;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+
+            &:hover {
+                color: $smart-cart_primary-color-dark;
+                text-decoration: underline;
+            }
+        }
     }
 
     &__sku {
@@ -284,18 +294,56 @@ $smart-cart_border-radius: 0.8rem !default;
         }
     }
 
-    &__qty {
+    &__qty-wrap {
+        align-items: stretch;
         border: 1px solid $smart-cart_border-color;
         border-radius: 0.6rem;
-        font-size: 1.4rem;
+        display: flex;
         grid-column: 2 / 3;
-        padding: 0.6rem;
-        text-align: center;
-        width: 5.2rem;
+        overflow: hidden;
+        width: fit-content;
 
         @include media('>=tablet') {
             grid-column: auto;
         }
+    }
+
+    &__qty {
+        appearance: textfield;
+        border: 0;
+        font-size: 1.4rem;
+        padding: 0.6rem 0.2rem;
+        text-align: center;
+        width: 3.6rem;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+    }
+
+    &__qty-btn {
+        align-items: center;
+        color: $smart-cart_muted-color;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        padding: 0 0.8rem;
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+        user-select: none;
+
+        &:hover {
+            background: rgba($smart-cart_primary-color, 0.08);
+            color: $smart-cart_primary-color-dark;
+        }
+    }
+
+    &__qty-icon {
+        height: 0.9rem;
+        width: 0.9rem;
     }
 
     &__price {
