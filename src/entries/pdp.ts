@@ -120,3 +120,4 @@ import 'components/toolbar';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_Pwa';
+import 'MageSuite_Review/web/css/ai-product-review-summary.scss';
