@@ -96,6 +96,7 @@ import 'components/toolbar';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/ai-product-review-summary';
 // import 'components/authentication-modal';
 // import 'components/page-scroll';
 // import 'components/product-details/attachments';
@@ -120,4 +121,3 @@ import 'components/toolbar';
 // import 'PluginCompany_ContactForms';
 // import 'Smile_ElasticsuiteInstantSearch';
 // import 'MageSuite_Pwa';
-// import 'MageSuite_Review/web/css/ai-product-review-summary.scss';
