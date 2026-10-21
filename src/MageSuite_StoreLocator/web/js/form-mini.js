@@ -44,6 +44,11 @@ define([
     }
 
     $.widget('magesuite.quickSearch', $.mage.quickSearch, {
+        options: {
+            searchListClass: 'cs-store-locator__search-list',
+            searchListItemClass: 'cs-store-locator__search-item',
+        },
+
         _create: function () {
             this._super();
 
@@ -86,7 +91,9 @@ define([
             };
 
             var dropdown = $(
-                '<ul role="listbox" class="cs-store-locator__search-list"></ul>'
+                '<ul role="listbox" class="' +
+                    this.options.searchListClass +
+                    '"></ul>'
             );
             var value = this.element.val();
 
@@ -115,7 +122,9 @@ define([
                             element.index = index;
 
                             html =
-                                '<li class="cs-store-locator__search-item"><span class="qs-option-name">' +
+                                '<li class="' +
+                                _this.options.searchListItemClass +
+                                '"><span class="qs-option-name">' +
                                 highlightMatchesInString(element.description, [
                                     value,
                                 ]) +
