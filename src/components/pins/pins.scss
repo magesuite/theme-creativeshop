@@ -16,6 +16,8 @@ $pins_z-index: 10 !default;
 $pins_marker-transform--active: scale(1.08) !default;
 $pins_marker-transition: transform 0.15s ease-out !default;
 $pins_marker-unresolved-color: $color_dove-gray !default;
+$pins_marker-no-fill-stroke-width: 2 !default;
+$pins_marker-no-fill-shadow: drop-shadow(0 0 0.1rem rgba($color_black, 0.6)) $pins_marker-shadow !default;
 $pins_marker-strike-color: $color_white !default;
 $pins_marker-strike-thickness: 0.2rem !default;
 $pins_marker-strike-radius: 0.1rem !default;
@@ -161,6 +163,20 @@ $pins_card-arrow-overlap: 1px !default;
         }
     }
 
+    &__pin--no-fill:not(#{$root}__pin--unresolved) {
+        --cs-pins-icon-stroke-width: #{$pins_marker-no-fill-stroke-width};
+
+        color: transparent;
+
+        #{$root}__icon {
+            overflow: visible;
+        }
+    }
+
+    &__pin--no-fill:not(#{$root}__pin--unresolved, #{$root}__pin--dark-outline) &__marker {
+        filter: $pins_marker-no-fill-shadow;
+    }
+
     &__pin:hover &__marker,
     &__pin.is-open &__marker,
     &__trigger:focus-visible &__marker {
@@ -181,6 +197,10 @@ $pins_card-arrow-overlap: 1px !default;
 
     &__pin--unresolved {
         color: $pins_marker-unresolved-color;
+
+        #{$root}__marker {
+            --cs-pins-icon-stroke: initial;
+        }
 
         #{$root}__marker:after {
             content: '';
@@ -357,15 +377,18 @@ $pins_card-arrow-overlap: 1px !default;
         &:after {
             transform: translateX(-100%);
             background: $pins_card-skeleton-gradient;
-
-            @media (prefers-reduced-motion: no-preference) {
-                animation: $pins_card-skeleton-animation;
-            }
         }
 
         &.is-loaded:before,
         &.is-loaded:after {
             display: none;
+        }
+    }
+
+    &__pin.is-open &__card-media:after,
+    &:not(#{$root}--initialized) &__pin--rich:focus-within &__card-media:after {
+        @media (prefers-reduced-motion: no-preference) {
+            animation: $pins_card-skeleton-animation;
         }
     }
 
