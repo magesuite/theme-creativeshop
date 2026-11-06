@@ -3,8 +3,8 @@
  * - added show password icon to password input
  */
 define([
-  'jquery', 
-  'mgsTogglePassword', 
+  'jquery',
+  'mgsTogglePassword',
   'mgsWaitForElement'
 ], function ($, mgsTogglePassword, mgsWaitForElement) {
     'use strict';
