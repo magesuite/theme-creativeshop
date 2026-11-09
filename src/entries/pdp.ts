@@ -96,6 +96,7 @@ import 'components/toolbar';
 /**
  * Optional components - can be imported in child themes entries
  */
+// import 'components/ai-content-label';
 // import 'components/ai-product-review-summary';
 // import 'components/authentication-modal';
 // import 'components/page-scroll';
