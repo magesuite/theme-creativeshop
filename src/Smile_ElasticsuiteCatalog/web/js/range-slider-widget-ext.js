@@ -61,17 +61,13 @@ define(['jquery'], function ($) {
                 var key = event.key || event.keyCode;
 
                 if (event.type === 'blur' || key === 'Enter' || key === 13) {
-                    var from = this.parseStringToFloat(
-                        this.element
-                            .find(this.options.fromInput)
-                            .val()
-                            .replace(/[^\d\.\,]/, '') || 0
+                    var from = this._getInputValue(
+                        this.options.fromInput,
+                        this.minValue
                     );
-                    var to = this.parseStringToFloat(
-                        this.element
-                            .find(this.options.toInput)
-                            .val()
-                            .replace(/[^\d\.\,]/, '') || 0
+                    var to = this._getInputValue(
+                        this.options.toInput,
+                        this.maxValue
                     );
 
                     if (!to) {
@@ -95,15 +91,29 @@ define(['jquery'], function ($) {
             },
             /**
              * Custom method
+             * Reads an input, falling back to the given value when it holds no number.
+             * @param {string} inputSelector
+             * @param {number} fallbackValue
+             */
+            _getInputValue: function (inputSelector, fallbackValue) {
+                var value = this.parseStringToFloat(
+                    this.element.find(inputSelector).val()
+                );
+
+                return isNaN(value) ? fallbackValue : value;
+            },
+            /**
+             * Custom method
              * Helper which properly transforms formatted string to float
              * @param {string} amount
              */
             parseStringToFloat: function (amount) {
                 return parseFloat(
-                    amount
+                    String(amount)
                         .split(this.options.fieldFormat.groupSymbol)
                         .join('')
                         .replace(this.options.fieldFormat.decimalSymbol, '.')
+                        .replace(/[^\d\.]/g, '')
                 );
             },
             /**
