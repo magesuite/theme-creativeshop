@@ -1,35 +1,37 @@
 <?php
 /**
- * @var $block \Magento\Framework\View\Element\Template
+ * @var $block \Smile\ElasticsuiteCore\Block\Search\Form\Autocomplete
+ * @var $escaper \Magento\Framework\Escaper
  * @var $helper \Magento\Search\Helper\Data
  */
-$helper = $this->helper('Magento\Search\Helper\Data');
+// phpcs:ignore Magento2.Templates.ThisInTemplate.FoundHelper, Magento2.Templates.ThisInTemplate.FoundThis
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
 ?>
 
 <?php if ($block->getVar('header/mobile_search_in_offcanvas', 'Magento_Theme')): ?>
     <div class="cs-offcanvas-navigation__search">
-        <form role="search" class="cs-header-search cs-header-search--in-offcanvas" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get" id="cs-header-search-offcanvas">
+        <form role="search" class="cs-header-search cs-header-search--in-offcanvas" action="<?= $escaper->escapeUrl($helper->getResultUrl()) ?>" method="get" id="cs-header-search-offcanvas">
             <div class="cs-header-search__field cs-header-search__field--offcanvas">
                 <label class="label cs-header-search__label" for="search-offcanvas" data-role="minisearch-label">
-                    <span><?= $block->escapeHtml(__('Search')) ?></span>
+                    <span><?= $escaper->escapeHtml(__('Search')) ?></span>
                 </label>
                 <input
                     id="search-offcanvas"
-                    data-mage-init='{
-                        "quickSearch":{
-                            "formSelector":"#cs-header-search-offcanvas",
-                            "url":"<?= /* @escapeNotVerified */ $block->getUrl('search/ajax/suggest'); ?>",
-                            "destinationSelector":"#search_autocomplete_offcanvas",
-                            "templates": <?= /* @noEscape */ $block->getJsonSuggestRenderers();?>,
-                            "priceFormat" : <?= /* @noEscape */ $block->getJsonPriceFormat();?>
-                        }
-                    }'
+                    data-mage-init="<?= $escaper->escapeHtmlAttr(json_encode([
+                        'quickSearch' => [
+                            'formSelector' => '#cs-header-search-offcanvas',
+                            'url' => $block->getUrl('search/ajax/suggest'),
+                            'destinationSelector' => '#search_autocomplete_offcanvas',
+                            'templates' => json_decode($block->getJsonSuggestRenderers()),
+                            'priceFormat' => json_decode($block->getJsonPriceFormat()),
+                        ],
+                    ])) ?>"
                     type="search"
-                    name="<?= /* @escapeNotVerified */ $helper->getQueryParamName(); ?>"
-                    value="<?= /* @escapeNotVerified */ $helper->getEscapedQueryText(); ?>"
-                    placeholder="<?= /* @escapeNotVerified */ $block->getSearchPlaceholder(); ?>"
+                    name="<?= $escaper->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+                    value="<?= /* @noEscape */ $helper->getEscapedQueryText() ?>"
+                    placeholder="<?= $escaper->escapeHtmlAttr($block->getSearchPlaceholder()) ?>"
                     class="cs-header-search__input"
-                    maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength(); ?>"
+                    maxlength="<?= $escaper->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
                     role="combobox"
                     aria-haspopup="false"
                     aria-autocomplete="both"
@@ -42,7 +44,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                  <div class="cs-header-search__action">
                     <span class="cs-header-search__close">
                         <?= $block->getChildHtml('top.search.icon.close'); ?>
-                        <span class="cs-header-search__close-label"><?= /* @escapeNotVerified */ __('Close search'); ?></span>
+                        <span class="cs-header-search__close-label"><?= $escaper->escapeHtml(__('Close search')) ?></span>
                     </span>
                     <button class="cs-header-search__button" type="submit">
                         <span class="cs-header-search__button-container cs-header-search__button-container--search">
@@ -51,7 +53,7 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                         <span class="cs-header-search__button-container cs-header-search__button-container--loader">
                             <?= $block->getChildHtml('top.search.icon.loader'); ?>
                         </span>
-                        <span class="cs-header-search__button-label"><?= /* @escapeNotVerified */ __('Search'); ?></span>
+                        <span class="cs-header-search__button-label"><?= $escaper->escapeHtml(__('Search')) ?></span>
                     </button>
                 </div>
 
