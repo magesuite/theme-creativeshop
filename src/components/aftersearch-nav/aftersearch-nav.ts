@@ -55,6 +55,7 @@ export class AftersearchNav {
         toggleButtonClick?: (event: JQuery.Event) => void;
         filterApply?: (event: JQuery.Event) => void;
         inputChange?: (event: JQuery.Event) => void;
+        pageHide?: () => void;
     } = {};
 
     public constructor($element: JQuery, options?: AftersearchNavOptions) {
@@ -81,6 +82,10 @@ export class AftersearchNav {
      */
     protected _applyFilter() {
         this._$element.find(`.${this._options.loaderClassName}`).show();
+    }
+
+    protected _hideLoader(): void {
+        this._$element.find(`.${this._options.loaderClassName}`).hide();
     }
 
     protected _adjustDropdown(event) {
@@ -163,6 +168,7 @@ export class AftersearchNav {
         if (!this._manualFiltersEnabled) {
             // Do not set event listener if MageSuite_ManualFilters is enabled
             this._eventListeners.filterApply = this._applyFilter.bind(this);
+            this._eventListeners.pageHide = this._hideLoader.bind(this);
         }
 
         this._eventListeners.inputChange = debounce(this._adjustDropdown.bind(this), 300);
@@ -178,6 +184,7 @@ export class AftersearchNav {
                 this._options.loaderClickTargetsSelector,
                 this._eventListeners.filterApply
             );
+            window.addEventListener('pagehide', this._eventListeners.pageHide);
         }
     }
 }
