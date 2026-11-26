@@ -44,6 +44,8 @@ $aftersearch-nav_show-more-button-icon-pos: 'no-icon' !default;
 $aftersearch-nav--manual-filters-enabled: false !default;
 $aftersearch-nav--apply-filters-button-type: 'primary' !default;
 $aftersearch-nav--reset-filters-button-type: 'secondary' !default;
+$aftersearch-nav--filter-buttons-gap: 1rem !default;
+$aftersearch-nav--filter-buttons-margin-top: 1rem !default;
 
 $aftersearch-nav--horizontal_item-gutter: 0.8em !default;
 $aftersearch-nav--horizontal_item-font-size: 1.1rem !default;
@@ -432,14 +434,17 @@ $num-aftersearch-nav--horizontal_cols: length($aftersearch-nav--horizontal_cols)
         font-size: $aftersearch-nav_filter-font-size;
     }
 
+    @if ($aftersearch-nav--manual-filters-enabled) {
+        &__buttons-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: $aftersearch-nav--filter-buttons-gap;
+            margin-top: $aftersearch-nav--filter-buttons-margin-top;
+        }
+    }
+
     &__button {
         @if ($aftersearch-nav--manual-filters-enabled) {
-            &-wrapper {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-            }
-
             &-apply {
                 @include button($type: $aftersearch-nav--apply-filters-button-type);
             }
@@ -450,8 +455,6 @@ $num-aftersearch-nav--horizontal_cols: length($aftersearch-nav--horizontal_cols)
 
             &-apply,
             &-reset {
-                margin-top: 1rem;
-
                 &[disabled] {
                     cursor: not-allowed;
                 }
